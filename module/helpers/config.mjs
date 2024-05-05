@@ -14,6 +14,23 @@ BOILERPLATE.abilities = {
   lck: 'Luck',
 };
 
+BOILERPLATE.skills = {
+  barter: 'Barter',
+  breach: 'Breach',
+  crafting: 'Crafting',
+  energy_weapons: 'Energy Weapons',
+  explosives: 'Explosives',
+  guns: 'Guns',
+  intimidation: 'Intimidation',
+  medicine: 'Medicine',
+  melee_weapons: 'Melee Weapons',
+  science: 'Science',
+  sneak: 'Sneak',
+  speech: 'Speech',
+  survival: 'Surival',
+  unarmed: 'Unarmed',
+};
+
 BOILERPLATE.abilityAbbreviations = {
   str: 'Str',
   per: 'Per',

@@ -24,27 +24,29 @@
         }
       },
       "abilities": {
-        "str": {
-          "value": 5
-        },
-        "per": {
-          "value": 5
-        },
-        "end": {
-          "value": 5
-        },
-        "cha": {
-          "value": 5
-        },
-        "int": {
-          "value": 5
-        },
-        "agi": {
-          "value": 5
-        },
-        "lck": {
-          "value": 5
-        }
+        "str": {"value": 5},
+		"per": {"value": 5},
+		"end": {"value": 5},
+		"cha": {"value": 5},
+		"int": {"value": 5},
+		"agi": {"value": 5},
+		"lck": {"value": 5}
+      },
+	   "skills": {
+        "barter": {"value": 0},
+		"breach": {"value": 0},
+		"crafting": {"value": 0},
+		"energy_weapons": {"value": 0},
+		"explosives": {"value": 0},
+		"guns": {"value": 0},
+		"intimidation": {"value": 0},
+		"medicine": {"value": 0},
+		"melee_weapons": {"value": 0},
+		"science": {"value": 0},
+		"sneak": {"value": 0},
+		"speech": {"value": 0},
+		"survival": {"value": 0},
+		"unarmed": {"value": 0}
       }
     },
     "npc": {

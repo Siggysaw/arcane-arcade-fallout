@@ -18,7 +18,7 @@ export class BoilerplateActorSheet extends ActorSheet {
         {
           navSelector: '.sheet-tabs',
           contentSelector: '.sheet-body',
-          initial: 'features',
+          initial: 'status',
         },
       ],
     });
@@ -81,6 +81,9 @@ export class BoilerplateActorSheet extends ActorSheet {
     // Handle ability scores.
     for (let [k, v] of Object.entries(context.system.abilities)) {
       v.label = game.i18n.localize(CONFIG.BOILERPLATE.abilities[k]) ?? k;
+    }
+	for (let [k, v] of Object.entries(context.system.skills)) {
+      v.label = game.i18n.localize(CONFIG.BOILERPLATE.skills[k]) ?? k;
     }
   }
 

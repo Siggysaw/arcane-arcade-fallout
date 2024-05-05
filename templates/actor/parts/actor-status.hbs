@@ -1,1 +1,13 @@
-<p> Testing!</p>
+            <div class="skills flexcol">
+            <div class="skill flexrow flex-group-center">
+			<table>
+            {{#each system.skills as |skill key|}}
+			<tr>
+			<td><label for="system.skills.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d20+@skills.{{key}}.mod" data-label="{{skill.label}}">{{skill.label}}</label></td>
+			<td><input type="text" name="system.skills.{{key}}.value" value="{{skill.value}}" data-dtype="Number"/></td>
+			<td><span class="skill-mod" data-label="{{skill.label}}"> {{numberFormat skill.mod decimals=0 sign=true}}</span></td>
+			</tr>
+			{{/each}}
+			</table>    
+            </div>
+          </div>

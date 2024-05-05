@@ -52,6 +52,11 @@ export class BoilerplateActor extends Actor {
       // Calculate the modifier using d20 rules.
       ability.mod = Math.floor((ability.value - 5));
     }
+	    // Loop through skills scores, and add their modifiers to our sheet output.
+    for (let [key, skills] of Object.entries(systemData.skills)) {
+      // Calculate the modifier using d20 rules.
+      skills.mod = Math.floor((skills.value - 0));
+    }
   }
 
   /**
@@ -89,6 +94,12 @@ export class BoilerplateActor extends Actor {
     // formulas like `@str.mod + 4`.
     if (data.abilities) {
       for (let [k, v] of Object.entries(data.abilities)) {
+        data[k] = foundry.utils.deepClone(v);
+      }
+    }
+	
+	if (data.skills) {
+      for (let [k, v] of Object.entries(data.skills)) {
         data[k] = foundry.utils.deepClone(v);
       }
     }
