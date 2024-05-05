@@ -365,18 +365,15 @@
   border: none;
 }
 body .actor .window-content {
-	background-image:url("/systems/boilerplate/assets/pipboy.png") ;
+	background-image:url("/systems/arcane-arcade-fallout/assets/pipboy_75.png") ;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
+
 }
-.character,.character input,.sheet h1,.sheet h2,.sheet h3,.sheet a,.sheet li, .boilerplate .items-list .item .item-name{
+.character,.character input,.sheet h1,.sheet h2,.sheet h3,.sheet a,.sheet a:hover,.sheet li, .boilerplate .items-list .item .item-name{
 	color:#01E998;
 }
 
-form .profile-image{
-	max-width:200px;
-	max-height:200px;
-}
 .sheet .character-name input{
 	border:none;
 	font-size:20pt;
@@ -417,16 +414,37 @@ background:none;
 	border:none;
 	
 }
-.sheet .current-caps{
-	margin-top:10px;
-	
-}
 .sheet .current-caps input{
 		margin-top:3px;
 	
 }
 .sheet .modify{
 	width:35px;
-	
 }
 
+.sheet header.sheet-header img {
+  flex: 0 0 64px;
+  height: 130px;
+  width: 200px;
+  object-fit: cover;
+  border:solid 2px #1D5427;
+}
+
+td{
+
+}
+.sheet header.sheet-header .custom-icon{
+	height:30px;
+	max-width:30px;
+}
+
+.sheet td .modify{
+	width:75px;
+}
+.sheet ::placeholder{
+	color:#1D5427;
+	opacity: 1;
+}
+table,tr,td, .sheet img{
+	background:none;
+}

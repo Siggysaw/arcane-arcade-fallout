@@ -1,35 +1,17 @@
 <style>
-td{
 
-}
-.sheet header.sheet-header .custom-icon{
-	height:30px;
-	max-width:30px;
-}
-
-.sheet td .modify{
-	width:75px;
-}
-.sheet ::placeholder{
-	color:#1D5427;
-	opacity: 1;
-}
-table,tr,td, .sheet img{
-	background:none;
-}
-.sheet img{
-	border:none;
-}
 </style>
 <script>
 function updatexp(change){
 var current={{system.xp.value}};
 document.getElementById("xp").value = Number(change) + Number(current);
+document.getElementById("modifyxp").value = '';
 }
 
 function updatecaps(change){
 var current={{system.caps.value}};
 document.getElementById("caps").value = Number(change) + Number(current);
+document.getElementById("modifycaps").value = '';
 }
 
 </script>
@@ -44,12 +26,12 @@ document.getElementById("caps").value = Number(change) + Number(current);
 	<table class="bio">
 		<tr>
 			<td colspan=3 class="character-name" style="text-align:left;"><input type="text" name="name" value="{{actor.name}}" /><br><br></td></tr>
-			<tr><td class="bio-label"><span class="label">Race:</span></td><td><input type="text" name="system.race.value" value="{{system.race.value}}"/></td></tr>
-			<tr><td class="bio-label"><span class="label">BG:</span></td><td><input type="text" name="system.background.value" value="{{system.background.value}}"/></td></tr>			
+			<tr><td class="bio-label"><span class="label">Race:</span></td><td colspan=2><input type="text" name="system.race.value" value="{{system.race.value}}"/></td></tr>
+			<tr><td class="bio-label"><span class="label">BG:</span></td><td colspan=2><input type="text" name="system.background.value" value="{{system.background.value}}"/></td></tr>			
 			<tr><td></td><td></td></tr>
 			<tr><td class="bio-label"><span class="label">Lvl:</span></td><td colspan=2><input type="number" name="system.level.value" value="{{system.level.value}}" /></td></tr>
 			<tr><td class="bio-label"><span class="label">XP:</span></td><td><input id="xp" type="number" name="system.xp.value" value="{{system.xp.value}}" /></td>
-			<td><input onchange="updatexp(this.value)" class="modify" placeholder="modify" type="number" /></td></tr>			
+			<td><input id="modifyxp" onchange="updatexp(this.value)" class="modify" placeholder="modify" type="number" /></td></tr>			
 			</table>
 	
 	</td><td>
@@ -66,8 +48,18 @@ document.getElementById("caps").value = Number(change) + Number(current);
 			<td class="statusnum"><input type="number" name="system.stamina.value" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"/> / <input type="number" name="system.staminamax.value" value="{{system.staminamax.value}}" /></td>
 		</tr>
 	</table>
-	<table class="current-caps"><tr><td><img class="custom-icon" src="/systems/arcane-arcade-fallout/assets/caps.webp" /></td><td><input id="caps" type="number" name="system.caps.value" value="{{system.caps.value}}"/></td><td><input class="modify" onchange="updatecaps(this.value)" value='' placeholder="modify" type="number" /> </td></tr></table>
-	</td><td style="width:200px;"><img style="width:90%;height:auto;display:block;margin:auto;" class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" /></td></tr></table>
+	</td><td style="width:200px;">
+	<table>
+	<tr>
+	<td class="profile-image-td"><img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" /></td></tr><tr><td>
+		<table class="current-caps"><tr><td><img style="border:none;" class="custom-icon" src="/systems/arcane-arcade-fallout/assets/caps.webp" /></td>
+		<td><input id="caps" type="number" name="system.caps.value" value="{{system.caps.value}}"/></td>
+		<td><input id="modifycaps" class="modify" onchange="updatecaps(this.value)" value='' placeholder="modify" type="number" />
+		</td></tr>
+	</table></td>
+	</tr>
+	</table>
+	</table>
 		
       </div>
     </div>
@@ -86,33 +78,46 @@ document.getElementById("caps").value = Number(change) + Number(current);
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
+            <div class="abilities flexcol">
+            <div class="ability flexrow flex-group-center">
+			<table><tr>
+            {{#each system.abilities as |ability key|}}
+			<td><label for="system.abilities.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d20+@abilities.{{key}}.mod" data-label="{{ability.label}}">{{ability.label}}</label></td>
+			{{/each}}
+			<tr>
+			{{#each system.abilities as |ability key|}}
+			<td><input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number"/></td>
+			{{/each}}
+			</tr><tr>
+			{{#each system.abilities as |ability key|}}
+			<td><span class="ability-mod" data-label="{{ability.label}}"> {{numberFormat ability.mod decimals=0 sign=true}}</span></td>
+			{{/each}}
+			 </tr></table>    
+             
+			 
+			  
+			
+            </div>
+          </div>
+  {{!-- Owned status Tab --}}
     <div class="tab status" data-group="primary" data-tab="status">
-	</div>
-    {{!-- Owned Features Tab --}}
+      <section class="grid grid-3col">
+        {{!-- For the main status list, span the right two columns --}}
+        <section class="main grid-span-2">
+          {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-status.hbs"}}
+        </section>
+      </section>
+    </div>
+
+  {{!-- Owned Features Tab --}}
     <div class="tab features" data-group="primary" data-tab="features">
       <section class="grid grid-3col">
-        <aside class="sidebar">
-
-          {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-          use both the "grid" and "grid-Ncol" class where "N" can be any number
-          from 1 to 12 and will create that number of columns.  --}}
-          <div class="abilities flexcol">
-            {{#each system.abilities as |ability key|}}
-            <div class="ability flexrow flex-group-center">
-              <label for="system.abilities.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d20+@abilities.{{key}}.mod" data-label="{{ability.label}}">{{ability.label}}</label>
-              <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number"/>
-              <span class="ability-mod rollable" data-roll="d20+@abilities.{{key}}.mod" data-label="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</span>
-            </div>
-            {{/each}}
-          </div>
-        </aside>
-
         {{!-- For the main features list, span the right two columns --}}
-        <section class="main grid-span-2">
+        <section class="grid-span-2">
           {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
           {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-features.hbs"}}
         </section>
-
       </section>
     </div>
 

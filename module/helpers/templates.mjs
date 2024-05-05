@@ -6,6 +6,7 @@
 export const preloadHandlebarsTemplates = async function () {
   return loadTemplates([
     // Actor partials.
+    'systems/arcane-arcade-fallout/templates/actor/parts/actor-status.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-features.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-spells.hbs',
