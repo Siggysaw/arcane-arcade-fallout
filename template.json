@@ -1,0 +1,121 @@
+{
+  "Actor": {
+    "types": ["character", "npc"],
+    "templates": {
+      "base": {
+        "health": {
+          "value": 10,
+          "min": 0,
+          "max": 10
+        },
+        "power": {
+          "value": 5,
+          "min": 0,
+          "max": 5
+        },
+        "biography": ""
+      }
+    },
+    "character": {
+      "templates": ["base"],
+      "attributes": {
+        "level": {
+          "value": 1
+        }
+      },
+      "abilities": {
+        "str": {
+          "value": 5
+        },
+        "per": {
+          "value": 5
+        },
+        "end": {
+          "value": 5
+        },
+        "cha": {
+          "value": 5
+        },
+        "int": {
+          "value": 5
+        },
+        "agi": {
+          "value": 5
+        },
+        "lck": {
+          "value": 5
+        }
+      }
+    },
+    "npc": {
+      "templates": ["base"],
+      "cr": 0
+    }
+  },
+ "Item": {
+    "types": ["item","weapon", "feature", "spell"],
+    "templates": {
+      "base": {
+        "description": ""
+      }
+    },
+    "item": {
+      "templates": ["base"],
+      "quantity": 1,
+      "weight": 0,
+      "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+    },
+    "feature": {
+      "templates": ["base"]
+    },
+    "spell": {
+      "templates": ["base"],
+      "spellLevel": 1
+    },
+     "weapon":{
+            "type": "bladed",
+            "base-cost": 0,
+            "ap": 0,
+            "damage": [
+            {
+                "amount": "1d6",
+                "damage-type": "slashing"
+            },
+            {
+                "amount": "2d8",
+                "damage-type": "plasma"
+            },
+            {
+                "depleted": true,
+                "amount": "1d6",
+                "damage-type": "slashing"
+            }
+            ],
+            "short-range": 0,
+            "long-range": 0,
+            "crit-chance": 20,
+            "crit-mod": 2,
+            "crit-damage": 0,
+            "crit-effect": "bleeding",
+            "quantity": 1,
+            "load": 0,
+            "str-req": 5,
+            "special-properties": [
+                "Two-Handed",
+                "Weighted"
+            ],
+            "rarity": "common",
+            "crafting-complexity": "hard",
+            "decay": 0,
+            "ammo-type": "9mm",
+            "special-ammo-type": "Rubber",
+            "ammo-rounds": 12,
+            "clip-size": 12,
+            "weapon-mod-limit": 6,
+            "weapon-mods": [
+                "Auto-Firing-Turret",
+                "Bayonet"
+            ]
+        }
+    }
+}

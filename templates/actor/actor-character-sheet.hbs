@@ -1,0 +1,144 @@
+<style>
+td{
+
+}
+.sheet header.sheet-header .custom-icon{
+	height:30px;
+	max-width:30px;
+}
+
+.sheet td .modify{
+	width:75px;
+}
+.sheet ::placeholder{
+	color:#1D5427;
+	opacity: 1;
+}
+table,tr,td, .sheet img{
+	background:none;
+}
+.sheet img{
+	border:none;
+}
+</style>
+<script>
+function updatexp(change){
+var current={{system.xp.value}};
+document.getElementById("xp").value = Number(change) + Number(current);
+}
+
+function updatecaps(change){
+var current={{system.caps.value}};
+document.getElementById("caps").value = Number(change) + Number(current);
+}
+
+</script>
+
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+
+  {{!-- Sheet Header --}}
+  <header class="sheet-header">
+    <div class="header-fields">
+	<table>
+	<tr><td style="width:250px;" class="left">
+	<table class="bio">
+		<tr>
+			<td colspan=3 class="character-name" style="text-align:left;"><input type="text" name="name" value="{{actor.name}}" /><br><br></td></tr>
+			<tr><td class="bio-label"><span class="label">Race:</span></td><td><input type="text" name="system.race.value" value="{{system.race.value}}"/></td></tr>
+			<tr><td class="bio-label"><span class="label">BG:</span></td><td><input type="text" name="system.background.value" value="{{system.background.value}}"/></td></tr>			
+			<tr><td></td><td></td></tr>
+			<tr><td class="bio-label"><span class="label">Lvl:</span></td><td colspan=2><input type="number" name="system.level.value" value="{{system.level.value}}" /></td></tr>
+			<tr><td class="bio-label"><span class="label">XP:</span></td><td><input id="xp" type="number" name="system.xp.value" value="{{system.xp.value}}" /></td>
+			<td><input onchange="updatexp(this.value)" class="modify" placeholder="modify" type="number" /></td></tr>			
+			</table>
+	
+	</td><td>
+	<table><tr>
+<table class="current-health current-stats" ><tr>
+		<td><span class="status-label">HP</span><progress style="width:90%;float:right;" class="statusbar health" value="{{system.health.value}}" max="{{system.healthmax.value}}"> {{system.health.value}} </progress></td></tr>
+		<tr>
+			<td class="statusnum"><input type="number" name="system.health.value" value="{{system.health.value}}" max="{{system.healthmax.value}}"/> / <input type="number" name="system.healthmax.value" value="{{system.healthmax.value}}" /></td>
+		</tr>
+	</table>
+			<table class="current-stamina current-stats" ><tr>
+		<td><span class="status-label">AP</span><progress style="width:90%;float:right;" class="statusbar stamina" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"> {{system.stamina.value}} </progress></td></tr>
+		<tr>
+			<td class="statusnum"><input type="number" name="system.stamina.value" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"/> / <input type="number" name="system.staminamax.value" value="{{system.staminamax.value}}" /></td>
+		</tr>
+	</table>
+	<table class="current-caps"><tr><td><img class="custom-icon" src="/systems/arcane-arcade-fallout/assets/caps.webp" /></td><td><input id="caps" type="number" name="system.caps.value" value="{{system.caps.value}}"/></td><td><input class="modify" onchange="updatecaps(this.value)" value='' placeholder="modify" type="number" /> </td></tr></table>
+	</td><td style="width:200px;"><img style="width:90%;height:auto;display:block;margin:auto;" class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" /></td></tr></table>
+		
+      </div>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    {{!-- Default tab is specified in actor-sheet.mjs --}}
+	<a class="item" data-tab="status">Status</a>
+    <a class="item" data-tab="features">Data</a>
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="items">Items</a>
+    <a class="item" data-tab="spells">Spells</a>
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+    <div class="tab status" data-group="primary" data-tab="status">
+	</div>
+    {{!-- Owned Features Tab --}}
+    <div class="tab features" data-group="primary" data-tab="features">
+      <section class="grid grid-3col">
+        <aside class="sidebar">
+
+          {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
+          use both the "grid" and "grid-Ncol" class where "N" can be any number
+          from 1 to 12 and will create that number of columns.  --}}
+          <div class="abilities flexcol">
+            {{#each system.abilities as |ability key|}}
+            <div class="ability flexrow flex-group-center">
+              <label for="system.abilities.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d20+@abilities.{{key}}.mod" data-label="{{ability.label}}">{{ability.label}}</label>
+              <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number"/>
+              <span class="ability-mod rollable" data-roll="d20+@abilities.{{key}}.mod" data-label="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</span>
+            </div>
+            {{/each}}
+          </div>
+        </aside>
+
+        {{!-- For the main features list, span the right two columns --}}
+        <section class="main grid-span-2">
+          {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-features.hbs"}}
+        </section>
+
+      </section>
+    </div>
+
+    {{!-- Biography Tab --}}
+    <div class="tab biography" data-group="primary" data-tab="description">
+      {{!-- If you want TinyMCE editors to output inline rolls when rendered, you need to pass the actor's roll data to the rollData property. --}}
+      {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}
+    </div>
+
+    {{!-- Owned Items Tab --}}
+    <div class="tab items" data-group="primary" data-tab="items">
+       {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
+    </div>
+
+    {{!-- Owned Spells Tab --}}
+    <div class="tab spells" data-group="primary" data-tab="spells">
+      {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-spells.hbs"}}
+    </div>
+
+    {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
+    </div>
+
+  </section>
+</form>
+
+{{log system}}
+
