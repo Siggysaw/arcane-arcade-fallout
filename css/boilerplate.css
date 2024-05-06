@@ -5,8 +5,8 @@
 }
 
 .rollable:hover, .rollable:focus {
-  color: #000;
-  text-shadow: 0 0 10px red;
+  color: #1D5427;
+  text-shadow: 0 0 10px #1D5427;
   cursor: pointer;
 }
 
@@ -424,10 +424,13 @@ background:none;
 
 .sheet header.sheet-header img {
   flex: 0 0 64px;
-  height: 130px;
+  height: 175px;
   width: 200px;
   object-fit: cover;
   border:solid 2px #1D5427;
+}
+.sheet header.sheet-header .profile-image-td img {
+	margin-top:-20px;
 }
 
 td{
@@ -447,4 +450,26 @@ td{
 }
 table,tr,td, .sheet img{
 	background:none;
+}
+
+.status table td{
+	border:solid 1px;
+	vertical-align:middle;
+	padding:5px;
+}
+.status table{
+		font-size:8pt;
+		width:275px;
+}
+
+.status .skill-special{
+	width:40px;
+}
+.status .skill-label{
+	text-transform:uppercase;
+	width:75px;
+	font-size:10pt;
+}
+.status .skill-value{
+	width:25px;
 }

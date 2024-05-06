@@ -1,13 +1,123 @@
-            <div class="skills flexcol">
-            <div class="skill flexrow flex-group-center">
-			<table>
-            {{#each system.skills as |skill key|}}
-			<tr>
-			<td><label for="system.skills.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d20+@skills.{{key}}.mod" data-label="{{skill.label}}">{{skill.label}}</label></td>
-			<td><input type="text" name="system.skills.{{key}}.value" value="{{skill.value}}" data-dtype="Number"/></td>
-			<td><span class="skill-mod" data-label="{{skill.label}}"> {{numberFormat skill.mod decimals=0 sign=true}}</span></td>
-			</tr>
-			{{/each}}
-			</table>    
-            </div>
-          </div>
+<table id="skill-table">
+
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.barter.value}}+@abilities.cha.mod">CHA</label>
+		</td>
+		<td class="skill-cell skill-label">Barter</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.barter.value" value="{{system.barter.value}}" /></td>
+	</tr>
+
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.breach.value}}+@abilities.per.mod">PER</label> / 
+		<label class="rollable" data-roll="d20+{{system.breach.value}}+@abilities.int.mod">INT</label>
+		</td>
+		<td class="skill-cell skill-label">Breach</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.breach.value" value="{{system.breach.value}}" /></td>
+	</tr>
+
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.crafting.value}}+@abilities.int.mod">INT</label>
+		</td>
+		<td class="skill-cell skill-label">Crafting</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.crafting.value" value="{{system.crafting.value}}" /></td>
+	</tr>
+	
+		<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.energy_weapons.value}}+@abilities.per.mod">PER</label>
+		</td>
+		<td class="skill-cell skill-label">Energy Weapons</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.energy_weapons.value" value="{{system.energy_weapons.value}}" /></td>
+	</tr>
+	
+		<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.explosives.value}}+@abilities.per.mod">PER</label>
+		</td>
+		<td class="skill-cell skill-label">Explosives</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.explosives.value" value="{{system.explosives.value}}" /></td>
+	</tr>
+
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.guns.value}}+@abilities.agi.mod">AGI</label>
+		</td>
+		<td class="skill-cell skill-label">Guns</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.guns.value" value="{{system.guns.value}}" /></td>
+	</tr>
+	
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.intimidation.value}}+@abilities.str.mod">STR</label> / 
+		<label class="rollable" data-roll="d20+{{system.intimidation.value}}+@abilities.cha.mod">CHA</label>
+		</td>
+		<td class="skill-cell skill-label">Intimidation</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.intimidation.value" value="{{system.intimidation.value}}" /></td>
+	</tr>
+
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.medicine.value}}+@abilities.per.mod">PER</label> / 
+		<label class="rollable" data-roll="d20+{{system.medicine.value}}+@abilities.int.mod">INT</label>
+		</td>
+		<td class="skill-cell skill-label">Medicine</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.medicine.value" value="{{system.medicine.value}}" /></td>
+	</tr>
+	
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.melee_weapons.value}}+@abilities.str.mod">STR</label>
+		</td>
+		<td class="skill-cell skill-label">Melee Weapons</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.melee_weapons.value" value="{{system.melee_weapons.value}}" /></td>
+	</tr>
+	
+	
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.science.value}}+@abilities.int.mod">INT</label>
+		</td>
+		<td class="skill-cell skill-label">Science</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.science.value" value="{{system.science.value}}" /></td>
+	</tr>
+	
+	
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.sneak.value}}+@abilities.agi.mod">AGI</label>
+		</td>
+		<td class="skill-cell skill-label">Sneak</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.sneak.value" value="{{system.sneak.value}}" /></td>
+	</tr>
+	
+	
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.speech.value}}+@abilities.cha.mod">CHA</label>
+		</td>
+		<td class="skill-cell skill-label">Speech</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.speech.value" value="{{system.speech.value}}" /></td>
+	</tr>
+	
+	
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.survival.value}}+@abilities.end.mod">END</label>
+		</td>
+		<td class="skill-cell skill-label">Survival</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.survival.value" value="{{system.survival.value}}" /></td>
+	</tr>
+	
+	
+	<tr class="skill-row">
+		<td class="skill-special skill-cell">
+		<label class="rollable" data-roll="d20+{{system.unarmed.value}}+@abilities.str.mod">STR</label>
+		</td>
+		<td class="skill-cell skill-label">Unarmed</td>
+		<td class="skill-cell skill-value"><input type="number" min="0" name="system.unarmed.value" value="{{system.unarmed.value}}" /></td>
+	</tr>
+
+</table>
