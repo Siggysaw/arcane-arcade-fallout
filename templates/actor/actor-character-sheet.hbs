@@ -1,6 +1,4 @@
-<style>
 
-</style>
 <script>
 function updatexp(change){
 var current={{system.xp.value}};
@@ -13,14 +11,19 @@ var current={{system.caps.value}};
 document.getElementById("caps").value = Number(change) + Number(current);
 document.getElementById("modifycaps").value = '';
 }
-
+var penalties={{system.fatigue.value}}+{{system.hunger.value}}+{{system.dehydration.value}}+{{system.exhaustion.value}}+{{system.lvl_radiation.value}};
+document.getElementById("penalties").value = penalties;
 </script>
+
+
+
 
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
   {{!-- Sheet Header --}}
   <header class="sheet-header">
     <div class="header-fields">
+	<input id="penalties" name="system.penalties.value" value=""  hidden/>
 	<table>
 	<tr><td style="width:250px;" class="left">
 	<table class="bio">
