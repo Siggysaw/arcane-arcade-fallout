@@ -1,123 +1,143 @@
-<table id="skill-table">
-
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.barter.value}}+@abilities.cha.mod">CHA</label>
-		</td>
-		<td class="skill-cell skill-label">Barter</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.barter.value" value="{{system.barter.value}}" /></td>
-	</tr>
-
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.breach.value}}+@abilities.per.mod">PER</label> / 
-		<label class="rollable" data-roll="d20+{{system.breach.value}}+@abilities.int.mod">INT</label>
-		</td>
-		<td class="skill-cell skill-label">Breach</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.breach.value" value="{{system.breach.value}}" /></td>
-	</tr>
-
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.crafting.value}}+@abilities.int.mod">INT</label>
-		</td>
-		<td class="skill-cell skill-label">Crafting</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.crafting.value" value="{{system.crafting.value}}" /></td>
-	</tr>
-	
+<table class="status-block">
+<tr><td class="skill-table">
+	<table>
 		<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.energy_weapons.value}}+@abilities.per.mod">PER</label>
-		</td>
-		<td class="skill-cell skill-label">Energy Weapons</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.energy_weapons.value" value="{{system.energy_weapons.value}}" /></td>
-	</tr>
-	
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.barter.value}}+@abilities.cha.mod">CHA</label>
+			</td>
+			<td class="skill-cell skill-label">Barter</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.barter.value" value="{{system.barter.value}}" /></td>
+		</tr>
+
 		<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.explosives.value}}+@abilities.per.mod">PER</label>
-		</td>
-		<td class="skill-cell skill-label">Explosives</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.explosives.value" value="{{system.explosives.value}}" /></td>
-	</tr>
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.breach.value}}+@abilities.per.mod">PER</label> / 
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.breach.value}}+@abilities.int.mod">INT</label>
+			</td>
+			<td class="skill-cell skill-label">Breach</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.breach.value" value="{{system.breach.value}}" /></td>
+		</tr>
 
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.guns.value}}+@abilities.agi.mod">AGI</label>
-		</td>
-		<td class="skill-cell skill-label">Guns</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.guns.value" value="{{system.guns.value}}" /></td>
-	</tr>
-	
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.intimidation.value}}+@abilities.str.mod">STR</label> / 
-		<label class="rollable" data-roll="d20+{{system.intimidation.value}}+@abilities.cha.mod">CHA</label>
-		</td>
-		<td class="skill-cell skill-label">Intimidation</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.intimidation.value" value="{{system.intimidation.value}}" /></td>
-	</tr>
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.crafting.value}}+@abilities.int.mod">INT</label>
+			</td>
+			<td class="skill-cell skill-label">Crafting</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.crafting.value" value="{{system.crafting.value}}" /></td>
+		</tr>
+		
+			<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.energy_weapons.value}}+@abilities.per.mod">PER</label>
+			</td>
+			<td class="skill-cell skill-label">Energy Weapons</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.energy_weapons.value" value="{{system.energy_weapons.value}}" /></td>
+		</tr>
+		
+			<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.explosives.value}}+@abilities.per.mod">PER</label>
+			</td>
+			<td class="skill-cell skill-label">Explosives</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.explosives.value" value="{{system.explosives.value}}" /></td>
+		</tr>
 
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.medicine.value}}+@abilities.per.mod">PER</label> / 
-		<label class="rollable" data-roll="d20+{{system.medicine.value}}+@abilities.int.mod">INT</label>
-		</td>
-		<td class="skill-cell skill-label">Medicine</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.medicine.value" value="{{system.medicine.value}}" /></td>
-	</tr>
-	
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.melee_weapons.value}}+@abilities.str.mod">STR</label>
-		</td>
-		<td class="skill-cell skill-label">Melee Weapons</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.melee_weapons.value" value="{{system.melee_weapons.value}}" /></td>
-	</tr>
-	
-	
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.science.value}}+@abilities.int.mod">INT</label>
-		</td>
-		<td class="skill-cell skill-label">Science</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.science.value" value="{{system.science.value}}" /></td>
-	</tr>
-	
-	
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.sneak.value}}+@abilities.agi.mod">AGI</label>
-		</td>
-		<td class="skill-cell skill-label">Sneak</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.sneak.value" value="{{system.sneak.value}}" /></td>
-	</tr>
-	
-	
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.speech.value}}+@abilities.cha.mod">CHA</label>
-		</td>
-		<td class="skill-cell skill-label">Speech</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.speech.value" value="{{system.speech.value}}" /></td>
-	</tr>
-	
-	
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.survival.value}}+@abilities.end.mod">END</label>
-		</td>
-		<td class="skill-cell skill-label">Survival</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.survival.value" value="{{system.survival.value}}" /></td>
-	</tr>
-	
-	
-	<tr class="skill-row">
-		<td class="skill-special skill-cell">
-		<label class="rollable" data-roll="d20+{{system.unarmed.value}}+@abilities.str.mod">STR</label>
-		</td>
-		<td class="skill-cell skill-label">Unarmed</td>
-		<td class="skill-cell skill-value"><input type="number" min="0" name="system.unarmed.value" value="{{system.unarmed.value}}" /></td>
-	</tr>
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.guns.value}}+@abilities.agi.mod">AGI</label>
+			</td>
+			<td class="skill-cell skill-label">Guns</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.guns.value" value="{{system.guns.value}}" /></td>
+		</tr>
+		
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.intimidation.value}}+@abilities.str.mod">STR</label> / 
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.intimidation.value}}+@abilities.cha.mod">CHA</label>
+			</td>
+			<td class="skill-cell skill-label">Intimidation</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.intimidation.value" value="{{system.intimidation.value}}" /></td>
+		</tr>
 
-</table>
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.medicine.value}}+@abilities.per.mod">PER</label> / 
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.medicine.value}}+@abilities.int.mod">INT</label>
+			</td>
+			<td class="skill-cell skill-label">Medicine</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.medicine.value" value="{{system.medicine.value}}" /></td>
+		</tr>
+		
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.melee_weapons.value}}+@abilities.str.mod">STR</label>
+			</td>
+			<td class="skill-cell skill-label">Melee Weapons</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.melee_weapons.value" value="{{system.melee_weapons.value}}" /></td>
+		</tr>
+		
+		
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.science.value}}+@abilities.int.mod">INT</label>
+			</td>
+			<td class="skill-cell skill-label">Science</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.science.value" value="{{system.science.value}}" /></td>
+		</tr>
+		
+		
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.sneak.value}}+@abilities.agi.mod">AGI</label>
+			</td>
+			<td class="skill-cell skill-label">Sneak</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.sneak.value" value="{{system.sneak.value}}" /></td>
+		</tr>
+		
+		
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.speech.value}}+@abilities.cha.mod">CHA</label>
+			</td>
+			<td class="skill-cell skill-label">Speech</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.speech.value" value="{{system.speech.value}}" /></td>
+		</tr>
+		
+		
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.survival.value}}+@abilities.end.mod">END</label>
+			</td>
+			<td class="skill-cell skill-label">Survival</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.survival.value" value="{{system.survival.value}}" /></td>
+		</tr>
+		
+		
+		<tr class="skill-row">
+			<td class="skill-special skill-cell">
+			<label class="rollable" data-roll="d20-{{system.hunger.value}}-{{system.dehydration.value}}-{{system.exhaustion.value}}-{{system.lvl_radiation.value}}+{{system.unarmed.value}}+@abilities.str.mod">STR</label>
+			</td>
+			<td class="skill-cell skill-label">Unarmed</td>
+			<td class="skill-cell skill-value"><input type="number"  name="system.unarmed.value" value="{{system.unarmed.value}}" /></td>
+		</tr>
+
+	</table>
+</td>
+<td class="status-table">
+	<table>
+		<tr>
+			<td  class="status-info-label">LVL of Hunger</td>
+			<td  class="status-info-label">LVL of Dehydration</td>
+			<td  class="status-info-label">LVL of Exhaustion</td>
+			<td  class="status-info-label">Radiation DC</td>
+			<td  class="status-info-label">LVL of Radiation</td>
+			</tr>
+			<tr>
+			<td  class="status-info-value"><input type="number" name="system.hunger.value" value="{{system.hunger.value}}" min=0/></td>
+			<td  class="status-info-value"><input type="number" name="system.dehydration.value" value="{{system.dehydration.value}}" min=0/></td>
+			<td  class="status-info-value"><input type="number" name="system.exhaustion.value" value="{{system.exhaustion.value}}" min=0/></td>
+			<td  class="status-info-value"><input type="number" name="system.rad_dc.value" value="{{system.rad_dc.value}}" min=0/></td>
+			<td  class="status-info-value"><input type="number" name="system.lvl_radiation.value" value="{{system.lvl_radiation.value}}" min=0/></td>
+		</tr>
+	</table>
+</td></tr></table>

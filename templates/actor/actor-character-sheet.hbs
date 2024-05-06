@@ -86,7 +86,7 @@ document.getElementById("modifycaps").value = '';
 			{{/each}}
 			<tr>
 			{{#each system.abilities as |ability key|}}
-			<td><input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number"/></td>
+			<td><input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number" min="0" max="10"/></td>
 			{{/each}}
 			</tr><tr>
 			{{#each system.abilities as |ability key|}}
@@ -101,9 +101,9 @@ document.getElementById("modifycaps").value = '';
           </div>
   {{!-- Owned status Tab --}}
     <div class="tab status" data-group="primary" data-tab="status">
-      <section class="grid grid-3col">
+      <section>
         {{!-- For the main status list, span the right two columns --}}
-        <section class="main grid-span-2">
+        <section>
           {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
           {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-status.hbs"}}
         </section>

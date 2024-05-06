@@ -453,23 +453,26 @@ table,tr,td, .sheet img{
 }
 
 .status table td{
-	border:solid 1px;
-	vertical-align:middle;
+	border:none;
 	padding:5px;
+	font-size:8pt;
 }
-.status table{
-		font-size:8pt;
-		width:275px;
+.status .skill-table td,.status .status-table td{
+	border:solid 1px;
 }
-
-.status .skill-special{
-	width:40px;
+.status .skill-table td{
+	width:100px;
+}
+.status .skill-table td{
+	vertical-align:middle;
 }
 .status .skill-label{
 	text-transform:uppercase;
-	width:75px;
 	font-size:10pt;
 }
 .status .skill-value{
 	width:25px;
+}
+.sheet. table .status-table{
+	vertical-align:top;
 }
