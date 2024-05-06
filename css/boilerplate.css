@@ -3,7 +3,10 @@
 .window-app {
   font-family: "Roboto", sans-serif;
 }
-
+:root{
+	--color-shadow-primary: #1D5427;
+	
+}
 .rollable:hover, .rollable:focus {
   color: #1D5427;
   text-shadow: 0 0 10px #1D5427;
@@ -460,11 +463,12 @@ table,tr,td, .sheet img{
 .status .skill-table td,.status .status-table td{
 	border:solid 1px;
 }
-.status .skill-table td{
-	width:100px;
+.status .skill-table{
+	width:235px;
 }
 .status .skill-table td{
 	vertical-align:middle;
+
 }
 .status .skill-label{
 	text-transform:uppercase;

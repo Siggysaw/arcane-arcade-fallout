@@ -13,6 +13,9 @@ document.getElementById("modifycaps").value = '';
 }
 var penalties={{system.fatigue.value}}+{{system.hunger.value}}+{{system.dehydration.value}}+{{system.exhaustion.value}}+{{system.lvl_radiation.value}};
 document.getElementById("penalties").value = penalties;
+
+document.getElementById("healing-rate").value = Math.floor(({{system.level.value}} + {{system.abilities.end.value}})/2);
+
 </script>
 
 
@@ -45,10 +48,15 @@ document.getElementById("penalties").value = penalties;
 			<td class="statusnum"><input type="number" name="system.health.value" value="{{system.health.value}}" max="{{system.healthmax.value}}"/> / <input type="number" name="system.healthmax.value" value="{{system.healthmax.value}}" /></td>
 		</tr>
 	</table>
-			<table class="current-stamina current-stats" ><tr>
-		<td><span class="status-label">AP</span><progress style="width:90%;float:right;" class="statusbar stamina" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"> {{system.stamina.value}} </progress></td></tr>
+			<table class="current-stamina current-stats" >
+			<tr>
+				<td colspan=2><span class="status-label">AP</span><progress style="width:90%;float:right;" class="statusbar stamina" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"> {{system.stamina.value}} </progress></td>
+			</tr>
+			<tr>
+				<td colspan=2 class="statusnum"><input type="number" name="system.stamina.value" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"/> / <input type="number" name="system.staminamax.value" value="{{system.staminamax.value}}" /></td>
+			</tr>
 		<tr>
-			<td class="statusnum"><input type="number" name="system.stamina.value" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"/> / <input type="number" name="system.staminamax.value" value="{{system.staminamax.value}}" /></td>
+			<td><input type="text" name="system.ac.value" value="{{system.ac.value}}">AC</td><td><input type="text" name="system.dt.value" value="{{system.dt.value}}">DT</td>
 		</tr>
 	</table>
 	</td><td style="width:200px;">
