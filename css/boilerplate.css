@@ -379,7 +379,10 @@
 .window-app .window-content select,
 .dialog,
 .window-app .window-content textarea{
-	color:#01E998
+	color:#01E998;
+}
+.window-app .window-content button{
+	background:#222;
 }
 .window-app .window-content .header-actions button,
 .window-app .window-content .header-search input{
