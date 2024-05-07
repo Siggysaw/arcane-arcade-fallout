@@ -2,22 +2,26 @@
 .sheet table td{
 	vertical-align:middle;
 }
+.sheet .editor-content{
+	line-height:2;
+}
 </style>
 
 
 <form class="{{cssClass}}" autocomplete="off">
 <table><tr><td style="border:solid 1px;">{{system.repeat.value}}</td></tr></table>
-<input type="text" name="system.repeat.value" value="{{system.repeat.value}}" hidden />
+<input type="text" name="system.repeat.value" value="{{system.repeat.value}}" hidden/>
   <header class="sheet-header">
     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
     <div class="header-fields">
       <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
 	  <table>
-<tr><td style="width:100px;">Requirement:</td><td><input type="text" name="system.requirement.value" value="{{system.requirement.value}}" /></td></tr>
+<tr><td>Req:</td><td><input type="text" name="system.requirement.value" value="{{system.requirement.value}}" disabled/></td><td><span>Lvl:</span> <input style="width:35px;text-align:center;" type="number" min="1" name="system.perk-level.value" value="{{system.perk-level.value}}" /></td></tr>
 </table>
 
     </div>
   </header>
+  
  {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a style="display:none;"class="item" data-tab="description">Description</a>

@@ -1,6 +1,6 @@
 {
   "name": "{{title}}",
-  "type": "Perk",
+  "type": "perk",
   "img": "systems/arcane-arcade-fallout/assets/perks-icon.png",
   "system": {
     "requirement": {

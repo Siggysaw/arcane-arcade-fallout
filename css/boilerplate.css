@@ -384,10 +384,7 @@
 .window-app .window-content button{
 	background:#222;
 }
-.window-app .window-content .header-actions button,
-.window-app .window-content .header-search input{
-	color:black;
-}
+
 .character,
 .character input,
 .sheet h1,.sheet h2,.sheet h3,

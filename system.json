@@ -36,7 +36,16 @@
       "path": "lang/en.json"
     }
   ],
-  "packs": [],
+  "packs": [
+    {
+      "label": "Perks",
+      "type": "perk",
+      "name": "Perks",
+      "path": "packs/perks",
+      "system": "arcane-arcade-fallout",
+      "banner": "systems/arcane-arcade-fallout/perks-icon.png"
+    }
+	],
   "packFolders": [],
   "socket": false,
   "manifest": "",
