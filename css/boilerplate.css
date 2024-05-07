@@ -367,13 +367,29 @@
 .boilerplate .effects .item .effect-controls {
   border: none;
 }
-body .actor .window-content {
+.window-app .window-content, .window-app .window-content .form-fields {
 	background-image:url("/systems/arcane-arcade-fallout/assets/pipboy_75.png") ;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
-
+	color:#01E998;
 }
-.character,.character input,.sheet h1,.sheet h2,.sheet h3,.sheet a,.sheet a:hover,.sheet li, .boilerplate .items-list .item .item-name{
+.window-app .window-content input,
+.window-app .window-content button, 
+.window-app .window-content label,
+.window-app .window-content select,
+.dialog,
+.window-app .window-content textarea{
+	color:#01E998
+}
+.window-app .window-content .header-actions button,
+.window-app .window-content .header-search input{
+	color:black;
+}
+.character,
+.character input,
+.sheet h1,.sheet h2,.sheet h3,
+.sheet a,.sheet a:hover,.sheet li,
+.boilerplate .items-list .item .item-name{
 	color:#01E998;
 }
 

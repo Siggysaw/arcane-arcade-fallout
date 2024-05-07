@@ -1,0 +1,30 @@
+{
+  "name": "{{title}}",
+  "type": "Perk",
+  "img": "systems/arcane-arcade-fallout/assets/perks-icon.png",
+  "system": {
+    "requirement": {
+      "value": "{{requirement}}"
+    },
+	 "repeat": {
+     "value": "{{repeat}}"
+    },
+    "description": "{{description}}"
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "exportSource": {
+      "world": "fallout-ttrpg",
+      "system": "arcane-arcade-fallout",
+      "coreVersion": "11.315",
+      "systemVersion": "1.0.0"
+    }
+  },
+  "_stats": {
+    "systemId": "arcane-arcade-fallout",
+    "systemVersion": "1.0.0",
+    "coreVersion": "11.315",
+    "lastModifiedBy": "gzYpjX3Fqlrk2eh5"
+  }
+}

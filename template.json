@@ -55,7 +55,7 @@
     }
   },
  "Item": {
-    "types": ["item","weapon", "feature", "spell"],
+    "types": ["item","Equipment", "Feature", "Spell","Perk"],
     "templates": {
       "base": {
         "description": ""
@@ -66,6 +66,11 @@
       "quantity": 1,
       "weight": 0,
       "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+    },
+	"perk": {
+      "templates": ["base"],
+      "quantity": 1,
+      "formula": ""
     },
     "feature": {
       "templates": ["base"]
