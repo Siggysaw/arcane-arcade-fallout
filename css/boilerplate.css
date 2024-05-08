@@ -367,11 +367,17 @@
 .boilerplate .effects .item .effect-controls {
   border: none;
 }
-.window-app .window-content, .window-app .window-content .form-fields {
+.window-app .window-content, 
+.window-app .window-content .dialog option,
+.dialog optgroup {
 	background-image:url("/systems/arcane-arcade-fallout/assets/pipboy_75.png") ;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	color:#01E998;
+}
+.dialog option,
+.dialog optgroup{
+	background-color:#1D5427;
 }
 .window-app .window-content input,
 .window-app .window-content button, 

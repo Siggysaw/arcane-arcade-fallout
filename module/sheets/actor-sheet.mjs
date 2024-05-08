@@ -99,6 +99,7 @@ export class BoilerplateActorSheet extends ActorSheet {
     const gear = [];
     const features = [];
 	const perks = [];
+	const armors = [];
     const spells = {
       0: [],
       1: [],
@@ -127,6 +128,10 @@ export class BoilerplateActorSheet extends ActorSheet {
       else if (i.type === 'perk') {
         perks.push(i);
       }
+	  // Append to perks.
+      else if (i.type === 'armor') {
+        armors.push(i);
+      }
 	  
       // Append to spells.
       else if (i.type === 'spell') {
@@ -141,6 +146,7 @@ export class BoilerplateActorSheet extends ActorSheet {
     context.features = features;
     context.spells = spells;
     context.perks = perks;	
+	context.armors = armors;	
   }
 
   /* -------------------------------------------- */

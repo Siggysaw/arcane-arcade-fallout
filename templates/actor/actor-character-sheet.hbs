@@ -1,4 +1,3 @@
-
 <script>
 function updatexp(change){
 var current={{system.xp.value}};
@@ -16,11 +15,16 @@ document.getElementById("healing-rate").value = Math.floor(({{system.level.value
 document.getElementById("roll-penalties").value = Number({{system.hunger.value}}) + Number({{system.dehydration.value}}) + Number({{system.exhaustion.value}}) + Number({{system.lvl_radiation.value}}) + Number({{system.fatigue.value}});
 
 if (document.getElementById("roll-penalties").value > 9 || {{system.health.value}}<{{system.healthmax.value}}/2) {
-	document.getElementById("vault-boy-status").src="/systems/arcane-arcade-fallout/assets/vaultboy-hurt-icon.png";
+	document.getElementById("vault-boy-status").src="/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-hurt-icon.png";
 }else{
-	document.getElementById("vault-boy-status").src="/systems/arcane-arcade-fallout/assets/vaultboy-icon.png";
+	document.getElementById("vault-boy-status").src="/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png";
 }
 
+var armor_ac = document.getElementById("armor-ac").innerHTML;
+document.getElementById("armor-class-form").value= Number(armor_ac);
+
+var armor_dt = document.getElementById("armor-dt").innerHTML;
+document.getElementById("damage-threshold-form").value= Number(armor_dt);
 </script>
 
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
@@ -36,15 +40,21 @@ if (document.getElementById("roll-penalties").value > 9 || {{system.health.value
 			<td colspan=3 class="character-name" style="text-align:left;"><input type="text" name="name" value="{{actor.name}}" /><br><br></td></tr>
 			<tr><td class="bio-label"><span class="label">Race:</span></td><td colspan=2><input type="text" name="system.race.value" value="{{system.race.value}}"/></td></tr>
 			<tr><td class="bio-label"><span class="label">BG:</span></td><td colspan=2><input type="text" name="system.background.value" value="{{system.background.value}}"/></td></tr>			
-			<tr><td></td><td></td></tr>
-			<tr><td class="bio-label"><span class="label">Lvl:</span></td><td colspan=2><input type="number" name="system.level.value" value="{{system.level.value}}" /></td></tr>
-			<tr><td class="bio-label"><span class="label">XP:</span></td><td><input id="xp" type="number" name="system.xp.value" value="{{system.xp.value}}" /></td>
+			<tr>
+			<td class="bio-label"><span class="label">Lvl:</span></td>
+			<td colspan=2><input type="number" name="system.level.value" value="{{system.level.value}}" /></td>
+			</tr>
+			<tr>
+			<td class="bio-label"><span class="label">XP:</span></td>
+			<td><input id="xp" type="number" name="system.xp.value" value="{{system.xp.value}}" /></td>
 			<td><input id="modifyxp" onchange="updatexp(this.value)" class="modify" placeholder="modify" type="number" /></td></tr>			
+			<tr><td><img style="width:50px;height:50px;border:none;" src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png"></td>
+			<td style="vertical-align:middle" class="statusnum"><input  type="number" name="system.current-load.value" value="{{system.current-load.value}}"> / <input class="statusnum" type="number" name="system.loadmax.value" value="{{system.loadmax.value}}"></td></tr>
 			</table>
 	
 	</td><td>
 	<table><tr>
-<table class="current-health current-stats" ><tr>
+		<table class="current-health current-stats" ><tr>
 		<td><span class="status-label">HP</span><progress style="width:90%;float:right;" class="statusbar health" value="{{system.health.value}}" max="{{system.healthmax.value}}"> {{system.health.value}} </progress></td></tr>
 		<tr>
 			<td class="statusnum"><input type="number" name="system.health.value" value="{{system.health.value}}" max="{{system.healthmax.value}}"/> / <input type="number" name="system.healthmax.value" value="{{system.healthmax.value}}" /></td>
@@ -58,7 +68,7 @@ if (document.getElementById("roll-penalties").value > 9 || {{system.health.value
 				<td colspan=2 class="statusnum"><input type="number" name="system.stamina.value" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"/> / <input type="number" name="system.staminamax.value" value="{{system.staminamax.value}}" /></td>
 			</tr>
 		<tr>
-			<td><input type="text" name="system.ac.value" value="{{system.ac.value}}">AC</td><td><input type="text" name="system.dt.value" value="{{system.dt.value}}">DT</td>
+			<td><input id="armor-class-form" type="text" name="system.ac.value" value="{{system.ac.value}}">AC</td><td><input id="damage-threshold-form" type="text" name="system.dt.value" value="{{system.dt.value}}">DT</td>
 		</tr>
 	</table>
 	</td><td style="width:200px;">
