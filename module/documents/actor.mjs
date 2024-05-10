@@ -37,7 +37,7 @@ export class BoilerplateActor extends Actor {
 		+systemData.penalties.exhaustion.value
 		+systemData.penalties.radiation.value
 		+systemData.penalties.fatigue.value}
-		
+			
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.

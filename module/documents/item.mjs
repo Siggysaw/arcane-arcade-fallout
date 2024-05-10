@@ -10,6 +10,21 @@ export class BoilerplateItem extends Item {
     // As with the actor class, items are documents that can have their data
     // preparation methods overridden (such as prepareBaseData()).
     super.prepareData();
+	this.system.shortrangedcalc= {
+		value: 	Number(this.actor.system.abilities.per.value) * Number(this.system.rangedshort.value)
+	}
+	
+	this.system.longrangedcalc= {
+		value: 	Number(this.actor.system.abilities.per.value) * Number(this.system.rangedmedium.value)
+	}
+	this.system.shortrangedcalc1= {
+		value: 	Number(this.actor.system.abilities.per.value) * Number(this.system.rangedshort.value)-1
+	}
+	
+	this.system.longrangedcalc1= {
+		value: 	Number(this.actor.system.abilities.per.value) * Number(this.system.rangedmedium.value)+1
+	}
+	
   }
 
   /**

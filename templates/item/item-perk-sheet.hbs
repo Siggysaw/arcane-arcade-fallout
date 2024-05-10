@@ -16,19 +16,24 @@
     <div class="header-fields">
       <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
 	  <table>
-<tr><td>Req:</td><td><input type="text" name="system.requirement.value" value="{{system.requirement.value}}" disabled/></td><td><span>Lvl:</span> <input style="width:35px;text-align:center;" type="number" min="1" name="system.perk-level.value" value="{{system.perk-level.value}}" /></td></tr>
+<tr><td>Req:</td><td><input type="text" name="system.requirement.value" value="{{system.requirement.value}}" disabled/></td>
+<td><span>Qty:</span> <input style="width:35px;text-align:center;" type="number" min="1" name="system.perk-level.value" value="{{system.perk-level.value}}" /></td></tr>
 </table>
 
     </div>
   </header>
   
  {{!-- Sheet Tab Navigation --}}
+ {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a style="display:none;"class="item" data-tab="description">Description</a>
-  </nav>
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="effects">Effects</a> 
+ </nav>
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
+
+
 
     {{!-- Description Tab --}}
     <div class="tab" data-group="primary" data-tab="description">
@@ -37,7 +42,10 @@
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner
       editable=editable}}
     </div>
-
+ {{!-- Effects Tab --}}
+    <div class="tab effects" data-group="primary" data-tab="effects">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
+    </div>
 
   </section>
 </form>
