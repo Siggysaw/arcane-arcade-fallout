@@ -31,6 +31,13 @@ export class BoilerplateActor extends Actor {
     const actorData = this;
     const systemData = actorData.system;
     const flags = actorData.flags.boilerplate || {};
+	this.system.penalty_total = {
+		value: 	systemData.penalties.hunger.value
+		+systemData.penalties.dehydration.value
+		+systemData.penalties.exhaustion.value
+		+systemData.penalties.radiation.value
+		+systemData.penalties.fatigue.value}
+		
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
@@ -54,8 +61,13 @@ export class BoilerplateActor extends Actor {
     }
 	    // Loop through skills scores, and add their modifiers to our sheet output.
     for (let [key, skills] of Object.entries(systemData.skills)) {
-      // Calculate the modifier using d20 rules.
-      skills.mod = Math.floor((skills.value - 0));
+      // Calculate the modifier
+      skills.mod = Math.floor((skills.value));
+    }
+	    // Loop through penalty scores, and add their modifiers to our sheet output.
+    for (let [key, penalties] of Object.entries(systemData.penalties)) {
+      // Calculate the modifier
+      penalties.mod = Math.floor((penalties.value));
     }
   }
 
@@ -100,6 +112,11 @@ export class BoilerplateActor extends Actor {
 	
 	if (data.skills) {
       for (let [k, v] of Object.entries(data.skills)) {
+        data[k] = foundry.utils.deepClone(v);
+      }
+    }
+	if (data.penalties) {
+      for (let [k, v] of Object.entries(data.penalties)) {
         data[k] = foundry.utils.deepClone(v);
       }
     }

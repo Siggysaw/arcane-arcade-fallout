@@ -12,13 +12,6 @@ document.getElementById("modifycaps").value = '';
 }
 
 document.getElementById("healing-rate").value = Math.floor(({{system.level.value}} + {{system.abilities.end.value}})/2);
-document.getElementById("roll-penalties").value = Number({{system.hunger.value}}) + Number({{system.dehydration.value}}) + Number({{system.exhaustion.value}}) + Number({{system.lvl_radiation.value}}) + Number({{system.fatigue.value}});
-
-if (document.getElementById("roll-penalties").value > 9 || {{system.health.value}}<{{system.healthmax.value}}/2) {
-	document.getElementById("vault-boy-status").src="/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-hurt-icon.png";
-}else{
-	document.getElementById("vault-boy-status").src="/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png";
-}
 
 </script>
 
@@ -109,7 +102,7 @@ if (document.getElementById("roll-penalties").value > 9 || {{system.health.value
 	{{/each}}
 	<tr>
 	{{#each system.abilities as |ability key|}}
-	<td><input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number" min="0" max="10"/></td>
+	<td><input type="number" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number" min="0" max="10"/></td>
 	{{/each}}
 	</tr><tr>
 	{{#each system.abilities as |ability key|}}

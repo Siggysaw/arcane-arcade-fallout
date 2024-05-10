@@ -1,21 +1,23 @@
 <style>
-table{
-	border-solid 1px;
-}
-.sheet .armor-stats td{
+.sheet .equipped-stats td{
 	border:solid 1px;
-	
 }
 </style>
+
+
 <table>
 <tr>
-<td class="inventory-slot armorslot" style="50%">
+
+
+  {{!-- Armor Slot --}}
+  
+<td class="inventory-slot armorslot" style="width:50%;padding:10px;">
 {{#each armors as |item id|}}
     <li class='item flexrow' data-item-id='{{item._id}}'>
     <table>
 	<tr><td><h2>{{item.name}}</h2></td></tr>
 	<tr><td>
-		  <table class="armor-stats">
+		  <table class="equipped-stats">
 	  <tr>
 	  <td>Cost</td><td>AC</td><td>DT</td><td>Slots</td><td>Load</td><td>STR Req.</td></tr>
 	  <tr>
@@ -27,16 +29,62 @@ table{
 	  <td>{{{system.str-req.value}}}</td>
 	  </tr>
 </table>
-	
-	
 	<div class='item-controls'>
 	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='perk'}}'><i class='fas fa-trash'></i></a>
-		<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='perk'}}'><i class='fas fa-edit'></i></a>
+	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='perk'}}'><i class='fas fa-edit'></i></a>
 	</div></td></tr>
 	</table>
 </li>
   {{/each}}
 </td>
-<td class="inventory-slot weapons" style="width:50%">Weapons Go Here.</td>
+
+
+  {{!-- RangedWeapon Slot --}}
+  
+<td class="inventory-slot weapons" style="width:50%;padding:10px;">
+{{#each rangedweapons as |item id|}}
+    <li class='item flexrow' data-item-id='{{item._id}}'>
+    <table>
+	<tr><td><h2>{{item.name}}</h2></td></tr>
+	<tr><td>
+	<table class="equipped-stats">
+		<tr><td colspan=999>DETAILS</td></tr>
+		<tr>
+		<td>AP</td><td>Dmg</td><td>Crit DV</td><td>Crit Dmg</td><td>Load</td><td>Str Req</td>
+		</tr><tr>
+		<td><label class="rollable resource-label" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty_total.value">{{system.AP-cost.value}}</label></td>
+		<td><label class="rollable resource-label" data-label="OUCH! DMG from a {{item.name}}" data-roll="{{system.damage.value}}">{{system.damage.value}}</td>
+		<td>{{system.ranged-critical-dv.value}}</td>
+		<td>{{system.ranged-critical-bonus.value}}</td>
+		<td>{{system.load.value}}</td>
+		<td>{{system.strengthrequirement.value}}</td>
+		</tr></table>
+	<table class="equipped-stats">
+		<tr><td>Type</td><td>Capacity</td>
+		</tr><tr>
+		<td>{{system.ammotype.value}}</td>
+		<td>{{system.capacity.value}}</td>
+		</tr>
+		</table>
+	<table class="equipped-stats">
+	<tr><td colspan=999>RANGE TABLE</td></tr>
+	<tr><td>Short</td><td>Medium</td><td>Long</td></tr>
+	<tr>
+	
+	
+	<td id="{{system.id.value}}">{{system.rangedshort.value}} x PER</td>
+	<td id="ranged-medium">{{system.rangedmedium.value}} x PER</td>
+	<td id="ranged-long">>10 x PER</td>
+	</tr>		
+	</table>
+	<div class='item-controls'>
+	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='perk'}}'><i class='fas fa-trash'></i></a>
+	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='perk'}}'><i class='fas fa-edit'></i></a>
+	</div></td></tr>
+	</table>
+</li>
+  {{/each}}
+
+</td>
 </tr>
 </table>

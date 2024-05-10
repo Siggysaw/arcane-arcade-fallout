@@ -1,127 +1,19 @@
+<style>
+.specialroll{
+	text-transform:uppercase;
+}
+</style>
+
 <table class="status-block">
 <tr><td class="skill-table">
-	<table>
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Barter With Charisma" data-roll="d20+{{system.barter.value}}-{{system.roll-penalties.value}}+@abilities.cha.mod">CHA</label>
-			</td>
-			<td class="skill-cell skill-label">Barter</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.barter.value" value="{{system.barter.value}}" /></td>
-		</tr>
-
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Breach With Perception" data-roll="d20+{{system.breach.value}}-{{system.roll-penalties.value}}+@abilities.per.mod">PER</label> / 
-			<label class="rollable" data-label="Breach With Intelligence" data-roll="d20+{{system.breach.value}}-{{system.roll-penalties.value}}+@abilities.int.mod">INT</label>
-			</td>
-			<td class="skill-cell skill-label">Breach</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.breach.value" value="{{system.breach.value}}" /></td>
-		</tr>
-
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Crafting With Intelligence" data-roll="d20+{{system.crafting.value}}-{{system.roll-penalties.value}}+@abilities.int.mod">INT</label>
-			</td>
-			<td class="skill-cell skill-label">Crafting</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.crafting.value" value="{{system.crafting.value}}" /></td>
-		</tr>
-		
-			<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Energy Weapons With Perception" data-roll="d20+{{system.energy_weapons.value}}-{{system.roll-penalties.value}}+@abilities.per.mod">PER</label>
-			</td>
-			<td class="skill-cell skill-label">Energy Weapons</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.energy_weapons.value" value="{{system.energy_weapons.value}}" /></td>
-		</tr>
-		
-			<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Explosives With Perception" data-roll="d20+{{system.explosives.value}}-{{system.roll-penalties.value}}+@abilities.per.mod">PER</label>
-			</td>
-			<td class="skill-cell skill-label">Explosives</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.explosives.value" value="{{system.explosives.value}}" /></td>
-		</tr>
-
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Guns With Agility" data-roll="d20+{{system.guns.value}}-{{system.roll-penalties.value}}+@abilities.agi.mod">AGI</label>
-			</td>
-			<td class="skill-cell skill-label">Guns</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.guns.value" value="{{system.guns.value}}" /></td>
-		</tr>
-		
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Intimidation With Strength" data-roll="d20+{{system.intimidation.value}}-{{system.roll-penalties.value}}+@abilities.str.mod">STR</label> / 
-			<label class="rollable" data-label="Intimidation With Charisma" data-roll="d20+{{system.intimidation.value}}-{{system.roll-penalties.value}}+@abilities.cha.mod">CHA</label>
-			</td>
-			<td class="skill-cell skill-label">Intimidation</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.intimidation.value" value="{{system.intimidation.value}}" /></td>
-		</tr>
-
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Medicine With Perception" data-roll="d20+{{system.medicine.value}}-{{system.roll-penalties.value}}+@abilities.per.mod">PER</label> / 
-			<label class="rollable" data-label="Medicine With Intelligence" data-roll="d20+{{system.medicine.value}}-{{system.roll-penalties.value}}+@abilities.int.mod">INT</label>
-			</td>
-			<td class="skill-cell skill-label">Medicine</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.medicine.value" value="{{system.medicine.value}}" /></td>
-		</tr>
-		
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Melee Weapons With Strength" data-roll="d20+{{system.melee_weapons.value}}-{{system.roll-penalties.value}}+@abilities.str.mod">STR</label>
-			</td>
-			<td class="skill-cell skill-label">Melee Weapons</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.melee_weapons.value" value="{{system.melee_weapons.value}}" /></td>
-		</tr>
-		
-		
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Science With Intelligence" data-roll="d20+{{system.science.value}}-{{system.roll-penalties.value}}+@abilities.int.mod">INT</label>
-			</td>
-			<td class="skill-cell skill-label">Science</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.science.value" value="{{system.science.value}}" /></td>
-		</tr>
-		
-		
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Sneak With Agility" data-roll="d20+{{system.sneak.value}}-{{system.roll-penalties.value}}+@abilities.agi.mod">AGI</label>
-			</td>
-			<td class="skill-cell skill-label">Sneak</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.sneak.value" value="{{system.sneak.value}}" /></td>
-		</tr>
-		
-		
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Speech With Charisma" data-roll="d20+{{system.speech.value}}-{{system.roll-penalties.value}}+@abilities.cha.mod">CHA</label>
-			</td>
-			</td>
-			<td class="skill-cell skill-label">Speech</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.speech.value" value="{{system.speech.value}}" /></td>
-		</tr>
-		
-		
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Survival With Endurance" data-roll="d20+{{system.survival.value}}-{{system.roll-penalties.value}}+@abilities.end.mod">END</label>
-			</td>
-			<td class="skill-cell skill-label">Survival</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.survival.value" value="{{system.survival.value}}" /></td>
-		</tr>
-		
-		
-		<tr class="skill-row">
-			<td class="skill-special skill-cell">
-			<label class="rollable" data-label="Unarmed With Strength" data-roll="d20+{{system.unarmed.value}}-{{system.roll-penalties.value}}-{{system.roll-penalties.value}}+@abilities.str.mod">STR</label>
-			</td>
-			<td class="skill-cell skill-label">Unarmed</td>
-			<td class="skill-cell skill-value"><input type="number"  name="system.unarmed.value" value="{{system.unarmed.value}}" /></td>
-		</tr>
-
+	<table><tr>
+			{{#each system.skills as |skill key|}}
+			<tr><td>
+			{{#each skill.roll as |specialroll|}}
+			<p class="specialroll"><label for="{{specialroll}}" class="resource-label rollable" data-roll="d20+{{skill.value}}+@abilities.{{specialroll}}.mod" data-label="{{actor.name}} performed a {{skill.label}} roll using {{specialroll}}">{{specialroll}}</label></p>
+			{{/each}}
+			</td><td class="skill-label">{{skill.label}}</td><td class="skill-value"><input type="number" name="system.skills.{{key}}.value" value="{{skill.value}}"></td></tr>
+			{{/each}}
 	</table>
 </td>
 <td class="status-table">
@@ -134,11 +26,11 @@
 			<td  class="status-info-label">Radiation Lvl</td>
 			</tr>
 			<tr>
-			<td  class="status-info-value"><input type="number" name="system.hunger.value" value="{{system.hunger.value}}" min=0/></td>
-			<td  class="status-info-value"><input type="number" name="system.dehydration.value" value="{{system.dehydration.value}}" min=0/></td>
-			<td  class="status-info-value"><input type="number" name="system.exhaustion.value" value="{{system.exhaustion.value}}" min=0/></td>
+			<td  class="status-info-value"><input type="number" name="system.penalties.hunger.value" value="{{system.penalties.hunger.value}}" min=0/></td>
+			<td  class="status-info-value"><input type="number" name="system.penalties.dehydration.value" value="{{system.penalties.dehydration.value}}" min=0/></td>
+			<td  class="status-info-value"><input type="number" name="system.penalties.exhaustion.value" value="{{system.penalties.exhaustion.value}}" min=0/></td>
 			<td  class="status-info-value"><input type="number" name="system.rad-dc.value" value="{{system.rad-dc.value}}" min=0/></td>
-			<td  class="status-info-value"><input type="number" name="system.lvl_radiation.value" value="{{system.lvl_radiation.value}}" min=0/></td>
+			<td  class="status-info-value"><input type="number" name="system.penalties.radiation.value" value="{{system.penalties.radiation.value}}" min=0/></td>
 		</tr>
 	</table>
 	<br>
@@ -151,7 +43,7 @@
 		<tr>
 			<td><input id="healing-rate" type="number" name="system.healing-rate.value" value=""></td>
 			<td><input type="number" name="system.combat-sequence.value" value="{{system.combat-sequence.value}}"></td>
-			<td><input type="number" name="system.fatigue.value" value="{{system.fatigue.value}}"></td>
+			<td><input type="number" name="system.penalties.fatigue.value" value="{{system.penalties.fatigue.value}}"></td>
 		</tr>
 		<tr>
 			<td>Passive Sense</td>
@@ -163,7 +55,10 @@
 			<td><input type="number" name="system.party-nerve.value" value="{{system.party-nerve.value}}"></td>
 			<td><input type="number" name="system.group-sneak.value" value="{{system.group-sneak.value}}"></td>
 		</tr>
-			<tr><td colspan=4><img id="vault-boy-status" style="width:auto;height:250px;display:block;margin:auto;border:none;" src='/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-hurt-icon.png'><br>Total Penalties:<input id="roll-penalties" type="number" name="system.roll-penalties.value" value="" /></td></tr>
+			<tr><td colspan=4><img id="vault-boy-status" style="width:auto;height:250px;display:block;margin:auto;border:none;" src='/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png'></td></tr>
+			<tr>
+			<td colspan=999>Total Penalties: {{system.penalty_total.value}}</td>
+			</tr>
 	</table>
 </td></tr>
 </table>

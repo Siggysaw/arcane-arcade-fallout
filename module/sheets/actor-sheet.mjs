@@ -100,17 +100,10 @@ export class BoilerplateActorSheet extends ActorSheet {
     const features = [];
 	const perks = [];
 	const armors = [];
+	const rangedweapons =[];
     const spells = {
       0: [],
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: [],
-      9: [],
+
     };
 
     // Iterate through items, allocating to containers
@@ -128,11 +121,14 @@ export class BoilerplateActorSheet extends ActorSheet {
       else if (i.type === 'perk') {
         perks.push(i);
       }
-	  // Append to perks.
+	  // Append to armor.
       else if (i.type === 'armor') {
         armors.push(i);
       }
-	  
+	  // Append to rangedweapons.
+      else if (i.type === 'rangedweapon') {
+        rangedweapons.push(i);
+      }	  
       // Append to spells.
       else if (i.type === 'spell') {
         if (i.system.spellLevel != undefined) {
@@ -146,7 +142,8 @@ export class BoilerplateActorSheet extends ActorSheet {
     context.features = features;
     context.spells = spells;
     context.perks = perks;	
-	context.armors = armors;	
+	context.armors = armors;
+	context.rangedweapons = rangedweapons;	
   }
 
   /* -------------------------------------------- */

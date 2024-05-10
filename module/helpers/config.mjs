@@ -30,20 +30,13 @@ BOILERPLATE.skills = {
 	survival: 'Surival',
 	unarmed: 'Unarmed',
 };
-
-BOILERPLATE.armor = {
-	camouflage:"Camouflage",
-	light:"Light",
-	fitted:"Fitted",
-	leadlined:"Lead Lined",
-	strengthened:"Strengthened",
-	sturdy:"Sturdy",
-	sturdy:"Pocketed",
-	reinforced:"Reinforced",
-	hardened:"Hardened"
+BOILERPLATE.penalties = {
+	hunger: 'Hunger',
+	dehydration: 'Dehydration',
+	exhaustion: 'Exhaustion',
+	radiation: 'Radiation',
+	fatigue: 'Fatigue',
 };
-
-
 
 
 BOILERPLATE.abilityAbbreviations = {

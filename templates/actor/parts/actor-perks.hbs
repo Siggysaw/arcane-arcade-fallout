@@ -2,6 +2,11 @@
 .perk-table td{
 	padding:5px;
 }
+.perk-div {
+background:black;
+padding:5px;
+width:100%;
+}
 </style>
   
   
@@ -11,6 +16,7 @@
     <li class='item flexrow' data-item-id='{{item._id}}'>
     <table class="perk-table" style="border:solid 1px;">
 	<tr><td><h3>{{item.name}}</h3>
+	<div class="perk-div"><img class="perk-image" src="{{item.img}}" /></div>
 	
 	</td></tr>
 	<tr><td style="height:150px;">{{{item.system.description}}}

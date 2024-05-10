@@ -1,0 +1,54 @@
+﻿title,cost,ap,damage,shortrange,longrange,criticalhit,criticaldamage,type,capacity,special,load,str
+Flare Gun,90,4,1d4 ,x4,x10,20, 1d4.,Flare,1,Incendiary.,2,1
+Acid Soaker,45,4,1 acid,30 ft.,,20, 1d4.,Acid,20,Corrosive.,4,1
+Pipe pistol,165,5,1d4,x6,x10,20, 1d4.,9mm,12,Breakable. Kickback. Semi-Automatic.,8,3
+Bolt-action Pipe pistol,200,6,1d8,x7,x12,20, 1d8.,0.308,6,Breakable. Kickback. Manual Reload.,8,3
+10mm pistol,315,5,2d4,x8,x16,19, 1d4.,10mm,12,Sturdy. Kickback.,10,4
+9mm pistol,200,5,1d6,x8,x12,20, 1d6.,9mm,13,Kickback.,6,3
+5.56mm pistol,335,4,1d8,x5,x16,20, x2,5.56mm,5,Manual Reload. Kickback.,8,5
+Pipe revolver,215,5,1d6,x6,x10,20, x2.,0.44,6,Breakable. Manual Reload.,6,4
+.357 Magnum,375,5,1d8,x6,x18,20, x3,0.357,6,Accurate. Manual Reload.,6,4
+.44 Magnum,515,5,2d8,x6,x14,20, x3,0.44,6,Accurate. Manual Reload.,8,4
+Walther PPK,400,4,1d10,x10,x14,20, 3d10.,10mm,12,Semi-Automatic. Kickback.,6,4
+12.7mm pistol,310,5,2d6,x5,x10,20, 1d6.,12.7mm,7,Semi-Automatic. Kickback.,10,6
+Ranger Sequoia revolver,825,6,3d10,x6,x18,20, x3,.45-70 Gov't,5,Accurate. Destructive. Manual Reload.,10,6
+H&H Tools nail gun,100,6,1,x3,x15,19, x3.,Nails,90,Automatic: 2. Two Handed. Unstable.,5,4
+9mm SMG,190,6,1d4,x4,x8,20, 1d4.,9mm,30,Automatic: 2. Two Handed. Unstable.,8,5
+10mm SMG,250,6,1d6,x4,x8,20, 1d6.,10mm,30,Automatic: 2. Two Handed. Unstable.,12,5
+Tommy Gun,300,6,1d6,x4,x7,20, 1d6.,0.45,50,Automatic: 4. Two Handed. Unstable.,14,6
+12.7mm SMG,380,6,1d10,x5,x8,20, 1d10.,12.7mm,21,Automatic: 5. Two Handed. Unstable.,10,6
+Syringer,130,5,1,x3,x6,20, deals damage to hit points.,Syringe,1,Accurate. Powerful.,8,2
+Lever Action Rifle,455,5,2d6 ,x6,x18,20, x3,10mm,10,Accurate. Manual Reload. Two Handed.,15,5
+Cowboy Repeater,400,5,2d6 ,x8,x18,20, x2,0.357,7,Accurate. Manual Reload. Two Handed.,12,4
+Varmint Rifle,275,6,2d4 ,x8,x18,20, 2d4.,5.56mm,5,Accurate. Two Handed.,12,4
+Trail Carbine,310,6,2d8 ,x8,x18,20, x2,0.44,8,Accurate. Manual Reload. Two Handed.,12,4
+Railway Rifle,730,6,2d10,x4,x8,19, x4,Spike,10,"Debilitating. Destructive, Two Handed",18,6
+Junk Jet,300,6,3d6,x4,x10,19, 3d6.,Any item that is smaller than 1 cubic foot,5,"Breakable. Powerful. Unstable, Two Handed",18,6
+Sniper Rifle,710,6,2d12,x10,x30,19, x4,0.308,6,Accurate. Two Handed.,16,5
+Assault Rifle,375,6,1d10 .,x8,x18,20, 1d10.,5mm,24,"Automatic: 3 (Switch).Two Handed,Single Shot:Accurate,Semi-automatic,automatic:unstable",14,5
+Anti-Material Rifle,1200,6,5d8 ,x16,x40,19, x4.,0.5,6,Accurate. Two Handed.,20,7
+Lever-action Shotgun,600,4,3d4,x3,x6,20, 5d4,20 gauge,5,Powerful. Manual Reload. Spread. Two Handed.,10,5
+Single Shotgun,500,4,3d6,x3,x6,20, 3d6,20 gauge,1,Powerful. Quick Reload. Spread. Two Handed.,10,4
+Sawed-off Shotgun,700,4,2d10,x2,x4,20, 4d10,12 gauge,2,"Destructive. Powerful.Quick Reload,Spread,Two Handed,Unstable",8,4
+Double Barrel Shotgun,700,4,2d10,x3,x6,20, 3d10,12 gauge,2,Powerful. Quick Reload. Spread. Two Handed.,12,5
+Combat Shotgun,800,4,2d12,x4,x7,20, 2d12.,12 gauge,8,Powerful. Spread. Two Handed.,14,5
+Riot Shotgun,900,5,3d6,x3,x6,20, 6d6,12 gauge,12,Powerful. Semi-Automatic Spread. Two Handed.,10,5
+Flamer,240,6,2d10 ,"60 ft. line, 10 feet wide. or a 20 ft cone.",,,,fuel,5,"Area of Effect. Incendiary,Slow,Slow Reload, Two Handed",60,7
+Missile Launcher,670,6,10d6,x10,x40,,,Missile,1,"Area of Effect.Destructive,Durable,Slow,Two Handed",50,7
+Minigun,1650,6,5d6 ,x15,x40,20, 2d6.,5mm,120,"Automatic: 2.Destructive.Durable,Slow,Reload,Spread,TwoHanded",90,10
+Fat-Man,665,6,12d10,120 feet.,,,,Mini nuke,1,"Area of Effect.Destructive,Durable,Slow,Two-Handed",30,5
+Solar Scorcher,340,3,1d4 ,x5,x10,20,applies burning. (uses 10 ammo per attack),The weapon can fire so long as it is in Sunlight.,0,Energy Weapon. Semi-Automatic.,4,1
+Laser pistol,415,4,1d8 ,x10,x20,20, x2 applies burning.,1 Energy Cell ,30,Energy Weapon. Semi-Automatic.,6,1
+Laser rifle,500,5,2d6 ,x12,x24,20, x2 applies burning.,1 Energy Cell ,24,Accurate. Energy Weapon. Unwieldy.,10,2
+Automatic laser rifle,360,5,1d6 ,x8,x12,20, 1d6 laser and applies burning.,1 Energy Cell ,24,Automatic: 2. Energy Weapon. Unstable.Unwieldy.,12,2
+Tri-Beam laser rifle,730,5,3d6 ,x4,x8,20, 5d6 laser and applies burning.,1 Energy Cell ,8,Energy Weapon.Spread. Powerful.Unwieldy.,12,2
+Plasma pistol,430,5,1d12 ,x6,x10,20, x3.,1 Microfusion Cell ,16,Destructive. Energy Weapon. Kickback.,8,2
+Plasma rifle,610,6,2d8 ,x8,x12,20, x3.,1 Microfusion Cell ,12,"Destructive.Debilitating, Energy Weapon, Unwieldy",12,3
+Multiplas rifle,690,6,3d8 ,x4,x8,20, 5d8.,1 Microfusion Cell ,4,Energy Weapon.Spread. Powerful.Unwieldy.,12,3
+Tesla cannon,425,3,1d8 ,30 feet.,,20, 1d8. Applies dazed.,1 Microfusion Cell ,5,Arc. Charge. Energy Weapon.Electromagnetic. Two Handed.,15,4
+Gamma gun,355,4,1d12 ,x6,x10,20, 1d12.,1 Gamma cell ,8,Kickback.Radioactive.,8,2
+Cryolator,360,5,3d10 .,20 ft cone.,,,,1 Cryo cell ,3,Area of Effect. Freezing. Slow. Two Handed.,25,6
+Crystalizing Cryolator,410,5,2d10 .,x8,x16.,20, x2 applies slowed.,1 Cryo cell ,9,Debilitating. Destructive. Two Handed.,25,6
+Gauss pistol,710,3,1d10,x8,x16,20, 2d10.,(1) 2mm EC ,12,Charge. Energy Weapon. Kickback.Powerful. Unstable.,12,5
+Gauss rifle,865,3,1d12,x10,x20,20, 4d12.,(1) 2mm EC ,6,"Charge. Energy Weapon. Powerful. Two Handed, Unstable.",18,5
+Gatling laser,1100,6,2d10 .,x30,x30,20, 1d10. Applies burning.,1 Fusion Core ,100,Automatic: 4. Destructive. Energy Weapon. Unwieldy.,50,5

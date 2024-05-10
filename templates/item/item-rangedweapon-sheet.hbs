@@ -1,0 +1,83 @@
+<style>
+.sheet table td{
+	vertical-align:middle;
+}
+.sheet .editor-content{
+	line-height:2;
+}
+</style>
+
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    <div class="header-fields">
+    <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+	<table>
+	<tr>
+	<td>Cost</td>
+	<td>AP</td>
+	<td>Damage</td>
+	<td></td>
+	<td>Critical DV</td>
+	</tr><tr>
+	<td><input type="number" name="system.base-cost.value" value="{{system.base-cost.value}}" /></td>
+	<td><input type="number" name="system.AP-cost.value" value="{{system.AP-cost.value}}" /></td>
+	<td><input type="text" name="system.damage.value" value="{{system.damage.value}}" /></td>
+	<td></td>
+	<td><input type="text" name="system.ranged-critical-dv.value" value="{{system.ranged-critical-dv.value}}" /></td>
+	</tr><tr>	
+	<td>Ammo Type</td>
+	<td>Capacity</td>
+	<td>Load</td>
+	<td>STR Req.</td>
+	<td>Crit Bonus DMG</td></tr>
+	<tr>
+	<td><input type="text" name="system.ammotype.value" value="{{system.ammotype.value}}" /></td>
+	<td><input type="number" name="system.capacity.value" value="{{system.capacity.value}}" /></td>
+	<td><input type="number" name="system.load.value" value="{{system.load.value}}" /></td>
+	<td><input type="number" name="system.strengthrequirement.value" value="{{system.strengthrequirement.value}}" /></td>
+	<td><input type="text" name="system.ranged-critical-bonus.value" value="{{system.ranged-critical-bonus.value}}" /></td>
+	</tr>
+	</table>
+	<table class="equipped-stats">
+	<tr><td>Short Range:</td><td><input type="text" name="system.rangedshort.value" value="{{system.rangedshort.value}}" /></td><td>Normal</td></tr>
+	<tr><td>Medium Range:</td><td><input type="text" name="system.rangedmedium.value" value="{{system.rangedmedium.value}}"></td><td>Disadvantage </td></tr>
+	<tr><td>Long Range:</td><td><input type="text" name="system.rangedlong.value" value="{{system.rangedlong.value}}"></td><td>Nat 20</td></tr>		
+	</table>	
+    </div>
+  </header>
+  
+ {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="upgrades">Upgrades</a> 
+    <a class="item" data-tab="effects">Effects</a> 
+ </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{!-- Description Tab --}}
+    <div class="tab" data-group="primary" data-tab="description">
+      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the
+      rollData prop. --}}
+      {{editor system.description target="system.description" rollData=rollData button=true owner=owner
+      editable=editable}}
+    </div>
+    {{!-- Upgrades Tab --}}
+    <div class="tab" data-group="primary" data-tab="upgrades">
+    </div>	
+	    
+ {{!-- Effects Tab --}}
+    <div class="tab effects" data-group="primary" data-tab="effects">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
+    </div>
+	
+	
+
+  </section>
+</form>
+
+{{log system}}
+
+
