@@ -1,0 +1,80 @@
+{
+  "name": "{{title}}",
+  "type": "meleeweapon",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "cost": {
+      "value": "{{cost}}"
+    },
+    "AP": {
+      "value": "{{ap}}"
+    },
+    "damage": {
+      "value": "{{damage}}"
+    },
+    "critical": {
+      "value": "{{criticaldv}}"
+    },
+    "criticaldamage": {
+      "value": "{{criticalbonus}}"
+    },
+    "ammo": {
+      "value": "{{ammo}}"
+    },	
+    "load": {
+      "value": "{{load}}"
+    },
+    "strengthrequirement": {
+      "value": "{{strreq}}"
+    },
+    "description": "<p>{{special}}</p>"
+  },
+  "effects": [
+    {
+      "name": "Load Increase",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.da7XdSFLrS19QJ3T",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "f8wRnPUPhCr3x5My",
+      "changes": [
+        {
+          "key": "system.current-load.value",
+          "mode": 2,
+          "value": "{{load}}"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null
+    }
+  ],
+  "folder": null,
+  "flags": {
+    "core": {},
+    "exportSource": {
+      "world": "fallout-ttrpg",
+      "system": "arcane-arcade-fallout",
+      "coreVersion": "11.315",
+      "systemVersion": "1.0.0"
+    }
+  },
+  "_stats": {
+    "systemId": "arcane-arcade-fallout",
+    "systemVersion": "1.0.0",
+    "coreVersion": "11.315",
+    "createdTime": 1715438901244,
+    "modifiedTime": 1715438953056,
+    "lastModifiedBy": "gzYpjX3Fqlrk2eh5"
+  }
+}

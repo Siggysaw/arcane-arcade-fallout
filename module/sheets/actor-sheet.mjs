@@ -101,6 +101,7 @@ export class BoilerplateActorSheet extends ActorSheet {
 	const perks = [];
 	const armors = [];
 	const rangedweapons =[];
+	const meleeweapons =[];	
     const spells = {
       0: [],
 
@@ -129,6 +130,10 @@ export class BoilerplateActorSheet extends ActorSheet {
       else if (i.type === 'rangedweapon') {
         rangedweapons.push(i);
       }	  
+	  // Append to rangedweapons.
+      else if (i.type === 'meleeweapon') {
+        meleeweapons.push(i);
+      }	  	  
       // Append to spells.
       else if (i.type === 'spell') {
         if (i.system.spellLevel != undefined) {
@@ -144,6 +149,7 @@ export class BoilerplateActorSheet extends ActorSheet {
     context.perks = perks;	
 	context.armors = armors;
 	context.rangedweapons = rangedweapons;	
+	context.meleeweapons = meleeweapons;		
   }
 
   /* -------------------------------------------- */

@@ -13,35 +13,18 @@
     <div class="header-fields">
     <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
 	<table>
+	<tr><td>Cost</td><td>AP</td><td>Damage</td><td>Crit</td><td>Crit Dmg</td><td>Load</td><td>Str Req.</td></tr>	
 	<tr>
-	<td>Cost</td>
-	<td>AP</td>
-	<td>Damage</td>
-	<td></td>
-	<td>Critical DV</td>
-	</tr><tr>
-	<td><input type="number" name="system.base-cost.value" value="{{system.base-cost.value}}" /></td>
-	<td><input type="number" name="system.AP-cost.value" value="{{system.AP-cost.value}}" /></td>
+	<td><input type="number" name="system.cost.value" value="{{system.cost.value}}" /></td>
+	<td><input type="number" name="system.AP.value" value="{{system.AP.value}}" /></td>
 	<td><input type="text" name="system.damage.value" value="{{system.damage.value}}" /></td>
-	<td></td>
-	<td><input type="text" name="system.ranged-critical-dv.value" value="{{system.ranged-critical-dv.value}}" /></td>
-	</tr><tr>	
-	<td>Ammo Type</td>
-	<td>Capacity</td>
-	<td>Load</td>
-	<td>STR Req.</td>
-	<td>Crit Bonus DMG</td></tr>
-	<tr>
-	<td><input type="text" name="system.ammotype.value" value="{{system.ammotype.value}}" /></td>
-	<td><input type="number" name="system.capacity.value" value="{{system.capacity.value}}" /></td>
+	<td><input type="text" name="system.critical.value" value="{{system.critical.value}}" /></td>
+	<td><input type="text" name="system.criticaldamage.value" value="{{system.criticaldamage.value}}" /></td>
 	<td><input type="number" name="system.load.value" value="{{system.load.value}}" /></td>
-	<td><input type="number" name="system.strengthrequirement.value" value="{{system.strengthrequirement.value}}" /></td>
-	<td><input type="text" name="system.ranged-critical-bonus.value" value="{{system.ranged-critical-bonus.value}}" /></td>
-	</tr>
-	</table>
-	<table class="equipped-stats">
-	<tr><td>Short Range:</td><td><input type="text" name="system.rangedshort.value" value="{{system.rangedshort.value}}" /></td><td>Normal</td></tr>
-	<tr><td>Medium Range:</td><td><input type="text" name="system.rangedmedium.value" value="{{system.rangedmedium.value}}"></td><td>Disadvantage </td></tr>
+	<td><input type="number" name="system.strengthrequirement.value" value="{{system.strengthrequirement.value}}" /></td></tr>
+
+	<tr><td colspan=2>Ammo</td><td colspan=999><input type="text" name="system.ammo.value" value="{{system.ammo.value}}" /></td></tr>
+	
 	</table>	
     </div>
   </header>

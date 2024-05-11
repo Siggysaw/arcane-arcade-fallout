@@ -73,5 +73,6 @@ export class BoilerplateItemSheet extends ItemSheet {
     html.on('click', '.effect-control', (ev) =>
       onManageActiveEffect(ev, this.item)
     );
+	html.on('click', '.updateap', this.actor.system.stamina.value=5);	
   }
 }
