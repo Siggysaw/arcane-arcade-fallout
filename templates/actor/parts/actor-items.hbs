@@ -42,33 +42,6 @@
   {{!-- RangedWeapon Slot --}}
   
 <td class="inventory-slot weapons" style="width:50%;padding:10px;">
-{{#each meleeweapons as |item id|}}
-    <li class='item flexrow' data-item-id='{{item._id}}'>
-<table>
-	<tr><td><h2>{{item.name}}</h2></td></tr>
-	<tr><td>
-	<table class="equipped-stats">
-		<tr><td colspan=999>DETAILS</td></tr>
-		<tr>
-		<td>AP</td><td>Dmg</td><td>Crit DV</td><td>Crit Dmg</td><td>Load</td><td>Str Req</td>
-		</tr><tr>
-		<td>
-		<label class="rollable resource-label updateap" data-roll="d20">{{system.AP.value}}</label>
-		</td>
-		<td><label class="rollable resource-label" data-label="OUCH! DMG from a {{item.name}}" data-roll="{{system.damage.value}}">{{system.damage.value}}</td>
-		<td>{{system.critical.value}}</td>
-		<td>{{system.criticaldamage.value}}</td>
-		<td>{{system.load.value}}</td>
-		<td>{{system.strengthrequirement.value}}</td>
-		</tr></table>
-	<div class='item-controls'>
-	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='meleeweapon'}}'><i class='fas fa-trash'></i></a>
-	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='meleeweapon'}}'><i class='fas fa-edit'></i></a>
-	</div></td></tr></table>
-</li>
-
-
-{{/each}}
 {{#each rangedweapons as |item id|}}
     <li class='item flexrow' data-item-id='{{item._id}}'>
     <table>
@@ -79,7 +52,7 @@
 		<tr>
 		<td>AP</td><td>Dmg</td><td>Crit DV</td><td>Crit Dmg</td><td>Load</td><td>Str Req</td>
 		</tr><tr>
-		<td><label class="rollable resource-label apspent" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty_total.value">{{system.AP-cost.value}}</label></td>
+		<td><label class="rollable resource-label" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty_total.value">{{system.AP-cost.value}}</label></td>
 		<td><label class="rollable resource-label" data-label="OUCH! DMG from a {{item.name}}" data-roll="{{system.damage.value}}">{{system.damage.value}}</td>
 		<td>{{system.ranged-critical-dv.value}}</td>
 		<td>{{system.ranged-critical-bonus.value}}</td>
@@ -104,8 +77,8 @@
 	</tr>		
 	</table>
 	<div class='item-controls'>
-	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='rangedweapon'}}'><i class='fas fa-trash'></i></a>
-	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='rangedweapon'}}'><i class='fas fa-edit'></i></a>
+	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='perk'}}'><i class='fas fa-trash'></i></a>
+	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='perk'}}'><i class='fas fa-edit'></i></a>
 	</div></td></tr>
 	</table>
 </li>
@@ -114,4 +87,3 @@
 </td>
 </tr>
 </table>
-

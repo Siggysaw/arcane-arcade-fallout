@@ -49,10 +49,16 @@ document.getElementById("healing-rate").value = Math.floor(({{system.level.value
 	</table>
 			<table class="current-stamina current-stats" >
 			<tr>
-				<td colspan=2><span class="status-label">AP</span><progress style="width:90%;float:right;" class="statusbar stamina" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"> {{system.stamina.value}} </progress></td>
+				<td colspan=2><span class="status-label">ST</span><progress style="width:90%;float:right;" class="statusbar stamina" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"> {{system.stamina.value}} </progress></td>
 			</tr>
 			<tr>
 				<td colspan=2 class="statusnum"><input type="number" name="system.stamina.value" value="{{system.stamina.value}}" max="{{system.staminamax.value}}"/> / <input type="number" name="system.staminamax.value" value="{{system.staminamax.value}}" /></td>
+			</tr>
+			<tr>
+				<td colspan=2><span class="status-label">AP</span><progress style="width:90%;float:right;" class="statusbar stamina" value="{{system.abilitypoints.value}}" max="{{system.abilitypointsmax.value}}"> {{system.abilitypoints.value}} </progress></td>
+			</tr>
+			<tr>
+				<td colspan=2 class="statusnum"><input type="number" name="system.abilitypoints.value" value="{{system.abilitypoints.value}}" max="{{system.abilitypointsmax.value}}"/> / <input type="number" name="system.abilitypointsmax.value" value="{{system.abilitypointsmax.value}}" /></td>
 			</tr>
 		<tr>
 			<td><input id="armor-class-form" type="number" name="system.armor-class.value" value="{{system.armor-class.value}}">AC</td><td><input id="damage-threshold-form" type="number" name="system.damage-threshold.value" value="{{system.damage-threshold.value}}">DT</td>
