@@ -158,6 +158,12 @@ export class BoilerplateActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
 
+  html.on('click', '.spentabilitypoints', (ev) => {
+    currentap=this.system.actor.abilitypoints.value;
+    this.actor.update({"system.abilitypoints.value":  currentap - data-spentabilitypoints}); 
+  });
+
+
     // Render the item sheet for viewing/editing prior to the editable check.
     html.on('click', '.item-edit', (ev) => {
       const li = $(ev.currentTarget).parents('.item');

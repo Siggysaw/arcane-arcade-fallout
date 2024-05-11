@@ -36,16 +36,56 @@
       "path": "lang/en.json"
     }
   ],
-  "packs": [
+"packs": [
     {
       "label": "Perks",
-      "type": "perk",
-      "name": "Perks",
+      "type": "Item",
+      "name": "perks",
       "path": "packs/perks",
       "system": "arcane-arcade-fallout",
-      "banner": "systems/arcane-arcade-fallout/perks-icon.png"
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Armor",
+      "type": "Item",
+      "name": "armor",
+      "path": "packs/armor",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Ranged Weapons",
+      "type": "Item",
+      "name": "ranged-weapons",
+      "path": "packs/ranged-weapons",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Melee Weapons",
+      "type": "Item",
+      "name": "melee-weapons",
+      "path": "packs/melee-weapons",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     }
-	],
+  ],
   "packFolders": [],
   "socket": false,
   "manifest": "",

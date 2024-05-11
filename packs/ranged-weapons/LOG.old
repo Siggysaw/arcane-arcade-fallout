@@ -1,1 +1,5 @@
-2024/05/10-15:31:06.338 37e4 Delete type=3 #1
+2024/05/11-09:50:17.413 5bcc Recovering log #3
+2024/05/11-09:50:17.413 5bcc Level-0 table #5: started
+2024/05/11-09:50:17.417 5bcc Level-0 table #5: 20557 bytes OK
+2024/05/11-09:50:17.425 5bcc Delete type=0 #3
+2024/05/11-09:50:17.425 5bcc Delete type=3 #2
