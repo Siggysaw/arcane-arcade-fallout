@@ -52,7 +52,7 @@
 		<tr>
 		<td>AP</td><td>Dmg</td><td>Crit DV</td><td>Crit Dmg</td><td>Load</td><td>Str Req</td>
 		</tr><tr>
-		<td><label class="rollable resource-label" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty_total.value">{{system.AP-cost.value}}</label></td>
+		<td><label class="rollable resource-label ap-spent" data-spent="{{system.AP-cost.value}}" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty_total.value">{{system.AP-cost.value}}</label></td>
 		<td><label class="rollable resource-label" data-label="OUCH! DMG from a {{item.name}}" data-roll="{{system.damage.value}}">{{system.damage.value}}</td>
 		<td>{{system.ranged-critical-dv.value}}</td>
 		<td>{{system.ranged-critical-bonus.value}}</td>
@@ -87,3 +87,5 @@
 </td>
 </tr>
 </table>
+
+<span class="APDrain rollable" data-roll="d20">Testing</span>
