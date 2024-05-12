@@ -170,13 +170,25 @@ export class BoilerplateActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
 	
-    html.on('click', '.ap-spent', (ev) => {	
-		const spentAction=ev.currentTarget.dataset.spent;
+    html.on('click', '.ap-spent', (ev) => {
+		const spentAction = ev.currentTarget.dataset.spent;
+		const weaponId = ev.currentTarget.dataset.weaponId;
 		const currentAp=this.actor.system.actionpoints.value;
 		const updatedAp=Number(currentAp) - Number(spentAction);
+
+    const weapon = this.actor.items.get(weaponId)
+    if (weapon.type === 'rangedweapon') {
+      const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.value === weapon.system.ammotype.value)
+      if (!foundAmmo) {
+        ui.notifications.warn(`Ammo ${CONFIG.BOILERPLATE.ammoTypes[weapon.system.ammotype.value].name} not found`);
+        return;
+      } else {
+        this.actor.items.update([{ _id: foundAmmo._id, "system.quantity.value": Number(foundAmmo.system.quantity.value - 1) }])
+      }
+    }
+
 		this.actor.update({'system.actionpoints.value': Number(updatedAp)})
 	});
-	
 
     // Render the item sheet for viewing/editing prior to the editable check.
     html.on('click', '.item-edit', (ev) => {
