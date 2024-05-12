@@ -14,16 +14,11 @@
 	<td>
 	
 
-{{#each drugs as |item id|}}
+{{#each actor.items as |item id|}}
     <li style="float:left;" class='item flexrow' data-item-id='{{item._id}}'>
-	<a class='item-control item-delete'>{{item.name}} </a>,	
+	<a class='item-control item-edit'>{{item.name}} </a>,	
   {{/each}}
-  
-{{#each foodanddrink as |item id|}}
-	{{item.name}} (x{{system.itemQty.value}}) ,	
-	</li>
-  {{/each}} 
-  
+   
 	</td>
 	</tr>
 	</table>

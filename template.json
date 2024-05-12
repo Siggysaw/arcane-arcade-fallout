@@ -155,7 +155,8 @@
 	"ammo": {
 		"templates": ["base", "equipment"],
 		"img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
-		"ammotype": { "value": "9mm" }
+		"ammotype": { "value": "9mm" },
+		"qty":{ "value":1}
 	}
   }
 }

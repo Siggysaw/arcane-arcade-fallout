@@ -104,6 +104,7 @@ export class BoilerplateActorSheet extends ActorSheet {
 	const meleeweapons =[];	
 	const drugs =[];
 	const foodanddrinks=[];
+	const ammos=[];	
     const spells = {
       0: [],
     };
@@ -142,6 +143,10 @@ export class BoilerplateActorSheet extends ActorSheet {
 	  // Append to fooddrinks.
       else if (i.type === 'food-drink') {
         foodanddrinks.push(i);
+      }	 
+	  // Append to fooddrinks.
+      else if (i.type === 'ammo') {
+        ammos.push(i);
       }	  	  
       // Append to spells.
       else if (i.type === 'spell') {
@@ -160,7 +165,9 @@ export class BoilerplateActorSheet extends ActorSheet {
 	context.rangedweapons = rangedweapons;	
 	context.meleeweapons = meleeweapons;
 	context.drugs = drugs;	
-	context.foodanddrinks = foodanddrinks;		
+	context.foodanddrinks = foodanddrinks;	
+	context.ammos = ammos;		
+	
   }
 
 
