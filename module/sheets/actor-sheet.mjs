@@ -100,8 +100,9 @@ export class BoilerplateActorSheet extends ActorSheet {
     const features = [];
 	const perks = [];
 	const armors = [];
-	const rangedweapons =[];
-	const meleeweapons =[];	
+	const ammos = [];
+	const rangedweapons = [];
+	const meleeweapons = [];	
     const spells = {
       0: [],
 
@@ -126,6 +127,10 @@ export class BoilerplateActorSheet extends ActorSheet {
       else if (i.type === 'armor') {
         armors.push(i);
       }
+	  // Append to armor.
+      else if (i.type === 'ammo') {
+        ammos.push(i);
+      }
 	  // Append to rangedweapons.
       else if (i.type === 'rangedweapon') {
         rangedweapons.push(i);
@@ -148,6 +153,7 @@ export class BoilerplateActorSheet extends ActorSheet {
     context.spells = spells;
     context.perks = perks;	
 	context.armors = armors;
+	context.ammos = ammos;
 	context.rangedweapons = rangedweapons;	
 	context.meleeweapons = meleeweapons;		
   }
@@ -158,10 +164,24 @@ export class BoilerplateActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
 	
-    html.on('click', '.ap-spent', (ev) => {	
-		const spentAction=ev.currentTarget.dataset.spent;
+    html.on('click', '.ap-spent', (ev) => {
+      console.log('event', ev)	
+		const spentAction = ev.currentTarget.dataset.spent;
+		const weaponId = ev.currentTarget.dataset.weaponId;
 		const currentAp=this.actor.system.actionpoints.value;
 		const updatedAp=Number(currentAp) - Number(spentAction);
+
+    const weapon = this.actor.items.get(weaponId)
+    if (weapon.type === 'rangedweapon') {
+      const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.value === weapon.system.ammotype.value)
+      if (!foundAmmo) {
+        ui.notifications.warn(`Ammo ${CONFIG.BOILERPLATE.ammoTypes[weapon.system.ammotype.value].name} not found`);
+        return;
+      } else {
+        this.actor.items.update([{ _id: foundAmmo._id, "system.quantity.value": Number(foundAmmo.system.quantity.value - 1) }])
+      }
+    }
+
 		this.actor.update({'system.actionpoints.value': Number(updatedAp)})
 	});
 	
