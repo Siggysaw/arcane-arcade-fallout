@@ -55,7 +55,16 @@
 </td>
   {{!-- RangedWeapon Slot --}}
   
-<td class="inventory-slot weapons" style="width:50%;padding:10px;">
+<td class="inventory-slot ammos" style="width:50%;padding:10px;">
+{{#each ammos as |item id|}}
+    <li class='item flexrow' data-item-id='{{item._id}}'>
+    <table>
+	<tr>
+		<td><h2>{{item.name}}({{system.quantity.value}})</h2></td>
+	</tr>
+	</table>
+{{/each}}
+
 {{#each rangedweapons as |item id|}}
     <li class='item flexrow' data-item-id='{{item._id}}'>
     <table>
@@ -66,7 +75,17 @@
 		<tr>
 		<td>AP</td><td>Dmg</td><td>Crit DV</td><td>Crit Dmg</td><td>Load</td><td>Str Req</td>
 		</tr><tr>
-		<td><label class="rollable resource-label ap-spent" data-spent="{{system.AP-cost.value}}" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty_total.value">{{system.AP-cost.value}}</label></td>
+		<td>
+			<label
+				class="rollable resource-label ap-spent"
+				data-spent="{{system.AP-cost.value}}"
+				data-label="BOOM! Attack with a {{item.name}}"
+				data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty_total.value"
+				data-weapon-id="{{item._id}}"
+			>
+				{{system.AP-cost.value}}
+			</label>
+		</td>
 		<td><label class="rollable resource-label" data-label="OUCH! DMG from a {{item.name}}" data-roll="{{system.damage.value}}">{{system.damage.value}}</td>
 		<td>{{system.ranged-critical-dv.value}}</td>
 		<td>{{system.ranged-critical-bonus.value}}</td>

@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character", "npc","creature"],
+    "types": ["character", "npc", "creature"],
     "templates": {
       "base": {
         "health": {
@@ -24,78 +24,78 @@
         }
       },
       "abilities": {
-        "str": {"value": 5},
-		"per": {"value": 5},
-		"end": {"value": 5},
-		"cha": {"value": 5},
-		"int": {"value": 5},
-		"agi": {"value": 5},
-		"lck": {"value": 5}
+        "str": { "value": 5 },
+        "per": { "value": 5 },
+        "end": { "value": 5 },
+        "cha": { "value": 5 },
+        "int": { "value": 5 },
+        "agi": { "value": 5 },
+        "lck": { "value": 5 }
       },
-	  "penalties": {
-        "hunger": {"value": 0},
-		"dehydration": {"value": 0},
-		"exhaustion": {"value": 0},
-		"radiation": {"value": 0},
-		"fatigue": {"value": 0}	
+      "penalties": {
+        "hunger": { "value": 0 },
+        "dehydration": { "value": 0 },
+        "exhaustion": { "value": 0 },
+        "radiation": { "value": 0 },
+        "fatigue": { "value": 0 }
       },
-	   "skills": {
+      "skills": {
         "barter": {
-			"value": 0,
-			"roll":["cha"]
-			},
-		"breach": {
-			"value": 0,
-			"roll":["int","per"]
-			},
-		"crafting": {
-			"value": 0,
-			"roll":["int"]
-			},
-		"energy_weapons": {
-			"value": 0,
-			"roll":["per"]
-			},
-		"explosives": {
-			"value": 0,
-			"roll":["per"]
-			},
-		"guns": {
-			"value": 0,
-			"roll":["agi"]
-			},
-		"intimidation": {
-			"value": 0,
-			"roll":["str","cha"]
-			},
-		"medicine": {
-			"value": 0,
-			"roll":["per","int"]
-			},
-		"melee_weapons": {
-			"value": 0,
-			"roll":["str"]
-			},
-		"science": {
-			"value": 0,
-			"roll":["int"]
-			},
-		"sneak": {
-			"value": 0,
-			"roll":["agi"]
-			},
-		"speech": {
-			"value": 0,
-			"roll":["cha"]
-			},
-		"survival": {
-			"value": 0,
-			"roll":["end"]
-			},
-		"unarmed": {
-			"value": 0,
-			"roll":["str"]
-			}
+          "value": 0,
+          "roll": ["cha"]
+        },
+        "breach": {
+          "value": 0,
+          "roll": ["int", "per"]
+        },
+        "crafting": {
+          "value": 0,
+          "roll": ["int"]
+        },
+        "energy_weapons": {
+          "value": 0,
+          "roll": ["per"]
+        },
+        "explosives": {
+          "value": 0,
+          "roll": ["per"]
+        },
+        "guns": {
+          "value": 0,
+          "roll": ["agi"]
+        },
+        "intimidation": {
+          "value": 0,
+          "roll": ["str", "cha"]
+        },
+        "medicine": {
+          "value": 0,
+          "roll": ["per", "int"]
+        },
+        "melee_weapons": {
+          "value": 0,
+          "roll": ["str"]
+        },
+        "science": {
+          "value": 0,
+          "roll": ["int"]
+        },
+        "sneak": {
+          "value": 0,
+          "roll": ["agi"]
+        },
+        "speech": {
+          "value": 0,
+          "roll": ["cha"]
+        },
+        "survival": {
+          "value": 0,
+          "roll": ["end"]
+        },
+        "unarmed": {
+          "value": 0,
+          "roll": ["str"]
+        }
       }
     },
     "npc": {
@@ -103,34 +103,34 @@
       "cr": 0
     }
   },
- "Item": {
+  "Item": {
     "types": [
-	"item",
-	"armor",
-	"rangedweapon",
-	"meleeweapon",
-	"junkitem",
-	"drug",
-	"food-drink",
-	"feature", 
-	"spell",
-	"perk"],
+      "item",
+      "armor",
+      "rangedweapon",
+      "meleeweapon",
+      "junkitem",
+      "drug",
+      "food-drink",
+      "feature",
+      "spell",
+      "perk",
+      "ammo"
+    ],
     "templates": {
       "base": {
         "description": ""
       },
 	  "equipment": {
-        "load": "1",
-		"cost": "1"
-      }
+		"load": { "value": 1 },
+		"quantity": { "value": 1 },
+		"cost": { "value": 1 }
+	  }
     },
     "item": {
-      "templates": ["base"],
-      "quantity": 1,
-      "weight": 0,
-      "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+      "templates": ["base"]
     },
-	"perk": {
+    "perk": {
       "templates": ["base"]
     },
     "feature": {
@@ -140,17 +140,22 @@
       "templates": ["base"],
       "spellLevel": 1
     },
-	"armor": {
-        "camouflage": {"value": 0},
-		"light": {"value": 0},
-		"fitted": {"value": 0},
-		"leadlined": {"value": 0},
-		"strengthened": {"value": 0},
-		"sturdy": {"value": 0},
-		"pocketed": {"value": 0},
-		"reinforced": {"value": 0},
-		"hardened": {"value": 0}
-      }
-	
-    }
+    "armor": {
+	  "templates": ["base", "equipment"],
+      "camouflage": { "value": 0 },
+      "light": { "value": 0 },
+      "fitted": { "value": 0 },
+      "leadlined": { "value": 0 },
+      "strengthened": { "value": 0 },
+      "sturdy": { "value": 0 },
+      "pocketed": { "value": 0 },
+      "reinforced": { "value": 0 },
+      "hardened": { "value": 0 }
+    },
+	"ammo": {
+		"templates": ["base", "equipment"],
+		"img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
+		"ammotype": { "value": "9mm" }
+	}
+  }
 }
