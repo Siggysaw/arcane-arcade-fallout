@@ -38,7 +38,6 @@
   {{/each}}
 </td>
 
-
   {{!-- RangedWeapon Slot --}}
   
 <td class="inventory-slot weapons" style="width:50%;padding:10px;">
@@ -84,8 +83,39 @@
 </li>
   {{/each}}
 
+{{!-- MeleeWeapons Slot --}}
+  
+{{#each meleeweapons as |item id|}}
+    <li class='item flexrow' data-item-id='{{item._id}}'>
+    <table>
+	<tr><td><h2>{{item.name}}</h2></td></tr>
+	<tr><td>
+	<table class="equipped-stats">
+		<tr><td colspan=999>DETAILS</td></tr>
+		<tr>
+		<td>AP</td><td>Dmg</td><td>Crit DV</td><td>Crit Dmg</td><td>Load</td><td>Str Req</td>
+		</tr><tr>
+		<td><label class="rollable resource-label ap-spent" data-spent="{{system.AP.value}}" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty_total.value">{{system.AP.value}}</label></td>
+		<td><label class="rollable resource-label" data-label="OUCH! DMG from a {{item.name}}" data-roll="{{system.damage.value}}">{{system.damage.value}}</td>
+		<td>{{system.critical.value}}</td>
+		<td>{{system.criticaldamage.value}}</td>
+		<td>{{system.load.value}}</td>
+		<td>{{system.strengthrequirement.value}}</td>
+		</tr></table>
+	<table class="equipped-stats">
+		<tr><td>Type</td><td>Capacity</td>
+		</tr><tr>
+		<td>{{system.ammo.value}}</td>
+		<td></td>
+		</tr>
+		</table>
+	<div class='item-controls'>
+	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='perk'}}'><i class='fas fa-trash'></i></a>
+	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='perk'}}'><i class='fas fa-edit'></i></a>
+	</div></td></tr>
+	</table>
+</li>
+  {{/each}}  
 </td>
 </tr>
 </table>
-
-<span class="APDrain rollable" data-roll="d20">Testing</span>

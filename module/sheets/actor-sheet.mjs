@@ -162,7 +162,6 @@ export class BoilerplateActorSheet extends ActorSheet {
 		const spentAction=ev.currentTarget.dataset.spent;
 		const currentAp=this.actor.system.actionpoints.value;
 		const updatedAp=Number(currentAp) - Number(spentAction);
-		console.log(updatedAp);
 		this.actor.update({'system.actionpoints.value': Number(updatedAp)})
 	});
 	
