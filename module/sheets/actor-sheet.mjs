@@ -102,9 +102,10 @@ export class BoilerplateActorSheet extends ActorSheet {
 	const armors = [];
 	const rangedweapons =[];
 	const meleeweapons =[];	
+	const drugs =[];
+	const foodanddrinks=[];
     const spells = {
       0: [],
-
     };
 
     // Iterate through items, allocating to containers
@@ -133,6 +134,14 @@ export class BoilerplateActorSheet extends ActorSheet {
 	  // Append to rangedweapons.
       else if (i.type === 'meleeweapon') {
         meleeweapons.push(i);
+      }	
+	  // Append to rangedweapons.
+      else if (i.type === 'drug') {
+        drugs.push(i);
+      }	  
+	  // Append to fooddrinks.
+      else if (i.type === 'food-drink') {
+        foodanddrinks.push(i);
       }	  	  
       // Append to spells.
       else if (i.type === 'spell') {
@@ -149,8 +158,11 @@ export class BoilerplateActorSheet extends ActorSheet {
     context.perks = perks;	
 	context.armors = armors;
 	context.rangedweapons = rangedweapons;	
-	context.meleeweapons = meleeweapons;		
+	context.meleeweapons = meleeweapons;
+	context.drugs = drugs;	
+	context.foodanddrinks = foodanddrinks;		
   }
+
 
   /* -------------------------------------------- */
 
@@ -236,7 +248,7 @@ export class BoilerplateActorSheet extends ActorSheet {
     delete itemData.system['type'];
 
     // Finally, create the item!
-    return await Item.create(itemData, { parent: this.actor });
+	return await Item.create(itemData, { parent: this.actor });
   }
 
   /**

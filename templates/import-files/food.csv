@@ -1,62 +1,62 @@
-﻿title,cost,properties,load,type,,,load,strreq
-Baked Bloatfly,10,Tasty. Fortifying. Putrid.,4,food,,,,
-Bear roast,45,Filling. Flavorsome. Strengthening,6,food,,,,
-Bighorner steak,20,Filling. Flavorsome.,5,food,,,,
-Bloodbug Steak,25,Bland. Regenerating. Putrid.,3,food,,,,
-Deathclaw Egg Omelette,80,Delicacy. Empowering. Regenerating.,5,food,,,,
-BlamCo Mac & Cheese,10,Filling. Tasty. Irradiated.,4,food,,,,
-Canned Dog Food,4,Filling. Tasty. Irradiated. Putrid.,2,food,,,,
-Cram,5,Filling. Bland. Irradiated.,1,food,,,,
-Dandy Boy Apples,2,Bland. Snack. Irradiated.,1,food,,,,
-Fancy Lads Snack Cakes,4,Tasty. Snack. Irradiated.,2,food,,,,
-InstaMash,5,Filling. Bland. Irradiated.,6,food,,,,
-Noodle cup,15,Filling. Tasty.,3,food,,,,
-Pork n' Beans,10,Filling. Tasty. Irradiated.,2,food,,,,
-Potato Crisps,4,Tasty. Snack. Irradiated.,1,food,,,,
-Salisbury Steak,10,Filling. Tasty. Irradiated.,5,food,,,,
-Sugar Bombs,5,Tasty. Irradiated.,4,food,,,,
-Yum Yum Deviled Eggs,10,Filling. Tasty. Irradiated.,4,food,,,,
-Agave Fruit,3,Tasty. Snack.,1,food,,,,
-Apple,5,Tasty. Snack.,1,food,,,,
-Yucca Fruit,6,Bland. Refreshing.,2,food,,,,
-Cactus Fruit,5,Tasty. Refreshing. Snack.,1,food,,,,
-Blackberries,8,Tasty. Snack.,1,food,,,,
-Bloodleaf,5,Bland. Snack.Regenerating.,1,food,,,,
-Brain fungus,6,Bland.,3,food,,,,
-Carrot,3,Tasty. Snack.,2,food,,,,
-Cave Fungus,6,Bland. Snack.,1,food,,,,
-Corn,3,Tasty.,2,food,,,,
-Cranberries,3,Tasty. Snack.,1,food,,,,
-Gourd,3,Tasty. Filling.,5,food,,,,
-Jalapeño pepper,6,Tasty. Spicy. Snack.,1,food,,,,
-Melon,3,Tasty. Filling.,5,food,,,,
-Mutfruit,3,Tasty. Snack.,1,food,,,,
-Pear,3,Tasty. Snack.,1,food,,,,
-Potato,3,Bland.,2,food,,,,
-Prickly Pear Fruit,3,Tasty. Snack.,1,food,,,,
-Razorgrain,3,Bland. Snack.,1,food,,,,
-Silt bean,3,Bland. Snack.,1,food,,,,
-Tarberry,3,Tasty. Snack.,1,food,,,,
-Tato,3,Tasty. Snack.,1,food,,,,
-Xander Root,2,Bland. Snack.,1,food,,,,
-Deathclaw Steak,60,Delicacy. Empowering Filling.,8,food,,,,
-Desert Salad,15,Flavorsome.,4,food,,,,
-Donut,8,Tasty. Snack.,1,food,,,,
-Fruit filled donut,8,Tasty. Snack. Fortifying. Irradiated.,1,food,,,,
-Quantum crunch donut,33,Caffeinated. Charged. Irradiated. Snack. Tasty.,1,food,,,,
-Fire ant fricassée,35,Delicacy. Spicy. Putrid.,6,food,,,,
-Gecko steak,15,Filling. Tasty.,4,food,,,,
-Grilled Radroach,10,Fortifying. Tasty. Putrid.,3,food,,,,
-Grilled Radstag,30,Filling. Tasty. Hearty.,6,food,,,,
-Iguana on a Stick,10,Tasty.,3,food,,,,
-Mole rat chunks,20,Energizing. Tasty.,3,food,,,,
-Mole rat stew,15,Flavorsome.,8,food,,,,
-Mutt chops,15,Filling. Tasty.,4,food,,,,
-Radscorpion egg omelette,65,Cleansing. Flavorsome.,5,food,,,,
-Radscorpion steak,30,Filling. Flavorsome. Pungent.,6,food,,,,
-Radstag stew,25,Filling. Tasty. Pungent.,8,food,,,,
-Ribeye steak,35,Filling. Delicacy.,6,food,,,,
-Roasted ant,5,Filling. Bland. Putrid.,4,food,,,,
-Roasted mirelurk meat,25,Filling. Tasty. Energizing.,4,food,,,,
-Vegetable soup,15,Tasty. Fortifying.,8,food,,,,
-Wasteland omelet,60,Filling. Flavorsome.Hearty. Regenerating.,4,food,,,,
+﻿title,cost,properties,load
+Baked Bloatfly,10,Tasty. Fortifying. Putrid.,4
+Bear roast,45,Filling. Flavorsome. Strengthening,6
+Bighorner steak,20,Filling. Flavorsome.,5
+Bloodbug Steak,25,Bland. Regenerating. Putrid.,3
+Deathclaw Egg Omelette,80,Delicacy. Empowering. Regenerating.,5
+BlamCo Mac & Cheese,10,Filling. Tasty. Irradiated.,4
+Canned Dog Food,4,Filling. Tasty. Irradiated. Putrid.,2
+Cram,5,Filling. Bland. Irradiated.,1
+Dandy Boy Apples,2,Bland. Snack. Irradiated.,1
+Fancy Lads Snack Cakes,4,Tasty. Snack. Irradiated.,2
+InstaMash,5,Filling. Bland. Irradiated.,6
+Noodle cup,15,Filling. Tasty.,3
+Pork n' Beans,10,Filling. Tasty. Irradiated.,2
+Potato Crisps,4,Tasty. Snack. Irradiated.,1
+Salisbury Steak,10,Filling. Tasty. Irradiated.,5
+Sugar Bombs,5,Tasty. Irradiated.,4
+Yum Yum Deviled Eggs,10,Filling. Tasty. Irradiated.,4
+Agave Fruit,3,Tasty. Snack.,1
+Apple,5,Tasty. Snack.,1
+Yucca Fruit,6,Bland. Refreshing.,2
+Cactus Fruit,5,Tasty. Refreshing. Snack.,1
+Blackberries,8,Tasty. Snack.,1
+Bloodleaf,5,Bland. Snack.Regenerating.,1
+Brain fungus,6,Bland.,3
+Carrot,3,Tasty. Snack.,2
+Cave Fungus,6,Bland. Snack.,1
+Corn,3,Tasty.,2
+Cranberries,3,Tasty. Snack.,1
+Gourd,3,Tasty. Filling.,5
+Jalapeño pepper,6,Tasty. Spicy. Snack.,1
+Melon,3,Tasty. Filling.,5
+Mutfruit,3,Tasty. Snack.,1
+Pear,3,Tasty. Snack.,1
+Potato,3,Bland.,2
+Prickly Pear Fruit,3,Tasty. Snack.,1
+Razorgrain,3,Bland. Snack.,1
+Silt bean,3,Bland. Snack.,1
+Tarberry,3,Tasty. Snack.,1
+Tato,3,Tasty. Snack.,1
+Xander Root,2,Bland. Snack.,1
+Deathclaw Steak,60,Delicacy. Empowering Filling.,8
+Desert Salad,15,Flavorsome.,4
+Donut,8,Tasty. Snack.,1
+Fruit filled donut,8,Tasty. Snack. Fortifying. Irradiated.,1
+Quantum crunch donut,33,Caffeinated. Charged. Irradiated. Snack. Tasty.,1
+Fire ant fricassée,35,Delicacy. Spicy. Putrid.,6
+Gecko steak,15,Filling. Tasty.,4
+Grilled Radroach,10,Fortifying. Tasty. Putrid.,3
+Grilled Radstag,30,Filling. Tasty. Hearty.,6
+Iguana on a Stick,10,Tasty.,3
+Mole rat chunks,20,Energizing. Tasty.,3
+Mole rat stew,15,Flavorsome.,8
+Mutt chops,15,Filling. Tasty.,4
+Radscorpion egg omelette,65,Cleansing. Flavorsome.,5
+Radscorpion steak,30,Filling. Flavorsome. Pungent.,6
+Radstag stew,25,Filling. Tasty. Pungent.,8
+Ribeye steak,35,Filling. Delicacy.,6
+Roasted ant,5,Filling. Bland. Putrid.,4
+Roasted mirelurk meat,25,Filling. Tasty. Energizing.,4
+Vegetable soup,15,Tasty. Fortifying.,8
+Wasteland omelet,60,Filling. Flavorsome.Hearty. Regenerating.,4

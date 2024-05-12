@@ -7,11 +7,27 @@
 
 <table>
 <tr>
-
-
   {{!-- Armor Slot --}}
+  <td class="inventory-slot armorslot" style="width:50%;padding:10px;">
+	<table>
+	<tr>
+	<td>
+	
+
+{{#each drugs as |item id|}}
+    <li style="float:left;" class='item flexrow' data-item-id='{{item._id}}'>
+	<a class='item-control item-delete'>{{item.name}} </a>,	
+  {{/each}}
   
-<td class="inventory-slot armorslot" style="width:50%;padding:10px;">
+{{#each foodanddrink as |item id|}}
+	{{item.name}} (x{{system.itemQty.value}}) ,	
+	</li>
+  {{/each}} 
+  
+	</td>
+	</tr>
+	</table>
+
 {{#each armors as |item id|}}
     <li class='item flexrow' data-item-id='{{item._id}}'>
     <table>
@@ -30,14 +46,13 @@
 	  </tr>
 </table>
 	<div class='item-controls'>
-	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='perk'}}'><i class='fas fa-trash'></i></a>
-	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='perk'}}'><i class='fas fa-edit'></i></a>
+	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='item'}}'><i class='fas fa-trash'></i></a>
+	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='item'}}'><i class='fas fa-edit'></i></a>
 	</div></td></tr>
 	</table>
 </li>
   {{/each}}
 </td>
-
   {{!-- RangedWeapon Slot --}}
   
 <td class="inventory-slot weapons" style="width:50%;padding:10px;">
