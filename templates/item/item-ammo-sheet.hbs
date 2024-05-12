@@ -1,0 +1,67 @@
+<style>
+.sheet table td{
+	vertical-align:middle;
+}
+.sheet .editor-content{
+	line-height:2;
+}
+</style>
+
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img bla" src="{{system.img}}" data-edit="img" title="{{item.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+	  <table>
+        <tr>
+            <td>Cost</td>
+            <td>Load</td>
+            <td>Quantity</td>
+            <td>Ammo Type</td>
+        </tr>
+        <tr>
+            <td><input type="number" name="system.cost.value" value="{{system.cost.value}}" /></td>
+            <td><input type="number" name="system.load.value" value="{{system.load.value}}" /></td>
+            <td><input type="number" name="system.quantity.value" value="{{system.quantity.value}}" /></td>
+            <td>
+                <select name="system.ammotype.value">
+                    {{#select system.ammotype.value}}
+                        {{#each ammoTypes}}
+                            <option value="{{type}}">{{name}}</option>
+                        {{/each}}
+                    {{/select}}
+                </select>
+            </td>
+        </tr>
+      </table>
+    </div>
+  </header>
+  
+ {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="effects">Effects</a> 
+ </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{!-- Description Tab --}}
+    <div class="tab" data-group="primary" data-tab="description">
+      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the
+      rollData prop. --}}
+      {{editor system.description target="system.description" rollData=rollData button=true owner=owner
+      editable=editable}}
+    </div>
+	    
+ {{!-- Effects Tab --}}
+    <div class="tab effects" data-group="primary" data-tab="effects">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
+    </div>
+
+  </section>
+</form>
+
+{{log system}}
+
+
