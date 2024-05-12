@@ -185,9 +185,9 @@ export class BoilerplateActorSheet extends ActorSheet {
 
     const weapon = this.actor.items.get(weaponId)
     if (weapon.type === 'rangedweapon') {
-      const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.type === weapon.system.ammotype.value)
+      const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.value === weapon.system.ammotype.value)
       if (!foundAmmo) {
-        ui.notifications.warn(`Ammo ${CONFIG.BOILERPLATE.ammoTypes[weapon.system.ammotype.value].name}  not found`);
+        ui.notifications.warn(`Ammo ${CONFIG.BOILERPLATE.ammoTypes[weapon.system.ammotype.value].name} not found`);
         return;
       } else {
         this.actor.items.update([{ _id: foundAmmo._id, "system.quantity.value": Number(foundAmmo.system.quantity.value - 1) }])
