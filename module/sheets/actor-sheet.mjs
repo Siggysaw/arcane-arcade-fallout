@@ -165,7 +165,6 @@ export class BoilerplateActorSheet extends ActorSheet {
     super.activateListeners(html);
 	
     html.on('click', '.ap-spent', (ev) => {
-      console.log('event', ev)	
 		const spentAction = ev.currentTarget.dataset.spent;
 		const weaponId = ev.currentTarget.dataset.weaponId;
 		const currentAp=this.actor.system.actionpoints.value;
