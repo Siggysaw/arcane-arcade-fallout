@@ -51,14 +51,7 @@
   {{!-- RangedWeapon Slot --}}
   
 <td class="inventory-slot ammos" style="width:50%;padding:10px;">
-{{#each ammos as |item id|}}
-    <li class='item flexrow' data-item-id='{{item._id}}'>
-    <table>
-	<tr>
-		<td><h2>{{item.name}}({{system.quantity.value}})</h2></td>
-	</tr>
-	</table>
-{{/each}}
+
 
 {{#each rangedweapons as |item id|}}
     <li class='item flexrow' data-item-id='{{item._id}}'>
