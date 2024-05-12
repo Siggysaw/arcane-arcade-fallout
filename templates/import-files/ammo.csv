@@ -1,25 +1,25 @@
-﻿title,cost,properties,load,type
-12 gauge,5c,,0.1,ammo
-0.308,10c,,0.1,ammo
-0.5,20c,,0.1,ammo
-.357 Magnum,5c,,0.1,ammo
-.44 Magnum,8c,,0.1,ammo
-0.45,2c,,0.1,ammo
-.45-70 Gov't.,12c,,0.1,ammo
-10mm,4c,,0.1,ammo
-12.7mm,12c,,0.1,ammo
-20 gauge,2c,,0.1,ammo
-5.56mm,2c,,0.1,ammo
-5mm,5c,,0.1,ammo
-9mm,2c,,0.1,ammo
-Flares,5c,,0.1,ammo
-Nails (x5),2c.,,0.1,ammo
-Cryo Cell,50c,,0.1,ammo
-Energy Cell,30c,,0.1,ammo
-Microfusion Cell,35c,,0.1,ammo
-Fusion Core,200c,,0.1,ammo
-2mm EC,40c,,0.1,ammo
-Gamma cell,60c,,0.1,ammo
-Fuel,50c,,20,ammo
-Mini Nuke,250c,,12,ammo
-Missile,50c,,10,ammo
+﻿title,cost,properties,load
+12 gauge,5,,0.1
+0.308,10,,0.1
+0.5,20,,0.1
+.357 Magnum,5,,0.1
+.44 Magnum,8,,0.1
+0.45,2,,0.1
+.45-70 Gov't.,12,,0.1
+10mm,4,,0.1
+12.7mm,12,,0.1
+20 gauge,2,,0.1
+5.56mm,2,,0.1
+5mm,5,,0.1
+9mm,2,,0.1
+Flares,5,,0.1
+Nails (x5),2,,0.1
+Cryo Cell,50,,0.1
+Energy Cell,30,,0.1
+Microfusion Cell,35,,0.1
+Fusion Core,200,,0.1
+2mm EC,40,,0.1
+Gamma cell,60,,0.1
+Fuel,50,,20
+Mini Nuke,250,,12
+Missile,50,,10
