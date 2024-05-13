@@ -13,7 +13,12 @@
 					<td>
 						{{#each actor.items as |item id|}}
 							<li style="float:left;" class='item flexrow' data-item-id='{{item._id}}'>
-							<a class='item-control item-edit'>{{item.name}} ({{system.qty.value}}) </a>,	
+							<a class='item-control item-edit'>
+								{{item.name}}
+								{{#if system.qty.value }}
+									({{system.qty.value}})
+								{{/if}}
+							</a>,	
 						{{/each}}
 					</td>
 				</tr>

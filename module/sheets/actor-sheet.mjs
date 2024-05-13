@@ -195,15 +195,14 @@ export class BoilerplateActorSheet extends ActorSheet {
     const weapon = this.actor.items.get(weaponId)
     if (weapon.system.consumes.target.value) {
       const foundAmmo = this.actor.items.get(weapon.system.consumes.target.value)
-      if (!foundAmmo) {
-        ui.notifications.warn(`Ammo not found for actor ${this.actor.id}`);
-        return;
-      } else {
+      if (foundAmmo && foundAmmo.system.qty.value > 0) {
         this.updateEmbeddedItem("Item", foundAmmo._id, "system.qty.value", Number(foundAmmo.system.qty.value - 1))
+        this.actor.update({'system.actionpoints.value': Number(updatedAp)})
+      } else {
+        ui.notifications.warn(`Ammo not found for actor ${this.actor.id}`);
+        return
       }
     }
-
-		this.actor.update({'system.actionpoints.value': Number(updatedAp)})
 	});
 
     // Render the item sheet for viewing/editing prior to the editable check.

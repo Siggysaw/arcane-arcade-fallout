@@ -123,7 +123,6 @@
       },
 	  "equipment": {
       "load": { "value": 1 },
-      "qty": { "value": 1 },
       "base-cost": { "value": 1 }
 	  }
     },
@@ -155,6 +154,7 @@
     "ammo": {
       "templates": ["base", "equipment"],
       "img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
+      "qty": { "value": 1 }
     },
     "rangedweapon": {
       "templates": ["base", "equipment"],
