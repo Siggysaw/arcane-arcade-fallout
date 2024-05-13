@@ -13,7 +13,7 @@
 					<td>
 						{{#each actor.items as |item id|}}
 							<li style="float:left;" class='item flexrow' data-item-id='{{item._id}}'>
-							<a class='item-control item-edit'>{{item.name}} ({{system.quantity.value}}) </a>,	
+							<a class='item-control item-edit'>{{item.name}} ({{system.qty.value}}) </a>,	
 						{{/each}}
 					</td>
 				</tr>
@@ -64,7 +64,7 @@
 					<li class='item flexrow' data-item-id='{{item._id}}'>
 						<table>
 							<tr>
-								<td><h2>{{item.name}}({{system.quantity.value}})</h2></td>
+								<td><h2>{{item.name}}({{system.qty.value}})</h2></td>
 							</tr>
 						</table>
 						<div class='item-controls'>

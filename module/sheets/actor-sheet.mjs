@@ -199,7 +199,7 @@ export class BoilerplateActorSheet extends ActorSheet {
         ui.notifications.warn(`Ammo not found for actor ${this.actor.id}`);
         return;
       } else {
-        this.updateEmbeddedItem("Item", foundAmmo._id, "system.quantity.value", Number(foundAmmo.system.quantity.value - 1))
+        this.updateEmbeddedItem("Item", foundAmmo._id, "system.qty.value", Number(foundAmmo.system.qty.value - 1))
       }
     }
 
