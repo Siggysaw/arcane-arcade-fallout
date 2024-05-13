@@ -17,21 +17,11 @@
             <td>Cost</td>
             <td>Load</td>
             <td>Quantity</td>
-            <td>Ammo Type</td>
         </tr>
         <tr>
-            <td><input type="number" name="system.cost.value" value="{{system.cost.value}}" /></td>
-            <td><input type="number" name="system.load.value" value="{{system.load.value}}" /></td>
-            <td><input type="number" name="system.quantity.value" value="{{system.quantity.value}}" /></td>
-            <td>
-                <select name="system.ammotype.value">
-                    {{#select system.ammotype.value}}
-                        {{#each ammoTypes}}
-                            <option value="{{type}}">{{name}}</option>
-                        {{/each}}
-                    {{/select}}
-                </select>
-            </td>
+            <td><input type="number" name="system.cost" value="{{system.cost}}" /></td>
+            <td><input type="number" name="system.load" value="{{system.load}}" /></td>
+            <td><input type="number" name="system.quantity" value="{{system.quantity}}" /></td>
         </tr>
       </table>
     </div>

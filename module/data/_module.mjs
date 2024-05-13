@@ -6,4 +6,5 @@ export {default as FalloutZeroNPC} from "./npc.mjs";
 // Export Items
 export {default as FalloutZeroItemBase} from "./item-base.mjs";
 export {default as FalloutZeroItem} from "./item.mjs";
+export {default as FalloutZeroItemAmmo} from "./ammo.mjs";
 export {default as FalloutZeroFeature} from "./feature.mjs";

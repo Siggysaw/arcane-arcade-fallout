@@ -6,7 +6,7 @@ document.getElementById("modifyxp").value = '';
 }
 
 function updatecaps(change){
-var current={{system.caps.value}};
+var current={{system.caps}};
 document.getElementById("caps").value = Number(change) + Number(current);
 document.getElementById("modifycaps").value = '';
 }
@@ -67,7 +67,7 @@ document.getElementById("modifycaps").value = '';
 	<tr>
 	<td class="profile-image-td"><img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" /></td></tr><tr><td>
 		<table class="current-caps"><tr><td><img style="border:none;" class="custom-icon" src="/systems/arcane-arcade-fallout/assets/caps.webp" /></td>
-		<td><input id="caps" type="number" name="system.caps.value" value="{{system.caps.value}}"/></td>
+		<td><input id="caps" type="number" name="system.caps" value="{{system.caps}}"/></td>
 		<td><input id="modifycaps" class="modify" onchange="updatecaps(this.value)" value='' placeholder="modify" type="number" />
 		</td></tr>
 	</table></td>

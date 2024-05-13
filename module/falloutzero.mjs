@@ -46,6 +46,7 @@ Hooks.once('init', function () {
   CONFIG.Item.documentClass = FalloutZeroItem;
   CONFIG.Item.dataModels = {
     item: models.FalloutZeroItem,
+    ammo: models.FalloutZeroItemAmmo,
     feature: models.FalloutZeroFeature,
   }
 

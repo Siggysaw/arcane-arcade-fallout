@@ -52,10 +52,6 @@ export class FalloutZeroItemSheet extends ItemSheet {
     context.system = itemData.system;
     context.flags = itemData.flags;
 
-    if (this.item.type === "ammo") {
-      context.ammoTypes = CONFIG.FALLOUTZERO.ammoTypes
-    }
-
     // Prepare active effects for easier access
     context.effects = prepareActiveEffectCategories(this.item.effects);
 
