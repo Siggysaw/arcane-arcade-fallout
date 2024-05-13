@@ -28,13 +28,8 @@ export class FalloutZeroActor extends Actor {
    * is queried and has a roll executed directly from it).
    */
   prepareDerivedData() {
-    
     const actorData = this;
     const flags = actorData.flags.falloutzero || {};
-    this.system.penalty_total = {
-      value: 	actorData.system.attributes.hunger.value + actorData.system.attributes.dehydration.value + actorData.system.attributes.exhaustion.value + actorData.system.attributes.radiation.value + actorData.system.attributes.fatigue.value
-    }
-			
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
@@ -75,30 +70,6 @@ export class FalloutZeroActor extends Actor {
    */
   _getCharacterRollData(data) {
     if (this.type !== 'character') return;
-
-    // Copy the ability scores to the top level, so that rolls can use
-    // formulas like `@str.mod + 4`.
-    if (data.abilities) {
-      for (let [k, v] of Object.entries(data.abilities)) {
-        data[k] = foundry.utils.deepClone(v);
-      }
-    }
-	
-	if (data.skills) {
-      for (let [k, v] of Object.entries(data.skills)) {
-        data[k] = foundry.utils.deepClone(v);
-      }
-    }
-	if (data.penalties) {
-      for (let [k, v] of Object.entries(data.penalties)) {
-        data[k] = foundry.utils.deepClone(v);
-      }
-    }
-
-    // Add level for easier access, or fall back to 0.
-    if (data.attributes.level) {
-      data.lvl = data.attributes.level.value ?? 0;
-    }
   }
 
   /**

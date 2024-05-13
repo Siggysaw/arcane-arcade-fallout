@@ -21,6 +21,39 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         initial: 10
       })
     });
+    schema['stamina'] = new fields.SchemaField({
+      value: new fields.NumberField({
+        ...requiredInteger,
+        min: 0,
+        initial: 10,
+      }),
+      min: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+      max: new fields.NumberField({
+        ...requiredInteger,
+        initial: 10,
+      })
+    });
+    schema['action-points'] = new fields.SchemaField({
+      value: new fields.NumberField({
+        ...requiredInteger,
+        initial: 10,
+      }),
+      min: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0
+      }),
+      max: new fields.NumberField({
+        ...requiredInteger,
+        initial: 10
+      })
+    });
+    schema['passive-sense'] = new fields.NumberField({
+      ...requiredInteger,
+      initial: 0
+    })
     
     // Iterate over ability names and create a new SchemaField for each.
     schema.abilities = new fields.SchemaField(Object.keys(FALLOUTZERO.abilities).reduce((obj, ability) => {
@@ -42,7 +75,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       return obj;
     }, {}));
 
-    schema.ac = new fields.SchemaField({
+    schema['armor-class'] = new fields.SchemaField({
       value: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
@@ -53,7 +86,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       })
     });
 
-    schema.dt = new fields.SchemaField({
+    schema['damage-threshold'] = new fields.SchemaField({
       value: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
@@ -64,27 +97,6 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       })
     });
 
-    schema.ap = new fields.SchemaField({
-      value: new fields.NumberField({
-        ...requiredInteger,
-        initial: 0,
-      }),
-      min: new fields.NumberField({
-        ...requiredInteger,
-        initial: 0
-      })
-    });
-
-    schema.sp = new fields.SchemaField({
-      value: new fields.NumberField({
-        ...requiredInteger,
-        initial: 0,
-      }),
-      min: new fields.NumberField({
-        ...requiredInteger,
-        initial: 0
-      })
-    });
 
     return schema
   }
@@ -104,6 +116,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       this.skills[key].label = FALLOUTZERO.skills[key].label
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
     }
+
+    this['passive-sense'] = 12 + this.abilities['per'].mod
   }
 
   getRollData() {

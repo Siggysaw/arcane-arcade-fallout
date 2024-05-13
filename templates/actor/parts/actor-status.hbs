@@ -9,7 +9,6 @@
 	<table><tr>
 			{{#each system.skills as |skill key|}}
 			<tr><td>
-				{{ log 'skill' skill}}
 			{{#each skill.ability as |specialroll|}}
 			<p class="specialroll"><label for="{{specialroll}}" class="resource-label rollable" data-roll="d20+{{skill.value}}+@abilities.{{specialroll}}.mod" data-label="{{actor.name}} performed a {{skill.label}} roll using {{specialroll}}">{{specialroll}}</label></p>
 			{{/each}}
@@ -30,7 +29,7 @@
 			<td  class="status-info-value"><input type="number" name="system.penalties.hunger.value" value="{{system.penalties.hunger.value}}" min=0/></td>
 			<td  class="status-info-value"><input type="number" name="system.penalties.dehydration.value" value="{{system.penalties.dehydration.value}}" min=0/></td>
 			<td  class="status-info-value"><input type="number" name="system.penalties.exhaustion.value" value="{{system.penalties.exhaustion.value}}" min=0/></td>
-			<td  class="status-info-value"><input type="number" name="system.rad-dc.value" value="{{system.rad-dc.value}}" min=0/></td>
+			<td  class="status-info-value"><input type="number" name="system.penalties.rad-dc.value" value="{{system.penalties.rad-dc.value}}" min=0/></td>
 			<td  class="status-info-value"><input type="number" name="system.penalties.radiation.value" value="{{system.penalties.radiation.value}}" min=0/></td>
 		</tr>
 	</table>
@@ -52,13 +51,13 @@
 			<td>Group Sneak</td>
 		</tr>
 		<tr>
-			<td><input type="number" name="system.passive-sense.value" value="{{system.passive-sense.value}}"></td>
+			<td><input type="number" name="system.passive-sense" value="{{system.passive-sense}}"></td>
 			<td><input type="number" name="system.party-nerve.value" value="{{system.party-nerve.value}}"></td>
 			<td><input type="number" name="system.group-sneak.value" value="{{system.group-sneak.value}}"></td>
 		</tr>
 			<tr><td colspan=4><img id="vault-boy-status" style="width:auto;height:250px;display:block;margin:auto;border:none;" src='/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png'></td></tr>
 			<tr>
-			<td colspan=999>Total Penalties: {{system.penalty_total.value}}</td>
+			<td colspan=999>Total Penalties: {{system.penalty-total}}</td>
 			</tr>
 	</table>
 </td></tr>
