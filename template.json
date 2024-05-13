@@ -122,9 +122,9 @@
         "description": ""
       },
 	  "equipment": {
-		"load": { "value": 1 },
-		"quantity": { "value": 1 },
-		"cost": { "value": 1 }
+      "load": { "value": 1 },
+      "quantity": { "value": 1 },
+      "base-cost": { "value": 1 }
 	  }
     },
     "item": {
@@ -152,11 +152,59 @@
       "reinforced": { "value": 0 },
       "hardened": { "value": 0 }
     },
-	"ammo": {
-		"templates": ["base", "equipment"],
-		"img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
-		"ammotype": { "value": "9mm" },
-		"qty":{ "value":1}
-	}
+    "ammo": {
+      "templates": ["base", "equipment"],
+      "img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
+      "qty":{ "value":1}
+    },
+    "rangedweapon": {
+      "templates": ["base", "equipment"],
+      "img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
+      "AP-cost": { "value": 1 },
+      "consumes": {
+        "type": "ammo",
+        "target": { "value": "" },
+        "amount": { "value": 1 }
+      },
+      "damage": { "value": 1 },
+      "range": { "value": 1 },
+      "ranged-critical-dv": { "value": 20 },
+      "capacity": { "value": 1 },
+      "strengthrequirement": { "value": 1 },
+      "ranged-critical-bonus": { "value": 1 },
+      "rangedshort": { "value": 1 },
+      "rangedmedium": { "value": 1 },
+      "rangedlong": { "value": 1 },
+      "effects": [
+        {
+          "name": "Load Increase",
+          "icon": "icons/svg/aura.svg",
+          "origin": "Item.AUI8YIt0qqKIkHwo",
+          "duration": {
+            "startTime": null,
+            "seconds": null,
+            "combat": null,
+            "rounds": null,
+            "turns": null,
+            "startRound": null,
+            "startTurn": null
+          },
+          "disabled": false,
+          "_id": "Ni9Bj7j6IpuZII4o",
+          "changes": [
+            {
+              "key": "system.current-load.value",
+              "mode": 2,
+              "value": "{{load}}"
+            }
+          ],
+          "description": "",
+          "transfer": true,
+          "statuses": [],
+          "flags": {},
+          "tint": null
+        }
+      ]
+    }
   }
 }
