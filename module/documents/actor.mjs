@@ -2,7 +2,7 @@
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
-export class BoilerplateActor extends Actor {
+export class FalloutZeroActor extends Actor {
   /** @override */
   prepareData() {
     // Prepare data for the actor. Calling the super version of this executes
@@ -28,15 +28,12 @@ export class BoilerplateActor extends Actor {
    * is queried and has a roll executed directly from it).
    */
   prepareDerivedData() {
+    
     const actorData = this;
-    const systemData = actorData.system;
-    const flags = actorData.flags.boilerplate || {};
-	this.system.penalty_total = {
-		value: 	systemData.penalties.hunger.value
-		+systemData.penalties.dehydration.value
-		+systemData.penalties.exhaustion.value
-		+systemData.penalties.radiation.value
-		+systemData.penalties.fatigue.value}
+    const flags = actorData.flags.falloutzero || {};
+    this.system.penalty_total = {
+      value: 	actorData.system.attributes.hunger.value + actorData.system.attributes.dehydration.value + actorData.system.attributes.exhaustion.value + actorData.system.attributes.radiation.value + actorData.system.attributes.fatigue.value
+    }
 			
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
@@ -50,25 +47,6 @@ export class BoilerplateActor extends Actor {
    */
   _prepareCharacterData(actorData) {
     if (actorData.type !== 'character') return;
-
-    // Make modifications to data here. For example:
-    const systemData = actorData.system;
-
-    // Loop through ability scores, and add their modifiers to our sheet output.
-    for (let [key, ability] of Object.entries(systemData.abilities)) {
-      // Calculate the modifier using d20 rules.
-      ability.mod = Math.floor((ability.value - 5));
-    }
-	    // Loop through skills scores, and add their modifiers to our sheet output.
-    for (let [key, skills] of Object.entries(systemData.skills)) {
-      // Calculate the modifier
-      skills.mod = Math.floor((skills.value));
-    }
-	    // Loop through penalty scores, and add their modifiers to our sheet output.
-    for (let [key, penalties] of Object.entries(systemData.penalties)) {
-      // Calculate the modifier
-      penalties.mod = Math.floor((penalties.value));
-    }
   }
 
   /**
@@ -76,10 +54,6 @@ export class BoilerplateActor extends Actor {
    */
   _prepareNpcData(actorData) {
     if (actorData.type !== 'npc') return;
-
-    // Make modifications to data here. For example:
-    const systemData = actorData.system;
-    systemData.xp = systemData.cr * systemData.cr * 100;
   }
 
   /**

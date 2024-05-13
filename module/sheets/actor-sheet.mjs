@@ -7,11 +7,11 @@ import {
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class BoilerplateActorSheet extends ActorSheet {
+export class FalloutZeroActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ['boilerplate', 'sheet', 'actor'],
+      classes: ['falloutzero', 'sheet', 'actor'],
       width: 750,
       height: 750,
       tabs: [
@@ -78,13 +78,6 @@ export class BoilerplateActorSheet extends ActorSheet {
    * @return {undefined}
    */
   _prepareCharacterData(context) {
-    // Handle ability scores.
-    for (let [k, v] of Object.entries(context.system.abilities)) {
-      v.label = game.i18n.localize(CONFIG.BOILERPLATE.abilities[k]) ?? k;
-    }
-	for (let [k, v] of Object.entries(context.system.skills)) {
-      v.label = game.i18n.localize(CONFIG.BOILERPLATE.skills[k]) ?? k;
-    }
   }
 
   /**
@@ -98,13 +91,13 @@ export class BoilerplateActorSheet extends ActorSheet {
     // Initialize containers.
     const gear = [];
     const features = [];
-	const perks = [];
-	const armors = [];
-	const rangedweapons =[];
-	const meleeweapons =[];	
-	const drugs =[];
-	const foodanddrinks=[];
-	const ammos=[];	
+    const perks = [];
+    const armors = [];
+    const rangedweapons =[];
+    const meleeweapons =[];	
+    const drugs =[];
+    const foodanddrinks=[];
+    const ammos=[];	
     const spells = {
       0: [],
     };
@@ -161,13 +154,12 @@ export class BoilerplateActorSheet extends ActorSheet {
     context.features = features;
     context.spells = spells;
     context.perks = perks;	
-	context.armors = armors;
-	context.rangedweapons = rangedweapons;	
-	context.meleeweapons = meleeweapons;
-	context.drugs = drugs;	
-	context.foodanddrinks = foodanddrinks;	
-	context.ammos = ammos;		
-	
+    context.armors = armors;
+    context.rangedweapons = rangedweapons;	
+    context.meleeweapons = meleeweapons;
+    context.drugs = drugs;	
+    context.foodanddrinks = foodanddrinks;	
+    context.ammos = ammos;		
   }
 
 
@@ -187,7 +179,7 @@ export class BoilerplateActorSheet extends ActorSheet {
     if (weapon.type === 'rangedweapon') {
       const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.value === weapon.system.ammotype.value)
       if (!foundAmmo) {
-        ui.notifications.warn(`Ammo ${CONFIG.BOILERPLATE.ammoTypes[weapon.system.ammotype.value].name} not found`);
+        ui.notifications.warn(`Ammo ${CONFIG.FALLOUTZERO.ammoTypes[weapon.system.ammotype.value].name} not found`);
         return;
       } else {
         this.actor.items.update([{ _id: foundAmmo._id, "system.quantity.value": Number(foundAmmo.system.quantity.value - 1) }])

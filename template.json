@@ -1,5 +1,11 @@
 {
+
   "Actor": {
+    "types": ["character"],
+    "htmlFields": ["biography"],
+    "character": {}
+  },
+  "Actorold": {
     "types": ["character", "npc", "creature"],
     "templates": {
       "base": {

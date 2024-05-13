@@ -7,11 +7,11 @@ import {
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class BoilerplateItemSheet extends ItemSheet {
+export class FalloutZeroItemSheet extends ItemSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ['boilerplate', 'sheet', 'item'],
+      classes: ['falloutzero', 'sheet', 'item'],
       width: 520,
       height: 480,
       tabs: [
@@ -53,7 +53,7 @@ export class BoilerplateItemSheet extends ItemSheet {
     context.flags = itemData.flags;
 
     if (this.item.type === "ammo") {
-      context.ammoTypes = CONFIG.BOILERPLATE.ammoTypes
+      context.ammoTypes = CONFIG.FALLOUTZERO.ammoTypes
     }
 
     // Prepare active effects for easier access

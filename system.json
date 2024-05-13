@@ -27,8 +27,8 @@
     "minimum": 11,
     "verified": "11.315"
   },
-  "esmodules": ["module/boilerplate.mjs"],
-  "styles": ["css/boilerplate.css"],
+  "esmodules": ["module/falloutzero.mjs"],
+  "styles": ["css/falloutzero.css"],
   "languages": [
     {
       "lang": "en",
