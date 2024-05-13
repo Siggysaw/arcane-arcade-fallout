@@ -97,6 +97,10 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       })
     });
 
+    schema.caps = new fields.NumberField({
+      initial: 0,
+      min: 0,
+    })
 
     return schema
   }

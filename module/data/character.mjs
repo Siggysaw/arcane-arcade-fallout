@@ -38,7 +38,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       })
     });
 
-    schema['penalty-total'] = new fields.NumberField({ value: 0 })
+    schema['healing-rate'] = new fields.NumberField({ initial: 0, min: 0 })
+
+    schema['penalty-total'] = new fields.NumberField({ initial: 0, min: 0 })
 
     return schema;
   }
@@ -50,6 +52,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     }
     this.penalties['rad-dc'].value = 12 - this.abilities['end'].mod
     this['carry-load'].max = this.abilities['str'].value * 10
+    this['healing-rate'] = Math.floor((this.level + this.abilities['end'].value) / 2)
     this['penalty-total'] = this.penalties.hunger.value + this.penalties.dehydration.value + this.penalties.exhaustion.value + this.penalties.radiation.value + this.penalties.fatigue.value
   }
 }

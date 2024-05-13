@@ -17,8 +17,6 @@ Hooks.once('init', function () {
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.falloutzero = {
-    FalloutZeroActor,
-    FalloutZeroItem,
     rollItemMacro,
   };
 
