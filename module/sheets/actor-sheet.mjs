@@ -45,6 +45,7 @@ export class BoilerplateActorSheet extends ActorSheet {
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = actorData.system;
     context.flags = actorData.flags;
+    context.documentName = actorData.documentName
 
     // Prepare character data and items.
     if (actorData.type == 'character') {
@@ -68,6 +69,15 @@ export class BoilerplateActorSheet extends ActorSheet {
     );
 
     return context;
+  }
+
+  updateEmbeddedItem(documentName, itemId, attributePath, newValue) {
+    try {
+      this.actor.updateEmbeddedDocuments(documentName, [{ _id: itemId, [attributePath]: newValue }])
+    } catch (error) {
+      ui.notifications.warn(`Failed to update embeddedItem: ${error}`)
+      throw error
+    }
   }
 
   /**
@@ -98,13 +108,13 @@ export class BoilerplateActorSheet extends ActorSheet {
     // Initialize containers.
     const gear = [];
     const features = [];
-	const perks = [];
-	const armors = [];
-	const rangedweapons =[];
-	const meleeweapons =[];	
-	const drugs =[];
-	const foodanddrinks=[];
-	const ammos=[];	
+    const perks = [];
+    const armors = [];
+    const rangedweapons = [];
+    const meleeweapons = [];	
+    const drugs = [];
+    const foodanddrinks = [];
+    const ammos = [];	
     const spells = {
       0: [],
     };
@@ -161,13 +171,12 @@ export class BoilerplateActorSheet extends ActorSheet {
     context.features = features;
     context.spells = spells;
     context.perks = perks;	
-	context.armors = armors;
-	context.rangedweapons = rangedweapons;	
-	context.meleeweapons = meleeweapons;
-	context.drugs = drugs;	
-	context.foodanddrinks = foodanddrinks;	
-	context.ammos = ammos;		
-	
+    context.armors = armors;
+    context.rangedweapons = rangedweapons;	
+    context.meleeweapons = meleeweapons;
+    context.drugs = drugs;	
+    context.foodanddrinks = foodanddrinks;	
+    context.ammos = ammos;
   }
 
 
@@ -184,17 +193,16 @@ export class BoilerplateActorSheet extends ActorSheet {
 		const updatedAp=Number(currentAp) - Number(spentAction);
 
     const weapon = this.actor.items.get(weaponId)
-    if (weapon.type === 'rangedweapon') {
-      const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.value === weapon.system.ammotype.value)
-      if (!foundAmmo) {
-        ui.notifications.warn(`Ammo ${CONFIG.BOILERPLATE.ammoTypes[weapon.system.ammotype.value].name} not found`);
-        return;
+    if (weapon.system.consumes.target.value) {
+      const foundAmmo = this.actor.items.get(weapon.system.consumes.target.value)
+      if (foundAmmo && foundAmmo.system.qty.value > 0) {
+        this.updateEmbeddedItem("Item", foundAmmo._id, "system.qty.value", Number(foundAmmo.system.qty.value - 1))
+        this.actor.update({'system.actionpoints.value': Number(updatedAp)})
       } else {
-        this.actor.items.update([{ _id: foundAmmo._id, "system.quantity.value": Number(foundAmmo.system.quantity.value - 1) }])
+        ui.notifications.warn(`Ammo not found for actor ${this.actor.id}`);
+        return
       }
     }
-
-		this.actor.update({'system.actionpoints.value': Number(updatedAp)})
 	});
 
     // Render the item sheet for viewing/editing prior to the editable check.
@@ -203,6 +211,17 @@ export class BoilerplateActorSheet extends ActorSheet {
       const item = this.actor.items.get(li.data('itemId'));
       item.sheet.render(true);
     });
+
+    html.on('change', '[data-action]', (ev) => {
+      const dataset = ev.target.dataset;
+      switch (dataset.action) {
+        case "updateEmbeddedItem":
+          this.updateEmbeddedItem(dataset.documentName, dataset.itemId, dataset.attributePath, ev.target.value)
+          return
+      }
+
+      ui.notifications.warn(`Action ${dataset.action} not found for actor ${this.actor.id}`);
+    })
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
