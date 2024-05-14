@@ -21,7 +21,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         initial: 10
       })
     });
-    schema['stamina'] = new fields.SchemaField({
+    schema.stamina = new fields.SchemaField({
       value: new fields.NumberField({
         ...requiredInteger,
         min: 0,
@@ -36,7 +36,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         initial: 10,
       })
     });
-    schema['action-points'] = new fields.SchemaField({
+    schema.actionPoints = new fields.SchemaField({
       value: new fields.NumberField({
         ...requiredInteger,
         initial: 10,
@@ -50,17 +50,13 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         initial: 10
       })
     });
-    schema['passive-sense'] = new fields.NumberField({
-      ...requiredInteger,
-      initial: 0
-    })
     
     // Iterate over ability names and create a new SchemaField for each.
     schema.abilities = new fields.SchemaField(Object.keys(FALLOUTZERO.abilities).reduce((obj, ability) => {
       obj[ability] = new fields.SchemaField({
         value: new fields.NumberField({ ...requiredInteger, initial: 5, min: 0 }),
         mod: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
-        label: new fields.StringField({ required: true, blank: true })
+        label: new fields.StringField({ initial: FALLOUTZERO.abilities[ability].label })
       });
       return obj;
     }, {}));
@@ -70,12 +66,12 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         ability: new fields.ArrayField(new fields.StringField({ required: true })),
         value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
         mod: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
-        label: new fields.StringField({ required: true, blank: true })
+        label: new fields.StringField({ initial: FALLOUTZERO.skills[skill].label })
       });
       return obj;
     }, {}));
 
-    schema['armor-class'] = new fields.SchemaField({
+    schema.armorClass = new fields.SchemaField({
       value: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
@@ -86,7 +82,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       })
     });
 
-    schema['damage-threshold'] = new fields.SchemaField({
+    schema.damageThreshold = new fields.SchemaField({
       value: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
@@ -105,23 +101,19 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     return schema
   }
 
-  prepareDerivedData() {
+  prepareBaseData() {
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
       // Calculate the modifier using d20 rules.
       this.abilities[key].mod = Math.floor(this.abilities[key].value - 5)
-      this.abilities[key].label = FALLOUTZERO.abilities[key].label
     }
 
     // Loop through skill scores, and add their modifiers to our sheet output.
     for (const key in this.skills) {
       // Calculate the modifier using d20 rules.
       this.skills[key].mod = Math.floor(this.skills[key].value)
-      this.skills[key].label = FALLOUTZERO.skills[key].label
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
     }
-
-    this['passive-sense'] = 12 + this.abilities['per'].mod
   }
 
   getRollData() {

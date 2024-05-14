@@ -33,8 +33,8 @@
 	  <td>Cost</td><td>AC</td><td>DT</td><td>Slots</td><td>Load</td><td>STR Req.</td></tr>
 	  <tr>
 	  <td>{{{system.base-cost.value}}}</td>
-	  <td id="armor-ac">{{{system.armor-class.value}}}</td>
-	  <td id="armor-dt">{{{system.damage-threshold.value}}}</td>
+	  <td id="armor-ac">{{{system.armorClass.value}}}</td>
+	  <td id="armor-dt">{{{system.damageThreshold.value}}}</td>
 	  <td>{{{system.slots.value}}}</td>
 	  <td>{{{system.load.value}}}</td>
 	  <td>{{{system.str-req.value}}}</td>
@@ -68,7 +68,7 @@
 				class="rollable resource-label ap-spent"
 				data-spent="{{system.AP-cost.value}}"
 				data-label="BOOM! Attack with a {{item.name}}"
-				data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty-total"
+				data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal"
 				data-weapon-id="{{item._id}}"
 			>
 				{{system.AP-cost.value}}
@@ -117,7 +117,7 @@
 		<tr>
 		<td>AP</td><td>Dmg</td><td>Crit DV</td><td>Crit Dmg</td><td>Load</td><td>Str Req</td>
 		</tr><tr>
-		<td><label class="rollable resource-label ap-spent" data-spent="{{system.AP.value}}" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penalty-total">{{system.AP.value}}</label></td>
+		<td><label class="rollable resource-label ap-spent" data-spent="{{system.AP.value}}" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal">{{system.AP.value}}</label></td>
 		<td><label class="rollable resource-label" data-label="OUCH! DMG from a {{item.name}}" data-roll="{{system.damage.value}}">{{system.damage.value}}</td>
 		<td>{{system.critical.value}}</td>
 		<td>{{system.criticaldamage.value}}</td>
