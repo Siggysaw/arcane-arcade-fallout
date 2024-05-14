@@ -1,6 +1,6 @@
-import BoilerplateActorBase from "./actor-base.mjs";
+import FalloutZeroActorBase from "./actor-base.mjs";
 
-export default class BoilerplateNPC extends BoilerplateActorBase {
+export default class FalloutZeroNPC extends FalloutZeroActorBase {
 
   static defineSchema() {
     const fields = foundry.data.fields;

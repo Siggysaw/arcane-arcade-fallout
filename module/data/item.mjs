@@ -1,6 +1,6 @@
-import BoilerplateItemBase from "./item-base.mjs";
+import FalloutZeroItemBase from "./item-base.mjs";
 
-export default class BoilerplateItem extends BoilerplateItemBase {
+export default class FalloutZeroItem extends FalloutZeroItemBase {
 
   static defineSchema() {
     const fields = foundry.data.fields;

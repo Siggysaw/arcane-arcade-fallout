@@ -1,4 +1,4 @@
-export default class BoilerplateItemBase extends foundry.abstract.TypeDataModel {
+export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel {
 
   static defineSchema() {
     const fields = foundry.data.fields;

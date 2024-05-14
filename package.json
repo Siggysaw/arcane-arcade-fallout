@@ -1,11 +1,11 @@
 {
-  "name": "boilerplate",
+  "name": "falloutzero",
   "version": "2.0.0",
-  "description": "CSS compiler for the Boilerplate system",
+  "description": "CSS compiler for the falloutzero system",
   "scripts": {
-    "build": "sass src/scss/boilerplate.scss css/boilerplate.css --style=expanded --no-source-map",
-    "watch": "sass src/scss/boilerplate.scss css/boilerplate.css --style=expanded --source-map --watch",
-    "generate": "node src/generate-boilerplate-system.mjs"
+    "build": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --no-source-map",
+    "watch": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --source-map --watch",
+    "generate": "node src/generate-falloutzero-system.mjs"
   },
   "browserslist": [
     "last 3 versions"
