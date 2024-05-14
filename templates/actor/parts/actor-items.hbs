@@ -1,143 +1,240 @@
 <style>
-.sheet .equipped-stats td{
-	border:solid 1px;
-}
+	.sheet .equipped-stats td {
+		border: solid 1px;
+	}
 </style>
 
 
 <table>
-<tr>
-  {{!-- Armor Slot --}}
-  <td class="inventory-slot armorslot" style="width:50%;padding:10px;">
-	<table>
 	<tr>
-	<td>
-	
+		{{!-- Armor Slot --}}
+		<td class="inventory-slot armorslot" style="width:50%;padding:10px;">
+			<table>
+				<tr>
+					<td>
+						{{#each actor.items as |item id|}}
+						<div style="float:left;" class='item flexrow' data-item-id='{{item._id}}'>
+							<a class='item-control item-edit'>{{item.name}} ({{system.quantity.value}}) </a>
+						</div>
+						{{/each}}
+					</td>
+				</tr>
+			</table>
 
-{{#each actor.items as |item id|}}
-    <li style="float:left;" class='item flexrow' data-item-id='{{item._id}}'>
-	<a class='item-control item-edit'>{{item.name}} ({{system.quantity.value}}) </a>,	
-  {{/each}}
-   
-	</td>
-	</tr>
-	</table>
-
-{{#each armors as |item id|}}
-    <li class='item flexrow' data-item-id='{{item._id}}'>
-    <table>
-	<tr><td><h2>{{item.name}}</h2></td></tr>
-	<tr><td>
-		  <table class="equipped-stats">
-	  <tr>
-	  <td>Cost</td><td>AC</td><td>DT</td><td>Slots</td><td>Load</td><td>STR Req.</td></tr>
-	  <tr>
-	  <td>{{{system.cost.value}}}</td>
-	  <td id="armor-ac">{{{system.armorClass.value}}}</td>
-	  <td id="armor-dt">{{{system.damageThreshold.value}}}</td>
-	  <td>{{{system.slots.value}}}</td>
-	  <td>{{{system.load.value}}}</td>
-	  <td>{{{system.str-req.value}}}</td>
-	  </tr>
-</table>
-	<div class='item-controls'>
-	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='item'}}'><i class='fas fa-trash'></i></a>
-	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='item'}}'><i class='fas fa-edit'></i></a>
-	</div></td></tr>
-	</table>
-</li>
-  {{/each}}
-</td>
-  {{!-- RangedWeapon Slot --}}
-  
-<td class="inventory-slot ammos" style="width:50%;padding:10px;">
-
-
-{{#each rangedWeapons as |item id|}}
-    <li class='item flexrow' data-item-id='{{item._id}}'>
-    <table>
-	<tr><td><h2>{{item.name}}</h2></td></tr>
-	<tr><td>
-	<table class="equipped-stats">
-		<tr><td colspan=999>DETAILS</td></tr>
-		<tr>
-		<td>AP</td><td>Dmg</td><td>Crit DV</td><td>Crit Dmg</td><td>Load</td><td>Str Req</td>
-		</tr><tr>
-		<td>
-			<label
-				class="rollable resource-label ap-spent"
-				data-spent="{{system.AP-cost.value}}"
-				data-label="BOOM! Attack with a {{item.name}}"
-				data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal"
-				data-weapon-id="{{item._id}}"
-			>
-				{{system.AP-cost.value}}
-			</label>
+			{{#each armors as |item id|}}
+			<div class='item flexrow' data-item-id='{{item._id}}'>
+				<table>
+					<tr>
+						<td>
+							<h2>{{item.name}}</h2>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<table class="equipped-stats">
+								<tr>
+									<td>Cost</td>
+									<td>AC</td>
+									<td>DT</td>
+									<td>Slots</td>
+									<td>Load</td>
+									<td>STR Req.</td>
+								</tr>
+								<tr>
+									<td>{{{system.cost.value}}}</td>
+									<td>{{{system.armorClass.value}}}</td>
+									<td>{{{system.damageThreshold.value}}}</td>
+									<td>{{{system.slots.value}}}</td>
+									<td>{{{system.load.value}}}</td>
+									<td>{{{system.str-req.value}}}</td>
+								</tr>
+							</table>
+							<div class='item-controls'>
+								<a style="float:right;margin-right:10px;" class='item-control item-delete'
+									title='{{localize "DOCUMENT.Delete" type=' item'}}'><i class='fas fa-trash'></i></a>
+								<a style="float:right;margin-right:10px;" class='item-control item-edit'
+									title='{{localize "DOCUMENT.Update" type=' item'}}'><i class='fas fa-edit'></i></a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			{{/each}}
 		</td>
-		<td><label class="rollable resource-label" data-label="OUCH! DMG from a {{item.name}}" data-roll="{{system.damage.value}}">{{system.damage.value}}</td>
-		<td>{{system.ranged-critical-dv.value}}</td>
-		<td>{{system.ranged-critical-bonus.value}}</td>
-		<td>{{system.load.value}}</td>
-		<td>{{system.strengthrequirement.value}}</td>
-		</tr></table>
-	<table class="equipped-stats">
-		<tr><td>Type</td><td>Capacity</td>
-		</tr><tr>
-		<td>{{system.ammotype.value}}</td>
-		<td>{{system.capacity.value}}</td>
-		</tr>
-		</table>
-	<table class="equipped-stats">
-	<tr><td colspan=999>RANGE</td></tr>
-	<tr>
-	<td>0 - {{system.shortrangedcalc1.value}}ft</td>
-	<td id="range">{{system.shortrangedcalc.value}}ft - {{system.longrangedcalc.value}}ft</td>
-	<td>> {{system.longrangedcalc1.value}}ft</td>
+		{{!-- RangedWeapon Slot --}}
+		<td class="inventory-slot ammos" style="width:50%;padding:10px;">
+			{{#each rangedWeapons as |item id|}}
+			<div class='item flexrow' data-item-id='{{item._id}}'>
+				<table>
+					<tr>
+						<td>
+							<h2>{{item.name}}</h2>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<table class="equipped-stats">
+								<tr>
+									<td colspan=999>DETAILS</td>
+								</tr>
+								<tr>
+									<td>AP</td>
+									<td>Dmg</td>
+									<td>Crit DV</td>
+									<td>Crit Dmg</td>
+									<td>Load</td>
+									<td>Str Req</td>
+								</tr>
+								<tr>
+									<td>
+										<label class="rollable resource-label ap-spent" data-spent="{{item.apCost}}"
+											data-label="BOOM! Attack with a {{item.name}}"
+											data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal"
+											data-weapon-id="{{item._id}}">
+											{{item.apCost}}
+										</label>
+									</td>
+									<td>
+										<label class="rollable resource-label"
+											data-label="OUCH! DMG from a {{item.name}}"
+											data-roll="{{item.damage.formula}}">
+											{{item.damage.formula}}
+										</label>
+									</td>
+									<td>{{item.critical.dice}}</td>
+									<td>{{item.critical.bonus}}</td>
+									<td>{{item.load}}</td>
+									<td>{{item.strengthRequirement}}</td>
+								</tr>
+							</table>
+							<table class="equipped-stats">
+								<tr>
+									<td>Type</td>
+									<td>Rounds</td>
+								</tr>
+								<tr>
+									<td>{{system.ammo.type}}</td>
+									<td>{{system.ammo.capacity.value}}</td>
+								</tr>
+							</table>
+							<table class="equipped-stats">
+								<tr>
+									<td colspan=999>RANGE</td>
+								</tr>
+								<tr>
+									<td>0 - {{system.shortrangedcalc1.value}}ft</td>
+									<td id="range">{{system.shortrangedcalc.value}}ft -
+										{{system.longrangedcalc.value}}ft</td>
+									<td>{{system.longrangedcalc1.value}}ft</td>
+								</tr>
+								<tr>
+									<td>Advantage</td>
+									<td>Normal</td>
+									<td>Disadvantage</td>
+								</tr>
+							</table>
+							<table class="equipped-stats">
+								<tr>
+									<td colspan=999>CONSUMES</td>
+								</tr>
+								<tr>
+									<td>Type</td>
+									<td>Quantity</td>
+									<td>Item</td>
+								</tr>
+								<tr>
+									<td>{{item.system.ammo.type}}</td>
+									<td>{{item.system.ammo.consumes.amount}}</td>
+									<td>
+										<select
+											data-action="updateEmbeddedItem"
+											data-item-id="{{item._id}}"
+											data-attribute-path="system.ammo.consumes.target"
+											data-document-name="Item"
+										>
+										{{log 'ammos' item}}
+											{{selectOptions item.ammos selected=item.system.ammo.consumes.target nameAttr="_id" labelAttr="name" blank="none"}}
+										</select>
+									</td>
+								</tr>
+							</table>
+							<div class='item-controls'>
+								<a style="float:right;margin-right:10px;" class='item-control item-delete'
+									title='{{localize "DOCUMENT.Delete" type=' perk'}}'><i class='fas fa-trash'></i></a>
+								<a style="float:right;margin-right:10px;" class='item-control item-edit'
+									title='{{localize "DOCUMENT.Update" type=' perk'}}'><i class='fas fa-edit'></i></a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			{{/each}}
+			{{!-- MeleeWeapons Slot --}}
+			{{#each meleeWeapons as |item id|}}
+			<div class='item flexrow' data-item-id='{{item._id}}'>
+				<table>
+					<tr>
+						<td>
+							<h2>{{item.name}}</h2>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<table class="equipped-stats">
+								<tr>
+									<td colspan=999>DETAILS</td>
+								</tr>
+								<tr>
+									<td>AP</td>
+									<td>Dmg</td>
+									<td>Crit DV</td>
+									<td>Crit Dmg</td>
+									<td>Load</td>
+									<td>Str Req</td>
+								</tr>
+								<tr>
+									<td>
+										<label class="rollable resource-label ap-spent" data-spent="{{system.apCost}}"
+											data-label="BOOM! Attack with a {{item.name}}"
+											data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal">
+											{{system.apCost}}
+										</label>
+									</td>
+									<td>
+										<label class="rollable resource-label"
+											data-label="OUCH! DMG from a {{item.name}}"
+											data-roll="{{system.damage.formula}}">
+											{{system.damage.formula}}
+										</label>
+									</td>
+									<td>{{item.critical.dice}}</td>
+									<td>{{item.critical.bonus}}</td>
+									<td>{{item.load}}</td>
+									<td>{{item.strengthRequirement}}</td>
+								</tr>
+							</table>
+							<table class="equipped-stats">
+								<tr>
+									<td>Type</td>
+									<td>Rounds</td>
+								</tr>
+								<tr>
+									<td>{{system.ammo.capacity.value}}</td>
+								</tr>
+							</table>
+							<div class='item-controls'>
+								<a style="float:right;margin-right:10px;" class='item-control item-delete'
+									title='{{localize "DOCUMENT.Delete" type=' perk'}}'><i class='fas fa-trash'></i></a>
+								<a style="float:right;margin-right:10px;" class='item-control item-edit'
+									title='{{localize "DOCUMENT.Update" type=' perk'}}'><i class='fas fa-edit'></i></a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			{{/each}}
+		</td>
 	</tr>
-	<tr><td>Advantage</td><td>Normal</td><td>Disadvantage</td>
-	</tr>		
-	</table>
-	<div class='item-controls'>
-	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='perk'}}'><i class='fas fa-trash'></i></a>
-	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='perk'}}'><i class='fas fa-edit'></i></a>
-	</div></td></tr>
-	</table>
-</li>
-  {{/each}}
-
-{{!-- MeleeWeapons Slot --}}
-  
-{{#each meleeWeapons as |item id|}}
-    <li class='item flexrow' data-item-id='{{item._id}}'>
-    <table>
-	<tr><td><h2>{{item.name}}</h2></td></tr>
-	<tr><td>
-	<table class="equipped-stats">
-		<tr><td colspan=999>DETAILS</td></tr>
-		<tr>
-		<td>AP</td><td>Dmg</td><td>Crit DV</td><td>Crit Dmg</td><td>Load</td><td>Str Req</td>
-		</tr><tr>
-		<td><label class="rollable resource-label ap-spent" data-spent="{{system.AP.value}}" data-label="BOOM! Attack with a {{item.name}}" data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal">{{system.AP.value}}</label></td>
-		<td><label class="rollable resource-label" data-label="OUCH! DMG from a {{item.name}}" data-roll="{{system.damage.value}}">{{system.damage.value}}</td>
-		<td>{{system.critical.value}}</td>
-		<td>{{system.criticaldamage.value}}</td>
-		<td>{{system.load.value}}</td>
-		<td>{{system.strengthrequirement.value}}</td>
-		</tr></table>
-	<table class="equipped-stats">
-		<tr><td>Type</td><td>Capacity</td>
-		</tr><tr>
-		<td>{{system.ammo.value}}</td>
-		<td></td>
-		</tr>
-		</table>
-	<div class='item-controls'>
-	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='perk'}}'><i class='fas fa-trash'></i></a>
-	<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='perk'}}'><i class='fas fa-edit'></i></a>
-	</div></td></tr>
-	</table>
-</li>
-  {{/each}}  
-</td>
-</tr>
 </table>
+
+{{log rangedWeapons}}
