@@ -30,12 +30,14 @@
   "TYPES": {
     "Actor": {
       "character": "Character",
-      "npc": "NPC"
+      "npc": "NPC",
+	  "creature": "Creature"
     },
     "Item": {
       "item": "Item",
       "feature": "Feature",
-      "spell": "Spell"
+      "spell": "Spell",
+	  "perk": "Perk"
     }
   }
 }
