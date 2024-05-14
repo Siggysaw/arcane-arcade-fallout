@@ -136,15 +136,30 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.features = features;
     context.perks = perks;	
     context.armors = armors;
-    context.rangedWeapons = rangedWeapons;	
-    context.meleeWeapons = meleeWeapons;
     context.drugs = drugs;	
     context.foodAndDrinks = foodAndDrinks;	
-    context.ammos = ammos;		
+    context.ammos = ammos
+    context.rangedWeapons = rangedWeapons.map((weapon) => {
+      weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
+      return weapon
+    });	
+    context.meleeWeapons = meleeWeapons.map((weapon) => {
+      weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
+      return weapon
+    });	
   }
 
 
   /* -------------------------------------------- */
+
+  updateEmbeddedItem(documentName, itemId, attributePath, newValue) {
+    try {
+      this.actor.updateEmbeddedDocuments(documentName, [{ _id: itemId, [attributePath]: newValue }])
+    } catch (error) {
+      ui.notifications.warn(`Failed to update embeddedItem: ${error}`)
+      throw error
+    }
+  }
 
   /** @override */
   activateListeners(html) {
@@ -176,6 +191,17 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const item = this.actor.items.get(li.data('itemId'));
       item.sheet.render(true);
     });
+
+    html.on('change', '[data-action]', (ev) => {
+      const dataset = ev.target.dataset;
+      switch (dataset.action) {
+        case "updateEmbeddedItem":
+          this.updateEmbeddedItem(dataset.documentName, dataset.itemId, dataset.attributePath, ev.target.value)
+          return
+      }
+
+      ui.notifications.warn(`Action ${dataset.action} not found for actor ${this.actor.id}`);
+    })
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable

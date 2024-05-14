@@ -48,7 +48,12 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
                 ...requiredInteger,
                 initial: 6
             })
-        })
+        }),
+        consumes: new fields.SchemaField({
+            type: new fields.ArrayField(new fields.StringField()),
+            target: new fields.ArrayField(new fields.StringField()),
+            amount: new fields.NumberField({ initial: 1 }),
+        }),
     })
     schema.properties = new fields.ArrayField(new fields.StringField())
     schema.strengthRequirement = new fields.NumberField({ initial: 0 })
@@ -56,6 +61,6 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     return schema;
   }
 
-//   prepareDerivedData() {
-//   }
+  prepareDerivedData() {
+  }
 }
