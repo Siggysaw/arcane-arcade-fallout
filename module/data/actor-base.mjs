@@ -101,7 +101,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     return schema
   }
 
-  prepareDerivedData() {
+  prepareBaseData() {
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
       // Calculate the modifier using d20 rules.

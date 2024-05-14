@@ -15,7 +15,6 @@ document.getElementById("modifycaps").value = '';
 
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
-
   {{!-- Sheet Header --}}
   <header class="sheet-header">
     <div class="header-fields">
@@ -24,15 +23,15 @@ document.getElementById("modifycaps").value = '';
 	<table class="bio">
 		<tr>
 			<td colspan=3 class="character-name" style="text-align:left;"><input type="text" name="name" value="{{actor.name}}" /><br><br></td></tr>
-			<tr><td class="bio-label"><span class="label">Race:</span></td><td colspan=2><input type="text" name="actor.race.value" value="{{system.race.value}}"/></td></tr>
-			<tr><td class="bio-label"><span class="label">BG:</span></td><td colspan=2><input type="text" name="system.background.value" value="{{system.background.value}}"/></td></tr>			
+			<tr><td class="bio-label"><span class="label">Race:</span></td><td colspan=2><input type="text" name="system.race" value="{{system.race}}"/></td></tr>
+			<tr><td class="bio-label"><span class="label">BG:</span></td><td colspan=2><input type="text" name="system.background" value="{{system.background}}"/></td></tr>			
 			<tr>
 			<td class="bio-label"><span class="label">Lvl:</span></td>
 			<td colspan=2><input type="number" name="system.level" value="{{system.level}}" /></td>
 			</tr>
 			<tr>
 			<td class="bio-label"><span class="label">XP:</span></td>
-			<td><input id="xp" type="number" name="system.xp.value" value="{{system.xp.value}}" /></td>
+			<td><input id="xp" type="number" name="system.xp" value="{{system.xp}}" /></td>
 			<td><input id="modifyxp" onchange="updatexp(this.value)" class="modify" placeholder="modify" type="number" /></td></tr>			
 			<tr><td><img style="width:60px;height:60px;border:none;margin:0px;padding:0px;" src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png"></td>
 			<td style="vertical-align:middle" class="statusnum"><input  type="number" name="system.carryLoad.value" value="{{system.carryLoad.value}}"> / <input class="statusnum" type="number" name="system.carryLoad.max" value="{{system.carryLoad.max}}"></td></tr>
