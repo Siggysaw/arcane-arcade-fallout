@@ -97,6 +97,19 @@
       },
       "flags": {},
       "package": "world"
+    },
+	{
+      "label": "Food and Drinks",
+      "type": "Item",
+      "name": "food-and-drinks",
+      "path": "packs/food-and-drinks",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {},
+      "package": "world"
     }
   ],
   "packFolders": [],
