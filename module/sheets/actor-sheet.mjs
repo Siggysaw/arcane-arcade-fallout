@@ -93,72 +93,53 @@ export class FalloutZeroActorSheet extends ActorSheet {
     const features = [];
     const perks = [];
     const armors = [];
-    const rangedweapons =[];
-    const meleeweapons =[];	
-    const drugs =[];
-    const foodanddrinks=[];
-    const ammos=[];	
-    const spells = {
-      0: [],
-    };
+    const rangedWeapons = [];
+    const meleeWeapons = [];	
+    const drugs = [];
+    const foodAndDrinks = [];
+    const ammos = [];
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || Item.DEFAULT_ICON;
-      // Append to gear.
       if (i.type === 'item') {
         gear.push(i);
       }
-      // Append to features.
       else if (i.type === 'feature') {
         features.push(i);
       }
-	  // Append to perks.
       else if (i.type === 'perk') {
         perks.push(i);
       }
-	  // Append to armor.
       else if (i.type === 'armor') {
         armors.push(i);
       }
-	  // Append to rangedweapons.
-      else if (i.type === 'rangedweapon') {
-        rangedweapons.push(i);
+      else if (i.type === 'ranged-weapon') {
+        rangedWeapons.push(i);
       }	  
-	  // Append to rangedweapons.
-      else if (i.type === 'meleeweapon') {
-        meleeweapons.push(i);
+      else if (i.type === 'melee-weapon') {
+        meleeWeapons.push(i);
       }	
-	  // Append to rangedweapons.
       else if (i.type === 'drug') {
         drugs.push(i);
       }	  
-	  // Append to fooddrinks.
       else if (i.type === 'food-drink') {
-        foodanddrinks.push(i);
+        foodAndDrinks.push(i);
       }	 
-	  // Append to fooddrinks.
       else if (i.type === 'ammo') {
         ammos.push(i);
-      }	  	  
-      // Append to spells.
-      else if (i.type === 'spell') {
-        if (i.system.spellLevel != undefined) {
-          spells[i.system.spellLevel].push(i);
-        }
       }
     }
 
     // Assign and return
     context.gear = gear;
     context.features = features;
-    context.spells = spells;
     context.perks = perks;	
     context.armors = armors;
-    context.rangedweapons = rangedweapons;	
-    context.meleeweapons = meleeweapons;
+    context.rangedWeapons = rangedWeapons;	
+    context.meleeWeapons = meleeWeapons;
     context.drugs = drugs;	
-    context.foodanddrinks = foodanddrinks;	
+    context.foodAndDrinks = foodAndDrinks;	
     context.ammos = ammos;		
   }
 
@@ -172,21 +153,21 @@ export class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '.ap-spent', (ev) => {
 		const spentAction = ev.currentTarget.dataset.spent;
 		const weaponId = ev.currentTarget.dataset.weaponId;
-		const currentAp=this.actor.system.actionpoints.value;
+		const currentAp=this.actor.system.actionPoints.value;
 		const updatedAp=Number(currentAp) - Number(spentAction);
 
     const weapon = this.actor.items.get(weaponId)
-    if (weapon.type === 'rangedweapon') {
+    if (weapon.type === 'ranged-weapon') {
       const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.value === weapon.system.ammotype.value)
       if (!foundAmmo) {
-        ui.notifications.warn(`Ammo ${CONFIG.FALLOUTZERO.ammoTypes[weapon.system.ammotype.value].name} not found`);
+        ui.notifications.warn(`Ammo not found`);
         return;
       } else {
         this.actor.items.update([{ _id: foundAmmo._id, "system.quantity.value": Number(foundAmmo.system.quantity.value - 1) }])
       }
     }
 
-		this.actor.update({'system.actionpoints.value': Number(updatedAp)})
+		this.actor.update({'system.actionPoints.value': Number(updatedAp)})
 	});
 
     // Render the item sheet for viewing/editing prior to the editable check.

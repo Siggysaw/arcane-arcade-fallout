@@ -5,7 +5,7 @@
     "character": {}
   },
   "Item": {
-    "types": ["ammo", "rangedweapon", "meleeweapon", "armor","perk"],
+    "types": ["ammo", "ranged-weapon", "melee-weapon", "armor","perk"],
     "htmlFields": ["description"]
   }
 }
