@@ -4,7 +4,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
     const fields = foundry.data.fields;
     const schema = {};
 
-    schema.description = new fields.StringField({ required: true, blank: true });
+    schema.description = new fields.HTMLField();
 
     return schema;
   }

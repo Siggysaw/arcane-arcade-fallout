@@ -48,6 +48,8 @@ Hooks.once('init', function () {
     item: models.FalloutZeroItem,
     ammo: models.FalloutZeroItemAmmo,
     feature: models.FalloutZeroFeature,
+    'ranged-weapon': models.FalloutZeroRangedWeapon,
+    'melee-weapon': models.FalloutZeroMeleeWeapon,
   }
 
   // Active Effects are never copied to the Actor,
