@@ -17,7 +17,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
 
     schema.penalties = new fields.SchemaField(Object.keys(FALLOUTZERO.penalties).reduce((obj, penalty) => {
       obj[penalty] = new fields.SchemaField({
-        label: new fields.StringField({ value: FALLOUTZERO.penalties[penalty] }),
+        label: new fields.StringField({ required: true }),
         value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
       });
       return obj;
@@ -51,7 +51,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
   prepareDerivedData() {
     super.prepareDerivedData()
     for (const key in this.penalties) {
-      this.penalties[key].label = FALLOUTZERO.penalties[key].label
+      this.penalties[key].label = FALLOUTZERO.penalties[key]
     }
     this.penalties.radDC.value = 12 - this.abilities['end'].mod
     // this.carryLoad.max.value = this.abilities['str'].value * 10
