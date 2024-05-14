@@ -35,7 +35,7 @@ document.getElementById("modifycaps").value = '';
 			<td><input id="xp" type="number" name="system.xp.value" value="{{system.xp.value}}" /></td>
 			<td><input id="modifyxp" onchange="updatexp(this.value)" class="modify" placeholder="modify" type="number" /></td></tr>			
 			<tr><td><img style="width:60px;height:60px;border:none;margin:0px;padding:0px;" src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png"></td>
-			<td style="vertical-align:middle" class="statusnum"><input  type="number" name="system.carry-load.value" value="{{system.carry-load.value}}"> / <input class="statusnum" type="number" name="system.carry-load.max" value="{{system.carry-load.max}}"></td></tr>
+			<td style="vertical-align:middle" class="statusnum"><input  type="number" name="system.carryLoad.value" value="{{system.carryLoad.value}}"> / <input class="statusnum" type="number" name="system.carryLoad.max" value="{{system.carryLoad.max}}"></td></tr>
 			</table>
 	</td><td>
 	<table><tr>
@@ -53,13 +53,13 @@ document.getElementById("modifycaps").value = '';
 				<td colspan=2 class="statusnum"><input type="number" name="system.stamina.value" value="{{system.stamina.value}}" max="{{system.stamina.max}}"/> / <input type="number" name="system.stamina.max" value="{{system.stamina.max}}" /></td>
 			</tr>
 			<tr>
-				<td colspan=2><span class="status-label">AP</span><progress style="width:90%;float:right;" class="statusbar stamina" value="{{system.action-points.value}}" max="{{system.action-points.max}}"> {{system.action-points.value}} </progress></td>
+				<td colspan=2><span class="status-label">AP</span><progress style="width:90%;float:right;" class="statusbar stamina" value="{{system.actionPoints.value}}" max="{{system.actionPoints.max}}"> {{system.actionPoints.value}} </progress></td>
 			</tr>
 			<tr>
-				<td colspan=2 class="statusnum"><input type="number" name="system.action-points.value" value="{{system.action-points.value}}" max="{{system.action-points.max}}"/> / <input type="number" name="system.action-points.max" value="{{system.action-points.max}}" /></td>
+				<td colspan=2 class="statusnum"><input type="number" name="system.actionPoints.value" value="{{system.actionPoints.value}}" max="{{system.actionPoints.max}}"/> / <input type="number" name="system.actionPoints.max" value="{{system.actionPoints.max}}" /></td>
 			</tr>
 		<tr>
-			<td><input id="armor-class-form" type="number" name="system.armor-class.value" value="{{system.armor-class.value}}">AC</td><td><input id="damage-threshold-form" type="number" name="system.damage-threshold.value" value="{{system.damage-threshold.value}}">DT</td>
+			<td><input id="armorClass-form" type="number" name="system.armorClass.value" value="{{system.armorClass.value}}">AC</td><td><input id="damageThreshold-form" type="number" name="system.damageThreshold.value" value="{{system.damageThreshold.value}}">DT</td>
 		</tr>
 	</table>
 	</td><td style="width:200px;">
