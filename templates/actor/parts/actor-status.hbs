@@ -10,7 +10,7 @@
 			{{#each system.skills as |skill key|}}
 			<tr><td>
 			{{#each skill.ability as |specialroll|}}
-			<p class="specialroll"><label for="{{specialroll}}" class="resource-label rollable" data-roll="d20+{{skill.value}}+@abilities.{{specialroll}}.mod" data-label="{{actor.name}} performed a {{skill.label}} roll using {{specialroll}}">{{specialroll}}</label></p>
+			<p class="specialroll"><label for="{{specialroll}}" class="resource-label rollable" data-roll="d20+{{skill.value}}+@abilities.{{specialroll}}.mod-{{system.penalty-total}}" data-label="{{actor.name}} performed a {{skill.label}} roll using {{specialroll}}">{{specialroll}}</label></p>
 			{{/each}}
 			</td><td class="skill-label">{{skill.label}}</td><td class="skill-value"><input type="number" name="system.skills.{{key}}.value" value="{{skill.value}}"></td></tr>
 			{{/each}}

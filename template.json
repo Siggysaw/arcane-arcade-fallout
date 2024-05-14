@@ -1,11 +1,11 @@
 {
   "Actor": {
-    "types": ["character", "npc"],
+    "types": ["character", "npc","creatures"],
     "htmlFields": ["biography"],
     "character": {}
   },
   "Item": {
-    "types": ["ammo", "rangedweapon", "meleeweapon", "armor"],
+    "types": ["ammo", "rangedweapon", "meleeweapon", "armor","perk"],
     "htmlFields": ["description"]
   }
 }

@@ -1,10 +1,10 @@
-export const BOILERPLATE = {};
+export const FALLOUTZERO = {};
 
 /**
  * The set of Ability Scores used within the system.
  * @type {Object}
  */
-BOILERPLATE.abilities = {
+FALLOUTZERO.abilities = {
   str: 'Strength',
   per: 'Perception',
   end: 'Endurance',
@@ -14,7 +14,7 @@ BOILERPLATE.abilities = {
   lck: 'Luck',
 };
 
-BOILERPLATE.skills = {
+FALLOUTZERO.skills = {
 	barter: 'Barter',
 	breach: 'Breach',
 	crafting: 'Crafting',
@@ -30,7 +30,7 @@ BOILERPLATE.skills = {
 	survival: 'Surival',
 	unarmed: 'Unarmed',
 };
-BOILERPLATE.penalties = {
+FALLOUTZERO.penalties = {
 	hunger: 'Hunger',
 	dehydration: 'Dehydration',
 	exhaustion: 'Exhaustion',
@@ -39,7 +39,7 @@ BOILERPLATE.penalties = {
 };
 
 
-BOILERPLATE.abilityAbbreviations = {
+FALLOUTZERO.abilityAbbreviations = {
 	str: 'Str',
 	per: 'Per',
 	end: 'End',
