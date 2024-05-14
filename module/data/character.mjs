@@ -1,4 +1,4 @@
-import FalloutZeroActorBase from "./actor-base.mjs";
+import FalloutZeroActorBase from "./actorBase.mjs";
 import { FALLOUTZERO } from "../config.mjs";
 
 export default class FalloutZeroCharacter extends FalloutZeroActorBase {

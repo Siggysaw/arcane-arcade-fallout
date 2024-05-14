@@ -1,3 +1,3 @@
-import FalloutZeroItemBase from "./item-base.mjs";
+import FalloutZeroItemBase from "./itemBase.mjs";
 
 export default class FalloutZeroFeature extends FalloutZeroItemBase {}

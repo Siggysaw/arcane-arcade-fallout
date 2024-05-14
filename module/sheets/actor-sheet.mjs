@@ -114,10 +114,10 @@ export class FalloutZeroActorSheet extends ActorSheet {
       else if (i.type === 'armor') {
         armors.push(i);
       }
-      else if (i.type === 'ranged-weapon') {
+      else if (i.type === 'rangedWeapon') {
         rangedWeapons.push(i);
       }	  
-      else if (i.type === 'melee-weapon') {
+      else if (i.type === 'meleeWeapon') {
         meleeWeapons.push(i);
       }	
       else if (i.type === 'drug') {
@@ -157,7 +157,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
 		const updatedAp=Number(currentAp) - Number(spentAction);
 
     const weapon = this.actor.items.get(weaponId)
-    if (weapon.type === 'ranged-weapon') {
+    if (weapon.type === 'rangedWeapon') {
       const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.value === weapon.system.ammotype.value)
       if (!foundAmmo) {
         ui.notifications.warn(`Ammo not found`);
