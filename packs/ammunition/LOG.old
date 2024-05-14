@@ -1,4 +1,9 @@
-2024/05/14-15:43:36.963 79e0 Recovering log #29
-2024/05/14-15:43:36.972 79e0 Delete type=0 #29
-2024/05/14-15:43:36.972 79e0 Delete type=3 #26
-2024/05/14-15:43:36.972 79e0 Delete type=3 #27
+2024/05/14-16:44:21.667 6c98 Log #33: 0 ops saved to Table #42 OK
+2024/05/14-16:44:21.667 6c98 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition/000033.log: OK
+2024/05/14-16:44:21.668 6c98 Log #41: 0 ops saved to Table #43 OK
+2024/05/14-16:44:21.668 6c98 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition/000041.log: OK
+2024/05/14-16:44:21.668 6c98 Table #5: 30 entries OK
+2024/05/14-16:44:21.668 6c98 Table #8: 26 entries OK
+2024/05/14-16:44:21.671 6c98 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition/MANIFEST-000032: OK
+2024/05/14-16:44:21.672 6c98 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition/MANIFEST-000040: OK
+2024/05/14-16:44:21.676 6c98 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition; recovered 2 files; 9647 bytes. Some data may have been lost. ****
