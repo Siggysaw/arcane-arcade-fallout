@@ -91,20 +91,20 @@
 											data-label="BOOM! Attack with a {{item.name}}"
 											data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal"
 											data-weapon-id="{{item._id}}">
-											{{item.apCost}}
+											{{item.system.apCost}}
 										</label>
 									</td>
 									<td>
 										<label class="rollable resource-label"
 											data-label="OUCH! DMG from a {{item.name}}"
-											data-roll="{{item.damage.formula}}">
-											{{item.damage.formula}}
+											data-roll="{{item.system.damage.formula}}">
+											{{item.system.damage.formula}}
 										</label>
 									</td>
-									<td>{{item.critical.dice}}</td>
-									<td>{{item.critical.bonus}}</td>
-									<td>{{item.load}}</td>
-									<td>{{item.strengthRequirement}}</td>
+									<td>{{item.system.critical.dice}}</td>
+									<td>{{item.system.critical.bonus}}</td>
+									<td>{{item.system.load}}</td>
+									<td>{{item.system.strengthRequirement}}</td>
 								</tr>
 							</table>
 							<table class="equipped-stats">
