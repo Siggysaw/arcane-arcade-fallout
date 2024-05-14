@@ -11,7 +11,3 @@ export {default as FalloutZeroFeature} from "./feature.mjs";
 export {default as FalloutZeroWeapon} from "./weapon.mjs";
 export {default as FalloutZeroRangedWeapon} from "./rangedWeapon.mjs";
 export {default as FalloutZeroMeleeWeapon} from "./meleeWeapon.mjs";
-export {default as FalloutZeroMeleeWeapon} from "./foodAnddrink.mjs";
-export {default as FalloutZeroMeleeWeapon} from "./drugs.mjs";
-
-
