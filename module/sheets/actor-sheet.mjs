@@ -173,12 +173,12 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     const weapon = this.actor.items.get(weaponId)
     if (weapon.type === 'rangedWeapon') {
-      const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.value === weapon.system.ammotype.value)
+      const foundAmmo = this.actor.items.get(weapon.system.ammo.consumes.target)
       if (!foundAmmo) {
         ui.notifications.warn(`Ammo not found`);
         return;
       } else {
-        this.actor.items.update([{ _id: foundAmmo._id, "system.quantity.value": Number(foundAmmo.system.quantity.value - 1) }])
+        this.actor.items.update([{ _id: foundAmmo._id, "system.quantity": Number(foundAmmo.system.quantity - 1) }])
       }
     }
 
