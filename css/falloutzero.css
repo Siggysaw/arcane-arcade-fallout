@@ -509,3 +509,9 @@ background:black;
 padding:5px;
 width:100%;
 }
+.specialroll{
+	text-transform:uppercase;
+}
+.sheet .equipped-stats td {
+		border: solid 1px;
+	}
