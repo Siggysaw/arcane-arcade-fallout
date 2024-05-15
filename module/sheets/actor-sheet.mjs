@@ -154,7 +154,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
   #getWeaponsNewCapacity(weapon, consumableAmmo) {
     if (consumableAmmo && consumableAmmo.system.quantity < weapon.system.ammo.capacity.max ) {
-      return consumableAmmo.system.quantity + weapon.system.ammo.capacity.value
+      return consumableAmmo.system.quantity
     } else {
       return weapon.system.ammo.capacity.max
     }
