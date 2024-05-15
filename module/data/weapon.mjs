@@ -21,8 +21,8 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     //     diceBonus: new fields.StringField({ initial: "+@str.mod+ceil(@lvl / 2)" })
     // })
     schema.range = new fields.SchemaField({
-        short: new fields.NumberField({ initial: 1 }),
-        long: new fields.NumberField({ initial: 10, blank: true }),
+        short: new fields.NumberField({ initial: 1, calculated: "" }),
+        long: new fields.NumberField({ initial: 10, blank: true, calculated: "" }),
     })
     schema.critical = new fields.SchemaField({
         dice: new fields.NumberField({ initial: 20, blank: true }),
@@ -51,7 +51,7 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
         }),
         consumes: new fields.SchemaField({
             type: new fields.ArrayField(new fields.StringField()),
-            target: new fields.ArrayField(new fields.StringField()),
+            target: new fields.StringField(),
             amount: new fields.NumberField({ initial: 1 }),
         }),
     })

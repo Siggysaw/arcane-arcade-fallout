@@ -10,22 +10,16 @@ export class FalloutZeroItem extends Item {
     // As with the actor class, items are documents that can have their data
     // preparation methods overridden (such as prepareBaseData()).
     super.prepareData();
-    // if (this.type === 'ranged-weapon' && this.actor) {
-    //   this.system.shortrangedcalc= {
-    //     value: 	Number(this.actor.system.abilities.per.value) * Number(this.system.rangedshort.value)
-    //   }
+     if (this.type === 'ranged-weapon' && this.actor) {
+     
+		this.system.range.short.calculated= {
+         value: 	Number(this.actor.system.abilities.per.value) * Number(this.system.range.short) - 1
+       }
       
-    //   this.system.longrangedcalc= {
-    //     value: 	Number(this.actor.system.abilities.per.value) * Number(this.system.rangedmedium.value)
-    //   }
-    //   this.system.shortrangedcalc1= {
-    //     value: 	Number(this.actor.system.abilities.per.value) * Number(this.system.rangedshort.value)-1
-    //   }
-      
-    //   this.system.longrangedcalc1= {
-    //     value: 	Number(this.actor.system.abilities.per.value) * Number(this.system.rangedmedium.value)+1
-    //   }
-    // }
+       this.system.range.long.calculated= {
+         value: 	Number(this.actor.system.abilities.per.value) * Number(system.range.long) + 1
+       }
+     }
   }
 
   /**
