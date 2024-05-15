@@ -14,7 +14,7 @@
 					<td>
 						{{#each actor.items as |item id|}}
 						<div style="float:left;" class='item flexrow' data-item-id='{{item._id}}'>
-							<a class='item-control item-edit'>{{item.name}} ({{system.quantity}}) </a>
+							<a class='item-control item-edit'>{{item.name}} ({{system.quantity.value}}) </a>
 						</div>
 						{{/each}}
 					</td>
@@ -41,12 +41,12 @@
 									<td>STR Req.</td>
 								</tr>
 								<tr>
-									<td>{{{system.cost}}}</td>
-									<td>{{{system.armorClass}}}</td>
-									<td>{{{system.damageThreshold}}}</td>
-									<td>{{{system.slots}}}</td>
-									<td>{{{system.load}}}</td>
-									<td>{{{system.str-req}}}</td>
+									<td>{{{system.cost.value}}}</td>
+									<td>{{{system.armorClass.value}}}</td>
+									<td>{{{system.damageThreshold.value}}}</td>
+									<td>{{{system.slots.value}}}</td>
+									<td>{{{system.load.value}}}</td>
+									<td>{{{system.str-req.value}}}</td>
 								</tr>
 							</table>
 							<div class='item-controls'>
@@ -87,7 +87,7 @@
 								</tr>
 								<tr>
 									<td>
-										<label class="rollable resource-label ap-spent" data-spent="{{item.system.apCost}}"
+										<label class="rollable resource-label ap-spent" data-spent="{{item.apCost}}"
 											data-label="BOOM! Attack with a {{item.name}}"
 											data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal"
 											data-weapon-id="{{item._id}}">
