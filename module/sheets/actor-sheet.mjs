@@ -166,24 +166,31 @@ export class FalloutZeroActorSheet extends ActorSheet {
     super.activateListeners(html);
 	
     html.on('click', '.ap-spent', (ev) => {
-		const spentAction = ev.currentTarget.dataset.spent;
-		const weaponId = ev.currentTarget.dataset.weaponId;
-		const currentAp=this.actor.system.actionPoints.value;
-		const updatedAp=Number(currentAp) - Number(spentAction);
+      const currentAp=this.actor.system.actionPoints.value;
+      const weaponId = ev.currentTarget.dataset.weaponId;
+      const weapon = this.actor.items.get(weaponId);
+      const spentAction = weapon.system.apCost;
+      const updatedAp=Number(currentAp) - Number(spentAction);
 
-    const weapon = this.actor.items.get(weaponId)
-    if (weapon.type === 'rangedWeapon') {
-      const foundAmmo = this.actor.items.find((item) => item.type === "ammo" && item.system.ammotype.value === weapon.system.ammotype.value)
-      if (!foundAmmo) {
-        ui.notifications.warn(`Ammo not found`);
-        return;
-      } else {
-        this.actor.items.update([{ _id: foundAmmo._id, "system.quantity.value": Number(foundAmmo.system.quantity.value - 1) }])
+      // if action would reduce AP below 0
+      if (updatedAp < 0) {
+        ui.notifications.warn(`Not enough AP for action`);
+        return
       }
-    }
+      
+      // if ammo consumes target exists on weapon but the quantity is 0
+      const foundAmmo = this.actor.items.get(weapon.system.ammo.consumes.target)
+      if (foundAmmo && foundAmmo.system.quantity < 1) {
+        ui.notifications.warn(`No ammo left for weapon`);
+        return
+      }
 
-		this.actor.update({'system.actionPoints.value': Number(updatedAp)})
-	});
+      // Update ammo quantity and actor AP
+      if (foundAmmo) this.actor.items.update([{ _id: foundAmmo._id, "system.quantity": Number(foundAmmo.system.quantity - 1) }])
+      this.actor.update({'system.actionPoints.value': Number(updatedAp)})
+      
+      console.log("ACTOR UPDATE", { 'system.actionPoints.value': updatedAp, 'item.system.quantity': foundAmmo.system.quantity - 1 })
+    });
 
     // Render the item sheet for viewing/editing prior to the editable check.
     html.on('click', '.item-edit', (ev) => {
