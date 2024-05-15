@@ -51,7 +51,7 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
         }),
         consumes: new fields.SchemaField({
             type: new fields.ArrayField(new fields.StringField()),
-            target: new fields.ArrayField(new fields.StringField()),
+            target: new fields.StringField(),
             amount: new fields.NumberField({ initial: 1 }),
         }),
     })
