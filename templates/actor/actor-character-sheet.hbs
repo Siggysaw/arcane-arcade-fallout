@@ -1,4 +1,3 @@
-
 <script>
 function updatexp(change){
 var current={{system.xp.value}};
@@ -102,7 +101,7 @@ document.getElementById("modifycaps").value = '';
 		
 <table><tr>
 	{{#each system.abilities as |ability key|}}
-	<td><label for="system.abilities.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d20+@abilities.{{key}}.mod - {{../system.penaltyTotal}}" data-label="{{ability.label}}">{{ability.label}}</label></td>
+	<td><label for="system.abilities.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d20-{{system.roll-penalties.value}}+@abilities.{{key}}.mod" data-label="{{ability.label}}">{{ability.label}}</label></td>
 	{{/each}}
 	<tr>
 	{{#each system.abilities as |ability key|}}

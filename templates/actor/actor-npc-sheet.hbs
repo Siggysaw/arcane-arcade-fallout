@@ -1,6 +1,6 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
- {{!-- Sheet Header --}}
+  {{!-- Sheet Header --}}
   <header class="sheet-header">
     <div class="header-fields">
 	<table>
@@ -11,7 +11,6 @@
 			<tr><td class="bio-label"><span class="label">Race:</span></td><td colspan=2><input type="text" name="system.race" value="{{system.race}}"/></td></tr>
 			<tr><td class="bio-label"><span class="label">BG:</span></td><td colspan=2><input type="text" name="system.background" value="{{system.background}}"/></td></tr>			
 			<tr>
-		
 			</table>
 	</td><td>
 	<table><tr>
@@ -42,7 +41,7 @@
 	<table>
 	<tr>
 	<td class="profile-image-td"><img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" /></td></tr><tr><td>
-</td>
+		</td>
 	</tr>
 	</table>
 	</table>
@@ -51,10 +50,11 @@
     </div>
   </header>
 
-   {{!-- Sheet Tab Navigation --}}
+  {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     {{!-- Default tab is specified in actor-sheet.mjs --}}
 	<a class="item" data-tab="status">Status</a>
+    <a class="item" data-tab="items">Inventory</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -86,12 +86,28 @@
 		
           {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
           {{> "systems/arcane-arcade-fallout/templates/actor/parts/npc-status.hbs"}}
-		  
-		  
         </section>
       </section>
     </div>
+
+
+    {{!-- Owned Items Tab --}}
+    <div class="tab items" data-group="primary" data-tab="items">
+       {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
+    </div>
+
+    {{!-- Owned Perks Tab --}}
+    <div class="tab perks" data-group="primary" data-tab="perks">
+      {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
+    </div>
+
+    {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
+    </div>
+
   </section>
 </form>
 
 {{log system}}
+
