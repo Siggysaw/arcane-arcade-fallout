@@ -1,0 +1,49 @@
+<style>
+.specialroll{
+	text-transform:uppercase;
+}
+</style>
+
+<table class="status-block">
+<tr><td class="skill-table">
+	<table><tr>
+			{{#each system.skills as |skill key|}}
+			<tr><td>
+			{{#each skill.ability as |ability|}}
+			<p class="specialroll">
+				<label
+					for="{{ability}}"
+					class="resource-label rollable"
+					data-roll="d20+{{skill.value}}+{{../../system.abilities.ability.mod}}-{{../../system.penaltyTotal}}"
+					data-label="{{actor.name}} performed a {{skill.label}} roll using {{ability}}"
+				>
+					{{ability}}
+				</label>
+			</p>
+			{{/each}}
+			</td><td class="skill-label">{{skill.label}}</td><td class="skill-value"><input type="number" name="system.skills.{{key}}.value" value="{{skill.value}}"></td></tr>
+			{{/each}}
+	</table>
+</td>
+<td class="status-table">
+	<table>
+		<tr>
+			<td>Healing/Repair Rate</td>
+			<td  class="rollable" data-roll="d20+{{system.combatSequence}}+@abilities.per.mod">Combat Sequence</td>
+			<td>Fatigue</td>
+			<td>Passive Sense</td>
+			<td>Testing</td>
+		</tr>
+		<tr>
+			<td><input type="number" name="system.healingRate" value="{{system.healingRate}}"></td>
+			<td><input type="number" name="system.combatSequence" value="{{system.combatSequence}}"></td>
+			<td><input type="number" name="system.penalties.fatigue.value" value="{{system.penalties.fatigue.value}}"></td>
+			<td><input type="number" name="system.passiveSense" value="{{system.passiveSense}}"></td>
+			<td><input type="text" name="system.details" value="{{system.details}}"></td>
+		</tr>
+			<tr><td colspan=4 style="height:400px;text-align:left;padding:10px;">{{editor system.properties target="system.properties" button=true engine="prosemirror" editable=editable}}</td></tr>
+			
+
+	</table>
+</td></tr>
+</table>
