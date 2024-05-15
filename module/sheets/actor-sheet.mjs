@@ -152,12 +152,11 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
   /* -------------------------------------------- */
 
-  updateEmbeddedItem(documentName, itemId, attributePath, newValue) {
-    try {
-      this.actor.updateEmbeddedDocuments(documentName, [{ _id: itemId, [attributePath]: newValue }])
-    } catch (error) {
-      ui.notifications.warn(`Failed to update embeddedItem: ${error}`)
-      throw error
+  #getWeaponsNewCapacity(weapon, consumableAmmo) {
+    if (consumableAmmo && consumableAmmo.system.quantity < weapon.system.ammo.capacity.max ) {
+      return consumableAmmo.system.quantity + weapon.system.ammo.capacity.value
+    } else {
+      return weapon.system.ammo.capacity.max
     }
   }
 
@@ -180,34 +179,87 @@ export class FalloutZeroActorSheet extends ActorSheet {
       
       // if ammo consumes target exists on weapon but the quantity is 0
       const foundAmmo = this.actor.items.get(weapon.system.ammo.consumes.target)
-      if (foundAmmo && foundAmmo.system.quantity < 1) {
-        ui.notifications.warn(`No ammo left for weapon`);
+      if (foundAmmo) {
+        if (foundAmmo.system.quantity < 1) {
+          ui.notifications.warn(`No ammo left for weapon`);
+          return
+        }
+      }
+
+      // if weapon ammo capacity is 0
+      if (weapon.system.ammo.capacity.value < 1) {
+        ui.notifications.warn(`Weapon ammo is empty, need to reload`);
         return
       }
 
       // Update ammo quantity and actor AP
-      if (foundAmmo) this.actor.items.update([{ _id: foundAmmo._id, "system.quantity": Number(foundAmmo.system.quantity - 1) }])
+      if (foundAmmo) {
+        const newAmmoQty = Number(foundAmmo.system.quantity - 1)
+        const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
+        this.actor.updateEmbeddedDocuments("Item", [
+          { _id: foundAmmo._id, "system.quantity": newAmmoQty },
+          { _id: weapon._id, "system.ammo.capacity.value": newWeaponAmmoCapacity }
+        ])
+        
+        console.log("ACTOR UPDATE", {
+          'item.system.quantity': newAmmoQty,
+          'weapon.system.ammo.capacity.value': newWeaponAmmoCapacity
+        })
+      }
+
       this.actor.update({'system.actionPoints.value': Number(updatedAp)})
       
-      console.log("ACTOR UPDATE", { 'system.actionPoints.value': updatedAp, 'item.system.quantity': foundAmmo.system.quantity - 1 })
+      console.log("ACTOR UPDATE", {
+        'system.actionPoints.value': updatedAp,
+      })
     });
 
     // Render the item sheet for viewing/editing prior to the editable check.
-    html.on('click', '.item-edit', (ev) => {
-      const li = $(ev.currentTarget).parents('.item');
-      const item = this.actor.items.get(li.data('itemId'));
+    html.on('click', '[data-edit]', (ev) => {
+      const itemId = ev.currentTarget.dataset.itemId;
+      const item = this.actor.items.get(itemId);
       item.sheet.render(true);
     });
 
-    html.on('change', '[data-action]', (ev) => {
-      const dataset = ev.target.dataset;
-      switch (dataset.action) {
-        case "updateEmbeddedItem":
-          this.updateEmbeddedItem(dataset.documentName, dataset.itemId, dataset.attributePath, ev.target.value)
-          return
-      }
+    // handles weapon reload
+    html.on('click', '[data-reload]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId;
+      const weapon = this.actor.items.get(weaponId)
+      if (weapon) {
+        if (weapon.system.ammo.capacity.value === weapon.system.ammo.capacity.max) {
+          ui.notifications.warn(`Weapon capacity is already at max`);
+          return 
+        }
 
-      ui.notifications.warn(`Action ${dataset.action} not found for actor ${this.actor.id}`);
+        const consumableAmmo = this.actor.items.get(weapon.system.ammo.consumes.target)
+
+        if (consumableAmmo.system.quantity < 1) {
+          ui.notifications.warn(`No rounds left to reload weapon`);
+          return 
+        }
+
+        const newCapacity = this.#getWeaponsNewCapacity(weapon, consumableAmmo)
+        const newAP = this.actor.system.actionPoints.value - 6
+
+        if (newAP < 0) {
+          ui.notifications.warn(`Not enough action points to reload`);
+          return
+        }
+
+        if (newCapacity < 1) {
+          ui.notifications.warn(`No rounds left to reload weapon`);
+          return 
+        }
+        
+        this.actor.update({'system.actionPoints.value': newAP})
+        this.actor.updateEmbeddedDocuments("Item", [{ _id: weaponId, 'system.ammo.capacity.value': newCapacity }])
+      }
+    })
+
+    // handles changing ammo on weapon
+    html.on('change', '[data-set-ammo]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId;
+      this.actor.updateEmbeddedDocuments("Item", [{ _id: weaponId, 'system.ammo.consumes.target': ev.target.value }])
     })
 
     // -------------------------------------------------------------
