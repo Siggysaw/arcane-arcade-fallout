@@ -116,6 +116,100 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     }
   }
 
+  rollWeapon(weaponId) {
+    const currentAp = this.actionPoints.value;
+    const weapon = this.parent.items.get(weaponId);
+    const apCost = weapon.system.apCost;
+    const newAP = Number(currentAp) - Number(apCost);
+
+    // if action would reduce AP below 0
+    if (newAP < 0) {
+      ui.notifications.warn(`Not enough AP for action`);
+      return
+    }
+    
+    // if weapon ammo capacity is 0
+    if (weapon.system.ammo.capacity.value < 1) {
+      ui.notifications.warn(`Weapon ammo is empty, need to reload`);
+      return
+    }
+    
+    // Update ammo quantity
+    const foundAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
+    if (foundAmmo) {
+      const newAmmoQty = Number(foundAmmo.system.quantity - 1)
+      const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
+      this.parent.updateEmbeddedDocuments("Item", [
+        { _id: foundAmmo._id, "system.quantity": newAmmoQty },
+        { _id: weapon._id, "system.ammo.capacity.value": newWeaponAmmoCapacity }
+      ])
+      
+      console.log("ACTOR UPDATE", {
+        'item.system.quantity': newAmmoQty,
+        'weapon.system.ammo.capacity.value': newWeaponAmmoCapacity
+      })
+    }
+    
+    // update actor AP
+    this.parent.update({'system.actionPoints.value': Number(newAP)})
+
+    // roll to hit
+    let roll = new Roll(`d20+${this.skills['guns'].value} + ${this.abilities['agi'].mod} - ${this.penaltyTotal}`, this.getRollData())
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.parent }),
+      flavor: `BOOM! Attack with a ${weapon.name}`,
+      rollMode: game.settings.get('core', 'rollMode'),
+    });
+
+    console.log("ACTOR UPDATE", {
+      'system.actionPoints.value': newAP,
+    })
+
+    return roll;
+  }
+
+  getWeaponsNewCapacity (weapon, consumableAmmo) {
+    if (consumableAmmo && consumableAmmo.system.quantity < weapon.system.ammo.capacity.max ) {
+      return consumableAmmo.system.quantity
+    } else {
+      return weapon.system.ammo.capacity.max
+    }
+  }
+
+  reload(weaponId = null) {
+    const weapon = this.parent.items.get(weaponId)
+    if (!weapon) {
+      ui.notifications.warn(`Weapon ${weaponId} not found on actor`);
+      return
+    }
+    
+    const newAP = this.actionPoints.value - 6
+    if (newAP < 0) {
+      ui.notifications.warn(`Not enough action points to reload`);
+      return
+    }
+    
+    if (weapon.system.capacityAtMax) {
+      ui.notifications.warn(`Weapon capacity is already at max`);
+      return 
+    }
+
+    const consumableAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
+    if (consumableAmmo.system.quantity < 1 || consumableAmmo.system.quantity === weapon.system.ammo.capacity.value) {
+      ui.notifications.warn(`No rounds left to reload weapon`);
+      return 
+    }
+
+    const newCapacity = this.getWeaponsNewCapacity(weapon, consumableAmmo)
+    if (newCapacity < 1) {
+      ui.notifications.warn(`No rounds left to reload weapon`);
+      return 
+    }
+
+    this.parent.update({'system.actionPoints.value': newAP})
+    this.parent.updateEmbeddedDocuments("Item", [{ _id: weaponId, 'system.ammo.capacity.value': newCapacity }])
+  }
+
   getRollData() {
     const data = {};
 
