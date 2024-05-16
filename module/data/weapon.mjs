@@ -63,4 +63,14 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
 
   prepareDerivedData() {
   }
+
+  get capacityAtMax() {
+    return this.ammo.capacity.value === this.ammo.capacity.max
+  }
+
+//   reload(ammo = undefined) {
+//     if (!ammo) {
+
+//     }
+//   }
 }

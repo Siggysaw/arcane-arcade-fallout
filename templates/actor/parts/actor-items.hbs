@@ -78,10 +78,11 @@
 								</tr>
 								<tr>
 									<td>
-										<button class="rollable resource-label ap-spent"
-											data-label="BOOM! Attack with a {{item.name}}"
-											data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal"
-											data-weapon-id="{{item._id}}">
+										<label
+											data-weapon-roll
+											data-weapon-id="{{item._id}}"
+											class="resource-label"
+										>
 											{{item.system.apCost}}
 										</button>
 									</td>
@@ -187,7 +188,8 @@
 								</tr>
 								<tr>
 									<td>
-										<label class="rollable resource-label ap-spent" data-spent="{{system.apCost}}"
+										<label class="rollable resource-label"
+											data-weapon-roll
 											data-label="BOOM! Attack with a {{item.name}}"
 											data-roll="d20+@skills.guns.value + @abilities.agi.mod - @penaltyTotal">
 											{{system.apCost}}

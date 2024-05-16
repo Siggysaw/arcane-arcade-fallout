@@ -151,67 +151,13 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
 
   /* -------------------------------------------- */
-
-  #getWeaponsNewCapacity(weapon, consumableAmmo) {
-    if (consumableAmmo && consumableAmmo.system.quantity < weapon.system.ammo.capacity.max ) {
-      return consumableAmmo.system.quantity
-    } else {
-      return weapon.system.ammo.capacity.max
-    }
-  }
-
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
 	
-    html.on('click', '.ap-spent', (ev) => {
-      const currentAp=this.actor.system.actionPoints.value;
+    html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId;
-      const weapon = this.actor.items.get(weaponId);
-      const spentAction = weapon.system.apCost;
-      const updatedAp=Number(currentAp) - Number(spentAction);
-
-      // if action would reduce AP below 0
-      if (updatedAp < 0) {
-        ui.notifications.warn(`Not enough AP for action`);
-        return
-      }
-      
-      // if ammo consumes target exists on weapon but the quantity is 0
-      const foundAmmo = this.actor.items.get(weapon.system.ammo.consumes.target)
-      if (foundAmmo) {
-        if (foundAmmo.system.quantity < 1) {
-          ui.notifications.warn(`No ammo left for weapon`);
-          return
-        }
-      }
-
-      // if weapon ammo capacity is 0
-      if (weapon.system.ammo.capacity.value < 1) {
-        ui.notifications.warn(`Weapon ammo is empty, need to reload`);
-        return
-      }
-
-      // Update ammo quantity and actor AP
-      if (foundAmmo) {
-        const newAmmoQty = Number(foundAmmo.system.quantity - 1)
-        const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
-        this.actor.updateEmbeddedDocuments("Item", [
-          { _id: foundAmmo._id, "system.quantity": newAmmoQty },
-          { _id: weapon._id, "system.ammo.capacity.value": newWeaponAmmoCapacity }
-        ])
-        
-        console.log("ACTOR UPDATE", {
-          'item.system.quantity': newAmmoQty,
-          'weapon.system.ammo.capacity.value': newWeaponAmmoCapacity
-        })
-      }
-
-      this.actor.update({'system.actionPoints.value': Number(updatedAp)})
-      
-      console.log("ACTOR UPDATE", {
-        'system.actionPoints.value': updatedAp,
-      })
+      this.actor.system.rollWeapon(weaponId)
     });
 
     // Render the item sheet for viewing/editing prior to the editable check.
@@ -224,36 +170,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     // handles weapon reload
     html.on('click', '[data-reload]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId;
-      const weapon = this.actor.items.get(weaponId)
-      if (weapon) {
-        if (weapon.system.ammo.capacity.value === weapon.system.ammo.capacity.max) {
-          ui.notifications.warn(`Weapon capacity is already at max`);
-          return 
-        }
-
-        const consumableAmmo = this.actor.items.get(weapon.system.ammo.consumes.target)
-
-        if (consumableAmmo.system.quantity < 1) {
-          ui.notifications.warn(`No rounds left to reload weapon`);
-          return 
-        }
-
-        const newCapacity = this.#getWeaponsNewCapacity(weapon, consumableAmmo)
-        const newAP = this.actor.system.actionPoints.value - 6
-
-        if (newAP < 0) {
-          ui.notifications.warn(`Not enough action points to reload`);
-          return
-        }
-
-        if (newCapacity < 1) {
-          ui.notifications.warn(`No rounds left to reload weapon`);
-          return 
-        }
-        
-        this.actor.update({'system.actionPoints.value': newAP})
-        this.actor.updateEmbeddedDocuments("Item", [{ _id: weaponId, 'system.ammo.capacity.value': newCapacity }])
-      }
+      this.actor.system.reload(weaponId)
     })
 
     // handles changing ammo on weapon
@@ -325,7 +242,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     delete itemData.system['type'];
 
     // Finally, create the item!
-	return await Item.create(itemData, { parent: this.actor });
+	  return await Item.create(itemData, { parent: this.actor });
   }
 
   /**
