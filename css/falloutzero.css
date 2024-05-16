@@ -505,13 +505,29 @@ table,tr,td, .sheet img{
 	padding:5px;
 }
 .sheet .perk-div {
-background:black;
-padding:5px;
-width:100%;
+	background:black;
+	padding:5px;
+	width:100%;
 }
 .specialroll{
 	text-transform:uppercase;
 }
 .sheet .equipped-stats td {
-		border: solid 1px;
-	}
+	border: solid 1px;
+	vertical-align:middle;
+	padding:2px;
+}
+
+.sheet .equipped-stats button{
+	border:#1D5427
+}
+.sheet .equipped-stats button:hover{
+	border:#1D5427;
+	background:#1D5427;
+	color:black;
+}
+.sheet .equipped-stats button:active{
+	border:#1D5427;
+	background:white;
+	color:#1D5427;
+}
