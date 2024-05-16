@@ -5,7 +5,7 @@
 			<table>
 				{{#each actor.items as |item id|}}
 				<tr>
-					<td data-edit data-item-id='{{item._id}}'>				
+					<td data-edit data-item-id="{{item._id}}">				
 						{{item.name}} ({{item.system.quantity}})
 					</td>
 				</tr>
@@ -41,10 +41,22 @@
 								</tr>
 							</table>
 							<div class='item-controls'>
-								<a style="float:right;margin-right:10px;" class='item-control item-delete'
-									title='{{localize "DOCUMENT.Delete" type=' item'}}'><i class='fas fa-trash'></i></a>
-								<a style="float:right;margin-right:10px;" class='item-control item-edit'
-									title='{{localize "DOCUMENT.Update" type=' item'}}'><i class='fas fa-edit'></i></a>
+								<a
+									style="float:right;margin-right:10px;"
+									class='item-control item-delete'
+									title='{{localize "DOCUMENT.Delete" type=' item'}}'
+								>
+									<i class='fas fa-trash'></i>
+								</a>
+								<a
+									style="float:right;margin-right:10px;"
+									data-edit
+									data-item-id="{{item._id}}"
+									class='item-control'
+									title='{{localize "DOCUMENT.Update" type=' item'}}'
+								>
+									<i class='fas fa-edit'></i>
+								</a>
 							</div>
 						</td>
 					</tr>
@@ -78,7 +90,8 @@
 								</tr>
 								<tr>
 									<td>
-										<label
+										<button
+											class="rollable resource-label"
 											data-weapon-roll
 											data-weapon-id="{{item._id}}"
 											class="resource-label"
@@ -87,7 +100,9 @@
 										</button>
 									</td>
 									<td>
-										<button class="rollable resource-label"
+										<button
+											class="rollable resource-label"
+											data-rollable
 											data-label="OUCH! DMG from a {{item.name}}"
 											data-roll="{{item.system.damage.formula}}">
 											{{item.system.damage.formula}}
@@ -103,17 +118,28 @@
 								<tr>
 									<td colspan=999>RANGE</td>
 								</tr>
+								{{#if item.system.range.flat}}
 								<tr>
-									<td>0 - {{system.shortrangedcalc1.value}}ft</td>
-									<td id="range">{{system.shortrangedcalc.value}}ft -
-										{{system.longrangedcalc.value}}ft</td>
-									<td>{{system.longrangedcalc1.value}}ft</td>
+									<td>flat</td>
 								</tr>
 								<tr>
-									<td>Advantage</td>
-									<td>Normal</td>
-									<td>Disadvantage</td>
+									<td>{{item.system.range.flat}}ft</td>
 								</tr>
+								{{else}}
+								<tr>
+									<td>Short</td>
+									<td>Long (Disadvantage)</td>
+									<td>Out of range</td>
+								</tr>
+								<tr>
+									<td>0 - {{item.system.range.short}}ft</td>
+									<td>
+										{{item.system.range.short}}
+										ft - {{system.range.long}}ft
+									</td>
+									<td>{{system.range.long}}ft+</td>
+								</tr>
+								{{/if}}
 							</table>
 							<table class="equipped-stats">
 								<tr>
@@ -148,15 +174,31 @@
 										</button>
 									</td>
 									<td> 
-										Qty of Ammo
+										{{#each item.ammos as |ammo|}}
+											{{#if (eq ammo._id item.system.ammo.consumes.target )}}
+												{{ammo.system.quantity}}
+											{{/if}}
+										{{/each}}
 									</td>
 								</tr>
 							</table>
 							<div class='item-controls'>
-								<a style="float:right;margin-right:10px;" class='item-control item-delete'
-									title='{{localize "DOCUMENT.Delete" type=' item'}}'><i class='fas fa-trash'></i></a>
-								<a style="float:right;margin-right:10px;" class='item-control item-edit'
-									title='{{localize "DOCUMENT.Update" type=' item'}}'><i class='fas fa-edit'></i></a>
+								<a
+									style="float:right;margin-right:10px;"
+									class='item-control item-delete'
+									title='{{localize "DOCUMENT.Delete" type=' item'}}'
+								>
+										<i class='fas fa-trash'></i>
+								</a>
+								<a
+									style="float:right;margin-right:10px;"
+									class='item-control'
+									data-edit
+									data-item-id="{{item._id}}"
+									title='{{localize "DOCUMENT.Update" type=' item'}}'
+								>
+										<i class='fas fa-edit'></i>
+								</a>
 							</div>
 						</td>
 					</tr>
@@ -197,6 +239,7 @@
 									</td>
 									<td>
 										<label class="rollable resource-label"
+											data-rollable
 											data-label="OUCH! DMG from a {{item.name}}"
 											data-roll="{{system.damage.formula}}">
 											{{system.damage.formula}}
@@ -218,10 +261,21 @@
 								</tr>
 							</table>
 							<div class='item-controls'>
-								<a style="float:right;margin-right:10px;" class='item-control item-delete'
-									title='{{localize "DOCUMENT.Delete" type=' item'}}'><i class='fas fa-trash'></i></a>
-								<a style="float:right;margin-right:10px;" class='item-control item-edit'
-									title='{{localize "DOCUMENT.Update" type=' item'}}'><i class='fas fa-edit'></i></a>
+								<a
+									style="float:right;margin-right:10px;"
+									class='item-control item-delete'
+									title='{{localize "DOCUMENT.Delete" type=' item'}}'>
+										<i class='fas fa-trash'></i>
+								</a>
+								<a
+									style="float:right;margin-right:10px;"
+									data-edit
+									data-item-id="{{item._id}}"
+									class='item-control'
+									title='{{localize "DOCUMENT.Update" type='item'}}'
+								>
+										<i class='fas fa-edit'></i>
+								</a>
 							</div>
 						</td>
 					</tr>

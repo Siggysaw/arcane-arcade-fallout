@@ -38,7 +38,7 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
         capacity: new fields.SchemaField({
             value: new fields.NumberField({
                 ...requiredInteger,
-                initial: 6,
+                initial: 0,
             }),
             min: new fields.NumberField({
                 ...requiredInteger,
@@ -58,19 +58,16 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     schema.properties = new fields.ArrayField(new fields.StringField())
     schema.strengthRequirement = new fields.NumberField({ initial: 0 })
 
-    return schema;
-  }
+    schema.range = new fields.SchemaField({
+        short: new fields.NumberField({ initial: 1, min: 1, nullable: false}),
+        long: new fields.NumberField({ initial: 1, min: 1, nullable: false}),
+        flat: new fields.NumberField({ initial: null, min: 1})
+    })
 
-  prepareDerivedData() {
+    return schema;
   }
 
   get capacityAtMax() {
     return this.ammo.capacity.value === this.ammo.capacity.max
   }
-
-//   reload(ammo = undefined) {
-//     if (!ammo) {
-
-//     }
-//   }
 }

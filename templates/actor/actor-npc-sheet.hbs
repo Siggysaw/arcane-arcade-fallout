@@ -71,7 +71,7 @@
 		
 <table><tr>
 	{{#each system.abilities as |ability key|}}
-	<td><label for="system.abilities.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d20-{{system.roll-penalties.value}}+@abilities.{{key}}.mod" data-label="{{ability.label}}">{{ability.label}}</label></td>
+	<td><label for="system.abilities.{{key}}.value" class="resource-label rollable flexlarge align-left" data-rollable data-roll="d20-{{system.roll-penalties.value}}+@abilities.{{key}}.mod" data-label="{{ability.label}}">{{ability.label}}</label></td>
 	{{/each}}
 	<tr>
 	{{#each system.abilities as |ability key|}}

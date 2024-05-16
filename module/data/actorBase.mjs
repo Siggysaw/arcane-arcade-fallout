@@ -102,6 +102,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   }
 
   prepareBaseData() {
+    super.prepareBaseData()
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
       // Calculate the modifier using d20 rules.
@@ -154,7 +155,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     this.parent.update({'system.actionPoints.value': Number(newAP)})
 
     // roll to hit
-    let roll = new Roll(`d20+${this.skills['guns'].value} + ${this.abilities['agi'].mod} - ${this.penaltyTotal}`, this.getRollData())
+    let roll = new Roll(`d20+${this.skills[weapon.system.skillBonus].value} + ${this.abilities[weapon.system.abilityMod].mod} - ${this.penaltyTotal}`, this.getRollData())
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.parent }),
       flavor: `BOOM! Attack with a ${weapon.name}`,
@@ -195,7 +196,10 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     }
 
     const consumableAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
-    if (consumableAmmo.system.quantity < 1 || consumableAmmo.system.quantity === weapon.system.ammo.capacity.value) {
+    if (!consumableAmmo) {
+      ui.notifications.warn(`No rounds assigned to weapon, set a consumable ammo`);
+      return 
+    } else if (consumableAmmo.system.quantity < 1 || consumableAmmo.system.quantity === weapon.system.ammo.capacity.value) {
       ui.notifications.warn(`No rounds left to reload weapon`);
       return 
     }
