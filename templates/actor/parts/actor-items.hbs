@@ -1,10 +1,3 @@
-<style>
-	.sheet .equipped-stats td {
-		border: solid 1px;
-	}
-</style>
-
-
 <table>
 	<tr>
 		{{!-- Armor Slot --}}
@@ -91,14 +84,14 @@
 											class="resource-label"
 										>
 											{{item.system.apCost}}
-										</label>
+										</button>
 									</td>
 									<td>
-										<label class="rollable resource-label"
+										<button class="rollable resource-label"
 											data-label="OUCH! DMG from a {{item.name}}"
 											data-roll="{{item.system.damage.formula}}">
 											{{item.system.damage.formula}}
-										</label>
+										</button>
 									</td>
 									<td>{{item.system.critical.dice}}</td>
 									<td>{{item.system.critical.bonus}}</td>
@@ -144,28 +137,26 @@
 							</table>
 							<table class="equipped-stats">
 								<tr>
-									<td colspan=999>AMMO / CAPACITY</td>
+									<td colspan=2>AMMO</td>
+									<td>OWNED</td>
 								</tr>
 								<tr>
-									<td>Reload</td>
-									<td>Current Ammo</td>
-									<td>Max</td>
-								</tr>
-								<tr>
+									<td>{{item.system.ammo.capacity.value}} / {{item.system.ammo.capacity.max}}</td>
 									<td>
 										<button data-reload data-weapon-id="{{item._id}}">
-											reload
+											RELOAD
 										</button>
 									</td>
-									<td>{{item.system.ammo.capacity.value}}</td>
-									<td>{{item.system.ammo.capacity.max}}</td>
+									<td> 
+										Qty of Ammo
+									</td>
 								</tr>
 							</table>
 							<div class='item-controls'>
 								<a style="float:right;margin-right:10px;" class='item-control item-delete'
-									title='{{localize "DOCUMENT.Delete" type=' perk'}}'><i class='fas fa-trash'></i></a>
+									title='{{localize "DOCUMENT.Delete" type=' item'}}'><i class='fas fa-trash'></i></a>
 								<a style="float:right;margin-right:10px;" class='item-control item-edit'
-									title='{{localize "DOCUMENT.Update" type=' perk'}}'><i class='fas fa-edit'></i></a>
+									title='{{localize "DOCUMENT.Update" type=' item'}}'><i class='fas fa-edit'></i></a>
 							</div>
 						</td>
 					</tr>
@@ -228,9 +219,9 @@
 							</table>
 							<div class='item-controls'>
 								<a style="float:right;margin-right:10px;" class='item-control item-delete'
-									title='{{localize "DOCUMENT.Delete" type=' perk'}}'><i class='fas fa-trash'></i></a>
+									title='{{localize "DOCUMENT.Delete" type=' item'}}'><i class='fas fa-trash'></i></a>
 								<a style="float:right;margin-right:10px;" class='item-control item-edit'
-									title='{{localize "DOCUMENT.Update" type=' perk'}}'><i class='fas fa-edit'></i></a>
+									title='{{localize "DOCUMENT.Update" type=' item'}}'><i class='fas fa-edit'></i></a>
 							</div>
 						</td>
 					</tr>
