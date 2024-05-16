@@ -1,6 +1,7 @@
 <style>
 	.sheet .equipped-stats td {
 		border: solid 1px;
+		vertical-align:middle;
 	}
 </style>
 
@@ -143,21 +144,19 @@
 							</table>
 							<table class="equipped-stats">
 								<tr>
-									<td colspan=999>AMMO / CAPACITY</td>
+									<td colspan=2>AMMO</td>
+									<td>OWNED</td>
 								</tr>
 								<tr>
-									<td>Reload</td>
-									<td>Current Ammo</td>
-									<td>Max</td>
-								</tr>
-								<tr>
+									<td>{{item.system.ammo.capacity.value}} / {{item.system.ammo.capacity.max}}</td>
 									<td>
 										<button data-reload data-weapon-id="{{item._id}}">
 											reload
 										</button>
 									</td>
-									<td>{{item.system.ammo.capacity.value}}</td>
-									<td>{{item.system.ammo.capacity.max}}</td>
+									<td> 
+										Qty of Ammo
+									</td>
 								</tr>
 							</table>
 							<div class='item-controls'>
