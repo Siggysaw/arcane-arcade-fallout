@@ -141,6 +141,10 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.ammos = ammos
     context.rangedWeapons = rangedWeapons.map((weapon) => {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
+      if (!weapon.system.range.flat) {
+        weapon.system.range.short = this.actor.system.abilities['per'].value * weapon.system.range.short
+        weapon.system.range.long = this.actor.system.abilities['per'].value * weapon.system.range.long
+      }
       return weapon
     });	
     context.meleeWeapons = meleeWeapons.map((weapon) => {
@@ -205,7 +209,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     });
 
     // Rollable abilities.
-    html.on('click', '.rollable', this._onRoll.bind(this));
+    html.on('click', '[data-rollable]', this._onRoll.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {

@@ -14,6 +14,7 @@
 				<label
 					for="{{ability}}"
 					class="resource-label rollable"
+					data-rollable
 					data-roll="d20+{{skill.value}}+{{../../system.abilities.ability.mod}}-{{../../system.penaltyTotal}}"
 					data-label="{{actor.name}} performed a {{skill.label}} roll using {{ability}}"
 				>
@@ -31,7 +32,7 @@
 			<td  class="status-info-label">Hunger Lvl</td>
 			<td  class="status-info-label">Dehydration Lvl</td>
 			<td  class="status-info-label">Exhaustion Lvl</td>
-			<td  class="status-info-label"><span class="rollable" data-roll="d20-{{system.roll-penalties.value}}" data-label="Radiation DC Check: Roll over {{system.radDC.value}} to succeed">Radiation DC</span></td>
+			<td  class="status-info-label"><span class="rollable" data-rollable data-roll="d20-{{system.roll-penalties.value}}" data-label="Radiation DC Check: Roll over {{system.radDC.value}} to succeed">Radiation DC</span></td>
 			<td  class="status-info-label">Radiation Lvl</td>
 			</tr>
 			<tr>
