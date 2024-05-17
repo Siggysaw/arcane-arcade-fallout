@@ -153,6 +153,27 @@ export class FalloutZeroActorSheet extends ActorSheet {
       this.actor.system.rollWeapon(weaponId)
     })
 
+    html.on("click", "[data-collapsible]", (ev) => {
+      document.querySelectorAll('.collapsible').forEach(collapsible => {
+        collapsible.addEventListener('click', function() {
+            // Get the item ID
+            const itemId = this.getAttribute('data-item-id');
+            
+            // Find the corresponding collapsible content
+            const content = document.querySelector(`.collapsible-content[data-item-id="${itemId}"]`);
+            
+            // Toggle content visibility
+            if (content) {
+                if (content.style.display === 'none' || content.style.display === '') {
+                    content.style.display = 'table-row';
+                } else {
+                    content.style.display = 'none';
+                }
+            }
+        });
+    });
+  });
+
     // Render the item sheet for viewing/editing prior to the editable check.
     html.on('click', '[data-edit]', (ev) => {
       const itemId = ev.currentTarget.dataset.itemId

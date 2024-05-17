@@ -535,3 +535,6 @@ table,tr,td, .sheet img{
 .sheet .karma{
 	width:60px;	
 }
+.allcaps{
+	text-transform:uppercase;
+}
