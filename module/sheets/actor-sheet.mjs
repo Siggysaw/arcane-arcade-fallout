@@ -1,7 +1,7 @@
 import {
   onManageActiveEffect,
   prepareActiveEffectCategories,
-} from '../helpers/effects.mjs';
+} from "../helpers/effects.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -11,14 +11,14 @@ export class FalloutZeroActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ['falloutzero', 'sheet', 'actor'],
+      classes: ["falloutzero", "sheet", "actor"],
       width: 750,
       height: 750,
       tabs: [
         {
-          navSelector: '.sheet-tabs',
-          contentSelector: '.sheet-body',
-          initial: 'status',
+          navSelector: ".sheet-tabs",
+          contentSelector: ".sheet-body",
+          initial: "status",
         },
       ],
     });
@@ -47,13 +47,13 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.flags = actorData.flags;
 
     // Prepare character data and items.
-    if (actorData.type == 'character') {
+    if (actorData.type == "character") {
       this._prepareItems(context);
       this._prepareCharacterData(context);
     }
 
     // Prepare NPC data and items.
-    if (actorData.type == 'npc') {
+    if (actorData.type == "npc") {
       this._prepareItems(context);
     }
 
@@ -77,8 +77,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
    *
    * @return {undefined}
    */
-  _prepareCharacterData(context) {
-  }
+  _prepareCharacterData(context) {}
 
   /**
    * Organize and classify Items for Character sheets.
@@ -94,7 +93,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     const perks = [];
     const armors = [];
     const rangedWeapons = [];
-    const meleeWeapons = [];	
+    const meleeWeapons = [];
     const medicines = [];
     const foodAnddrinks = [];
     const ammos = [];
@@ -102,31 +101,23 @@ export class FalloutZeroActorSheet extends ActorSheet {
     // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || Item.DEFAULT_ICON;
-      if (i.type === 'item') {
+      if (i.type === "item") {
         gear.push(i);
-      }
-      else if (i.type === 'feature') {
+      } else if (i.type === "feature") {
         features.push(i);
-      }
-      else if (i.type === 'perk') {
+      } else if (i.type === "perk") {
         perks.push(i);
-      }
-      else if (i.type === 'armor') {
+      } else if (i.type === "armor") {
         armors.push(i);
-      }
-      else if (i.type === 'rangedWeapon') {
+      } else if (i.type === "rangedWeapon") {
         rangedWeapons.push(i);
-      }	  
-      else if (i.type === 'meleeWeapon') {
+      } else if (i.type === "meleeWeapon") {
         meleeWeapons.push(i);
-      }	
-      else if (i.type === 'medicine') {
+      } else if (i.type === "medicine") {
         medicines.push(i);
-      }	  
-      else if (i.type === 'foodAnddrink') {
+      } else if (i.type === "foodAnddrink") {
         foodAnddrinks.push(i);
-      }	 
-      else if (i.type === 'ammo') {
+      } else if (i.type === "ammo") {
         ammos.push(i);
       }
     }
@@ -134,73 +125,81 @@ export class FalloutZeroActorSheet extends ActorSheet {
     // Assign and return
     context.gear = gear;
     context.features = features;
-    context.perks = perks;	
+    context.perks = perks;
     context.armors = armors;
-    context.medicines = medicines;	
-    context.foodAnddrinks = foodAnddrinks;	
-    context.ammos = ammos
+    context.medicines = medicines;
+    context.foodAnddrinks = foodAnddrinks;
+    context.ammos = ammos;
     context.rangedWeapons = rangedWeapons.map((weapon) => {
-      weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
+      weapon.ammos = ammos.filter(
+        (ammo) => ammo.system.type === weapon.system.ammo.type
+      );
       // if (!weapon.system.range.flat) {
-        weapon.system.range.short = this.actor.system.abilities['per'].value * weapon.system.range.short
-        weapon.system.range.long = this.actor.system.abilities['per'].value * weapon.system.range.long
+      weapon.system.range.short =
+        this.actor.system.abilities["per"].value * weapon.system.range.short;
+      weapon.system.range.long =
+        this.actor.system.abilities["per"].value * weapon.system.range.long;
       // }
-      return weapon
-    });	
+      return weapon;
+    });
     context.meleeWeapons = meleeWeapons.map((weapon) => {
-      weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
-      return weapon
-    });	
+      weapon.ammos = ammos.filter(
+        (ammo) => ammo.system.type === weapon.system.ammo.type
+      );
+      return weapon;
+    });
   }
-
 
   /* -------------------------------------------- */
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
-	
-    html.on('click', '[data-weapon-roll]', (ev) => {
+
+    html.on("click", "[data-weapon-roll]", (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId;
-      this.actor.system.rollWeapon(weaponId)
+      const hasDisadvantage = Boolean(ev.currentTarget.dataset.disadvantage);
+      this.actor.system.rollWeapon(weaponId, hasDisadvantage);
     });
 
     // Render the item sheet for viewing/editing prior to the editable check.
-    html.on('click', '[data-edit]', (ev) => {
+    html.on("click", "[data-edit]", (ev) => {
       const itemId = ev.currentTarget.dataset.itemId;
       const item = this.actor.items.get(itemId);
       item.sheet.render(true);
     });
 
     // handles weapon reload
-    html.on('click', '[data-reload]', (ev) => {
+    html.on("click", "[data-reload]", (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId;
-      this.actor.system.reload(weaponId)
-    })
+      this.actor.system.reload(weaponId);
+    });
 
     // handles changing ammo on weapon
-    html.on('change', '[data-set-ammo]', (ev) => {
+    html.on("change", "[data-set-ammo]", (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId;
-      this.actor.updateEmbeddedDocuments("Item", [{ _id: weaponId, 'system.ammo.consumes.target': ev.target.value }])
-    })
+      this.actor.updateEmbeddedDocuments("Item", [
+        { _id: weaponId, "system.ammo.consumes.target": ev.target.value },
+      ]);
+    });
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
 
     // Add Inventory Item
-    html.on('click', '.item-create', this._onItemCreate.bind(this));
+    html.on("click", ".item-create", this._onItemCreate.bind(this));
 
     // Delete Inventory Item
-    html.on('click', '.item-delete', (ev) => {
-      const li = $(ev.currentTarget).parents('.item');
-      const item = this.actor.items.get(li.data('itemId'));
+    html.on("click", ".item-delete", (ev) => {
+      const li = $(ev.currentTarget).parents(".item");
+      const item = this.actor.items.get(li.data("itemId"));
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
 
     // Active Effect management
-    html.on('click', '.effect-control', (ev) => {
-      const row = ev.currentTarget.closest('li');
+    html.on("click", ".effect-control", (ev) => {
+      const row = ev.currentTarget.closest("li");
       const document =
         row.dataset.parentId === this.actor.id
           ? this.actor
@@ -209,15 +208,15 @@ export class FalloutZeroActorSheet extends ActorSheet {
     });
 
     // Rollable abilities.
-    html.on('click', '[data-rollable]', this._onRoll.bind(this));
+    html.on("click", "[data-rollable]", this._onRoll.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
-      html.find('li.item').each((i, li) => {
-        if (li.classList.contains('inventory-header')) return;
-        li.setAttribute('draggable', true);
-        li.addEventListener('dragstart', handler, false);
+      html.find("li.item").each((i, li) => {
+        if (li.classList.contains("inventory-header")) return;
+        li.setAttribute("draggable", true);
+        li.addEventListener("dragstart", handler, false);
       });
     }
   }
@@ -243,10 +242,10 @@ export class FalloutZeroActorSheet extends ActorSheet {
       system: data,
     };
     // Remove the type from the dataset since it's in the itemData.type prop.
-    delete itemData.system['type'];
+    delete itemData.system["type"];
 
     // Finally, create the item!
-	  return await Item.create(itemData, { parent: this.actor });
+    return await Item.create(itemData, { parent: this.actor });
   }
 
   /**
@@ -261,8 +260,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Handle item rolls.
     if (dataset.rollType) {
-      if (dataset.rollType == 'item') {
-        const itemId = element.closest('.item').dataset.itemId;
+      if (dataset.rollType == "item") {
+        const itemId = element.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
         if (item) return item.roll();
       }
@@ -270,12 +269,12 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Handle rolls that supply the formula directly.
     if (dataset.roll) {
-      let label = dataset.label ? `[ability] ${dataset.label}` : '';
+      let label = dataset.label ? `[ability] ${dataset.label}` : "";
       let roll = new Roll(dataset.roll, this.actor.getRollData());
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: label,
-        rollMode: game.settings.get('core', 'rollMode'),
+        rollMode: game.settings.get("core", "rollMode"),
       });
       return roll;
     }
