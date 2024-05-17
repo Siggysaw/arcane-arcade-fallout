@@ -1,3 +1,5 @@
-2024/05/16-21:14:46.162 90f4 Recovering log #87
-2024/05/16-21:14:46.170 90f4 Delete type=0 #87
-2024/05/16-21:14:46.170 90f4 Delete type=3 #86
+2024/05/17-12:22:04.237 87ec Log #93: 0 ops saved to Table #94 OK
+2024/05/17-12:22:04.237 87ec Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition/000093.log: OK
+2024/05/17-12:22:04.237 87ec Table #73: 24 entries OK
+2024/05/17-12:22:04.242 87ec Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition/MANIFEST-000092: OK
+2024/05/17-12:22:04.246 87ec **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition; recovered 1 files; 4320 bytes. Some data may have been lost. ****
