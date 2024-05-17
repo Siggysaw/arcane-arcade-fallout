@@ -50,6 +50,20 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         initial: 10
       })
     });
+	schema.karmaCaps = new fields.SchemaField({
+      value: new fields.NumberField({
+        ...requiredInteger,
+        initial: 1,
+      }),
+      min: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0
+      }),
+      max: new fields.NumberField({
+        ...requiredInteger,
+        initial: 1
+      })
+    });	
     
     // Iterate over ability names and create a new SchemaField for each.
     schema.abilities = new fields.SchemaField(Object.keys(FALLOUTZERO.abilities).reduce((obj, ability) => {
@@ -97,7 +111,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       initial: 0,
       min: 0,
     })
-
+    
     return schema
   }
 
