@@ -1,4 +1,4 @@
-<style>
+{{!-- <style>
     .collapsible-content {
         display: none;
     }
@@ -6,18 +6,7 @@
         cursor: pointer;
         color: #007bff;
     }
-</style>
-
-<script>
-    function toggleCollapse(element) {
-        const content = element.closest('table').querySelector('.collapsible-content');
-        if (content.style.display === "none") {
-            content.style.display = "table-row";
-        } else {
-            content.style.display = "none";
-        }
-    }
-</script>
+</style> --}}
 
 
 <table>
@@ -29,10 +18,10 @@
                 <table>
                     <tr>
                         <td>
-                            <h2 class="collapsible" onclick="toggleCollapse(this)">{{item.name}}</h2>
+                            <h2 class="collapsible" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</h2>
                         </td>
                     </tr>
-                    <tr class="collapsible-content">
+                    <tr class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
                         <td>
                             <table class="equipped-stats">
                                 <tr>
@@ -73,10 +62,10 @@
                 <table>
                     <tr>
                         <td>
-                            <h2 class="collapsible" onclick="toggleCollapse(this)">{{item.name}}</h2>
+                            <button class="collapsible" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
                         </td>
                     </tr>
-                    <tr class="collapsible-content">
+                    <tr class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
                         <td>
                             <table class="equipped-stats">
                                 <tr>
@@ -193,7 +182,7 @@
                 <table>
                     <tr>
                         <td>
-                            <h2 class="collapsible" onclick="toggleCollapse(this)">{{item.name}}</h2>
+                            <h2 class="collapsible" data-collapsable>{{item.name}}</h2>
                         </td>
                     </tr>
                     <tr class="collapsible-content">
