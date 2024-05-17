@@ -144,6 +144,10 @@
     "damageThreshold": {
       "value": "{{damageThreshold}}",
       "min": 0
+    },    
+	"armorClass": {
+      "value": "{{armorClass}}",
+      "min": 0
     },
     "background": "{{background}}",
     "race": "{{race}}",
@@ -152,7 +156,22 @@
     "passiveSense": "{{passiveSense}}",
     "penaltyTotal": 0,
     "properties": "{{properties}}"
-    },
+    },  "prototypeToken": {
+    "name": "NPCNAME",
+    "displayName": 0,
+    "actorLink": false,
+    "appendNumber": false,
+    "prependAdjective": false,
+    "texture": {
+      "src": "systems/arcane-arcade-fallout/assets/enemies/{{name}}.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "offsetX": 0,
+      "offsetY": 0,
+      "rotation": 0,
+      "tint": null
+    }
+	},
   "_stats": {
     "systemId": "arcane-arcade-fallout",
     "systemVersion": "1.0.0",
