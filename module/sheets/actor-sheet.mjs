@@ -96,7 +96,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     const rangedWeapons = [];
     const meleeWeapons = [];	
     const medicines = [];
-    const foodAndDrinks = [];
+    const foodAnddrinks = [];
     const ammos = [];
 
     // Iterate through items, allocating to containers
@@ -123,8 +123,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
       else if (i.type === 'medicine') {
         medicines.push(i);
       }	  
-      else if (i.type === 'food-drink') {
-        foodAndDrinks.push(i);
+      else if (i.type === 'foodAnddrink') {
+        foodAnddrinks.push(i);
       }	 
       else if (i.type === 'ammo') {
         ammos.push(i);
@@ -137,7 +137,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.perks = perks;	
     context.armors = armors;
     context.medicines = medicines;	
-    context.foodAndDrinks = foodAndDrinks;	
+    context.foodAnddrinks = foodAnddrinks;	
     context.ammos = ammos
     context.rangedWeapons = rangedWeapons.map((weapon) => {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)

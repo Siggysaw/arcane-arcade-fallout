@@ -43,6 +43,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     schema.healingRate = new fields.NumberField({ initial: 0, min: 0 })
     schema.groupSneak = new fields.NumberField({ initial: 0, min: 0 })
     schema.combatSequence = new fields.NumberField({ initial: 0, min: 0 })	
+    schema.partyNerve = new fields.NumberField({ initial: 0, min: 0 })		
     schema.passiveSense = new fields.NumberField({
       ...requiredInteger,
       initial: 0

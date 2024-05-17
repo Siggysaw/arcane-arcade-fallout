@@ -70,6 +70,7 @@
     <a class="item" data-tab="perks">Perks</a>
     <a class="item" data-tab="items">Combat</a>
     <a class="item" data-tab="medicine">Aid</a>	
+    <a class="item" data-tab="backpack">Backpack</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -122,10 +123,15 @@
       {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
     </div>
     
+	{{!-- Backpack Tab --}}
+    <div class="tab backpack flexcol" data-group="primary" data-tab="backpack">
+      {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
+    </div>
+	
 	{{!-- Active Effects Tab --}}
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
-    </div>
+    </div>	
 
   </section>
 </form>

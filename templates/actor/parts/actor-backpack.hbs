@@ -1,0 +1,38 @@
+<table>
+<tr>
+	<td style="text-align:left;">
+		<p>
+		{{#each ammos as |item id|}}
+			<a
+				class='item-control'
+				data-edit
+				data-item-id="{{item._id}}"
+				title='{{localize "DOCUMENT.Update" type="item"}}'
+			>
+					{{item.name}}({{system.quantity}}),
+			</a>
+		{{/each}}
+				{{#each medicines as |item id|}}
+			<a
+				class='item-control'
+				data-edit
+				data-item-id="{{item._id}}"
+				title='{{localize "DOCUMENT.Update" type="item"}}'
+			>
+					{{item.name}}({{system.quantity}}),
+			</a>
+		{{/each}}
+				{{#each foodAnddrinks as |item id|}}
+			<a
+				class='item-control'
+				data-edit
+				data-item-id="{{item._id}}"
+				title='{{localize "DOCUMENT.Update" type="item"}}'
+			>
+					{{item.name}}({{system.quantity}}),
+			</a>
+		{{/each}}
+		</p>
+	</td>
+</tr>
+</table>
