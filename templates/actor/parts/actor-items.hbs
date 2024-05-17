@@ -294,7 +294,22 @@
 					</tr>
 				</table>
 			</div>
+			<div style="text-align:left;">
 			{{/each}}
+			{{#each ammos as |item id|}}
+			<div style="float:left;" class='item-controls'>
+				<a
+					data-edit
+					data-item-id="{{item._id}}"
+					class='item-control'
+					title='{{localize "DOCUMENT.Update" type='item'}}'
+				>
+					{{item.name}} ({{system.quantity}}), 
+				</a>
+			</div>			
+			{{/each}}
+			</div>
 		</td>
 	</tr>
+	<tr>
 </table>
