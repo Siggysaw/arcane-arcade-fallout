@@ -9,16 +9,13 @@
 </style> --}}
 
 
-<table>
-    <tr>
         <!-- Armor Slot -->
-        <td class="inventory-slot armorslot" style="width:50%;padding:10px;">
             {{#each armors as |item id|}}
             <div class='item flexrow' data-item-id='{{item._id}}'>
                 <table>
                     <tr>
                         <td>
-                            <h2 class="collapsible" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</h2>
+                            <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}} ARMOR</button>
                         </td>
                     </tr>
                     <tr class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
@@ -54,15 +51,24 @@
                 </table>
             </div>
             {{/each}}
-        </td>
         <!-- RangedWeapon Slot -->
-        <td class="inventory-slot ammos" style="width:50%;padding:10px;">
+		<table><tr><td>
+			{{#each ammos as |item id|}}
+                <div class='item-controls'>
+                    <a style="float:left;" data-edit data-item-id="{{item._id}}" class='item-control' title='{{localize "DOCUMENT.Update" type="item"}}'>
+                        {{item.name}} ({{system.quantity}}),
+                    </a>
+                </div>
+                {{/each}}
+				</td></tr></table>
+
+				
             {{#each rangedWeapons as |item id|}}
-            <div class='item flexrow' data-item-id='{{item._id}}'>
-                <table>
+            <div style="width:45%;display:block;float:left;margin-left:20px;" class='item flexrow' data-item-id='{{item._id}}'>
+                <table class="weapontable">
                     <tr>
                         <td>
-                            <button class="collapsible" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
+                            <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
                         </td>
                     </tr>
                     <tr class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
@@ -178,7 +184,7 @@
             {{/each}}
             <!-- MeleeWeapons Slot -->
             {{#each meleeWeapons as |item id|}}
-            <div class='item flexrow' data-item-id='{{item._id}}'>
+            <div class='item flexrow' data-item-id='{{item._id}}' style="width:100%;">
                 <table>
                     <tr>
                         <td>
@@ -238,13 +244,6 @@
                 </table>
             </div>
             <div style="text-align:left;">
-                {{/each}}
-                {{#each ammos as |item id|}}
-                <div style="float:left;" class='item-controls'>
-                    <a data-edit data-item-id="{{item._id}}" class='item-control' title='{{localize "DOCUMENT.Update" type=' item'}}'>
-                        {{item.name}} ({{system.quantity}}),
-                    </a>
-                </div>
                 {{/each}}
             </div>
         </td>
