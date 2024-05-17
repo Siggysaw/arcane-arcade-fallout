@@ -61,7 +61,7 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     schema.range = new fields.SchemaField({
         short: new fields.NumberField({ initial: 1, min: 1, nullable: false}),
         long: new fields.NumberField({ initial: 1, min: 1, nullable: false}),
-        flat: new fields.NumberField({ initial: null, min: 1})
+        // flat: new fields.NumberField({ initial: null, min: 1})
     })
 
     return schema;
