@@ -4,22 +4,22 @@
 	<tr><td style="width:25%;vertical-align:middle;">{{item.name}} ({{system.itemQty.value}})</td><td><td style="text-align:left;">{{{item.system.description}}}</td>
 	<td style="width:50px;vertical-align:bottom;"><div class='item-controls'>
 	<div class='item-controls'>
-								<a
-									style="float:right;margin-right:10px;"
-									class='item-control item-delete'
-									title='{{localize "DOCUMENT.Delete" type=' item'}}'
-								>
-										<i class='fas fa-trash'></i>
-								</a>
-								<a
-									style="float:right;margin-right:10px;"
-									class='item-control'
-									data-edit
-									data-item-id="{{item._id}}"
-									title='{{localize "DOCUMENT.Update" type=' item'}}'
-								>
-										<i class='fas fa-edit'></i>
-								</a>
+		<a
+			style="float:right;margin-right:10px;"
+			class='item-control item-delete'
+			title='{{localize "DOCUMENT.Delete" type=' item'}}'
+		>
+				<i class='fas fa-trash'></i>
+		</a>
+		<a
+			style="float:right;margin-right:10px;"
+			class='item-control'
+			data-edit
+			data-item-id="{{item._id}}"
+			title='{{localize "DOCUMENT.Update" type=' item'}}'
+		>
+				<i class='fas fa-edit'></i>
+		</a>
 							</div>
 	</div></td></tr>
 	</table>

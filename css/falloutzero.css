@@ -456,8 +456,9 @@ background:none;
 .sheet header.sheet-header .profile-image-td img {
 }
 
-td{
-
+.label{
+	font-weight:bold;
+	text-decoration:underline;
 }
 .sheet header.sheet-header .custom-icon{
 	height:30px;
@@ -529,4 +530,8 @@ table,tr,td, .sheet img{
 	border:#1D5427;
 	background:white;
 	color:#1D5427;
+}
+.sheet-tabs .active{
+	text-decoration:underline;
+	font-weight:bold;
 }
