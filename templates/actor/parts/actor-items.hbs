@@ -2,16 +2,6 @@
 	<tr>
 		{{!-- Armor Slot --}}
 		<td class="inventory-slot armorslot" style="width:50%;padding:10px;">
-			<table>
-				{{#each actor.items as |item id|}}
-				<tr>
-					<td data-edit data-item-id="{{item._id}}">				
-						{{item.name}} ({{item.system.quantity}})
-					</td>
-				</tr>
-				{{/each}}
-			</table>
-
 			{{#each armors as |item id|}}
 			<div class='item flexrow' data-item-id='{{item._id}}'>
 				<table>
@@ -32,7 +22,7 @@
 									<td>STR Req.</td>
 								</tr>
 								<tr>
-									<td>{{{system.cost.value}}}</td>
+									<td>{{{system.base-cost.value}}}</td>
 									<td>{{{system.armorClass.value}}}</td>
 									<td>{{{system.damageThreshold.value}}}</td>
 									<td>{{{system.slots.value}}}</td>
@@ -127,9 +117,31 @@
 								</tr>
 								{{else}}
 								<tr>
-									<td>Short</td>
-									<td>Long (Disadvantage)</td>
-									<td>Out of range</td>
+									<td><button
+											class="rollable resource-label"
+											data-weapon-roll
+											data-weapon-id="{{item._id}}"
+											class="resource-label"
+										>
+											Advantage
+										</button></td>
+									<td><button
+											class="rollable resource-label"
+											data-weapon-roll
+											data-weapon-id="{{item._id}}"
+											class="resource-label"
+										>
+											Standard
+										</button>
+										</td>
+									<td><button
+											class="rollable resource-label"
+											data-weapon-roll
+											data-weapon-id="{{item._id}}"
+											class="resource-label"
+										>
+											Disadvantage
+										</button></td>
 								</tr>
 								<tr>
 									<td>0 - {{item.system.range.short}}ft</td>

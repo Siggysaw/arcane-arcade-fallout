@@ -95,7 +95,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     const armors = [];
     const rangedWeapons = [];
     const meleeWeapons = [];	
-    const drugs = [];
+    const medicines = [];
     const foodAndDrinks = [];
     const ammos = [];
 
@@ -120,8 +120,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
       else if (i.type === 'meleeWeapon') {
         meleeWeapons.push(i);
       }	
-      else if (i.type === 'drug') {
-        drugs.push(i);
+      else if (i.type === 'medicine') {
+        medicines.push(i);
       }	  
       else if (i.type === 'food-drink') {
         foodAndDrinks.push(i);
@@ -136,7 +136,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.features = features;
     context.perks = perks;	
     context.armors = armors;
-    context.drugs = drugs;	
+    context.medicines = medicines;	
     context.foodAndDrinks = foodAndDrinks;	
     context.ammos = ammos
     context.rangedWeapons = rangedWeapons.map((weapon) => {

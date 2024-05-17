@@ -1,18 +1,3 @@
-<script>
-function updatexp(change){
-var current={{system.xp.value}};
-document.getElementById("xp").value = Number(change) + Number(current);
-document.getElementById("modifyxp").value = '';
-}
-
-function updatecaps(change){
-var current={{system.caps}};
-document.getElementById("caps").value = Number(change) + Number(current);
-document.getElementById("modifycaps").value = '';
-}
-
-</script>
-
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
   {{!-- Sheet Header --}}
@@ -82,8 +67,9 @@ document.getElementById("modifycaps").value = '';
   <nav class="sheet-tabs tabs" data-group="primary">
     {{!-- Default tab is specified in actor-sheet.mjs --}}
 	<a class="item" data-tab="status">Status</a>
-    <a class="item" data-tab="perks">Data</a>
-    <a class="item" data-tab="items">Inventory</a>
+    <a class="item" data-tab="perks">Perks</a>
+    <a class="item" data-tab="items">Combat</a>
+    <a class="item" data-tab="medicine">Aid</a>	
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -130,8 +116,13 @@ document.getElementById("modifycaps").value = '';
     <div class="tab perks" data-group="primary" data-tab="perks">
       {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
     </div>
-
-    {{!-- Active Effects Tab --}}
+    
+	{{!-- Owned Perks Tab --}}
+    <div class="tab perks" data-group="primary" data-tab="medicine">
+      {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
+    </div>
+    
+	{{!-- Active Effects Tab --}}
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
     </div>
