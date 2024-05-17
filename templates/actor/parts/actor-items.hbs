@@ -54,7 +54,7 @@
         <!-- RangedWeapon Slot -->
 		<table><tr><td>
 			{{#each ammos as |item id|}}
-                <div class='item-controls'>
+                <div class='item-controls' style="display:block;margin:auto;">
                     <a style="float:left;" data-edit data-item-id="{{item._id}}" class='item-control' title='{{localize "DOCUMENT.Update" type="item"}}'>
                         {{item.name}} ({{system.quantity}}),
                     </a>
@@ -64,8 +64,8 @@
 
 				
             {{#each rangedWeapons as |item id|}}
-            <div style="width:45%;display:block;float:left;margin-left:20px;" class='item flexrow' data-item-id='{{item._id}}'>
-                <table class="weapontable">
+            <div style="width:49%;display:block;float:left;margin-left:1%;" class='item flexrow' data-item-id='{{item._id}}'>
+                <table class="weapontable" style="border:solid 1px;">
                     <tr>
                         <td>
                             <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
