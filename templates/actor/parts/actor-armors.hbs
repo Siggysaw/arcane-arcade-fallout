@@ -1,13 +1,32 @@
-
-  {{#each armors as |item id|}}
-    <li class='item flexrow' data-item-id='{{item._id}}'>
-    <table style="border:solid 1px;">
-	<tr><td><h3>{{item.name}}</h3></td></tr>
-	<tr><td>{{item.system.description}}
-	<div class='item-controls'>
-	<a style="float:right;margin-right:10px;" class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='perk'}}'><i class='fas fa-trash'></i></a>
-		<a style="float:right;margin-right:10px;" class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='perk'}}'><i class='fas fa-edit'></i></a>
-	</div></td></tr>
-	</table>
+{{#each armors as |item id|}}
+<li class="item flexrow" data-item-id="{{ item._id }}">
+  <table style="border: solid 1px">
+    <tr>
+      <td>
+        <h3>{{ item.name }}</h3>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ item.system.description }}
+        <div class="item-controls">
+          <a
+            style="float: right; margin-right: 10px"
+            class="item-control item-delete"
+            title="{{localize 'DOCUMENT.Delete' type='perk'}}"
+          >
+            <i class="fas fa-trash" />
+          </a>
+          <a
+            style="float: right; margin-right: 10px"
+            class="item-control item-edit"
+            title="{{localize 'DOCUMENT.Update' type='perk'}}"
+          >
+            <i class="fas fa-edit" />
+          </a>
+        </div>
+      </td>
+    </tr>
+  </table>
 </li>
-  {{/each}}
+{{/each}}

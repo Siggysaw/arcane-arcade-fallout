@@ -5,17 +5,24 @@
   "scripts": {
     "build": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --no-source-map",
     "watch": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --source-map --watch",
-    "generate": "node src/generate-falloutzero-system.mjs"
+    "generate": "node src/generate-falloutzero-system.mjs",
+    "prepare": "husky"
   },
   "browserslist": [
     "last 3 versions"
   ],
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
   "author": "Asacolips",
   "license": "MIT",
   "private": true,
   "devDependencies": {
     "glob": "^10.3.10",
+    "husky": "^9.0.11",
     "inquirer": "^9.2.15",
+    "lint-staged": "^15.2.2",
+    "prettier": "3.2.5",
     "prompt": "^1.3.0",
     "renamer": "^5.0.0",
     "replace": "^1.2.2",

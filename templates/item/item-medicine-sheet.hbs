@@ -1,18 +1,26 @@
-<form class="{{cssClass}}" autocomplete="off">
+<form class="{{ cssClass }}" autocomplete="off">
   <header class="sheet-header">
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
     <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+      <h1 class="charname">
+        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+      </h1>
     </div>
   </header>
-<table style="width:200px;">
-<tr><td>Cost</td><td>Load</td><td>Qty</td></tr>
-<tr>
-<td><input type="number" name="system.base-cost.value" value="{{system.base-cost.value}}" /></td>
-<td><input type="number" name="system.load.value" value="{{system.load.value}}" /></td>
-<td><input type="number" name="system.quantity" value="{{system.quantity}}" /></td>
-</tr>
-</table>
+  <table style="width: 200px">
+    <tr>
+      <td>Cost</td>
+      <td>Load</td>
+      <td>Qty</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="number" name="system.base-cost.value" value="{{ system.base - cost.value }}" />
+      </td>
+      <td><input type="number" name="system.load.value" value="{{ system.load.value }}" /></td>
+      <td><input type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
+    </tr>
+  </table>
 
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
@@ -22,15 +30,13 @@
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
-
     {{!-- Description Tab --}}
     <div class="tab" data-group="primary" data-tab="description">
       {{editor system.description target="system.description"  button=true engine="prosemirror" collaborate=false}}
     </div>
- {{!-- Effects Tab --}}
+    {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">
       {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
-    </div>	
-
+    </div>
   </section>
 </form>
