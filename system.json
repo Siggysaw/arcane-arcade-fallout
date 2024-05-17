@@ -5,11 +5,7 @@
     
   "authors": [
     {
-        "name": "Vera",
-        "discord": "veraa_m"
-    },
-    {
-      "name": "Sig",
+      "name": "Fallout TTRPG Dev Team",
       "discord": "SigSaw"
     }
   ],
@@ -106,8 +102,7 @@
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       },
-      "flags": {},
-      "package": "world"
+      "flags": {}
     },    {
       "label": "Enemies",
       "type": "Actor",
