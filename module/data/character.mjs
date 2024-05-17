@@ -41,6 +41,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     schema.race = new fields.StringField({ initial: "", blank: true })
     schema.xp = new fields.NumberField({ initial: 0, min: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0, min: 0 })
+    schema.groupSneak = new fields.NumberField({ initial: 0, min: 0 })
+    schema.combatSequence = new fields.NumberField({ initial: 0, min: 0 })	
     schema.passiveSense = new fields.NumberField({
       ...requiredInteger,
       initial: 0
