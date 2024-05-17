@@ -10,7 +10,7 @@
 <table>
 <tr><td><table class="foodanddrinks"> 
  {{#each foodAnddrinks as |item id|}}
- <tr><td class="label">{{item.name}}</td><td>{{{item.system.description}}}</td><td>({{system.quantity}})</td>
+ <tr><td><span class="label" style="margin-right:5px;">{{item.name}}</span> ({{system.quantity}})</td><td>{{{item.system.description}}}</td>
 	<td> 
 	<li class='item flexrow' data-item-id='{{item._id}}'>
 	<div class='item-controls'>
