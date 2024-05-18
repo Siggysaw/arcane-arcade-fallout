@@ -1,8 +1,10 @@
-<form class="{{cssClass}}" autocomplete="off">
+<form class="{{ cssClass }}" autocomplete="off">
   <header class="sheet-header">
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
     <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+      <h1 class="charname">
+        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+      </h1>
     </div>
   </header>
 
@@ -14,7 +16,6 @@
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
-
     {{!-- Description Tab --}}
     <div class="tab" data-group="primary" data-tab="description">
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
@@ -25,7 +26,12 @@
       {{!-- As you add new fields, add them in here! --}}
       <div class="resource">
         <label class="resource-label">Spell Level</label>
-        <input type="text" name="system.spellLevel" value="{{system.spellLevel}}" data-dtype="Number"/>
+        <input
+          type="text"
+          name="system.spellLevel"
+          value="{{ system.spellLevel }}"
+          data-dtype="Number"
+        />
       </div>
     </div>
   </section>

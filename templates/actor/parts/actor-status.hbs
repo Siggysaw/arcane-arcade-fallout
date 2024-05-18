@@ -1,96 +1,157 @@
 <style>
-	.specialroll {
-		text-transform: uppercase;
-	}
+  .specialroll {
+    text-transform: uppercase;
+  }
 </style>
 
 <table class="status-block">
-	<tr>
-		<td class="skill-table">
-			<table>
-				<tr>
-					{{#each system.skills as |skill key|}}
-				<tr>
-					<td>
-						{{#each skill.ability as |ability|}}
-						<p class="specialroll">
-							<label for="{{ability}}" class="resource-label rollable" data-rollable
-								data-roll="d20+{{skill.value}}+{{../../system.abilities.ability.mod}}-{{../../system.penaltyTotal}}"
-								data-label="{{actor.name}} performed a {{skill.label}} roll using {{ability}}">
-								{{ability}}
-							</label>
-						</p>
-						{{/each}}
-					</td>
-					<td class="skill-label">{{skill.label}}</td>
-					<td class="skill-value">
-						<input
-							type="number"
-							name="system.skills.{{key}}.value"
-							value="{{skill.value}}"
-						/>
-					</td>
-				</tr>
-				{{/each}}
-			</table>
-		</td>
-		<td class="status-table">
-			<table>
-				<tr>
-					<td class="status-info-label">Hunger Lvl</td>
-					<td class="status-info-label">Dehydration Lvl</td>
-					<td class="status-info-label">Exhaustion Lvl</td>
-					<td class="status-info-label"><span class="rollable" data-rollable
-							data-roll="d20-{{system.roll-penalties.value}}"
-							data-label="Radiation DC Check: Roll over {{system.radDC.value}} to succeed">Radiation
-							DC</span></td>
-					<td class="status-info-label">Radiation Lvl</td>
-				</tr>
-				<tr>
-					<td class="status-info-value"><input type="number" name="system.penalties.hunger.value"
-							value="{{system.penalties.hunger.value}}" min=0 /></td>
-					<td class="status-info-value"><input type="number" name="system.penalties.dehydration.value"
-							value="{{system.penalties.dehydration.value}}" min=0 /></td>
-					<td class="status-info-value"><input type="number" name="system.penalties.exhaustion.value"
-							value="{{system.penalties.exhaustion.value}}" min=0 /></td>
-					<td class="status-info-value"><input type="number" name="system.penalties.radDC.value"
-							value="{{system.penalties.radDC.value}}" min=0 /></td>
-					<td class="status-info-value"><input type="number" name="system.penalties.radiation.value"
-							value="{{system.penalties.radiation.value}}" min=0 /></td>
-				</tr>
-			</table>
-			<br>
-			<table>
-				<tr>
-					<td>Healing Rate</td>
-					<td>Combat Sequence</td>
-					<td>Fatigue</td>
-				</tr>
-				<tr>
-					<td><input type="number" name="system.healingRate" value="{{system.healingRate}}"/></td>
-					<td><input type="number" name="system.combatSequence" value="{{system.combatSequence}}"/></td>
-					<td><input type="number" name="system.penalties.fatigue.value"
-							value="{{system.penalties.fatigue.value}}"/></td>
-				</tr>
-				<tr>
-					<td>Passive Sense</td>
-					<td>Party Nerve</td>
-					<td>Group Sneak</td>
-				</tr>
-				<tr>
-					<td><input type="number" name="system.passiveSense" value="{{system.passiveSense}}"/></td>
-					<td><input type="number" name="system.partyNerve" value="{{system.partyNerve}}"/></td>
-					<td><input type="number" name="system.groupSneak" value="{{system.groupSneak}}"/></td>
-				</tr>
-				<tr>
-					<td colspan=4><img id="vault-boy-status"
-							style="width:auto;height:250px;display:block;margin:auto;border:none;"
-							src='/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png'></td>
-				</tr>
-				<tr>
-					<td colspan=999>Total Penalties: {{system.penaltyTotal}}</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
+  <tr>
+    <td class="skill-table">
+      <table>
+        <tr>
+          {{#each system.skills as |skill key|}}
+        </tr>
+
+        <tr>
+          <td>
+            {{#each skill.ability as |abilityKey|}}
+
+            <p class="specialroll">
+              <label
+                for="{{ abilityKey }}"
+                class="resource-label rollable"
+                data-rollable
+                data-roll="d20+{{
+                  skill.value
+                }}+{{#with (lookup ../../system.abilities [abilityKey])}} {{
+                  mod
+                }} {{/with}}-{{../../system.penaltyTotal}}"
+                data-label="Performed a {{
+                  skill.label
+                }} roll using {{#with (lookup ../../system.abilities [abilityKey])}} {{
+                  label
+                }} {{/with}}"
+              >
+                {{ abilityKey }}
+              </label>
+            </p>
+            {{/each}}
+          </td>
+          <td class="skill-label">{{ skill.label }}</td>
+          <td class="skill-value">
+            <input type="number" name="system.skills.{{ key }}.value" value="{{ skill.value }}" />
+          </td>
+        </tr>
+        {{/each}}
+      </table>
+    </td>
+    <td class="status-table">
+      <table>
+        <tr>
+          <td class="status-info-label">Hunger Lvl</td>
+          <td class="status-info-label">Dehydration Lvl</td>
+          <td class="status-info-label">Exhaustion Lvl</td>
+          <td class="status-info-label">
+            <span
+              class="rollable"
+              data-rollable
+              data-roll="d20-{{ penaltyTotal }}"
+              data-label="Radiation DC Check: Roll over {{ system.radDC.value }} to succeed"
+              >Radiation DC</span
+            >
+          </td>
+          <td class="status-info-label">Radiation Lvl</td>
+        </tr>
+        <tr>
+          <td class="status-info-value">
+            <input
+              type="number"
+              name="system.penalties.hunger.value"
+              value="{{ system.penalties.hunger.value }}"
+              min="0"
+            />
+          </td>
+          <td class="status-info-value">
+            <input
+              type="number"
+              name="system.penalties.dehydration.value"
+              value="{{ system.penalties.dehydration.value }}"
+              min="0"
+            />
+          </td>
+          <td class="status-info-value">
+            <input
+              type="number"
+              name="system.penalties.exhaustion.value"
+              value="{{ system.penalties.exhaustion.value }}"
+              min="0"
+            />
+          </td>
+          <td class="status-info-value">
+            <input
+              type="number"
+              name="system.penalties.radDC.value"
+              value="{{ system.penalties.radDC.value }}"
+              min="0"
+            />
+          </td>
+          <td class="status-info-value">
+            <input
+              type="number"
+              name="system.penalties.radiation.value"
+              value="{{ system.penalties.radiation.value }}"
+              min="0"
+            />
+          </td>
+        </tr>
+      </table>
+      <br />
+      <table>
+        <tr>
+          <td>Healing Rate</td>
+          <td>Combat Sequence</td>
+          <td>Fatigue</td>
+        </tr>
+        <tr>
+          <td>
+            <input type="number" name="system.healingRate" value="{{ system.healingRate }}" />
+          </td>
+          <td>
+            <input type="number" name="system.combatSequence" value="{{ system.combatSequence }}" />
+          </td>
+          <td>
+            <input
+              type="number"
+              name="system.penalties.fatigue.value"
+              value="{{ system.penalties.fatigue.value }}"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Passive Sense</td>
+          <td>Party Nerve</td>
+          <td>Group Sneak</td>
+        </tr>
+        <tr>
+          <td>
+            <input type="number" name="system.passiveSense" value="{{ system.passiveSense }}" />
+          </td>
+          <td><input type="number" name="system.partyNerve" value="{{ system.partyNerve }}" /></td>
+          <td><input type="number" name="system.groupSneak" value="{{ system.groupSneak }}" /></td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <img
+              id="vault-boy-status"
+              style="width: auto; height: 250px; display: block; margin: auto; border: none"
+              src="/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="999">Total Penalties: {{ system.penaltyTotal }}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
 </table>
