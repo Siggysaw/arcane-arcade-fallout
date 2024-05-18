@@ -1,5 +1,3 @@
-2024/05/18-14:41:45.273 7724 Log #271: 0 ops saved to Table #272 OK
-2024/05/18-14:41:45.274 7724 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\perks/000271.log: OK
-2024/05/18-14:41:45.274 7724 Table #245: 174 entries OK
-2024/05/18-14:41:45.278 7724 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\perks/MANIFEST-000270: OK
-2024/05/18-14:41:45.284 7724 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\perks; recovered 1 files; 69605 bytes. Some data may have been lost. ****
+2024/05/18-17:45:50.035 22c8 Recovering log #290
+2024/05/18-17:45:50.044 22c8 Delete type=0 #290
+2024/05/18-17:45:50.044 22c8 Delete type=3 #289

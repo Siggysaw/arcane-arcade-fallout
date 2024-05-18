@@ -1,22 +1,28 @@
 {
- "name": "{{name}}",
+  "name": "{{name}}",
   "type": "npc",
   "img": "systems/arcane-arcade-fallout/assets/enemies/{{name}}.png",
   "system": {
+    "biography": "",
+    "health": {
+      "value": "{{health}}",
+      "min": 0,
+      "max": "{{health}}"
+    },
     "stamina": {
       "value": "{{stamina}}",
       "min": 0,
       "max": "{{stamina}}"
     },
-"health": {
-      "value": "{{health}}",
-      "min": 0,
-      "max": "{{health}}"
-    },	
     "actionPoints": {
       "value": "{{actionPoints}}",
       "min": 0,
       "max": "{{actionPoints}}"
+    },
+    "karmaCaps": {
+      "value": 1,
+      "min": 0,
+      "max": 1
     },
     "abilities": {
       "str": {
@@ -59,105 +65,126 @@
       "barter": {
         "ability": [],
         "value": "{{barter}}",
-        "mod": 0,
         "label": "Barter"
       },
       "breach": {
         "ability": [],
         "value": "{{breach}}",
-        "mod": 0,
         "label": "Breach"
       },
       "crafting": {
         "ability": [],
         "value": "{{crafting}}",
-        "mod": 0,
         "label": "Crafting"
       },
       "energy_weapons": {
         "ability": [],
         "value": "{{energyWeapons}}",
-        "mod": 0,
         "label": "Energy Weapons"
       },
       "explosives": {
         "ability": [],
         "value": "{{explosives}}",
-        "mod": 0,
         "label": "Explosives"
       },
       "guns": {
         "ability": [],
         "value": "{{guns}}",
-        "mod": 0,
         "label": "Guns"
       },
       "intimidation": {
         "ability": [],
         "value": "{{intimidation}}",
-        "mod": 0,
         "label": "Intimidation"
       },
       "medicine": {
         "ability": [],
         "value": "{{medicine}}",
-        "mod": 0,
         "label": "Medicine"
       },
       "melee_weapons": {
         "ability": [],
         "value": "{{meleeWeapons}}",
-        "mod": 0,
         "label": "Melee Weapons"
       },
       "science": {
         "ability": [],
         "value": "{{science}}",
-        "mod": 0,
         "label": "Science"
       },
       "sneak": {
         "ability": [],
         "value": "{{sneak}}",
-        "mod": 0,
         "label": "Sneak"
       },
       "speech": {
         "ability": [],
         "value": "{{speech}}",
-        "mod": 0,
         "label": "Speech"
       },
       "survival": {
         "ability": [],
         "value": "{{survival}}",
-        "mod": 0,
         "label": "Survival"
       },
       "unarmed": {
         "ability": [],
         "value": "{{unarmed}}",
-        "mod": 0,
         "label": "Unarmed"
       }
+    },
+    "armorClass": {
+      "value": "{{armorClass}}",
+      "min": 0
     },
     "damageThreshold": {
       "value": "{{damageThreshold}}",
       "min": 0
-    },    
-	"armorClass": {
-      "value": "{{armorClass}}",
-      "min": 0
+    },
+    "caps": 0,
+    "level": 1,
+    "penalties": {
+      "hunger": {
+        "label": "",
+        "value": 0
+      },
+      "dehydration": {
+        "label": "",
+        "value": 0
+      },
+      "exhaustion": {
+        "label": "",
+        "value": 0
+      },
+      "radDC": {
+        "label": "",
+        "value": 0
+      },
+      "radiation": {
+        "label": "",
+        "value": 0
+      },
+      "fatigue": {
+        "label": "",
+        "value": 0
+      }
+    },
+    "carryLoad": {
+      "value": 0,
+      "min": 0,
+      "max": 0
     },
     "background": "{{background}}",
     "race": "{{race}}",
-    "combatSequence": 0,
+    "xp": 0,
     "healingRate": "{{healingRate}}",
-    "passiveSense": "{{passiveSense}}",
+    "combatSequence": 1,
+    "npcPassivesense": "{{passiveSense}}",
     "penaltyTotal": 0,
     "properties": "{{properties}}"
-    },  "prototypeToken": {
-    "name": "NPCNAME",
+  },
+  "prototypeToken": {
+    "name": "{{name}}",
     "displayName": 0,
     "actorLink": false,
     "appendNumber": false,
@@ -168,16 +195,74 @@
       "scaleY": 1,
       "offsetX": 0,
       "offsetY": 0,
-      "rotation": 0,
-      "tint": null
+      "rotation": 0
+    },
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": -1,
+    "displayBars": 0,
+    "bar1": {
+      "attribute": "health"
+    },
+    "bar2": {
+      "attribute": "power"
+    },
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "sight": {
+      "enabled": false,
+      "range": 0,
+      "angle": 360,
+      "visionMode": "basic",
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": [],
+    "flags": {},
+    "randomImg": false
+  },
+  "items": [],
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "exportSource": {
+      "world": "fallout-ttrpg",
+      "system": "arcane-arcade-fallout",
+      "coreVersion": "11.315",
+      "systemVersion": "1.0.0"
     }
-	},
+  },
   "_stats": {
     "systemId": "arcane-arcade-fallout",
     "systemVersion": "1.0.0",
     "coreVersion": "11.315",
-    "createdTime": 1715978735828,
-    "modifiedTime": 1715978754373,
+    "createdTime": 1716065004017,
+    "modifiedTime": 1716066084751,
     "lastModifiedBy": "gzYpjX3Fqlrk2eh5"
   }
 }
