@@ -1,4 +1,6 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# .husky/pre-commit
 
-npx lint-staged
+# Your WIP script
+# ...
+
+exit 1
