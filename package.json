@@ -6,20 +6,15 @@
     "build": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --no-source-map",
     "watch": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --source-map --watch",
     "generate": "node src/generate-falloutzero-system.mjs",
-    "check-format": "prettier --check .",
-    "check-lint": "eslint . --ext mjs --ext js",
-    "format": "prettier --write .",
-    "prepare": "husky init",
+    "prepare": "husky init && husky install",
     "pre-commit": "lint-staged"
   },
   "browserslist": [
     "last 3 versions"
   ],
   "lint-staged": {
-    "**/*.{mjs,hbs}": [
-      "eslint",
-      "prettier --write"
-    ]
+    "*.{js,mjs}": "eslint --cache --fix",
+    "*.{js,css,md,hbs}": "prettier --write"
   },
   "author": "Asacolips",
   "license": "MIT",
