@@ -28,9 +28,6 @@
     "sass": "^1.53.0"
   },
   "lint-staged": {
-    "*.{js,mjs}": [
-      "eslint --quiet --fix"
-    ],
     "*.{js,mjs,hbs}": [
       "prettier --write --ignore-unknown"
     ]
