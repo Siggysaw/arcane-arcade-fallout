@@ -58,6 +58,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     for (const key in this.penalties) {
       this.penalties[key].label = FALLOUTZERO.penalties[key]
     }
+	for (const item in this.items) {
+      const allItems = this.items[item].name + allItems
+    }
     this.penalties.radDC.value = 12 - this.abilities['end'].mod
     this.carryLoad.max = this.abilities['str'].value * 10
     this.healingRate = Math.floor((this.level + this.abilities['end'].value) / 2)

@@ -4,24 +4,40 @@
   "img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
   "system": {
     "description": "{{properties}}",
-    "load": {
-      "value": "{{load}}"
-    },
-    "quantity": {
-      "value": 1
-    },
-    "cost": {
-      "value": "{{cost}}"
-    },
     "img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
-    "ammotype": {
-      "value": "{{title}}"
-    },
-    "qty": {
-      "value": 1
-    }
+    "quantity": 1,
+    "load": "{{load}}",
+    "cost": "{{cost}}",
+    "type": "{{title}}"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Load Increase",
+      "icon": "icons/svg/aura.svg",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "changes": [
+        {
+          "key": "system.carryLoad.value",
+          "mode": 2,
+          "value": "{{load}}"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null
+    }
+  ],
   "folder": null,
   "flags": {
     "core": {},

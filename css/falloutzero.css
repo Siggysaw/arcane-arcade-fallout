@@ -368,8 +368,7 @@
   border: none;
 }
 .window-app .window-content, 
-.window-app .window-content .dialog option,
-.dialog optgroup,.sheet ul{
+.window-app .window-content .dialog option{
 	background-image:url("/systems/arcane-arcade-fallout/assets/pipboy_75.png") ;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -377,8 +376,7 @@
 }
 .dialog option,
 .dialog optgroup,
-.window-app .dialog ul,
-.sheet ul {
+.window-app .dialog ul{
 	background-color:#1D5427;
 }
 .window-app .window-content input,
@@ -543,4 +541,7 @@ table,tr,td, .sheet img{
 }
 :root {
 	--color-bg-option: #1D5427;
+}
+.window-content :root{
+	--color-bg-option: none;	
 }
