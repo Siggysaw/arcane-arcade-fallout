@@ -1,57 +1,57 @@
-﻿title,cost,ap,damage,criticaldv,criticalbonus,special,ammo,load,strreq
-Shiv,65,4,1d4,20, x2,Fragile.,,1,1
-Knife,200,4,1d6,20, x3,"Thrown, x3/x6.",,2,2
-Switchblade,120,4,1d6,20, x2,"Fragile, Weighted.",,2,1
-Sharpened Pole,85,4,1d4,20, x3,"Fragile, Reach, Thrown: x6/x10.",,4,2
-Combat Knife,220,4,2d4,20, x3 Applies bleeding,"Thrown, x3/x8.",,3,2
-Throwing Knife,80,4,1d4,20, x3 Applies bleeding,"Fragile. Thrown, x4/x8. If thrown, damage die increases to 1d6.",,2,2
-Spear,140,4,1d10,20, x2,"Reach, Thrown: x6/x10.",,2,2
-Sword,195,4,2d6,20, x2,Defensive.,,4,3
-Plastic Bumper Sword,265,6,3d6,20, x3,Two Handed. Cleave. Reach.,,10,8
-Steel Bumper Sword,415,6,10d6,20, x3,Two Handed. Slow. Always Cleaves. Weighted. Reach.,,30,10
-Cleaver,175,5,1d6,20, x3,Debilitating. Weighted.,,2,4
-Fire Axe,270,6,2d10,20, x3,"Two Handed, Weighted, Sturdy.",,5,6
-Hatchet,200,4,2d6,20, x3,Thrown: x4/x8.,,2,4
-Machete,165,4,2d4,20, x3 Bleeding,Sturdy.,,3,4
-Assaultron Blade,225,5,3d4,20, x3 Bleeding,Sturdy. Defensive.,,4,5
-Mr. Handy buzz blade,220,5,1d10,20, x3,Weighted. Mangle.,,4,5
-Guitar Sword,160,5,1d8,20, x3,Defensive. The first six times the weapon gains a level of decay you take 1 damage.,,5,5
-Sickle,130,4,1d8,19, 20 Applies bleeding,Defensive. Debilitating.,,2,2
-Ski Sword,210,4,2d4,20, x4,"Defensive. Sturdy. If you have two, you can ski.",,4,5
-Pickaxe,265,6,3d6,20, x3,Two Handed. Weighted. Sturdy.,,6,6
-Pitchfork,290,5,4d4,20, x3,Reach. Debilitating.,,5,3
-Police Baton,105,4,1d6,20, 1d6,Sturdy.,,2,1
-Wrench,140,4,2d4,20, 4d4,Sturdy.,,3,2
-Crowbar,335,6,2d10,20, 4d10,Weighted. Durable. Defensive. Two Handed.,,18,6
-Sledgehammer,215,6,1d12,20, 3d12 Dazed,Sturdy. Weighted. Two Handed.,,22,7
-Baseball Bat,200,5,3d4,20, 2d4 push back 5 ft,Weighted. Sturdy. Defensive. Two Handed.,,4,4
-Super Sledge,310,6,3d12,20, 3d12 Dazed,Weighted. Two Handed.,,26,8
-9 iron,130,5,1d8,20,1d6 Prone,Weighted. Two Handed.,,4,3
-Dress cane,115,4,1d4,20,3d4 Prone,Defensive.,,2,2
-Lead pipe,130,5,1d8,20, 1d6,Sturdy. Defensive.,,6,5
-Rolling pin,125,4,1d6,20, 2d6,Weighted. Breakable. Defensive.,,3,4
-Shovel,255,4,3d4,20, x3,Weighted. Two Handed. Defensive.,,8,4
-Tire iron,100,4,1d6,20, 1d4 Prone,Weighted.,,2,2
-Pool cue,125,5,1d6,20, 3d6,Weighted. Breakable. Two Handed,,2,3
-Bone Club,145,4,1d8,20, 1d6,Debilitating. Sturdy.,,2,4
-Commie Whacker,15,4,1d1,20,+2,"If the target admits they are a communist, the weapon always critically hits.",,2,1
-Paddle Ball,11,2,1d1,20,+1,Fragile.,,1,2
-Board,115,4,1d8,20, 1d8,Weighted. Breakable. Two Handed.,,10,5
-Board with a nail,125,4,1d8 + 1,20, 1d8,Weighted. Breakable. Two Handed.,,10,5
-Protest Sign,50,5,1d4,20, Pushed back 5 feet,Two Handed. Breakable.,,6,3
-Stop Sign,350,6,5d8,20, x3,Two Handed. Slow. Reach.  Applies Dazed,,45,9
-War Drum,100,4,1d10,20, 1d10 Deafens for 1 round,Two Handed. Breakable.,,8,6
-Cattle Prod,210,4,1d4 ,20,Dazed,1d4 bludgeon AND 2d8 electricity | Depleted: 1d4 bludgeoning. ,"Energy Cells, 10 rounds.",3,3
-Ripper,410,3,3d8,20,1d8,Debilitating. Mangle ,1 Energy Cell =  10 rounds,4,6
-Chainsaw,670,6,6d8,20,3d8,Debilitating. Two-Handed. Mangle. | Depleted: 1d8 bludgeoning.,Energy Cell 5 rounds.,20,8
-Drill,190,4,1d8,19, Applies bleeding.,Debilitating. Mangle.,,5,5
-Plasma Cutter,750,5,4d8,20, Applies severe arm or leg condition.,Dismember.,,8,5
-Shishkebab,690,4,"2d6 slashing, 2d6 fire.",20, x2. Applies Burning.,Debilitating. Dismember.Defensive. .,"Flamer fuel, 10 rounds",6,5
-Brass Knuckles,150,4,1d4 + 1,20, 4d4.,Unarmed. Durable. Weighted.,,3,5
-Spiked Knuckles,120,4,1d4 + 1,19, Applies bleeding.,Unarmed.,,2,4
-Boxing Gloves,115,4,1d4,20, 1d4. Applies dazed.,Defensive. Sturdy. Unarmed.,,4,3
-Bear Skull Arm,190,6,3d6,20, x2 Applies bleeding.,Unarmed. Debilitating. Defensive.,,10,5
-Deathclaw Gauntlet,280,6,3d12,20, 1d12.,Unarmed. Debilitating. Mangle. Defensive.,,6,5
-Hunting Trap Fist,265,5,4d4,20, x2.,Clasp. Debilitating.Defensive. Mangle. Unarmed.,,20,8
-Bear Trap Fist,320,6,3d12,20, x2.,Clasp. Debilitating.Defensive. Mangle. Unarmed.,,40,10
-Power Fist,350,4,4d6,20, x2 Prone or knockback 15 feet.,Unarmed. Debilitating. Weighted. | Depleted: 1d6 bludgeoning.,Energy Cell 20 Rounds,10,6
+﻿title,type,cost,ap,damage,criticaldv,criticalbonus,special,ammo,load,strreq
+Shiv,piercing,65,4,1d4,20, x2,Fragile.,,1,1
+Knife,piercing/slashing,200,4,1d6,20, x3,"Thrown, x3/x6.",,2,2
+Switchblade,piercing/slashing,120,4,1d6,20, x2,"Fragile, Weighted.",,2,1
+Sharpened Pole,piercing/slashing,85,4,1d4,20, x3,"Fragile, Reach, Thrown: x6/x10.",,4,2
+Combat Knife,piercing/slashing,220,4,2d4,20, x3 Applies bleeding,"Thrown, x3/x8.",,3,2
+Throwing Knife,piercing,80,4,1d4,20, x3 Applies bleeding,"Fragile. Thrown, x4/x8. If thrown, damage die increases to 1d6.",,2,2
+Spear,piercing/slashing,140,4,1d10,20, x2,"Reach, Thrown: x6/x10.",,2,2
+Sword,piercing/slashing,195,4,2d6,20, x2,Defensive.,,4,3
+Plastic Bumper Sword,slashing,265,6,3d6,20, x3,Two Handed. Cleave. Reach.,,10,8
+Steel Bumper Sword,slashing,415,6,10d6,20, x3,Two Handed. Slow. Always Cleaves. Weighted. Reach.,,30,10
+Cleaver,slashing,175,5,1d6,20, x3,Debilitating. Weighted.,,2,4
+Fire Axe,slashing,270,6,2d10,20, x3,"Two Handed, Weighted, Sturdy.",,5,6
+Hatchet,piercing,200,4,2d6,20, x3,Thrown: x4/x8.,,2,4
+Machete,slashing,165,4,2d4,20, x3 Bleeding,Sturdy.,,3,4
+Assaultron Blade,piercing/slashing,225,5,3d4,20, x3 Bleeding,Sturdy. Defensive.,,4,5
+Mr. Handy buzz blade,slashing,220,5,1d10,20, x3,Weighted. Mangle.,,4,5
+Guitar Sword,slashing,160,5,1d8,20, x3,Defensive. The first six times the weapon gains a level of decay you take 1 damage.,,5,5
+Sickle,piercing,130,4,1d8,19, 20 Applies bleeding,Defensive. Debilitating.,,2,2
+Ski Sword,slashing,210,4,2d4,20, x4,"Defensive. Sturdy. If you have two, you can ski.",,4,5
+Pickaxe,piercing,265,6,3d6,20, x3,Two Handed. Weighted. Sturdy.,,6,6
+Pitchfork,piercing/slashing,290,5,4d4,20, x3,Reach. Debilitating.,,5,3
+Police Baton,bludgeoning,105,4,1d6,20, 1d6,Sturdy.,,2,1
+Wrench,bludgeoning,140,4,2d4,20, 4d4,Sturdy.,,3,2
+Crowbar,bludgeoning,335,6,2d10,20, 4d10,Weighted. Durable. Defensive. Two Handed.,,18,6
+Sledgehammer,bludgeoning,215,6,1d12,20, 3d12 Dazed,Sturdy. Weighted. Two Handed.,,22,7
+Baseball Bat,bludgeoning,200,5,3d4,20, 2d4 push back 5 ft,Weighted. Sturdy. Defensive. Two Handed.,,4,4
+Super Sledge,bludgeoning,310,6,3d12,20, 3d12 Dazed,Weighted. Two Handed.,,26,8
+9 iron,bludgeoning,130,5,1d8,20,1d6 Prone,Weighted. Two Handed.,,4,3
+Dress cane,bludgeoning,115,4,1d4,20,3d4 Prone,Defensive.,,2,2
+Lead pipe,bludgeoning,130,5,1d8,20, 1d6,Sturdy. Defensive.,,6,5
+Rolling pin,bludgeoning,125,4,1d6,20, 2d6,Weighted. Breakable. Defensive.,,3,4
+Shovel,bludgeoning/slashing,255,4,3d4,20, x3,Weighted. Two Handed. Defensive.,,8,4
+Tire iron,bludgeoning,100,4,1d6,20, 1d4 Prone,Weighted.,,2,2
+Pool cue,bludgeoning,125,5,1d6,20, 3d6,Weighted. Breakable. Two Handed,,2,3
+Bone Club,bludgeoning,145,4,1d8,20, 1d6,Debilitating. Sturdy.,,2,4
+Commie Whacker,bludgeoning,15,4,1d1,20,2,"If the target admits they are a communist, the weapon always critically hits.",,2,1
+Paddle Ball,bludgeoning,11,2,1d1,20,1,Fragile.,,1,2
+Board,bludgeoning,115,4,1d8,20, 1d8,Weighted. Breakable. Two Handed.,,10,5
+Board with a nail,bludgeoning,125,4,1d8 + 1,20, 1d8,Weighted. Breakable. Two Handed.,,10,5
+Protest Sign,bludgeoning,50,5,1d4,20, Pushed back 5 feet,Two Handed. Breakable.,,6,3
+Stop Sign,bludgeoning,350,6,5d8,20, x3,Two Handed. Slow. Reach.  Applies Dazed,,45,9
+War Drum,bludgeoning,100,4,1d10,20, 1d10 Deafens for 1 round,Two Handed. Breakable.,,8,6
+Cattle Prod,electric/bludgeoning,210,4,See Description,20,Dazed,1d4 bludgeon AND 2d8 electricity | Depleted: 1d4 bludgeoning. ,"Energy Cells, 10 rounds.",3,3
+Ripper,slashing,410,3,3d8,20,1d8,Debilitating. Mangle ,1 Energy Cell =  10 rounds,4,6
+Chainsaw,slashing,670,6,6d8,20,3d8,Debilitating. Two-Handed. Mangle. | Depleted: 1d8 bludgeoning.,Energy Cell 5 rounds.,20,8
+Drill,slashing,190,4,1d8,19, Applies bleeding.,Debilitating. Mangle.,,5,5
+Plasma Cutter,plasma,750,5,4d8,20, Applies severe arm or leg condition.,Dismember.,,8,5
+Shishkebab,slashing/fire,690,4,"2d6 slashing, 2d6 fire.",20, x2. Applies Burning.,Debilitating. Dismember.Defensive. .,"Flamer fuel, 10 rounds",6,5
+Brass Knuckles,bludgeoning,150,4,1d4 + 1,20, 4d4.,Unarmed. Durable. Weighted.,,3,5
+Spiked Knuckles,piercing,120,4,1d4 + 1,19, Applies bleeding.,Unarmed.,,2,4
+Boxing Gloves,bludgeoning,115,4,1d4,20, 1d4. Applies dazed.,Defensive. Sturdy. Unarmed.,,4,3
+Bear Skull Arm,piercing/slashing,190,6,3d6,20, x2 Applies bleeding.,Unarmed. Debilitating. Defensive.,,10,5
+Deathclaw Gauntlet,slashing,280,6,3d12,20, 1d12.,Unarmed. Debilitating. Mangle. Defensive.,,6,5
+Hunting Trap Fist,piercing,265,5,4d4,20, x2.,Clasp. Debilitating.Defensive. Mangle. Unarmed.,,20,8
+Bear Trap Fist,piercing,320,6,3d12,20, x2.,Clasp. Debilitating.Defensive. Mangle. Unarmed.,,40,10
+Power Fist,bludgeoning,350,4,4d6,20, x2 Prone or knockback 15 feet.,Unarmed. Debilitating. Weighted. | Depleted: 1d6 bludgeoning.,Energy Cell 20 Rounds,10,6

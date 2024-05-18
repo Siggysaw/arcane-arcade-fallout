@@ -207,19 +207,19 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="rollable resource-label" data-weapon-roll data-weapon-id="{{item._id}}">
-                                            {{item.apCost}}
+                                        <label class="rollable resource-label" data-weapon-roll data-weapon-id="{{system._id}}">
+                                            {{system.apCost}}
                                         </label>
                                     </td>
                                     <td>
-                                        <label class="rollable resource-label" data-rollable data-label="OUCH! DMG from a {{item.name}}" data-roll="{{item.damage.formula}}">
-                                            {{item.damage.formula}}
+                                        <label class="rollable resource-label" data-rollable data-label="OUCH! DMG from a {{system.name}}" data-roll="{{system.damage.formula}}">
+                                            {{system.damage.formula}}
                                         </label>
                                     </td>
-                                    <td>{{item.critical.dice}}</td>
-                                    <td>{{item.critical.bonus}}</td>
-                                    <td>{{item.load}}</td>
-                                    <td>{{item.strengthRequirement}}</td>
+                                    <td>{{system.critical.dice}}</td>
+                                    <td>{{system.critical.bonus}}</td>
+                                    <td>{{system.load}}</td>
+                                    <td>{{system.strengthRequirement}}</td>
                                 </tr>
                             </table>
                             <table class="equipped-stats">
@@ -227,8 +227,8 @@
                                     <td>Type</td>
                                     <td>Rounds</td>
                                 </tr>
-                                <tr>
-                                    <td>{{item.ammo.capacity.value}}</td>
+                                <tr><td>{{system.ammo.type}}</td>
+                                    <td>{{system.ammo.capacity.value}}</td>
                                 </tr>
                             </table>
                             <div class='item-controls'>
