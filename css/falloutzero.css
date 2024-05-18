@@ -538,3 +538,9 @@ table,tr,td, .sheet img{
 .allcaps{
 	text-transform:uppercase;
 }
+.sheet table td select{
+	background:none;
+}
+:root {
+	--color-bg-option: #1D5427;
+}

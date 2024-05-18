@@ -116,7 +116,7 @@
       "flags": {},
       "package": "world"
     },    {
-      "label": "rangedWeapons",
+      "label": "Ranged Weapons",
       "type": "Item",
       "name": "rangedweapons",
       "path": "packs/rangedweapons",

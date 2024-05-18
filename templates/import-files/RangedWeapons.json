@@ -1,83 +1,58 @@
 {
   "name": "{{title}}",
-  "type": "rangedweapon",
+  "type": "rangedWeapon",
   "img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
-   "system": {
-    "base-cost": {
-      "value": "{{cost}}"
-    },
-    "AP-cost": {
-      "value": "{{ap}}"
-    },
+  "system": {
+    "img": "systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp",
+    "load": "{{load}}",
+    "cost": "{{cost}}",
+    "apCost": "{{ap}}",
     "damage": {
-      "value": "{{damage}}"
+      "type": "{{type}}",
+      "formula": "{{damage}}"
     },
     "range": {
-      "value": ""
+      "short": "{{shortrange}}",
+      "long": "{{longrange}}"
     },
-    "ranged-critical-dv": {
-      "value": "{{criticalhit}}"
+    "critical": {
+      "dice": "{{criticalhit}}",
+      "bonus": "{{criticaldamage}}",
+      "multiplier": "1",
+      "roll": {
+        "diceNum": 1,
+        "diceSize": "d4"
+      }
     },
-    "ammotype": {
-      "value": "{{type}}"
+    "ammo": {
+      "type": "{{type}}",
+      "capacity": {
+        "value": 0,
+        "min": 0,
+        "max": "{{capacity}}"
+      },
+      "consumes": {
+        "type": [],
+        "amount": 1
+      }
     },
-    "capacity": {
-      "value": "{{capacity}}"
-    },
-    "load": {
-      "value": "{{load}}"
-    },
-    "strengthrequirement": {
-      "value": "{{str}}"
-    },
-    "ranged-critical-bonus": {
-      "value": "{{criticaldamage}}"
-    },
-    "rangedshort": {
-      "value": "{{shortrange}}"
-    },
-    "rangedmedium": {
-      "value": "{{longrange}}"
-    },
-    "rangedlong": {
-      "value": ""
-    },
-"description": "<p>{{special}}</p>"
+    "properties": [],
+    "strengthRequirement": "{{str}}",
+    "abilityMod": "agi",
+    "skillBonus": "guns"
   },
   "effects": [
     {
-      "name": "Load Increase",
+      "name": "New Active Effect",
       "icon": "icons/svg/aura.svg",
-      "origin": "Item.AUI8YIt0qqKIkHwo",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "Ni9Bj7j6IpuZII4o",
       "changes": [
         {
-          "key": "system.current-load.value",
+          "key": "system.carryLoad.value",
           "mode": 2,
           "value": "{{load}}"
         }
-      ],
-      "description": "",
-      "transfer": true,
-      "statuses": [],
-      "flags": {},
-      "tint": null
+      ]
     }
   ],
-  "_stats": {
-    "systemId": "arcane-arcade-fallout",
-    "systemVersion": "1.0.0",
-    "coreVersion": "11.315",
-    "lastModifiedBy": "gzYpjX3Fqlrk2eh5"
-  }
+  "folder": null
 }
