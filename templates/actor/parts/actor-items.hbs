@@ -52,15 +52,25 @@
             </div>
             {{/each}}
         <!-- RangedWeapon Slot -->
-		<table><tr><td>
-			{{#each ammos as |item id|}}
-                <div class='item-controls' style="display:block;margin:auto;">
-                    <a style="float:left;" data-edit data-item-id="{{item._id}}" class='item-control' title='{{localize "DOCUMENT.Update" type="item"}}'>
-                        {{item.name}} ({{system.quantity}}),
-                    </a>
+		<table>
+    <tr>
+        <button class="collapsible allcaps" data-collapsible="true">AMMO</button>
+        <td class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
+            {{#each ammos as |item id|}}
+                <div class='item flexrow' data-item-id='{{item._id}}' style="width:20%;display:block;float:left;margin-left:2%; border:1px solid #ccc; padding: 10px;">
+                    <div class='item-controls' style="display:block;margin:auto;">
+                        <a style="float:left;" data-edit data-item-id="{{item._id}}" class='item-control' title='{{localize "DOCUMENT.Update" type="item"}}'>
+                            {{item.name}} ({{system.quantity}})
+                        </a>
+                        <a style="float:right;margin-right:10px;" class='item-control item-delete' data-item-id="{{item._id}}" title='{{localize "DOCUMENT.Delete" type="item"}}'>
+                            <i class='fas fa-trash'></i>
+                        </a>
+                    </div>
                 </div>
-                {{/each}}
-				</td></tr></table>
+            {{/each}}
+        </td>
+    </tr>
+</table>
 
 				
             {{#each rangedWeapons as |item id|}}
