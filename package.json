@@ -6,7 +6,10 @@
     "build": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --no-source-map",
     "watch": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --source-map --watch",
     "generate": "node src/generate-falloutzero-system.mjs",
-    "prepare": "husky"
+    "check-format": "prettier --check .",
+    "check-lint": "eslint . --ext mjs --ext js",
+    "format": "prettier --write .",
+    "prepare": "husky && husky install"
   },
   "browserslist": [
     "last 3 versions"
@@ -26,7 +29,7 @@
     "eslint": "^9.3.0",
     "eslint-config-prettier": "^9.1.0",
     "glob": "^10.3.10",
-    "husky": "^9.0.11",
+    "husky": "^8.0.0",
     "inquirer": "^9.2.15",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
