@@ -286,8 +286,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
       let roll = new Roll(dataset.roll, this.actor.getRollData())
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: ,
-        rollMode: game.settings.get('core', "rollMode"),
+        flavor: label,
+        rollMode: game.settings.get('core', 'rollMode'),
       })
       return roll
     }

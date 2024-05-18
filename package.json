@@ -9,17 +9,16 @@
     "check-format": "prettier --check .",
     "check-lint": "eslint . --ext mjs --ext js",
     "format": "prettier --write .",
-    "prepare": "husky && husky install"
+    "prepare": "husky init",
+    "pre-commit": "lint-staged"
   },
   "browserslist": [
     "last 3 versions"
   ],
   "lint-staged": {
-    "*.{mjs}": [
-      "eslint --quiet --fix"
-    ],
-    "*.{json,mjs,hbs}": [
-      "prettier --write --ignore-unknown"
+    "**/*.{mjs,hbs}": [
+      "eslint",
+      "prettier --write"
     ]
   },
   "author": "Asacolips",
