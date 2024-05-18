@@ -12,10 +12,10 @@
     "last 3 versions"
   ],
   "lint-staged": {
-    "*.{js, jsx,ts,tsx}": [
+    "*.{mjs}": [
       "eslint --quiet --fix"
     ],
-    "*.{json,js,ts,jsx,tsx,html}": [
+    "*.{json,mjs,hbs}": [
       "prettier --write --ignore-unknown"
     ]
   },
