@@ -153,26 +153,26 @@ export class FalloutZeroActorSheet extends ActorSheet {
       this.actor.system.rollWeapon(weaponId)
     })
 
-    html.on("click", "[data-collapsible]", (ev) => {
-      document.querySelectorAll('.collapsible').forEach(collapsible => {
-        collapsible.addEventListener('click', function() {
-            // Get the item ID
-            const itemId = this.getAttribute('data-item-id');
-            
-            // Find the corresponding collapsible content
-            const content = document.querySelector(`.collapsible-content[data-item-id="${itemId}"]`);
-            
-            // Toggle content visibility
-            if (content) {
-                if (content.style.display === 'none' || content.style.display === '') {
-                    content.style.display = 'table-row';
-                } else {
-                    content.style.display = 'none';
-                }
+    html.on('click', '[data-collapsible]', (ev) => {
+      document.querySelectorAll('.collapsible').forEach((collapsible) => {
+        collapsible.addEventListener('click', function () {
+          // Get the item ID
+          const itemId = this.getAttribute('data-item-id')
+
+          // Find the corresponding collapsible content
+          const content = document.querySelector(`.collapsible-content[data-item-id="${itemId}"]`)
+
+          // Toggle content visibility
+          if (content) {
+            if (content.style.display === 'none' || content.style.display === '') {
+              content.style.display = 'table-row'
+            } else {
+              content.style.display = 'none'
             }
-        });
-    });
-  });
+          }
+        })
+      })
+    })
 
     // Render the item sheet for viewing/editing prior to the editable check.
     html.on('click', '[data-edit]', (ev) => {
@@ -282,7 +282,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Handle rolls that supply the formula directly.
     if (dataset.roll) {
-      let label = dataset.label ? `[ability] ${dataset.label}` : ''
+      let label = dataset.label || ''
       let roll = new Roll(dataset.roll, this.actor.getRollData())
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
