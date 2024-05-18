@@ -64,14 +64,14 @@
 
 				
             {{#each rangedWeapons as |item id|}}
-            <div style="width:49%;display:block;float:left;margin-left:1%;" class='item flexrow' data-item-id='{{item._id}}'>
+            <div style="width:48%;display:block;float:left;margin-left:2%;" class='item flexrow' data-item-id='{{item._id}}'>
                 <table class="weapontable" style="border:solid 1px;">
                     <tr>
                         <td>
                             <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
                         </td>
                     </tr>
-                    <tr class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
+                    <tr style="display:none;" class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
                         <td>
                             <table class="equipped-stats">
                                 <tr>
@@ -184,14 +184,14 @@
             {{/each}}
             <!-- MeleeWeapons Slot -->
             {{#each meleeWeapons as |item id|}}
-            <div class='item flexrow' data-item-id='{{item._id}}' style="width:100%;">
-                <table>
+		<div style="width:48%;display:block;float:left;margin-left:2%;" class='item flexrow' data-item-id='{{item._id}}'>
+                <table class="weapontable" style="border:solid 1px;">
                     <tr>
                         <td>
-                            <h2 class="collapsible" data-collapsable>{{item.name}}</h2>
+                            <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
                         </td>
                     </tr>
-                    <tr class="collapsible-content">
+                    <tr style="display:none;" class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
                         <td>
                             <table class="equipped-stats">
                                 <tr>
