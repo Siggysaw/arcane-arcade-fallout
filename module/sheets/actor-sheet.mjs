@@ -149,8 +149,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
-      const hasDisadvantage = ev.currentTarget.dataset.disadvantage
-      this.actor.system.rollWeapon(weaponId)
+      const hasDisadvantage = Boolean(ev.currentTarget.dataset.disadvantage)
+      this.actor.system.rollWeapon(weaponId, hasDisadvantage)
     })
 
     html.on('click', '[data-collapsible]', (ev) => {
