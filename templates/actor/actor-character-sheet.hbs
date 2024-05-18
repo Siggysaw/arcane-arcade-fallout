@@ -294,7 +294,7 @@
                     for="system.abilities.{{ key }}.value"
                     class="resource-label rollable flexlarge align-left"
                     data-rollable
-                    data-roll="d20-{{ system.roll - penalties.value }}+@abilities.{{ key }}.mod"
+                    data-roll="d20+{{ ability.mod }}-{{ ../system.penaltyTotal }}"
                     data-label="{{ ability.label }}"
                     >{{ ability.label }}</label
                   >

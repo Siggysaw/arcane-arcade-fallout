@@ -14,18 +14,25 @@
 
         <tr>
           <td>
-            {{#each skill.ability as |ability|}}
+            {{#each skill.ability as |abilityKey|}}
+
             <p class="specialroll">
               <label
-                for="{{ ability }}"
+                for="{{ abilityKey }}"
                 class="resource-label rollable"
                 data-rollable
                 data-roll="d20+{{
                   skill.value
-                }}+{{../../system.abilities.ability.mod}}-{{../../system.penaltyTotal}}"
-                data-label="{{ actor.name }} performed a {{ skill.label }} roll using {{ ability }}"
+                }}+{{#with (lookup ../../system.abilities [abilityKey])}} {{
+                  mod
+                }} {{/with}}-{{../../system.penaltyTotal}}"
+                data-label="{{ actor.name }} performed a {{
+                  skill.label
+                }} roll using {{#with (lookup ../../system.abilities [abilityKey])}} {{
+                  label
+                }} {{/with}}"
               >
-                {{ ability }}
+                {{ abilityKey }}
               </label>
             </p>
             {{/each}}
@@ -48,7 +55,7 @@
             <span
               class="rollable"
               data-rollable
-              data-roll="d20-{{ system.roll - penalties.value }}"
+              data-roll="d20-{{ penaltyTotal }}"
               data-label="Radiation DC Check: Roll over {{ system.radDC.value }} to succeed"
               >Radiation DC</span
             >
