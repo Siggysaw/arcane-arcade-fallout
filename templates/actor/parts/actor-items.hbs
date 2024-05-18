@@ -54,7 +54,7 @@
         <!-- RangedWeapon Slot -->
 		<table><tr><td>
 			{{#each ammos as |item id|}}
-                <div class='item-controls'>
+                <div class='item-controls' style="display:block;margin:auto;">
                     <a style="float:left;" data-edit data-item-id="{{item._id}}" class='item-control' title='{{localize "DOCUMENT.Update" type="item"}}'>
                         {{item.name}} ({{system.quantity}}),
                     </a>
@@ -64,14 +64,14 @@
 
 				
             {{#each rangedWeapons as |item id|}}
-            <div style="width:45%;display:block;float:left;margin-left:20px;" class='item flexrow' data-item-id='{{item._id}}'>
-                <table class="weapontable">
+            <div style="width:48%;display:block;float:left;margin-left:2%;" class='item flexrow' data-item-id='{{item._id}}'>
+                <table class="weapontable" style="border:solid 1px;">
                     <tr>
                         <td>
                             <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
                         </td>
                     </tr>
-                    <tr class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
+                    <tr style="display:table-row;" class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
                         <td>
                             <table class="equipped-stats">
                                 <tr>
@@ -184,14 +184,14 @@
             {{/each}}
             <!-- MeleeWeapons Slot -->
             {{#each meleeWeapons as |item id|}}
-            <div class='item flexrow' data-item-id='{{item._id}}' style="width:100%;">
-                <table>
+		<div style="width:48%;display:block;float:left;margin-left:2%;" class='item flexrow' data-item-id='{{item._id}}'>
+                <table class="weapontable" style="border:solid 1px;">
                     <tr>
                         <td>
-                            <h2 class="collapsible" data-collapsable>{{item.name}}</h2>
+                            <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
                         </td>
                     </tr>
-                    <tr class="collapsible-content">
+                    <tr style="display:table-row;" class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
                         <td>
                             <table class="equipped-stats">
                                 <tr>
@@ -207,19 +207,19 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="rollable resource-label" data-weapon-roll data-weapon-id="{{item._id}}">
-                                            {{item.apCost}}
+                                        <label class="rollable resource-label" data-weapon-roll data-weapon-id="{{system._id}}">
+                                            {{system.apCost}}
                                         </label>
                                     </td>
                                     <td>
-                                        <label class="rollable resource-label" data-rollable data-label="OUCH! DMG from a {{item.name}}" data-roll="{{item.damage.formula}}">
-                                            {{item.damage.formula}}
+                                        <label class="rollable resource-label" data-rollable data-label="OUCH! DMG from a {{system.name}}" data-roll="{{system.damage.formula}}">
+                                            {{system.damage.formula}}
                                         </label>
                                     </td>
-                                    <td>{{item.critical.dice}}</td>
-                                    <td>{{item.critical.bonus}}</td>
-                                    <td>{{item.load}}</td>
-                                    <td>{{item.strengthRequirement}}</td>
+                                    <td>{{system.critical.dice}}</td>
+                                    <td>{{system.critical.bonus}}</td>
+                                    <td>{{system.load}}</td>
+                                    <td>{{system.strengthRequirement}}</td>
                                 </tr>
                             </table>
                             <table class="equipped-stats">
@@ -227,8 +227,8 @@
                                     <td>Type</td>
                                     <td>Rounds</td>
                                 </tr>
-                                <tr>
-                                    <td>{{item.ammo.capacity.value}}</td>
+                                <tr><td>{{system.ammo.type}}</td>
+                                    <td>{{system.ammo.capacity.value}}</td>
                                 </tr>
                             </table>
                             <div class='item-controls'>
@@ -243,10 +243,4 @@
                     </tr>
                 </table>
             </div>
-            <div style="text-align:left;">
                 {{/each}}
-            </div>
-        </td>
-    </tr>
-    <tr>
-</table>

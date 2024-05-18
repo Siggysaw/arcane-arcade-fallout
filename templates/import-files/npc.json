@@ -1,0 +1,183 @@
+{
+ "name": "{{name}}",
+  "type": "npc",
+  "img": "systems/arcane-arcade-fallout/assets/enemies/{{name}}.png",
+  "system": {
+    "stamina": {
+      "value": "{{stamina}}",
+      "min": 0,
+      "max": "{{stamina}}"
+    },
+"health": {
+      "value": "{{health}}",
+      "min": 0,
+      "max": "{{health}}"
+    },	
+    "actionPoints": {
+      "value": "{{actionPoints}}",
+      "min": 0,
+      "max": "{{actionPoints}}"
+    },
+    "abilities": {
+      "str": {
+        "value": "{{str}}",
+        "mod": 0,
+        "label": "Strength"
+      },
+      "per": {
+        "value": "{{per}}",
+        "mod": 0,
+        "label": "Perception"
+      },
+      "end": {
+        "value": "{{end}}",
+        "mod": 0,
+        "label": "Endurance"
+      },
+      "cha": {
+        "value": "{{cha}}",
+        "mod": 0,
+        "label": "Charisma"
+      },
+      "int": {
+        "value": "{{int}}",
+        "mod": 0,
+        "label": "Intelligence"
+      },
+      "agi": {
+        "value": "{{agi}}",
+        "mod": 0,
+        "label": "Agility"
+      },
+      "lck": {
+        "value": "{{lck}}",
+        "mod": 0,
+        "label": "Luck"
+      }
+    },
+    "skills": {
+      "barter": {
+        "ability": [],
+        "value": "{{barter}}",
+        "mod": 0,
+        "label": "Barter"
+      },
+      "breach": {
+        "ability": [],
+        "value": "{{breach}}",
+        "mod": 0,
+        "label": "Breach"
+      },
+      "crafting": {
+        "ability": [],
+        "value": "{{crafting}}",
+        "mod": 0,
+        "label": "Crafting"
+      },
+      "energy_weapons": {
+        "ability": [],
+        "value": "{{energyWeapons}}",
+        "mod": 0,
+        "label": "Energy Weapons"
+      },
+      "explosives": {
+        "ability": [],
+        "value": "{{explosives}}",
+        "mod": 0,
+        "label": "Explosives"
+      },
+      "guns": {
+        "ability": [],
+        "value": "{{guns}}",
+        "mod": 0,
+        "label": "Guns"
+      },
+      "intimidation": {
+        "ability": [],
+        "value": "{{intimidation}}",
+        "mod": 0,
+        "label": "Intimidation"
+      },
+      "medicine": {
+        "ability": [],
+        "value": "{{medicine}}",
+        "mod": 0,
+        "label": "Medicine"
+      },
+      "melee_weapons": {
+        "ability": [],
+        "value": "{{meleeWeapons}}",
+        "mod": 0,
+        "label": "Melee Weapons"
+      },
+      "science": {
+        "ability": [],
+        "value": "{{science}}",
+        "mod": 0,
+        "label": "Science"
+      },
+      "sneak": {
+        "ability": [],
+        "value": "{{sneak}}",
+        "mod": 0,
+        "label": "Sneak"
+      },
+      "speech": {
+        "ability": [],
+        "value": "{{speech}}",
+        "mod": 0,
+        "label": "Speech"
+      },
+      "survival": {
+        "ability": [],
+        "value": "{{survival}}",
+        "mod": 0,
+        "label": "Survival"
+      },
+      "unarmed": {
+        "ability": [],
+        "value": "{{unarmed}}",
+        "mod": 0,
+        "label": "Unarmed"
+      }
+    },
+    "damageThreshold": {
+      "value": "{{damageThreshold}}",
+      "min": 0
+    },    
+	"armorClass": {
+      "value": "{{armorClass}}",
+      "min": 0
+    },
+    "background": "{{background}}",
+    "race": "{{race}}",
+    "combatSequence": 0,
+    "healingRate": "{{healingRate}}",
+    "passiveSense": "{{passiveSense}}",
+    "penaltyTotal": 0,
+    "properties": "{{properties}}"
+    },  "prototypeToken": {
+    "name": "NPCNAME",
+    "displayName": 0,
+    "actorLink": false,
+    "appendNumber": false,
+    "prependAdjective": false,
+    "texture": {
+      "src": "systems/arcane-arcade-fallout/assets/enemies/{{name}}.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "offsetX": 0,
+      "offsetY": 0,
+      "rotation": 0,
+      "tint": null
+    }
+	},
+  "_stats": {
+    "systemId": "arcane-arcade-fallout",
+    "systemVersion": "1.0.0",
+    "coreVersion": "11.315",
+    "createdTime": 1715978735828,
+    "modifiedTime": 1715978754373,
+    "lastModifiedBy": "gzYpjX3Fqlrk2eh5"
+  }
+}

@@ -1,39 +1,52 @@
 {
   "name": "{{title}}",
-  "type": "meleeweapon",
-  "img": "icons/svg/item-bag.svg",
+  "type": "meleeWeapon",
+  "img": "systems/arcane-arcade-fallout/assets/vaultboy/melee-weapon-icon.png",
   "system": {
-    "cost": {
-      "value": "{{cost}}"
-    },
-    "AP": {
-      "value": "{{ap}}"
-    },
+    "description": "<p>{{special}}</p>",
+    "img": "systems/arcane-arcade-fallout/assets/vaultboy/melee-weapon-icon.png",
+    "load": "{{load}}",
+    "cost": "{{cost}}",
+    "apCost": "{{ap}}",
     "damage": {
-      "value": "{{damage}}"
+      "type": "{{type}}",
+      "formula": "{{damage}}"
+    },
+    "range": {
+      "short": 0,
+      "long": 0
     },
     "critical": {
-      "value": "{{criticaldv}}"
-    },
-    "criticaldamage": {
-      "value": "{{criticalbonus}}"
+      "dice": "{{criticaldv}}",
+      "bonus": "{{criticalbonus}}",
+      "multiplier": 1,
+      "roll": {
+        "diceNum": 1,
+        "diceSize": "d4"
+      }
     },
     "ammo": {
-      "value": "{{ammo}}"
-    },	
-    "load": {
-      "value": "{{load}}"
+      "type": "{{ammo}}",
+      "capacity": {
+        "value": 0,
+        "min": 0,
+        "max": 0
+      },
+      "consumes": {
+        "type": [],
+        "amount": 1
+      }
     },
-    "strengthrequirement": {
-      "value": "{{strreq}}"
-    },
-    "description": "<p>{{special}}</p>"
+    "properties": [],
+    "strengthRequirement": "{{strreq}}",
+    "abilityMod": "str",
+    "skillBonus": "melee_weapons"
   },
   "effects": [
     {
-      "name": "Load Increase",
+      "name": "Inventory Effect",
       "icon": "icons/svg/aura.svg",
-      "origin": "Item.da7XdSFLrS19QJ3T",
+      "origin": "Item.DgPDTlOIO8PtesDS",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -44,10 +57,9 @@
         "startTurn": null
       },
       "disabled": false,
-      "_id": "f8wRnPUPhCr3x5My",
       "changes": [
         {
-          "key": "system.current-load.value",
+          "key": "system.currentLoad",
           "mode": 2,
           "value": "{{load}}"
         }
@@ -60,21 +72,12 @@
     }
   ],
   "folder": null,
-  "flags": {
-    "core": {},
-    "exportSource": {
-      "world": "fallout-ttrpg",
-      "system": "arcane-arcade-fallout",
-      "coreVersion": "11.315",
-      "systemVersion": "1.0.0"
-    }
-  },
   "_stats": {
     "systemId": "arcane-arcade-fallout",
     "systemVersion": "1.0.0",
     "coreVersion": "11.315",
-    "createdTime": 1715438901244,
-    "modifiedTime": 1715438953056,
-    "lastModifiedBy": "gzYpjX3Fqlrk2eh5"
+    "createdTime": 1715992320518,
+    "modifiedTime": 1715992502624,
+    "lastModifiedBy": "1zcyRzHXRiMQ1xFk"
   }
 }

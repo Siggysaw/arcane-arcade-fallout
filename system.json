@@ -5,11 +5,7 @@
     
   "authors": [
     {
-        "name": "Vera",
-        "discord": "veraa_m"
-    },
-    {
-      "name": "Sig",
+      "name": "Fallout TTRPG Dev Team",
       "discord": "SigSaw"
     }
   ],
@@ -62,18 +58,6 @@
       "flags": {}
     },
     {
-      "label": "Ranged Weapons",
-      "type": "Item",
-      "name": "ranged-weapons",
-      "path": "packs/ranged-weapons",
-      "system": "arcane-arcade-fallout",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      },
-      "flags": {}
-    },
-    {
       "label": "Melee Weapons",
       "type": "Item",
       "name": "melee-weapons",
@@ -97,8 +81,18 @@
       },
       "flags": {},
       "package": "world"
-    },
-	{
+    },{
+      "label": "Medicine",
+      "type": "Item",
+      "name": "medicine",
+      "path": "packs/medicine",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },{
       "label": "Food and Drinks",
       "type": "Item",
       "name": "food-and-drinks",
@@ -108,8 +102,30 @@
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       },
+      "flags": {}
+    },    {
+      "label": "Enemies",
+      "type": "Actor",
+      "name": "enemies",
+      "path": "packs/enemies",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
       "flags": {},
       "package": "world"
+    },    {
+      "label": "rangedWeapons",
+      "type": "Item",
+      "name": "rangedweapons",
+      "path": "packs/rangedweapons",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     }
   ],
   "packFolders": [],
