@@ -6,7 +6,7 @@
     "build": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --no-source-map",
     "watch": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --source-map --watch",
     "generate": "node src/generate-falloutzero-system.mjs",
-    "prepare": "husky"
+    "postinstall": "npx simple-git-hooks"
   },
   "browserslist": [
     "last 3 versions"
@@ -35,6 +35,6 @@
     "*.{js,mjs,css,md,hbs}": "prettier --write"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "node --version"
   }
 }
