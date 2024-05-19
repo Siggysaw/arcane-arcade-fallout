@@ -6,7 +6,7 @@
     "build": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --no-source-map",
     "watch": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --source-map --watch",
     "generate": "node src/generate-falloutzero-system.mjs",
-    "prepare": "husky"
+    "prepare": "husky && husky install"
   },
   "browserslist": [
     "last 3 versions"
@@ -30,15 +30,8 @@
     "replace": "^1.2.2",
     "sass": "^1.53.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "module/**/*.{js,mjs,hbs}": [
-      "pretty-quick --staged",
-      "eslint --fix"
-    ]
+    "*.js": "eslint --cache --fix",
+    "*.{js,mjs,css,md,hbs}": "prettier --write"
   }
 }
