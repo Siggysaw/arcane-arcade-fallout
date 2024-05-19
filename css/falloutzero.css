@@ -385,7 +385,8 @@
 .window-app .window-content label,
 .window-app .window-content select,
 .dialog,
-.window-app .window-content textarea {
+.window-app .window-content textarea,
+.window-app form p {
   color: #01e998;
 }
 .window-app .window-content button {
