@@ -32,7 +32,6 @@
                     </td>
                   </tr>
                   <tr>
-                  <test>
                     <td class="bio-label"><span class="label">XP:</span></td>
                     <td>
                       <input id="xp" type="number" name="system.xp" value="{{ system.xp }}" />
@@ -47,29 +46,27 @@
                       />
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <img
-                        title="Carry Load"
-                        style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
-                        src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png"
-                      />
-                    </td>
-                    <td style="vertical-align: middle" class="statusnum">
-                      <input
-                        type="number"
-                        name="system.carryLoad.value"
-                        value="{{ system.carryLoad.value }}"
-                      />
-                      /
-                      <input
-                        class="statusnum"
-                        type="number"
-                        name="system.carryLoad.max"
-                        value="{{ system.carryLoad.max }}"
-                      />
-                    </td>
-                  </tr>
+                  <td>
+                    <img
+                      title="Carry Load"
+                      style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
+                      src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png"
+                    />
+                  </td>
+                  <td style="vertical-align: middle" class="statusnum">
+                    <input
+                      type="number"
+                      name="system.carryLoad.value"
+                      value="{{ system.carryLoad.value }}"
+                    />
+                    /
+                    <input
+                      class="statusnum"
+                      type="number"
+                      name="system.carryLoad.max"
+                      value="{{ system.carryLoad.max }}"
+                    />
+                  </td>
                 </table>
               </td>
               <td>
@@ -154,7 +151,6 @@
                               type="number"
                               name="system.actionPoints.value"
                               value="{{ system.actionPoints.value }}"
-                              max="{{ system.actionPoints.max }}"
                             />
                             /
                             <input
@@ -162,6 +158,18 @@
                               name="system.actionPoints.max"
                               value="{{ system.actionPoints.max }}"
                             />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <button data-recycle-ap>
+                              <i class="fa-solid fa-recycle"></i>
+                            </button>
+                          </td>
+                          <td>
+                            <button data-refill-ap>
+                              <i class="fa-regular fa-arrow-up-right-dots"></i>
+                            </button>
                           </td>
                         </tr>
                         <tr>

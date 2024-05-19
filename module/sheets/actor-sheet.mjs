@@ -151,6 +151,17 @@ export class FalloutZeroActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html)
 
+    //ap refill
+    html.on('click', '[data-refill-ap]', () => {
+      this.actor.system.refillAp()
+    })
+
+    //ap recycle
+    html.on('click', '[data-recycle-ap]', () => {
+      this.actor.system.recycleAp()
+    })
+
+    // weapon roll
     html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       const hasDisadvantage = Boolean(ev.currentTarget.dataset.disadvantage)
