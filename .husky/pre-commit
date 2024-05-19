@@ -1,6 +1,0 @@
-# .husky/pre-commit
-
-# Your WIP script
-# ...
-
-exit 1

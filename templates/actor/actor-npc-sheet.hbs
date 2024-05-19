@@ -15,8 +15,13 @@
                   </tr>
                   <tr>
                     <td class="bio-label"><span class="label">Race:</span></td>
-                    <td colspan="2" >
-                      <input style="text-transform:captialize" type="text" name="system.race" value="{{ system.race }}" />
+                    <td colspan="2">
+                      <input
+                        style="text-transform: captialize"
+                        type="text"
+                        name="system.race"
+                        value="{{ system.race }}"
+                      />
                     </td>
                   </tr>
                   <tr>
@@ -163,12 +168,11 @@
                     <td>
                       <table>
                         <tr>
-                          <td class="profile-image-td" style="padding:10px;padding-top:0px;">
+                          <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
                             <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
                           </td>
                         </tr>
-                        <tr>
-                        </tr>
+                        <tr></tr>
                       </table>
                     </td>
                   </tr>
@@ -250,7 +254,6 @@
       <div class="tab items" data-group="primary" data-tab="items">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
       </div>
-
     </section>
   </div>
 </form>

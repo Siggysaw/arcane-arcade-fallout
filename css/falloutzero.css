@@ -1,22 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 /* Global styles */
 .window-app {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
-:root{
-	--color-shadow-primary: #1D5427;
-	
+:root {
+  --color-shadow-primary: #1d5427;
 }
-.rollable:hover, .rollable:focus {
-  color: #1D5427;
-  text-shadow: 0 0 10px #1D5427;
+.rollable:hover,
+.rollable:focus {
+  color: #1d5427;
+  text-shadow: 0 0 10px #1d5427;
   cursor: pointer;
 }
 
 .grid,
 .grid-2col {
   display: grid;
-  grid-column: span 2/span 2;
+  grid-column: span 2 / span 2;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin: 10px 0;
@@ -24,52 +24,52 @@
 }
 
 .grid-3col {
-  grid-column: span 3/span 3;
+  grid-column: span 3 / span 3;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .grid-4col {
-  grid-column: span 4/span 4;
+  grid-column: span 4 / span 4;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .grid-5col {
-  grid-column: span 5/span 5;
+  grid-column: span 5 / span 5;
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .grid-6col {
-  grid-column: span 6/span 6;
+  grid-column: span 6 / span 6;
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .grid-7col {
-  grid-column: span 7/span 7;
+  grid-column: span 7 / span 7;
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 .grid-8col {
-  grid-column: span 8/span 8;
+  grid-column: span 8 / span 8;
   grid-template-columns: repeat(8, minmax(0, 1fr));
 }
 
 .grid-9col {
-  grid-column: span 9/span 9;
+  grid-column: span 9 / span 9;
   grid-template-columns: repeat(9, minmax(0, 1fr));
 }
 
 .grid-10col {
-  grid-column: span 10/span 10;
+  grid-column: span 10 / span 10;
   grid-template-columns: repeat(10, minmax(0, 1fr));
 }
 
 .grid-11col {
-  grid-column: span 11/span 11;
+  grid-column: span 11 / span 11;
   grid-template-columns: repeat(11, minmax(0, 1fr));
 }
 
 .grid-12col {
-  grid-column: span 12/span 12;
+  grid-column: span 12 / span 12;
   grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
@@ -208,7 +208,7 @@
 
 /* Styles limited to falloutzero sheets */
 .falloutzero .item-form {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 .falloutzero .sheet-header {
   flex: 0 auto;
@@ -296,7 +296,8 @@
   align-items: center;
   display: flex;
 }
-.falloutzero .items-list .item-name h3, .falloutzero .items-list .item-name h4 {
+.falloutzero .items-list .item-name h3,
+.falloutzero .items-list .item-name h4 {
   margin: 0;
   white-space: nowrap;
   overflow-x: hidden;
@@ -367,93 +368,96 @@
 .falloutzero .effects .item .effect-controls {
   border: none;
 }
-.window-app .window-content, 
-.window-app .window-content .dialog option{
-	background-image:url("/systems/arcane-arcade-fallout/assets/pipboy_75.png") ;
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	color:#01E998;
+.window-app .window-content,
+.window-app .window-content .dialog option {
+  background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: #01e998;
 }
 .dialog option,
 .dialog optgroup,
-.window-app .dialog ul{
-	background-color:#1D5427;
+.window-app .dialog ul {
+  background-color: #1d5427;
 }
 .window-app .window-content input,
-.window-app .window-content button, 
+.window-app .window-content button,
 .window-app .window-content label,
 .window-app .window-content select,
 .dialog,
-.window-app .window-content textarea{
-	color:#01E998;
+.window-app .window-content textarea {
+  color: #01e998;
 }
-.window-app .window-content button{
-	background:#222;
+.window-app .window-content button {
+  background: #222;
 }
 .sheet.journal-entry .journal-entry-content {
-  background-image: url("/systems/arcane-arcade-fallout/assets/terminal.png");
+  background-image: url('/systems/arcane-arcade-fallout/assets/terminal.png');
   background-size: cover;
-  color: #01E998;
+  color: #01e998;
 }
-.sheet.journal-entry .title{
-  display:none;
+.sheet.journal-entry .title {
+  display: none;
 }
-.sheet.journal-entry .journal-entry-content img{
-  border:#FF6059 solid 2px;
+.sheet.journal-entry .journal-entry-content img {
+  border: #ff6059 solid 2px;
 }
 .character,
 .character input,
-.sheet h1,.sheet h2,.sheet h3,
-.sheet a,.sheet a:hover,.sheet li,
-.falloutzero .items-list .item .item-name{
-	color:#01E998;
+.sheet h1,
+.sheet h2,
+.sheet h3,
+.sheet a,
+.sheet a:hover,
+.sheet li,
+.falloutzero .items-list .item .item-name {
+  color: #01e998;
 }
 
-.sheet .character-name input{
-	border:none;
-	font-size:20pt;
-	float:left;
+.sheet .character-name input {
+  border: none;
+  font-size: 20pt;
+  float: left;
 }
 
-.sheet input{
-border:solid 1px #1D5427;
+.sheet input {
+  border: solid 1px #1d5427;
+}
+.statusnum input {
+  width: 50px;
+}
+.sheet table tr,
+.sheet table td {
+  background: none;
+}
+.sheet table td {
+  vertical-align: top;
+  text-align: center;
+}
+table .bio-label {
+  text-align: left;
+  font-size: 14pt;
+  margin-right: 5px;
+}
+.sheet .statusbar {
+  background: none;
+}
+.sheet .current-stats,
+.sheet .current-caps {
+  width: 90%;
+  margin: auto;
+}
 
+.sheet table {
+  border-top: none;
+  border-bottom: none;
+  border: none;
 }
-.statusnum input{
-width:50px;
+.sheet .current-caps input {
+  margin-top: 3px;
 }
-.sheet table tr, .sheet table td{
-	background:none;
-}
-.sheet table td{
-	vertical-align:top;
-	text-align:center;
-}
-table .bio-label{
-	text-align:left;
-	font-size:14pt;
-	margin-right:5px;
-}
-.sheet .statusbar{
-background:none;
-}
-.sheet .current-stats, .sheet .current-caps{
-	width:90%;
-	margin:auto;
-}
-
-.sheet table{
-	border-top:none;
-	border-bottom:none;
-	border:none;
-	
-}
-.sheet .current-caps input{
-		margin-top:3px;
-	
-}
-.sheet .modify{
-	width:35px;
+.sheet .modify {
+  width: 35px;
 }
 
 .sheet header.sheet-header img {
@@ -461,127 +465,130 @@ background:none;
   height: 175px;
   width: 200px;
   object-fit: cover;
-  border:solid 2px #1D5427;
+  border: solid 2px #1d5427;
 }
 .sheet header.sheet-header .profile-image-td img {
 }
-.sheet header.sheet-header .custom-icon{
-	height:30px;
-	max-width:30px;
+.sheet header.sheet-header .custom-icon {
+  height: 30px;
+  max-width: 30px;
 }
 
-.sheet td .modify{
-	width:75px;
+.sheet td .modify {
+  width: 75px;
 }
-.sheet ::placeholder{
-	color:#1D5427;
-	opacity: 1;
+.sheet ::placeholder {
+  color: #1d5427;
+  opacity: 1;
 }
-table,tr,td, .sheet img{
-	background:none;
+table,
+tr,
+td,
+.sheet img {
+  background: none;
 }
 
-.status table td{
-	border:none;
-	padding:5px;
-	font-size:8pt;
+.status table td {
+  border: none;
+  padding: 5px;
+  font-size: 8pt;
 }
-.status .skill-table td,.status .status-table td{
-	border:solid 1px;
+.status .skill-table td,
+.status .status-table td {
+  border: solid 1px;
 }
-.status .skill-table{
-	width:235px;
+.status .skill-table {
+  width: 235px;
 }
-.status .skill-table td{
-	vertical-align:middle;
-
+.status .skill-table td {
+  vertical-align: middle;
 }
-.status .skill-label{
-	text-transform:uppercase;
-	font-size:10pt;
+.status .skill-label {
+  text-transform: uppercase;
+  font-size: 10pt;
 }
-.status .skill-value{
-	width:25px;
+.status .skill-value {
+  width: 25px;
 }
-.sheet. table .status-table{
-	vertical-align:top;
+.sheet. table .status-table {
+  vertical-align: top;
 }
-.sheet .perk-table td{
-	padding:5px;
+.sheet .perk-table td {
+  padding: 5px;
 }
 .sheet .perk-div {
-	background:black;
-	padding:5px;
-	width:100%;
+  background: black;
+  padding: 5px;
+  width: 100%;
 }
-.specialroll{
-	text-transform:uppercase;
+.specialroll {
+  text-transform: uppercase;
 }
 .sheet .equipped-stats td {
-	border: solid 1px;
-	vertical-align:middle;
-	padding:2px;
+  border: solid 1px;
+  vertical-align: middle;
+  padding: 2px;
 }
 
-.sheet .equipped-stats button{
-	border:#1D5427
+.sheet .equipped-stats button {
+  border: #1d5427;
 }
-.sheet .equipped-stats button:hover{
-	border:#1D5427;
-	background:#1D5427;
-	color:black;
+.sheet .equipped-stats button:hover {
+  border: #1d5427;
+  background: #1d5427;
+  color: black;
 }
-.sheet .equipped-stats button:active{
-	border:#1D5427;
-	background:white;
-	color:#1D5427;
+.sheet .equipped-stats button:active {
+  border: #1d5427;
+  background: white;
+  color: #1d5427;
 }
-.sheet-tabs .active{
-	text-decoration:underline;
-	font-weight:bold;
+.sheet-tabs .active {
+  text-decoration: underline;
+  font-weight: bold;
 }
-.sheet .karma{
-	width:60px;	
+.sheet .karma {
+  width: 60px;
 }
-.allcaps{
-	text-transform:uppercase;
+.allcaps {
+  text-transform: uppercase;
 }
-.sheet table td select{
-	background:none;
+.sheet table td select {
+  background: none;
 }
 :root {
-	--color-bg-option: #1D5427;
+  --color-bg-option: #1d5427;
 }
-.window-content :root{
-	--color-bg-option: none;	
+.window-content :root {
+  --color-bg-option: none;
 }
-.sheet .item-controls{
-	vertical-align:bottom;
-	padding:10px;
-}
-
-.backpack .item-controls{
-	float:left;
-}
-.td-controls{
-	width:60px;
-	margin:0px;
-	padding:0px;
-}
-.spacer{
-	border:none;
-	width:10px;
+.sheet .item-controls {
+  vertical-align: bottom;
+  padding: 10px;
 }
 
-.sheet .karmaCap input[type="checkbox"] {
-    content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
-    appearance: none;
-    display: block;
-    width: 50px;
-    height: 50px;
-	border:none;
+.backpack .item-controls {
+  float: left;
+}
+.td-controls {
+  width: 60px;
+  margin: 0px;
+  padding: 0px;
+}
+.spacer {
+  border: none;
+  width: 10px;
 }
 
-.sheet .karmaCap input[type="checkbox"]:checked {
-    content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
+.sheet .karmaCap input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
+  appearance: none;
+  display: block;
+  width: 50px;
+  height: 50px;
+  border: none;
+}
+
+.sheet .karmaCap input[type='checkbox']:checked {
+  content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
 }

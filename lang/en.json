@@ -31,13 +31,13 @@
     "Actor": {
       "character": "Character",
       "npc": "NPC",
-	  "creature": "Creature"
+      "creature": "Creature"
     },
     "Item": {
       "item": "Item",
       "feature": "Feature",
       "spell": "Spell",
-	  "perk": "Perk"
+      "perk": "Perk"
     }
   }
 }

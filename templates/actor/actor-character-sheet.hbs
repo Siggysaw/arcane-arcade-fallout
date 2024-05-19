@@ -224,9 +224,14 @@
                             </table>
                             <table class="current-caps">
                               <tr>
-								<td colspan=999 class="karmaCap">
-									<input type="checkbox" name="system.karmaCapflipped" {{checked system.karmaCapflipped}} />
-								</td>
+                                <td colspan="999" class="karmaCap">
+                                  <input
+                                    type="checkbox"
+                                    name="system.karmaCapflipped"
+                                    {{checked
+                                    system.karmaCapflipped}}
+                                  />
+                                </td>
                               </tr>
                             </table>
                           </td>
@@ -313,32 +318,31 @@
       </div>
 
       {{!-- Owned Items Tab --}}
-      <div class="tab items " data-group="primary" data-tab="items">
+      <div class="tab items" data-group="primary" data-tab="items">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
-      <div class="tab perks " data-group="primary" data-tab="perks">
+      <div class="tab perks" data-group="primary" data-tab="perks">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
-      <div class="tab medicine " data-group="primary" data-tab="medicine">
+      <div class="tab medicine" data-group="primary" data-tab="medicine">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
       </div>
 
       {{!-- Backpack Tab --}}
-      <div class="tab backpack " data-group="primary" data-tab="backpack">
+      <div class="tab backpack" data-group="primary" data-tab="backpack">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
       </div>
 
       {{!-- Active Effects Tab --}}
-      <div class="tab effects " data-group="primary" data-tab="effects">
+      <div class="tab effects" data-group="primary" data-tab="effects">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
       </div>
     </section>
   </div>
-  
 </form>
 
 {{log system}}
