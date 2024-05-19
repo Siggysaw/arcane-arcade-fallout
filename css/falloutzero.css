@@ -530,15 +530,15 @@ td,
   padding: 2px;
 }
 
-.sheet .equipped-stats button {
+.sheet button {
   border: #1d5427;
 }
-.sheet .equipped-stats button:hover {
+.sheet button:hover {
   border: #1d5427;
   background: #1d5427;
   color: black;
 }
-.sheet .equipped-stats button:active {
+.sheet button:active {
   border: #1d5427;
   background: white;
   color: #1d5427;
@@ -591,4 +591,7 @@ td,
 
 .sheet .karmaCap input[type='checkbox']:checked {
   content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
+}
+.htmlfield{
+	padding:20px;
 }

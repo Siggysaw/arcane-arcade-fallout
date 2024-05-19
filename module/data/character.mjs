@@ -28,6 +28,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       value: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
+		total: 0,
       }),
       min: new fields.NumberField({
         ...requiredInteger,
@@ -71,5 +72,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       this.penalties.radiation.value +
       this.penalties.fatigue.value
     this.passiveSense = 12 + this.abilities['per'].mod
+
+
+
+
   }
 }

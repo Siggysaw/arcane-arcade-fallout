@@ -16,7 +16,7 @@
       "medicine",
       "chems",
       "junkItem",
-      "junkTypes"
+	  "trait"
     ],
     "htmlFields": ["description"]
   }

@@ -1,0 +1,28 @@
+{
+  "name": "{{name}}",
+  "type": "trait",
+  "img": "systems/arcane-arcade-fallout/assets/vaultboy/trait-icon.png",
+  "system": {
+    "requirement": {
+      "value": "{{prereq}}"
+    },
+    "description": "{{description}}<br><hr><br>{{wildwasteland}}",
+    "properties": "",
+    "wild": ""
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "exportSource": {
+      "world": "fallout-ttrpg",
+      "system": "arcane-arcade-fallout",
+      "coreVersion": "11.315",
+      "systemVersion": "1.0.0"
+    }
+  },
+  "_stats": {
+    "systemId": "arcane-arcade-fallout",
+    "systemVersion": "1.0.0",
+    "coreVersion": "11.315"
+  }
+}

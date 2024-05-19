@@ -95,6 +95,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
     const foodAnddrinks = []
     const ammos = []
     const junk = []
+    const traits = []	
+
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -119,6 +121,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
         ammos.push(i)
       } else if (i.type === 'junkItem') {
         junk.push(i)
+      } else if (i.type === 'trait') {
+        traits.push(i)
       }
     }
 
@@ -131,6 +135,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.foodAnddrinks = foodAnddrinks
     context.ammos = ammos
     context.junk = junk
+    context.traits = traits	
     context.rangedWeapons = rangedWeapons.map((weapon) => {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
       // if (!weapon.system.range.flat) {

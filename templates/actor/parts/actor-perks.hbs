@@ -1,4 +1,4 @@
-{{#each perks as |item id|}}
+{{#each traits as |item id|}}
 <div style="width: 49%; float: left">
   <li class="item flexrow" data-item-id="{{ item._id }}">
     <table class="perk-table" style="border: solid 1px">
@@ -6,11 +6,41 @@
         <td>
           <h3>{{ item.name }}</h3>
           <div class="perk-div"><img class="perk-image" src="{{ item.img }}" /></div>
-          Qty:
         </td>
       </tr>
       <tr>
-        <td style="height: 150px">{{ item.system.description }}</td>
+        <td><summary><details>{{{ item.system.description }}}</details></summary></td>
+      </tr>
+      <tr>
+        <td style="text-align: right; padding-right: 5px">
+          <div class="item-controls">
+            <a class="item-control item-edit" title="{{localize 'DOCUMENT.Update' type='perk'}}"
+              ><i class="fas fa-edit"></i
+            ></a>
+            <a class="item-control item-delete" title="{{localize 'DOCUMENT.Delete' type='perk'}}"
+              ><i class="fas fa-trash"></i
+            ></a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </li>
+</div>
+{{/each}}
+
+
+{{#each perks as |item id|}}
+<div style="width: 49%; float: left">
+  <li class="item flexrow" data-item-id="{{ item._id }}">
+    <table class="perk-table" style="border: solid 1px">
+      <tr>
+        <td>
+          <h3>{{ item.name }} ({{system.perk-level.value}})</h3>
+          <div class="perk-div"><img class="perk-image" src="{{ item.img }}" /></div>
+        </td>
+      </tr>
+      <tr>
+        <td><summary><details>{{{ item.system.description }}}</details></summary></td>
       </tr>
       <tr>
         <td style="text-align: right; padding-right: 5px">

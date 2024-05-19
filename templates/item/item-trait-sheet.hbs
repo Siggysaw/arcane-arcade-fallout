@@ -5,12 +5,7 @@
 </style>
 
 <form class="{{ cssClass }}" autocomplete="off">
-  <table>
-    <tr>
-      <td style="border: solid 1px">{{ system.repeat.value }}</td>
-    </tr>
-  </table>
-  <input type="text" name="system.repeat.value" value="{{ system.repeat.value }}" hidden />
+
   <header class="sheet-header">
     <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
     <div class="header-fields">
@@ -25,17 +20,6 @@
               type="text"
               name="system.requirement.value"
               value="{{ system.requirement.value }}"
-              disabled
-            />
-          </td>
-          <td>
-            <span>Qty:</span>
-            <input
-              style="width: 35px; text-align: center"
-              type="number"
-              min="1"
-              name="system.perk-level.value"
-              value="{{system.perk-level.value}}"
             />
           </td>
         </tr>
@@ -47,7 +31,6 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="effects">Effects</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -56,8 +39,7 @@
     <div class="tab htmlfield" data-group="primary" data-tab="description">
       {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the
       rollData prop. --}}
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner
-      editable=editable}}
+       {{editor system.description target="system.description" button=true engine="prosemirror" collaborate=false}}
     </div>
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">
