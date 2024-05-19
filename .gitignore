@@ -1,6 +1,14 @@
 /node_modules
 /.vscode
-packs/ranged-weapons/lost/000057.log
 /packs
-/packs
+/packs/ammunition
+/packs/armor
+/packs/enemies
+/packs/food-and-drinks
+/packs/junk
+/packs/medicine
+/packs/melee-weapons
+/packs/perks
+/packs/rangedweapons
+/packs/traits
 .tool-versions
