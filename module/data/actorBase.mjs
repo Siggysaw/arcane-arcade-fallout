@@ -180,7 +180,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
 
       console.log('ACTOR UPDATE', {
         'item.system.quantity': newAmmoQty,
-        'weapon.system.ammo.capacity.value': newWeaponAmmoCapacity,
+        "weapon.system.ammo.capacity.value": newWeaponAmmoCapacity,
       })
     }
 
