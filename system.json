@@ -1,8 +1,8 @@
 {
-	"id": "arcane-arcade-fallout",
-    "title": "The Arcane Arcade Fallout TTRPG",
-    "description": "Foundry version of Arcane Arcade's Fallout TTRPG system by Jacob Budz. Inspired by the game series of the same name by Interplay and Bethesda.",
-    
+  "id": "arcane-arcade-fallout",
+  "title": "The Arcane Arcade Fallout TTRPG",
+  "description": "Foundry version of Arcane Arcade's Fallout TTRPG system by Jacob Budz. Inspired by the game series of the same name by Interplay and Bethesda.",
+
   "authors": [
     {
       "name": "Fallout TTRPG Dev Team",
@@ -32,7 +32,7 @@
       "path": "lang/en.json"
     }
   ],
-"packs": [
+  "packs": [
     {
       "label": "Perks",
       "type": "Item",
@@ -69,7 +69,7 @@
       },
       "flags": {}
     },
-	 {
+    {
       "label": "Ammunition",
       "type": "Item",
       "name": "ammunition",
@@ -81,7 +81,8 @@
       },
       "flags": {},
       "package": "world"
-    },{
+    },
+    {
       "label": "Medicine",
       "type": "Item",
       "name": "medicine",
@@ -92,7 +93,8 @@
         "ASSISTANT": "OWNER"
       },
       "flags": {}
-    },{
+    },
+    {
       "label": "Food and Drinks",
       "type": "Item",
       "name": "food-and-drinks",
@@ -103,7 +105,8 @@
         "ASSISTANT": "OWNER"
       },
       "flags": {}
-    },    {
+    },
+    {
       "label": "Enemies",
       "type": "Actor",
       "name": "enemies",
@@ -115,7 +118,8 @@
       },
       "flags": {},
       "package": "world"
-    },    {
+    },
+    {
       "label": "Ranged Weapons",
       "type": "Item",
       "name": "rangedweapons",
@@ -126,7 +130,8 @@
         "ASSISTANT": "OWNER"
       },
       "flags": {}
-    },{
+    },
+    {
       "label": "Junk",
       "type": "Item",
       "name": "junk",

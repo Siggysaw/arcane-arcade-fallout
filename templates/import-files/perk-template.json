@@ -6,8 +6,8 @@
     "requirement": {
       "value": "{{requirement}}"
     },
-	 "repeat": {
-     "value": "{{repeat}}"
+    "repeat": {
+      "value": "{{repeat}}"
     },
     "description": "{{description}}"
   },
