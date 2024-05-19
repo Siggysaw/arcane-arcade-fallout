@@ -5,7 +5,8 @@
   "scripts": {
     "build": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --no-source-map",
     "watch": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --source-map --watch",
-    "generate": "node src/generate-falloutzero-system.mjs"
+    "generate": "node src/generate-falloutzero-system.mjs",
+    "prepare": "husky"
   },
   "browserslist": [
     "last 3 versions"
