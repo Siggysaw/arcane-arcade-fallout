@@ -157,7 +157,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
       this.actor.system.rollWeapon(weaponId, hasDisadvantage)
     })
 
-    html.on('click', '[data-collapsible]', (ev) => {
+    html.on("click", '[data-collapsible]', (ev) => {
       document.querySelectorAll('.collapsible').forEach((collapsible) => {
         collapsible.addEventListener('click', function () {
           // Get the item ID
