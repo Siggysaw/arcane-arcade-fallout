@@ -8,7 +8,6 @@
     }
 </style> --}}
 
-
         <!-- Armor Slot -->
             {{#each armors as |item id|}}
             <div class='item flexrow' data-item-id='{{item._id}}'>
@@ -60,8 +59,8 @@
 		<tr class="collapsible-content" data-collapsible-content="true" data-item-id="ammo">
 		<td>
             {{#each ammos as |item id|}}
-			<div data-item-id="{{item._id}}">			
-                <div class='item flexrow' data-item-id='{{item._id}}'>
+			<div data-item-id="{{item._id}}" style="float:left;width:25%;">			
+                <div style="width:100%;border:solid 1px;padding:10px 10px 10px 10px" class='item flexrow' data-item-id='{{item._id}}'>
                     <div class='item-controls' style="display:block;margin:auto;">
                         <a style="float:right;" class='item-control item-delete' data-item-id="{{item._id}}" title='{{localize "DOCUMENT.Delete" type="item"}}'>
                             <i class='fas fa-trash'></i>
@@ -200,7 +199,7 @@
             </div>
             {{/each}}
 			
-			</td><td>
+			</td><td class="spacer"></td><td>
             <!-- MeleeWeapons Slot -->
             {{#each meleeWeapons as |item id|}}
 		<div class='item flexrow weapons-div' data-item-id='{{item._id}}'>
@@ -210,7 +209,7 @@
                             <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
                         </td>
                     </tr>
-                    <tr class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
+                    <tr style="display:table-row;" class="collapsible-content" data-collapsible-content="true" data-item-id="{{item._id}}">
                         <td>
                             <table class="equipped-stats">
                                 <tr>
@@ -263,4 +262,6 @@
                 </table>
             </div>
                 {{/each}}
-</td></tr></table>
+		</td>
+	</tr>
+</table>

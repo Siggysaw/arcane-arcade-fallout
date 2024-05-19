@@ -557,5 +557,18 @@ table,tr,td, .sheet img{
 }
 .sheet .item-controls{
 	vertical-align:bottom;
+	padding:10px;
 }
 
+.backpack .item-controls{
+	float:left;
+}
+.td-controls{
+	width:60px;
+	margin:0px;
+	padding:0px;
+}
+.spacer{
+	border:none;
+	width:10px;
+}
