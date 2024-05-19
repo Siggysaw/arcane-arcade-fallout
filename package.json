@@ -35,7 +35,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{js,mjs,hbs}": [
+    "module/**/*.{js,mjs,hbs}": [
       "pretty-quick --staged",
       "eslint --fix"
     ]
