@@ -390,7 +390,17 @@
 .window-app .window-content button{
 	background:#222;
 }
-
+.sheet.journal-entry .journal-entry-content {
+  background-image: url("/systems/arcane-arcade-fallout/assets/terminal.png");
+  background-size: cover;
+  color: #01E998;
+}
+.sheet.journal-entry .title{
+  display:none;
+}
+.sheet.journal-entry .journal-entry-content img{
+  border:#FF6059 solid 2px;
+}
 .character,
 .character input,
 .sheet h1,.sheet h2,.sheet h3,
