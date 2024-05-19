@@ -368,8 +368,7 @@
   border: none;
 }
 .window-app .window-content, 
-.window-app .window-content .dialog option,
-.dialog optgroup,.sheet ul{
+.window-app .window-content .dialog option{
 	background-image:url("/systems/arcane-arcade-fallout/assets/pipboy_75.png") ;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -377,8 +376,7 @@
 }
 .dialog option,
 .dialog optgroup,
-.window-app .dialog ul,
-.sheet ul {
+.window-app .dialog ul{
 	background-color:#1D5427;
 }
 .window-app .window-content input,
@@ -392,7 +390,17 @@
 .window-app .window-content button{
 	background:#222;
 }
-
+.sheet.journal-entry .journal-entry-content {
+  background-image: url("/systems/arcane-arcade-fallout/assets/terminal.png");
+  background-size: cover;
+  color: #01E998;
+}
+.sheet.journal-entry .title{
+  display:none;
+}
+.sheet.journal-entry .journal-entry-content img{
+  border:#FF6059 solid 2px;
+}
 .character,
 .character input,
 .sheet h1,.sheet h2,.sheet h3,
@@ -543,4 +551,37 @@ table,tr,td, .sheet img{
 }
 :root {
 	--color-bg-option: #1D5427;
+}
+.window-content :root{
+	--color-bg-option: none;	
+}
+.sheet .item-controls{
+	vertical-align:bottom;
+	padding:10px;
+}
+
+.backpack .item-controls{
+	float:left;
+}
+.td-controls{
+	width:60px;
+	margin:0px;
+	padding:0px;
+}
+.spacer{
+	border:none;
+	width:10px;
+}
+
+.sheet .karmaCap input[type="checkbox"] {
+    content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
+    appearance: none;
+    display: block;
+    width: 50px;
+    height: 50px;
+	border:none;
+}
+
+.sheet .karmaCap input[type="checkbox"]:checked {
+    content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
 }

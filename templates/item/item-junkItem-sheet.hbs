@@ -7,17 +7,10 @@
       </h1>
     </div>
   </header>
-  <table style="width: 200px">
-    <tr>
-      <td>Cost</td>
-      <td>Load</td>
-      <td>Qty</td>
-    </tr>
-    <tr>
-      <td><input type="number" name="system.cost" value="{{ system.cost }}" /></td>
-      <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
-      <td><input type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
-    </tr>
+  <table>
+    <tr><td style="width:200px;">Load:</td><td><input type="number" name="system.load" value="{{ system.load }}" /></td></tr>
+    <tr><td style="width:200px;">Material 1:</td><td><input type="text" name="system.junk.type1" value="{{ system.junk.type }}" /></td><td>Qty</td><td><input type="number" name="system.junk.quantity1" value="{{ system.junk.quantity1 }}" /></td></tr>	
+    <tr><td style="width:200px;">Material 2:</td><td><input type="text" name="system.junk.type2" value="{{ system.junk.type2 }}" /></td><td>Qty</td><td><input type="number" name="system.junk.quantity2" value="{{ system.junk.quantity2 }}" /></td></tr>
   </table>
 
   {{!-- Sheet Tab Navigation --}}

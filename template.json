@@ -5,7 +5,7 @@
     "character": {}
   },
   "Item": {
-    "types": ["item","ammo", "rangedWeapon", "meleeWeapon", "armor","perk","foodAnddrink","medicine","chems"],
+    "types": ["item","ammo", "rangedWeapon", "meleeWeapon", "armor","perk","foodAnddrink","medicine","chems","junkItem","junkTypes"],
     "htmlFields": ["description"]
   }
 }

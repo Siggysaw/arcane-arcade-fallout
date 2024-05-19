@@ -8,7 +8,6 @@
     }
 </style> --}}
 
-
         <!-- Armor Slot -->
             {{#each armors as |item id|}}
             <div class='item flexrow' data-item-id='{{item._id}}'>
@@ -78,10 +77,11 @@
     </tr>
 </table>
 
+<table><tr><td>
 	        <!-- Ranged Weapons Slot -->			
             {{#each rangedWeapons as |item id|}}
-            <div style="width:48%;display:block;float:left;margin-left:2%;" class='item flexrow' data-item-id='{{item._id}}'>
-                <table class="weapontable" style="border:solid 1px;">
+            <div class='item flexrow weapons-div' data-item-id='{{item._id}}'>
+                <table class="weapons-table">
                     <tr>
                         <td>
                             <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
@@ -198,10 +198,12 @@
                 </table>
             </div>
             {{/each}}
+			
+			</td><td class="spacer"></td><td>
             <!-- MeleeWeapons Slot -->
             {{#each meleeWeapons as |item id|}}
-		<div style="width:48%;display:block;float:left;margin-left:2%;" class='item flexrow' data-item-id='{{item._id}}'>
-                <table class="weapontable" style="border:solid 1px;">
+		<div class='item flexrow weapons-div' data-item-id='{{item._id}}'>
+                <table class="weapons-table">
                     <tr>
                         <td>
                             <button class="collapsible allcaps" data-collapsible="true" data-item-id="{{item._id}}">{{item.name}}</button>
@@ -260,3 +262,6 @@
                 </table>
             </div>
                 {{/each}}
+		</td>
+	</tr>
+</table>

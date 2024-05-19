@@ -1,35 +1,50 @@
-{{#each medicines as |item id|}}
-<li class="item flexrow" data-item-id="{{ item._id }}">
-  <table style="border: solid 1px">
-    <tr>
-      <td style="width: 25%; vertical-align: middle">
-        {{ item.name }} ({{ system.itemQty.value }})
-      </td>
-      <td></td>
-      <td style="text-align: left">{{ item.system.description }}</td>
-      <td style="width: 50px; vertical-align: bottom">
-        <div class="item-controls">
-          <div class="item-controls">
-            <a
-              style="float: right; margin-right: 10px"
-              class="item-control item-delete"
-              title="{{localize 'DOCUMENT.Delete' type=' item'}}"
-            >
-              <i class="fas fa-trash"></i>
-            </a>
-            <a
-              style="float: right; margin-right: 10px"
-              class="item-control"
-              data-edit
-              data-item-id="{{ item._id }}"
-              title="{{localize 'DOCUMENT.Update' type='item'}}"
-            >
-              <i class="fas fa-edit"></i>
-            </a>
-          </div>
-        </div>
-      </td>
-    </tr>
-  </table>
-</li>
-{{/each}}
+<style>
+  .sheet table .medicines td {
+    border: solid 1px;
+    vertical-align: middle;
+  }
+  .sheet .medicines .label {
+    font-size: 12pt;
+  }
+</style>
+<table>
+  <tr>
+    <td>
+      <table class="medicines">
+        {{#each medicines as |item id|}}
+        <tr>
+          <td style="width:20%;">
+            <span class="label" style="margin-right: 5px">
+              {{ item.name }} ({{ system.quantity }})
+            </span>
+          </td>
+
+          <td style="width:70%;text-align:left;padding:10px;">
+            {{{ item.system.description }}}
+            <li class="item flexrow" data-item-id="{{ item._id }}">
+              <div class="item-controls">
+                <a
+                  style="float: right; margin-right: 10px"
+                  class="item-control item-delete"
+                  title="{{localize 'DOCUMENT.Delete' type='item'}}"
+                >
+                  <i class="fas fa-trash"></i>
+                </a>
+                <a
+                  style="float: right; margin-right: 10px"
+                  class="item-control"
+                  data-edit
+                  data-item-id="{{ item._id }}"
+                  title="{{localize 'DOCUMENT.Update' type='item'}}"
+                >
+                  <i class="fas fa-edit"></i>
+                </a>
+              </div>
+            </li>
+          </td>
+        </tr>
+        {{/each}}
+      </table>
+    </td>
+  </tr>
+</table>

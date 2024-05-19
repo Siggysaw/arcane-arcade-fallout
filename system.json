@@ -126,6 +126,17 @@
         "ASSISTANT": "OWNER"
       },
       "flags": {}
+    },{
+      "label": "Junk",
+      "type": "Item",
+      "name": "junk",
+      "path": "packs/junk",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     }
   ],
   "packFolders": [],

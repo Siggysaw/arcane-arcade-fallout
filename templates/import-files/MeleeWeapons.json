@@ -59,7 +59,7 @@
       "disabled": false,
       "changes": [
         {
-          "key": "system.currentLoad",
+          "key": "system.carryLoad.value",
           "mode": 2,
           "value": "{{load}}"
         }

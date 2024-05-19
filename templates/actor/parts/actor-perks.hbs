@@ -1,12 +1,12 @@
 {{#each perks as |item id|}}
-<div style="width: 49%; float: left; display: block">
+<div style="width: 49%;float:left;">
   <li class="item flexrow" data-item-id="{{ item._id }}">
     <table class="perk-table" style="border: solid 1px">
       <tr>
         <td>
           <h3>{{ item.name }}</h3>
           <div class="perk-div"><img class="perk-image" src="{{ item.img }}" /></div>
-          Qty: {{ system.perk - level.value }}
+          Qty: 
         </td>
       </tr>
       <tr>
