@@ -147,6 +147,17 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     }
   }
 
+  refillAp() {
+    this.parent.update({ 'system.actionPoints.value': this.parent.system.actionPoints.max })
+  }
+
+  recycleAp() {
+    this.parent.update({
+      'system.actionPoints.value':
+        Math.floor(this.parent.system.actionPoints.value / 2) + this.parent.system.actionPoints.max,
+    })
+  }
+
   rollWeapon(weaponId, hasDisadvantage = false) {
     const currentAp = this.actionPoints.value
     const weapon = this.parent.items.get(weaponId)

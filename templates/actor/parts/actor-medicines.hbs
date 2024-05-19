@@ -13,14 +13,14 @@
       <table class="medicines">
         {{#each medicines as |item id|}}
         <tr>
-          <td style="width:20%;">
+          <td style="width: 20%">
             <span class="label" style="margin-right: 5px">
               {{ item.name }} ({{ system.quantity }})
             </span>
           </td>
 
-          <td style="width:70%;text-align:left;padding:10px;">
-            {{{ item.system.description }}}
+          <td style="width: 70%; text-align: left; padding: 10px">
+            {{ item.system.description }}
             <li class="item flexrow" data-item-id="{{ item._id }}">
               <div class="item-controls">
                 <a
