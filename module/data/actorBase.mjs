@@ -71,12 +71,12 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           value: new fields.NumberField({
             ...requiredInteger,
             initial: 5,
-            min: 0,
+            min: -10,
           }),
           mod: new fields.NumberField({
             ...requiredInteger,
             initial: 0,
-            min: 0,
+            min: -10,
           }),
           label: new fields.StringField({
             initial: FALLOUTZERO.abilities[ability].label,
@@ -93,7 +93,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           value: new fields.NumberField({
             ...requiredInteger,
             initial: 0,
-            min: 0,
+            min: -10,
           }),
           label: new fields.StringField({
             initial: FALLOUTZERO.skills[skill].label,

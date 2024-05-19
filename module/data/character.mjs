@@ -71,10 +71,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       this.penalties.exhaustion.value +
       this.penalties.radiation.value +
       this.penalties.fatigue.value
-    this.passiveSense = 12 + this.abilities['per'].mod
-
-
-
+	  this.passiveSense = 12 + this.abilities['per'].mod
 
   }
 }
