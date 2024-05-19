@@ -582,7 +582,7 @@ td,
 }
 
 .sheet .karmaCap input[type='checkbox'] {
-  content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
+  content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
   appearance: none;
   display: block;
   width: 50px;
@@ -591,8 +591,12 @@ td,
 }
 
 .sheet .karmaCap input[type='checkbox']:checked {
-  content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
+  content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
 }
 .htmlfield{
 	padding:20px;
 }
+.karmaCap input{
+	float:left;
+}
+
