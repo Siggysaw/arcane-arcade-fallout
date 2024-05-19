@@ -336,17 +336,17 @@
       </div>
 
       {{!-- Owned Items Tab --}}
-      <div class="tab items" data-group="primary" data-tab="items">
+      <div class="tab items flexcol" data-group="primary" data-tab="items">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
-      <div class="tab perks" data-group="primary" data-tab="perks">
+      <div class="tab perks flexcol" data-group="primary" data-tab="perks">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
-      <div class="tab perks" data-group="primary" data-tab="medicine">
+      <div class="tab medicine flexcol" data-group="primary" data-tab="medicine">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
       </div>
 
@@ -361,7 +361,7 @@
       </div>
     </section>
   </div>
-  {{allItems}}
+  
 </form>
 
 {{log system}}

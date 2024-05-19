@@ -545,3 +545,6 @@ table,tr,td, .sheet img{
 .window-content :root{
 	--color-bg-option: none;	
 }
+.sheet .item-controls{
+	vertical-align:bottom;
+}

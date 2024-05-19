@@ -21,16 +21,8 @@
                 for="{{ abilityKey }}"
                 class="resource-label rollable"
                 data-rollable
-                data-roll="d20+{{
-                  skill.value
-                }}+{{#with (lookup ../../system.abilities [abilityKey])}} {{
-                  mod
-                }} {{/with}}-{{../../system.penaltyTotal}}"
-                data-label="Performed a {{
-                  skill.label
-                }} roll using {{#with (lookup ../../system.abilities [abilityKey])}} {{
-                  label
-                }} {{/with}}"
+                data-roll="d20+{{skill.value}}+{{#with (lookup ../../system.abilities [abilityKey])}} {{mod}} {{/with}}-{{../../system.penaltyTotal}}"
+                data-label="Performed a {{skill.label}} roll using {{#with (lookup ../../system.abilities [abilityKey])}} {{label}} {{/with}}"
               >
                 {{ abilityKey }}
               </label>
