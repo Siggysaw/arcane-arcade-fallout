@@ -45,7 +45,12 @@
       <table class="foodanddrinks" >
         {{#each junk as |item id|}}
         <tr>
-          <td>{{ item.name }}</td><td>{{system.junk.type1}} ({{ system.junk.quantity1 }}),{{system.junk.type2}} ({{system.junk.quantity2}})</td>
+          <td>{{ item.name }}</td>
+		  <td>
+		  {{system.junk.type1}} ({{system.junk.quantity1 }})
+		  {{system.junk.type2}} ({{system.junk.quantity2}}) 
+		  {{system.junk.type3}} ({{system.junk.quantity3}})
+		  </td>
           <td >
             <li class="item flexrow" data-item-id="{{ item._id }}">
               <div class="item-controls">
