@@ -224,32 +224,9 @@
                             </table>
                             <table class="current-caps">
                               <tr>
-                                <td colspan="999" style="vertical-align: middle">
-                                  <img
-                                    title="Karma Caps"
-                                    style="border: none"
-                                    class="custom-icon"
-                                    src="/systems/arcane-arcade-fallout/assets/KarmaCap.png"
-                                  />
-                                  <input
-                                    id="caps"
-                                    class="karma"
-                                    type="number"
-                                    name="system.karmaCaps.value"
-                                    value="{{ system.karmaCaps.value }}"
-                                    min="0"
-                                    max="{{ system.karmaCaps.max }}"
-                                  />
-                                  /
-                                  <input
-                                    id="caps"
-                                    class="karma"
-                                    type="number"
-                                    name="system.karmaCaps.max"
-                                    value="{{ system.karmaCaps.max }}"
-                                    min="0"
-                                  />
-                                </td>
+				<td colspan=999 class="karmaCap">
+					<input type="checkbox" name="karmaCapflipped" {{checked karmaCapflipped}} />
+				</td>
                               </tr>
                             </table>
                           </td>
@@ -336,27 +313,27 @@
       </div>
 
       {{!-- Owned Items Tab --}}
-      <div class="tab items flexcol" data-group="primary" data-tab="items">
+      <div class="tab items " data-group="primary" data-tab="items">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
-      <div class="tab perks flexcol" data-group="primary" data-tab="perks">
+      <div class="tab perks " data-group="primary" data-tab="perks">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
-      <div class="tab medicine flexcol" data-group="primary" data-tab="medicine">
+      <div class="tab medicine " data-group="primary" data-tab="medicine">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
       </div>
 
       {{!-- Backpack Tab --}}
-      <div class="tab backpack flexcol" data-group="primary" data-tab="backpack">
+      <div class="tab backpack " data-group="primary" data-tab="backpack">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
       </div>
 
       {{!-- Active Effects Tab --}}
-      <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      <div class="tab effects " data-group="primary" data-tab="effects">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
       </div>
     </section>

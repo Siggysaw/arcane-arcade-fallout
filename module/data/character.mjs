@@ -39,6 +39,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     })
     schema.background = new fields.StringField({ initial: "", blank: true })
     schema.race = new fields.StringField({ initial: "", blank: true })
+    schema.karmaCapflipped = new fields.StringField({ blank: false})	
     schema.xp = new fields.NumberField({ initial: 0, min: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0, min: 0 })
     schema.groupSneak = new fields.NumberField({ initial: 0, min: 0 })
@@ -58,8 +59,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     for (const key in this.penalties) {
       this.penalties[key].label = FALLOUTZERO.penalties[key]
     }
-    this.penalties.radDC.value = 12 - this.abilities['end'].mod
-    this.carryLoad.max = this.abilities['str'].value * 10
+	this.penalties.radDC.value = 12 - this.abilities['end'].mod
+	//players need the ability to increase their max carry load manually.
+    //this.carryLoad.max = this.abilities['str'].value * 10
     this.healingRate = Math.floor((this.level + this.abilities['end'].value) / 2)
     this.penaltyTotal = this.penalties.hunger.value + this.penalties.dehydration.value + this.penalties.exhaustion.value + this.penalties.radiation.value + this.penalties.fatigue.value
     this.passiveSense = 12 + this.abilities['per'].mod
