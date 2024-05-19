@@ -142,16 +142,16 @@
       },
       "flags": {}
     },{
-		"label": "Traits",
-		"type": "Item",
-		"name": "traits",
-		"path": "packs/traits",
-		"system": "arcane-arcade-fallout",
-		"ownership": {
-		"PLAYER": "OBSERVER",
-		"ASSISTANT": "OWNER"
-		},
-		"flags": {}
+	"label": "Traits",
+	"type": "Item",
+	"name": "traits",
+	"path": "packs/traits",
+	"system": "arcane-arcade-fallout",
+	"ownership": {
+	"PLAYER": "OBSERVER",
+	"ASSISTANT": "OWNER"
+	},
+	"flags": {}
     }
   ],
   "packFolders": [],
