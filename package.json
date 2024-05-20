@@ -1,7 +1,7 @@
 {
   "name": "falloutzero",
   "version": "2.0.0",
-  "description": "CSS compiler for the falloutzero system",
+  "description": "falloutzero system",
   "scripts": {
     "build": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --no-source-map",
     "watch": "sass src/scss/falloutzero.scss css/falloutzero.css --style=expanded --source-map --watch",
@@ -11,7 +11,6 @@
   "browserslist": [
     "last 3 versions"
   ],
-  "author": "Asacolips",
   "license": "MIT",
   "private": true,
   "devDependencies": {
