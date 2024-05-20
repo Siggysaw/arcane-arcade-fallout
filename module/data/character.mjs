@@ -81,5 +81,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       this.penalties.radiation.value +
       this.penalties.fatigue.value
     this.passiveSense = 12 + this.abilities['per'].mod
+    this.karmaCaps.flipped = [...new Array(this.karmaCaps.value)].map(() => false)
   }
 }
