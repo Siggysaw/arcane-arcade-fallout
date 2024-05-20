@@ -24,7 +24,7 @@ jobs:
         uses: battila7/get-version-action@v2
 
       - name: Create zip archive
-        run: zip -r ./module.zip system.json template.json LICENSE.txt assets/ css/ lang/ lib/ module/ packs/ templates/ --exclude "packs/_source/*"
+        run: zip -r ./system.zip system.json template.json LICENSE.txt assets/ css/ lang/ lib/ module/ packs/ templates/ --exclude "packs/_source/*"
 
       - name: Update release with files
         id: create_version_release
@@ -35,6 +35,6 @@ jobs:
           draft: ${{ github.event.release.unpublished }}
           prerelease: ${{ github.event.release.prerelease }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './system.json, ./module.zip'
+          artifacts: './system.json, ./system.zip'
           tag: ${{ github.event.release.tag_name }}
           body: ${{ github.event.release.body }}
