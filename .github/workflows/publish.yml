@@ -23,13 +23,6 @@ jobs:
         id: get_version
         uses: battila7/get-version-action@v2
 
-      - name: Run Vite build
-        env:
-          MODULE_VERSION: ${{steps.get_version.outputs.version-without-v}}
-          GH_PROJECT: ${{github.repository}}
-          GH_TAG: ${{github.event.release.tag_name}}
-        run: npm run build
-
       - name: Create zip archive
         working-directory: dist
         run: zip -r ./module.zip system.json assets/ css/ lang/ lib/ module/ packs/ /templates
@@ -43,6 +36,6 @@ jobs:
           draft: ${{ github.event.release.unpublished }}
           prerelease: ${{ github.event.release.prerelease }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "./dist/module.json, ./dist/module.zip"
+          artifacts: './dist/module.json, ./dist/module.zip'
           tag: ${{ github.event.release.tag_name }}
           body: ${{ github.event.release.body }}
