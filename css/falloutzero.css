@@ -6,6 +6,19 @@
 :root {
   --color-shadow-primary: #1d5427;
 }
+
+summary::marker {
+  content: '';
+}
+
+details > summary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #222;
+  cursor: pointer;
+}
+
 .rollable:hover,
 .rollable:focus {
   color: #1d5427;
@@ -593,10 +606,9 @@ td,
 .sheet .karmaCap input[type='checkbox']:checked {
   content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
 }
-.htmlfield{
-	padding:20px;
+.htmlfield {
+  padding: 20px;
 }
-.karmaCap input{
-	float:left;
+.karmaCap input {
+  float: left;
 }
-

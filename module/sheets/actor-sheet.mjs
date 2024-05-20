@@ -95,8 +95,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     const foodAnddrinks = []
     const ammos = []
     const junk = []
-    const traits = []	
-
+    const traits = []
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -135,7 +134,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.foodAnddrinks = foodAnddrinks
     context.ammos = ammos
     context.junk = junk
-    context.traits = traits	
+    context.traits = traits
     context.rangedWeapons = rangedWeapons.map((weapon) => {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
       // if (!weapon.system.range.flat) {
@@ -171,27 +170,6 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const weaponId = ev.currentTarget.dataset.weaponId
       const hasDisadvantage = Boolean(ev.currentTarget.dataset.disadvantage)
       this.actor.system.rollWeapon(weaponId, hasDisadvantage)
-    })
-
-    html.on('click', '[data-collapsible]', (ev) => {
-      document.querySelectorAll('.collapsible').forEach((collapsible) => {
-        collapsible.addEventListener('click', function () {
-          // Get the item ID
-          const itemId = this.getAttribute('data-item-id')
-
-          // Find the corresponding collapsible content
-          const content = document.querySelector(`.collapsible-content[data-item-id="${itemId}"]`)
-
-          // Toggle content visibility
-          if (content) {
-            if (content.style.display === 'none' || content.style.display === '') {
-              content.style.display = 'table-row'
-            } else {
-              content.style.display = 'none'
-            }
-          }
-        })
-      })
     })
 
     // Render the item sheet for viewing/editing prior to the editable check.
