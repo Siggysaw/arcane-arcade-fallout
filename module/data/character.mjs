@@ -41,12 +41,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     })
     schema.background = new fields.StringField({ initial: '', blank: true })
     schema.race = new fields.StringField({ initial: '', blank: true })
-    schema.karmaCapflipped = new fields.BooleanField({})
-    schema.karmaCapflipped2 = new fields.BooleanField({})
-    schema.karmaCapflipped3 = new fields.BooleanField({})
-    schema.karmaCapflipped4 = new fields.BooleanField({})
-    schema.karmaCapflipped5 = new fields.BooleanField({})
-    schema.karmaCapflipped6 = new fields.BooleanField({})
     schema.karmaCaps = new fields.SchemaField({
       flipped: new fields.ArrayField(new fields.StringField({ initial: 'false' })),
       value: new fields.NumberField({ initial: 1, min: 1, max: 6 }),
@@ -81,5 +75,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       this.penalties.radiation.value +
       this.penalties.fatigue.value
     this.passiveSense = 12 + this.abilities['per'].mod
+    this.karmaCaps.flipped = [...new Array(this.karmaCaps.value)].map(() => false)
   }
 }
