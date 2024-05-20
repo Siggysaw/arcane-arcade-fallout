@@ -1,14 +1,5 @@
 /node_modules
 /.vscode
 /packs
-/packs/ammunition
-/packs/armor
-/packs/enemies
-/packs/food-and-drinks
-/packs/junk
-/packs/medicine
-/packs/melee-weapons
-/packs/perks
-/packs/rangedweapons
-/packs/traits
 .tool-versions
+/dist

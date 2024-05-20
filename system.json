@@ -2,14 +2,24 @@
   "id": "arcane-arcade-fallout",
   "title": "The Arcane Arcade Fallout TTRPG",
   "description": "Foundry version of Arcane Arcade's Fallout TTRPG system by Jacob Budz. Inspired by the game series of the same name by Interplay and Bethesda.",
-
+  "version": "0.0.1",
+  "compatibility": {
+    "minimum": 11,
+    "verified": "11.315"
+  },
+  "minimumCoreVersion": "11",
+  "compatibleCoreVersion": "11",
+  "manifestPlusVersion": "1.0.0",
+  "url": "https://github.com/Siggysaw/fallout-arcane-arcade.git",
+  "manifest": "https://github.com/Siggysaw/fallout-arcane-arcade/releases/latest/download/module.json",
+  "download": "https://github.com/Siggysaw/fallout-arcane-arcade/releases/latest/download/module.zip",
+  "bugs": "https://github.com/Siggysaw/fallout-arcane-arcade/issues",
+  "allowBugReporter": true,
   "authors": [
     {
-      "name": "Fallout TTRPG Foundry Dev Team",
-      "discord": "SigSaw"
+      "name": "Fallout TTRPG Foundry Dev Team"
     }
   ],
-  "url": "https://github.com/Siggysaw/fallout-arcane-arcade.git",
   "changelog": "CHANGELOG.md",
   "media": [
     {
@@ -18,11 +28,6 @@
       "thumbnail": "systems/arcane-arcade-fallout/assets/anvil-impact.png"
     }
   ],
-  "version": "1.0.0",
-  "compatibility": {
-    "minimum": 11,
-    "verified": "11.315"
-  },
   "esmodules": ["module/falloutzero.mjs"],
   "styles": ["css/falloutzero.css"],
   "languages": [
@@ -141,26 +146,25 @@
         "ASSISTANT": "OWNER"
       },
       "flags": {}
-    },{
-	"label": "Traits",
-	"type": "Item",
-	"name": "traits",
-	"path": "packs/traits",
-	"system": "arcane-arcade-fallout",
-	"ownership": {
-	"PLAYER": "OBSERVER",
-	"ASSISTANT": "OWNER"
-	},
-	"flags": {}
+    },
+    {
+      "label": "Traits",
+      "type": "Item",
+      "name": "traits",
+      "path": "packs/traits",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     }
   ],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://github.com/Siggysaw/arcane-arcade-fallout/blob/8c1ce45c7d9097204b8352e0d79de00af2bac225/system.json",
-  "download": "https://github.com/Siggysaw/arcane-arcade-fallout/blob/233d9e2821209078eb8d4484b815e3a9505b8238/arcane-arcade-fallout-latest.zip",
   "background": "systems/arcane-arcade-fallout/assets/anvil-impact.png",
   "gridDistance": 5,
   "gridUnits": "ft",
   "primaryTokenAttribute": "health",
-  "secondaryTokenAttribute": "power"
+  "secondaryTokenAttribute": "stamina"
 }
