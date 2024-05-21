@@ -7,8 +7,7 @@ export default class FalloutZeroRangedWeapon extends FalloutZeroWeapon {
 
     schema.abilityMod = new fields.StringField({ initial: 'agi' })
     schema.skillBonus = new fields.StringField({ initial: 'guns' })
-
-    schema
+    schema.consumesAmmo = new fields.BooleanField({ initial: true })
     return schema
   }
 

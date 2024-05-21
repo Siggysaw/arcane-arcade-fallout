@@ -285,7 +285,7 @@
                       <label
                         class="rollable resource-label"
                         data-weapon-roll
-                        data-weapon-id="{{ system._id }}"
+                        data-weapon-id="{{ item._id }}"
                       >
                         {{ system.apCost }}
                       </label>
@@ -306,6 +306,7 @@
                     <td>{{ system.strengthRequirement }}</td>
                   </tr>
                 </table>
+                {{#if system.consumesAmmo}}
                 <table class="equipped-stats">
                   <tr>
                     <td>Type</td>
@@ -316,6 +317,7 @@
                     <td>{{ system.ammo.capacity.value }}</td>
                   </tr>
                 </table>
+                {{/if}}
                 <div class="item-controls">
                   <a
                     style="float: right; margin-right: 10px"
