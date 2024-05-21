@@ -421,6 +421,7 @@ details > summary {
 .sheet a,
 .sheet a:hover,
 .sheet li,
+form .title,
 .falloutzero .items-list .item .item-name {
   color: #01e998;
 }
@@ -591,21 +592,40 @@ td,
   width: 10px;
 }
 
-.sheet .karmaCap input[type='checkbox'] {
-  content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
-  appearance: none;
-  display: block;
+.sheet button.karma-cap {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
   width: 50px;
   height: 50px;
   border: none;
 }
 
-.sheet .karmaCap input[type='checkbox']:checked {
-  content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
+.sheet button.karma-cap > img {
+  border: none;
 }
+
 .htmlfield {
   padding: 20px;
 }
 .karmaCap input {
   float: left;
+}
+
+form td .status-notes{
+	height:334px;
+	text-align:left;
+	overflow:scroll;
+	background-color:#222;
+	background-image:url('/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png');
+	background-size:cover;
+	background-repeat:no-repeat;
+	font-size:10pt;
+	padding:20px;
+}
+
+form td .status-notes option,
+form td .status-notes li,
+form td .status-notes li:hover{
+	background:black;
 }

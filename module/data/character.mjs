@@ -37,12 +37,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     })
     schema.background = new fields.StringField({ initial: '', blank: true })
     schema.race = new fields.StringField({ initial: '', blank: true })
-    schema.karmaCapflipped = new fields.BooleanField({})
-    schema.karmaCapflipped2 = new fields.BooleanField({})
-    schema.karmaCapflipped3 = new fields.BooleanField({})
-    schema.karmaCapflipped4 = new fields.BooleanField({})
-    schema.karmaCapflipped5 = new fields.BooleanField({})
-    schema.karmaCapflipped6 = new fields.BooleanField({})
     schema.xp = new fields.NumberField({ initial: 0, min: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0, min: 0 })
     schema.groupSneak = new fields.NumberField({ initial: 0, min: 0 })
@@ -53,6 +47,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       initial: 0,
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
+    schema.properties = new fields.HTMLField()
 
     return schema
   }
