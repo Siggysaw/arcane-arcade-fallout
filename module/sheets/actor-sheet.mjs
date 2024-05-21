@@ -74,7 +74,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
    *
    * @return {undefined}
    */
-  _prepareCharacterData(context) {}
+  _prepareCharacterData() {}
 
   /**
    * Organize and classify Items for Character sheets.
@@ -154,6 +154,17 @@ export class FalloutZeroActorSheet extends ActorSheet {
   /** @override */
   activateListeners(html) {
     super.activateListeners(html)
+
+    // karma cap flips
+    html.on('click', '[data-cap-flip]', (ev) => {
+      const capIndex = Number(ev.currentTarget.dataset.index)
+      if (capIndex > -1) {
+        const newCaps = this.actor.system.karmaCaps.map((flipped, index) => {
+          return capIndex === index ? !flipped : flipped
+        })
+        this.actor.update({ 'system.karmaCaps': newCaps })
+      }
+    })
 
     //ap refill
     html.on('click', '[data-refill-ap]', () => {

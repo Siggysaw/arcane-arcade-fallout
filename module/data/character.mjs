@@ -28,7 +28,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       value: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
-		total: 0,
+        total: 0,
       }),
       min: new fields.NumberField({
         ...requiredInteger,
@@ -41,12 +41,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     })
     schema.background = new fields.StringField({ initial: '', blank: true })
     schema.race = new fields.StringField({ initial: '', blank: true })
-    schema.karmaCapflipped = new fields.BooleanField({})
-    schema.karmaCapflipped2 = new fields.BooleanField({})
-    schema.karmaCapflipped3 = new fields.BooleanField({})
-    schema.karmaCapflipped4 = new fields.BooleanField({})
-    schema.karmaCapflipped5 = new fields.BooleanField({})
-    schema.karmaCapflipped6 = new fields.BooleanField({})	
+    schema.karmaCaps = new fields.ArrayField(new fields.BooleanField(), {
+      initial: [false],
+    })
     schema.xp = new fields.NumberField({ initial: 0, min: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0, min: 0 })
     schema.groupSneak = new fields.NumberField({ initial: 0, min: 0 })
@@ -77,7 +74,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       this.penalties.exhaustion.value +
       this.penalties.radiation.value +
       this.penalties.fatigue.value
-	  this.passiveSense = 12 + this.abilities['per'].mod
-
+    this.passiveSense = 12 + this.abilities['per'].mod
   }
 }
