@@ -170,29 +170,26 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       return
     }
 
-    // if weapon ammo capacity is 0
-    if (weapon.system.ammo.capacity.value < 1) {
-      ui.notifications.warn(`Weapon ammo is empty, need to reload`)
-      return
-    }
+    if (weapon.system.consumesAmmo) {
+      // if weapon ammo capacity is 0
+      if (weapon.system.ammo.capacity.value < 1) {
+        ui.notifications.warn(`Weapon ammo is empty, need to reload`)
+        return
+      }
 
-    // Update ammo quantity
-    const foundAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
-    if (foundAmmo) {
-      const newAmmoQty = Number(foundAmmo.system.quantity - 1)
-      const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
-      this.parent.updateEmbeddedDocuments('Item', [
-        { _id: foundAmmo._id, 'system.quantity': newAmmoQty },
-        {
-          _id: weapon._id,
-          'system.ammo.capacity.value': newWeaponAmmoCapacity,
-        },
-      ])
-
-      console.log('ACTOR UPDATE', {
-        'item.system.quantity': newAmmoQty,
-        'weapon.system.ammo.capacity.value': newWeaponAmmoCapacity,
-      })
+      // Update ammo quantity
+      const foundAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
+      if (foundAmmo) {
+        const newAmmoQty = Number(foundAmmo.system.quantity - 1)
+        const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
+        this.parent.updateEmbeddedDocuments('Item', [
+          { _id: foundAmmo._id, 'system.quantity': newAmmoQty },
+          {
+            _id: weapon._id,
+            'system.ammo.capacity.value': newWeaponAmmoCapacity,
+          },
+        ])
+      }
     }
 
     // update actor AP
