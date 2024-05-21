@@ -1,7 +1,7 @@
 {
   "name": "{{title}}",
   "type": "perk",
-  "img": "systems/arcane-arcade-fallout/assets/perks-icon.png",
+  "img": "systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/{{title}}.png",
   "system": {
     "requirement": {
       "value": "{{requirement}}"

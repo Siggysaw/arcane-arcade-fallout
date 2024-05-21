@@ -47,12 +47,12 @@
     <table class="perk-table" style="border: solid 1px">
       <tr>
         <td>
-          <h3>{{ item.name }} ({{system.perk-level.value}})</h3>
+          <h3>{{ item.name }}</h3>
           <div class="perk-div"><img class="perk-image" src="{{ item.img }}" /></div>
         </td>
       </tr>
       <tr>
-        <td><summary><details>{{{ item.system.description }}}</details></summary></td>
+        <td><summary><details>Current Level: {{system.perkLevel.value}}<br>{{{ item.system.description }}}</details></summary></td>
       </tr>
       <tr>
         <td style="text-align: right; padding-right: 5px">
