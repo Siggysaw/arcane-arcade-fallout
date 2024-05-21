@@ -424,6 +424,7 @@ details > summary {
 .sheet a,
 .sheet a:hover,
 .sheet li,
+form .title,
 .falloutzero .items-list .item .item-name {
   color: #01e998;
 }
