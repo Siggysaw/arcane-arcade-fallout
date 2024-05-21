@@ -613,3 +613,21 @@ td,
 .karmaCap input {
   float: left;
 }
+
+form td .status-notes{
+	height:334px;
+	text-align:left;
+	overflow:scroll;
+	background-color:#222;
+	background-image:url('/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png');
+	background-size:cover;
+	background-repeat:no-repeat;
+	font-size:10pt;
+	padding:20px;
+}
+
+form td .status-notes option,
+form td .status-notes li,
+form td .status-notes li:hover{
+	background:black;
+}

@@ -57,6 +57,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       initial: 0,
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
+    schema.properties = new fields.HTMLField()
 
     return schema
   }
