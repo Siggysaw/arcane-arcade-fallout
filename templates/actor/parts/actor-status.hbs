@@ -140,16 +140,12 @@
           <td><input type="number" name="system.groupSneak" value="{{ system.groupSneak }}" /></td>
         </tr>
         <tr>
-          <td colspan="4">
-            <img
-              id="vault-boy-status"
-              style="width: auto; height: 250px; display: block; margin: auto; border: none"
-              src="/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png"
-            />
+          <td class="status-notes" colspan="4">
+            {{editor system.properties target="system.properties" button=true engine="prosemirror"}}
           </td>
         </tr>
         <tr>
-          <td colspan="999">Total Penalties: {{ system.penaltyTotal }}</td>
+          <td colspan="999" >Total Penalties: {{ system.penaltyTotal }}</td>
         </tr>
       </table>
     </td>

@@ -30,27 +30,6 @@
                       <input type="text" name="system.background" value="{{ system.background }}" />
                     </td>
                   </tr>
-                  <tr>
-                    <td class="bio-label"><span class="label">Lvl:</span></td>
-                    <td colspan="2">
-                      <input type="number" name="system.level" value="{{ system.level }}" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="bio-label"><span class="label">XP:</span></td>
-                    <td>
-                      <input id="xp" type="number" name="system.xp" value="{{ system.xp }}" />
-                    </td>
-                    <td>
-                      <input
-                        id="modifyxp"
-                        onchange="updatexp(this.value)"
-                        class="modify"
-                        placeholder="modify"
-                        type="number"
-                      />
-                    </td>
-                  </tr>
                 </table>
               </td>
               <td>
@@ -143,6 +122,18 @@
                               name="system.actionPoints.max"
                               value="{{ system.actionPoints.max }}"
                             />
+                          </td>
+                        </tr>
+						 <tr>
+                          <td>
+                            <button data-recycle-ap title="Refresh AP During Combat">
+                              <i class="fa-solid fa-recycle"></i>
+                            </button>
+                          </td>
+                          <td>
+                            <button data-refill-ap title="Refresh AP Outside of Combat">
+                              <i class="fa-regular fa-arrow-up-right-dots"></i>
+                            </button>
                           </td>
                         </tr>
                         <tr>

@@ -7,6 +7,8 @@ export default class FalloutZeroMeleeWeapon extends FalloutZeroWeapon {
 
     schema.abilityMod = new fields.StringField({ initial: 'str' })
     schema.skillBonus = new fields.StringField({ initial: 'melee_weapons' })
+
+    schema.consumesAmmo = new fields.BooleanField({ initial: false })
     return schema
   }
 

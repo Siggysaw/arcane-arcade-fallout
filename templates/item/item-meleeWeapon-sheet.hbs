@@ -41,13 +41,16 @@
           </td>
         </tr>
         <tr>
+          {{#if system.consumesAmmo}}
           <td>Ammo Type</td>
           <td>Capacity</td>
+          {{/if}}
           <td>Load</td>
           <td>Crit Bonus Roll</td>
           <td>Crit Bonus Multiplier</td>
         </tr>
         <tr>
+          {{#if system.consumesAmmo}}
           <td>
             <input type="text" name="system.ammo.type" value="{{ system.ammo.type }}" />
           </td>
@@ -64,6 +67,7 @@
               value="{{ system.ammo.capacity.max }}"
             />
           </td>
+          {{/if}}
           <td>
             <input type="number" name="system.load" value="{{ system.load }}" />
           </td>

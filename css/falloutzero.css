@@ -269,7 +269,6 @@ details > summary {
   font-weight: bold;
 }
 .falloutzero .items-header {
-  height: 28px;
   margin: 2px 0;
   padding: 0;
   align-items: center;
@@ -317,7 +316,6 @@ details > summary {
 }
 .falloutzero .items-list .item-controls {
   display: flex;
-  flex: 0 0 100px;
   justify-content: flex-end;
 }
 .falloutzero .items-list .item-controls a {
@@ -350,7 +348,6 @@ details > summary {
   font-size: 12px;
 }
 .falloutzero .items-list .items-header {
-  height: 28px;
   margin: 2px 0;
   padding: 0;
   align-items: center;
@@ -424,6 +421,7 @@ details > summary {
 .sheet a,
 .sheet a:hover,
 .sheet li,
+form .title,
 .falloutzero .items-list .item .item-name {
   color: #01e998;
 }
@@ -612,4 +610,22 @@ td,
 }
 .karmaCap input {
   float: left;
+}
+
+form td .status-notes{
+	height:334px;
+	text-align:left;
+	overflow:scroll;
+	background-color:#222;
+	background-image:url('/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png');
+	background-size:cover;
+	background-repeat:no-repeat;
+	font-size:10pt;
+	padding:20px;
+}
+
+form td .status-notes option,
+form td .status-notes li,
+form td .status-notes li:hover{
+	background:black;
 }
