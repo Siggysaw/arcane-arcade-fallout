@@ -629,3 +629,6 @@ form td .status-notes li,
 form td .status-notes li:hover{
 	background:black;
 }
+.directory .directory-header .header-search input{
+	background:#222;
+}
