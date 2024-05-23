@@ -64,6 +64,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       this.penalties[key].label = FALLOUTZERO.penalties[key]
     }
     this.penalties.radDC.value = 12 - this.abilities['end'].mod
+    //players need the ability to increase their max carry load manually.
+
     this.carryLoad.max = this.abilities['str'].value * 10
     this.healingRate = Math.floor((this.level + this.abilities['end'].value) / 2)
     this.penaltyTotal =
