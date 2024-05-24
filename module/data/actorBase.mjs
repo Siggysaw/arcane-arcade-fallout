@@ -197,8 +197,9 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
 
     // roll to hit
     const dice = hasDisadvantage ? '2d20kl' : 'd20'
+
     let roll = new Roll(
-      `${dice} + ${this.skills[weapon.system.skillBonus].value} + ${this.abilities[weapon.system.abilityMod].mod} - ${this.penaltyTotal}`,
+      `${dice} + ${this.skills[weapon.system.skillBonus].value} + ${this.abilities[weapon.system.abilityMod].mod} - ${this.penaltyTotal} - ${(weapon.system.decay - 10)*-1}`,
       this.getRollData(),
     )
     roll.toMessage({

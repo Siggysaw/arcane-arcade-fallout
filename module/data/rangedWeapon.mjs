@@ -6,8 +6,11 @@ export default class FalloutZeroRangedWeapon extends FalloutZeroWeapon {
     const schema = super.defineSchema()
 
     schema.abilityMod = new fields.StringField({ initial: 'agi' })
+    schema.upgrades = new fields.HTMLField({})	
     schema.skillBonus = new fields.StringField({ initial: 'guns' })
     schema.consumesAmmo = new fields.BooleanField({ initial: true })
+    schema.decay = new fields.NumberField({ initial:0, min:0, max:10})	
+	
     return schema
   }
 

@@ -631,3 +631,6 @@ form td .status-notes li:hover {
 .directory .directory-header .header-search input {
   background: #222;
 }
+.item .item-box{
+	max-width:425px;
+}
