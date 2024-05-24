@@ -107,7 +107,9 @@
       editable=editable}}
     </div>
     {{!-- Upgrades Tab --}}
-    <div class="tab" data-group="primary" data-tab="upgrades"></div>
+    <div class="tab" data-group="primary" data-tab="upgrades">
+		{{editor system.upgrades target="system.upgrades" button=true engine="prosemirror"}} 	
+	</div>
 
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">

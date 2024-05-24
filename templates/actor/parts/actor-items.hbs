@@ -1,7 +1,10 @@
+<table>
+<tr>
+<td>
 <!-- Armor Slot -->
 {{#each armors as |item id|}}
-<div class="item" data-item-id="{{ item._id }}">
-  <table class="item-box" style="margin:auto;">
+<div class="item flexrow" data-item-id="{{ item._id }}"> 
+ <table class="item-box">
     <tr>
       <td>
         <details open="true">
@@ -25,6 +28,17 @@
               <td>{{ system.load.value }}</td>
               <td>{{ system.strReq.value }}</td>
             </tr>
+			 <tr>
+			 <td colspan='999'>
+			CND: <input style="width:50px;" type="number" name="{{item.system.decay}}" value="{{item.system.decay}}" data-set-decay data-weapon-id="{{ item._id }}">
+			<progress style="width:60%;text-align:right;"
+					  class="statusbar stamina"
+					  value="{{item.system.decay}}"
+					  max="10"
+					>
+					  {{item.system.decay}}
+					</progress>
+			</td></tr>
           </table>
           <div class="item-controls">
             <a
@@ -49,36 +63,26 @@
       </td>
     </tr>
   </table>
-</div>
+  </div>
 {{/each}}
-
+</td>
+<td>
 <!-- AMMO Slot -->
-
-<details open="true">
-  <summary>
-    <p class="allcaps">AMMO</p>
-  </summary>
   <table class="item-box">
-    <tr data-item-id="ammo">
+    <tr>
       <td>
+        <details open="true">
+          <summary>
+            <p class="allcaps">{{ item.name }} AMMO</p>
+          </summary>
         {{#each ammos as |item id|}}
-        <div data-item-id="{{ item._id }}" style="float: left; width: 25%">
+        <div data-item-id="{{ item._id }}">
           <div
-            style="width: 100%; border: solid 1px; padding: 10px 10px 10px 10px"
             class="item flexrow"
             data-item-id="{{ item._id }}"
           >
-            <div class="item-controls" style="display: block; margin: auto">
+            <div class="item-controls">
               <a
-                style="float: right"
-                class="item-control item-delete"
-                data-item-id="{{ item._id }}"
-                title="{{localize 'DOCUMENT.Delete' type='item'}}"
-              >
-                <i class="fas fa-trash"></i>
-              </a>
-              <a
-                style="float: left"
                 data-edit
                 data-item-id="{{ item._id }}"
                 class="item-control"
@@ -86,6 +90,13 @@
               >
                 {{ item.name }} ({{ system.quantity }})
               </a>
+              <a
+                class="item-control item-delete"
+                data-item-id="{{ item._id }}"
+                title="{{localize 'DOCUMENT.Delete' type='item'}}"
+              >
+                <i class="fas fa-trash"></i>
+              </a>			  
             </div>
           </div>
         </div>
@@ -94,7 +105,9 @@
     </tr>
   </table>
 </details>
-
+</td>
+</tr>
+</table>
 <table>
   <tr>
     <td>
@@ -191,21 +204,31 @@
                 </table>
                 <table class="equipped-stats">
                   <tr>
-                    <td colspan="999">CONSUMES</td>
+                    <td colspan=3>CONSUMES</td><td>Modifiers</td>
                   </tr>
                   <tr>
                     <td>Type</td>
                     <td>Rounds per attack</td>
                     <td>Item</td>
-                  </tr>
+					<td>
+                      <select style="width:100%;" data-set-ability data-weapon-id="{{ item._id }}">
+                        {{selectOptions ../system.abilities selected=item.system.abilityMod nameAttr="abbr" labelAttr="label" blank="None"}}
+                      </select>					
+					</td>
+				  </tr>
                   <tr>
                     <td>{{ item.system.ammo.type }}</td>
                     <td>{{ item.system.ammo.consumes.amount }}</td>
                     <td>
-                      <select data-set-ammo data-weapon-id="{{ item._id }}">
-                        {{selectOptions item.ammos selected=item.system.ammo.consumes.target nameAttr="_id" labelAttr="name" blank="none"}}
+                      <select style="width:100%;" data-set-ammo data-weapon-id="{{ item._id }}">
+                        {{selectOptions item.ammos selected=item.system.ammo.consumes.target nameAttr="_id" labelAttr="name" blank="None"}}
                       </select>
                     </td>
+					<td>
+			        <select style="width:100%;" data-set-skill data-weapon-id="{{ item._id }}">
+                        {{selectOptions ../system.skills selected=item.system.skillBonus nameAttr="id" labelAttr="label" blank="None"}}
+                     </select>	
+					</td>
                   </tr>
                 </table>
                 <table class="equipped-stats">
@@ -229,8 +252,10 @@
                       {{/each}}
                     </td>
                   </tr>
-				   <tr>
-					<td colspan="999"><span title="Every Level Of Decay Lowers this Number">CND: </span><progress
+				   <tr style="vertical-align:middle">
+				   <td colspan='999'>
+					CND: <input style="width:50px;" type="number" name="{{item.system.decay}}" value="{{item.system.decay}}" data-set-decay data-weapon-id="{{ item._id }}">
+					<progress style="width:60%;text-align:right;"
                               class="statusbar stamina"
                               value="{{item.system.decay}}"
                               max="10"
@@ -294,23 +319,19 @@
                   </tr>
                   <tr>
                     <td>
-                      <label
-                        class="rollable resource-label"
-                        data-weapon-roll
-                        data-weapon-id="{{ item._id }}"
-                      >
-                        {{ system.apCost }}
-                      </label>
+                      <button data-weapon-roll data-weapon-id="{{ item._id }}">
+                        {{ item.system.apCost }}
+                      </button>
                     </td>
                     <td>
-                      <label
+                      <button
                         class="rollable resource-label"
                         data-rollable
-                        data-label="OUCH! DMG from a {{ system.name }}"
-                        data-roll="{{ system.damage.formula }}"
+                        data-label="OUCH! DMG from a {{ item.name }}"
+                        data-roll="{{ item.system.damage.formula }}"
                       >
-                        {{ system.damage.formula }}
-                      </label>
+                        {{ item.system.damage.formula }}
+                      </button>
                     </td>
                     <td>{{ system.critical.dice }}</td>
                     <td>{{ system.critical.bonus }}</td>
@@ -329,11 +350,32 @@
                     <td>{{ system.ammo.capacity.value }}</td>
                   </tr>
 				  <tr>
-				  <td colspan="999"> Hello?
-					</td>	
-				  </tr>
                 </table>
                 {{/if}}
+				<table class="equipped-stats">
+				<td>
+                      <select style="width:100%;" data-set-ability data-weapon-id="{{ item._id }}">
+                        {{selectOptions ../system.abilities selected=item.system.abilityMod nameAttr="abbr" labelAttr="label" blank="None"}}
+                      </select>					
+					</td><td>
+			        <select style="width:100%;" data-set-skill data-weapon-id="{{ item._id }}">
+                        {{selectOptions ../system.skills selected=item.system.skillBonus nameAttr="id" labelAttr="label" blank="None"}}
+                     </select>	
+					</td>
+					 <tr>
+					 <td colspan='999'>
+					CND: <input style="width:50px;" type="number" name="{{item.system.decay}}" value="{{item.system.decay}}" data-set-decay data-weapon-id="{{ item._id }}">
+					<progress style="width:60%;text-align:right;"
+                              class="statusbar stamina"
+                              value="{{item.system.decay}}"
+                              max="10"
+                            >
+                              {{item.system.decay}}
+                            </progress>
+					</td></tr>		 
+					
+					
+					</table>
                 <div class="item-controls">
                   <a
                     style="float: right; margin-right: 10px"

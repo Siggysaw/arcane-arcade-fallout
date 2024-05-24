@@ -8,7 +8,7 @@
     "quantity": 1,
     "load": "{{load}}",
     "cost": "{{cost}}",
-    "type": "{{title}}"
+    "type": "{{type}}"
   },
   "effects": [
     {
