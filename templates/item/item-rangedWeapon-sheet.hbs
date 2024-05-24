@@ -13,13 +13,17 @@
       </h1>
       <table>
         <tr>
+		  <td title="Every Level of Decay Lowers This Number. Item Breaks At 0">CND</td>
           <td>Cost</td>
           <td>AP</td>
           <td>Damage</td>
-          <td>Critical DV</td>
-          <td>STR Req.</td>
+          <td>Crit DV</td>
+          <td>STR</td>
         </tr>
         <tr>
+          <td>
+            <input type="number" name="system.decay" value="{{ system.decay }}" min="0" max="10" />
+          </td>		
           <td>
             <input type="number" name="system.cost" value="{{ system.cost }}" />
           </td>
@@ -41,11 +45,11 @@
           </td>
         </tr>
         <tr>
-          <td>Ammo Type</td>
+          <td>Ammo</td>
           <td>Capacity</td>
           <td>Load</td>
-          <td>Crit Bonus Roll</td>
-          <td>Crit Bonus Multiplier</td>
+          <td  colspan=2>Crit Roll</td>
+          <td>Crit Bonus</td>
         </tr>
         <tr>
           <td>
@@ -67,7 +71,7 @@
           <td>
             <input type="number" name="system.load" value="{{ system.load }}" />
           </td>
-          <td>
+          <td colspan=2>
             <input type="text" name="system.critical.bonus" value="{{ system.critical.bonus }}" />
           </td>
           <td>
@@ -79,7 +83,7 @@
           </td>
         </tr>
       </table>
-      <table class="equipped-stats">
+      <table class="equipped-stats" style="width:300px;">
         <tr>
           <td>Short Range:</td>
           <td>
@@ -113,7 +117,9 @@
 			editable=editable}}
     </div>
     {{!-- Upgrades Tab --}}
-    <div class="tab" data-group="primary" data-tab="upgrades"></div>
+    <div class="tab" data-group="primary" data-tab="upgrades">
+	 	  {{editor system.upgrades target="system.upgrades" button=true engine="prosemirror"}} 	
+	</div>
 
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">

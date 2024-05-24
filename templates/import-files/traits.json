@@ -1,7 +1,7 @@
 {
   "name": "{{name}}",
   "type": "trait",
-  "img": "systems/arcane-arcade-fallout/assets/vaultboy/trait-icon.png",
+  "img": "systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/{{name}}.png",
   "system": {
     "requirement": {
       "value": "{{prereq}}"

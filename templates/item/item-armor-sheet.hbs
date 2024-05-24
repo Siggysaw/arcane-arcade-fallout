@@ -67,8 +67,7 @@
     <div class="tab" data-group="primary" data-tab="description">
       {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the
       rollData prop. --}}
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner
-      editable=editable}}
+	  {{editor system.description target="system.description" button=true engine="prosemirror"}}
     </div>
     {{!-- Upgrades Tab --}}
     <div class="tab" data-group="primary" data-tab="upgrades">
@@ -79,6 +78,7 @@
         armor upgrade you cannot attach it to another set of armor unless it is of the same material
         unless otherwise specified.
       </p>
+	 	  {{editor system.upgrades target="system.upgrades" button=false engine="prosemirror"}} 
     </div>
 
     {{!-- Effects Tab --}}
