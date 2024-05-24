@@ -203,6 +203,30 @@ export class FalloutZeroActorSheet extends ActorSheet {
         { _id: weaponId, 'system.ammo.consumes.target': ev.target.value },
       ])
     })
+	
+    // handles changing skill on weapon
+    html.on('change', '[data-set-skill]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId
+      this.actor.updateEmbeddedDocuments('Item', [
+        { _id: weaponId, 'system.skillBonus': ev.target.value },
+      ])
+    })	
+
+    // handles changing ability on weapon
+    html.on('change', '[data-set-ability]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId
+      this.actor.updateEmbeddedDocuments('Item', [
+        { _id: weaponId, 'system.abilityMod': ev.target.value },
+      ])
+    })	
+	
+    // Updates Weapon Decay
+    html.on('change', '[data-set-decay]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId
+      this.actor.updateEmbeddedDocuments('Item', [
+        { _id: weaponId, 'system.decay': ev.target.value },
+      ])
+    })		
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable

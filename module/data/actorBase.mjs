@@ -81,6 +81,9 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           label: new fields.StringField({
             initial: FALLOUTZERO.abilities[ability].label,
           }),
+          abbr: new fields.StringField({
+            initial: FALLOUTZERO.abilities[ability].abbreviation,
+          }),		  
         })
         return obj
       }, {}),
@@ -97,6 +100,9 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           }),
           label: new fields.StringField({
             initial: FALLOUTZERO.skills[skill].label,
+          }),
+		  id: new fields.StringField({
+            initial: FALLOUTZERO.skills[skill].id,
           }),
         })
         return obj

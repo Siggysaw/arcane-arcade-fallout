@@ -17,6 +17,7 @@ details > summary {
   align-items: center;
   background: #222;
   cursor: pointer;
+  border:solid 1px #ccc;
 }
 
 .rollable:hover,
@@ -634,7 +635,7 @@ form td .status-notes li:hover {
 .prosemirror {
   display: flex;
   flex-direction: column;
-  --color-control-bg: #222;
+  --color-control-bg: #222; */
   --color-hover-bg: #222
   background: #222;
 }
