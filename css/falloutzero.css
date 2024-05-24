@@ -387,7 +387,8 @@ details > summary {
 }
 .dialog option,
 .dialog optgroup,
-.window-app .dialog ul {
+.window-app .dialog ul,
+ {
   background-color: #1d5427;
 }
 .window-app .window-content input,
@@ -422,7 +423,8 @@ details > summary {
 .sheet a:hover,
 .sheet li,
 form .title,
-.falloutzero .items-list .item .item-name {
+.falloutzero .items-list .item .item-name,
+.journal-entry-content{
   color: #01e998;
 }
 
@@ -628,7 +630,12 @@ form td .status-notes li,
 form td .status-notes li:hover {
   background: black;
 }
-.directory .directory-header .header-search input {
+.directory .directory-header .header-search input,
+.prosemirror {
+  display: flex;
+  flex-direction: column;
+  --color-control-bg: #222; */
+  --color-hover-bg: #222
   background: #222;
 }
 .item .item-box{
