@@ -536,6 +536,9 @@ td,
   padding: 5px;
   width: 100%;
 }
+.sheet .perk-div .perk-image {
+  height:150px;
+}
 .specialroll {
   text-transform: uppercase;
 }
