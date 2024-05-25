@@ -7,7 +7,7 @@
  <table class="item-box">
     <tr>
       <td>
-        <details open="true">
+        <details {{#if item.system.itemOpen }}open="true" {{/if}}>
           <summary>
             <p class="allcaps">{{ item.name }} ARMOR</p>
           </summary>
@@ -71,7 +71,7 @@
   <table class="item-box">
     <tr>
       <td>
-        <details open="true">
+        <details {{#if item.system.itemOpen }}open="true" {{/if}}>
           <summary>
             <p class="allcaps">{{ item.name }} AMMO</p>
           </summary>
@@ -118,7 +118,7 @@
 		<tr>
           <tr>
             <td>
-              <details open="true">
+              <details {{#if item.system.itemOpen }}open="true" {{/if}}>
                 <summary>
                   <p class="allcaps" data-item-id="{{ item._id }}">
                     {{ item.name }}
@@ -299,7 +299,7 @@
         <table  class="item-box weapons-table right">
           <tr>
             <td>
-              <details open="true">
+              <details {{#if item.system.itemOpen }}open="true" {{/if}}>
                 <summary>
                   <p class="allcaps">
                     {{ item.name }}

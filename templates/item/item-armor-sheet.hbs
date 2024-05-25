@@ -11,7 +11,8 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-	  <input type="number" name="system.decay" value="{{system.decay}}">
+	  Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />			  
+	  
       <table>
         <tr>
           <td>Cost</td>
@@ -73,11 +74,7 @@
     {{!-- Upgrades Tab --}}
     <div class="tab" data-group="primary" data-tab="upgrades">
       <p>
-        Upgrades can be crafted or purchased from certain vendors. When you have an armor upgrade
-        you can spend 1 minute to attach it to your armor, or spend 1 minute to remove it. You can
-        only have one type of armor upgrade on each set of armor. When you craft or purchase an
-        armor upgrade you cannot attach it to another set of armor unless it is of the same material
-        unless otherwise specified.
+Upgrade Functionality is on the way! Until then, type out the mods you've put on your weapon and update your stats manually accordingly
       </p>
 	 	  {{editor system.upgrades target="system.upgrades" button=false engine="prosemirror"}} 
     </div>

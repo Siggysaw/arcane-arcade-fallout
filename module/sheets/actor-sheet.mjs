@@ -226,7 +226,15 @@ export class FalloutZeroActorSheet extends ActorSheet {
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.decay': ev.target.value },
       ])
-    })		
+    })	
+	
+    // Updates Expand Item Field
+    html.on('change', '[data-set-itemOpen]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId
+      this.actor.updateEmbeddedDocuments('Item', [
+        { _id: weaponId, 'system.itemOpen': ev.target.value },
+      ])
+    })	
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
