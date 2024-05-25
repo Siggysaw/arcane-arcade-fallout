@@ -11,7 +11,8 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-	  Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />			  
+	  Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
+	  Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}"/>	 
 	  
       <table>
         <tr>
@@ -47,7 +48,7 @@
           <td>
             <input type="number" name="system.slots.value" value="{{ system.slots.value }}" />
           </td>
-          <td><input type="number" name="system.load.value" value="{{ system.load.value }}" /></td>
+          <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
           <td>
             <input type="number" name="system.strReq.value" value="{{ system.strReq.value }}" />
           </td>

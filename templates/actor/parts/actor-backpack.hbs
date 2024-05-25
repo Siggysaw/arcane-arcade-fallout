@@ -4,8 +4,9 @@
     vertical-align: middle;
   }
 </style>
-<table class="backpack">
-<tr><td>
+<table class="equipped-stats">
+<tr><td style="width:45%;vertical-align:top">
+<h3>Ranged Weapons</h3>
 {{#each rangedWeapons as |item id|}}
 {{#unless item.system.itemEquipped}}
 <li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
@@ -18,15 +19,17 @@
 	>
 	  {{item.name}}({{item.system.quantity}}) 
 	</a>                <a
-                  class="item-control item-delete"
-                  title="{{localize 'DOCUMENT.Delete' type='item'}}"
-                >
-                  <i class="fas fa-trash"></i>
-                </a>
+	  class="item-control item-delete"
+	  title="{{localize 'DOCUMENT.Delete' type='item'}}"
+	>
+	  <i class="fas fa-trash"></i>
+	</a>
   </div>
 </li>
 {{/unless}}
 {{/each}}
+</td><td  style="width:45%;vertical-align:top">
+<h3>Melee Weapons</h3>
 {{#each meleeWeapons as |item id|}}
 {{#unless item.system.itemEquipped}}
 <li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
@@ -39,16 +42,19 @@
 	>
 	  {{item.name}}({{item.system.quantity}}) 
 	</a>                <a
-                  class="item-control item-delete"
-                  title="{{localize 'DOCUMENT.Delete' type='item'}}"
-                >
-                  <i class="fas fa-trash"></i>
-                </a>
+	  class="item-control item-delete"
+	  title="{{localize 'DOCUMENT.Delete' type='item'}}"
+	>
+	  <i class="fas fa-trash"></i>
+	</a>
   </div>
 </li>
 {{/unless}}
 {{/each}}
 </td></tr>
+</table>
+
+<table class="backpack">
   <tr>
     <td>
       <table class="foodanddrinks">
@@ -91,9 +97,11 @@
         <table class="foodanddrinks">
           {{#each junk as |item id|}}
           <tr>
-            <td>{{ item.name }} ({{item.quantity}})</td>
+            <td>{{ item.name }} ({{item.system.quantity}})</td>
             <td>
-              {{ system.junk.type1 }} ({{ system.junk.quantity1 }}) {{ system.junk.type2 }} ({{system.junk.quantity2}}) {{ system.junk.type3 }} ({{ system.junk.quantity3 }})
+             {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}} 
+             {{#if (gt system.junk.quantity2 0)}} {{ system.junk.type2 }} ({{ system.junk.quantity2 }}){{/if}} 
+             {{#if (gt system.junk.quantity3 0)}} {{ system.junk.type3 }} ({{ system.junk.quantity3 }}){{/if}} 			 
             </td>
             <td class="td-controls">
               <li class="item flexrow" data-item-id="{{ item._id }}">

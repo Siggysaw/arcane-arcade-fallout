@@ -57,12 +57,14 @@ export class FalloutZeroActorSheet extends ActorSheet {
     actorData.system.carryLoad.value = actorData.items.reduce((acc, item) => {
       if (item.system.load) {
         if (item.system.quantity) {
-          acc += item.system.load * item.system.quantity
+		const totalLoad= item.system.load * item.system.quantity
+          acc += totalLoad
         } else {
-          acc += item.system.load
+		const totalLoad= item.system.load		
+          acc += totalLoad
         }
       }
-      return acc
+      return Math.round(acc * 10) / 10
     }, 0)
 
     // Add roll data for TinyMCE editors.

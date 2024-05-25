@@ -5,7 +5,7 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-		Qty: <input style="width:50px;" type="number" name="system.quantity" value="{{ system.quantity }}" />
+		Qty: <input style="width:50px;" type="number" name="system.quantity" value="{{ system.quantity }}" min="0" />
     </div>
   </header>
   <table>
@@ -15,7 +15,7 @@
     </tr>
     <tr>
       <td style="width: 200px">Material 1:</td>
-      <td><input type="text" name="system.junk.type1" value="{{ system.junk.type }}" /></td>
+      <td><input type="text" name="system.junk.type1" value="{{ system.junk.type1 }}" /></td>
       <td>Qty</td>
       <td>
         <input type="number" name="system.junk.quantity1" value="{{ system.junk.quantity1 }}" />

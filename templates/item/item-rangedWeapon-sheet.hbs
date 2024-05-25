@@ -12,9 +12,8 @@
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
 	  Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />
-	  Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} />	  
-	  
-
+	  Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
+	  Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}"/>	 
     </div>
   </header>
 
