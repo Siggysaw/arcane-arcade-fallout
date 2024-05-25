@@ -11,9 +11,25 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-	  Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />			  
+	  Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />
+	  Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} />		  
 	  
-      <table>
+    
+    </div>
+  </header>
+  
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="upgrades">Upgrades</a>
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+    {{!-- Description Tab --}}
+    <div class="tab" data-group="primary" data-tab="description">
+<table>
         <tr>
 		  <td>Decay</td>
           <td>Cost</td>
@@ -53,7 +69,7 @@
           {{/if}}
           <td>Load</td>
           <td>Crit Bonus Roll</td>
-          <td>Crit Bonus Multiplier</td>
+          <td>Crit Bonus</td>
         </tr>
         <tr>
           {{#if system.consumesAmmo}}
@@ -78,7 +94,7 @@
             <input type="number" name="system.load" value="{{ system.load }}" />
           </td>
           <td>
-            <input type="text" name="system.critical.bonus" value="{{ system.critical.bonus }}" />
+            <input colspan=2 type="text" name="system.critical.bonus" value="{{ system.critical.bonus }}" />
           </td>
           <td>
             <input
@@ -88,21 +104,8 @@
             />
           </td>
         </tr>
-      </table>
-    </div>
-  </header>
-
-  {{!-- Sheet Tab Navigation --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="upgrades">Upgrades</a>
-    <a class="item" data-tab="effects">Effects</a>
-  </nav>
-
-  {{!-- Sheet Body --}}
-  <section class="sheet-body">
-    {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
+      </table>	
+	
       {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the
       rollData prop. --}}
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner

@@ -113,6 +113,7 @@
     <td>
       <!-- Ranged Weapons Slot -->
       {{#each rangedWeapons as |item id|}}
+	  {{#if item.system.itemEquipped}}
       <div class="item flexrow weapons-div" data-item-id="{{ item._id }}">
         <table  class="item-box weapons-table left">
 		<tr>
@@ -289,12 +290,14 @@
           </tr>
         </table>
       </div>
+	  {{/if}}
       {{/each}}
     </td>
     <td class="spacer"></td>
     <td>
       <!-- MeleeWeapons Slot -->
       {{#each meleeWeapons as |item id|}}
+	  {{#if item.system.itemEquipped}}
       <div class="item flexrow weapons-div" data-item-id="{{ item._id }}">
         <table  class="item-box weapons-table right">
           <tr>
@@ -399,6 +402,7 @@
           </tr>
         </table>
       </div>
+	  {{/if}}
       {{/each}}
     </td>
   </tr>

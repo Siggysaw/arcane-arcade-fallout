@@ -5,6 +5,50 @@
   }
 </style>
 <table class="backpack">
+<tr><td>
+{{#each rangedWeapons as |item id|}}
+{{#unless item.system.itemEquipped}}
+<li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
+  <div class="item-controls">
+	<a
+	  class="item-control"
+	  data-edit
+	  data-item-id="{{ item._id }}"
+	  title="{{localize 'DOCUMENT.Update' type='item'}}"
+	>
+	  {{item.name}}({{item.system.quantity}}) 
+	</a>                <a
+                  class="item-control item-delete"
+                  title="{{localize 'DOCUMENT.Delete' type='item'}}"
+                >
+                  <i class="fas fa-trash"></i>
+                </a>
+  </div>
+</li>
+{{/unless}}
+{{/each}}
+{{#each meleeWeapons as |item id|}}
+{{#unless item.system.itemEquipped}}
+<li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
+  <div class="item-controls">
+	<a
+	  class="item-control"
+	  data-edit
+	  data-item-id="{{ item._id }}"
+	  title="{{localize 'DOCUMENT.Update' type='item'}}"
+	>
+	  {{item.name}}({{item.system.quantity}}) 
+	</a>                <a
+                  class="item-control item-delete"
+                  title="{{localize 'DOCUMENT.Delete' type='item'}}"
+                >
+                  <i class="fas fa-trash"></i>
+                </a>
+  </div>
+</li>
+{{/unless}}
+{{/each}}
+</td></tr>
   <tr>
     <td>
       <table class="foodanddrinks">

@@ -11,22 +11,33 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-	  Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />			  
+	  Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />
+	  Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} />	  
 	  
-      <table>
-	  <tr>
+
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="upgrades">Upgrades</a>
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+    {{!-- Description Tab --}}
+    <div class="tab" data-group="primary" data-tab="description">
+    <table>
         <tr>
-		  <td title="Every Level of Decay Lowers This Number. Item Breaks At 0">CND</td>
           <td>Cost</td>
           <td>AP</td>
           <td>Damage</td>
           <td>Crit DV</td>
           <td>STR</td>
         </tr>
-        <tr>
-          <td>
-            <input type="number" name="system.decay" value="{{ system.decay }}" min="0" max="10" />
-          </td>		
+        <tr>	
           <td>
             <input type="number" name="system.cost" value="{{ system.cost }}" />
           </td>
@@ -74,7 +85,7 @@
           <td>
             <input type="number" name="system.load" value="{{ system.load }}" />
           </td>
-          <td colspan=2>
+          <td>
             <input type="text" name="system.critical.bonus" value="{{ system.critical.bonus }}" />
           </td>
           <td>
@@ -100,27 +111,14 @@
           </td>
         </tr>
       </table>
-    </div>
-  </header>
-
-  {{!-- Sheet Tab Navigation --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="upgrades">Upgrades</a>
-    <a class="item" data-tab="effects">Effects</a>
-  </nav>
-
-  {{!-- Sheet Body --}}
-  <section class="sheet-body">
-    {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
-      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to
+	  {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to
 			the rollData prop. --}}
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror"
 			editable=editable}}
     </div>
     {{!-- Upgrades Tab --}}
     <div class="tab" data-group="primary" data-tab="upgrades">
+	Upgradeables are on the way! Until then, add your modifications to this box and manually update your stats.
 	 	  {{editor system.upgrades target="system.upgrades" button=true engine="prosemirror"}} 	
 	</div>
 
