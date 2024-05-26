@@ -58,6 +58,7 @@
   <tr>
     <td>
       <table class="foodanddrinks">
+		<tr><td>Name</td><td>Description</td><td>Load</td><td></td></tr>
         {{#each foodAnddrinks as |item id|}}
         <tr>
           <td style="width: 100px">
@@ -66,7 +67,9 @@
 
           <td>
             {{{ item.system.description }}}
-          </td>
+          </td><td>
+			{{item.system.load}}
+		  </td>
           <td class="td-controls">
             <li class="item flexrow" data-item-id="{{ item._id }}">
               <div class="item-controls">
@@ -92,9 +95,9 @@
       </table>
     </td>
     <td class="spacer"></td>
-    <td>
+    <td style="min-width:300px">
       <div>
-        <table class="foodanddrinks">
+        <table class="foodanddrinks" >
           {{#each junk as |item id|}}
           <tr>
             <td>{{ item.name }} ({{item.system.quantity}})</td>

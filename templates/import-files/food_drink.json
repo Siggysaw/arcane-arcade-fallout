@@ -8,36 +8,7 @@
     "quantity": "{{qty}}",
     "description": "<p>{{properties}}</p>"
   },
-  "effects": [
-    {
-      "name": "Inventory Effect",
-      "icon": "icons/svg/aura.svg",
-      "origin": "Item.9e6fkeVdVIReWZGH",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "WV1B2o1W6aCjovS0",
-      "changes": [
-        {
-          "key": "system.carryLoad.value",
-          "mode": 2,
-          "value": "{{load}}"
-        }
-      ],
-      "description": "",
-      "transfer": true,
-      "statuses": [],
-      "flags": {},
-      "tint": null
-    }
-  ],
+  "effects": [],
   "folder": null,
   "flags": {
     "core": {},

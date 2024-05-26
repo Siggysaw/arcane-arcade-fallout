@@ -1,83 +1,115 @@
-﻿title,cost,properties,load,type,qty
-Baked Bloatfly,10,Tasty. Fortifying. Putrid.,4,food,1
-Bear roast,45,Filling. Flavorsome. Strengthening,6,food,1
-Bighorner steak,20,Filling. Flavorsome.,5,food,1
-Bloodbug Steak,25,Bland. Regenerating. Putrid.,3,food,1
-Deathclaw Egg Omelette,80,Delicacy. Empowering. Regenerating.,5,food,1
-BlamCo Mac & Cheese,10,Filling. Tasty. Irradiated.,4,food,1
-Canned Dog Food,4,Filling. Tasty. Irradiated. Putrid.,2,food,1
-Cram,5,Filling. Bland. Irradiated.,1,food,1
-Dandy Boy Apples,2,Bland. Snack. Irradiated.,1,food,1
-Fancy Lads Snack Cakes,4,Tasty. Snack. Irradiated.,2,food,1
-InstaMash,5,Filling. Bland. Irradiated.,6,food,1
-Noodle cup,15,Filling. Tasty.,3,food,1
-Pork n' Beans,10,Filling. Tasty. Irradiated.,2,food,1
-Potato Crisps,4,Tasty. Snack. Irradiated.,1,food,1
-Salisbury Steak,10,Filling. Tasty. Irradiated.,5,food,1
-Sugar Bombs,5,Tasty. Irradiated.,4,food,1
-Yum Yum Deviled Eggs,10,Filling. Tasty. Irradiated.,4,food,1
-Agave Fruit,3,Tasty. Snack.,1,food,1
-Apple,5,Tasty. Snack.,1,food,1
-Yucca Fruit,6,Bland. Refreshing.,2,food,1
-Cactus Fruit,5,Tasty. Refreshing. Snack.,1,food,1
-Blackberries,8,Tasty. Snack.,1,food,1
-Bloodleaf,5,Bland. Snack.Regenerating.,1,food,1
-Brain fungus,6,Bland.,3,food,1
-Carrot,3,Tasty. Snack.,2,food,1
-Cave Fungus,6,Bland. Snack.,1,food,1
-Corn,3,Tasty.,2,food,1
-Cranberries,3,Tasty. Snack.,1,food,1
-Gourd,3,Tasty. Filling.,5,food,1
-Jalapeño pepper,6,Tasty. Spicy. Snack.,1,food,1
-Melon,3,Tasty. Filling.,5,food,1
-Mutfruit,3,Tasty. Snack.,1,food,1
-Pear,3,Tasty. Snack.,1,food,1
-Potato,3,Bland.,2,food,1
-Prickly Pear Fruit,3,Tasty. Snack.,1,food,1
-Razorgrain,3,Bland. Snack.,1,food,1
-Silt bean,3,Bland. Snack.,1,food,1
-Tarberry,3,Tasty. Snack.,1,food,1
-Tato,3,Tasty. Snack.,1,food,1
-Xander Root,2,Bland. Snack.,1,food,1
-Deathclaw Steak,60,Delicacy. Empowering Filling.,8,food,1
-Desert Salad,15,Flavorsome.,4,food,1
-Donut,8,Tasty. Snack.,1,food,1
-Fruit filled donut,8,Tasty. Snack. Fortifying. Irradiated.,1,food,1
-Quantum crunch donut,33,Caffeinated. Charged. Irradiated. Snack. Tasty.,1,food,1
-Fire ant fricassée,35,Delicacy. Spicy. Putrid.,6,food,1
-Gecko steak,15,Filling. Tasty.,4,food,1
-Grilled Radroach,10,Fortifying. Tasty. Putrid.,3,food,1
-Grilled Radstag,30,Filling. Tasty. Hearty.,6,food,1
-Iguana on a Stick,10,Tasty.,3,food,1
-Mole rat chunks,20,Energizing. Tasty.,3,food,1
-Mole rat stew,15,Flavorsome.,8,food,1
-Mutt chops,15,Filling. Tasty.,4,food,1
-Radscorpion egg omelette,65,Cleansing. Flavorsome.,5,food,1
-Radscorpion steak,30,Filling. Flavorsome. Pungent.,6,food,1
-Radstag stew,25,Filling. Tasty. Pungent.,8,food,1
-Ribeye steak,35,Filling. Delicacy.,6,food,1
-Roasted ant,5,Filling. Bland. Putrid.,4,food,1
-Roasted mirelurk meat,25,Filling. Tasty. Energizing.,4,food,1
-Vegetable soup,15,Tasty. Fortifying.,8,food,1
-Wasteland omelet,60,Filling. Flavorsome.Hearty. Regenerating.,4,food,1
-Absinthe,60,High-Proof. Addictive. Hallucinogenic. (See Chems),2,drink,1
-Atomic Cocktail,10,Caffeinated. Energizing. Irradiated.,2,drink,1
-Beer,10,Alcoholic. Addictive.,2,drink,1
-Coffee,15,Caffeinated. Tasty.,2,drink,1
-Cowboy Coffee,5,Caffeinated.,2,drink,1
-Dirty Wastelander,15,High-Proof. Addictive.,2,drink,1
-Dirty water,5,Irradiated.,2,drink,1
-Moonshine,40,High-Proof. Addictive. Strengthening.,2,drink,1
-Nuka-Cola,15,Caffeinated. Irradiated. Tasty. Lucky.,2,drink,1
-Nuka-Cola Cherry,15,Caffeinated. Irradiated. Flavorsome.,2,drink,1
-Nuka-Cola Quantum,35,Caffeinated. Charged. Irradiated. Tasty.,2,drink,1
-Purified water,20,Hydrating.,2,drink,1
-Rum,25,High-Proof. Addictive. Tasty.,2,drink,1
-Scotch,25,High-Proof. Addictive. Tasty.,2,drink,1
-Sunset Sarsaparilla,10,Flavorsome. Irradiated.,2,drink,1
-Vodka,40,High-Proof. Addictive. Strengthening.,2,drink,1
-Wasteland Tequila,20,High-Proof. Addictive. Lucky.,2,drink,1
-Whiskey,20,High-Proof. Addictive. Lucky.,2,drink,1
-Dead Man’s Wine,1,Alcoholic. Addictive. Putrid. Irradiated.,2,drink,1
-Wasteland Wine.,15,Alcoholic. Addictive. Tasty. Irradiated.,2,drink,1
-Wine,20,Alcoholic. Addictive. Tasty.,2,drink,1
+﻿title,cost,properties,load,qty
+Addictol,125,"<p>This miracle drug comes in an inhaler. You
+can spend 4 AP to consume it. When you do; you become
+cured of all addictions. However, you gain three levels of
+dehydration, hunger, and exhaustion</p>",1,1
+Antivenom,25,"<p>You can consume this bottled medicine
+with 5 AP. If you do; you become resistant to poison
+damage dealt to your hit points for the next 6 hours.</p>",3,1
+Cateye,20,"<p> You can consume this small pill with 3 AP. If
+you do; you have night vision for the next 3 hours</p>",0,1
+Doctor's Bag,300,"<p>This bag includes specialized tools,
+bandages, gauze, and healing serums to provide medical
+aid. You can use this kit on yourself or another creature so
+long as they are next to you. When you use it, choose one
+of the following actions.
+- Tourniquet. Spend 6 AP and remove up to two
+levels of bleeding.
+- Pain Killer. Spend 6 AP to heal a dying creature 1
+hit point.
+- Stitch Wounds. Spend 10 minutes and heal a
+creature with a number of hit points equal to
+double their healing rate + your medicine skill
+bonus.
+- Set Bone. Spend 10 minutes and a creature with
+the Broken Arm or Broken Leg condition may
+remove it.
+After you have used three of these actions, the doctor’ bag
+supplies are used and it no longer functions</p>",15,1
+Fixer,50,"<p>A small pill typically found in a tin with up to 5.
+You can spend 4 AP to consume it. When you do; you
+become cured of one addiction of your choice. However,
+you gain one level of dehydration, hunger, and exhaustion</p>",0,1
+First Aid Kit,80,"<p>You can use this kit on yourself or
+another creature so long as they are next to you. When
+you use it, choose one of the following actions.
+- Tourniquet. Spend 6 AP and remove up to two
+levels of bleeding.
+- Pain Killer. Spend 6 AP to heal a dying creature 1
+hit point.
+- Stitch Wounds. Spend 10 minutes and heal a
+creature with a number of hit points equal to
+double their healing rate + your medicine skill
+bonus.
+After you have used one of these actions, the first aid kit’s
+supplies are used and it no longer functions</p>",4,1
+Healing Powder,30,"<p>You can spend 6 AP to use this
+medicinal item on yourself or another creature so long as
+they are next to you. If that creature is a human, mutant,
+abomination, animal, or insect; at the start of each of their
+turns they heal a number of hit points equal to half their
+healing rate (rounded down). After healing for three
+rounds, the effects cease. Ghouls, robots, and gen-2
+synths are unaffected by healing powder</p>",3,1
+RadAway,80,"<p>You can spend 15 minutes to use this
+medicinal item on yourself or a creature within 5 feet of
+you. At the end of the hour, the affected creature removes
+two levels of radiation but gains one level of thirst</p>",4,1
+RadAway (Diluted),30,"<p> You can spend 15 minutes to use
+this medicinal item on yourself or a creature within 5 feet
+of you. At the end of the hour, the affected creature
+removes one level of radiation but gains one level of thirst.</p>",4,1
+Rad-X,40,"<p>You can consume this small pill with 3 AP. If
+you do; your radiation DC decreases by 2 for the next 3
+hours. You can consume a total of three Rad-X at one
+time to gain their benefits, if you consume more than three
+you do not gain any additional benefits.</p>",0,1
+RobCo Quick Fix-it 1.0,40,"<p>The RobCo Quick Fix-it 1.0 is
+a healing stim but for robots! You can spend 4 AP to use
+this item on yourself or another creature so long as they
+are next to you. If that creature is a robot or gen-2 synth;
+they heal a number of hit points equal to half their healing
+rate.</p>",4,1
+RobCo Quick Fix-it 2.0,75,"<p>The RobCo Quick Fix-it 2.0 is
+the new and improved healing stim but for robots! You can
+spend 4 AP to use this item on yourself or another
+creature so long as they are next to you. If that creature is
+a robot or gen-2 synth; they heal a number of hit points
+equal to their healing rate</p>",4,1
+Extreme Damages RobCo Quick Fix-it 2.0,150,"<p>The
+Extreme Damages RobCo Quick Fix-it 2.0 is a healing
+stim but for robots in severe cases of major damages! You
+can spend 4 AP to use this item on yourself or another
+creature so long as they are next to you. If that creature is
+a robot or gen-2 synth; they heal a number of hit points
+equal to double their healing rate</p>",4,1
+Stimpak,75,"<p>You can spend 4 AP to use this medicinal
+item on yourself or another creature so long as they are
+next to you. If that creature is a human, mutant, gen-2
+synth, abomination, animal, or insect; they heal a number
+of hit points equal to their healing rate. If that creature is a
+ghoul; they heal a number of hit points equal to half their
+healing rate.</p>",4,1
+Stimpak (Diluted),40,"<p> You can spend 4 AP to use this
+medicinal item on yourself or another creature so long as
+87
+they are next to you. If that creature is a human, mutant,
+gen-2 synth, abomination, animal, or insect; they heal a
+number of hit points equal to half their healing rate. If that
+creature is a ghoul; they heal a number of hit points equal
+to a quarter of their healing rate.</p>",4,1
+Super Stimpak,150,"<p>You can spend 4 AP to use this
+medicinal item on yourself or another creature so long as
+they are next to you. If that creature is a human, mutant,
+gen-2 synth, abomination, animal, or insect; they heal a
+number of hit points equal to double their healing rate. If
+that creature is a ghoul; they heal a number of hit points
+equal to their healing rate</p>",6,1
+Auto-Inject Stimpak,150,"<p>When your hit points are equal
+to or lower than half their maximum (rounded down) for
+the first time on a turn; you automatically gain the effects
+of a stimpak.</p>",4,1
+Auto-Inject Super Stimpak,300,"<p>When your hit points are
+equal to or lower than half their maximum (rounded down)
+for the first time on a turn; you automatically gain the
+effects of a super stimpak</p>",6,1

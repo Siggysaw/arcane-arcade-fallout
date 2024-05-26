@@ -41,18 +41,6 @@
     "abilityMod": "agi",
     "skillBonus": "guns"
   },
-  "effects": [
-    {
-      "name": "New Active Effect",
-      "icon": "icons/svg/aura.svg",
-      "changes": [
-        {
-          "key": "system.carryLoad.value",
-          "mode": 2,
-          "value": "{{load}}"
-        }
-      ]
-    }
-  ],
+  "effects": [],
   "folder": null
 }

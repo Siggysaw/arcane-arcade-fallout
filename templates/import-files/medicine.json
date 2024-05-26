@@ -1,43 +1,14 @@
 {
   "name": "{{title}}",
-  "type": "foodAnddrink",
-  "img": "systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/wasteland%20camel.png",
+  "type": "medicine",
+  "img": "systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/{{title}}.png",
   "system": {
     "cost": "{{cost}}",
     "load": "{{load}}",
-    "quantity": "{{qty}}",
+    "quantity": "1",
     "description": "<p>{{properties}}</p>"
   },
-  "effects": [
-    {
-      "name": "Inventory Effect",
-      "icon": "icons/svg/aura.svg",
-      "origin": "Item.9e6fkeVdVIReWZGH",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "WV1B2o1W6aCjovS0",
-      "changes": [
-        {
-          "key": "system.carryLoad.value",
-          "mode": 2,
-          "value": "{{load}}"
-        }
-      ],
-      "description": "",
-      "transfer": true,
-      "statuses": [],
-      "flags": {},
-      "tint": null
-    }
-  ],
+  "effects": [],
   "folder": null,
   "flags": {
     "core": {},

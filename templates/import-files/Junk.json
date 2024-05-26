@@ -1,0 +1,29 @@
+{
+  "name": "{{name}}",
+  "type": "junkItem",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+	"quantity": "1",
+    "load": ".2",
+    "junk": {
+      "type1": "{{type1}}",
+      "quantity1": "{{qty1}}",
+      "type2": "{{type2}}",
+      "quantity2": "{{qty2}}",
+      "type3": "{{type3}}",
+      "quantity3": "{{qty3}}"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "exportSource": {
+      "world": "fallout-ttrpg",
+      "system": "arcane-arcade-fallout",
+      "coreVersion": "11.315",
+      "systemVersion": "1.0.0"
+    }
+  },
+  "_stats": {
+  }
+}

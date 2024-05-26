@@ -10,34 +10,7 @@
     "cost": "{{cost}}",
     "type": "{{type}}"
   },
-  "effects": [
-    {
-      "name": "Load Increase",
-      "icon": "icons/svg/aura.svg",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "changes": [
-        {
-          "key": "system.carryLoad.value",
-          "mode": 2,
-          "value": "{{load}}"
-        }
-      ],
-      "description": "",
-      "transfer": true,
-      "statuses": [],
-      "flags": {},
-      "tint": null
-    }
-  ],
+  "effects": [],
   "folder": null,
   "flags": {
     "core": {},

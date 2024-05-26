@@ -1,10 +1,10 @@
 {
   "name": "{{title}}",
   "type": "meleeWeapon",
-  "img": "systems/arcane-arcade-fallout/assets/vaultboy/melee-weapon-icon.png",
+  "img": "systems/arcane-arcade-fallout/assets/vaultboy/blunt%20melee.png",
   "system": {
     "description": "<p>{{special}}</p>",
-    "img": "systems/arcane-arcade-fallout/assets/vaultboy/melee-weapon-icon.png",
+    "img": "systems/arcane-arcade-fallout/assets/vaultboy/blunt%20melee.png",
     "load": "{{load}}",
     "cost": "{{cost}}",
     "apCost": "{{ap}}",
@@ -42,35 +42,7 @@
     "abilityMod": "str",
     "skillBonus": "melee_weapons"
   },
-  "effects": [
-    {
-      "name": "Inventory Effect",
-      "icon": "icons/svg/aura.svg",
-      "origin": "Item.DgPDTlOIO8PtesDS",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "changes": [
-        {
-          "key": "system.carryLoad.value",
-          "mode": 2,
-          "value": "{{load}}"
-        }
-      ],
-      "description": "",
-      "transfer": true,
-      "statuses": [],
-      "flags": {},
-      "tint": null
-    }
-  ],
+  "effects": [],
   "folder": null,
   "_stats": {
     "systemId": "arcane-arcade-fallout",
