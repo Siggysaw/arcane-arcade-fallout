@@ -180,6 +180,7 @@
       {{!-- Default tab is specified in actor-sheet.mjs --}}
       <a class="item" data-tab="status">STATUS</a>
       <a class="item" data-tab="items">COMBAT</a>
+      <a class="item" data-tab="backpack">BACKPACK</a>	  
     </nav>
 
     {{!-- Sheet Body --}}
@@ -245,6 +246,10 @@
       <div class="tab items" data-group="primary" data-tab="items">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
       </div>
+      {{!-- Backpack Tab --}}
+      <div class="tab backpack" data-group="primary" data-tab="backpack">
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
+      </div>	  
     </section>
   </div>
 </form>
