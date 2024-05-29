@@ -1,7 +1,7 @@
 {
   "name": "{{title}}",
   "type": "foodAnddrink",
-  "img": "systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/wasteland%20camel.png",
+  "img": "systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/wastelandcamel.png",
   "system": {
     "cost": "{{cost}}",
     "load": "{{load}}",
