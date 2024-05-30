@@ -648,6 +648,11 @@ form td .status-notes li:hover {
 .alwaysopen{
 	float:left;
 }
-
+.directory .directory-header .header-search input {
+  flex: 1;
+  margin: 0 3px;
+  background: #222;
+  color: #01e998;
+}
 
 
