@@ -48,6 +48,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     schema.groupSneak = new fields.NumberField({ initial: 0, min: 0 })
     schema.combatSequence = new fields.NumberField({ initial: 0, min: 0 })
     schema.partyNerve = new fields.NumberField({ initial: 0, min: 0 })
+	schema.irradiated = new fields.NumberField({initial:0, min: 0});
     schema.passiveSense = new fields.NumberField({
       ...requiredInteger,
       initial: 0,
@@ -72,5 +73,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       this.penalties.radiation.value +
       this.penalties.fatigue.value
     this.passiveSense = 12 + this.abilities['per'].mod
+	this.luckmod = Math.floor(this.abilities['lck'].mod/2)
+	if(this.luckmod<0){
+		this.luckmod=-1
+	}
   }
 }
