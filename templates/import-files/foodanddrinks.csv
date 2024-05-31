@@ -1,83 +1,83 @@
 ﻿title,cost,properties,load,type,qty
-Baked Bloatfly,10,Tasty. Fortifying. Putrid.,4,food,1
-Bear roast,45,Filling. Flavorsome. Strengthening,6,food,1
-Bighorner steak,20,Filling. Flavorsome.,5,food,1
-Bloodbug Steak,25,Bland. Regenerating. Putrid.,3,food,1
-Deathclaw Egg Omelette,80,Delicacy. Empowering. Regenerating.,5,food,1
-BlamCo Mac & Cheese,10,Filling. Tasty. Irradiated.,4,food,1
-Canned Dog Food,4,Filling. Tasty. Irradiated. Putrid.,2,food,1
-Cram,5,Filling. Bland. Irradiated.,1,food,1
-Dandy Boy Apples,2,Bland. Snack. Irradiated.,1,food,1
-Fancy Lads Snack Cakes,4,Tasty. Snack. Irradiated.,2,food,1
-InstaMash,5,Filling. Bland. Irradiated.,6,food,1
-Noodle cup,15,Filling. Tasty.,3,food,1
-Pork n' Beans,10,Filling. Tasty. Irradiated.,2,food,1
-Potato Crisps,4,Tasty. Snack. Irradiated.,1,food,1
-Salisbury Steak,10,Filling. Tasty. Irradiated.,5,food,1
-Sugar Bombs,5,Tasty. Irradiated.,4,food,1
-Yum Yum Deviled Eggs,10,Filling. Tasty. Irradiated.,4,food,1
-Agave Fruit,3,Tasty. Snack.,1,food,1
-Apple,5,Tasty. Snack.,1,food,1
-Yucca Fruit,6,Bland. Refreshing.,2,food,1
-Cactus Fruit,5,Tasty. Refreshing. Snack.,1,food,1
-Blackberries,8,Tasty. Snack.,1,food,1
-Bloodleaf,5,Bland. Snack.Regenerating.,1,food,1
-Brain fungus,6,Bland.,3,food,1
-Carrot,3,Tasty. Snack.,2,food,1
-Cave Fungus,6,Bland. Snack.,1,food,1
-Corn,3,Tasty.,2,food,1
-Cranberries,3,Tasty. Snack.,1,food,1
-Gourd,3,Tasty. Filling.,5,food,1
-Jalapeño pepper,6,Tasty. Spicy. Snack.,1,food,1
-Melon,3,Tasty. Filling.,5,food,1
-Mutfruit,3,Tasty. Snack.,1,food,1
-Pear,3,Tasty. Snack.,1,food,1
-Potato,3,Bland.,2,food,1
-Prickly Pear Fruit,3,Tasty. Snack.,1,food,1
-Razorgrain,3,Bland. Snack.,1,food,1
-Silt bean,3,Bland. Snack.,1,food,1
-Tarberry,3,Tasty. Snack.,1,food,1
-Tato,3,Tasty. Snack.,1,food,1
-Xander Root,2,Bland. Snack.,1,food,1
-Deathclaw Steak,60,Delicacy. Empowering Filling.,8,food,1
-Desert Salad,15,Flavorsome.,4,food,1
-Donut,8,Tasty. Snack.,1,food,1
-Fruit filled donut,8,Tasty. Snack. Fortifying. Irradiated.,1,food,1
-Quantum crunch donut,33,Caffeinated. Charged. Irradiated. Snack. Tasty.,1,food,1
-Fire ant fricassée,35,Delicacy. Spicy. Putrid.,6,food,1
-Gecko steak,15,Filling. Tasty.,4,food,1
-Grilled Radroach,10,Fortifying. Tasty. Putrid.,3,food,1
-Grilled Radstag,30,Filling. Tasty. Hearty.,6,food,1
-Iguana on a Stick,10,Tasty.,3,food,1
-Mole rat chunks,20,Energizing. Tasty.,3,food,1
-Mole rat stew,15,Flavorsome.,8,food,1
-Mutt chops,15,Filling. Tasty.,4,food,1
-Radscorpion egg omelette,65,Cleansing. Flavorsome.,5,food,1
-Radscorpion steak,30,Filling. Flavorsome. Pungent.,6,food,1
-Radstag stew,25,Filling. Tasty. Pungent.,8,food,1
-Ribeye steak,35,Filling. Delicacy.,6,food,1
-Roasted ant,5,Filling. Bland. Putrid.,4,food,1
-Roasted mirelurk meat,25,Filling. Tasty. Energizing.,4,food,1
-Vegetable soup,15,Tasty. Fortifying.,8,food,1
-Wasteland omelet,60,Filling. Flavorsome.Hearty. Regenerating.,4,food,1
-Absinthe,60,High-Proof. Addictive. Hallucinogenic. (See Chems),2,drink,1
-Atomic Cocktail,10,Caffeinated. Energizing. Irradiated.,2,drink,1
-Beer,10,Alcoholic. Addictive.,2,drink,1
-Coffee,15,Caffeinated. Tasty.,2,drink,1
-Cowboy Coffee,5,Caffeinated.,2,drink,1
-Dirty Wastelander,15,High-Proof. Addictive.,2,drink,1
-Dirty water,5,Irradiated.,2,drink,1
-Moonshine,40,High-Proof. Addictive. Strengthening.,2,drink,1
-Nuka-Cola,15,Caffeinated. Irradiated. Tasty. Lucky.,2,drink,1
-Nuka-Cola Cherry,15,Caffeinated. Irradiated. Flavorsome.,2,drink,1
-Nuka-Cola Quantum,35,Caffeinated. Charged. Irradiated. Tasty.,2,drink,1
-Purified water,20,Hydrating.,2,drink,1
-Rum,25,High-Proof. Addictive. Tasty.,2,drink,1
-Scotch,25,High-Proof. Addictive. Tasty.,2,drink,1
-Sunset Sarsaparilla,10,Flavorsome. Irradiated.,2,drink,1
-Vodka,40,High-Proof. Addictive. Strengthening.,2,drink,1
-Wasteland Tequila,20,High-Proof. Addictive. Lucky.,2,drink,1
-Whiskey,20,High-Proof. Addictive. Lucky.,2,drink,1
-Dead Man’s Wine,1,Alcoholic. Addictive. Putrid. Irradiated.,2,drink,1
-Wasteland Wine.,15,Alcoholic. Addictive. Tasty. Irradiated.,2,drink,1
-Wine,20,Alcoholic. Addictive. Tasty.,2,drink,1
+Baked Bloatfly,10,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='fortifying'>Fortifying</span> <span class="condition" data-condition='putrid'>Putrid</span>,4,food,1
+Bear roast,45,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='flavorsome'>Flavorsome</span> <span class="condition" data-condition='strengthening'>Strengthening</span>,6,food,1
+Bighorner steak,20,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='flavorsome'>Flavorsome</span>,5,food,1
+Bloodbug Steak,25,<span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='regenerating'>Regenerating</span> <span class="condition" data-condition='putrid'>Putrid</span>,3,food,1
+Deathclaw Egg Omelette,80,<span class="condition" data-condition='delicacy'>Delicacy</span> <span class="condition" data-condition='empowering'>Empowering</span> <span class="condition" data-condition='regenerating'>Regenerating</span>,5,food,1
+BlamCo Mac & Cheese,10,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,4,food,1
+Canned Dog Food,4,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='irradiated'>Irradiated</span> <span class="condition" data-condition='putrid'>Putrid</span>,2,food,1
+Cram,5,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,1,food,1
+Dandy Boy Apples,2,<span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='snack'>Snack</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,1,food,1
+Fancy Lads <span class="condition" data-condition='snack'>Snack</span> Cakes,4,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,2,food,1
+InstaMash,5,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,6,food,1
+Noodle cup,15,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span>,3,food,1
+Pork n' Beans,10,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,2,food,1
+Potato Crisps,4,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,1,food,1
+Salisbury Steak,10,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,5,food,1
+Sugar Bombs,5,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,4,food,1
+Yum Yum Deviled Eggs,10,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,4,food,1
+Agave Fruit,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Apple,5,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Yucca Fruit,6,<span class="condition" data-condition='bland'>Bland</span> Refreshing,2,food,1
+Cactus Fruit,5,<span class="condition" data-condition='tasty'>Tasty</span> Refreshing <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Blackberries,8,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Bloodleaf,5,<span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='snack'>Snack</span><span class="condition" data-condition='regenerating'>Regenerating</span>,1,food,1
+Brain fungus,6,<span class="condition" data-condition='bland'>Bland</span>,3,food,1
+Carrot,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,2,food,1
+Cave Fungus,6,<span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Corn,3,<span class="condition" data-condition='tasty'>Tasty</span>,2,food,1
+Cranberries,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Gourd,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='filling'>Filling</span>,5,food,1
+Jalapeño pepper,6,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='spicy'>Spicy</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Melon,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='filling'>Filling</span>,5,food,1
+Mutfruit,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Pear,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Potato,3,<span class="condition" data-condition='bland'>Bland</span>,2,food,1
+Prickly Pear Fruit,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Razorgrain,3,<span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Silt bean,3,<span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Tarberry,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Tato,3,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Xander Root,2,<span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Deathclaw Steak,60,<span class="condition" data-condition='delicacy'>Delicacy</span> <span class="condition" data-condition='empowering'>Empowering</span> <span class="condition" data-condition='filling'>Filling</span>,8,food,1
+Desert Salad,15,<span class="condition" data-condition='flavorsome'>Flavorsome</span>,4,food,1
+Donut,8,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span>,1,food,1
+Fruit filled donut,8,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='snack'>Snack</span> <span class="condition" data-condition='fortifying'>Fortifying</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,1,food,1
+Quantum crunch donut,33,<span class="condition" data-condition='caffeinated'>Caffeinated</span> <span class="condition" data-condition='charged'>Charged</span> <span class="condition" data-condition='irradiated'>Irradiated</span> <span class="condition" data-condition='snack'>Snack</span> <span class="condition" data-condition='tasty'>Tasty</span>,1,food,1
+Fire ant fricassée,35,<span class="condition" data-condition='delicacy'>Delicacy</span> <span class="condition" data-condition='spicy'>Spicy</span> <span class="condition" data-condition='putrid'>Putrid</span>,6,food,1
+Gecko steak,15,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span>,4,food,1
+Grilled Radroach,10,<span class="condition" data-condition='fortifying'>Fortifying</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='putrid'>Putrid</span>,3,food,1
+Grilled Radstag,30,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='hearty'>Hearty</span>,6,food,1
+Iguana on a Stick,10,<span class="condition" data-condition='tasty'>Tasty</span>,3,food,1
+Mole rat chunks,20,<span class="condition" data-condition='energizing'>Energizing</span> <span class="condition" data-condition='tasty'>Tasty</span>,3,food,1
+Mole rat stew,15,<span class="condition" data-condition='flavorsome'>Flavorsome</span>,8,food,1
+Mutt chops,15,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span>,4,food,1
+Radscorpion egg omelette,65,<span class="condition" data-condition='cleansing'>Cleansing</span> <span class="condition" data-condition='flavorsome'>Flavorsome</span>,5,food,1
+Radscorpion steak,30,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='flavorsome'>Flavorsome</span> <span class="condition" data-condition='pungent'>Pungent</span>,6,food,1
+Radstag stew,25,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='pungent'>Pungent</span>,8,food,1
+Ribeye steak,35,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='delicacy'>Delicacy</span>,6,food,1
+Roasted ant,5,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='bland'>Bland</span> <span class="condition" data-condition='putrid'>Putrid</span>,4,food,1
+Roasted mirelurk meat,25,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='energizing'>Energizing</span>,4,food,1
+Vegetable soup,15,<span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='fortifying'>Fortifying</span>,8,food,1
+Wasteland omelet,60,<span class="condition" data-condition='filling'>Filling</span> <span class="condition" data-condition='flavorsome'>Flavorsome</span><span class="condition" data-condition='hearty'>Hearty</span> <span class="condition" data-condition='regenerating'>Regenerating</span>,4,food,1
+Absinthe,60,<span class="condition" data-condition='high_proof'>High-Proof</span> <span class="condition" data-condition='addictive'>Addictive</span> Hallucinogenic (See Chems),2,drink,1
+Atomic Cocktail,10,<span class="condition" data-condition='caffeinated'>Caffeinated</span> <span class="condition" data-condition='energizing'>Energizing</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,2,drink,1
+Beer,10,<span class="condition" data-condition='alcoholic'>Alcoholic</span> <span class="condition" data-condition='addictive'>Addictive</span>,2,drink,1
+Coffee,15,<span class="condition" data-condition='caffeinated'>Caffeinated</span> <span class="condition" data-condition='tasty'>Tasty</span>,2,drink,1
+Cowboy Coffee,5,<span class="condition" data-condition='caffeinated'>Caffeinated</span>,2,drink,1
+Dirty Wastelander,15,<span class="condition" data-condition='high_proof'>High-Proof</span> <span class="condition" data-condition='addictive'>Addictive</span>,2,drink,1
+Dirty water,5,<span class="condition" data-condition='irradiated'>Irradiated</span>,2,drink,1
+Moonshine,40,<span class="condition" data-condition='high_proof'>High-Proof</span> <span class="condition" data-condition='addictive'>Addictive</span> <span class="condition" data-condition='strengthening'>Strengthening</span>,2,drink,1
+Nuka-Cola,15,<span class="condition" data-condition='caffeinated'>Caffeinated</span> <span class="condition" data-condition='irradiated'>Irradiated</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='lucky'>Lucky</span>,2,drink,1
+Nuka-Cola Cherry,15,<span class="condition" data-condition='caffeinated'>Caffeinated</span> <span class="condition" data-condition='irradiated'>Irradiated</span> <span class="condition" data-condition='flavorsome'>Flavorsome</span>,2,drink,1
+Nuka-Cola Quantum,35,<span class="condition" data-condition='caffeinated'>Caffeinated</span> <span class="condition" data-condition='charged'>Charged</span> <span class="condition" data-condition='irradiated'>Irradiated</span> <span class="condition" data-condition='tasty'>Tasty</span>,2,drink,1
+Purified water,20,<span class="condition" data-condition='hydrating'><span class="condition" data-condition='hydrating'><span class="condition" data-condition='hydrating'>Hydrating</span></span>,2,drink,1
+Rum,25,<span class="condition" data-condition='high_proof'>High-Proof</span> <span class="condition" data-condition='addictive'>Addictive</span> <span class="condition" data-condition='tasty'>Tasty</span>,2,drink,1
+Scotch,25,<span class="condition" data-condition='high_proof'>High-Proof</span> <span class="condition" data-condition='addictive'>Addictive</span> <span class="condition" data-condition='tasty'>Tasty</span>,2,drink,1
+Sunset Sarsaparilla,10,<span class="condition" data-condition='flavorsome'>Flavorsome</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,2,drink,1
+Vodka,40,<span class="condition" data-condition='high_proof'>High-Proof</span> <span class="condition" data-condition='addictive'>Addictive</span> <span class="condition" data-condition='strengthening'>Strengthening</span>,2,drink,1
+Wasteland Tequila,20,<span class="condition" data-condition='high_proof'>High-Proof</span> <span class="condition" data-condition='addictive'>Addictive</span> <span class="condition" data-condition='lucky'>Lucky</span>,2,drink,1
+Whiskey,20,<span class="condition" data-condition='high_proof'>High-Proof</span> <span class="condition" data-condition='addictive'>Addictive</span> <span class="condition" data-condition='lucky'>Lucky</span>,2,drink,1
+Dead Man’s Wine,1,<span class="condition" data-condition='alcoholic'>Alcoholic</span> <span class="condition" data-condition='addictive'>Addictive</span> <span class="condition" data-condition='putrid'>Putrid</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,2,drink,1
+Wasteland Wine,15,<span class="condition" data-condition='alcoholic'>Alcoholic</span> <span class="condition" data-condition='addictive'>Addictive</span> <span class="condition" data-condition='tasty'>Tasty</span> <span class="condition" data-condition='irradiated'>Irradiated</span>,2,drink,1
+Wine,20,<span class="condition" data-condition='alcoholic'>Alcoholic</span> <span class="condition" data-condition='addictive'>Addictive</span> <span class="condition" data-condition='tasty'>Tasty</span>,2,drink,1
