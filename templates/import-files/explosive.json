@@ -1,0 +1,29 @@
+{
+  "name": "{{title}}",
+  "type": "explosive",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "cost": "{{cost}}",
+    "load": "{{load}}",
+    "quantity": 1,
+    "apCost": "{{ap}}",
+    "range": "{{range}}",
+    "armDC": "{{armdc}}",
+    "aoeRadius": "{{area}}",
+    "damage1": "{{damage1}}",
+    "damageType1": "{{damagetype1}}",
+    "damage2": "{{damage2}}",
+    "damageType2": "{{damagetype2}}",
+    "properties": "{{special}}"
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "exportSource": {
+      "world": "fallout-ttrpg",
+      "system": "arcane-arcade-fallout",
+      "coreVersion": "11.315",
+      "systemVersion": "0.0.10"
+    }
+  }
+}

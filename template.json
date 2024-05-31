@@ -14,9 +14,10 @@
       "perk",
       "foodAnddrink",
       "medicine",
-      "chems",
+      "chem",
       "junkItem",
-	  "trait"
+	  "trait",
+	  "explosive"
     ],
     "htmlFields": ["description"]
   }

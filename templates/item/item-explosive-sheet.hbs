@@ -1,0 +1,61 @@
+<form class="{{ cssClass }}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
+    <div class="header-fields">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+      </h1>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+  <table class="equipped-stats">
+    <tr>
+      <td>Cost</td>
+      <td>Load</td>
+      <td>Qty</td>
+      <td>AP</td>	  
+      <td>Range</td>
+      <td>Arm DC</td>
+    </tr>
+    <tr>
+      <td><input type="number" name="system.cost" value="{{ system.cost }}" /></td>
+      <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
+      <td><input type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
+      <td><input type="number" name="system.apCost" value="{{ system.apCost }}" /></td>
+      <td><input type="number" name="system.range" value="{{ system.range }}" /></td>
+      <td><input type="text" name="system.armDC" value="{{ system.armDC }}" /></td>	  
+    </tr>
+	</table>
+	<br> 
+	<table class="equipped-stats">
+	<tr><td colspan=999>Damage Calculation</td>
+	<tr>
+	<td>Area of Effect</td><td>DMG 1</td><td>DMG Type1</td><td>DMG 2</td><td>DMG Type 2</td>
+	</tr>
+	<tr>
+	  <td><input type="text" name="system.aoeRadius" value="{{ system.aoeRadius }}" />
+      <td><input type="text" name="system.damage1" value="{{ system.damage1 }}" /></td>
+      <td><input type="text" name="system.damageType1" value="{{ system.damageType1 }}" /></td>
+      <td><input type="text" name="system.damage2" value="{{ system.damage2 }}" /></td>
+      <td><input type="text" name="system.damageType2" value="{{ system.damageType2 }}" /></td>	  
+	</tr>
+	</table>	  
+
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+    {{!-- Description Tab --}}
+    <div class="tab" data-group="primary" data-tab="description" style="padding:20px;">
+		{{editor system.properties target="system.properties" button=true engine="prosemirror"}}
+    </div>
+    {{!-- Effects Tab --}}
+    <div class="tab effects" data-group="primary" data-tab="effects">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
+    </div>
+  </section>
+</form>

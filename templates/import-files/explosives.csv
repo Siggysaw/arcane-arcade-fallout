@@ -1,0 +1,17 @@
+﻿title,cost,ap,damage1,damagetype1,damage2,damagetype2,range,armdc,special,load,quantity,area
+Dynamite,50,6,3d6,explosive,,,6,,Deafening: 10ft. Destructive.,3,1,5ft. / 20ft. radius
+Molotov Cocktail,20,6,3d10,fire,,,6,,Incendiary. Shattering.,4,1,5ft. radius
+Frag Grenade,150,5,4d6,explosive,,,10,,Deafening: 10ft. Destructive. Dismember.,3,1,5ft. / 20ft. radius
+Plasma Grenade,250,4,4d8,plasma,,,10,,-,4,1,10ft. radius
+Pluse Grenade,150,4,2d8,electricity,,,10,,Electromagnetic.,4,1,15ft. radius
+Incendiary Grenade,125,5,2d6,explosive,3d6,fire,10,,Deafening: 5ft. Incendiary.,3,1,5ft. / 15ft. radius
+Cryogenic Grenade,125,4,2d6,explosive,3d6,cold,10,,Deafening: 5ft. Freezing.,4,1,5ft. / 10ft. radius
+Flash Bang,25,5,1,explosive,,,10,,"Blinding: 20ft, Deafening: 20ft.",3,1,20ft. radius
+Long Fuse Dynamite,100,6,3d6,explosive,,,,1,Deafening: 10ft. Destructive. Slow: 3 rounds (18 seconds),3,1,5ft. / 15ft. radius
+Frag Mine,140,6,6d6,explosive,,,,4,Proximity. Deafening: 10ft. Destructive. Dismember. ,8,1,2.5ft. / 10ft. radius
+Plasma Mine,180,6,4d8,plasma,,,,6,Proximity.,8,1,10ft radius
+Pulse Mine,80,6,3d8,electricity,,,,6,Electromagnetic. Proximity. ,6,1,20ft radius
+Bottlecap Mine,250,6,4d6,explosive,6d6,slashing,,2,Proximity. Deafening: 10ft. Destructive. Mangle.,10,1,5ft. / 20ft radius
+Cryo Mine,140,6,4d6,cold,,,,8,Freezing. Proximity.,8,1,10ft radius
+C-4 Plastic Explosive,350,6,15d6,explosive,,,,10,Deafening: 10ft. Destructive. Detonator. Dismember. ,12,1,5ft. / 25ft. radius
+Nuke Mine,600,6,12d10,explosive,,2 lvls radiation,,10,Destructive. Proximity.,22,1,45ft radius

@@ -1,0 +1,22 @@
+{
+  "name": "{{title}}",
+  "type": "chem",
+  "img": "systems/arcane-arcade-fallout/assets/items/chem.png",
+  "system": {
+    "cost": "{{cost}}",
+    "load": "{{load}}",
+    "quantity": "1",
+    "description": "<p>{{properties}}</p>"
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "core": {},
+    "exportSource": {
+      "world": "fallout-ttrpg",
+      "system": "arcane-arcade-fallout",
+      "coreVersion": "11.315",
+      "systemVersion": "1.0.0"
+    }
+  }
+}

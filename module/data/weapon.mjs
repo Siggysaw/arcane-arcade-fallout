@@ -6,15 +6,12 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     const requiredInteger = { required: true, nullable: false, integer: true }
     const schema = super.defineSchema()
 
-    schema.img = new fields.StringField({
-      initial: 'systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp',
-    })
     schema.load = new fields.NumberField({ required: true, nullable: false, initial: 0.1, min: 0 })
     schema.cost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
     schema.apCost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
     schema.decay = new fields.NumberField({ initial:10, min:0, max:10})
-    schema.itemOpen = new fields.BooleanField({})	
-    schema.properties = new fields.ArrayField(new fields.StringField())
+    schema.itemOpen = new fields.BooleanField()	
+    schema.properties = new fields.HTMLField()
     schema.strengthRequirement = new fields.NumberField({ initial: 0 })	
     schema.damage = new fields.SchemaField({
       type: new fields.StringField({ initial: 'piercing' }),

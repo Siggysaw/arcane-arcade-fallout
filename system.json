@@ -100,6 +100,18 @@
       "flags": {}
     },
     {
+      "label": "Chems",
+      "type": "Item",
+      "name": "chems",
+      "path": "packs/chems",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },	
+    {
       "label": "Food and Drinks",
       "type": "Item",
       "name": "food-and-drinks",
@@ -147,6 +159,18 @@
       },
       "flags": {}
     },
+    {
+      "label": "Explosives",
+      "type": "Item",
+      "name": "explosives",
+      "path": "packs/explosives",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },	
     {
       "label": "Traits",
       "type": "Item",
