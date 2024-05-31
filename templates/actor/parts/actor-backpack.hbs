@@ -97,7 +97,9 @@
     <td class="spacer"></td>
     <td style="min-width:300px">
       <div>
+
         <table class="foodanddrinks" >
+	  <tr><td colspan=999>JUNK</td></tr>
           {{#each junk as |item id|}}
           <tr>
             <td>{{ item.name }} ({{item.system.quantity}})</td>
@@ -130,6 +132,48 @@
           </tr>
           {{/each}}
         </table>
+      </div>
+    </td>
+  </tr>
+  <tr>
+      <td colspan=999 >
+      <div style="width:75%;display:block;margin:auto;">
+        <table  class="foodanddrinks">
+		<tr><td colspan=999>CHEMS</td></tr>
+        {{#each chems as |item id|}}
+        <tr>
+          <td>
+            <span class="label" style="margin-right: 5px">
+              {{ item.name }} ({{ system.quantity }})
+            </span>
+          </td>
+
+          <td style="width: 70%; text-align: left; padding: 10px;">
+            {{{ item.system.description }}}
+            <li class="item flexrow" data-item-id="{{ item._id }}">
+              <div class="item-controls">
+                <a
+                  style="float: right; margin-right: 10px"
+                  class="item-control item-delete"
+                  title="{{localize 'DOCUMENT.Delete' type='item'}}"
+                >
+                  <i class="fas fa-trash"></i>
+                </a>
+                <a
+                  style="float: right; margin-right: 10px"
+                  class="item-control"
+                  data-edit
+                  data-item-id="{{ item._id }}"
+                  title="{{localize 'DOCUMENT.Update' type='item'}}"
+                >
+                  <i class="fas fa-edit"></i>
+                </a>
+              </div>
+            </li>
+          </td>
+        </tr>
+        {{/each}}
+      </table>
       </div>
     </td>
   </tr>
