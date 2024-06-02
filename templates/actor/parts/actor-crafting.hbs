@@ -1,0 +1,54 @@
+<table>
+    <tr>
+        <td>
+            <table class="equipped-stats">
+                {{#each system.materials as |material key|}}
+                <tr>
+                    <td style="width:200px">
+                        {{material.label}}
+                    </td>
+                    <td style="width:50px">
+                        <input type="number" name="system.materials.{{ key }}.value" value="{{ material.value }}" min="0" />
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+       </td>
+    <td style="width:66%;">
+            {{#if junk}}
+            <table class="equipped-stats" style="width:95%;margin-left:20px;">
+                <tr>
+                    <td colspan=999>JUNK</td>
+                </tr>
+                {{#each junk as |item id|}}
+                <tr>
+                    <td>{{ item.name }} ({{item.system.quantity}})</td>
+                    <td>
+                        {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}}
+                        {{#if (gt system.junk.quantity2 0)}} {{ system.junk.type2 }} ({{ system.junk.quantity2 }}){{/if}}
+                        {{#if (gt system.junk.quantity3 0)}} {{ system.junk.type3 }} ({{ system.junk.quantity3 }}){{/if}}
+                    </td>
+                    <td class="td-controls">
+                        <li class="item flexrow" data-item-id="{{ item._id }}">
+                            <div class="item-controls">
+                                <a class="item-control"
+                                   data-edit
+                                   data-item-id="{{ item._id }}"
+                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a 
+                                   class="item-control item-delete"
+                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+            {{/if}}
+       </td>
+    </tr>
+</table>

@@ -29,9 +29,9 @@
   {{!-- Sheet Body --}}
   <section class="sheet-body">
     {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
-    </div>
+      <div class="tab" data-group="primary" data-tab="description">
+       {{editor system.description target="system.description" button=true engine="prosemirror"}}
+      </div>
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">
       {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}

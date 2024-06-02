@@ -48,35 +48,6 @@ FALLOUTZERO.abilityAbbreviations = {
   lck: 'Lck',
 }
 
-FALLOUTZERO.junkTypes = {
-  lead: 'Lead',
-  leather: 'Leather',
-  nuclearmaterial: 'Nuclear Material',
-  oil: 'Oil',
-  paint: 'Paint',
-  plastic: 'Plastic',
-  rubber: 'Rubber',
-  screw: 'Screw',
-  silver: 'Silver',
-  spring: 'Spring',
-  steel: 'Steel',
-  wood: 'Wood',
-  acid: 'Acid',
-  adhesive: 'Adhesive',
-  aluminum: 'Aluminum',
-  antiseptic: 'Antiseptic',
-  asbestos: 'Asbestos',
-  ballisticfiber: 'Ballistic Fiber',
-  ceramic: 'Ceramic',
-  circuitry: 'Circuitry',
-  cloth: 'Cloth',
-  copper: 'Copper',
-  crystal: 'Crystal',
-  fertilizer: 'Fertilizer',
-  fiberOptics: 'Fiber Optics',
-  fiberglass: 'Fiberglass',
-  glass: 'Glass',
-}
 
 FALLOUTZERO.conditions = {
   blinded: {

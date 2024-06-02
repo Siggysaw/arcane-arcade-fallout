@@ -55,15 +55,38 @@ export class FalloutZeroActorSheet extends ActorSheet {
     }
 
 	// Calculate Carry Load
-	actorData.system.carryLoad.value = actorData.items.reduce((acc, item) => {
-	  const { load = 0, quantity = 1 } = item.system;
-	  if(load === .1){
-		acc += Math.floor(load * quantity);	  
-	  }else{
-		acc += load * quantity;
-	  }
-	  return Math.round(acc * 10) / 10; 
-	}, 0);
+    actorData.system.carryLoad.value = actorData.items.reduce((acc, item) => {
+      const { load = 0, quantity = 1 } = item.system;
+      acc += Math.floor(load * quantity);
+      return Math.round(acc * 10) / 10;
+    }, 0) + 
+      Math.floor(actorData.system.materials.acid.value * .1) +
+      Math.floor(actorData.system.materials.adhesive.value * .1) +
+      Math.floor(actorData.system.materials.aluminum.value * .1) +
+      Math.floor(actorData.system.materials.antiseptic.value * .1) +
+      Math.floor(actorData.system.materials.asbestos.value * .1) +
+      Math.floor(actorData.system.materials.ballisticfiber.value * .1) +
+      Math.floor(actorData.system.materials.ceramic.value * .1) +
+      Math.floor(actorData.system.materials.circuitry.value * .1) +
+      Math.floor(actorData.system.materials.cloth.value * .1) +
+      Math.floor(actorData.system.materials.copper.value * .1) +
+      Math.floor(actorData.system.materials.crystal.value * .1) +
+      Math.floor(actorData.system.materials.fertilizer.value * .1) +
+      Math.floor(actorData.system.materials.fiberoptics.value * .1) +
+      Math.floor(actorData.system.materials.fiberglass.value * .1) +
+      Math.floor(actorData.system.materials.glass.value * .1) +
+      Math.floor(actorData.system.materials.leather.value * .1) +
+      Math.floor(actorData.system.materials.nuclearmaterial.value * .1) +
+      Math.floor(actorData.system.materials.oil.value * .1) +
+      Math.floor(actorData.system.materials.paint.value * .1) +
+      Math.floor(actorData.system.materials.plastic.value * .1) +
+      Math.floor(actorData.system.materials.rubber.value * .1) +
+      Math.floor(actorData.system.materials.screw.value * .1) +
+      Math.floor(actorData.system.materials.silver.value * .1) +
+      Math.floor(actorData.system.materials.spring.value * .1) +
+      Math.floor(actorData.system.materials.steel.value * .1) +
+      Math.floor(actorData.system.materials.wood.value * .1) +
+      Math.floor(actorData.system.caps / 50)
 
 
 

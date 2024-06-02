@@ -263,7 +263,7 @@
       <a class="item" data-tab="items">COMBAT</a>
       <a class="item" data-tab="medicine">AID</a>
       <a class="item" data-tab="backpack">BACKPACK</a>
-      <a class="item" data-tab="effects">EFFECTS</a>
+      <a class="item" data-tab="crafting">CRAFTING</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -345,10 +345,10 @@
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
       </div>
 
-      {{!-- Active Effects Tab --}}
-      <div class="tab effects" data-group="primary" data-tab="effects">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
-      </div>
+      {{!-- Crafting Tab --}}
+      <div class="tab backpack" data-group="primary" data-tab="crafting">
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs"}}
+      </div>	  
     </section>
   </div>
 </form>

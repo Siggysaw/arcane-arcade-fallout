@@ -101,8 +101,27 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           label: new fields.StringField({
             initial: FALLOUTZERO.skills[skill].label,
           }),
-		  id: new fields.StringField({
+          id: new fields.StringField({
             initial: FALLOUTZERO.skills[skill].id,
+          }),
+        })
+        return obj
+      }, {}),
+    )
+
+    schema.materials = new fields.SchemaField(
+      Object.keys(FALLOUTZERO.materials).reduce((obj, material) => {
+        obj[material] = new fields.SchemaField({
+          value: new fields.NumberField({
+            ...requiredInteger,
+            initial: 0,
+            min: 0,
+          }),
+          label: new fields.StringField({
+            initial: FALLOUTZERO.materials[material].label,
+          }),
+          id: new fields.StringField({
+            initial: FALLOUTZERO.materials[material].id,
           }),
         })
         return obj

@@ -57,6 +57,7 @@
 <table class="backpack">
   <tr>
     <td>
+        {{#if foodAnddrinks}}
       <table class="foodanddrinks">
 		<tr><td>Name</td><td>Description</td><td>Load</td><td></td></tr>
         {{#each foodAnddrinks as |item id|}}
@@ -93,52 +94,18 @@
         </tr>
         {{/each}}
       </table>
+        {{/if}}
     </td>
     <td class="spacer"></td>
     <td style="min-width:300px">
-      <div>
-
-        <table class="foodanddrinks" >
-	  <tr><td colspan=999>JUNK</td></tr>
-          {{#each junk as |item id|}}
-          <tr>
-            <td>{{ item.name }} ({{item.system.quantity}})</td>
-            <td>
-             {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}} 
-             {{#if (gt system.junk.quantity2 0)}} {{ system.junk.type2 }} ({{ system.junk.quantity2 }}){{/if}} 
-             {{#if (gt system.junk.quantity3 0)}} {{ system.junk.type3 }} ({{ system.junk.quantity3 }}){{/if}} 			 
-            </td>
-            <td class="td-controls">
-              <li class="item flexrow" data-item-id="{{ item._id }}">
-                <div class="item-controls">
-                  <a
-                    class="item-control"
-                    data-edit
-                    data-item-id="{{ item._id }}"
-                    title="{{localize 'DOCUMENT.Update' type='item'}}"
-                  >
-                    <i class="fas fa-edit"></i>
-                  </a>
-                  <a
-                    style="float: right"
-                    class="item-control item-delete"
-                    title="{{localize 'DOCUMENT.Delete' type='item'}}"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </div>
-              </li>
-            </td>
-          </tr>
-          {{/each}}
-        </table>
-      </div>
+ 
     </td>
   </tr>
   <tr>
       <td colspan=999 >
       <div style="width:75%;display:block;margin:auto;">
-        <table  class="foodanddrinks">
+        {{#if chems}}
+          <table  class="foodanddrinks">
 		<tr><td colspan=999>CHEMS</td></tr>
         {{#each chems as |item id|}}
         <tr>
@@ -174,6 +141,7 @@
         </tr>
         {{/each}}
       </table>
+          {{/if}}
       </div>
     </td>
   </tr>
