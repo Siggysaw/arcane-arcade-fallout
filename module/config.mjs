@@ -275,3 +275,6 @@ FALLOUTZERO.penalties = {
   radiation: 'Radiation',
   fatigue: 'Fatigue',
 }
+
+
+

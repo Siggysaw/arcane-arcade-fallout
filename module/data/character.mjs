@@ -73,10 +73,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       this.penalties.radiation.value +
       this.penalties.fatigue.value
 
-    this.system.materialsTotal =
-      this.system.materials.acid.value +
-      this.system.materials.adhesive.value
-
     this.passiveSense = 12 + this.abilities['per'].mod
 
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)

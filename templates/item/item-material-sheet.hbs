@@ -1,0 +1,38 @@
+<form class="{{cssClass}} material-sheet" autocomplete="off">
+    <header class="sheet-header">
+        <h1 class="title">
+            <input name="name" type="text" value="{{item.name}}" placeholder="Name" class="editable" />
+        </h1>
+        <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
+    </header>
+    <section class="sheet-body">
+        <section class="cell">
+            <h2 class="title center underline">{{item.name}}</h2>
+        </section>
+
+
+        <section class="cell attachedItems">
+            <h2 class="title center underline">Attachments</h2>
+            <section class="item-list">
+                {{#if system.attachedItems}}
+                {{#each attachments as |attachment uuid|}}
+                <div class="item attachment" data-uuid="{{uuid}}">
+                    <h3 class="menu">
+                        <img src="{{attachment.img}}" alt="{{attachment.name}}" style="height: 1.2rem;" />
+                        {{attachment.name}}
+                        <small class="small fire-dark">{{localize (tr_path "falloutzero.items.types" attachment.type)}}</small>
+                    </h3>
+                    {{#if attachment.system.description}}
+                    <div class="description-scroll" style="">
+                        {{{enrichHTML attachment.system.description}}}
+                    </div>
+                    {{/if}}
+                </div>
+                {{/each}}
+                {{else}}
+                <p>Nothing is Attached</p>
+                {{/if}}
+            </section>
+        </section>
+    </section>
+</form>

@@ -135,6 +135,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
     const traits = []
     const chems = []
     const explosives = []	
+    const materials = []	
+    const miscItems = []	
 
 
     // Iterate through items, allocating to containers
@@ -164,8 +166,12 @@ export class FalloutZeroActorSheet extends ActorSheet {
         traits.push(i)
       }else if (i.type === 'chem') {
         chems.push(i)
-      }else if (i.type === 'explosive') {
+      } else if (i.type === 'explosive') {
         explosives.push(i)
+      } else if (i.type === 'material') {
+        materials.push(i)
+      } else if (i.type === 'miscItem') {
+        miscItems.push(i)
       }
     }
 
@@ -181,6 +187,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.traits = traits
     context.chems = chems
     context.explosives = explosives	
+    context.materials = materials	
+    context.miscItems = miscItems	
     context.rangedWeapons = rangedWeapons.map((weapon) => {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
       // if (!weapon.system.range.flat) {

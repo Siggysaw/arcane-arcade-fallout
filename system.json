@@ -110,7 +110,7 @@
         "ASSISTANT": "OWNER"
       },
       "flags": {}
-    },	
+    },
     {
       "label": "Food and Drinks",
       "type": "Item",
@@ -170,12 +170,24 @@
         "ASSISTANT": "OWNER"
       },
       "flags": {}
-    },	
+    },
     {
       "label": "Traits",
       "type": "Item",
       "name": "traits",
       "path": "packs/traits",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Miscellaneous",
+      "type": "Item",
+      "name": "Miscellaneous",
+      "path": "packs/misc",
       "system": "arcane-arcade-fallout",
       "ownership": {
         "PLAYER": "OBSERVER",

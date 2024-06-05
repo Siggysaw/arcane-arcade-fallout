@@ -16,8 +16,10 @@
       "medicine",
       "chem",
       "junkItem",
-	  "trait",
-	  "explosive"
+	    "trait",
+      "explosive",
+      "material",
+      "miscItem"
     ],
     "htmlFields": ["description"]
   }
