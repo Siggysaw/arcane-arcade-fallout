@@ -147,37 +147,33 @@
           <table class="equipped-stats">
 		<tr><td colspan=999>MISCELLANEOUS ITEMS</td></tr>
         {{#each miscItems as |item id|}}
-        <tr>
-          <td>
-            <span class="label" style="margin-right: 5px">
-              {{ item.name }} ({{ system.quantity }})
-            </span>
-          </td>
+          <tr>
+              <td>
+                  <span class="label" style="margin-right: 5px">
+                      {{ item.name }} ({{ system.quantity }})
+                  </span>
+              </td>
 
-          <td style="width: 70%; text-align: left; padding: 10px;">
-            {{{ item.system.description }}}
-            <li class="item flexrow" data-item-id="{{ item._id }}">
-              <div class="item-controls">
-                <a
-                  style="float: right; margin-right: 10px"
-                  class="item-control item-delete"
-                  title="{{localize 'DOCUMENT.Delete' type='item'}}"
-                >
-                  <i class="fas fa-trash"></i>
-                </a>
-                <a
-                  style="float: right; margin-right: 10px"
-                  class="item-control"
-                  data-edit
-                  data-item-id="{{ item._id }}"
-                  title="{{localize 'DOCUMENT.Update' type='item'}}"
-                >
-                  <i class="fas fa-edit"></i>
-                </a>
-              </div>
-            </li>
-          </td>
-        </tr>
+              <td style="width: 70%; text-align: left; padding: 10px;">
+                  {{{ item.system.description }}}
+              <td class="td-controls">
+                  <li class="item flexrow" data-item-id="{{ item._id }}">
+                      <div class="item-controls">
+                          <a class="item-control"
+                             data-edit
+                             data-item-id="{{ item._id }}"
+                             title="{{localize 'DOCUMENT.Update' type='item'}}">
+                              <i class="fas fa-edit"></i>
+                          </a>
+                          <a class="item-control item-delete"
+                             title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                              <i class="fas fa-trash"></i>
+                          </a>
+                      </div>
+                  </li>
+              </td>
+              </td>
+          </tr>
         {{/each}}
       </table>
           {{/if}}		  
