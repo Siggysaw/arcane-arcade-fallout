@@ -58,28 +58,28 @@
           </td>
         </tr>
         <tr>
-          <td>Ammo</td>
-          <td>Capacity</td>
-          <td>Load</td>
-          <td>Crit Roll</td>
-          <td>Crit Bonus</td>
+            <td>Ammo</td>
+            <td>Capacity</td>
+            <td>Consumes</td>
+            <td>Load</td>
+            <td>Crit Roll</td>
+            <td>Crit Bonus</td>
         </tr>
         <tr>
           <td>
             <input type="text" name="system.ammo.type" value="{{ system.ammo.type }}" />
           </td>
           <td style="display: flex; align-items: center">
-            <input
-              type="number"
-              name="system.ammo.capacity.value"
-              value="{{ system.ammo.capacity.value }}"
-            />
-            /
-            <input
-              type="number"
-              name="system.ammo.capacity.max"
-              value="{{ system.ammo.capacity.max }}"
-            />
+              <input type="number"
+                     name="system.ammo.capacity.value"
+                     value="{{ system.ammo.capacity.value }}" />
+              /
+              <input type="number"
+                     name="system.ammo.capacity.max"
+                     value="{{ system.ammo.capacity.max }}" />
+              <input type="number"
+                     name="system.ammo.consumes.amount"
+                     value="{{ system.ammo.consumes.amount }}" />
           </td>
           <td>
             <input type="number" name="system.load" value="{{ system.load }}" />

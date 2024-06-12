@@ -18,7 +18,7 @@
       <td>Cost</td>
       <td>Load</td>
       <td>Qty</td>
-      <td>AP</td>	  
+      <td><button class="useAP" data-apUsed="{{system.apCost}}">AP</button></td>	  
       <td>Range</td>
       <td>Arm DC</td>
     </tr>
@@ -35,7 +35,11 @@
 	<table class="equipped-stats">
 	<tr><td colspan=999>Damage Calculation</td>
 	<tr>
-	<td>Area of Effect</td><td>DMG 1</td><td>DMG Type1</td><td>DMG 2</td><td>DMG Type 2</td>
+	    <td>Area of Effect</td>
+        <td>Dmg 1</td>
+        <td>DMG Type1</td>
+        <td>DMG 2</td>
+        <td>DMG Type 2</td>
 	</tr>
 	<tr>
 	  <td><input type="text" name="system.aoeRadius" value="{{ system.aoeRadius }}" />

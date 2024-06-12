@@ -654,5 +654,19 @@ form td .status-notes li:hover {
   background: #222;
   color: #01e998;
 }
-
-
+.ammoitem, .explosiveitem {
+    font-size:9pt;
+}
+.explosivecollection, .ammocollection {
+    float:left;
+    margin:0px;
+    padding:0px;
+}
+.ammunition-and-explosives-box {
+    max-height:200px;
+    width:100%;
+    overflow:scroll;
+}
+.armorbox{
+    width:50%
+}

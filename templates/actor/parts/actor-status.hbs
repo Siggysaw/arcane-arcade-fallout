@@ -118,8 +118,11 @@
       <table>
         <tr>
           <td>Healing Rate</td>
-          <td>Combat Sequence</td>
-          <td>Fatigue</td>
+          <td class="resource-label rollable"
+            data-rollable
+            data-roll="d20+@combatSequence+@penaltyTotal+@luckmod"
+            data-label="Performed a Combat Sequence roll!<br> D20 + Combat Sequence - Penalties + Luck Mod / 2">Combat Sequence</td>
+           <td>Fatigue</td>
         </tr>
         <tr>
           <td>

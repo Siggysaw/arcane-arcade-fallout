@@ -186,7 +186,10 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.junk = junk
     context.traits = traits
     context.chems = chems
-    context.explosives = explosives	
+    context.explosives = explosives.map((weapon) => {
+      weapon.system.thrown = this.actor.system.abilities['str'].value * weapon.system.range
+      return weapon
+    })
     context.materials = materials	
     context.miscItems = miscItems	
     context.rangedWeapons = rangedWeapons.map((weapon) => {
@@ -202,12 +205,21 @@ export class FalloutZeroActorSheet extends ActorSheet {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
       return weapon
     })
+
+
+
   }
 
   /* -------------------------------------------- */
   /** @override */
   activateListeners(html) {
     super.activateListeners(html)
+
+    //ap use
+    html.on('click', '[data-ap-used]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId
+      this.actor.system.apUsed(weaponId)
+    })
 
     //ap refill
     html.on('click', '[data-refill-ap]', () => {

@@ -177,10 +177,25 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   }
 
   recycleAp() {
-    this.parent.update({
-      'system.actionPoints.value':
-        Math.floor(this.parent.system.actionPoints.value / 2) + this.parent.system.actionPoints.max,
-    })
+    let newAP = Math.floor(this.parent.system.actionPoints.value / 2) + this.parent.system.actionPoints.max
+    if (newAP < 16) {
+      this.parent.update({
+        'system.actionPoints.value':
+          Math.floor(this.parent.system.actionPoints.value / 2) + this.parent.system.actionPoints.max,
+      })
+    } else {
+      this.parent.update({
+        'system.actionPoints.value':
+          15,
+      })
+    }
+  }
+  apUsed(weaponId) {
+    const currentAp = this.actionPoints.value
+    const weapon = this.parent.items.get(weaponId)
+    const apCost = weapon.system.apCost
+    const newAP = Number(currentAp) - Number(apCost)
+    this.parent.update({ 'system.actionPoints.value': Number(newAP) })
   }
 
   rollWeapon(weaponId, hasDisadvantage = false) {
@@ -285,11 +300,16 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       return
     }
 
+    const updatedAmmoowned = consumableAmmo.system.quantity - newCapacity
     this.parent.update({ 'system.actionPoints.value': newAP })
     this.parent.updateEmbeddedDocuments('Item', [
       { _id: weaponId, 'system.ammo.capacity.value': newCapacity },
     ])
+    this.parent.updateEmbeddedDocuments('Item', [
+      { _id: weaponId, 'consumableAmmo.system.quantity': updatedAmmoowned },
+    ])
   }
+
 
   getRollData() {
     const data = {}

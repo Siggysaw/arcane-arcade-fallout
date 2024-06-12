@@ -43,12 +43,12 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     schema.karmaCapflipped4 = new fields.BooleanField({})
     schema.karmaCapflipped5 = new fields.BooleanField({})
     schema.karmaCapflipped6 = new fields.BooleanField({})
-    schema.xp = new fields.NumberField({ initial: 0, min: 0 })
-    schema.healingRate = new fields.NumberField({ initial: 0, min: 0 })
-    schema.groupSneak = new fields.NumberField({ initial: 0, min: 0 })
-    schema.combatSequence = new fields.NumberField({ initial: 0, min: 0 })
-    schema.partyNerve = new fields.NumberField({ initial: 0, min: 0 })
-	  schema.irradiated = new fields.NumberField({initial:0, min: 0});
+    schema.xp = new fields.NumberField({ initial: 0 })
+    schema.healingRate = new fields.NumberField({ initial: 0 })
+    schema.groupSneak = new fields.NumberField({ initial: 0 })
+    schema.combatSequence = new fields.NumberField({ initial: 0 })
+    schema.partyNerve = new fields.NumberField({ initial: 0  })
+	  schema.irradiated = new fields.NumberField({initial:0});
     schema.passiveSense = new fields.NumberField({
       ...requiredInteger,
       initial: 0,
@@ -61,6 +61,13 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
 
   prepareBaseData() {
     super.prepareBaseData()
+    Handlebars.registerHelper('ifCond', function (v1, v2, options) {
+      if (v1 >= v2) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    });
+
     for (const key in this.penalties) {
       this.penalties[key].label = FALLOUTZERO.penalties[key]
     }
@@ -74,12 +81,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
       this.penalties.fatigue.value
 
     this.passiveSense = 12 + this.abilities['per'].mod
+    this.carryLoad.max = this.abilities['str'].value * 10
 
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
 	if(this.luckmod<0){
 		  this.luckmod=-1
     }
-
-
   }
 }

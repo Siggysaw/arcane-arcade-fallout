@@ -186,8 +186,32 @@
     {
       "label": "Miscellaneous",
       "type": "Item",
-      "name": "Miscellaneous",
+      "name": "miscellaneous",
       "path": "packs/misc",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Monster Loot",
+      "type": "RollTable",
+      "name": "monsterloot",
+      "path": "packs/monster-loot",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Room Loot",
+      "type": "RollTable",
+      "name": "roomloot",
+      "path": "packs/room-loot",
       "system": "arcane-arcade-fallout",
       "ownership": {
         "PLAYER": "OBSERVER",

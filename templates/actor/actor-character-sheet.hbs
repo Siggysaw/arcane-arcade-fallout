@@ -100,6 +100,8 @@
                               style="width: 90%; float: right"
                               class="statusbar stamina"
                               value="{{ system.stamina.value }}"
+                               max="{{ system.stamina.max }}"
+
                             >
                               {{ system.stamina.value }}
                             </progress>
@@ -127,6 +129,8 @@
                               style="width: 90%; float: right"
                               class="statusbar stamina"
                               value="{{ system.actionPoints.value }}"
+                              max="{{ system.actionPoints.max }}"
+
                             >
                               {{ system.actionPoints.value }}
                             </progress>
@@ -296,6 +300,7 @@
                 {{#each system.abilities as |ability key|}}
                 <td>
                   <input
+                    data-set-{{key}}
                     type="number"
                     name="system.abilities.{{ key }}.value"
                     value="{{ ability.value }}"

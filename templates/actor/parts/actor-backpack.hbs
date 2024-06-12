@@ -6,51 +6,58 @@
 </style>
 <table class="equipped-stats">
 <tr><td style="width:45%;vertical-align:top">
-<h3>Ranged Weapons</h3>
-{{#each rangedWeapons as |item id|}}
-{{#unless item.system.itemEquipped}}
-<li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
-  <div class="item-controls">
-	<a
-	  class="item-control"
-	  data-edit
-	  data-item-id="{{ item._id }}"
-	  title="{{localize 'DOCUMENT.Update' type='item'}}"
-	>
-	  {{item.name}}({{item.system.quantity}}) 
-	</a>                <a
-	  class="item-control item-delete"
-	  title="{{localize 'DOCUMENT.Delete' type='item'}}"
-	>
-	  <i class="fas fa-trash"></i>
-	</a>
-  </div>
-</li>
-{{/unless}}
-{{/each}}
-</td><td style="width:45%;vertical-align:top">
-<h3>Melee Weapons</h3>
-{{#each meleeWeapons as |item id|}}
-{{#unless item.system.itemEquipped}}
-<li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
-  <div class="item-controls">
-	<a
-	  class="item-control"
-	  data-edit
-	  data-item-id="{{ item._id }}"
-	  title="{{localize 'DOCUMENT.Update' type='item'}}"
-	>
-	  {{item.name}}({{item.system.quantity}}) 
-	</a>                <a
-	  class="item-control item-delete"
-	  title="{{localize 'DOCUMENT.Delete' type='item'}}"
-	>
-	  <i class="fas fa-trash"></i>
-	</a>
-  </div>
-</li>
-{{/unless}}
-{{/each}}
+    <h3>Weapons and Armor</h3>
+    {{#each rangedWeapons as |item id|}}
+    {{#unless item.system.itemEquipped}}
+    <li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
+        <div class="item-controls">
+            <a class="item-control"
+               data-edit
+               data-item-id="{{ item._id }}"
+               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                {{item.name}}({{item.system.quantity}})
+            </a>                <a class="item-control item-delete"
+                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                <i class="fas fa-trash"></i>
+            </a>
+        </div>
+    </li>
+    {{/unless}}
+    {{/each}}
+    {{#each meleeWeapons as |item id|}}
+    {{#unless item.system.itemEquipped}}
+    <li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
+        <div class="item-controls">
+            <a class="item-control"
+               data-edit
+               data-item-id="{{ item._id }}"
+               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                {{item.name}}({{item.system.quantity}})
+            </a>                <a class="item-control item-delete"
+                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                <i class="fas fa-trash"></i>
+            </a>
+        </div>
+    </li>
+    {{/unless}}
+    {{/each}}
+    {{#each armors as |item id|}}
+    {{#unless item.system.itemEquipped}}
+    <li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
+        <div class="item-controls">
+            <a class="item-control"
+               data-edit
+               data-item-id="{{ item._id }}"
+               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                {{item.name}}({{item.system.quantity}})
+            </a>                <a class="item-control item-delete"
+                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                <i class="fas fa-trash"></i>
+            </a>
+        </div>
+    </li>
+    {{/unless}}
+    {{/each}}
 </td></tr>
 </table>
 
