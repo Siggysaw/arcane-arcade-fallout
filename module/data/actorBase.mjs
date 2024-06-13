@@ -177,12 +177,9 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   }
 
   recycleAp() {
-    let newAP = Math.floor(this.parent.system.actionPoints.value / 2) + this.parent.system.actionPoints.max
-    if (newAP < 16) {
-      this.parent.update({
-        'system.actionPoints.value':
-          Math.floor(this.parent.system.actionPoints.value / 2) + this.parent.system.actionPoints.max,
-      })
+    let RecycledAP = Math.floor(this.parent.system.actionPoints.value / 2) + this.parent.system.actionPoints.value
+    if (RecycledAP < 16) {
+      this.parent.update({'system.actionPoints.value': RecycledAP})
     } else {
       this.parent.update({
         'system.actionPoints.value':

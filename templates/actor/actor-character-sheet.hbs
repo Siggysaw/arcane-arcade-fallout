@@ -152,15 +152,11 @@
                           </td>
                         </tr>
                         <tr>
-                          <td>
-                            <button data-recycle-ap title="Refresh AP During Combat">
+                          <td><div class="fakebutton" data-recycle-ap title="Refresh AP During Combat">
                               <i class="fa-solid fa-recycle"></i>
-                            </button>
                           </td>
-                          <td>
-                            <button data-refill-ap title="Refresh AP Outside of Combat">
+                          <td><div class="fakebutton" data-refill-ap title="Refresh AP Outside of Combat">
                               <i class="fa-regular fa-arrow-up-right-dots"></i>
-                            </button>
                           </td>
                         </tr>
                         <tr>
@@ -186,9 +182,9 @@
                     <td>
                       <table>
                         <tr>
-                          <td class="profile-image-td">
-                            <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
-                          </td>
+                            <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
+                                <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
+                            </td>
                         </tr>
                         <tr>
                           <td>
@@ -306,7 +302,6 @@
                     value="{{ ability.value }}"
                     data-dtype="Number"
                     min="0"
-                    max="10"
                   />
                 </td>
                 {{/each}}

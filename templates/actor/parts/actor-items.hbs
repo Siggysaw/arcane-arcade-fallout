@@ -4,13 +4,14 @@
         <td class="armorbox">
             <!-- Armor Slot -->
             {{#each armors as |item id|}}
+            {{#if item.system.itemEquipped}}
             <div class="item flexrow" data-item-id="{{ item._id }}">
                 <table class="item-box">
                     <tr>
                         <td>
                             <details open="true">
                                 <summary>
-                                    <p class="allcaps">{{ item.name }} ARMOR</p>
+                                    <p class="allcaps">{{ item.name }}</p>
                                 </summary>
                                 <table class="equipped-stats">
                                     <tr>
@@ -41,26 +42,28 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <div class="item-controls">
-                                    <a style="float: right; margin-right: 10px"
-                                       class="item-control item-delete"
-                                       data-item-id="{{ item._id }}"
-                                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                    <a style="float: right; margin-right: 10px"
-                                       data-edit
-                                       data-item-id="{{ item._id }}"
-                                       class="item-control"
-                                       title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </div>
                             </details>
+                            <div class="item-controls">
+                                <a style="float: right; margin-right: 10px"
+                                   class="item-control item-delete"
+                                   data-item-id="{{ item._id }}"
+                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                                <a style="float: right; margin-right: 10px"
+                                   data-edit
+                                   data-item-id="{{ item._id }}"
+                                   class="item-control"
+                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </div>
+
                         </td>
                     </tr>
                 </table>
             </div>
+            {{/if}}
             {{/each}}
         </td>
         {{/if}}
@@ -134,26 +137,26 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button data-weapon-roll data-weapon-id="{{ item._id }}">
+                                            <div class='fakebutton' data-weapon-roll data-weapon-id="{{ item._id }}">
                                                 {{ item.system.apCost }}
-                                            </button>
+                                            </div class='fakebutton'>
                                         </td>
                                         <td>
-                                            <button class="rollable resource-label"
+                                            <div class='fakebutton' class="rollable resource-label"
                                                     data-rollable
                                                     data-label="OUCH! DMG from a {{ item.name }}"
                                                     data-roll="{{ item.system.damage.formula }}">
                                                 {{ item.system.damage.formula }}
-                                            </button>
+                                            </div class='fakebutton'>
                                         </td>
                                         <td>{{ item.system.critical.dice }}</td>
                                         <td>
-                                            <button class="rollable resource-label"
+                                            <div class='fakebutton' class="rollable resource-label"
                                                     data-rollable
                                                     data-label="CRITICAL! Crit Damage for {{ item.name }}"
                                                     data-roll="{{ item.system.critical.bonus }}">
                                                 {{ item.system.critical.bonus }}
-                                            </button>
+                                            </div class='fakebutton'>
                                         </td>
                                         <td>{{ item.system.load }}</td>
                                         <td>{{ item.system.strengthRequirement }}</td>
@@ -165,29 +168,29 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button class="rollable resource-label"
+                                            <div class='fakebutton' class="rollable resource-label"
                                                     data-weapon-roll
                                                     data-weapon-id="{{ item._id }}"
                                                     class="resource-label">
                                                 IN RANGE
-                                            </button>
+                                            </div class='fakebutton'>
                                         </td>
                                         <td>
-                                            <button class="rollable resource-label"
+                                            <div class='fakebutton' class="rollable resource-label"
                                                     data-weapon-roll
                                                     data-disadvantage="true"
                                                     data-weapon-id="{{ item._id }}"
                                                     class="resource-label">
                                                 DISADVANTAGED
-                                            </button>
+                                            </div class='fakebutton'>
                                         </td>
                                         <td>
-                                            <button class="rollable resource-label"
+                                            <div class='fakebutton' class="rollable resource-label"
                                                     data-weapon-roll
                                                     data-weapon-id="{{ item._id }}"
                                                     class="resource-label">
                                                 NAT 20 REQ
-                                            </button>
+                                            </div class='fakebutton'>
                                         </td>
                                     </tr>
                                     <tr>
@@ -237,7 +240,7 @@
                                             {{ item.system.ammo.capacity.max }}
                                         </td>
                                         <td>
-                                            <button data-reload data-weapon-id="{{ item._id }}">RELOAD</button>
+                                            <div class='fakebutton' data-reload data-weapon-id="{{ item._id }}">RELOAD</div class='fakebutton'>
                                         </td>
                                         <td>
                                             {{#each item.ammos as |ammo|}}
@@ -268,6 +271,7 @@
                         </td>
                     </tr>
                 </table>
+                </details>
                 <div class="item-controls">
                     <a style="float: right; margin-right: 10px"
                        class="item-control item-delete"
@@ -282,8 +286,8 @@
                         <i class="fas fa-edit"></i>
                     </a>
                 </div>
-                </details>
-        </td>
+
+</td>
     </tr>
 </table>
       </div>
@@ -319,17 +323,17 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <button data-weapon-roll data-weapon-id="{{ item._id }}">
+                                    <div class='fakebutton' data-weapon-roll data-weapon-id="{{ item._id }}">
                                         {{ item.system.apCost }}
-                                    </button>
+                                    </div class='fakebutton'>
                                 </td>
                                 <td>
-                                    <button class="rollable resource-label"
+                                    <div class='fakebutton' class="rollable resource-label"
                                             data-rollable
                                             data-label="OUCH! DMG from a {{ item.name }}"
                                             data-roll="{{ item.system.damage.formula }}">
-                                            {{ item.system.damage.formula }}
-                                    </button>
+                                        {{ item.system.damage.formula }}
+                                    </div class='fakebutton'>
                                 </td>
                                 <td>{{ system.critical.dice }}</td>
                                 <td>{{ system.critical.bonus }}</td>
@@ -375,6 +379,7 @@
 
 
                         </table>
+                    </details>
                         <div class="item-controls">
                             <a style="float: right; margin-right: 10px"
                                class="item-control item-delete"
@@ -389,7 +394,7 @@
                                 <i class="fas fa-edit"></i>
                             </a>
                         </div>
-                    </details>
+                   
                 </td>
             </tr>
         </table>
@@ -419,25 +424,25 @@
                                 <td>Load</td>
                                 <td>Qty</td>
                                 <td>
-                                <button class="resource-label"
-                                data-ap-used
-                                data-weapon-id="{{ item._id }}"
-                                class="resource-label">
-                                     AP
-                                </button>
+                                    <div class='fakebutton' class="resource-label"
+                                            data-ap-used
+                                            data-weapon-id="{{ item._id }}"
+                                            class="resource-label">
+                                        AP
+                                    </div class='fakebutton'>
                                 </td>
                                 <td>Range</td>
                                 <td>
                                     {{#ifCond ../system.skills.explosives.value system.armDC}}
                                     Auto Succeeds ({{system.armDC}})
                                     {{else}}
-                                    <button class="rollable resource-label"
+                                    <div class='fakebutton' class="rollable resource-label"
                                             data-rollable
                                             data-label="Attempt to Arm a {{ item.name }} They'll need to match or beat a {{system.armDC}}"
                                             data-roll="d20+ {{../system.skills.explosives.value}} - @penaltyTotal - 10"
                                             title="d20 + explosives({{../system.skills.explosives.value}}) - penalties({{../system.penaltyTotal}}) - Increased DV of 10" />
                                     ARM
-                                    </button>
+                                    </div class='fakebutton'>
                                     {{/ifCond}}
                                 </td>
                             </tr>
@@ -454,33 +459,34 @@
                             <tr><td colspan=999>Damage Calculation</td>
                             <tr>
                                 <td>Area of Effect</td>
-                                <td>
-                                    <button class="rollable resource-label"
-                                        data-rollable
-                                        data-label="KABOOM! <span class='allcaps'>{{item.system.damageType1}}</span> DMG from a {{ item.name }}"
-                                        data-roll="{{ item.system.damage1 }}">
-                                        Damage 1
-                                      </button>
-                                </td>
+                                <td>Damage 1</td>
                                 <td>DMG Type1</td>
-                                <td>
-                                    <button class="rollable resource-label"
-                                            data-rollable
-                                            data-label="KABOOM! <span class='allcaps'> {{item.system.damageType2}}</span> DMG from a {{ item.name }}"
-                                            data-roll="{{ item.system.damage2 }}">
-                                        Damage 2
-                                    </button>
-                                </td>
+                                <td>Damage 2</td>
                                 <td>DMG Type 2</td>
                             </tr>
                             <tr>
                                 <td>{{ system.aoeRadius }}</td>
-                                <td>{{ system.damage1 }}</td>
+                                <td>
+                                    <div class='fakebutton' class="rollable resource-label"
+                                            data-rollable
+                                            data-label="KABOOM! <span class='allcaps'>{{item.system.damageType1}}</span> DMG from a {{ item.name }}"
+                                            data-roll="{{ item.system.damage1 }}">
+                                        {{ item.system.damage1 }}
+                                    </div class='fakebutton'>
+                                </td>
                                 <td>{{ system.damageType1 }}</td>
-                                <td>{{ system.damage2 }}</td>
+                                <td>
+                                    <div class='fakebutton' class="rollable resource-label"
+                                            data-rollable
+                                            data-label="KABOOM! <span class='allcaps'> {{item.system.damageType2}}</span> DMG from a {{ item.name }}"
+                                            data-roll="{{ item.system.damage2 }}">
+                                       {{ item.system.damage2 }}
+                                    </div class='fakebutton'>
+                                </td>
                                 <td>{{ system.damageType2 }}</td>
                             </tr>
                         </table>
+                    </details>
                         <div class="item-controls">
                             <a style="float: right; margin-right: 10px"
                                class="item-control item-delete"
@@ -496,7 +502,7 @@
                                 <i class="fas fa-edit"></i>
                             </a>
                         </div>
-                    </details>
+                   
                 </td>
             </tr>
         </table>

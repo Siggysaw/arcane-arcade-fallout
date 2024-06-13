@@ -85,7 +85,6 @@
                               type="number"
                               name="system.stamina.value"
                               value="{{ system.stamina.value }}"
-                              max="{{ system.stamina.max }}"
                             />
                             /
                             <input
@@ -114,7 +113,6 @@
                               type="number"
                               name="system.actionPoints.value"
                               value="{{ system.actionPoints.value }}"
-                              max="{{ system.actionPoints.max }}"
                             />
                             /
                             <input
@@ -124,17 +122,15 @@
                             />
                           </td>
                         </tr>
-						 <tr>
-                          <td>
-                            <button data-recycle-ap title="Refresh AP During Combat">
-                              <i class="fa-solid fa-recycle"></i>
-                            </button>
-                          </td>
-                          <td>
-                            <button data-refill-ap title="Refresh AP Outside of Combat">
-                              <i class="fa-regular fa-arrow-up-right-dots"></i>
-                            </button>
-                          </td>
+                        <tr>
+                            <td>
+                                <div class="fakebutton" data-recycle-ap title="Refresh AP During Combat">
+                                    <i class="fa-solid fa-recycle"></i>
+                            </td>
+                            <td>
+                                <div class="fakebutton" data-refill-ap title="Refresh AP Outside of Combat">
+                                    <i class="fa-regular fa-arrow-up-right-dots"></i>
+                            </td>
                         </tr>
                         <tr>
                           <td>

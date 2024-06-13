@@ -393,6 +393,7 @@ details > summary {
   background-color: #1d5427;
 }
 .window-app .window-content input,
+.window-app .window-content .fakebutton,
 .window-app .window-content button,
 .window-app .window-content label,
 .window-app .window-content select,
@@ -401,6 +402,7 @@ details > summary {
 .window-app form p {
   color: #01e998;
 }
+.window-app .window-content div .fakebutton,
 .window-app .window-content button {
   background: #222;
 }
@@ -548,15 +550,16 @@ td,
   padding: 2px;
 }
 
-.sheet button {
+.sheet .fakebutton, .sheet button {
   border: #1d5427;
+  padding:5px;
 }
-.sheet button:hover {
+.sheet .fakebutton:hover, .sheet button:hover {
   border: #1d5427;
   background: #1d5427;
-  color: black;
+  color: white;
 }
-.sheet button:active {
+.sheet .fakebutton:active, .sheet button:active {
   border: #1d5427;
   background: white;
   color: #1d5427;
