@@ -217,10 +217,10 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       // Update ammo quantity
       const foundAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
       if (foundAmmo) {
-        const newAmmoQty = Number(foundAmmo.system.quantity - 1)
+        //const newAmmoQty = Number(foundAmmo.system.quantity - 1)
         const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
         this.parent.updateEmbeddedDocuments('Item', [
-          { _id: foundAmmo._id, 'system.quantity': newAmmoQty },
+         // { _id: foundAmmo._id, 'system.quantity': newAmmoQty },
           {
             _id: weapon._id,
             'system.ammo.capacity.value': newWeaponAmmoCapacity,
@@ -297,14 +297,43 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       return
     }
 
-    const updatedAmmoowned = consumableAmmo.system.quantity - newCapacity
+    // Update ammo quantity
+    const foundAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
+    const reloader = (ammoType) => {
+      if (ammoType === true) {
+        return 1;
+      } else {
+        return weapon.system.ammo.capacity.max - weapon.system.ammo.capacity.value;
+      }
+    }
+
+    if (foundAmmo) {
+      const reloaded = reloader(weapon.system.energyWeapon);
+      const newAmmoQty = Number(foundAmmo.system.quantity - reloaded)
+      this.parent.updateEmbeddedDocuments('Item', [
+        { _id: foundAmmo._id, 'system.quantity': newAmmoQty },
+      ])
+    }
+
     this.parent.update({ 'system.actionPoints.value': newAP })
     this.parent.updateEmbeddedDocuments('Item', [
       { _id: weaponId, 'system.ammo.capacity.value': newCapacity },
     ])
-    this.parent.updateEmbeddedDocuments('Item', [
-      { _id: weaponId, 'consumableAmmo.system.quantity': updatedAmmoowned },
-    ])
+    // After 10 Reloads, Gain 1 Level of Decay to the Weapon
+    const newReloaddecay = weapon.system.reloadDecay + 1
+    if (newReloaddecay == 10) {
+      const newDecay = weapon.system.decay - 1
+      this.parent.updateEmbeddedDocuments('Item', [
+        { _id: weaponId, 'system.decay': newDecay },
+      ])
+      this.parent.updateEmbeddedDocuments('Item', [
+        { _id: weaponId, 'system.reloadDecay': 0 },
+      ])
+    } else {
+      this.parent.updateEmbeddedDocuments('Item', [
+        { _id: weaponId, 'system.reloadDecay': newReloaddecay },
+      ])
+    }
   }
 
 
