@@ -8,7 +8,7 @@ export default class FalloutZeroItem extends FalloutZeroItemBase {
 
     schema.quantity = new fields.NumberField({ ...requiredInteger, initial: 1, min: 1 })
     schema.weight = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
-    schema.decay = new fields.NumberField({ initial:10, min:0, max:10})	
+    schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })	
 
     // Break down roll formula into three independent fields
     schema.roll = new fields.SchemaField({

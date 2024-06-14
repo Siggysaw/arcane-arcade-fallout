@@ -8,12 +8,19 @@
   <header class="sheet-header">
     <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
     <div class="header-fields">
-      <h1 class="charname">
-        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
-      </h1>
-	  Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />
-	  Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
-	  Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}"/>	 
+        <h1 class="charname">
+            <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+        </h1>
+        Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}" /><br />
+        <table>
+            <tr>
+                <td>Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} /></td>
+                <td>Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /></td>
+                <td>Energy Weapon: <input type="checkbox" name="system.energyWeapon" {{checked system.energyWeapon}} /></td>
+            </tr>
+         </table>
+
+
     </div>
   </header>
 
@@ -60,7 +67,6 @@
         <tr>
             <td>Ammo</td>
             <td>Capacity</td>
-            <td>Consumes</td>
             <td>Load</td>
             <td>Crit Roll</td>
             <td>Crit Bonus</td>
@@ -77,9 +83,6 @@
               <input type="number"
                      name="system.ammo.capacity.max"
                      value="{{ system.ammo.capacity.max }}" />
-              <input type="number"
-                     name="system.ammo.consumes.amount"
-                     value="{{ system.ammo.consumes.amount }}" />
           </td>
           <td>
             <input type="number" name="system.load" value="{{ system.load }}" />
@@ -110,10 +113,10 @@
           </td>
         </tr>
       </table>
-	  {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to
-			the rollData prop. --}}
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror"
-			editable=editable}}
+        <br />
+        <h3>Notes:</h3>
+	  {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
+      {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
     </div>
     {{!-- Upgrades Tab --}}
     <div class="tab" data-group="primary" data-tab="upgrades">

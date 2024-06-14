@@ -9,8 +9,10 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     schema.load = new fields.NumberField({ required: true, nullable: false, initial: 0.1, min: 0 })
     schema.cost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
     schema.apCost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
-    schema.decay = new fields.NumberField({ initial:10, min:0, max:10})
+    schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
+    schema.reloadDecay = new fields.NumberField({ initial: 0, min: 0, max: 10 })
     schema.itemOpen = new fields.BooleanField()	
+    schema.energyWeapon = new fields.BooleanField()	
     schema.properties = new fields.HTMLField()
     schema.strengthRequirement = new fields.NumberField({ initial: 0 })	
     schema.damage = new fields.SchemaField({
