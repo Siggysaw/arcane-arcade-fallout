@@ -1,13 +1,12 @@
-2024/05/30-21:13:37.940 70b8 Recovering log #46
-2024/05/30-21:13:37.940 70b8 Level-0 table #48: started
-2024/05/30-21:13:37.946 70b8 Level-0 table #48: 965 bytes OK
-2024/05/30-21:13:37.959 70b8 Delete type=0 #46
-2024/05/30-21:13:37.959 70b8 Delete type=3 #44
-2024/05/30-21:13:37.959 4488 Compacting 4@0 + 0@1 files
-2024/05/30-21:13:37.964 4488 Generated table #50@0: 54 keys, 17924 bytes
-2024/05/30-21:13:37.964 4488 Compacted 4@0 + 0@1 files => 17924 bytes
-2024/05/30-21:13:37.971 4488 compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/05/30-21:13:37.971 4488 Delete type=2 #20
-2024/05/30-21:13:37.971 4488 Delete type=2 #29
-2024/05/30-21:13:37.971 4488 Delete type=2 #45
-2024/05/30-21:13:37.971 4488 Delete type=2 #48
+2024/06/13-19:24:33.431 52ac Log #53: 53 ops saved to Table #119 OK
+2024/06/13-19:24:33.433 52ac Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/000053.log: OK
+2024/06/13-19:24:33.433 52ac Log #118: 0 ops saved to Table #120 OK
+2024/06/13-19:24:33.433 52ac Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/000118.log: OK
+2024/06/13-19:24:33.433 52ac Table #50: 54 entries OK
+2024/06/13-19:24:33.433 52ac Table #52: 15 entries OK
+2024/06/13-19:24:33.434 52ac Table #111: 54 entries OK
+2024/06/13-19:24:33.437 52ac Table #113: 1 entries OK
+2024/06/13-19:24:33.437 52ac Table #119: 53 entries OK
+2024/06/13-19:24:33.441 52ac Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/MANIFEST-000051: OK
+2024/06/13-19:24:33.441 52ac Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/MANIFEST-000117: OK
+2024/06/13-19:24:33.447 52ac **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons; recovered 5 files; 59562 bytes. Some data may have been lost. ****
