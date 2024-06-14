@@ -1,0 +1,10 @@
+2024/06/13-19:24:33.456 52ac Delete type=3 #1
+2024/06/13-19:24:33.457 74ac Compacting 5@0 + 0@1 files
+2024/06/13-19:24:33.460 74ac Generated table #123@0: 54 keys, 17893 bytes
+2024/06/13-19:24:33.460 74ac Compacted 5@0 + 0@1 files => 17893 bytes
+2024/06/13-19:24:33.464 74ac compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/06/13-19:24:33.464 74ac Delete type=2 #50
+2024/06/13-19:24:33.464 74ac Delete type=2 #52
+2024/06/13-19:24:33.464 74ac Delete type=2 #111
+2024/06/13-19:24:33.464 74ac Delete type=2 #113
+2024/06/13-19:24:33.464 74ac Delete type=2 #119
