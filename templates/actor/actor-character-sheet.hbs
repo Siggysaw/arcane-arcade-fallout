@@ -26,15 +26,16 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="bio-label"><span class="label">Lvl:</span></td>
+                    <td class="bio-label"><span class="label">Level:</span></td>
                     <td colspan="2">
-                      <input type="number" name="system.level" value="{{ system.level }}" />
+                      {{ system.level }}
                     </td>
                   </tr>
                   <tr>
                     <td class="bio-label"><span class="label">XP:</span></td>
                     <td>
-                      <input id="xp" type="number" name="system.xp" value="{{ system.xp }}" />
+                        <input style="width:50%" id="xp" type="number" name="system.xp" value="{{ system.xp }}" />
+                        <div class="fakebutton leveledUp" {{#GreaterThan system.xp 1000}} data-leveledup {{/GreaterThan}} style="width:50%;float:right;{{#LesserThan system.xp 1000}}opacity:25%;{{/LesserThan}}"" >Level Up!</div>
                     </td>
                   </tr>
                   <td>

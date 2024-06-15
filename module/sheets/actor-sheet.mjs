@@ -231,6 +231,19 @@ export class FalloutZeroActorSheet extends ActorSheet {
       this.actor.system.recycleAp()
     })
 
+    //Level Up!
+    html.on('click', '[data-leveledup]', () => {
+      this.actor.system.levelUp()
+    })
+    //Skill Updated
+    html.on('click', '[data-skilladdition]', (ev) => {
+      const skill = ev.currentTarget.dataset.skill
+      this.actor.system.skilladdition(skill)
+    })
+    html.on('click', '[data-skillsubtraction]', (ev) => {
+      const skill = ev.currentTarget.dataset.skill
+      this.actor.system.skillsubtraction(skill)
+    })
     // weapon roll
     html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId

@@ -15,6 +15,7 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs',	
     'systems/arcane-arcade-fallout/templates/actor/parts/npc-status.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/dialog/leveledup.hbs',
 
     // Item partials
     'systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs',

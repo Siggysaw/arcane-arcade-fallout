@@ -6,6 +6,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     const requiredInteger = { required: true, nullable: false, integer: true }
     const schema = {}
     schema.biography = new fields.HTMLField()
+    schema.skillPool = new fields.NumberField({ initial: 0 })
+    schema.totalSkillpoints = new fields.NumberField({ initial: 0 })
     schema.health = new fields.SchemaField({
       value: new fields.NumberField({
         ...requiredInteger,
@@ -160,6 +162,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
 
   prepareBaseData() {
     super.prepareBaseData()
+
+
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
       // Calculate the modifier using d20 rules.
@@ -171,6 +175,102 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
     }
   }
+  skilladdition(skill) {
+    const actor = this.parent.system
+    const newSkillvalue = this.parent.system.skills[skill].value + 1
+    const skillField = "system.skills." + skill + ".value"
+    this.parent.update({ [skillField]: newSkillvalue })
+
+    // update skillpool
+    const updatedSkillpool = actor.skillPool - 1
+    this.parent.update({ 'system.skillPool': updatedSkillpool })
+
+  }
+  skillsubtraction(skill) {
+    const actor = this.parent.system
+    const newSkillvalue = this.parent.system.skills[skill].value - 1
+    const skillField = "system.skills." + skill + ".value"
+    this.parent.update({ [skillField]: newSkillvalue })
+
+    // update skillpool
+    const updatedSkillpool = actor.skillPool + 1
+    this.parent.update({ 'system.skillPool': updatedSkillpool })
+  }
+
+  skillUpdated() {
+    //Set Variables
+    const actor = this.parent.system
+    let skillPool = actor.skillPool
+
+    // Loop Through Skills, get sum of all the skill
+    if (actor.abilities.int.mod > 0) {
+      skillMod = 5;
+    }
+    if (actor.abilities.int.mod == 0) {
+      skillMod = 4
+    }
+    if (actor.abilities.int.mod < 0) {
+      skillMod = 3
+    }
+    updatedSkillpool= skillPool + skillMod
+    this.parent.update({ 'system.skillPool': updatedSkillpool })
+  }
+
+  levelUp() {
+    const actor = this.parent.system
+    const myDialogOptions = {
+      width: 500,
+      height: 400
+    };
+    const newXP = this.parent.system.xp - 1000
+    const newLevel = this.parent.system.level + 1
+    const earnedSkillpoints = this.parent.system.skillPool
+    let skillPointsMod = ''
+    let SkillPointsUsed = ''
+    const SkillPoolUsed = ''
+    let updatedSkillpool = ''
+    let rewards = ''
+    let updatedSkillpoints = this.parent.system.totalSkillpoints
+    this.parent.update({ 'system.xp': newXP })
+    this.parent.update({ 'system.level': newLevel })
+
+    // Loop Through Skills, get sum of all the skill
+    for (const key in this.skills) {
+      SkillPointsUsed = Number(SkillPointsUsed) + Number(this.parent.system.skills[key].value)
+    }
+    // Levels that increase skill points
+    if (actor.level % 4 === 0) {
+      // Skill points allotted is based on Intelligence modifier
+      if (actor.abilities.int.mod > 0) {
+        skillPointsMod = 5;
+      }
+      if (actor.abilities.int.mod == 0) {
+        skillPointsMod = 4
+      }
+      if (actor.abilities.int.mod < 0) {
+        skillPointsMod = 3
+      }
+
+      // Update points available to spend
+      updatedSkillpool = Number(earnedSkillpoints) + Number(skillPointsMod)
+      this.parent.update({ 'system.skillPool': updatedSkillpool })
+
+      // Build the Rewards Screen
+      rewards += "You've Earned " + skillPointsMod + " Skill Points to Allocate!<br><br>"
+
+    }
+   
+
+    new Dialog({
+      title: 'You Leveled Up!',
+      content: rewards,
+      buttons: {}
+    }, myDialogOptions).render(true);
+
+  }
+
+
+
 
   refillAp() {
     this.parent.update({ 'system.actionPoints.value': this.parent.system.actionPoints.max })

@@ -61,13 +61,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
 
   prepareBaseData() {
     super.prepareBaseData()
-    Handlebars.registerHelper('ifCond', function (v1, v2, options) {
-      if (v1 >= v2) {
-        return options.fn(this);
-      }
-      return options.inverse(this);
-    });
-
     for (const key in this.penalties) {
       this.penalties[key].label = FALLOUTZERO.penalties[key]
     }

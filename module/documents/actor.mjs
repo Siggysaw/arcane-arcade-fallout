@@ -10,5 +10,21 @@ export class FalloutZeroActor extends Actor {
     // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
     // prepareDerivedData().
     super.prepareData()
+    //Handlebar JS Helpers
+
+    // Greater Than or Equal
+    Handlebars.registerHelper('GreaterThan', function (v1, v2, options) {
+      if (v1 >= v2) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    })
+    // Less Than
+    Handlebars.registerHelper('LesserThan', function (v1, v2, options) {
+      if (v1 < v2) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    })
   }
 }
