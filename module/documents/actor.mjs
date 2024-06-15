@@ -10,6 +10,7 @@ export class FalloutZeroActor extends Actor {
     // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
     // prepareDerivedData().
     super.prepareData()
+
     //Handlebar JS Helpers
 
     // Greater Than or Equal

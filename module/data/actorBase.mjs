@@ -217,22 +217,27 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   }
 
   levelUp() {
+
+    // Rewards Variables
     const actor = this.parent.system
-    const myDialogOptions = {
-      width: 500,
-      height: 400
-    };
+    const myDialogOptions = {width: 500,height: 400}
     const newXP = this.parent.system.xp - 1000
     const newLevel = this.parent.system.level + 1
+    let rewards = ''
+
+    // Update Level
+    this.parent.update({ 'system.xp': newXP })
+    this.parent.update({ 'system.level': newLevel })
+
+    // Skill Rewards Start
+
     const earnedSkillpoints = this.parent.system.skillPool
     let skillPointsMod = ''
     let SkillPointsUsed = ''
     const SkillPoolUsed = ''
     let updatedSkillpool = ''
-    let rewards = ''
     let updatedSkillpoints = this.parent.system.totalSkillpoints
-    this.parent.update({ 'system.xp': newXP })
-    this.parent.update({ 'system.level': newLevel })
+
 
     // Loop Through Skills, get sum of all the skill
     for (const key in this.skills) {
@@ -250,17 +255,35 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       if (actor.abilities.int.mod < 0) {
         skillPointsMod = 3
       }
-
       // Update points available to spend
       updatedSkillpool = Number(earnedSkillpoints) + Number(skillPointsMod)
       this.parent.update({ 'system.skillPool': updatedSkillpool })
 
       // Build the Rewards Screen
-      rewards += "You've Earned " + skillPointsMod + " Skill Points to Allocate!<br><br>"
+      rewards += `You've Earned ${skillPointsMod} Skill Points to Allocate!<br>`
 
     }
-   
-
+    // Health and Stamina Rewards Start
+    if (actor.level % 2 === 0) {
+      let currentHP = actor.health.max
+      let currentHPvalue = actor.health.value
+      let currentSP = actor.stamina.max
+      let currentSPvalue = actor.stamina.value
+      const endMod = actor.abilities.end.mod
+      const agiMod = actor.abilities.agi.mod
+      let updatedHealthvalue = currentHPvalue + endMod + 5
+      let updatedStaminavalue = currentSPvalue + agiMod + 5
+      let updatedHealth = currentHP + endMod + 5
+      let updatedStamina = currentSP + agiMod + 5
+      
+      this.parent.update({ 'system.health.max': updatedHealth })
+      this.parent.update({ 'system.health.value': updatedHealthvalue })
+      this.parent.update({ 'system.stamina.max': updatedStamina })
+      this.parent.update({ 'system.stamina.value': updatedStaminavalue })
+      rewards += `
+      <br>Health has been updated to ${updatedHealth}
+      <br>Stamina has been updated to ${updatedStamina}`
+    }
     new Dialog({
       title: 'You Leveled Up!',
       content: rewards,
