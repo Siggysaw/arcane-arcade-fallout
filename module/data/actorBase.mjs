@@ -458,7 +458,428 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       ])
     }
   }
-
+  npcLoot() {
+    let selectPC = canvas.tokens.controlled.find(u => u.actor.type === "character");
+    if (selectPC){
+      try{ // whisper loot to player if found from selected token
+        let playerName = game.users.filter(u => u.role < 3).find(u => u.character.name == selectPC.name);
+        this.parent.system.determineNpcLoot(selectPC.actor.name, true, playerName);
+      }
+      catch{ // public chat loot
+        this.parent.system.determineNpcLoot(selectPC.actor.name, false, "");
+      }
+    } else { // ask for character and player if none selected
+      this.parent.system.pcLuckDialog();
+    }
+  }
+  
+    formatDice (formula){
+      return `<a style="color:black" class="inline-roll roll" data-mode="roll" data-flavor="" data-formula=${formula}><i class="fas fa-dice-d20"></i>${formula}</a class="roll">`;
+    }
+  
+    formatCompendiumItem(compendium,itemName){
+      let compendiumObject, myItem, myRoll
+      if (itemName.includes("[[")){
+          try {
+              myRoll = itemName.replace("[[/r ","").replace("]]","");
+              itemName = this.parent.system.formatDice(myRoll)
+          } catch {console.log("Incorrect dice, not converted")}
+      }
+      try {
+          compendiumObject = game.packs.find( u => u.metadata.name == compendium);
+          myItem = compendiumObject.tree.entries.find(u => u.name == itemName);
+          if (myItem) {
+          return `<a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
+          data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="Item"><i class="fas fa-suitcase">
+          </i>${itemName}</a><br>`
+          } else {
+              return `${itemName}<br>`
+          }
+      } catch{
+          return `${itemName}<br>`
+      }
+    }
+  
+    createChatObject (compendium, itemName) {
+      let myRoll
+      switch (compendium) {
+        case "qty":
+          if (itemName.includes("[")){
+            myRoll = itemName.replace("[","");
+            return this.parent.system.formatDice(myRoll);
+          } else {return itemName;}
+          break;  
+        case "text":
+          return `${itemName}<br>`; //Bring back on same line as last
+          break;
+        case "money":
+          if (itemName.includes("[")){
+            myRoll = itemName.replace("[","");
+            return this.parent.system.formatDice(myRoll) + `<br>`;
+          } else {return `${itemName}<br>`;}
+          break;
+        default:
+          return this.parent.system.formatCompendiumItem(compendium,itemName);
+          break;
+      }
+    }
+  
+    async iterateLoot(myMonsterLoot, totLckMod){
+      let i = 0;
+      let compendium, itemName
+      let allLoot = `` 
+      while (i < myMonsterLoot.length) {
+        compendium = myMonsterLoot[i][0]
+        itemName = myMonsterLoot[i][1].replace("totLckMod",totLckMod)
+        if(itemName.includes("(")){
+          allLoot = allLoot.slice(0,allLoot.length-4) + " " + this.parent.system.formatCompendiumItem(compendium, itemName);
+        } else {
+          allLoot = allLoot + this.parent.system.createChatObject(compendium, itemName)
+        }
+        
+        i++;
+      }
+      return allLoot;
+    }
+  
+    async iterateResults(myLootResults){
+      let compendium = ``
+      let allLoot = `` 
+      for (var loot of myLootResults) {
+          compendium = loot.documentCollection.replace(`arcane-arcade-fallout.`,``)
+          console.log(compendium)
+          if (loot.text.includes("(")){
+            allLoot = allLoot.slice(0,allLoot.length-4) + " " + this.parent.system.formatCompendiumItem(compendium, loot.text);
+          }
+          else {
+            if (loot.text.endsWith("x")){
+              allLoot = allLoot + this.parent.system.formatCompendiumItem(compendium, loot.text);
+              allLoot = allLoot.slice(0,allLoot.length-4) + " ";
+            }
+            else{
+              allLoot = allLoot + this.parent.system.formatCompendiumItem(compendium, loot.text);
+            }
+          }
+      }
+      return allLoot;
+    }
+  
+    pcLuckDialog (){
+      let playerOptions, characterOptions
+      try{
+        playerOptions = game.users.filter(u => u.role < 3).map(u => `<option value=${u.name}> ${u.name} </option>`).join(``);
+        characterOptions = game.actors.filter(u=> u.type == "character").map(u => `<option value=${u.name}> ${u.name} </option>`).join(``);
+      } catch{
+        alert ("You must have at least 1 player and 1 actor to use this functionality.");
+        return;
+      }
+      let selectedCharacter = ``
+      let charAssociated
+      let selectedPlayer = ``
+      let dialogContent = `<p>You haven't selected a token. Who is this loot for?</p><br><div></div>
+                      <div">Player to whisper to:<select id="playSelec" name="player">${playerOptions}</select></div>
+                      <div">Character's luck Mod:<select id="charSelec" name="character">${characterOptions}</select></div>`
+      let d = new Dialog({
+        title: "Choose a player and character",
+        content: dialogContent,
+        buttons: {
+         Public: {
+          icon: '<i class="fas fa-check"></i>',
+          label: "Public",
+          callback: async () => {this.parent.system.determineNpcLoot(selectedCharacter, false, '')}
+         },
+         Whisper: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Whisper",
+          callback:  async () => {this.parent.system.determineNpcLoot(selectedCharacter, true, selectedPlayer)}
+         }
+        },
+        default: "Public",
+        render: (html) => {
+          selectedPlayer = document.getElementById("playSelec").value;
+          selectedCharacter = document.getElementById("charSelec").value;
+          html.find("[name=player]").change(function (){
+            selectedPlayer = document.getElementById("playSelec").value;
+            console.log(selectedPlayer);
+            charAssociated = game.users.find(u => u.name  == selectedPlayer).character
+            if (charAssociated){
+              document.getElementById("charSelec").value = selectedCharacter;
+            }
+            console.log(selectedPlayer);
+        });
+          html.find("[name=character]").change(function (){
+            selectedCharacter = document.getElementById("charSelec").value;
+            console.log(selectedCharacter);
+          });
+        },
+        close: html => console.log("loot distributed or not")
+       });
+       d.render(true);
+    }
+  
+    async determineNpcLoot(myActor, whisper, playerName){
+      const npcName = this.parent.name;
+      let dcLoot
+      const totLckMod = game.actors.find(u=> u.name == myActor).system.abilities.lck.mod
+      let myRollMode = CONST.DICE_ROLL_MODES.PRIVATE
+      const monsterLoot = [
+        {name:"Glowing One",dice:"LckDC10",loot:[
+            {all:[["junk","Radioactive Gland"]]},
+            {dc:[["money","Bottlecap"],["medicine","Rad-X"]]}
+        ]},
+        {name:"Glowing One Putrid",dice:"LckDC10",loot:[
+            {all:[["junk","Radioactive Gland"]]},
+            {dc:[["money","Bottlecap"]]}
+        ]},
+        {name:"Glowing One Bloated",dice:"LckDC10",loot:[
+            {all:[["junk","Radioactive Gland"]]},
+            {dc:[["money","Bottlecap"]]}
+        ]},
+        {name:"Super Mutant",dice:"All",loot:[
+            {all:[["rangedweapons","Hunting Rifle"],["text"," (3rd-level Decay)"],["qty","2x"],["ammunition",".308"],["melee-weapons","Board"],["explosives","Molotov Cocktail"],["text"," (Unless it it was used)"],["qty","3x "],["junk","Bones"]]}
+        ]},
+        {name:"Super Mutant Suicider",dice:"All",loot:[
+            {all:[["ammunition","Mini Nuke"],["text"," (Unless it exploded)"]]}
+        ]},
+        {name:"Super Mutant Skirmisher",dice:"All",loot:[
+            {all:[["rangedweapons","Thompson SMG"],["text"," (3rd-level Decay)"],["qty","2x"],["ammunition",".308"],["melee-weapons","Board"],["explosives","Molotov Cocktail"],["text","(Unless it it was used)"],["qty","3x "],["junk","Bones"]]}
+        ]},
+        {name:"Super Mutant Brute",dice:"All",loot:[
+            {all:[["rangedweapons","Hunting Rifle"],["text"," (3rd-level Decay)"],["qty","2x"],["ammunition","12 gauge"],["melee-weapons","Plastic Bumper Sword"],["explosives","Frag Grenade"],["text"," (Unless it it was used)"],["qty","3x "],["junk","Bones"]]}
+        ]},
+        {name:"Super Mutant Butcher",dice:"All",loot:[
+            {all:[["melee-weapons","Fire Axe"],["explosives","Frag Grenade"],["text"," (Unless it it was used)"],["qty","3x "],["junk","Bones"]]}
+        ]},
+        {name:"Super Mutant Master",dice:"LckDC12",loot:[
+            {all:[["rangedweapons","Minigun"],["text"," (4th-level Decay)"],["rangedweapons","Missile Launcher"],["text"," (5th-level Decay)"],["qty","3x "],["ammunition","5mm"],["qty","3x "],["ammunition","Missile"]]},
+            {dc:[["money","[4d10 Bottlecap"],["qty","3x "],["medicine","Stimpak"]]}
+        ]},
+        {name:"Brahmin",dice:"All",loot:[
+            {all:[["junk","Brahmin Meat"],["junk","Brahmin Hide"]]}
+        ]},
+        {name:"Dog",dice:"All",loot:[
+            {all:[["junk","Dog Meat"]]}
+        ]},
+        {name:"Dog",dice:"All",loot:[
+            {all:[["junk","Dog Meat"]]}
+        ]},
+        {name:"Mongrel",dice:"All",loot:[
+            {all:[["junk","Mongrel Meat"]]}
+        ]},
+        {name:"Mongrel Alpha",dice:"All",loot:[
+            {all:[["junk","Mongrel Meat"]]}
+        ]},
+        {name:"Mole Rat",dice:"All",loot:[
+            {all:[["junk","Mole Rat Meat"]]}
+        ]},
+        {name:"Mole Rat Brood Mother",dice:"All",loot:[
+            {all:[["junk","Mole Rat Meat"],["junk","Mole Rat Hide"]]}
+        ]},
+        {name:"Radstag",dice:"LckDC12",loot:[
+            {all:[["junk","Radstag Meat"],["junk","Radstag Hide"]]},
+            {dc:[["money","[1d10 Bottlecap"]]}
+        ]},
+        {name:"Mutated Bear",dice:"All",loot:[
+            {all:[["junk","Bear Meat"]]}
+        ]},
+        {name:"Deathclaw",dice:"All",loot:[
+            {all:[["junk","Deathclaw Meat"],["junk","Deathclaw Hide"],["junk","Deathclaw Hand"]]}
+        ]},
+        {name:"Giant Ant",dice:"All",loot:[
+            {all:[["junk","Ant Meat"]]}
+        ]},
+        {name:"Giant Ant Soldier",dice:"All",loot:[
+            {all:[["junk","Ant Meat"]]}
+        ]},
+        {name:"Fire Ant",dice:"All",loot:[
+            {all:[["junk","Fire Ant Meat"]]}
+        ]},
+        {name:"Giant Ant Queen",dice:"All",loot:[
+            {all:[["qty","3x"],["junk","Fire Ant Meat"],["qty","3x "],["junk","Ant Egg"]]}
+        ]},
+        {name:"Bloatfly",dice:"All",loot:[
+            {all:[["junk","Bloatfly Meat"]]}
+        ]},
+        {name:"Bloatfly Black",dice:"All",loot:[
+            {all:[["junk","Bloatfly Meat"]]}
+        ]},
+        {name:"Bloodbug",dice:"All",loot:[
+            {all:[["junk","Bloodbug Meat"]]}
+        ]},
+        {name:"Fog Crawler",dice:"All",loot:[
+            {all:[["qty","5x "],["junk","Mirelurk Meat"]]}
+        ]},
+        {name:"Mirelurk",dice:"All",loot:[
+            {all:[["junk","Mirelurk Meat"]]}
+        ]},
+        {name:"Mirelurk Razorclaw",dice:"All",loot:[
+            {all:[["junk","Mirelurk Meat"]]}
+        ]},
+        {name:"Mirelurk Queen",dice:"All",loot:[
+            {all:[["qty","5x "],["junk","Mirelurk Meat"]]}
+        ]},
+        {name:"Cazador",dice:"LckDC15",loot:[
+            {all:[["junk","Cazador Poison Gland"]]},
+            {dc:[["junk","Cazador Egg"]]}
+        ]},
+        {name:"Cazador Young",dice:"All",loot:[
+            {all:[["junk","Cazador Poison Gland"]]}
+        ]},
+        {name:"Cazador Legendary",dice:"LckDC10",loot:[
+            {all:[["junk","Cazador Poison Gland"]]},
+            {dc:[["junk","Cazador Egg"]]}
+        ]},
+        {name:"Radscorpion",dice:"LckDC15",loot:[
+            {all:[["junk","Radscorpion Poison Gland"],["junk","Radscorpion Meat"]]},
+            {dc:[["junk","Radscorpion Egg"]]}
+        ]},
+        {name:"Radscorpion Glowing",dice:"LckDC15",loot:[
+            {all:[["junk","Radscorpion Poison Gland"],["junk","Radscorpion Meat"]]},
+            {dc:[["junk","Radscorpion Egg"]]}
+        ]},
+        {name:"Radscorpion Stalker",dice:"LckDC15",loot:[
+            {all:[["junk","Radscorpion Poison Gland"],["junk","Radscorpion Meat"]]},
+            {dc:[["junk","Radscorpion Egg"]]}
+        ]},
+        {name:"Radroach",dice:"All",loot:[
+            {all:[["junk","Radroach Meat"]]}
+        ]},
+        {name:"Rattler",dice:"All",loot:[
+            {all:[["junk","Rattler Poison Gland"]]}
+        ]},
+        {name:"Stingwing",dice:"All",loot:[
+            {all:[["junk","Stingwing Meat"]]}
+        ]},
+        {name:"Stingwing Skimmer",dice:"All",loot:[
+            {all:[["junk","Stingwing Meat"]]}
+        ]},
+        {name:"Stingwing Chaser",dice:"All",loot:[
+            {all:[["junk","Stingwing Meat"]]}
+        ]},
+        {name:"Assaultron",dice:"All",loot:[
+            {all:[["qty",`[1d6+totLckMod `],["ammunition","Energy Cell"],["qty","2x "],["junk","Aluminum"],["junk","RobCo Quick Fix-it 1.0"]]}
+        ]},
+        {name:"Assaultron Invader",dice:"All",loot:[
+            {all:[["qty",`[1d6+totLckMod `],["ammunition","Energy Cell"],["qty","2x "],["junk","Aluminum"],["junk","RobCo Quick Fix-it 1.0"]]}
+        ]},
+        {name:"Assaultron Dominator",dice:"All",loot:[
+            {all:[["qty",`[2d6+totLckMod `],["ammunition","Energy Cell"],["qty","2x "],["junk","Aluminum"],["junk","RobCo Quick Fix-it 2.0"]]}
+        ]},
+        {name:"Eyebot",dice:"All",loot:[
+            {all:[["qty","2x "],["junk","Steel"]]}
+        ]},
+        {name:"Mister Gutsy",dice:"All",loot:[
+            {all:[["qty","2x "],["junk","Steel"],["qty",`[1d4+totLckMod`],["ammunition","10mm"]]}
+        ]},
+        {name:"Major Gutsy",dice:"All",loot:[
+            {all:[["qty","2x "],["junk","Steel"],["qty",`[1d4+totLckMod`],["ammunition","Energy Cell"]]}
+        ]},
+        {name:"Mister Handy",dice:"All",loot:[
+            {all:[["qty","2x "],["junk","Steel"],["qty",`[1d4+totLckMod`],["ammunition","10mm"]]}
+        ]},
+        {name:"Protectron",dice:"All",loot:[
+            {all:[["qty",`[1d6+totLckMod `],["ammunition","Energy Cell"],["qty","2x "],["junk","Steel"],["junk","RobCo Quick Fix-it 1.0"]]}
+        ]},
+        {name:"Protectron Medic",dice:"All",loot:[
+            {all:[["qty",`[1d6+totLckMod `],["ammunition","Energy Cell"],["qty","2x "],["junk","Steel"],["junk","RobCo Quick Fix-it 1.0"]]}
+        ]},
+        {name:"Protectron Fire",dice:"All",loot:[
+            {all:[["qty",`[1d6+totLckMod `],["ammunition","Energy Cell"],["qty","2x "],["junk","Steel"],["junk","RobCo Quick Fix-it 1.0"]]}
+        ]},
+        {name:"Protectron Utility",dice:"All",loot:[
+            {all:[["qty",`[1d6+totLckMod `],["ammunition","Energy Cell"],["qty","2x "],["junk","Steel"],["junk","RobCo Quick Fix-it 2.0"]]}
+        ]},
+        {name:"Protectron Police",dice:"All",loot:[
+            {all:[["qty",`[1d6+totLckMod `],["ammunition","Energy Cell"],["qty","2x "],["junk","Steel"],["junk","RobCo Quick Fix-it 1.0"]]}
+        ]},
+        {name:"Sentry Bot",dice:"All",loot:[
+            {all:[["qty","2x "],["ammunition","Fusion Core"],["qty","4x "],["junk","Steel"],["qty","2x "],["junk","Gear"]]}
+        ]},
+        {name:"Robobrain",dice:"All",loot:[
+            {all:[["qty","4x "],["junk","Steel"],["qty","2x "],["ammunition","Energy Cell"]]}
+        ]},
+        {name:"Brotherhood Initiate",dice:"All",loot:[
+            {all:[["armor","Leather"],["melee-weapons","Police Baton"],["rangedweapons","Laser pistol"],["qty","[2d8 "],["ammunition","Fusion Cell"],["money",`[2d4+totLckMod Bottlecap`]]}
+        ]},
+        {name:"Brotherhood Knight",dice:"All",loot:[
+            {all:[["armor","Steel"],["melee-weapons","Police Baton"],["rangedweapons","Laser rifle"],["qty","[2d8 "],["ammunition","Fusion Cell"],["money",`[3d4+totLckMod Bottlecap`]]}
+        ]},
+        {name:"Brotherhood Scribe",dice:"All",loot:[
+            {all:[["armor","Cloth"],["text"," (reinforced)"],["melee-weapons","Power Fist"],["explosives","Pulse Grenade"],["text"," (if available)"],
+            ["qty","2x "],["medicine","Stimpak"],["text"," (if available)"],["qty","[2d8 "],["ammunition","Microfusion Cell"],["money",`[4d4+totLckMod Bottlecap`]]}
+        ]},
+        {name:"Brotherhood Paladin",dice:"All",loot:[
+            {all:[["powerarmor","T-60"],["text"," (reinforced)"],["melee-weapons","Power Fist"],["rangedweapons","Gatling laser"],["qty","2x "],
+            ["explosives","Pulse Grenade"],["text"," (if available)"],["qty","2x "],["medicine","Auto-Inject Stimpak"],["text"," (if available)"],["qty","3x "],
+            ["ammunition","Fusion Core"],["money",`[5d4+totLckMod Bottlecap`]]}
+        ]},
+        {name:"Civilian",dice:"All",loot:[
+            {all:[["money",`[1d6+totLckMod Bottlecap`],["melee-weapons","Knife"],["rangedweapons","9mm pistol"],["text"," (2nd-level Decay)"],
+            ["qty","6x "],["ammunition","9mm"],["armor","Cloth"],["food-and-drinks","Salisbury Steak"],["qty","2x "],["food-and-drinks","Purified water"]]}
+        ]},
+        {name:"Doctor",dice:"All",loot:[
+            {all:[["money",`[4d10+totLckMod Bottlecap`],["melee-weapons","Knife"],["armor","Cloth"],["qty","2x "],["medicine","Stimpak"],["medicine","First Aid Kit"],
+            ["qty","2x "],["food-and-drinks","Purified water"],["food-and-drinks","Salisbury Steak"]]}
+        ]},
+        {name:"Guard",dice:"All",loot:[
+            {all:[["money",`[2d10+totLckMod Bottlecap`],["melee-weapons","Police Baton"],["rangedweapons","10mm pistol"],["text"," (2nd-level Decay)"],["rangedweapons","Hunting Shotgun"],
+            ["text"," (4th-level Decay)"],["armor","Leather"],["text"," (Hardened)"],["medicine","First Aid Kit"],["food-and-drinks","Brahmin Steak"],["qty","2x "],["food-and-drinks","Purified water"]]}
+        ]},
+        {name:"Junkie",dice:"All",loot:[
+            {all:[["text","Nothing"]]}
+        ]},
+      ]; //end of list of offical monster loot (without roll tables)
+      let myConcatenatedLoot = ``
+      const collection = await game.packs.find(u => u.metadata.label == "Monster Loot");
+      let table = await game.data.tables.find(u => u.name == npcName);
+      if (!whisper){
+        playerName = ``;
+        myRollMode = CONST.DICE_ROLL_MODES.PUBLIC
+      }
+      if (table) { // World rollTables (can be customized by user or homebrew)
+        table = await(fromUuid(`RollTable.${table._id}`));
+        console.log(table)
+        const roll = await new Roll(table.formula);
+        const customResults = await table.roll({roll});
+        console.log(customResults);
+        myConcatenatedLoot = await this.parent.system.iterateResults(customResults.results);
+        await customResults.roll.toMessage({flavor: myConcatenatedLoot})
+      } 
+      else { //Compendium rollTables
+        if (collection.tree.entries.find(u => u.name == npcName)){
+          table = await collection.getDocument(collection.tree.entries.find(u => u.name == npcName)._id);
+          const roll = await new Roll(table.formula);
+          const customResults = await table.roll({roll});
+          console.log(customResults);
+          myConcatenatedLoot = await this.parent.system.iterateResults(customResults.results);
+          await customResults.roll.toMessage({flavor: myConcatenatedLoot})
+        } 
+        else { //Not a roll table, from v2 hard-coded list
+          const aMonsterLoot = monsterLoot.find(u => u.name == npcName);
+          if (aMonsterLoot){ //Official monsters
+            myConcatenatedLoot = await this.parent.system.iterateLoot(aMonsterLoot.loot[0].all,totLckMod);
+            if (aMonsterLoot.loot.length >1){ //Luck Roll with DC if specified
+              myConcatenatedLoot = myConcatenatedLoot + `<br><div>${myActor} rolls ${this.parent.system.formatDice("d20+" + totLckMod)} for more loot.</div>` 
+              dcLoot = `On success (${aMonsterLoot.dice.replace("Lck","")}) : <br>` + await this.parent.system.iterateLoot(aMonsterLoot.loot[1].dc,totLckMod);
+            };
+          };
+          let chatData = {
+  
+            user: game.user._id,
+            
+            speaker: ChatMessage.getSpeaker(),
+            
+            content: myConcatenatedLoot,
+            
+            whisper: game.users.filter(u => u.name == playerName)
+            
+          };
+          ChatMessage.create(chatData, {});
+          if (dcLoot) {ChatMessage.create({content: dcLoot, whisper: game.user._id})};
+          //ChatMessage.create({content: myConcatenatedLoot});
+        }
+      }
+    }
 
   getRollData() {
     const data = {}

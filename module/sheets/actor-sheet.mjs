@@ -244,6 +244,10 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const skill = ev.currentTarget.dataset.skill
       this.actor.system.skillsubtraction(skill)
     })
+    //loot roll
+    html.on('click', '[data-npc-loot]', () => {
+      this.actor.system.npcLoot()
+    })
     // weapon roll
     html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
