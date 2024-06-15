@@ -515,7 +515,7 @@ td,
   border: solid 1px;
 }
 .status .skill-table {
-  width: 235px;
+  width: 275px;
 }
 .status .skill-table td {
   vertical-align: middle;
@@ -525,7 +525,7 @@ td,
   font-size: 10pt;
 }
 .status .skill-value {
-  width: 25px;
+  width: 75px;
 }
 .sheet. table .status-table {
   vertical-align: top;

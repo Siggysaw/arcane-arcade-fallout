@@ -433,7 +433,7 @@
                                 </td>
                                 <td>Range</td>
                                 <td>
-                                    {{#ifCond ../system.skills.explosives.value system.armDC}}
+                                    {{#GreaterThan ../system.skills.explosives.value system.armDC}}
                                     Auto Succeeds ({{system.armDC}})
                                     {{else}}
                                     <div class='fakebutton' class="rollable resource-label"
@@ -443,7 +443,7 @@
                                             title="d20 + explosives({{../system.skills.explosives.value}}) - penalties({{../system.penaltyTotal}}) - Increased DV of 10" />
                                     ARM
                                     </div class='fakebutton'>
-                                    {{/ifCond}}
+                                    {{/GreaterThan}}
                                 </td>
                             </tr>
                             <tr>

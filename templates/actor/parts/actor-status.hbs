@@ -3,10 +3,10 @@
     text-transform: uppercase;
   }
 </style>
-
 <table class="status-block">
   <tr>
     <td class="skill-table">
+       Points to Spend:{{system.skillPool}}
       <table>
         <tr>
           {{#each system.skills as |skill key|}}
@@ -32,13 +32,16 @@
           </td>
           <td class="skill-label">{{ skill.label }}</td>
           <td class="skill-value">
-            <input type="number" name="system.skills.{{ key }}.value" value="{{ skill.value }}" />
-          </td>
+              <i style="padding:3px;" data-skillsubtraction data-skill="{{skill.id}}" class="fas fa-minus-square"></i> 
+              {{ skill.value }} 
+              <i style="padding:3px;"  data-skilladdition data-skill="{{skill.id}}" class="fas fa-plus-square"></i>
+</td>
         </tr>
         {{/each}}
       </table>
     </td>
     <td class="status-table">
+        <br />
       <table>
         <tr>
           <td class="status-info-label">Hunger Lvl</td>
