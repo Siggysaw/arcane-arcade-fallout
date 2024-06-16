@@ -15,20 +15,60 @@
                   </tr>
                   <tr>
                     <td class="bio-label"><span class="label">Race:</span></td>
-                    <td colspan="2">
-                      <input type="text" name="system.race" value="{{ system.race }}" />
+                    <td colspan="2" style="border:solid 1px">
+                        {{#each races as |item id|}}
+                        <div data-item-id="{{ item._id }}">
+                            <div class="item flexrow"
+                                 data-item-id="{{ item._id }}">
+                                <div class="item-controls">
+                                    <a data-edit
+                                       data-item-id="{{ item._id }}"
+                                       class="item-control"
+                                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                        {{ item.name }}
+                                    </a>
+                                    <a style="float: right; margin-right: 10px"
+                                       class="item-control item-delete"
+                                       data-item-id="{{ item._id }}"
+                                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
                     </td>
                   </tr>
                   <tr>
-                    <td class="bio-label"><span class="label">BG:</span></td>
-                    <td colspan="2">
-                      <input type="text" name="system.background" value="{{ system.background }}" />
-                    </td>
+                      <td class="bio-label"><span class="label">BG:</span></td>
+                      <td colspan="2" style="border:solid 1px">
+                          {{#each backgrounds as |item id|}}
+                          <div data-item-id="{{ item._id }}">
+                              <div class="item flexrow"
+                                   data-item-id="{{ item._id }}">
+                                  <div class="item-controls">
+                                      <a data-edit
+                                         data-item-id="{{ item._id }}"
+                                         class="item-control"
+                                         title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                          {{ item.name }}
+                                      </a>
+                                      <a style="float: right; margin-right: 10px"
+                                         class="item-control item-delete"
+                                         data-item-id="{{ item._id }}"
+                                         title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                          <i class="fas fa-trash"></i>
+                                      </a>
+                                  </div>
+                              </div>
+                          </div>
+                          {{/each}}
+                      </td>
                   </tr>
                   <tr>
-                    <td class="bio-label"><span class="label">Level:</span></td>
+                    <td class="bio-label"><span class="label">Lvl:</span></td>
                     <td colspan="2">
-                      {{ system.level }}
+                      <input type="number" name="system.level" value="{{ system.level }}" />
                     </td>
                   </tr>
                   <tr>

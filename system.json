@@ -208,6 +208,30 @@
       "flags": {}
     },
     {
+      "label": "Race",
+      "type": "Item",
+      "name": "race",
+      "path": "packs/race",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Background",
+      "type": "Item",
+      "name": "background",
+      "path": "packs/background",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
       "label": "Room Loot",
       "type": "RollTable",
       "name": "roomloot",

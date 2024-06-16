@@ -552,7 +552,8 @@ td,
 
 .sheet .fakebutton, .sheet button {
   border: #1d5427;
-  padding:5px;
+  padding: 5px;
+  cursor: pointer;
 }
 .sheet .fakebutton:hover, .sheet button:hover {
   border: #1d5427;
@@ -650,6 +651,12 @@ form td .status-notes li:hover {
 }
 .alwaysopen{
 	float:left;
+}
+.sheet .smallinput {
+  width: 50px;
+}
+.sheet .mediuminput {
+  width: 100px;
 }
 .directory .directory-header .header-search input {
   flex: 1;

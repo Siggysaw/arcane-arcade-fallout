@@ -1,0 +1,24 @@
+{
+  "name": "{{title}}",
+  "type": "background",
+  "img": "systems/arcane-arcade-fallout/assets/vaultboy/backgrounds-icon.png",
+  "system": {
+    "skill1": {
+      "value": "{{skill1}}"
+    },
+    "skill2": {
+      "value": "{{skill2}}"
+    },
+    "skill3": {
+      "value": "{{skill3}}"
+    },
+    "description": "{{description}}"
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+  },
+  "_stats": {
+    "systemId": "arcane-arcade-fallout"
+  }
+}
