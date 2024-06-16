@@ -549,7 +549,9 @@ td,
   vertical-align: middle;
   padding: 2px;
 }
-
+.sheet .fas {
+    cursor: pointer;
+}
 .sheet .fakebutton, .sheet button {
   border: #1d5427;
   padding: 5px;

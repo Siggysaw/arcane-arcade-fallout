@@ -23,7 +23,7 @@
                                 <div class="item-controls">
                                     <a data-edit
                                        data-item-id="{{ item._id }}"
-                                       class="item-control"
+                                       class="item-control allcaps"
                                        title="{{localize 'DOCUMENT.Update' type='item'}}">
                                         {{ item.name }}
                                     </a>
@@ -49,7 +49,7 @@
                                   <div class="item-controls">
                                       <a data-edit
                                          data-item-id="{{ item._id }}"
-                                         class="item-control"
+                                         class="item-control allcaps"
                                          title="{{localize 'DOCUMENT.Update' type='item'}}">
                                           {{ item.name }}
                                       </a>
@@ -120,19 +120,15 @@
                           </td>
                         </tr>
                         <tr>
-                          <td class="statusnum" colspan="2">
-                            <input
-                              type="number"
-                              name="system.health.value"
-                              value="{{ system.health.value }}"
-                            />
-                            /
-                            <input
-                              type="number"
-                              name="system.health.max"
-                              value="{{ system.health.max }}"
-                            />
-                          </td>
+                            <td class="statusnum" colspan="2">
+                                <i style="padding:3px;" data-healthsubtraction class="fas fa-minus-square"></i>
+                                <input type="number"
+                                       name="system.health.value"
+                                       value="{{ system.health.value }}" />
+                                <i style="padding:3px;" data-healthaddition class="fas fa-plus-square"></i>
+                                /
+                              {{ system.health.max }}
+                            </td>
                         </tr>
                         <tr>
                           <td colspan="2">
@@ -149,19 +145,15 @@
                           </td>
                         </tr>
                         <tr>
-                          <td colspan="2" class="statusnum">
-                            <input
-                              type="number"
-                              name="system.stamina.value"
-                              value="{{ system.stamina.value }}"
-                            />
-                            /
-                            <input
-                              type="number"
-                              name="system.stamina.max"
-                              value="{{ system.stamina.max }}"
-                            />
-                          </td>
+                            <td colspan="2" class="statusnum">
+                                <i style="padding:3px;" data-staminasubtraction class="fas fa-minus-square"></i>
+                                <input type="number"
+                                       name="system.stamina.value"
+                                       value="{{ system.stamina.value }}" />
+                                <i style="padding:3px;" data-staminaaddition class="fas fa-plus-square"></i>
+                                /
+                                {{ system.stamina.max }}
+                            </td>
                         </tr>
                         <tr>
                           <td colspan="2">
