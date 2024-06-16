@@ -252,9 +252,17 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const skill = ev.currentTarget.dataset.skill
       this.actor.system.skillsubtraction(skill)
     })
-    //loot roll
+    //Monster loot roll
     html.on('click', '[data-npc-loot]', () => {
-      this.actor.system.npcLoot()
+      this.actor.system.npcLoot();
+    })
+    //Room loot roll <--- Help! Can't make the button not appear... so at least players can't click it. Signed: Kev
+    html.on('click', '[data-pc-loot]', () => {
+      if(game.user.role > 3){
+        this.actor.system.roomLoot();
+      } else{
+        alert("Nice try, Player");
+      }
     })
     // weapon roll
     html.on('click', '[data-weapon-roll]', (ev) => {

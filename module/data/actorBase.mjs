@@ -466,6 +466,194 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       ])
     }
   }
+
+  async rollMyTable (table){
+    let roll = await new Roll(table.formula.replace("5[",this.parent.system.abilities.lck.mod + "["));
+    const customResults = await table.roll({roll});
+    //let myFlavor = table.name + ": " ;
+    let loot = ''
+    for (var myResult of customResults.results) { //This could create an infinite loop only if two containers reference each other
+      loot += " " + await this.parent.system.rollContainer(myResult);
+      console.log(`${table.name} : ${myResult.range[0]}-${myResult.range[1]}: ${myResult.text}`)
+      //myFlavor += myResult.text + " ";
+    }
+    //Sending to chat was too many rolls. Sent to console instead
+    //customResults.roll.toMessage({flavor:myFlavor}, {rollMode:CONST.DICE_ROLL_MODES.SELF});
+    return loot;
+  }
+
+  async rollContainer(result){//If a table exists with that name, roll it. Otherwise, spit out the result in compendium format
+    let table = await this.parent.system.findTable(result.text);
+    let myLoot = ``;
+      if (result.text.startsWith("#Roll")){ //Reroll multiple tables exception
+      var substrings = result.text.split("&");
+      for (var matches of substrings){
+        var match = matches.match(/\{(.*?)\}/);
+        table = await this.parent.system.findTable(match[1]);
+        if(table){myLoot += await this.parent.system.rollMyTable(table);}
+      }
+    } 
+    else {
+      if (result.text.includes("Junk") && result.text.startsWith("[[")){ //Roll number and type of junk to roll
+        let subResults = result.text.split(" ")
+        let roll = new Roll(subResults[1].replace("]]",""))
+        await roll.evaluate();
+        var i = 0;
+        while (i < roll.total){ //get as many results as roll for specific junk table
+          table = await this.parent.system.findTable(subResults[2] + " " + subResults[3]);
+          if (table) {myLoot += await this.parent.system.rollMyTable(table);}
+          i++
+        }
+      } 
+      else {
+        if (table){ //roll table if one is found and reiterate
+          myLoot += await this.parent.system.rollMyTable(table);
+        } 
+        else { //send as loot
+            if (result.documentCollection){
+              myLoot += await this.parent.system.formatCompendiumItem(result.documentCollection.replace(`arcane-arcade-fallout.`,``), result.text);
+            } else {
+              myLoot += await this.parent.system.formatCompendiumItem("", result.text);
+            }
+        }
+      }
+    }
+    return myLoot;
+  }
+
+  async rollRoomLoot(tableName){
+    const table = await this.parent.system.findTable(tableName);
+    let roll = await new Roll(table.formula);
+    const customResults = await table.roll({roll});
+    console.log("LOOT TABLE ASYNCHRONOUS RESULTS : (MAY APPEAR IN REVERSE ORDER)")
+    let myConcatenatedLoot = `Room Loot: `
+    for (var result of customResults.results) {
+        myConcatenatedLoot += await this.parent.system.rollContainer(result);
+    }
+    myConcatenatedLoot = myConcatenatedLoot.split("<br>").join("");
+    customResults.roll.toMessage({flavor:myConcatenatedLoot});
+  }
+
+  async rollCustomLoot(myValues,myTables){
+    var i = 0;
+    var j = 0;
+    let formattedResult;
+    let tablesList = "Custom loot from "
+    console.log("LOOT TABLE ASYNCHRONOUS RESULTS : (MAY APPEAR IN REVERSE ORDER)")
+    let myConcatenatedLoot = ``
+    while (i < myValues.length){
+      if (myValues[i] > 0){
+        j=0;
+        tablesList += myTables[i] + ", ";
+        while (j < myValues[i]){
+          formattedResult = {text:myTables[i],documentCollection:""}
+          myConcatenatedLoot += await this.parent.system.rollContainer(formattedResult);
+          j++
+        }
+      }
+      i++
+    }
+    myConcatenatedLoot = myConcatenatedLoot.split("<br>").join("");
+    myConcatenatedLoot = tablesList.slice(0,-2) + ":<br>" + myConcatenatedLoot;
+    let chatData = {
+      user: game.user._id,
+      speaker: ChatMessage.getSpeaker(),
+      flavor: myConcatenatedLoot,
+      //whisper: game.users.find(u => u.name == playerName)
+    };
+    ChatMessage.create(chatData, {});
+  }
+
+  roomLoot(){
+    let lootContainers = [];
+    let allContainers = ``;
+    let myCaseValue = 0;
+    let i = 0;
+    let myTables = [``,``,``,``,``,``,``,``,``,``,``,``];
+    let myValues = [0,0,0,0,0,0,0,0,0,0,0,0];
+    let roomFolder = game.data.folders.find(u => u.name == "Room Loot")
+    if (roomFolder){
+      lootContainers = game.data.tables.filter(u => u.folder == roomFolder._id)
+    } else{
+      lootContainers = game.packs.find( u => u.metadata.name == "roomloot").tree.entries;
+    }
+    let containerOptions = lootContainers.map(u => `<option value=${u.name.split(" ").join("_")}> ${u.name} </option>`).join(``);
+    
+    while(i < lootContainers.length && i < 12){
+      allContainers +=
+      `<tr><td><i style="padding:3px;cursor: pointer;" name=data-tableSubtraction id="lower${i}" class="fas fa-minus-square"></i></td>
+        <td id=value${i}>0</td>
+        <td><i style="padding:3px;cursor: pointer;" name=data-tableAddition id="higher${i}" class="fas fa-plus-square"></i></td>
+        <td><select name="container" id="container${i}">${containerOptions.replace(`value=${lootContainers[i].name.split(" ").join("_")}`,`value=${lootContainers[i].name.split(" ").join("_")} selected="selected"`)}</select></td>
+        `
+        myTables[i] = lootContainers[i].name
+      if(i+1 < lootContainers.length){
+        allContainers +=
+        `<td><i style="padding:3px;cursor: pointer;" name=data-tableSubtraction id="lower${i+1}" class="fas fa-minus-square"></i></td>
+        <td id=value${i+1}>0</td>
+        <td><i style="padding:3px;cursor: pointer;" name=data-tableAddition id="higher${i+1}" class="fas fa-plus-square"></i></td>
+        <td><select name="container" id="container${i+1}">${containerOptions.replace(`value=${lootContainers[i+1].name.split(" ").join("_")}`,`value=${lootContainers[i+1].name.split(" ").join("_")} selected="selected"`)}</select></td></tr>`
+        myTables[i+1] = lootContainers[i+1].name
+      } else {
+        allContainers += `</tr>`
+      }
+      i+=2
+    }
+    
+    let dialogContent = `<div><p>By default, random room loot is rolled and distributed.</p></div>
+    <div>Alternatively, enter an amount of times each container will be rolled and select custom roll.</div><br>
+    <table>
+      ${allContainers}
+    <table>
+    <br><br><div><i>Tip: Options here are populated from the Room Loot Compendium OR by the Room Loot rolltables Folder if it exists."`
+    let d = new Dialog({
+      title: "Choose loot options for the room",
+      content: dialogContent,
+      buttons: {
+      Room: {
+        icon: '<i class="fas fa-check"></i>',
+        label: "Random Room Loot",
+        callback: async () => {this.parent.system.rollRoomLoot("Room Loot")}
+      },
+      Custom: {
+        icon: '<i class="fas fa-list-ul"></i>',
+        label: "Custom Rolls",
+        callback:  async () => {if(myValues.reduce((partialSum, a) => partialSum + a, 0) != 0) {
+          this.parent.system.rollCustomLoot(myValues,myTables)
+        } else {
+          alert(`You need at least one non-zero value for a custom roll. 
+            
+            Thank you for choosing Vault-Tec!`);
+          d.render(true);
+        }
+        ;}
+      }
+      },
+      default: "Room",
+      render: (html) => {
+          html.find("[name=data-tableSubtraction]").click(function (){
+            myCaseValue = document.getElementById(`value${this.id.replace(`lower`,``)}`).innerHTML
+            if (myCaseValue >0){
+              document.getElementById(`value${this.id.replace(`lower`,``)}`).innerHTML = myCaseValue - 1;
+              myValues[this.id.replace(`lower`,``)] -= 1;
+            }
+          });
+          html.find("[name=data-tableAddition]").click(function (){
+            document.getElementById(`value${this.id.replace(`higher`,``)}`).innerHTML = parseInt(document.getElementById(`value${this.id.replace(`higher`,``)}`).innerHTML) + 1;
+            myValues[this.id.replace(`higher`,``)] += 1;
+          })
+          html.find("[name=container]").change(function (){
+            myTables[this.id.replace(`container`,``)] = this.value.split("_").join(" ");
+          })
+      },
+    },{
+      left: 200,
+      top: 200,
+      width:600,
+  });
+    d.render(true);
+  }
+
   npcLoot() {
     let selectPC = canvas.tokens.controlled.find(u => u.actor.type === "character");
     if (selectPC){
@@ -508,7 +696,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       }
     }
   
-    createChatObject (compendium, itemName) {
+    createChatObject (compendium, itemName) {//only for official monsters list below
       let myRoll
       switch (compendium) {
         case "qty":
@@ -555,7 +743,6 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       let allLoot = `` 
       for (var loot of myLootResults) {
           compendium = loot.documentCollection.replace(`arcane-arcade-fallout.`,``)
-          console.log(compendium)
           if (loot.text.includes("(")){
             allLoot = allLoot.slice(0,allLoot.length-4) + " " + this.parent.system.formatCompendiumItem(compendium, loot.text);
           }
@@ -586,7 +773,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       let selectedPlayer = ``
       let dialogContent = `<p>You haven't selected a token. Who is this loot for?</p><br><div></div>
                       <div">Player to whisper to:<select id="playSelec" name="player">${playerOptions}</select></div>
-                      <div">Character's luck Mod:<select id="charSelec" name="character">${characterOptions}</select></div>`
+                      <div">Character's luck Mod:<select id="charSelec" name="character">${characterOptions}</select></div>
+                      <br><br><div><i>Tip: Selecting a player character token on the map before clicking loot will skip this window</i></div>`
       let d = new Dialog({
         title: "Choose a player and character",
         content: dialogContent,
@@ -608,23 +796,36 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           selectedCharacter = document.getElementById("charSelec").value;
           html.find("[name=player]").change(function (){
             selectedPlayer = document.getElementById("playSelec").value;
-            console.log(selectedPlayer);
             charAssociated = game.users.find(u => u.name  == selectedPlayer).character
             if (charAssociated){
               document.getElementById("charSelec").value = selectedCharacter;
             }
-            console.log(selectedPlayer);
         });
           html.find("[name=character]").change(function (){
             selectedCharacter = document.getElementById("charSelec").value;
-            console.log(selectedCharacter);
           });
         },
-        close: html => console.log("loot distributed or not")
        });
        d.render(true);
     }
   
+    async findTable(name) {
+      let table = null;
+      if (game.tables.getName(name)) {
+        table = game.tables.getName(name);
+      } else {
+        const pack = game.packs.find(p => {
+          if (p.metadata.type !== "RollTable") return false;
+          return !!p.index.getName(name);
+        });
+        if (pack) {
+          let entry = pack.index.getName(name);
+          table = await pack.getDocument(entry._id);
+        }
+      }
+      return table;
+    }
+
     async determineNpcLoot(myActor, whisper, playerName){
       const npcName = this.parent.name;
       let dcLoot
@@ -839,53 +1040,37 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       ]; //end of list of offical monster loot (without roll tables)
       let myConcatenatedLoot = ``
       const collection = await game.packs.find(u => u.metadata.label == "Monster Loot");
-      let table = await game.data.tables.find(u => u.name == npcName);
-      if (!whisper){
-        playerName = ``;
-        myRollMode = CONST.DICE_ROLL_MODES.PUBLIC
-      }
-      if (table) { // World rollTables (can be customized by user or homebrew)
-        table = await(fromUuid(`RollTable.${table._id}`));
-        console.log(table)
+      let table = await this.parent.system.findTable(npcName);
+      if (table) { // World & Compendium rollTables (can be customized by user or homebrew)
         const roll = await new Roll(table.formula);
         const customResults = await table.roll({roll});
-        console.log(customResults);
-        myConcatenatedLoot = await this.parent.system.iterateResults(customResults.results);
-        await customResults.roll.toMessage({flavor: myConcatenatedLoot})
+        myConcatenatedLoot = npcName + ` drops: <br>` + await this.parent.system.iterateResults(customResults.results);
+        if (!whisper){myRollMode = CONST.DICE_ROLL_MODES.PUBLIC};
+        await customResults.roll.toMessage({flavor: myConcatenatedLoot, user:game.users.find(u => u.name == playerName)},{rollMode: myRollMode})
       } 
-      else { //Compendium rollTables
-        if (collection.tree.entries.find(u => u.name == npcName)){
-          table = await collection.getDocument(collection.tree.entries.find(u => u.name == npcName)._id);
-          const roll = await new Roll(table.formula);
-          const customResults = await table.roll({roll});
-          console.log(customResults);
-          myConcatenatedLoot = await this.parent.system.iterateResults(customResults.results);
-          await customResults.roll.toMessage({flavor: myConcatenatedLoot})
-        } 
-        else { //Not a roll table, from v2 hard-coded list
-          const aMonsterLoot = monsterLoot.find(u => u.name == npcName);
-          if (aMonsterLoot){ //Official monsters
-            myConcatenatedLoot = await this.parent.system.iterateLoot(aMonsterLoot.loot[0].all,totLckMod);
-            if (aMonsterLoot.loot.length >1){ //Luck Roll with DC if specified
-              myConcatenatedLoot = myConcatenatedLoot + `<br><div>${myActor} rolls ${this.parent.system.formatDice("d20+" + totLckMod)} for more loot.</div>` 
-              dcLoot = `On success (${aMonsterLoot.dice.replace("Lck","")}) : <br>` + await this.parent.system.iterateLoot(aMonsterLoot.loot[1].dc,totLckMod);
-            };
+      else { //Not a roll table, from v2 hard-coded list
+        const aMonsterLoot = monsterLoot.find(u => u.name == npcName);
+        if (aMonsterLoot){ //Official monsters
+          myConcatenatedLoot = await this.parent.system.iterateLoot(aMonsterLoot.loot[0].all,totLckMod);
+          if (aMonsterLoot.loot.length >1){ //Luck Roll with DC if specified
+            myConcatenatedLoot += `<br><div>${myActor} rolls ${this.parent.system.formatDice("d20+" + totLckMod)} for more loot.</div>` 
+            dcLoot = `On success (${aMonsterLoot.dice.replace("Lck","")}) : <br>` + await this.parent.system.iterateLoot(aMonsterLoot.loot[1].dc,totLckMod);
           };
-          let chatData = {
-  
-            user: game.user._id,
-            
-            speaker: ChatMessage.getSpeaker(),
-            
-            content: myConcatenatedLoot,
-            
-            whisper: game.users.filter(u => u.name == playerName)
-            
-          };
-          ChatMessage.create(chatData, {});
-          if (dcLoot) {ChatMessage.create({content: dcLoot, whisper: game.user._id})};
-          //ChatMessage.create({content: myConcatenatedLoot});
-        }
+        };
+        let chatData = {
+
+          user: game.user._id,
+          
+          speaker: ChatMessage.getSpeaker(),
+          
+          content: myConcatenatedLoot,
+          
+          whisper: game.users.find(u => u.name == playerName)
+          
+        };
+        ChatMessage.create(chatData, {});
+        if (dcLoot) {ChatMessage.create({content: dcLoot, whisper: game.user._id})};
+        //ChatMessage.create({content: myConcatenatedLoot});
       }
     }
 
