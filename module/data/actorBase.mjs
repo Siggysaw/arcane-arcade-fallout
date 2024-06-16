@@ -6,7 +6,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     const requiredInteger = { required: true, nullable: false, integer: true }
     const schema = {}
     schema.biography = new fields.HTMLField()
-    schema.skillPool = new fields.NumberField({ initial: 0 })
+    schema.skillPool = new fields.NumberField({ initial: 6 })
     schema.totalSkillpoints = new fields.NumberField({ initial: 0 })
     schema.health = new fields.SchemaField({
       value: new fields.NumberField({
@@ -85,7 +85,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           }),
           abbr: new fields.StringField({
             initial: FALLOUTZERO.abilities[ability].abbreviation,
-          }),		  
+          }),
         })
         return obj
       }, {}),
@@ -212,7 +212,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     if (actor.abilities.int.mod < 0) {
       skillMod = 3
     }
-    updatedSkillpool= skillPool + skillMod
+    updatedSkillpool = skillPool + skillMod
     this.parent.update({ 'system.skillPool': updatedSkillpool })
   }
 
@@ -220,10 +220,10 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
 
     // Rewards Variables
     const actor = this.parent.system
-    const myDialogOptions = {width: 500,height: 400}
+    const myDialogOptions = { width: 500, height: 400 }
     const newXP = this.parent.system.xp - 1000
     const newLevel = this.parent.system.level + 1
-    let rewards = ''
+    let rewards = `<h3>Congratulations!</h3><p> You've Leveled Up! Please look below for your rewards!</p>`
 
     // Update Level
     this.parent.update({ 'system.xp': newXP })
@@ -238,11 +238,6 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     let updatedSkillpool = ''
     let updatedSkillpoints = this.parent.system.totalSkillpoints
 
-
-    // Loop Through Skills, get sum of all the skill
-    for (const key in this.skills) {
-      SkillPointsUsed = Number(SkillPointsUsed) + Number(this.parent.system.skills[key].value)
-    }
     // Levels that increase skill points
     if (actor.level % 4 === 0) {
       // Skill points allotted is based on Intelligence modifier
@@ -275,7 +270,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       let updatedStaminavalue = currentSPvalue + agiMod + 5
       let updatedHealth = currentHP + endMod + 5
       let updatedStamina = currentSP + agiMod + 5
-      
+
       this.parent.update({ 'system.health.max': updatedHealth })
       this.parent.update({ 'system.health.value': updatedHealthvalue })
       this.parent.update({ 'system.stamina.max': updatedStamina })
@@ -283,6 +278,15 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       rewards += `
       <br>Health has been updated to ${updatedHealth}
       <br>Stamina has been updated to ${updatedStamina}`
+    }
+    if (
+      newLevel == 5 ||
+      newLevel == 9 ||
+      newLevel == 13 ||
+      newLevel == 17 ||
+      newLevel == 19
+    ) { } else {
+      rewards += `<br>You can take a Perk OR you can add +1 to a SPECIAL stat!`
     }
     new Dialog({
       title: 'You Leveled Up!',
@@ -315,6 +319,12 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     const weapon = this.parent.items.get(weaponId)
     const apCost = weapon.system.apCost
     const newAP = Number(currentAp) - Number(apCost)
+
+    if (newAP < 0) {
+      ui.notifications.warn(`Not enough AP for action`)
+      return
+    }
+
     this.parent.update({ 'system.actionPoints.value': Number(newAP) })
   }
 
@@ -340,10 +350,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       // Update ammo quantity
       const foundAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
       if (foundAmmo) {
-        //const newAmmoQty = Number(foundAmmo.system.quantity - 1)
         const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
         this.parent.updateEmbeddedDocuments('Item', [
-         // { _id: foundAmmo._id, 'system.quantity': newAmmoQty },
           {
             _id: weapon._id,
             'system.ammo.capacity.value': newWeaponAmmoCapacity,
