@@ -175,6 +175,35 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
     }
   }
+  healthupdate(operator) {
+    let newHealth = ''
+    if (operator === "plus") {
+      newHealth = this.parent.system.health.value + 1
+    } else {
+      newHealth = this.parent.system.health.value - 1
+    }
+        this.parent.update({ 'system.health.value': newHealth })
+  }
+
+  staminaupdate(operator) {
+    let newStamina = ''
+    if (operator === "plus") {
+      newStamina = this.parent.system.stamina.value + 1
+    } else {
+      newStamina = this.parent.system.stamina.value - 1
+    }
+    this.parent.update({ 'system.stamina.value': newStamina })
+  }
+  actionupdate(operator) {
+    let newAction = ''
+    if (operator === "plus") {
+      newAction = this.parent.system.actionPoints.value + 1
+    } else {
+      newAction = this.parent.system.actionPoints.value - 1
+    }
+    this.parent.update({ 'system.actionPoints.value': newAction })
+  }
+
   skilladdition(skill) {
     const actor = this.parent.system
     const newSkillvalue = this.parent.system.skills[skill].value + 1

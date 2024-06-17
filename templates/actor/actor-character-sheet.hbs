@@ -107,67 +107,64 @@
                     <td>
                       <table>
                         <tr>
-                          <td colspan="2">
-                            <span class="status-label">HP</span>
-                            <progress
-                              style="width: 90%; float: right"
-                              class="statusbar health"
-                              value="{{ system.health.value }}"
-                              max="{{ system.health.max }}"
-                            >
-                              {{ system.health.value }}
-                            </progress>
-                          </td>
-                        </tr>
-                        <tr>
-                            <td class="statusnum" colspan="2">
-                                <i style="padding:3px;" data-healthsubtraction class="fas fa-minus-square"></i>
-                                <input type="number"
-                                       name="system.health.value"
-                                       value="{{ system.health.value }}" />
-                                <i style="padding:3px;" data-healthaddition class="fas fa-plus-square"></i>
-                                /
-                              {{ system.health.max }}
+                            <td colspan="2">
+                                <span class="status-label">HP</span>
+                                <i data-health="minus" class="fas fa-minus-square"></i>
+                                <i data-health="plus" class="fas fa-plus-square"></i>
+                                <progress style="width: 80%; float: right"
+                                          class="statusbar health"
+                                          value="{{ system.health.value }}"
+                                          max="{{ system.health.max }}">
+                                    {{ system.health.value }}
+                                </progress>
                             </td>
                         </tr>
                         <tr>
-                          <td colspan="2">
-                            <span class="status-label">SP</span
-                            ><progress
-                              style="width: 90%; float: right"
-                              class="statusbar stamina"
-                              value="{{ system.stamina.value }}"
-                               max="{{ system.stamina.max }}"
+                            <td class="statusnum" colspan="2">
+                                <input type="number"
+                                       class="numberwithbuttons"
+                                       name="system.health.value"
+                                       value="{{ system.health.value }}" />
+                                /
+                                {{ system.health.max }}<br />
 
-                            >
-                              {{ system.stamina.value }}
-                            </progress>
-                          </td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <span class="status-label">SP</span>
+                                <i data-stamina="minus" class="fas fa-minus-square"></i>
+                                <i data-stamina="plus" class="fas fa-plus-square"></i>
+                                <progress style="width: 80%; float: right"
+                                          class="statusbar stamina"
+                                          value="{{ system.stamina.value }}"
+                                          max="{{ system.stamina.max }}">
+                                    {{ system.stamina.value }}
+                                </progress>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2" class="statusnum">
-                                <i style="padding:3px;" data-staminasubtraction class="fas fa-minus-square"></i>
                                 <input type="number"
+                                       class="numberwithbuttons"
                                        name="system.stamina.value"
                                        value="{{ system.stamina.value }}" />
-                                <i style="padding:3px;" data-staminaaddition class="fas fa-plus-square"></i>
-                                /
+                                                                /
                                 {{ system.stamina.max }}
                             </td>
                         </tr>
                         <tr>
-                          <td colspan="2">
-                            <span class="status-label">AP</span
-                            ><progress
-                              style="width: 90%; float: right"
-                              class="statusbar stamina"
-                              value="{{ system.actionPoints.value }}"
-                              max="{{ system.actionPoints.max }}"
-
-                            >
-                              {{ system.actionPoints.value }}
-                            </progress>
-                          </td>
+                            <td colspan="2">
+                                <span class="status-label">AP</span>
+                                <i data-action="minus" class="fas fa-minus-square"></i>
+                                <i data-action="plus" class="fas fa-plus-square"></i>
+                                <progress style="width: 80%; float: right"
+                                          class="statusbar stamina"
+                                          value="{{ system.actionPoints.value }}"
+                                          max="{{ system.actionPoints.max }}">
+                                    {{ system.actionPoints.value }}
+                                </progress>
+                            </td>
                         </tr>
                         <tr>
                           <td colspan="2" class="statusnum">

@@ -228,6 +228,21 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const weaponId = ev.currentTarget.dataset.weaponId
       this.actor.system.apUsed(weaponId)
     })
+    //health update
+    html.on('click', '[data-health]', (ev) => {
+      const health = ev.currentTarget.dataset.health
+      this.actor.system.healthupdate(health)
+    })
+    //stamina update
+    html.on('click', '[data-stamina]', (ev) => {
+      const stamina = ev.currentTarget.dataset.stamina
+      this.actor.system.staminaupdate(stamina)
+    })
+    //action points update
+    html.on('click', '[data-action]', (ev) => {
+      const action = ev.currentTarget.dataset.action
+      this.actor.system.actionupdate(action)
+    })
 
     //ap refill
     html.on('click', '[data-refill-ap]', () => {
