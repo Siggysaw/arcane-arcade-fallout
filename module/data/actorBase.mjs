@@ -498,23 +498,23 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
 
   async rollMyTable (table){
     let roll = await new Roll(table.formula.replace("5[",this.parent.system.abilities.lck.mod + "["));
-    const customResults = await table.roll({roll});
-    //let myFlavor = table.name + ": " ;
+    const customResults = await table.draw({roll});
+    game.messages.contents[game.messages.contents.length-1].delete()
     let loot = ''
-    for (var myResult of customResults.results) { //This could create an infinite loop only if two containers reference each other
-      loot += " " + await this.parent.system.rollContainer(myResult);
-      console.log(`${table.name} : ${myResult.range[0]}-${myResult.range[1]}: ${myResult.text}`)
-      //myFlavor += myResult.text + " ";
+    for (var myResult of customResults.results) { //Goes back in the loop if results are tables
+      loot += " " + await this.parent.system.rollContainer(myResult, customResults.roll._total,customResults.roll._formula);
+      console.log(`${table.name} : Rolled ${customResults.roll._total} total for ${myResult.text}`);
     }
-    //Sending to chat was too many rolls. Sent to console instead
-    //customResults.roll.toMessage({flavor:myFlavor}, {rollMode:CONST.DICE_ROLL_MODES.SELF});
     return loot;
   }
 
-  async rollContainer(result){//If a table exists with that name, roll it. Otherwise, spit out the result in compendium format
+  //All loot container types are rolled here and exceptions are managed, loot is returned
+  async rollContainer(result,myTotal=0,formula=0){
     let table = await this.parent.system.findTable(result.text);
     let myLoot = ``;
-      if (result.text.startsWith("#Roll")){ //Reroll multiple tables exception
+    let myTooltip = ``;
+    //Exception : Result is to roll multiple times on multiple tables
+    if (result.text.startsWith("#Roll")){ 
       var substrings = result.text.split("&");
       for (var matches of substrings){
         var match = matches.match(/\{(.*?)\}/);
@@ -523,7 +523,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       }
     } 
     else {
-      if (result.text.includes("Junk") && result.text.startsWith("[[")){ //Roll number and type of junk to roll
+      //Exception : Junk has a rolled amount of tables to roll
+      if (result.text.includes("Junk") && result.text.startsWith("[[")){ 
         let subResults = result.text.split(" ")
         let roll = new Roll(subResults[1].replace("]]",""))
         await roll.evaluate();
@@ -534,15 +535,18 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           i++
         }
       } 
+      //Roll like a Regular table
       else {
         if (table){ //roll table if one is found and reiterate
           myLoot += await this.parent.system.rollMyTable(table);
         } 
-        else { //send as loot
+        //Or format loot result, whether it is an object or text
+        else {
+            myTooltip = `Rolled <b><u>${myTotal}</b></u> total on<div>${result.parent.name} table (${formula})</div>`;
             if (result.documentCollection){
-              myLoot += await this.parent.system.formatCompendiumItem(result.documentCollection.replace(`arcane-arcade-fallout.`,``), result.text);
+              myLoot += await this.parent.system.formatCompendiumItem(result.documentCollection.replace(`arcane-arcade-fallout.`,``), result.text,myTooltip);
             } else {
-              myLoot += await this.parent.system.formatCompendiumItem("", result.text);
+              myLoot += await this.parent.system.formatCompendiumItem("", result.text,myTooltip);
             }
         }
       }
@@ -550,6 +554,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     return myLoot;
   }
 
+  //Room loot starts and ends here with chat message.
   async rollRoomLoot(tableName){
     const table = await this.parent.system.findTable(tableName);
     let roll = await new Roll(table.formula);
@@ -563,6 +568,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     customResults.roll.toMessage({flavor:myConcatenatedLoot});
   }
 
+  //Custom container loot starts and ends here with chat message
   async rollCustomLoot(myValues,myTables){
     var i = 0;
     var j = 0;
@@ -593,6 +599,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     ChatMessage.create(chatData, {});
   }
 
+  //Dialog for room loot
   roomLoot(){
     let lootContainers = [];
     let allContainers = ``;
@@ -634,7 +641,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     <table>
       ${allContainers}
     <table>
-    <br><br><div><i>Tip: Options here are populated from the Room Loot Compendium OR by the Room Loot rolltables Folder if it exists."`
+    <br><br><div><i>Tip: Options here are populated from the Room Loot Compendium OR by the Room Loot rolltables Folder if it exists.`
     let d = new Dialog({
       title: "Choose loot options for the room",
       content: dialogContent,
@@ -686,23 +693,23 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   npcLoot() {
     let selectPC = canvas.tokens.controlled.find(u => u.actor.type === "character");
     if (selectPC){
-      try{ // whisper loot to player if found from selected token
-        let playerName = game.users.filter(u => u.role < 3).find(u => u.character.name == selectPC.name);
+      //try{ // whisper loot to player if found from selected token
+        let playerName = game.users.filter(u => u.role < 3).find(u => u.character.name == selectPC.name).name;
         this.parent.system.determineNpcLoot(selectPC.actor.name, true, playerName);
       }
-      catch{ // public chat loot
+      /*catch{ // public chat loot
         this.parent.system.determineNpcLoot(selectPC.actor.name, false, "");
       }
-    } else { // ask for character and player if none selected
+    }*/ else { // ask for character and player if none selected
       this.parent.system.pcLuckDialog();
     }
   }
   
     formatDice (formula){
-      return `<a style="color:black" class="inline-roll roll" data-mode="roll" data-flavor="" data-formula=${formula}><i class="fas fa-dice-d20"></i>${formula}</a class="roll">`;
+      return `<a style="color:black" class="inline-roll roll" data-mode="roll" data-flavor="" data-tooltip="Click to roll" data-formula=${formula}><i class="fas fa-dice-d20" ></i>${formula}</a class="roll">`;
     }
   
-    formatCompendiumItem(compendium,itemName){
+    formatCompendiumItem(compendium,itemName,myTooltip = "Item"){
       let compendiumObject, myItem, myRoll
       if (itemName.includes("[[")){
           try {
@@ -715,7 +722,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           myItem = compendiumObject.tree.entries.find(u => u.name == itemName);
           if (myItem) {
           return `<a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
-          data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="Item"><i class="fas fa-suitcase">
+          data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="${myTooltip}"><i class="fas fa-suitcase">
           </i>${itemName}</a><br>`
           } else {
               return `${itemName}<br>`
@@ -724,8 +731,9 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           return `${itemName}<br>`
       }
     }
-  
-    createChatObject (compendium, itemName) {//only for official monsters list below
+    
+    //Rolls loot for official monsters list below (not rolltables)
+    createChatObject (compendium, itemName) {
       let myRoll
       switch (compendium) {
         case "qty":
@@ -791,8 +799,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     pcLuckDialog (){
       let playerOptions, characterOptions
       try{
-        playerOptions = game.users.filter(u => u.role < 3).map(u => `<option value=${u.name}> ${u.name} </option>`).join(``);
-        characterOptions = game.actors.filter(u=> u.type == "character").map(u => `<option value=${u.name}> ${u.name} </option>`).join(``);
+        playerOptions = game.users.filter(u => u.role < 3).map(u => `<option value=${u.name.split(" ").join("_")}> ${u.name} </option>`).join(``);
+        characterOptions = game.actors.filter(u=> u.type == "character").map(u => `<option value=${u.name.split(" ").join("_")}> ${u.name} </option>`).join(``);
       } catch{
         alert ("You must have at least 1 player and 1 actor to use this functionality.");
         return;
@@ -811,7 +819,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
          Public: {
           icon: '<i class="fas fa-check"></i>',
           label: "Public",
-          callback: async () => {this.parent.system.determineNpcLoot(selectedCharacter, false, '')}
+          callback: async () => {this.parent.system.determineNpcLoot(selectedCharacter, false, game.user)}
          },
          Whisper: {
           icon: '<i class="fas fa-times"></i>',
@@ -821,17 +829,18 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         },
         default: "Public",
         render: (html) => {
-          selectedPlayer = document.getElementById("playSelec").value;
-          selectedCharacter = document.getElementById("charSelec").value;
+          selectedPlayer = document.getElementById("playSelec").value.split("_").join(" ");
+          selectedCharacter = document.getElementById("charSelec").value.split("_").join(" ");
           html.find("[name=player]").change(function (){
-            selectedPlayer = document.getElementById("playSelec").value;
+            selectedPlayer = document.getElementById("playSelec").value.split("_").join(" ");
             charAssociated = game.users.find(u => u.name  == selectedPlayer).character
+            console.log(charAssociated)
             if (charAssociated){
-              document.getElementById("charSelec").value = selectedCharacter;
+              document.getElementById("charSelec").value = charAssociated.name;
             }
         });
           html.find("[name=character]").change(function (){
-            selectedCharacter = document.getElementById("charSelec").value;
+            selectedCharacter = document.getElementById("charSelec").value.split("_").join(" ");
           });
         },
        });
@@ -857,7 +866,10 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
 
     async determineNpcLoot(myActor, whisper, playerName){
       const npcName = this.parent.name;
-      let dcLoot
+      let dcLoot, whisperUser
+      if (game.users.find(u => u.name == playerName)){
+        whisperUser = game.users.find(u => u.name == playerName)._id
+      }
       const totLckMod = game.actors.find(u=> u.name == myActor).system.abilities.lck.mod
       let myRollMode = CONST.DICE_ROLL_MODES.PRIVATE
       const monsterLoot = [
@@ -1071,6 +1083,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       const collection = await game.packs.find(u => u.metadata.label == "Monster Loot");
       let table = await this.parent.system.findTable(npcName);
       if (table) { // World & Compendium rollTables (can be customized by user or homebrew)
+        console.log(npcName)
         const roll = await new Roll(table.formula);
         const customResults = await table.roll({roll});
         myConcatenatedLoot = npcName + ` drops: <br>` + await this.parent.system.iterateResults(customResults.results);
@@ -1082,8 +1095,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         if (aMonsterLoot){ //Official monsters
           myConcatenatedLoot = await this.parent.system.iterateLoot(aMonsterLoot.loot[0].all,totLckMod);
           if (aMonsterLoot.loot.length >1){ //Luck Roll with DC if specified
-            myConcatenatedLoot += `<br><div>${myActor} rolls ${this.parent.system.formatDice("d20+" + totLckMod)} for more loot.</div>` 
-            dcLoot = `On success (${aMonsterLoot.dice.replace("Lck","")}) : <br>` + await this.parent.system.iterateLoot(aMonsterLoot.loot[1].dc,totLckMod);
+            myConcatenatedLoot += `<div><b>${myActor}</b> can roll ${this.parent.system.formatDice("1d20+" + totLckMod)} for more loot.</div>` 
+            dcLoot = `<b>On success (${aMonsterLoot.dice.replace("Lck","")})</b> : <br>` + await this.parent.system.iterateLoot(aMonsterLoot.loot[1].dc,totLckMod);
           };
         };
         let chatData = {
@@ -1092,13 +1105,13 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           
           speaker: ChatMessage.getSpeaker(),
           
-          content: myConcatenatedLoot,
+          flavor: myConcatenatedLoot,
           
-          whisper: game.users.find(u => u.name == playerName)
+          whisper: whisperUser
           
         };
         ChatMessage.create(chatData, {});
-        if (dcLoot) {ChatMessage.create({content: dcLoot, whisper: game.user._id})};
+        if (dcLoot) {ChatMessage.create({flavor: dcLoot, whisper: game.user._id})};
         //ChatMessage.create({content: myConcatenatedLoot});
       }
     }
