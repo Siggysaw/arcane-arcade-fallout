@@ -19,7 +19,15 @@ details > summary {
   cursor: pointer;
   border:solid 1px #ccc;
 }
-
+.sheet h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #222;
+  border: solid 1px #ccc;
+  text-transform:uppercase;
+  padding:5px;
+}
 .rollable:hover,
 .rollable:focus {
   color: #1d5427;

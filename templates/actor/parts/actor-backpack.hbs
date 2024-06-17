@@ -2,6 +2,7 @@
   .sheet table .foodanddrinks td {
     border: solid 1px;
     vertical-align: middle;
+    padding:10px;
   }
 </style>
 <table class="equipped-stats">
@@ -63,12 +64,12 @@
 
 <table class="backpack">
   <tr>
-    <td>
+    <td style="padding-right:10px">
 
         {{#if foodAnddrinks}}
-<table class="foodanddrinks"><tr><td>FOOD AND DRINKS</td></tr></table>			
-	<div style="max-height:300px;overflow:scroll">	
-      <table class="foodanddrinks">
+<table class="foodanddrinks" style="margin-right:5px">
+    <tr><td colspan="999"><h3>Food and Drinks</h3></td></tr>		
+	<div>	
 		<tr><td>Name</td><td>Description</td><td>Load</td><td></td></tr>
         {{#each foodAnddrinks as |item id|}}
         <tr>
@@ -107,62 +108,55 @@
 	  </div>
         {{/if}}
     </td>
-    <td class="spacer"></td>
-      <td>
-
+    <td>
         {{#if chems}}
-		<table class="foodanddrinks"><tr><td>CHEMS</td></table>
-      <div style="display:block;margin:auto;max-height:300px;overflow:scroll">		
-          <table class="foodanddrinks">
-        {{#each chems as |item id|}}
-        <tr>
-          <td style="width: 100px">
-            <span class="label"> {{ item.name }} ({{ system.quantity }}) </span>
-          </td>
+        <table class="equipped-stats">
+            <tr><td colspan=999><h3>CHEMS</h3></td></tr>
+            {{#each chems as |item id|}}
+            <tr>
+                <td style="width: 100px">
+                    <span class="label"> {{ item.name }} ({{ system.quantity }}) </span>
+                </td>
 
-          <td>
-            {{{ item.system.description }}}
-          </td>
-          <td class="td-controls">
-            <li class="item flexrow" data-item-id="{{ item._id }}">
-              <div class="item-controls">
-                <a
-                  class="item-control"
-                  data-edit
-                  data-item-id="{{ item._id }}"
-                  title="{{localize 'DOCUMENT.Update' type='item'}}"
-                >
-                  <i class="fas fa-edit"></i>
-                </a>
-                <a
-                  class="item-control item-delete"
-                  title="{{localize 'DOCUMENT.Delete' type='item'}}"
-                >
-                  <i class="fas fa-trash"></i>
-                </a>
-              </div>
-            </li>
-          </td>
-        </tr>
-        {{/each}}
-      </table>
-	  </table>
+                <td>
+                    {{{ item.system.description }}}
+                </td>
+                <td class="td-controls">
+                    <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <div class="item-controls">
+                            <a class="item-control"
+                               data-edit
+                               data-item-id="{{ item._id }}"
+                               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="item-control item-delete"
+                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                </td>
+            </tr>
+            {{/each}}
+</table>
 	  		  <div>
           {{/if}}
 
         {{#if miscItems}}
+                   
           <table class="equipped-stats">
-		<tr><td colspan=999>MISCELLANEOUS ITEMS</td></tr>
+		<tr><td colspan=999><h3>MISC ITEMS</h3></td></tr>
         {{#each miscItems as |item id|}}
           <tr>
-              <td>
+              <td class="item-label">
                   <span class="label" style="margin-right: 5px">
                       {{ item.name }} ({{ system.quantity }})
                   </span>
               </td>
 
               <td style="width: 70%; text-align: left; padding: 10px;">
-                  {{{ item.system.description }}}
+                  <details>{{{item.system.description}}}</details>
               <td class="td-controls">
                   <li class="item flexrow" data-item-id="{{ item._id }}">
                       <div class="item-controls">
