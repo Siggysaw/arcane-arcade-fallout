@@ -496,6 +496,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     }
   }
 
+  //Roll any table, check if loot is a table and start over or add loot.
   async rollMyTable (table){
     let roll = await new Roll(table.formula.replace("5[",this.parent.system.abilities.lck.mod + "["));
     const customResults = await table.draw({roll});
