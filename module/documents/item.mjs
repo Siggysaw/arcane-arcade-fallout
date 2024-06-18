@@ -12,6 +12,29 @@ export class FalloutZeroItem extends Item {
     super.prepareData()
   }
 
+  //Checks char items before creating one, stops it and updates quantity if it exists and is not equipped.
+  _preCreate(data, options, user){
+    super._preCreate(data,options,user)
+    if(this.parent){
+      let myItem = this.parent.items.find(u => u.name == this.name);
+      if (this.system.itemEquipped){
+        console.log(this);
+        this.system.itemEquipped = false;
+        console.log(this);
+        myItem = this.parent.items.find(u => u.name == this.name && u.system.itemEquipped == false);
+        try {this.system.update({'itemEquipped' : false })}
+        catch{console.log("Item cannot be updated in this way")}
+      }
+      let qty = 0;
+      if (myItem){
+        qty = myItem.system.quantity;
+        qty ++
+        myItem.update({'system.quantity' : qty });
+        return false;
+      }
+    }
+  }
+
   /**
    * Prepare a data object which defines the data schema used by dice roll commands against this Item
    * @override

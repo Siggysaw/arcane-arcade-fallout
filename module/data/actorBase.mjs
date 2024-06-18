@@ -848,7 +848,6 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           html.find("[name=player]").change(function (){
             selectedPlayer = document.getElementById("playSelec").value.split("_").join(" ");
             charAssociated = game.users.find(u => u.name  == selectedPlayer).character
-            console.log(charAssociated)
             if (charAssociated){
               document.getElementById("charSelec").value = charAssociated.name;
             }
@@ -1097,7 +1096,6 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       const collection = await game.packs.find(u => u.metadata.label == "Monster Loot");
       let table = await this.parent.system.findTable(npcName);
       if (table) { // World & Compendium rollTables (can be customized by user or homebrew)
-        console.log(npcName)
         const roll = await new Roll(table.formula);
         const customResults = await table.roll({roll});
         myConcatenatedLoot = npcName + ` drops: <br>` + await this.parent.system.iterateResults(customResults.results);
