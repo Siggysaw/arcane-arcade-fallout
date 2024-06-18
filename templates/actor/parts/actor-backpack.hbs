@@ -1,4 +1,4 @@
-<style>
+ <style>
   .sheet table .foodanddrinks td {
     border: solid 1px;
     vertical-align: middle;
@@ -63,118 +63,114 @@
 </table>
 
 <table class="backpack">
-  <tr>
-    <td style="padding-right:10px">
-
+    <tr>
         {{#if foodAnddrinks}}
-<table class="foodanddrinks" style="margin-right:5px">
-    <tr><td colspan="999"><h3>Food and Drinks</h3></td></tr>		
-	<div>	
-		<tr><td>Name</td><td>Description</td><td>Load</td><td></td></tr>
-        {{#each foodAnddrinks as |item id|}}
-        <tr>
-          <td style="width: 100px">
-            <span class="label"> {{ item.name }} ({{ system.quantity }}) </span>
-          </td>
+        <td style="padding-right:10px">
+            <table class="foodanddrinks" style="margin-right:5px">
+                <tr><td colspan="999" ><h3>Food and Drinks</h3></td></tr>
+                <div>
+                <tr><td>Name</td><td>Description</td><td>Load</td><td></td></tr>
+                {{#each foodAnddrinks as |item id|}}
+                <tr>
+                    <td style="width: 100px">
+                        <span class="label"> {{ item.name }} ({{ system.quantity }}) </span>
+                    </td>
 
-          <td>
-            {{{ item.system.description }}}
-          </td><td>
-			{{item.system.load}}
-		  </td>
-          <td class="td-controls">
-            <li class="item flexrow" data-item-id="{{ item._id }}">
-              <div class="item-controls">
-                <a
-                  class="item-control"
-                  data-edit
-                  data-item-id="{{ item._id }}"
-                  title="{{localize 'DOCUMENT.Update' type='item'}}"
-                >
-                  <i class="fas fa-edit"></i>
-                </a>
-                <a
-                  class="item-control item-delete"
-                  title="{{localize 'DOCUMENT.Delete' type='item'}}"
-                >
-                  <i class="fas fa-trash"></i>
-                </a>
-              </div>
-            </li>
-          </td>
-        </tr>
-        {{/each}}
-      </table>
-	  </div>
-        {{/if}}
-    </td>
-    <td>
-        {{#if chems}}
-        <table class="equipped-stats">
-            <tr><td colspan=999><h3>CHEMS</h3></td></tr>
-            {{#each chems as |item id|}}
-            <tr>
-                <td style="width: 100px">
-                    <span class="label"> {{ item.name }} ({{ system.quantity }}) </span>
-                </td>
+                    <td data-properties="{{item.system.description}}">
+                        {{{ item.system.description }}}
+                    </td>
+                    <td>
+                        {{item.system.load}}
+                    </td>
+                    <td class="td-controls" style="padding:0px;margin:0px;">
+                        <li class="item flexrow" data-item-id="{{ item._id }}">
+                            <div class="item-controls">
+                                <a class="item-control"
+                                   data-edit
+                                   data-item-id="{{ item._id }}"
+                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="item-control item-delete"
+                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+            </div>
+            {{/if}}
+        </td>
+        <td>
+            {{#if chems}}
+            <table class="equipped-stats">
+                <tr><td colspan=999><h3>CHEMS</h3></td></tr>
+                {{#each chems as |item id|}}
+                <tr>
+                    <td style="width: 100px">
+                        <span class="label"> {{ item.name }} ({{ system.quantity }}) </span>
+                    </td>
 
-                <td>
-                    {{{ item.system.description }}}
-                </td>
-                <td class="td-controls">
-                    <li class="item flexrow" data-item-id="{{ item._id }}">
-                        <div class="item-controls">
-                            <a class="item-control"
-                               data-edit
-                               data-item-id="{{ item._id }}"
-                               title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a class="item-control item-delete"
-                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </div>
-                    </li>
-                </td>
-            </tr>
-            {{/each}}
-</table>
-	  		  <div>
-          {{/if}}
+                    <td>
+                        {{{ item.system.description }}}
+                    </td>
+                    <td class="td-controls">
+                        <li class="item flexrow" data-item-id="{{ item._id }}">
+                            <div class="item-controls">
+                                <a class="item-control"
+                                   data-edit
+                                   data-item-id="{{ item._id }}"
+                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="item-control item-delete"
+                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+            <div>
+                {{/if}}
 
-        {{#if miscItems}}
-                   
-          <table class="equipped-stats">
-		<tr><td colspan=999><h3>MISC ITEMS</h3></td></tr>
-        {{#each miscItems as |item id|}}
-          <tr>
-              <td class="item-label">
-                  <span class="label" style="margin-right: 5px">
-                      {{ item.name }} ({{ system.quantity }})
-                  </span>
-              </td>
+                {{#if miscItems}}
 
-              <td style="width: 70%; text-align: left; padding: 10px;">
-                  <details>{{{item.system.description}}}</details>
-              <td class="td-controls">
-                  <li class="item flexrow" data-item-id="{{ item._id }}">
-                      <div class="item-controls">
-                          <a class="item-control"
-                             data-edit
-                             data-item-id="{{ item._id }}"
-                             title="{{localize 'DOCUMENT.Update' type='item'}}">
-                              <i class="fas fa-edit"></i>
-                          </a>
-                          <a class="item-control item-delete"
-                             title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                              <i class="fas fa-trash"></i>
-                          </a>
-                      </div>
-                  </li>
-              </td>
-              </td>
-          </tr>
+                <table class="equipped-stats">
+                    <tr><td colspan=999><h3>MISC ITEMS</h3></td></tr>
+                    {{#each miscItems as |item id|}}
+                    <tr>
+                        <td class="item-label">
+                            <span class="label" style="margin-right: 5px">
+                                {{ item.name }} ({{ system.quantity }})
+                            </span>
+                        </td>
+
+                        <td>
+                            <details>{{{item.system.description}}}</details>
+                        <td class="td-controls">
+                            <li class="item flexrow" data-item-id="{{ item._id }}">
+                                <div class="item-controls">
+                                    <a class="item-control"
+                                       data-edit
+                                       data-item-id="{{ item._id }}"
+                                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a class="item-control item-delete"
+                                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </td>
+        </td>
+    </tr>
         {{/each}}
       </table>
           {{/if}}		  

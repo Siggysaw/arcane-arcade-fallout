@@ -223,6 +223,11 @@ export class FalloutZeroActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html)
 
+    //Condition Send to Chat
+    html.on('click', '[data-condition]', (ev) => {
+      const condition = ev.currentTarget.dataset.condition
+      this.actor.system.conditiontochat(condition)
+    })
     //ap use
     html.on('click', '[data-ap-used]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId

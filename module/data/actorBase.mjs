@@ -162,8 +162,6 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
 
   prepareBaseData() {
     super.prepareBaseData()
-
-
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
       // Calculate the modifier using d20 rules.
@@ -175,6 +173,20 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
     }
   }
+
+  // START HERE FOR CUSTOM FUNCTIONS
+
+
+  conditiontochat(condition) {
+    const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1);
+    const rule = FALLOUTZERO.rules[conditionFormatted]
+    const message = `<div class="chattitle">${conditionFormatted}:</div><div class="chatinformation">${rule}</div>`
+    ChatMessage.create({
+      content: message
+    })
+  }
+
+
   healthupdate(operator) {
     let newHealth = ''
     if (operator === "plus") {

@@ -277,4 +277,31 @@ FALLOUTZERO.penalties = {
 }
 
 
+FALLOUTZERO.rules = {
+  Addictive: 'If you consume a drink with the Alcoholic property that also has this property, you must succeed an Endurance ability check equal to 5. If you fail, you become addicted to alcoholic drinks. While you are addicted to alcoholic drinks you always have two levels of exhaustion unless you are drunk. You lose your alcohol addiction if you spend a number of weeks equal to 6 minus your Endurance ability ability modifier (minimum 1).',
+  Alcoholic: 'When you consume a drink with this property, and your Endurance ability score is equal to 5 or higher, you become buzzed for 1d4 hours. Endurance ability score is equal to 4 or lower, you become drunk instead. If you are already buzzed and you consume another alcoholic or high-proof drink, you become drunk for 1d4 hours. If you are drunk, and drink two more alcoholic or high-proof drinks, you become hammered for 1d4 hours. If you are hammered, and drink two more alcoholic or high-proof drinks, you become wasted for 1d4 hours. ',
+  Caffeinated:'If you consume a food or drink with this property, you no longer suffer the negative effects of the first three levels of exhaustion for the next 6 hours. If you have no levels of exhaustion, whenever you roll a d20; add 1 to the result. If you drink another Caffeinated drink while under the effects of one already, you gain 1 AP at the start of your turn for the next 6 hours. However, at the end of those 6 hours, you gain a level of exhaustion for each additional caffeinated drink you consumed while under the effects of one already. ',
+  Highproof:'When you consume a drink with this property, and your Endurance ability score is equal to 5 or higher, you become drunk for 1d4 hours. Endurance ability score is equal to 4 or lower, you become hammered instead. If you are already drunk and you consume another alcoholic or high-proof drink, you become hammered for 1d4 hours. If you are hammered, and drink two more alcoholic or high-proof drinks, you become wasted for 1d4 hours.',
+  Hydrating:'When you consume a drink with this property, you remove an additional two levels of dehydration (for a total of three since all drinks remove one level of dehydration).',
+  Irradiated:'Some foods arent entirely the safest to eat, but beggars cant be choosers in the wasteland. When you consume a food that is irradiated, you gain one irradiated level. If you gain ten irradiated levels, you gain one level of rads. ',
+  Filling:'If you consume food with this property, you remove another level of hunger. ',
+  Bland:'If you consume a food with this property, you heal a number of stamina points equal to half your level.',
+  Tasty:'If you consume a food with this property, you heal a number of stamina points equal to your level.',
+  Flavorsome:'If you consume a food with this property, you heal a number of stamina points equal to double your level.',
+  Delicacy:'If you consume a food with this property, you heal a number of stamina points equal to triple your level.',
+  Fortifying:'If you consume food with this property, your radiation DC decreases by 2 for 6 hours. ',
+  Energizing:'If you consume a food or drink with this property, you gain 1 AP at the start of your turn for the next 4 hours.',
+  Empowering:'If you consume a food or drink with this property, you gain 2 AP at the start of your turn for the next 4 hours.',
+  Regenerating:'If you consume a food or drink with this property, you heal a number of hit points equal to your healing rate. ',
+  Refreshing:'If you consume a food with this property, you remove one level of dehydration.',
+  Snack:'If you consume a food with this property, you do not remove any levels of hunger unless you consume two foods with this property.',
+  Spicy:'If you consume a food or drink with this property, whenever you take fire or laser damage in the next 6 hours, your DT is increased by 3 for that damage.',
+  Hearty:'If you consume a food or drink with this property, your carry load increases by 50 for the next 6 hours.',
+  Pungent:'If you consume a food or drink with this property, your DT increases by 1 for the next 6 hours. ',
+  Putrid:'If you consume a food or drink with this property, you become poisoned for the next 4 hours if your Endurance score is 5 or lower. ',
+  Cleansing:'If you consume a food or drink with this property, you cure one addiction.',
+  Strengthening:'If you consume a food or drink with this property, whenever you attack another creature and roll damage; the damage is increased by 2.',
+  Lucky:'If you consume a food or drink with this property, you have advantage on all Luck ability checks for the next 6 hours. ',
+  Charged:'If you consume a food or drink with this property, you recycle all of your unspent AP at the beginning of each of your turns for the next hour.',
+}
 

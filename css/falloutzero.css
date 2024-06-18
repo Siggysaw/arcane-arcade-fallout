@@ -1,7 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 /* Global styles */
+@font-face {
+  font-family: "Monofonto";
+  src: url("systems/arcane-arcade-fallout/assets/fonts/monofonto.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "fixedsys";
+  src: url("systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
 .window-app {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Monofonto', sans-serif;
 }
 :root {
   --color-shadow-primary: #1d5427;
@@ -407,17 +422,24 @@ details > summary {
 .window-app .window-content select,
 .dialog,
 .window-app .window-content textarea,
-.window-app form p {
+.window-app form p,
+#chat .chat-message .message-header,
+.prosemirror.menu-dialog form p,
+.prosemirror.menu-dialog form button,
+.prosemirror.menu-dialog form input {
   color: #01e998;
 }
 .window-app .window-content div .fakebutton,
 .window-app .window-content button {
   background: #222;
 }
-.sheet.journal-entry .journal-entry-content {
+.sheet.journal-entry .journal-entry-content,
+#chat .chat-message,
+.prosemirror.menu-dialog form {
   background-image: url('/systems/arcane-arcade-fallout/assets/terminal.png');
   background-size: cover;
   color: #01e998;
+  font-family: Fixedsys
 }
 .sheet.journal-entry .title {
   display: none;
@@ -649,12 +671,12 @@ form td .status-notes li:hover {
   background: black;
 }
 .directory .directory-header .header-search input,
-.prosemirror {
+.prosemirror,
+.prosemirror.menu-dialog form {
   display: flex;
   flex-direction: column;
-  --color-control-bg: #222; */
-  --color-hover-bg: #222
-  background: #222;
+  --color-control-bg: #222;
+  */ --color-hover-bg: #222 background: #222;
 }
 .item .item-box{
 	max-width:425px;
@@ -689,4 +711,8 @@ form td .status-notes li:hover {
 }
 .armorbox{
     width:50%
+}
+
+#chatmessage .chattitle{
+    font-size:14pt;
 }
