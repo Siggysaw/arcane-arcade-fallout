@@ -2,17 +2,11 @@
 /* Global styles */
 @font-face {
   font-family: "Monofonto";
-  src: url("systems/arcane-arcade-fallout/assets/fonts/monofonto.otf") format("opentype");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
+  src: url("/systems/arcane-arcade-fallout/assets/fonts/monofonto.otf");
 }
 @font-face {
   font-family: "fixedsys";
-  src: url("systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf") format("truetype");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
+  src: url("/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf");
 }
 
 .window-app {
