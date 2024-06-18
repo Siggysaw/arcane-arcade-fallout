@@ -13,6 +13,14 @@ export class FalloutZeroActor extends Actor {
 
     //Handlebar JS Helpers
 
+    // If Player is a GM
+    Handlebars.registerHelper('GM', function (options) {
+      if (game.user.role === 4) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    })
+
     // Greater Than or Equal
     Handlebars.registerHelper('GreaterThan', function (v1, v2, options) {
       if (v1 >= v2) {

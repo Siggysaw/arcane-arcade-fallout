@@ -177,6 +177,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   // START HERE FOR CUSTOM FUNCTIONS
 
 
+
   conditiontochat(condition) {
     const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1);
     const rule = FALLOUTZERO.rules[conditionFormatted]
@@ -194,7 +195,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     } else {
       newHealth = this.parent.system.health.value - 1
     }
-        this.parent.update({ 'system.health.value': newHealth })
+    this.parent.update({ 'system.health.value': newHealth })
   }
 
   staminaupdate(operator) {
