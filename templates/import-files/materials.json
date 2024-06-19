@@ -1,0 +1,31 @@
+{
+  "name": "{{title}}",
+  "type": "material",
+  "img": "systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/heavyweight.png",
+  "system": {
+    "worn": false,
+    "filled": false,
+    "cost": "{{cost}}",
+    "load": ".1",
+    "loaddefault": "{{load}}",
+    "wornload": "{{worn}}",
+    "full": "{{full}}",
+    "quantity": 1,
+    "description": "{{properties}}"
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "exportSource": {
+      "world": "fallout-ttrpg",
+      "system": "arcane-arcade-fallout",
+      "coreVersion": "11.315",
+      "systemVersion": "0.0.13"
+    }
+  },
+  "_stats": {
+    "systemId": "arcane-arcade-fallout",
+    "systemVersion": "0.0.13",
+    "coreVersion": "11.315"
+  }
+}

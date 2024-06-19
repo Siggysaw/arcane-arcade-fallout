@@ -160,6 +160,18 @@
       "flags": {}
     },
     {
+      "label": "Material",
+      "type": "Item",
+      "name": "material",
+      "path": "packs/material",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
       "label": "Explosives",
       "type": "Item",
       "name": "explosives",

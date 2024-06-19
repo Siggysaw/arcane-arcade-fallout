@@ -66,9 +66,9 @@
                       </td>
                   </tr>
                   <tr>
-                    <td class="bio-label"><span class="label">Lvl:</span></td>
-                    <td colspan="2">
-                      <input type="number" name="system.level" value="{{ system.level }}" />
+                    <td class="bio-label"><span class="label">Level:</span></td>
+                    <td colspan="2" style="border:solid 1px">
+                      <span class="label">{{ system.level }}</span>
                     </td>
                   </tr>
                   <tr>
@@ -295,7 +295,7 @@
       </tr>
     </table>
     {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
+  <nav class="sheet-tabs tabs" data-group="primary">
       {{!-- Default tab is specified in actor-sheet.mjs --}}
       <a class="item" data-tab="status">STATUS</a>
       <a class="item" data-tab="perks">PERKS</a>
@@ -303,92 +303,92 @@
       <a class="item" data-tab="medicine">AID</a>
       <a class="item" data-tab="backpack">BACKPACK</a>
       <a class="item" data-tab="crafting">CRAFTING</a>
-    </nav>
+      {{#GM}}<a class="item" data-tab="effects">EFFECTS</a>{{/GM}}
+  </nav>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body">
+  <section class="sheet-body">
       <div class="abilities flexcol">
-        <div class="ability flexrow flex-group-center"></div>
+          <div class="ability flexrow flex-group-center"></div>
       </div>
       {{!-- Owned status Tab --}}
       <div class="tab status" data-group="primary" data-tab="status">
-        <section>
-          {{!-- For the main status list, span the right two columns --}}
           <section>
-            <table>
-              <tr>
-                {{#each system.abilities as |ability key|}}
-                <td>
-                  <label
-                    for="system.abilities.{{ key }}.value"
-                    class="resource-label rollable flexlarge align-left"
-                    data-rollable
-                    data-roll="d20+{{ ability.mod }}-@penaltyTotal"
-                    data-label="{{ ability.label }}"
-                    >{{ ability.label }}</label
-                  >
-                </td>
-                {{/each}}
-              </tr>
+              {{!-- For the main status list, span the right two columns --}}
+              <section>
+                  <table>
+                      <tr>
+                          {{#each system.abilities as |ability key|}}
+                          <td>
+                              <label for="system.abilities.{{ key }}.value"
+                                     class="resource-label rollable flexlarge align-left"
+                                     data-rollable
+                                     data-roll="d20+{{ ability.mod }}-@penaltyTotal"
+                                     data-label="{{ ability.label }}">{{ ability.label }}</label>
+                          </td>
+                          {{/each}}
+                      </tr>
 
-              <tr>
-                {{#each system.abilities as |ability key|}}
-                <td>
-                  <input
-                    data-set-{{key}}
-                    type="number"
-                    name="system.abilities.{{ key }}.value"
-                    value="{{ ability.value }}"
-                    data-dtype="Number"
-                    min="0"
-                  />
-                </td>
-                {{/each}}
-              </tr>
-              <tr>
-                {{#each system.abilities as |ability key|}}
-                <td>
-                  <span class="ability-mod" data-label="{{ ability.label }}">
-                    {{numberFormat ability.mod
-									decimals=0 sign=true}}</span
-                  >
-                </td>
-                {{/each}}
-              </tr>
-            </table>
+                      <tr>
+                          {{#each system.abilities as |ability key|}}
+                          <td>
+                              <input data-set-{{key}}
+                                     type="number"
+                                     name="system.abilities.{{ key }}.value"
+                                     value="{{ ability.value }}"
+                                     data-dtype="Number"
+                                     min="0" />
+                          </td>
+                          {{/each}}
+                      </tr>
+                      <tr>
+                          {{#each system.abilities as |ability key|}}
+                          <td>
+                              <span class="ability-mod" data-label="{{ ability.label }}">
+                                  {{numberFormat ability.mod decimals=0 sign=true }}
+                              </span>
+                          </td>
+                          {{/each}}
+                      </tr>
+                  </table>
 
-            {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and
-					defined in module/helpers/templates.mjs --}}
-            {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-status.hbs"}}
+                  {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and	defined in module/helpers/templates.mjs --}}
+                  {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-status.hbs"}}
+              </section>
           </section>
-        </section>
       </div>
 
       {{!-- Owned Items Tab --}}
       <div class="tab items" data-group="primary" data-tab="items">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
       <div class="tab perks" data-group="primary" data-tab="perks">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
       <div class="tab medicine" data-group="primary" data-tab="medicine">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
       </div>
 
       {{!-- Backpack Tab --}}
       <div class="tab backpack" data-group="primary" data-tab="backpack">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
       </div>
 
       {{!-- Crafting Tab --}}
-      <div class="tab backpack" data-group="primary" data-tab="crafting">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs"}}
-      </div>	  
-    </section>
+      <div class="tab crafting" data-group="primary" data-tab="crafting">
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs"}}
+      </div>
+      {{#GM}}
+      {{!-- Effects Tab --}}
+      <div class="tab effects" data-group="primary" data-tab="effects">
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
+      </div>
+      {{/GM}}
+  </section>
   </div>
 </form>
 

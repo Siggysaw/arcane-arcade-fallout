@@ -177,14 +177,33 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   // START HERE FOR CUSTOM FUNCTIONS
 
 
+  //add item
+  itemaddition(importeditem) {
+    const item = this.parent.items.get(importeditem)
+    const updatedQty = item.system.quantity + 1
+    item.update({ 'system.quantity': updatedQty })
+  }
 
+  //subtract item
+  itemsubtraction(importeditem) {
+    const item = this.parent.items.get(importeditem)
+    let updatedQty = item.system.quantity - 1
+    if (updatedQty < 1) {
+      updatedQty=0
+    }
+    item.update({ 'system.quantity': updatedQty })
+  }
+  
   conditiontochat(condition) {
+    const myDialogOptions = { width: 500, height: 300 }
     const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1);
     const rule = FALLOUTZERO.rules[conditionFormatted]
-    const message = `<div class="chattitle">${conditionFormatted}:</div><div class="chatinformation">${rule}</div>`
-    ChatMessage.create({
-      content: message
-    })
+    const message = `<div class="conditioninfo">${rule}</div>`
+    new Dialog({
+      title: `Details: ${conditionFormatted}`,
+      content: message,
+      buttons: {}
+    }, myDialogOptions).render(true);
   }
 
 

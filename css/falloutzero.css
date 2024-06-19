@@ -707,6 +707,8 @@ form td .status-notes li:hover {
     width:50%
 }
 
-#chatmessage .chattitle{
+.dialog .conditioninfo{
+    font-family:fixedsys;
+    padding:20px;
     font-size:14pt;
 }
