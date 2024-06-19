@@ -42,22 +42,22 @@
       "name": "Character",
       "sorting": "m",
       "packs": [
-        "Race",
-        "Background",
-        "Perks",
-        "Traits"
+        "race",
+        "background",
+        "perks",
+        "traits"
       ]
     },
     {
       "name": "Equipment",
       "sorting": "m",
       "packs": [
-        "Ammunition",
-        "Ranged Weapons",
-        "Melee Weapons",
-        "Explosives",
-        "Armor",
-        "Miscellaneous"
+        "ammunition",
+        "rangedweapons",
+        "melee-weapons",
+        "explosives",
+        "armor",
+        "miscellaneous"
 
       ]
     },
@@ -65,26 +65,26 @@
       "name": "Consumables",
       "sorting": "m",
       "packs": [
-        "Food and Drinks",
-        "Medicine",
-        "Chems"
+        "food-and-drinks",
+        "medicine",
+        "chems"
       ]
     },
     {
       "name": "NPCs",
       "sorting": "m",
       "packs": [
-        "Enemies",
-        "Monster Loot",
-        "Room Loot"
+        "enemies",
+        "monsterloot",
+        "roomloot"
       ]
     },
     {
       "name": "Crafting",
       "sorting": "m",
       "packs": [
-        "Junk",
-        "Material"
+        "junk",
+        "material"
       ]
     }
   ],
@@ -92,7 +92,7 @@
     {
       "label": "Perks",
       "type": "Item",
-      "name": "Perks",
+      "name": "perks",
       "path": "packs/perks",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -100,7 +100,7 @@
     {
       "label": "Armor",
       "type": "Item",
-      "name": "Armor",
+      "name": "armor",
       "path": "packs/armor",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -108,7 +108,7 @@
     {
       "label": "Ammunition",
       "type": "Item",
-      "name": "Ammunition",
+      "name": "ammunition",
       "path": "packs/ammunition",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -116,7 +116,7 @@
     {
       "label": "Background",
       "type": "Item",
-      "name": "Background",
+      "name": "background",
       "path": "packs/background",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -124,7 +124,7 @@
     {
       "label": "Race",
       "type": "Item",
-      "name": "Race",
+      "name": "race",
       "path": "packs/race",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -132,7 +132,7 @@
     {
       "label": "Chems",
       "type": "Item",
-      "name": "Chems",
+      "name": "chems",
       "path": "packs/chems",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -140,7 +140,7 @@
     {
       "label": "Medicine",
       "type": "Item",
-      "name": "Medicine",
+      "name": "medicine",
       "path": "packs/medicine",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -148,7 +148,7 @@
     {
       "label": "Food and Drinks",
       "type": "Item",
-      "name": "Food and Drinks",
+      "name": "food-and-drinks",
       "path": "packs/food-and-drinks",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -156,7 +156,7 @@
     {
       "label": "Melee Weapons",
       "type": "Item",
-      "name": "Melee Weapons",
+      "name": "melee-weapons",
       "path": "packs/melee-weapons",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -164,7 +164,7 @@
     {
       "label": "Ranged Weapons",
       "type": "Item",
-      "name": "Ranged Weapons",
+      "name": "rangedweapons",
       "path": "packs/rangedweapons",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -172,7 +172,7 @@
     {
       "label": "Traits",
       "type": "Item",
-      "name": "Traits",
+      "name": "traits",
       "path": "packs/traits",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -180,7 +180,7 @@
     {
       "label": "Enemies",
       "type": "Actor",
-      "name": "Enemies",
+      "name": "enemies",
       "path": "packs/enemies",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -188,7 +188,7 @@
     {
       "label": "Junk",
       "type": "Item",
-      "name": "Junk",
+      "name": "junk",
       "path": "packs/junk",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -196,7 +196,7 @@
     {
       "label": "Material",
       "type": "Item",
-      "name": "Material",
+      "name": "material",
       "path": "packs/material",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -204,7 +204,7 @@
     {
       "label": "Miscellaneous",
       "type": "Item",
-      "name": "Miscellaneous",
+      "name": "miscellaneous",
       "path": "packs/misc",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -212,7 +212,7 @@
     {
       "label": "Room Loot",
       "type": "RollTable",
-      "name": "Room Loot",
+      "name": "roomloot",
       "path": "packs/room-loot",
       "system": "arcane-arcade-fallout",
       "banner": ""
@@ -220,7 +220,7 @@
     {
       "label": "Monster Loot",
       "type": "RollTable",
-      "name": "Monster Loot",
+      "name": "monsterloot",
       "path": "packs/monster-loot",
       "system": "arcane-arcade-fallout",
       "banner": ""
