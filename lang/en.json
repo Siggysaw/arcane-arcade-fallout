@@ -35,9 +35,21 @@
     },
     "Item": {
       "item": "Item",
-      "feature": "Feature",
-      "spell": "Spell",
-      "perk": "Perk"
+      "race": "Race",
+      "background": "Background",
+      "ammo": "Ammo",
+      "explosive": "Explosive",
+      "rangedWeapon": "Ranged Weapon",
+      "meleeWeapon": "Melee Weapon",
+      "armor": "Armor",
+      "perk": "Perk",
+      "trait": "Trait",
+      "foodAnddrink": "Food And Drink",
+      "medicine": "Medicine",
+      "chem": "Chem",
+      "junkItem": "Junk",
+      "material": "Material",
+      "miscItem": "Miscellaneous"
     }
   }
 }
