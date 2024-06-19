@@ -190,6 +190,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.foodAnddrinks = foodAnddrinks
     context.ammos = ammos
     context.junk = junk
+    context.materials = materials
     context.traits = traits
     context.chems = chems
     context.races = races
@@ -197,8 +198,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.explosives = explosives.map((weapon) => {
       weapon.system.thrown = this.actor.system.abilities['str'].value * weapon.system.range
       return weapon
-    })
-    context.materials = materials	
+    })	
     context.miscItems = miscItems	
     context.rangedWeapons = rangedWeapons.map((weapon) => {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
@@ -223,11 +223,17 @@ export class FalloutZeroActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html)
 
-    //Condition Send to Chat
-    html.on('click', '[data-condition]', (ev) => {
-      const condition = ev.currentTarget.dataset.condition
-      this.actor.system.conditiontochat(condition)
+    //add to an item quantity
+    html.on('click', '[data-itemaddition]', (ev) => {
+      const item = ev.currentTarget.dataset.item
+      this.actor.system.itemaddition(item)
     })
+    //subtract from an item quantity
+    html.on('click', '[data-itemsubtraction]', (ev) => {
+      const item = ev.currentTarget.dataset.item
+      this.actor.system.itemsubtraction(item)
+    })
+
     //ap use
     html.on('click', '[data-ap-used]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
