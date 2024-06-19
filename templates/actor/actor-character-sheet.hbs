@@ -126,7 +126,10 @@
                                        name="system.health.value"
                                        value="{{ system.health.value }}" />
                                 /
-                                {{ system.health.max }}<br />
+                                <input type="number"
+                                       class="numberwithbuttons"
+                                       name="system.health.max"
+                                       value="{{ system.health.max }}" />
 
                             </td>
                         </tr>
@@ -146,11 +149,13 @@
                         <tr>
                             <td colspan="2" class="statusnum">
                                 <input type="number"
-                                       class="numberwithbuttons"
                                        name="system.stamina.value"
                                        value="{{ system.stamina.value }}" />
-                                                                /
-                                {{ system.stamina.max }}
+                                /
+                                
+                                <input type="number"
+                                       name="system.stamina.max"
+                                       value="{{ system.stamina.max }}"
                             </td>
                         </tr>
                         <tr>
