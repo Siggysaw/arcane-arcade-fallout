@@ -365,7 +365,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   }
 
   recycleAp() {
-    let RecycledAP = Math.floor(this.parent.system.actionPoints.value / 2) + this.parent.system.actionPoints.value
+    let RecycledAP = Math.floor(this.parent.system.actionPoints.value / 2) + this.parent.system.actionPoints.max
     if (RecycledAP < 16) {
       this.parent.update({'system.actionPoints.value': RecycledAP})
     } else {
@@ -727,10 +727,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     let selectPC = canvas.tokens.controlled.find(u => u.actor.type === "character");
     if (selectPC){
       //try{ // whisper loot to player if found from selected token
-      let playerName = ``
-      if (game.users.filter(u => u.role < 3).find(u => u.character.name == selectPC.name)){
-        playerName = game.users.filter(u => u.role < 3).find(u => u.character.name == selectPC.name).name;
-      }
+        let playerName = game.users.filter(u => u.role < 3).find(u => u.character.name == selectPC.name).name;
         this.parent.system.determineNpcLoot(selectPC.actor.name, true, playerName);
       }
       /*catch{ // public chat loot
