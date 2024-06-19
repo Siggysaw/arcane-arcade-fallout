@@ -233,7 +233,11 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const item = ev.currentTarget.dataset.item
       this.actor.system.itemsubtraction(item)
     })
-
+    //show rule information
+    html.on('click', '[data-condition]', (ev) => {
+      const condition = ev.currentTarget.dataset.condition
+      this.actor.system.ruleinfo(condition)
+    })
     //ap use
     html.on('click', '[data-ap-used]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId

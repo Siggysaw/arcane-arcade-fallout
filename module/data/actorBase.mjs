@@ -194,7 +194,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     item.update({ 'system.quantity': updatedQty })
   }
   
-  conditiontochat(condition) {
+  ruleinfo(condition) {
     const myDialogOptions = { width: 500, height: 300 }
     const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1);
     const rule = FALLOUTZERO.rules[conditionFormatted]
