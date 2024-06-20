@@ -11,7 +11,9 @@
 
 .window-app {
   font-family: 'Monofonto', sans-serif;
+  letter-spacing: 0.1rem;
 }
+
 :root {
   --color-shadow-primary: #1d5427;
 }
@@ -239,7 +241,7 @@ details > summary {
 
 /* Styles limited to falloutzero sheets */
 .falloutzero .item-form {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Monofonto', sans-serif;
 }
 .falloutzero .sheet-header {
   flex: 0 auto;
@@ -422,16 +424,23 @@ details > summary {
 .prosemirror.menu-dialog form button,
 .prosemirror.menu-dialog form input {
   color: #01e998;
+  letter-spacing: 0.0rem;
 }
 .window-app .window-content div .fakebutton,
 .window-app .window-content button {
   background: #222;
 }
 .sheet.journal-entry .journal-entry-content,
-#chat .chat-message,
 .prosemirror.menu-dialog form {
   background-image: url('/systems/arcane-arcade-fallout/assets/terminal.png');
   background-size: cover;
+  color: #01e998;
+  font-family: Fixedsys
+}
+#chat .chat-message,
+#keybindings .binding .key,
+#keybindings .binding .key.uneditable {
+  background: #222;
   color: #01e998;
   font-family: Fixedsys
 }
@@ -451,10 +460,12 @@ details > summary {
 .sheet li,
 form .title,
 .falloutzero .items-list .item .item-name,
-.journal-entry-content{
+.journal-entry-content {
   color: #01e998;
 }
-
+.journal-entry-content {
+  letter-spacing: 0rem;
+}
 .sheet .character-name input {
   border: none;
   font-size: 20pt;
@@ -463,6 +474,7 @@ form .title,
 
 .sheet input {
   border: solid 1px #1d5427;
+  font-size:10pt;
 }
 .statusnum input {
   width: 50px;
@@ -528,6 +540,9 @@ td,
 .sheet img {
   background: none;
 }
+.sheet .character-status td {
+  letter-spacing: 0rem;
+}
 
 .status table td {
   border: none;
@@ -550,6 +565,7 @@ td,
 }
 .status .skill-value {
   width: 75px;
+  font-size:10pt;
 }
 .sheet. table .status-table {
   vertical-align: top;
@@ -568,11 +584,16 @@ td,
 .specialroll {
   text-transform: uppercase;
 }
-.sheet .equipped-stats td {
-  border: solid 1px;
-  vertical-align: middle;
-  padding: 2px;
+.sheet {
+  background:#333;
+  background-size: cover;
 }
+  .sheet .equipped-stats td {
+    border: solid 1px;
+    vertical-align: middle;
+    padding: 2px;
+    letter-spacing: 0rem;
+  }
 .sheet .fas {
     cursor: pointer;
 }
@@ -657,6 +678,7 @@ form td .status-notes {
   background-repeat: no-repeat;
   font-size: 10pt;
   padding: 20px;
+  letter-spacing: 0rem;
 }
 
 form td .status-notes option,
@@ -664,16 +686,21 @@ form td .status-notes li,
 form td .status-notes li:hover {
   background: black;
 }
+
 .directory .directory-header .header-search input,
 .prosemirror,
-.prosemirror.menu-dialog form {
+.prosemirror.menu-dialog form{
   display: flex;
   flex-direction: column;
   --color-control-bg: #222;
   */ --color-hover-bg: #222 background: #222;
 }
-.item .item-box{
-	max-width:425px;
+.chat-message .table-draw .table-results .table-result .result-text a{
+    color:black;
+    padding:5px;
+}
+.item .item-box {
+  max-width: 425px;
 }
 .alwaysopen{
 	float:left;
