@@ -114,6 +114,14 @@
       "banner": ""
     },
     {
+      "label": "Explosives",
+      "type": "Item",
+      "name": "explosives",
+      "path": "packs/explosives",
+      "system": "arcane-arcade-fallout",
+      "banner": ""
+    },
+    {
       "label": "Background",
       "type": "Item",
       "name": "background",
