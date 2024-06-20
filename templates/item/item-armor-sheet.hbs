@@ -11,9 +11,15 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-	  Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
-	  Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}"/>	 
-	  
+      Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
+	    Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}"/>	 
+      <div>Upgrades: 
+        {{#each system.upgrades as |key|}}
+        <a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.world.upgrades.Item.{{key._id}}" 
+          data-id="{{key._id}}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="{{key.auto}}"><i class="fas fa-suitcase">
+          </i>{{ key.name }}{{ key.value }}</a>
+        {{/each}}
+        {{!{{.desc.value}}</div>
       <table>
         <tr>
           <td>Cost</td>
@@ -74,10 +80,135 @@
     </div>
     {{!-- Upgrades Tab --}}
     <div class="tab" data-group="primary" data-tab="upgrades">
-      <p>
-Upgrade Functionality is on the way! Until then, type out the mods you've put on your weapon and update your stats manually accordingly
-      </p>
-	 	  {{editor system.upgrades target="system.upgrades" button=false engine="prosemirror"}} 
+      <table>
+        <th style ="min-width:20px">
+          Rank
+        </th>
+        <th>
+          Upgrade Name
+        </th>
+        <th>
+          Description
+        </th>
+        <tr>
+          <td id="valueCamouflage">
+            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerCamouflage" class="fas fa-minus-square"></i>
+            {{system.upgrades.camouflage.value}}
+            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherCamouflage" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            Camouflage
+          </td>
+          <td id="descCamouflage" style = "max-width:200px">
+            {{system.upgrades.camouflage.desc}}
+          </td>
+        </tr>
+        <tr>
+          <td id="valueLight">
+            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerLight" class="fas fa-minus-square"></i>
+            {{system.upgrades.light.value}}
+            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherLight" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            Light
+          </td>
+          <td id="descLight" style = "max-width:200px">
+            {{system.upgrades.light.desc}}
+          </td>
+        </tr>
+        <tr>
+          <td id="valueFitted">
+            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerFitted" class="fas fa-minus-square"></i>
+            {{system.upgrades.fitted.value}}
+            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherFitted" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            Fitted
+          </td>
+          <td id="descFitted" style = "max-width:200px">
+            {{system.upgrades.fitted.desc}}
+          </td>
+        </tr>
+        <tr>
+          <td id="valueLeadLined">
+            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerLeadLined" class="fas fa-minus-square"></i>
+            {{system.upgrades.leadlined.value}}
+            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherLeadLined" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            Lead Lined
+          </td>
+          <td id="descLeadLined" style = "max-width:200px">
+            {{system.upgrades.leadlined.desc}}
+          </td>
+        </tr>
+        <tr>
+          <td id="valueStrengthened">
+            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerStrengthened" class="fas fa-minus-square"></i>
+            {{system.upgrades.strengthened.value}}
+            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherStrengthened" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            Strengthened
+          </td>
+          <td id="descStrengthened" style = "max-width:200px">
+            {{system.upgrades.strengthened.desc}}
+          </td>
+        </tr>
+        <tr>
+          <td id="valueSturdy">
+            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerSturdy" class="fas fa-minus-square"></i>
+            {{system.upgrades.sturdy.value}}
+            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherSturdy" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            Sturdy
+          </td>
+          <td id="descSturdy" style = "max-width:200px">
+            {{system.upgrades.sturdy.desc}}
+          </td>
+        </tr>
+        <tr>
+          <td id="valuePocketed">
+            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerPocketed" class="fas fa-minus-square"></i>
+            {{system.upgrades.pocketed.value}}
+            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherPocketed" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            Pocketed
+          </td>
+          <td id="descPocketed" style = "max-width:200px">
+            {{system.upgrades.pocketed.desc}}
+          </td>
+        </tr>
+        <tr>
+          <td id="valueReinforced">
+            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerReinforced" class="fas fa-minus-square"></i>
+            {{system.upgrades.reinforced.value}}
+            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherReinforced" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            Reinforced
+          </td>
+          <td id="descReinforced" style = "max-width:200px">
+            {{system.upgrades.reinforced.desc}}
+          </td>
+        </tr>
+        <tr>
+          <td id="valueHardened">
+            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerHardened" class="fas fa-minus-square"></i>
+            {{system.upgrades.hardened.value}}
+            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherHardened" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            Hardened
+          </td>
+          <td id="descHardened" style = "max-width:200px">
+            {{system.upgrades.hardened.desc}}
+          </td>
+        </tr>
+      </table>
+	 	  {{!--{{editor system.upgrades target="system.upgrades" button=false engine="prosemirror"}}--}} 
     </div>
 
     {{!-- Effects Tab --}}
