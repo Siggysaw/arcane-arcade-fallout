@@ -9,36 +9,50 @@ FALLOUTZERO.abilities = {
     label: 'Strength',
     abbreviation: 'str',
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   per: {
     label: 'Perception',
     abbreviation: 'per',
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   end: {
     label: 'Endurance',
     abbreviation: 'end',
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   cha: {
     label: 'Charisma',
     abbreviation: 'cha',
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   int: {
     label: 'Intelligence',
     abbreviation: 'int',
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   agi: {
     label: 'Agility',
     abbreviation: 'agi',
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   lck: {
     label: 'Luck',
     abbreviation: 'lck',
     reference: '',
+    modifiers: 0,
+    base: 0
   },
 }
 
@@ -48,84 +62,112 @@ FALLOUTZERO.skills = {
     label: 'Barter',
     ability: ['cha'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   breach: {
     id: 'breach',
     label: 'Breach',
     ability: ['per', 'int'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   crafting: {
     id: 'crafting',
     label: 'Crafting',
     ability: ['int'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   energy_weapons: {
     id: 'energy_weapons',
     label: 'Energy Weapons',
     ability: ['per'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   explosives: {
     id: 'explosives',
     label: 'Explosives',
     ability: ['per'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   guns: {
     id: 'guns',
     label: 'Guns',
     ability: ['agi'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   intimidation: {
     id: 'intimidation',
     label: 'Intimidation',
     ability: ['str', 'cha'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   medicine: {
     id: 'medicine',
     label: 'Medicine',
     ability: ['per', 'int'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   melee_weapons: {
     id: 'melee_weapons',
     label: 'Melee Weapons',
     ability: ['str'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   science: {
     id: 'science',
     label: 'Science',
     ability: ['int'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   sneak: {
     id: 'sneak',
     label: 'Sneak',
     ability: ['agi'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   speech: {
     id: 'speech',
     label: 'Speech',
     ability: ['cha'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   survival: {
     id: 'survival',
     label: 'Survival',
     ability: ['end'],
     reference: '',
+    modifiers: 0,
+    base: 0
   },
   unarmed: {
     id: 'unarmed',
     label: 'Unarmed',
     ability: ['str'],
     reference: '',
+    modifiers: 0,
+    base: 0,
   },
 }
 
