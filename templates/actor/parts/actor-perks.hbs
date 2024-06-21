@@ -10,22 +10,23 @@
                            data-edit
                            data-item-id="{{ item._id }}"
                            title="View Item Details">
-                            <img class="perk-image" src="{{ item.img }}" />
+                            <img title="{{system.description}}" class="perk-image" src="{{ item.img }}" />
                         </a>
                     </div>
                     <div class="perk-div">
                         <p style="margin-top:-3px">TRAIT</p>
                     </div>
-                    <div class="perk-div">
-                        <a style="float: right; margin-right: 10px;margin-top:-20px;"
-                           class="item-control item-delete"
-                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </table>
+    <li class="item flexrow" data-item-id="{{ item._id }}">
+        <div class="item-controls" style="background:black;">
+            <a class="item-control item-delete"
+               title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                <i class="fas fa-trash"></i>
+            </a>
+        </div>
+    </li>
+    </td>
+    </tr>
+    </table>
     </li>
 </div>
 {{/each}}
@@ -42,7 +43,7 @@
                            data-edit
                            data-item-id="{{ item._id }}"
                            title="View Item Details">
-                            <img class="perk-image" src="{{ item.img }}" />
+                            <img title="{{system.description}}" class="perk-image" src="{{ item.img }}" />
                         </a>
                     </div>
                     <div class="perk-div">
@@ -50,16 +51,17 @@
                         {{ system.quantity }}
                         <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
                     </div>
-                    <div class="perk-div">
-                        <a style="float: right; margin-right: 10px;margin-top:-20px;"
-                           class="item-control item-delete"
-                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </table>
+    <li class="item flexrow" data-item-id="{{ item._id }}">
+        <div class="item-controls" style="background:black;">
+            <a class="item-control item-delete"
+               title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                <i class="fas fa-trash"></i>
+            </a>
+        </div>
+    </li>
+    </td>
+    </tr>
+    </table>
     </li>
 </div>
 {{/each}}
