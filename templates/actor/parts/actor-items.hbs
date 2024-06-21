@@ -97,10 +97,10 @@
                                 </div>
                             </div>
                             {{/each}}
+                        </details>
                     </td>
                 </tr>
             </table>
-            </details>
             {{/if}}
         </td>
     </tr>
@@ -139,7 +139,7 @@
                                         <td>
                                             <div class='fakebutton' data-weapon-roll data-weapon-id="{{ item._id }}">
                                                 {{ item.system.apCost }}
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class='fakebutton' class="rollable resource-label"
@@ -147,7 +147,7 @@
                                                     data-label="OUCH! DMG from a {{ item.name }}"
                                                     data-roll="{{ item.system.damage.formula }}">
                                                 {{ item.system.damage.formula }}
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>{{ item.system.critical.dice }}</td>
                                         <td>
@@ -156,7 +156,7 @@
                                                     data-label="CRITICAL! Crit Damage for {{ item.name }}"
                                                     data-roll="{{ item.system.critical.bonus }}">
                                                 {{ item.system.critical.bonus }}
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>{{ item.system.load }}</td>
                                         <td>{{ item.system.strengthRequirement }}</td>
@@ -173,7 +173,7 @@
                                                     data-weapon-id="{{ item._id }}"
                                                     class="resource-label">
                                                 IN RANGE
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class='fakebutton' class="rollable resource-label"
@@ -182,7 +182,7 @@
                                                     data-weapon-id="{{ item._id }}"
                                                     class="resource-label">
                                                 DISADVANTAGED
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class='fakebutton' class="rollable resource-label"
@@ -190,7 +190,7 @@
                                                     data-weapon-id="{{ item._id }}"
                                                     class="resource-label">
                                                 NAT 20 REQ
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -210,7 +210,7 @@
                                         <td>Item</td>
                                         <td>
                                             <select style="width:100%;" data-set-ability data-weapon-id="{{ item._id }}">
-                                                {{selectOptions ../system.abilities selected=item.system.abilityMod nameAttr="abbr" labelAttr="label" blank="None"}}
+                                                {{selectOptions ../system.abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
                                             </select>
                                         </td>
                                     </tr>
@@ -219,12 +219,12 @@
                                         <td>{{ item.system.ammo.consumes.amount }}</td>
                                         <td>
                                             <select style="width:100%;" data-set-ammo data-weapon-id="{{ item._id }}">
-                                                {{selectOptions item.ammos selected=item.system.ammo.consumes.target nameAttr="_id" labelAttr="name" blank="None"}}
+                                                {{selectOptions item.ammos selected=item.system.ammo.consumes.target valueAttr="_id" labelAttr="name" blank="None"}}
                                             </select>
                                         </td>
                                         <td>
                                             <select style="width:100%;" data-set-skill data-weapon-id="{{ item._id }}">
-                                                {{selectOptions ../system.skills selected=item.system.skillBonus nameAttr="id" labelAttr="label" blank="None"}}
+                                                {{selectOptions ../system.skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
                                             </select>
                                         </td>
                                     </tr>
@@ -240,7 +240,7 @@
                                             {{ item.system.ammo.capacity.max }}
                                         </td>
                                         <td>
-                                            <div title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay" class='fakebutton' data-reload data-weapon-id="{{ item._id }}">RELOAD</div class='fakebutton'>
+                                            <div title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay" class='fakebutton' data-reload data-weapon-id="{{ item._id }}">RELOAD</div>
                                         </td>
                                         <td>
                                             {{#each item.ammos as |ammo|}}
@@ -268,10 +268,10 @@
                                                 {{item.system.decay}}
                                             </progress>
                                         </td>
+                                    </tr>
+                                </table>
+                            </details>
                         </td>
-                    </tr>
-                </table>
-                </details>
                 <div class="item-controls">
                     <a style="float: right; margin-right: 10px"
                        class="item-control item-delete"
@@ -325,7 +325,7 @@
                                 <td>
                                     <div class='fakebutton' data-weapon-roll data-weapon-id="{{ item._id }}">
                                         {{ item.system.apCost }}
-                                    </div class='fakebutton'>
+                                    </div>
                                 </td>
                                 <td>
                                     <div class='fakebutton' class="rollable resource-label"
@@ -333,7 +333,7 @@
                                             data-label="OUCH! DMG from a {{ item.name }}"
                                             data-roll="{{ item.system.damage.formula }}">
                                         {{ item.system.damage.formula }}
-                                    </div class='fakebutton'>
+                                    </div>
                                 </td>
                                 <td>{{ system.critical.dice }}</td>
                                 <td>{{ system.critical.bonus }}</td>
@@ -357,12 +357,12 @@
                         <table class="equipped-stats">
                             <td>
                                 <select style="width:100%;" data-set-ability data-weapon-id="{{ item._id }}">
-                                    {{selectOptions ../system.abilities selected=item.system.abilityMod nameAttr="abbr" labelAttr="label" blank="None"}}
+                                    {{selectOptions ../system.abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
                                 </select>
                             </td>
                             <td>
                                 <select style="width:100%;" data-set-skill data-weapon-id="{{ item._id }}">
-                                    {{selectOptions ../system.skills selected=item.system.skillBonus nameAttr="id" labelAttr="label" blank="None"}}
+                                    {{selectOptions ../system.skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
                                 </select>
                             </td>
                             <tr>
@@ -429,7 +429,7 @@
                                             data-weapon-id="{{ item._id }}"
                                             class="resource-label">
                                         AP
-                                    </div class='fakebutton'>
+                                    </div>
                                 </td>
                                 <td>Range</td>
                                 <td>
@@ -442,7 +442,7 @@
                                             data-roll="d20+ {{../system.skills.explosives.value}} - @penaltyTotal - 10"
                                             title="d20 + explosives({{../system.skills.explosives.value}}) - penalties({{../system.penaltyTotal}}) - Increased DV of 10" />
                                     ARM
-                                    </div class='fakebutton'>
+                                    </div>
                                     {{/GreaterThan}}
                                 </td>
                             </tr>
@@ -472,7 +472,7 @@
                                             data-label="KABOOM! <span class='allcaps'>{{item.system.damageType1}}</span> DMG from a {{ item.name }}"
                                             data-roll="{{ item.system.damage1 }}">
                                         {{ item.system.damage1 }}
-                                    </div class='fakebutton'>
+                                    </div>
                                 </td>
                                 <td>{{ system.damageType1 }}</td>
                                 <td>
@@ -481,7 +481,7 @@
                                             data-label="KABOOM! <span class='allcaps'> {{item.system.damageType2}}</span> DMG from a {{ item.name }}"
                                             data-roll="{{ item.system.damage2 }}">
                                        {{ item.system.damage2 }}
-                                    </div class='fakebutton'>
+                                    </div>
                                 </td>
                                 <td>{{ system.damageType2 }}</td>
                             </tr>

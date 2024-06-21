@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 /* Global styles */
 @font-face {
-  font-family: "Monofonto";
-  src: url("/systems/arcane-arcade-fallout/assets/fonts/monofonto.otf");
+  font-family: 'Monofonto';
+  src: url('/systems/arcane-arcade-fallout/assets/fonts/monofonto.otf');
 }
 @font-face {
-  font-family: "fixedsys";
-  src: url("/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf");
+  font-family: 'fixedsys';
+  src: url('/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf');
 }
 
 .window-app {
@@ -28,7 +28,7 @@ details > summary {
   align-items: center;
   background: #222;
   cursor: pointer;
-  border:solid 1px #ccc;
+  border: solid 1px #ccc;
 }
 .sheet h3 {
   display: flex;
@@ -36,8 +36,8 @@ details > summary {
   align-items: center;
   background: #222;
   border: solid 1px #ccc;
-  text-transform:uppercase;
-  padding:5px;
+  text-transform: uppercase;
+  padding: 5px;
 }
 .rollable:hover,
 .rollable:focus {
@@ -250,7 +250,6 @@ details > summary {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin-bottom: 10px;
 }
 .falloutzero .sheet-header .profile-img {
   flex: 0 0 100px;
@@ -407,8 +406,7 @@ details > summary {
 }
 .dialog option,
 .dialog optgroup,
-.window-app .dialog ul,
- {
+.window-app .dialog ul {
   background-color: #1d5427;
 }
 .window-app .window-content input,
@@ -424,7 +422,7 @@ details > summary {
 .prosemirror.menu-dialog form button,
 .prosemirror.menu-dialog form input {
   color: #01e998;
-  letter-spacing: 0.0rem;
+  letter-spacing: 0rem;
 }
 .window-app .window-content div .fakebutton,
 .window-app .window-content button {
@@ -435,14 +433,14 @@ details > summary {
   background-image: url('/systems/arcane-arcade-fallout/assets/terminal.png');
   background-size: cover;
   color: #01e998;
-  font-family: Fixedsys
+  font-family: Fixedsys;
 }
 #chat .chat-message,
 #keybindings .binding .key,
 #keybindings .binding .key.uneditable {
   background: #222;
   color: #01e998;
-  font-family: Fixedsys
+  font-family: Fixedsys;
 }
 .sheet.journal-entry .title {
   display: none;
@@ -474,7 +472,7 @@ form .title,
 
 .sheet input {
   border: solid 1px #1d5427;
-  font-size:10pt;
+  font-size: 10pt;
 }
 .statusnum input {
   width: 50px;
@@ -506,6 +504,7 @@ table .bio-label {
   border-bottom: none;
   border: none;
 }
+
 .sheet .current-caps input {
   margin-top: 3px;
 }
@@ -565,7 +564,7 @@ td,
 }
 .status .skill-value {
   width: 75px;
-  font-size:10pt;
+  font-size: 10pt;
 }
 .sheet. table .status-table {
   vertical-align: top;
@@ -579,35 +578,38 @@ td,
   width: 100%;
 }
 .sheet .perk-div .perk-image {
-  height:150px;
+  height: 150px;
 }
 .specialroll {
   text-transform: uppercase;
 }
 .sheet {
-  background:#333;
+  background: #333;
   background-size: cover;
 }
-  .sheet .equipped-stats td {
-    border: solid 1px;
-    vertical-align: middle;
-    padding: 2px;
-    letter-spacing: 0rem;
-  }
-.sheet .fas {
-    cursor: pointer;
+.sheet .equipped-stats td {
+  border: solid 1px;
+  vertical-align: middle;
+  padding: 2px;
+  letter-spacing: 0rem;
 }
-.sheet .fakebutton, .sheet button {
+.sheet .fas {
+  cursor: pointer;
+}
+.sheet .fakebutton,
+.sheet button {
   border: #1d5427;
   padding: 5px;
   cursor: pointer;
 }
-.sheet .fakebutton:hover, .sheet button:hover {
+.sheet .fakebutton:hover,
+.sheet button:hover {
   border: #1d5427;
   background: #1d5427;
   color: white;
 }
-.sheet .fakebutton:active, .sheet button:active {
+.sheet .fakebutton:active,
+.sheet button:active {
   border: #1d5427;
   background: white;
   color: #1d5427;
@@ -649,7 +651,12 @@ td,
   width: 10px;
 }
 
-.sheet .karmaCap input[type='checkbox'] {
+.sheet .karmaCaps {
+  display: flex;
+  align-items: center;
+}
+
+.sheet .karmaCaps input[type='checkbox'] {
   content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
   appearance: none;
   display: block;
@@ -658,14 +665,37 @@ td,
   border: none;
 }
 
-.sheet .karmaCap input[type='checkbox']:checked {
+.sheet .karmaCaps input[type='checkbox']:checked {
   content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
 }
+
+.sheet .addRemoveCaps button {
+  display: flex;
+  padding: 0;
+}
+.sheet .addRemoveCaps button:disabled {
+  opacity: 25%;
+  cursor: not-allowed;
+}
+
+.sheet .addRemoveCaps button:disabled:hover {
+  opacity: 25%;
+  cursor: not-allowed;
+  border: initial;
+  background: #222;
+  color: #01e998;
+}
+
+.sheet .addRemoveCaps button:disabled i {
+  cursor: not-allowed;
+}
+
+.sheet .addRemoveCaps > button > i {
+  margin: 0;
+}
+
 .htmlfield {
   padding: 20px;
-}
-.karmaCap input {
-  float: left;
 }
 
 form td .status-notes {
@@ -689,21 +719,22 @@ form td .status-notes li:hover {
 
 .directory .directory-header .header-search input,
 .prosemirror,
-.prosemirror.menu-dialog form{
+.prosemirror.menu-dialog form {
   display: flex;
   flex-direction: column;
   --color-control-bg: #222;
-  */ --color-hover-bg: #222 background: #222;
+  --color-hover-bg: #222;
+  background: #222;
 }
-.chat-message .table-draw .table-results .table-result .result-text a{
-    color:black;
-    padding:5px;
+.chat-message .table-draw .table-results .table-result .result-text a {
+  color: black;
+  padding: 5px;
 }
 .item .item-box {
   max-width: 425px;
 }
-.alwaysopen{
-	float:left;
+.alwaysopen {
+  float: left;
 }
 .sheet .smallinput {
   width: 50px;
@@ -717,25 +748,27 @@ form td .status-notes li:hover {
   background: #222;
   color: #01e998;
 }
-.ammoitem, .explosiveitem {
-    font-size:9pt;
+.ammoitem,
+.explosiveitem {
+  font-size: 9pt;
 }
-.explosivecollection, .ammocollection {
-    float:left;
-    margin:0px;
-    padding:0px;
+.explosivecollection,
+.ammocollection {
+  float: left;
+  margin: 0px;
+  padding: 0px;
 }
 .ammunition-and-explosives-box {
-    max-height:200px;
-    width:100%;
-    overflow:scroll;
+  max-height: 200px;
+  width: 100%;
+  overflow: scroll;
 }
-.armorbox{
-    width:50%
+.armorbox {
+  width: 50%;
 }
 
-.dialog .conditioninfo{
-    font-family:fixedsys;
-    padding:20px;
-    font-size:14pt;
+.dialog .conditioninfo {
+  font-family: fixedsys;
+  padding: 20px;
+  font-size: 14pt;
 }

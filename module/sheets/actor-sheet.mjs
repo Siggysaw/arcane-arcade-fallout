@@ -1,3 +1,4 @@
+import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 
 /**
@@ -54,42 +55,40 @@ export class FalloutZeroActorSheet extends ActorSheet {
       this._prepareItems(context)
     }
 
-	// Calculate Carry Load
-    actorData.system.carryLoad.value = actorData.items.reduce((acc, item) => {
-      const { load = 0, quantity = 1 } = item.system;
-      acc += Math.floor(load * quantity);
-      return Math.round(acc * 10) / 10;
-    }, 0) + 
-      Math.floor(actorData.system.materials.acid.value * .1) +
-      Math.floor(actorData.system.materials.adhesive.value * .1) +
-      Math.floor(actorData.system.materials.aluminum.value * .1) +
-      Math.floor(actorData.system.materials.antiseptic.value * .1) +
-      Math.floor(actorData.system.materials.asbestos.value * .1) +
-      Math.floor(actorData.system.materials.ballisticfiber.value * .1) +
-      Math.floor(actorData.system.materials.ceramic.value * .1) +
-      Math.floor(actorData.system.materials.circuitry.value * .1) +
-      Math.floor(actorData.system.materials.cloth.value * .1) +
-      Math.floor(actorData.system.materials.copper.value * .1) +
-      Math.floor(actorData.system.materials.crystal.value * .1) +
-      Math.floor(actorData.system.materials.fertilizer.value * .1) +
-      Math.floor(actorData.system.materials.fiberoptics.value * .1) +
-      Math.floor(actorData.system.materials.fiberglass.value * .1) +
-      Math.floor(actorData.system.materials.glass.value * .1) +
-      Math.floor(actorData.system.materials.leather.value * .1) +
-      Math.floor(actorData.system.materials.nuclearmaterial.value * .1) +
-      Math.floor(actorData.system.materials.oil.value * .1) +
-      Math.floor(actorData.system.materials.paint.value * .1) +
-      Math.floor(actorData.system.materials.plastic.value * .1) +
-      Math.floor(actorData.system.materials.rubber.value * .1) +
-      Math.floor(actorData.system.materials.screw.value * .1) +
-      Math.floor(actorData.system.materials.silver.value * .1) +
-      Math.floor(actorData.system.materials.spring.value * .1) +
-      Math.floor(actorData.system.materials.steel.value * .1) +
-      Math.floor(actorData.system.materials.wood.value * .1) +
+    // Calculate Carry Load
+    actorData.system.carryLoad.value =
+      actorData.items.reduce((acc, item) => {
+        const { load = 0, quantity = 1 } = item.system
+        acc += Math.floor(load * quantity)
+        return Math.round(acc * 10) / 10
+      }, 0) +
+      Math.floor(actorData.system.materials.acid.value * 0.1) +
+      Math.floor(actorData.system.materials.adhesive.value * 0.1) +
+      Math.floor(actorData.system.materials.aluminum.value * 0.1) +
+      Math.floor(actorData.system.materials.antiseptic.value * 0.1) +
+      Math.floor(actorData.system.materials.asbestos.value * 0.1) +
+      Math.floor(actorData.system.materials.ballisticfiber.value * 0.1) +
+      Math.floor(actorData.system.materials.ceramic.value * 0.1) +
+      Math.floor(actorData.system.materials.circuitry.value * 0.1) +
+      Math.floor(actorData.system.materials.cloth.value * 0.1) +
+      Math.floor(actorData.system.materials.copper.value * 0.1) +
+      Math.floor(actorData.system.materials.crystal.value * 0.1) +
+      Math.floor(actorData.system.materials.fertilizer.value * 0.1) +
+      Math.floor(actorData.system.materials.fiberoptics.value * 0.1) +
+      Math.floor(actorData.system.materials.fiberglass.value * 0.1) +
+      Math.floor(actorData.system.materials.glass.value * 0.1) +
+      Math.floor(actorData.system.materials.leather.value * 0.1) +
+      Math.floor(actorData.system.materials.nuclearmaterial.value * 0.1) +
+      Math.floor(actorData.system.materials.oil.value * 0.1) +
+      Math.floor(actorData.system.materials.paint.value * 0.1) +
+      Math.floor(actorData.system.materials.plastic.value * 0.1) +
+      Math.floor(actorData.system.materials.rubber.value * 0.1) +
+      Math.floor(actorData.system.materials.screw.value * 0.1) +
+      Math.floor(actorData.system.materials.silver.value * 0.1) +
+      Math.floor(actorData.system.materials.spring.value * 0.1) +
+      Math.floor(actorData.system.materials.steel.value * 0.1) +
+      Math.floor(actorData.system.materials.wood.value * 0.1) +
       Math.floor(actorData.system.caps / 50)
-
-
-
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData()
@@ -134,12 +133,11 @@ export class FalloutZeroActorSheet extends ActorSheet {
     const junk = []
     const traits = []
     const chems = []
-    const explosives = []	
-    const materials = []	
-    const miscItems = []	
+    const explosives = []
+    const materials = []
+    const miscItems = []
     const backgrounds = []
-    const races = []	
-
+    const races = []
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -166,7 +164,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
         junk.push(i)
       } else if (i.type === 'trait') {
         traits.push(i)
-      }else if (i.type === 'chem') {
+      } else if (i.type === 'chem') {
         chems.push(i)
       } else if (i.type === 'explosive') {
         explosives.push(i)
@@ -198,8 +196,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.explosives = explosives.map((weapon) => {
       weapon.system.thrown = this.actor.system.abilities['str'].value * weapon.system.range
       return weapon
-    })	
-    context.miscItems = miscItems	
+    })
+    context.miscItems = miscItems
     context.rangedWeapons = rangedWeapons.map((weapon) => {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
       // if (!weapon.system.range.flat) {
@@ -213,9 +211,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
       return weapon
     })
-
-
-
+    context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps
+    context.canRemoveCaps = this.actor.system.karmaCaps.length > 1
   }
 
   /* -------------------------------------------- */
@@ -268,7 +265,6 @@ export class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-recycle-ap]', () => {
       this.actor.system.recycleAp()
     })
-
     //Level Up!
     html.on('click', '[data-leveledup]', () => {
       this.actor.system.levelUp()
@@ -282,18 +278,27 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const skill = ev.currentTarget.dataset.skill
       this.actor.system.skillsubtraction(skill)
     })
+    //Add Cap
+    html.on('click', '[data-add-cap]', () => {
+      this.actor.system.addCap()
+    })
+    //Remove Cap
+    html.on('click', '[data-remove-cap]', () => {
+      this.actor.system.removeCap()
+    })
     //Monster loot roll
     html.on('click', '[data-npc-loot]', () => {
-      this.actor.system.npcLoot();
+      this.actor.system.npcLoot()
     })
     //Room loot roll <--- Help! Can't make the button not appear... so at least players can't click it. Signed: Kev
     html.on('click', '[data-pc-loot]', () => {
-      if(game.user.role > 3){
-        this.actor.system.roomLoot();
-      } else{
-        alert("Nice try, Player");
+      if (game.user.role > 3) {
+        this.actor.system.roomLoot()
+      } else {
+        alert('Nice try, Player')
       }
     })
+
     // weapon roll
     html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
@@ -321,14 +326,14 @@ export class FalloutZeroActorSheet extends ActorSheet {
         { _id: weaponId, 'system.ammo.consumes.target': ev.target.value },
       ])
     })
-	
+
     // handles changing skill on weapon
     html.on('change', '[data-set-skill]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.skillBonus': ev.target.value },
       ])
-    })	
+    })
 
     // handles changing ability on weapon
     html.on('change', '[data-set-ability]', (ev) => {
@@ -336,23 +341,23 @@ export class FalloutZeroActorSheet extends ActorSheet {
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.abilityMod': ev.target.value },
       ])
-    })	
-	
+    })
+
     // Updates Weapon Decay
     html.on('change', '[data-set-decay]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.decay': ev.target.value },
       ])
-    })	
-	
+    })
+
     // Updates Expand Item Field
     html.on('change', '[data-set-itemOpen]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.itemOpen': ev.target.value },
       ])
-    })	
+    })
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
