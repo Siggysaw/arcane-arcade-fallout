@@ -61,34 +61,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
         const { load = 0, quantity = 1 } = item.system
         acc += Math.floor(load * quantity)
         return Math.round(acc * 10) / 10
-      }, 0) +
-      Math.floor(actorData.system.materials.acid.value * 0.1) +
-      Math.floor(actorData.system.materials.adhesive.value * 0.1) +
-      Math.floor(actorData.system.materials.aluminum.value * 0.1) +
-      Math.floor(actorData.system.materials.antiseptic.value * 0.1) +
-      Math.floor(actorData.system.materials.asbestos.value * 0.1) +
-      Math.floor(actorData.system.materials.ballisticfiber.value * 0.1) +
-      Math.floor(actorData.system.materials.ceramic.value * 0.1) +
-      Math.floor(actorData.system.materials.circuitry.value * 0.1) +
-      Math.floor(actorData.system.materials.cloth.value * 0.1) +
-      Math.floor(actorData.system.materials.copper.value * 0.1) +
-      Math.floor(actorData.system.materials.crystal.value * 0.1) +
-      Math.floor(actorData.system.materials.fertilizer.value * 0.1) +
-      Math.floor(actorData.system.materials.fiberoptics.value * 0.1) +
-      Math.floor(actorData.system.materials.fiberglass.value * 0.1) +
-      Math.floor(actorData.system.materials.glass.value * 0.1) +
-      Math.floor(actorData.system.materials.leather.value * 0.1) +
-      Math.floor(actorData.system.materials.nuclearmaterial.value * 0.1) +
-      Math.floor(actorData.system.materials.oil.value * 0.1) +
-      Math.floor(actorData.system.materials.paint.value * 0.1) +
-      Math.floor(actorData.system.materials.plastic.value * 0.1) +
-      Math.floor(actorData.system.materials.rubber.value * 0.1) +
-      Math.floor(actorData.system.materials.screw.value * 0.1) +
-      Math.floor(actorData.system.materials.silver.value * 0.1) +
-      Math.floor(actorData.system.materials.spring.value * 0.1) +
-      Math.floor(actorData.system.materials.steel.value * 0.1) +
-      Math.floor(actorData.system.materials.wood.value * 0.1) +
-      Math.floor(actorData.system.caps / 50)
+      }, 0) + Math.floor(actorData.system.caps / 50)
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData()
@@ -239,6 +212,11 @@ export class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-itemsubtraction]', (ev) => {
       const item = ev.currentTarget.dataset.item
       this.actor.system.itemsubtraction(item)
+    })
+    //subtract from an item quantity
+    html.on('click', '[data-expandtoggle]', (ev) => {
+      const item = ev.currentTarget.dataset.itemid
+      this.actor.system.expandtoggle(item)
     })
     //show rule information
     html.on('click', '[data-condition]', (ev) => {
