@@ -220,6 +220,16 @@ export class FalloutZeroActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html)
 
+    //on change of luck ability
+    html.on('change', '[data-set-lck]', (ev) => {
+      const newLck = Number(ev.target.value)
+      const currentLck = this.actor.system.abilities.lck.value
+      if (currentLck === 9 && newLck === 10) {
+        this.actor.system.addCap()
+      } else if (currentLck === 10 && newLck === 9) {
+        this.actor.system.removeCap()
+      }
+    })
     //add to an item quantity
     html.on('click', '[data-itemaddition]', (ev) => {
       const item = ev.currentTarget.dataset.item

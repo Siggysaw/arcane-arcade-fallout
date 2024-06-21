@@ -283,10 +283,10 @@
         />
       {{/each}}
       <div class="addRemoveCaps">
-        <button {{#unless canAddCaps}}disabled{{/unless}} data-add-cap>
+        <button type="button" {{#unless canAddCaps}}disabled{{/unless}} data-add-cap>
           <i class="fas fa-plus-square"></i>
         </button>
-        <button {{#unless canRemoveCaps}}disabled{{/unless}} data-remove-cap>
+        <button type="button" {{#unless canRemoveCaps}}disabled{{/unless}} data-remove-cap>
           <i class="fas fa-minus-square"></i>
         </button>
       </div>
