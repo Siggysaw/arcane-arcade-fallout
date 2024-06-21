@@ -275,13 +275,6 @@
       </div>
     </header>
     <div class="karmaCaps">
-      {{#each system.karmaCaps as |flipped key|}}
-        <input
-          type="checkbox"
-          name="system.karmaCaps.{{ key }}"
-          {{checked flipped}}
-        />
-      {{/each}}
       <div class="addRemoveCaps">
         <button type="button" {{#unless canAddCaps}}disabled{{/unless}} data-add-cap>
           <i class="fas fa-plus-square"></i>
@@ -290,6 +283,13 @@
           <i class="fas fa-minus-square"></i>
         </button>
       </div>
+      {{#each system.karmaCaps as |flipped key|}}
+        <input
+          type="checkbox"
+          name="system.karmaCaps.{{ key }}"
+          {{checked flipped}}
+        />
+      {{/each}}
     </div>
     {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
