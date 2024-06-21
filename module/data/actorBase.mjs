@@ -180,14 +180,14 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   //add item
   itemaddition(importeditem) {
     const item = this.parent.items.get(importeditem)
-    const updatedQty = item.system.quantity + 1
+    const updatedQty = Number(item.system.quantity) + 1
     item.update({ 'system.quantity': updatedQty })
   }
 
   //subtract item
   itemsubtraction(importeditem) {
     const item = this.parent.items.get(importeditem)
-    let updatedQty = item.system.quantity - 1
+    let updatedQty = Number(item.system.quantity) - 1
     if (updatedQty < 1) {
       updatedQty=0
     }
@@ -356,7 +356,15 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     }, myDialogOptions).render(true);
 
   }
-
+  expandtoggle(item) {
+    let currentItem = this.parent.items.get(item)
+    let currentState = currentItem.system.itemOpen
+    if (currentState === true) {
+        this.parent.updateEmbeddedDocuments('Item', [{ _id: item, 'system.itemOpen': false },])
+    } else {
+        this.parent.updateEmbeddedDocuments('Item', [{ _id: item, 'system.itemOpen': true },])
+    }
+  }
 
 
 

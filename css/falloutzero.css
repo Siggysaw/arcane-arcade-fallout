@@ -581,6 +581,10 @@ td,
 .sheet .perk-div .perk-image {
   height:150px;
 }
+  .sheet .perk-div h3 {
+    font-size: 10pt;
+    letter-spacing: 0;
+  }
 .specialroll {
   text-transform: uppercase;
 }
@@ -738,4 +742,7 @@ form td .status-notes li:hover {
     font-family:fixedsys;
     padding:20px;
     font-size:14pt;
+}
+.condition{
+    cursor:pointer;
 }

@@ -1,6 +1,5 @@
 <table>
     <tr>
-        {{#if armors}}
         <td class="armorbox">
             <!-- Armor Slot -->
             {{#each armors as |item id|}}
@@ -9,8 +8,8 @@
                 <table class="item-box">
                     <tr>
                         <td>
-                            <details open="true">
-                                <summary>
+                            <details {{#if item.system.itemOpen }} open="true" {{/if}}>
+                                <summary data-expandtoggle data-itemid="{{item._id}}">
                                     <p class="allcaps">{{ item.name }}</p>
                                 </summary>
                                 <table class="equipped-stats">
@@ -30,84 +29,90 @@
                                         <td>{{ system.load }}</td>
                                         <td>{{ system.strReq.value }}</td>
                                     </tr>
-                                    <tr>
-                                        <td colspan='999'>
-                                            CND: <input style="width:50px;" type="number" name="{{item.system.decay}}" value="{{item.system.decay}}" data-set-decay data-weapon-id="{{ item._id }}">
-                                            <progress style="width:60%;text-align:right;"
+                                    <tr style="vertical-align:middle">
+                                        <td style="width:100px;border-right:none;">
+                                            CND: <input title="0 is Broken, 10 is Full Functionality"
+                                                        style="width:50px;"
+                                                        type="number"
+                                                        name="{{item.system.decay}}"
+                                                        value="{{item.system.decay}}"
+                                                        data-set-decay
+                                                        data-weapon-id="{{ item._id }}">
+                                        </td>
+                                        <td colspan="999" style="border-left:none;">
+                                            <progress style="width:100%;padding-right:5px;"
                                                       class="statusbar stamina"
                                                       value="{{item.system.decay}}"
                                                       max="10">
                                                 {{item.system.decay}}
                                             </progress>
                                         </td>
-                                    </tr>
-                                </table>
-                            </details>
+                        </td>
+                    </tr>
+                </table>
+                </details>
+                <div class="item-controls">
+                    <a style="float: right; margin-right: 10px"
+                       class="item-control item-delete"
+                       data-item-id="{{ item._id }}"
+                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                    <a style="float: right; margin-right: 10px"
+                       data-edit
+                       data-item-id="{{ item._id }}"
+                       class="item-control"
+                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+
+        </td>
+    </tr>
+</table>
+            </div>
+{{/if}}
+{{/each}}
+        </td>
+<td>
+    <!-- AMMO Slot -->
+    <table class="item-box">
+        <tr>
+            <td>
+                <details open="true">
+                    <summary data-expandtoggle data-itemid="{{item._id}}">
+                        <p class="allcaps">{{ item.name }} AMMO</p>
+                    </summary>
+                    {{#each ammos as |item id|}}
+                    <div style="float:left;" data-item-id="{{ item._id }}">
+                        <div class="item flexrow"
+                             data-item-id="{{ item._id }}">
                             <div class="item-controls">
-                                <a style="float: right; margin-right: 10px"
-                                   class="item-control item-delete"
+                                <a data-edit
+                                   data-item-id="{{ item._id }}"
+                                   class="item-control"
+                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                    {{ item.name }} ({{ system.quantity }})
+                                </a>
+                                <a class="item-control item-delete"
                                    data-item-id="{{ item._id }}"
                                    title="{{localize 'DOCUMENT.Delete' type='item'}}">
                                     <i class="fas fa-trash"></i>
                                 </a>
-                                <a style="float: right; margin-right: 10px"
-                                   data-edit
-                                   data-item-id="{{ item._id }}"
-                                   class="item-control"
-                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                    <i class="fas fa-edit"></i>
-                                </a>
                             </div>
-
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            {{/if}}
-            {{/each}}
-        </td>
-        {{/if}}
-        <td>
-            <!-- AMMO Slot -->
-            {{#if ammos }}
-            <table class="item-box">
-                <tr>
-                    <td>
-                        <details open="true">
-                            <summary>
-                                <p class="allcaps">{{ item.name }} AMMO</p>
-                            </summary>
-                            {{#each ammos as |item id|}}
-                            <div style="float:left;" data-item-id="{{ item._id }}">
-                                <div class="item flexrow"
-                                     data-item-id="{{ item._id }}">
-                                    <div class="item-controls">
-                                        <a data-edit
-                                           data-item-id="{{ item._id }}"
-                                           class="item-control"
-                                           title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                            {{ item.name }} ({{ system.quantity }})
-                                        </a>
-                                        <a class="item-control item-delete"
-                                           data-item-id="{{ item._id }}"
-                                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            {{/each}}
-                    </td>
-                </tr>
-            </table>
-            </details>
-            {{/if}}
-        </td>
+                        </div>
+                    </div>
+                    {{/each}}
+            </td>
+        </tr>
+    </table>
+    </details>
+</td>
     </tr>
 </table>
 <table>
     <tr>
-        <td>
+        <td style="width:49%;padding:5px;">
             <!-- Ranged Weapons Slot -->
             {{#each rangedWeapons as |item id|}}
             {{#if item.system.itemEquipped}}
@@ -117,7 +122,7 @@
                     <tr>
                         <td>
                             <details {{#if item.system.itemOpen }} open="true" {{/if}}>
-                                <summary>
+                                <summary data-expandtoggle data-itemid="{{item._id}}">
                                     <p class="allcaps" data-item-id="{{ item._id }}">
                                         {{ item.name }}
                                     </p>
@@ -139,24 +144,24 @@
                                         <td>
                                             <div class='fakebutton' data-weapon-roll data-weapon-id="{{ item._id }}">
                                                 {{ item.system.apCost }}
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class='fakebutton' class="rollable resource-label"
-                                                    data-rollable
-                                                    data-label="OUCH! DMG from a {{ item.name }}"
-                                                    data-roll="{{ item.system.damage.formula }}">
+                                                 data-rollable
+                                                 data-label="OUCH! DMG from a {{ item.name }}"
+                                                 data-roll="{{ item.system.damage.formula }}">
                                                 {{ item.system.damage.formula }}
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>{{ item.system.critical.dice }}</td>
                                         <td>
                                             <div class='fakebutton' class="rollable resource-label"
-                                                    data-rollable
-                                                    data-label="CRITICAL! Crit Damage for {{ item.name }}"
-                                                    data-roll="{{ item.system.critical.bonus }}">
+                                                 data-rollable
+                                                 data-label="CRITICAL! Crit Damage for {{ item.name }}"
+                                                 data-roll="{{ item.system.critical.bonus }}">
                                                 {{ item.system.critical.bonus }}
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>{{ item.system.load }}</td>
                                         <td>{{ item.system.strengthRequirement }}</td>
@@ -169,28 +174,28 @@
                                     <tr>
                                         <td>
                                             <div class='fakebutton' class="rollable resource-label"
-                                                    data-weapon-roll
-                                                    data-weapon-id="{{ item._id }}"
-                                                    class="resource-label">
+                                                 data-weapon-roll
+                                                 data-weapon-id="{{ item._id }}"
+                                                 class="resource-label">
                                                 IN RANGE
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class='fakebutton' class="rollable resource-label"
-                                                    data-weapon-roll
-                                                    data-disadvantage="true"
-                                                    data-weapon-id="{{ item._id }}"
-                                                    class="resource-label">
+                                                 data-weapon-roll
+                                                 data-disadvantage="true"
+                                                 data-weapon-id="{{ item._id }}"
+                                                 class="resource-label">
                                                 DISADVANTAGED
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class='fakebutton' class="rollable resource-label"
-                                                    data-weapon-roll
-                                                    data-weapon-id="{{ item._id }}"
-                                                    class="resource-label">
+                                                 data-weapon-roll
+                                                 data-weapon-id="{{ item._id }}"
+                                                 class="resource-label">
                                                 NAT 20 REQ
-                                            </div class='fakebutton'>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -240,7 +245,7 @@
                                             {{ item.system.ammo.capacity.max }}
                                         </td>
                                         <td>
-                                            <div title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay" class='fakebutton' data-reload data-weapon-id="{{ item._id }}">RELOAD</div class='fakebutton'>
+                                            <div title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay" class='fakebutton' data-reload data-weapon-id="{{ item._id }}">RELOAD</div>
                                         </td>
                                         <td>
                                             {{#each item.ammos as |ammo|}}
@@ -287,15 +292,14 @@
                     </a>
                 </div>
 
-</td>
+        </td>
     </tr>
 </table>
       </div>
 {{/if}}
 {{/each}}
     </td>
-<td class="spacer"></td>
-<td>
+<td style="width:49%;padding:5px;">
     <!-- MeleeWeapons Slot -->
     {{#each meleeWeapons as |item id|}}
     {{#if item.system.itemEquipped}}
@@ -304,7 +308,7 @@
             <tr>
                 <td>
                     <details {{#if item.system.itemOpen }} open="true" {{/if}}>
-                        <summary>
+                        <summary data-expandtoggle data-itemid="{{item._id}}">
                             <p class="allcaps">
                                 {{ item.name }}
                             </p>
@@ -325,15 +329,15 @@
                                 <td>
                                     <div class='fakebutton' data-weapon-roll data-weapon-id="{{ item._id }}">
                                         {{ item.system.apCost }}
-                                    </div class='fakebutton'>
+                                    </div>
                                 </td>
                                 <td>
                                     <div class='fakebutton' class="rollable resource-label"
-                                            data-rollable
-                                            data-label="OUCH! DMG from a {{ item.name }}"
-                                            data-roll="{{ item.system.damage.formula }}">
+                                         data-rollable
+                                         data-label="OUCH! DMG from a {{ item.name }}"
+                                         data-roll="{{ item.system.damage.formula }}">
                                         {{ item.system.damage.formula }}
-                                    </div class='fakebutton'>
+                                    </div>
                                 </td>
                                 <td>{{ system.critical.dice }}</td>
                                 <td>{{ system.critical.bonus }}</td>
@@ -365,38 +369,47 @@
                                     {{selectOptions ../system.skills selected=item.system.skillBonus nameAttr="id" labelAttr="label" blank="None"}}
                                 </select>
                             </td>
-                            <tr>
-                                <td colspan='999'>
-                                    CND: <input style="width:50px;" type="number" name="{{item.system.decay}}" value="{{item.system.decay}}" data-set-decay data-weapon-id="{{ item._id }}">
-                                    <progress style="width:60%;text-align:right;"
+                            <tr style="vertical-align:middle">
+                                <td style="width:100px;border-right:none;">
+                                    CND: <input title="0 is Broken, 10 is Full Functionality"
+                                                style="width:50px;"
+                                                type="number"
+                                                name="{{item.system.decay}}"
+                                                value="{{item.system.decay}}"
+                                                data-set-decay
+                                                data-weapon-id="{{ item._id }}">
+                                </td>
+                                <td colspan="999" style="border-left:none;">
+                                    <progress style="width:100%;padding-right:5px;"
                                               class="statusbar stamina"
                                               value="{{item.system.decay}}"
                                               max="10">
                                         {{item.system.decay}}
                                     </progress>
                                 </td>
-                            </tr>
-
-
-                        </table>
-                    </details>
-                        <div class="item-controls">
-                            <a style="float: right; margin-right: 10px"
-                               class="item-control item-delete"
-                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                            <a style="float: right; margin-right: 10px"
-                               data-edit
-                               data-item-id="{{ item._id }}"
-                               class="item-control"
-                               title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        </div>
-                   
                 </td>
             </tr>
+
+
+        </table>
+        </details>
+        <div class="item-controls">
+            <a style="float: right; margin-right: 10px"
+               class="item-control item-delete"
+               title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                <i class="fas fa-trash"></i>
+            </a>
+            <a style="float: right; margin-right: 10px"
+               data-edit
+               data-item-id="{{ item._id }}"
+               class="item-control"
+               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                <i class="fas fa-edit"></i>
+            </a>
+        </div>
+
+        </tdstyle="width:49%;">
+        </tr>
         </table>
     </div>
     {{/if}}
@@ -405,109 +418,122 @@
   </tr>
 </table>
 
-<table>
-{{#if explosives}}
-<td class="armorbox">
-    <!-- Armor Slot -->
-    {{#each explosives as |item id|}}
-    <div class="item flexrow" data-item-id="{{ item._id }}">
-        <table class="item-box">
-            <tr>
-                <td>
-                    <details>
-                        <summary>
-                            <p class="allcaps">{{ item.name }}</p>
-                        </summary>
-                        <table class="equipped-stats">
-                            <tr>
-                                <td>Cost</td>
-                                <td>Load</td>
-                                <td>Qty</td>
-                                <td>
-                                    <div class='fakebutton' class="resource-label"
-                                            data-ap-used
-                                            data-weapon-id="{{ item._id }}"
-                                            class="resource-label">
-                                        AP
-                                    </div class='fakebutton'>
-                                </td>
-                                <td>Range</td>
-                                <td>
-                                    {{#GreaterThan ../system.skills.explosives.value system.armDC}}
-                                    Auto Succeeds ({{system.armDC}})
-                                    {{else}}
-                                    <div class='fakebutton' class="rollable resource-label"
-                                            data-rollable
-                                            data-label="Attempt to Arm a {{ item.name }} They'll need to match or beat a {{system.armDC}}"
-                                            data-roll="d20+ {{../system.skills.explosives.value}} - @penaltyTotal - 10"
-                                            title="d20 + explosives({{../system.skills.explosives.value}}) - penalties({{../system.penaltyTotal}}) - Increased DV of 10" />
-                                    ARM
-                                    </div class='fakebutton'>
-                                    {{/GreaterThan}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>{{ system.cost }}</td>
-                                <td>{{ system.load }}</td>
-                                <td>{{ system.quantity }}</td>
-                                <td>{{ system.apCost }}</td>
-                                <td>{{ system.thrown }}</td>
-                                <td>{{ system.armDC}}</td>
-                            </tr>
-                        </table>
-                        <table class="equipped-stats">
-                            <tr><td colspan=999>Damage Calculation</td>
-                            <tr>
-                                <td>Area of Effect</td>
-                                <td>Damage 1</td>
-                                <td>DMG Type1</td>
-                                <td>Damage 2</td>
-                                <td>DMG Type 2</td>
-                            </tr>
-                            <tr>
-                                <td>{{ system.aoeRadius }}</td>
-                                <td>
-                                    <div class='fakebutton' class="rollable resource-label"
-                                            data-rollable
-                                            data-label="KABOOM! <span class='allcaps'>{{item.system.damageType1}}</span> DMG from a {{ item.name }}"
-                                            data-roll="{{ item.system.damage1 }}">
-                                        {{ item.system.damage1 }}
-                                    </div class='fakebutton'>
-                                </td>
-                                <td>{{ system.damageType1 }}</td>
-                                <td>
-                                    <div class='fakebutton' class="rollable resource-label"
-                                            data-rollable
-                                            data-label="KABOOM! <span class='allcaps'> {{item.system.damageType2}}</span> DMG from a {{ item.name }}"
-                                            data-roll="{{ item.system.damage2 }}">
-                                       {{ item.system.damage2 }}
-                                    </div class='fakebutton'>
-                                </td>
-                                <td>{{ system.damageType2 }}</td>
-                            </tr>
-                        </table>
-                    </details>
-                        <div class="item-controls">
-                            <a style="float: right; margin-right: 10px"
-                               class="item-control item-delete"
-                               data-item-id="{{ item._id }}"
-                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                            <a style="float: right; margin-right: 10px"
-                               data-edit
-                               data-item-id="{{ item._id }}"
-                               class="item-control"
-                               title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        </div>
-                   
+<table class="equipped-stats">
+    <tr><td colspan="999" style="font-size:18pt;">EXPLOSIVES</td></tr>
+    <td class="armorbox">
+        <!-- Explosives Slot -->
+        {{#each explosives as |item id|}}
+        <div style="width:33%;float:left;padding:5px;" class="item flexrow" data-item-id="{{ item._id }}">
+            <table class="item-box">
+                <tr>
+                    <td>
+                        <details {{#if item.system.itemOpen }} open="true" {{/if}}>
+                            <summary data-expandtoggle data-itemid="{{item._id}}">
+                                <p class="allcaps">{{ item.name }}</p>
+                            </summary>
+                            <table class="equipped-stats">
+                                <tr>
+                                    <td>Cost</td>
+                                    <td>Load</td>
+                                    <td>Qty</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ system.cost }}</td>
+                                    <td>{{ system.load }}</td>
+                                    <td>
+                                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
+                                        {{ system.quantity }}
+                                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class='fakebutton' class="resource-label"
+                                             data-ap-used
+                                             data-weapon-id="{{ item._id }}"
+                                             class="resource-label">
+                                            AP
+                                        </div>
+                                    </td>
+                                    <td>Range</td>
+                                    <td>
+                                        {{#GreaterThan ../system.skills.explosives.value system.armDC}}
+                                        Auto Succeeds ({{system.armDC}})
+                                        {{else}}
+                                        <div class='fakebutton' class="rollable resource-label"
+                                             data-rollable
+                                             data-label="Attempt to Arm a {{ item.name }} They'll need to match or beat a {{system.armDC}}"
+                                             data-roll="d20+ {{../system.skills.explosives.value}} - @penaltyTotal - 10"
+                                             title="d20 + explosives({{../system.skills.explosives.value}}) - penalties({{../system.penaltyTotal}}) - Increased DV of 10" />
+                                        ARM
+        </div>
+        {{/GreaterThan}}
+    </td>
+    </tr>
+    <tr>
+        <td>{{ system.apCost }}</td>
+        <td>{{ system.thrown }}</td>
+        <td>{{ system.armDC}}</td>
+    </tr>
+</table>
+<table class="equipped-stats"><tr><td>AOE: {{ system.aoeRadius }}</td></tr></table>
+<table class="equipped-stats">
+    <tr><td colspan=999>Damage Calculation</td>
+    <tr><td style="width:75px;">DMG 1</td><td>Type</td></tr>
+    <tr>
+        <td>
+            <div class='fakebutton' class="rollable resource-label"
+                 data-rollable
+                 data-label="KABOOM! <span class='allcaps'>{{item.system.damageType1}}</span> DMG from a {{ item.name }}"
+                 data-roll="{{ item.system.damage1 }}">
+                {{ item.system.damage1 }}
+            </div>
+        </td>
+        <td class="allcaps">
+            {{ item.system.damageType1}}
+        </td>
+    </tr>
+    {{#if item.system.damage2 }}
+</table>
+<table class="equipped-stats">
+    <tr>
+        <td style="width:75px;">DMG 2</td>
+        <td>Type</td>
+    </tr>
+    <td>
+        <div class='fakebutton' class="rollable resource-label"
+             data-rollable
+             data-label="KABOOM! <span class='allcaps'>{{item.system.damageType2}}</span> DMG from a {{ item.name }}"
+             data-roll="{{ item.system.damage2 }}">
+            {{ item.system.damage2 }}
+        </div>
+    </td>
+    <td class="allcaps">
+        {{ item.system.damageType2}}
+    </td>
+    {{/if}}
+</table>
+<div class="item-controls">
+    <a style="float: right; margin-right: 10px"
+       class="item-control item-delete"
+       data-item-id="{{ item._id }}"
+       title="{{localize 'DOCUMENT.Delete' type='item'}}">
+        <i class="fas fa-trash"></i>
+    </a>
+    <a style="float: right; margin-right: 10px"
+       data-edit
+       data-item-id="{{ item._id }}"
+       class="item-control"
+       title="{{localize 'DOCUMENT.Update' type='item'}}">
+        <i class="fas fa-edit"></i>
+    </a>
+</div>
+</details>
+
                 </td>
             </tr>
         </table>
     </div>
-    {{/each}}
+{{/each}}
 </td>
-{{/if}}
 </tr></table>

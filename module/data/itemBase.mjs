@@ -5,6 +5,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
 
     schema.description = new fields.HTMLField()
     schema.itemEquipped = new fields.BooleanField()
+    schema.itemOpen = new fields.BooleanField()
     schema.quantity = new fields.NumberField({initial: 1})		
 
     return schema

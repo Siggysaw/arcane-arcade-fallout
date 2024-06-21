@@ -8,58 +8,56 @@
   <header class="sheet-header">
     <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
     <div class="header-fields">
-      <h1 class="charname">
-        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
-      </h1>
-      Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
-	    Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}"/>	 
-      <div>Upgrades: 
-        {{#each system.upgrades as |key|}}
-        <a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.world.upgrades.Item.{{key._id}}" 
-          data-id="{{key._id}}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="{{key.auto}}"><i class="fas fa-suitcase">
-          </i>{{ key.name }}{{ key.value }}</a>
-        {{/each}}
-        {{!{{.desc.value}}</div>
-      <table>
-        <tr>
-          <td>Cost</td>
-          <td>AC</td>
-          <td>DT</td>
-          <td>Slots</td>
-          <td>Load</td>
-          <td>STR Req.</td>
-        </tr>
-        <tr>
-          <td>
-            <input
-              type="number"
-              name="system.baseCost.value"
-              value="{{ system.baseCost.value }}"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              name="system.armorClass.value"
-              value="{{ system.armorClass.value }}"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              name="system.damageThreshold.value"
-              value="{{ system.damageThreshold.value }}"
-            />
-          </td>
-          <td>
-            <input type="number" name="system.slots.value" value="{{ system.slots.value }}" />
-          </td>
-          <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
-          <td>
-            <input type="number" name="system.strReq.value" value="{{ system.strReq.value }}" />
-          </td>
-        </tr>
-      </table>
+        <h1 class="charname">
+            <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+        </h1>
+        Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
+        Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}" />
+        <div>
+            Upgrades:
+            {{#each system.upgrades as |key|}}
+            <a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.world.upgrades.Item.{{key._id}}"
+               data-id="{{key._id}}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="{{key.auto}}">
+                <i class="fas fa-suitcase">
+                </i>{{ key.name }}{{ key.value }}
+            </a>
+            {{/each}}
+            {{!{{.desc.value}}
+        </div>
+        <table>
+            <tr>
+                <td>Cost</td>
+                <td>AC</td>
+                <td>DT</td>
+                <td>Slots</td>
+                <td>Load</td>
+                <td>STR Req.</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="number"
+                           name="system.baseCost.value"
+                           value="{{ system.baseCost.value }}" />
+                </td>
+                <td>
+                    <input type="number"
+                           name="system.armorClass.value"
+                           value="{{ system.armorClass.value }}" />
+                </td>
+                <td>
+                    <input type="number"
+                           name="system.damageThreshold.value"
+                           value="{{ system.damageThreshold.value }}" />
+                </td>
+                <td>
+                    <input type="number" name="system.slots.value" value="{{ system.slots.value }}" />
+                </td>
+                <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
+                <td>
+                    <input type="number" name="system.strReq.value" value="{{ system.strReq.value }}" />
+                </td>
+            </tr>
+        </table>
     </div>
   </header>
 
