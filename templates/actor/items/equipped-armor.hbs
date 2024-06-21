@@ -1,0 +1,72 @@
+<td class="armorbox">
+    <!-- Armor Slot -->
+    {{#each armors as |item id|}}
+        {{#if item.system.itemEquipped}}
+            <div class="item flexrow" data-item-id="{{ item._id }}">
+                <table class="item-box">
+                    <tr>
+                        <td>
+                            <details {{#if item.system.itemOpen }} open="true" {{/if}}>
+                                <summary data-expandtoggle data-itemid="{{item._id}}">
+                                    <p class="allcaps">{{ item.name }}</p>
+                                </summary>
+                                <table class="equipped-stats">
+                                    <tr>
+                                        <td>Cost</td>
+                                        <td>AC</td>
+                                        <td>DT</td>
+                                        <td>Slots</td>
+                                        <td>Load</td>
+                                        <td>STR Req.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ system.baseCost.value }}</td>
+                                        <td>{{ system.armorClass.value }}</td>
+                                        <td>{{ system.damageThreshold.value }}</td>
+                                        <td>{{ system.slots.value }}</td>
+                                        <td>{{ system.load }}</td>
+                                        <td>{{ system.strReq.value }}</td>
+                                    </tr>
+                                    <tr style="vertical-align:middle">
+                                        <td style="width:100px;border-right:none;">
+                                            CND: <input title="0 is Broken, 10 is Full Functionality"
+                                                        style="width:50px;"
+                                                        type="number"
+                                                        name="{{item.system.decay}}"
+                                                        value="{{item.system.decay}}"
+                                                        data-set-decay
+                                                        data-weapon-id="{{ item._id }}">
+                                        </td>
+                                        <td colspan="999" style="border-left:none;">
+                                            <progress style="width:100%;padding-right:5px;"
+                                                        class="statusbar stamina"
+                                                        value="{{item.system.decay}}"
+                                                        max="10">
+                                                {{item.system.decay}}
+                                            </progress>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </details>
+                        </td>
+                    </tr>
+                </table>
+                <div class="item-controls">
+                    <a style="float: right; margin-right: 10px"
+                        class="item-control item-delete"
+                        data-item-id="{{ item._id }}"
+                        title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                    <a style="float: right; margin-right: 10px"
+                        data-edit
+                        data-item-id="{{ item._id }}"
+                        class="item-control"
+                        title="{{localize 'DOCUMENT.Update' type='item'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+        {{/if}}
+    {{/each}}
+</td>
