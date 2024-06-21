@@ -51,7 +51,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         initial: 10,
       }),
     })
-    schema.karmaCaps = new fields.ArrayField(new fields.BooleanField({ initial: true }))
+    schema.karmaCaps = new fields.ArrayField(new fields.BooleanField(), { initial: [true] })
 
     // Iterate over ability names and create a new SchemaField for each.
     schema.abilities = new fields.SchemaField(
@@ -158,11 +158,6 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     // Loop through skill scores, and add their modifiers to our sheet output.
     for (const key in this.skills) {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
-    }
-
-    // add initial cap if none exist
-    if (!this.karmaCaps.length) {
-      this.karmaCaps.push(true)
     }
   }
 

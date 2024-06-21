@@ -370,6 +370,13 @@ export class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '.item-delete', (ev) => {
       const li = $(ev.currentTarget).parents('.item')
       const item = this.actor.items.get(li.data('itemId'))
+
+      switch (item.type) {
+        case 'trait':
+          this._onItemDeleteTrait(item)
+          break
+      }
+
       item.delete()
       li.slideUp(200, () => this.render(false))
     })
@@ -423,6 +430,49 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Finally, create the item!
     return await Item.create(itemData, { parent: this.actor })
+  }
+
+  /**
+   * Handle the final creation of dropped Item data on the Actor.
+   * @param {Item} itemData     The item or items requested for creation
+   * @protected
+   */
+  _onDropItemCreate(itemData) {
+    console.log('_onDropItemCreate', itemData)
+    switch (itemData.type) {
+      case 'trait':
+        this._onDropItemCreateTrait(itemData)
+        return
+      default:
+        super._onDropItemCreate(itemData)
+        return
+    }
+  }
+
+  /**
+   * Handle the final creation of dropped trait Item data on the Actor.
+   * @param {Item} itemData     The item or items requested for creation
+   * @protected
+   */
+  _onDropItemCreateTrait(itemData) {
+    // If trait already exists
+    if (this.actor.items.contents.some((item) => item.name === itemData.name)) {
+      return ui.notifications.warn('Trait already exists on actor')
+    }
+
+    // Else add trait
+    super._onDropItemCreate(itemData)
+
+    // If trait is gifted, add cap
+    if (itemData.name === 'Gifted') {
+      this.actor.system.addCap()
+    }
+  }
+
+  _onItemDeleteTrait(itemData) {
+    if (itemData.name === 'Gifted') {
+      this.actor.system.removeCap()
+    }
   }
 
   /**
