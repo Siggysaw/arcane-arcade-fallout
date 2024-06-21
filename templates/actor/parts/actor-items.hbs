@@ -215,7 +215,7 @@
                                         <td>Item</td>
                                         <td>
                                             <select style="width:100%;" data-set-ability data-weapon-id="{{ item._id }}">
-                                                {{selectOptions ../system.abilities selected=item.system.abilityMod nameAttr="abbr" labelAttr="label" blank="None"}}
+                                                {{selectOptions ../system.abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
                                             </select>
                                         </td>
                                     </tr>
@@ -224,12 +224,12 @@
                                         <td>{{ item.system.ammo.consumes.amount }}</td>
                                         <td>
                                             <select style="width:100%;" data-set-ammo data-weapon-id="{{ item._id }}">
-                                                {{selectOptions item.ammos selected=item.system.ammo.consumes.target nameAttr="_id" labelAttr="name" blank="None"}}
+                                                {{selectOptions item.ammos selected=item.system.ammo.consumes.target valueAttr="_id" labelAttr="name" blank="None"}}
                                             </select>
                                         </td>
                                         <td>
                                             <select style="width:100%;" data-set-skill data-weapon-id="{{ item._id }}">
-                                                {{selectOptions ../system.skills selected=item.system.skillBonus nameAttr="id" labelAttr="label" blank="None"}}
+                                                {{selectOptions ../system.skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
                                             </select>
                                         </td>
                                     </tr>
@@ -273,10 +273,10 @@
                                                 {{item.system.decay}}
                                             </progress>
                                         </td>
+                                    </tr>
+                                </table>
+                            </details>
                         </td>
-                    </tr>
-                </table>
-                </details>
                 <div class="item-controls">
                     <a style="float: right; margin-right: 10px"
                        class="item-control item-delete"
@@ -361,12 +361,12 @@
                         <table class="equipped-stats">
                             <td>
                                 <select style="width:100%;" data-set-ability data-weapon-id="{{ item._id }}">
-                                    {{selectOptions ../system.abilities selected=item.system.abilityMod nameAttr="abbr" labelAttr="label" blank="None"}}
+                                    {{selectOptions ../system.abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
                                 </select>
                             </td>
                             <td>
                                 <select style="width:100%;" data-set-skill data-weapon-id="{{ item._id }}">
-                                    {{selectOptions ../system.skills selected=item.system.skillBonus nameAttr="id" labelAttr="label" blank="None"}}
+                                    {{selectOptions ../system.skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
                                 </select>
                             </td>
                             <tr style="vertical-align:middle">
@@ -408,7 +408,7 @@
             </a>
         </div>
 
-        </tdstyle="width:49%;">
+        </td>
         </tr>
         </table>
     </div>
