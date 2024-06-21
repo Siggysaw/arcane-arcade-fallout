@@ -11,18 +11,20 @@
         <h1 class="charname">
             <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
         </h1>
-        Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
+        Equipped: <input type="checkbox" equipItem name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
         Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}" />
         <div>
             Upgrades:
+            
             {{#each system.upgrades as |key|}}
-            <a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.world.upgrades.Item.{{key._id}}"
-               data-id="{{key._id}}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="{{key.auto}}">
-                <i class="fas fa-suitcase">
-                </i>{{ key.name }}{{ key.value }}
-            </a>
+              {{#GreaterThan key.value 1}}
+              <a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.world.upgrades.Item.{{key._id}}"
+                data-id="{{key._id}}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="{{key.auto}}">
+                  <i class="fas fa-suitcase">
+                  </i>{{ key.name }}{{ key.value }}
+              </a>
+              {{/GreaterThan}}
             {{/each}}
-            {{!{{.desc.value}}
         </div>
         <table>
             <tr>

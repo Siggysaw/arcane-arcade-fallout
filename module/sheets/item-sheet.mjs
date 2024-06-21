@@ -106,7 +106,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
             'system.upgrades.camouflage.auto' : auto,
             'system.upgrades.camouflage.desc' : desc, 
             'system.upgrades.camouflage.value' : newValue, 
-            'system.charMod.skills.sneak.value' : sneakAmount,
+            'system.charMod.system.skills.sneak.mod' : sneakAmount,
             'system.slots.value' : slots
           });
         } else{
@@ -114,7 +114,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
             'system.upgrades.camouflage.value' : newValue, 
             'system.upgrades.camouflage.desc' : desc, 
             'system.upgrades.camouflage.auto' : auto,
-            'system.charMod.skills.sneak.value' : sneakAmount,
+            'system.charMod.system.skills.sneak.mod' : sneakAmount,
             'system.slots.value' : slots
           });
         }
@@ -122,7 +122,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
         //Custom updates are written long-form to avoid updating multiple times the same objects, which could cause bugs
         actorSkill = this.actor.system.skills.sneak.value + 3*(newValue-oldValue);
         if (this.object.isequipped) {
-          this.actor.update({'.system.skills.sneak.value' : actorSkill});
+          this.actor.update({'.system.skills.sneak.mod' : actorSkill});
         }
         break;
       case 'light':
@@ -212,7 +212,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
               'system.slots.value' : slots
             });
             break;
-        } 
+          } 
         break;
       case 'fitted': 
         if(myPack.find(u => u.name == "Fitted" + newValue)){upgradeID=myPack.find(u => u.name == "Fitted" + newValue)._id};
@@ -234,7 +234,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
               'system.upgrades.fitted.value' : newValue, 
               'system.upgrades.fitted.desc' : desc,
               'system.upgrades.fitted.auto' : auto,
-              'system.charMod.stamina.value' : 0,
+              'system.charMod.system.stamina.modifiers' : 0,
             });
           }
           break;
@@ -246,7 +246,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
               'system.upgrades.fitted.value' : newValue, 
               'system.upgrades.fitted.desc' : desc,
               'system.upgrades.fitted.auto' : auto,
-              'system.charMod.stamina.max' : this.actor.level,
+              'system.charMod.system.stamina.modifiers' : this.actor.level,
             });
           } else{
             this.object.update({
@@ -285,7 +285,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
           'system.upgrades.leadlined.auto' : auto,
           'system.upgrades.leadlined.desc' : desc,
           'system.upgrades.leadlined.value' : newValue, 
-          'system.charMod.penalties.radDC.value' : -2*newValue,
+          'system.charMod.system.penalties.radDC.modifiers' : -2*newValue,
           'system.slots.value' : slots
         });
         break;
@@ -366,7 +366,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
           'system.upgrades.pocketed.auto' : auto,
           'system.upgrades.pocketed.desc' : desc,
           'system.upgrades.pocketed.value' : newValue, 
-          'system.charMod.carryLoad.max' : charLoad,
+          'system.charMod.system.carryLoad.modifiers' : charLoad,
           'system.slots.value' : slots
         });
         break;      
@@ -425,7 +425,40 @@ export class FalloutZeroItemSheet extends ItemSheet {
           'system.slots.value' : slots
         });
         break; 
-      }
+    }
+  }
+ 
+
+  //Equip item upgrades (right now, it's just armor upgrades)
+  async equipItemStats (){
+    const myActor = this.actor.system;
+    const myItem = this.object;
+    let AC = myActor.armorClass.value;
+    let DT = myActor.damageThreshold.value
+    
+    //Those are always present in armor
+    if (myActor.armorClass.base){AC = myActor.armorClass.base.value} //in case we don't have a base yet
+    if (myActor.damageThreshold.modifiers){AC = myActor.damageThreshold.value} //in case we don't have a base yet
+    AC = myItem.system.armorClass.value
+    DT = myItem.system.damageThreshold.value
+    //I could make a fixed list, but that would include all skills, penalties, etc. with specific addresses to update
+    //Since I can program addresses to be the same, I want to be able to iterate through whatever is in charMod
+    const everyMod = {
+      'system.armorClass.value' : AC,
+      'system.damageThreshold.value' : DT
+    };
+    if(myItem.system.charMod){
+      await Object.assign(everyMod,myItem.system.charMod.system)
+    }
+    await this.actor.update(everyMod)
+  }
+
+  
+
+
+
+  unequipItemStats(){
+    console.log("unequipped")
   }
 
   /* -------------------------------------------- */
@@ -438,37 +471,53 @@ export class FalloutZeroItemSheet extends ItemSheet {
     if (!this.isEditable) return
 
 
-    //Decrease value
+    //Decrease Upgrade Value
     html.on('click', '[data-tableSubtraction]', (ev) => {
       const myUpgrade = ev.currentTarget.id.replace("lower","").toLowerCase().replace(" ","");
       let oldValue = 0;
-      //UNEQUIP
+      //This check removes errors in case the fields don't exist and allows players to create their own (eventually)
       if(this.object.system.upgrades[myUpgrade]){
          oldValue = this.object.system.upgrades[myUpgrade].value;
       }
       if (oldValue!=0){
+        //UNEQUIP
         let newValue = oldValue - 1;
         this.changeUpgrade(myUpgrade,newValue,oldValue);
+        //EQUIP
       }
-      //EQUIP
+      
     })
 
-    //Increase value
+    //Increase Upgrade Value
     html.on('click', '[data-tableAddition]', (ev) => {
       const myUpgrade = ev.currentTarget.id.replace("higher","").toLowerCase();
       let oldValue = 0;
-      console.log(myUpgrade)
-      //UNEQUIP
+      //This check removes errors in case the fields don't exist and allows players to create their own (eventually)
       if(this.object.system.upgrades[myUpgrade]){
          oldValue = this.object.system.upgrades[myUpgrade].value;
       }
       if (oldValue!=3){
+        //UNEQUIP this.cancelItemUpgrades()
         let newValue = oldValue + 1;
-        if(this.object.system.slots.value > 0){
+        if(this.object.system.slots.value > 0 || newValue != 1){
           this.changeUpgrade(myUpgrade,newValue,oldValue);
         }
+        //EQUIP this.applyItemUpgrades()
       }
-      //EQUIP
+    })
+
+    
+
+
+
+    //On equip, calculate AC and other things that improve character's stats
+    html.on('change','[equipItem]',() => {
+      //Get original state of weapon
+      if (this.object.system.itemEquipped && this.object.type == "armor"){
+        this.unequipItemStats()
+      } else { 
+        this.equipItemStats()
+      }
     })
 
     // Roll handlers, click handlers, etc. would go here.
