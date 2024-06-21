@@ -63,11 +63,16 @@
             <table class="equipped-stats">
                 <tr><td colspan="999"><h3>Food and Drinks</h3></td></tr>
                 <div>
-                <tr><td>Name</td><td>Qty</td><td>Description</td><td></td></tr>
+                <tr><td>Name</td><td>Qty</td><td>Properties</td><td></td></tr>
                 {{#each foodAnddrinks as |item id|}}
                 <tr>
                     <td style="width: 100px">
-                        <span class="label"> {{ item.name }}</span>
+                        <a class="item-control"
+                           data-edit
+                           data-item-id="{{ item._id }}"
+                           title="{{localize 'DOCUMENT.Update' type='item'}}">
+                            {{ item.name }}
+                        </a>
                     </td>
                     <td>
                         <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
@@ -81,12 +86,6 @@
                     <td class="td-controls" style="padding:0px;margin:0px;">
                         <li class="item flexrow" data-item-id="{{ item._id }}">
                             <div class="item-controls">
-                                <a class="item-control"
-                                   data-edit
-                                   data-item-id="{{ item._id }}"
-                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                    <i class="fas fa-edit"></i>
-                                </a>
                                 <a class="item-control item-delete"
                                    title="{{localize 'DOCUMENT.Delete' type='item'}}">
                                     <i class="fas fa-trash"></i>
@@ -99,7 +98,8 @@
             </table>
             </div><br />
             <table class="equipped-stats">
-                <tr><td colspan=999><h3>CHEMS</h3></td></tr>
+                <tr><td colspan=999><h3>CHEMS</h3></td><td></td></tr>
+                <tr><td>Name</td><td>Qty</td><td>Properties</td></tr>
                 {{#each chems as |item id|}}
                 <tr>
                     <td style="width: 100px">
