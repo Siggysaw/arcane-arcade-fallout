@@ -13,9 +13,18 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs',
-    'systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs',	
+    'systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/npc-status.hbs',
     'systems/arcane-arcade-fallout/templates/actor/dialog/leveledup.hbs',
+
+    // Actor Items
+    'systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs',
+
+    // Actor Heading
+    'systems/arcane-arcade-fallout/templates/actor/heading/bio.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/heading/status.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/heading/image.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/heading/karmaCaps.hbs',
 
     // Item partials
     'systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs',

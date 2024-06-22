@@ -1,3 +1,4 @@
+import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 
 /**
@@ -54,15 +55,13 @@ export class FalloutZeroActorSheet extends ActorSheet {
       this._prepareItems(context)
     }
 
-	// Calculate Carry Load
-    actorData.system.carryLoad.value = actorData.items.reduce((acc, item) => {
-      const { load = 0, quantity = 1 } = item.system;
-      acc += Math.floor(load * quantity);
-      return Math.round(acc * 10) / 10;
-    }, 0) +  Math.floor(actorData.system.caps / 50)
-
-
-
+    // Calculate Carry Load
+    actorData.system.carryLoad.value =
+      actorData.items.reduce((acc, item) => {
+        const { load = 0, quantity = 1 } = item.system
+        acc += Math.floor(load * quantity)
+        return Math.round(acc * 10) / 10
+      }, 0) + Math.floor(actorData.system.caps / 50)
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData()
@@ -107,12 +106,11 @@ export class FalloutZeroActorSheet extends ActorSheet {
     const junk = []
     const traits = []
     const chems = []
-    const explosives = []	
-    const materials = []	
-    const miscItems = []	
+    const explosives = []
+    const materials = []
+    const miscItems = []
     const backgrounds = []
-    const races = []	
-
+    const races = []
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -139,7 +137,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
         junk.push(i)
       } else if (i.type === 'trait') {
         traits.push(i)
-      }else if (i.type === 'chem') {
+      } else if (i.type === 'chem') {
         chems.push(i)
       } else if (i.type === 'explosive') {
         explosives.push(i)
@@ -171,8 +169,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.explosives = explosives.map((weapon) => {
       weapon.system.thrown = this.actor.system.abilities['str'].value * weapon.system.range
       return weapon
-    })	
-    context.miscItems = miscItems	
+    })
+    context.miscItems = miscItems
     context.rangedWeapons = rangedWeapons.map((weapon) => {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
       // if (!weapon.system.range.flat) {
@@ -186,9 +184,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
       weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
       return weapon
     })
-
-
-
+    context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps
+    context.canRemoveCaps = this.actor.system.karmaCaps.length > 1
   }
 
   /* -------------------------------------------- */
@@ -196,6 +193,16 @@ export class FalloutZeroActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html)
 
+    //on change of luck ability
+    html.on('change', '[data-set-lck]', (ev) => {
+      const newLck = Number(ev.target.value)
+      const currentLck = this.actor.system.abilities.lck.value
+      if (currentLck === 9 && newLck === 10) {
+        this.actor.system.addCap()
+      } else if (currentLck === 10 && newLck === 9) {
+        this.actor.system.removeCap()
+      }
+    })
     //add to an item quantity
     html.on('click', '[data-itemaddition]', (ev) => {
       const item = ev.currentTarget.dataset.item
@@ -246,7 +253,6 @@ export class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-recycle-ap]', () => {
       this.actor.system.recycleAp()
     })
-
     //Level Up!
     html.on('click', '[data-leveledup]', () => {
       this.actor.system.levelUp()
@@ -260,18 +266,27 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const skill = ev.currentTarget.dataset.skill
       this.actor.system.skillsubtraction(skill)
     })
+    //Add Cap
+    html.on('click', '[data-add-cap]', () => {
+      this.actor.system.addCap()
+    })
+    //Remove Cap
+    html.on('click', '[data-remove-cap]', () => {
+      this.actor.system.removeCap()
+    })
     //Monster loot roll
     html.on('click', '[data-npc-loot]', () => {
-      this.actor.system.npcLoot();
+      this.actor.system.npcLoot()
     })
     //Room loot roll <--- Help! Can't make the button not appear... so at least players can't click it. Signed: Kev
     html.on('click', '[data-pc-loot]', () => {
-      if(game.user.role > 3){
-        this.actor.system.roomLoot();
-      } else{
-        alert("Nice try, Player");
+      if (game.user.role > 3) {
+        this.actor.system.roomLoot()
+      } else {
+        alert('Nice try, Player')
       }
     })
+
     // weapon roll
     html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
@@ -299,14 +314,14 @@ export class FalloutZeroActorSheet extends ActorSheet {
         { _id: weaponId, 'system.ammo.consumes.target': ev.target.value },
       ])
     })
-	
+
     // handles changing skill on weapon
     html.on('change', '[data-set-skill]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.skillBonus': ev.target.value },
       ])
-    })	
+    })
 
     // handles changing ability on weapon
     html.on('change', '[data-set-ability]', (ev) => {
@@ -314,23 +329,23 @@ export class FalloutZeroActorSheet extends ActorSheet {
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.abilityMod': ev.target.value },
       ])
-    })	
-	
+    })
+
     // Updates Weapon Decay
     html.on('change', '[data-set-decay]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.decay': ev.target.value },
       ])
-    })	
-	
+    })
+
     // Updates Expand Item Field
     html.on('change', '[data-set-itemOpen]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.itemOpen': ev.target.value },
       ])
-    })	
+    })
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
@@ -343,6 +358,13 @@ export class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '.item-delete', (ev) => {
       const li = $(ev.currentTarget).parents('.item')
       const item = this.actor.items.get(li.data('itemId'))
+
+      switch (item.type) {
+        case 'trait':
+          this._onItemDeleteTrait(item)
+          break
+      }
+
       item.delete()
       li.slideUp(200, () => this.render(false))
     })
@@ -396,6 +418,49 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Finally, create the item!
     return await Item.create(itemData, { parent: this.actor })
+  }
+
+  /**
+   * Handle the final creation of dropped Item data on the Actor.
+   * @param {Item} itemData     The item or items requested for creation
+   * @protected
+   */
+  _onDropItemCreate(itemData) {
+    console.log('_onDropItemCreate', itemData)
+    switch (itemData.type) {
+      case 'trait':
+        this._onDropItemCreateTrait(itemData)
+        return
+      default:
+        super._onDropItemCreate(itemData)
+        return
+    }
+  }
+
+  /**
+   * Handle the final creation of dropped trait Item data on the Actor.
+   * @param {Item} itemData     The item or items requested for creation
+   * @protected
+   */
+  _onDropItemCreateTrait(itemData) {
+    // If trait already exists
+    if (this.actor.items.contents.some((item) => item.name === itemData.name)) {
+      return ui.notifications.warn('Trait already exists on actor')
+    }
+
+    // Else add trait
+    super._onDropItemCreate(itemData)
+
+    // If trait is gifted, add cap
+    if (itemData.name === 'Gifted') {
+      this.actor.system.addCap()
+    }
+  }
+
+  _onItemDeleteTrait(itemData) {
+    if (itemData.name === 'Gifted') {
+      this.actor.system.removeCap()
+    }
   }
 
   /**

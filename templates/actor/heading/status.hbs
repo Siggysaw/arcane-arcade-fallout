@@ -1,0 +1,119 @@
+<table>
+  <tr>
+    <td>
+      <table class="character-status">
+        <tr>
+          <td colspan="2">
+            <span class="status-label">HP</span>
+            <i data-health="minus" class="fas fa-minus-square"></i>
+            <i data-health="plus" class="fas fa-plus-square"></i>
+            <progress
+              style="width: 80%; float: right"
+              class="statusbar health"
+              value="{{ health.value }}"
+              max="{{ health.max }}"
+            >
+              {{ health.value }}
+            </progress>
+          </td>
+        </tr>
+        <tr>
+          <td class="statusnum" colspan="2">
+            <input
+              type="number"
+              class="numberwithbuttons"
+              name="system.health.value"
+              value="{{ health.value }}"
+            />
+            /
+            <input
+              type="number"
+              class="numberwithbuttons"
+              name="system.health.max"
+              value="{{ health.max }}"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <span class="status-label">SP</span>
+            <i data-stamina="minus" class="fas fa-minus-square"></i>
+            <i data-stamina="plus" class="fas fa-plus-square"></i>
+            <progress
+              style="width: 80%; float: right"
+              class="statusbar stamina"
+              value="{{ stamina.value }}"
+              max="{{ stamina.max }}"
+            >
+              {{ stamina.value }}
+            </progress>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="statusnum">
+            <input type="number" name="system.stamina.value" value="{{ stamina.value }}" />
+            /
+
+            <input type="number" name="system.stamina.max" value="{{ stamina.max }}" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <span class="status-label">AP</span>
+            <i data-action="minus" class="fas fa-minus-square"></i>
+            <i data-action="plus" class="fas fa-plus-square"></i>
+            <progress
+              style="width: 80%; float: right"
+              class="statusbar stamina"
+              value="{{ actionPoints.value }}"
+              max="{{ actionPoints.max }}"
+            >
+              {{ actionPoints.value }}
+            </progress>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="statusnum">
+            <input
+              type="number"
+              name="system.actionPoints.value"
+              value="{{ actionPoints.value }}"
+            />
+            /
+            <input type="number" name="system.actionPoints.max" value="{{ actionPoints.max }}" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="fakebutton" data-recycle-ap title="Refresh AP During Combat">
+              <i class="fa-solid fa-recycle"></i>
+            </div>
+          </td>
+          <td>
+            <div class="fakebutton" data-refill-ap title="Refresh AP Outside of Combat">
+              <i class="fa-regular fa-arrow-up-right-dots"></i>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              id="armorClass-form"
+              type="number"
+              name="system.armorClass.value"
+              value="{{ armorClass.value }}"
+            />AC
+          </td>
+          <td>
+            <input
+              id="damageThreshold-form"
+              type="number"
+              name="system.damageThreshold.value"
+              value="{{ damageThreshold.value }}"
+            />DT
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

@@ -3,304 +3,45 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header">
       <div class="header-fields">
-        <form autocomplete="off">
-          <table>
-            <tr>
-              <td style="width: 250px" class="left">
-                <table class="bio">
-                  <tr>
-                    <td colspan="3" class="character-name" style="text-align: left">
-                      <input type="text" name="name" value="{{ actor.name }}" /><br /><br />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="bio-label"><span class="label">Race:</span></td>
-                    <td colspan="2" style="border:solid 1px">
-                        {{#each races as |item id|}}
-                        <div data-item-id="{{ item._id }}">
-                            <div class="item flexrow"
-                                 data-item-id="{{ item._id }}">
-                                <div class="item-controls">
-                                    <a data-edit
-                                       data-item-id="{{ item._id }}"
-                                       class="item-control allcaps"
-                                       title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                        {{ item.name }}
-                                    </a>
-                                    <a style="float: right; margin-right: 10px"
-                                       class="item-control item-delete"
-                                       data-item-id="{{ item._id }}"
-                                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        {{/each}}
-                    </td>
-                  </tr>
-                  <tr>
-                      <td class="bio-label"><span class="label">BG:</span></td>
-                      <td colspan="2" style="border:solid 1px">
-                          {{#each backgrounds as |item id|}}
-                          <div data-item-id="{{ item._id }}">
-                              <div class="item flexrow"
-                                   data-item-id="{{ item._id }}">
-                                  <div class="item-controls">
-                                      <a data-edit
-                                         data-item-id="{{ item._id }}"
-                                         class="item-control allcaps"
-                                         title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                          {{ item.name }}
-                                      </a>
-                                      <a style="float: right; margin-right: 10px"
-                                         class="item-control item-delete"
-                                         data-item-id="{{ item._id }}"
-                                         title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                          <i class="fas fa-trash"></i>
-                                      </a>
-                                  </div>
-                              </div>
-                          </div>
-                          {{/each}}
-                      </td>
-                  </tr>
-                  <tr>
-                    <td class="bio-label"><span class="label">Level:</span></td>
-                    <td style="margin:0px;padding:0px;vertical-align:middle;border:solid 1px" colspan="2">
-                      <span class="level">{{ system.level }}</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="bio-label"><span class="label">XP:</span></td>
-                    <td>
-                        <input style="width:50%" id="xp" type="number" name="system.xp" value="{{ system.xp }}" />
-                        <div class="fakebutton leveledUp" {{#GreaterThan system.xp 1000}} data-leveledup {{/GreaterThan}} style="width:50%;float:right;{{#LesserThan system.xp 1000}}opacity:25%;{{/LesserThan}}"" >Level Up!</div>
-                    </td>
-                  </tr>
-                  <td>
-                    <img
-                      title="Carry Load"
-                      style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
-                      src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png"
-                    />
-                  </td>
-                  <td style="vertical-align: middle" class="statusnum">
-                    <input
-                      type="number"
-                      name="system.carryLoad.value"
-                      value="{{ system.carryLoad.value }}"
-                    />
-                    /
-                    <input
-                      class="statusnum"
-                      type="number"
-                      name="system.carryLoad.max"
-                      value="{{ system.carryLoad.max }}"
-                    />
-                  </td>
-                </table>
-              </td>
-              <td>
-                <table>
-                  <tr>
-                    <td>
-                      <table class="character-status">
-                        <tr>
-                            <td colspan="2">
-                                <span class="status-label">HP</span>
-                                <i data-health="minus" class="fas fa-minus-square"></i>
-                                <i data-health="plus" class="fas fa-plus-square"></i>
-                                <progress style="width: 80%; float: right"
-                                          class="statusbar health"
-                                          value="{{ system.health.value }}"
-                                          max="{{ system.health.max }}">
-                                    {{ system.health.value }}
-                                </progress>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="statusnum" colspan="2">
-                                <input type="number"
-                                       class="numberwithbuttons"
-                                       name="system.health.value"
-                                       value="{{ system.health.value }}" />
-                                /
-                                <input type="number"
-                                       class="numberwithbuttons"
-                                       name="system.health.max"
-                                       value="{{ system.health.max }}" />
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <span class="status-label">SP</span>
-                                <i data-stamina="minus" class="fas fa-minus-square"></i>
-                                <i data-stamina="plus" class="fas fa-plus-square"></i>
-                                <progress style="width: 80%; float: right"
-                                          class="statusbar stamina"
-                                          value="{{ system.stamina.value }}"
-                                          max="{{ system.stamina.max }}">
-                                    {{ system.stamina.value }}
-                                </progress>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="statusnum">
-                                <input type="number"
-                                       name="system.stamina.value"
-                                       value="{{ system.stamina.value }}" />
-                                /
-                                
-                                <input type="number"
-                                       name="system.stamina.max"
-                                       value="{{ system.stamina.max }}"
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <span class="status-label">AP</span>
-                                <i data-action="minus" class="fas fa-minus-square"></i>
-                                <i data-action="plus" class="fas fa-plus-square"></i>
-                                <progress style="width: 80%; float: right"
-                                          class="statusbar stamina"
-                                          value="{{ system.actionPoints.value }}"
-                                          max="{{ system.actionPoints.max }}">
-                                    {{ system.actionPoints.value }}
-                                </progress>
-                            </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2" class="statusnum">
-                            <input
-                              type="number"
-                              name="system.actionPoints.value"
-                              value="{{ system.actionPoints.value }}"
-                            />
-                            /
-                            <input
-                              type="number"
-                              name="system.actionPoints.max"
-                              value="{{ system.actionPoints.max }}"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><div class="fakebutton" data-recycle-ap title="Refresh AP During Combat">
-                              <i class="fa-solid fa-recycle"></i>
-                          </td>
-                          <td><div class="fakebutton" data-refill-ap title="Refresh AP Outside of Combat">
-                              <i class="fa-regular fa-arrow-up-right-dots"></i>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input
-                              id="armorClass-form"
-                              type="number"
-                              name="system.armorClass.value"
-                              value="{{ system.armorClass.value }}"
-                            />AC
-                          </td>
-                          <td>
-                            <input
-                              id="damageThreshold-form"
-                              type="number"
-                              name="system.damageThreshold.value"
-                              value="{{ system.damageThreshold.value }}"
-                            />DT
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                    <td>
-                      <table>
-                        <tr>
-                            <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
-                                <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
-                            </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <table class="current-caps">
-                              <tr>
-                                <td>
-                                  <img
-                                    title="Bottlecaps"
-                                    style="border: none"
-                                    class="custom-icon"
-                                    src="/systems/arcane-arcade-fallout/assets/caps.webp"
-                                  />
-                                </td>
-                                <td>
-                                  <input
-                                    id="caps"
-                                    type="number"
-                                    name="system.caps"
-                                    value="{{ system.caps }}"
-                                  />
-                                </td>
-                              </tr>
-                            </table>
-                              {{#GM}}
-                            <tr>
-                              <td>
-                                  <div class = "fakebutton" data-pc-loot title="Player loots a room or container">
-                                      <i class="fa-regular">ROOM LOOT</i>
-                                  </div>
-                              </td>
-                            </tr>
-                          {{/GM}}
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </form>
+        <table>
+          <tr>
+            <td>
+              {{> 
+                "systems/arcane-arcade-fallout/templates/actor/heading/bio.hbs"
+                name=actor.name
+                races=races
+                backgrounds=backgrounds
+                level=system.level
+                xp=system.xp
+                carryLoad=system.carryLoad
+              }}
+            </td>
+            <td>
+              {{> 
+                "systems/arcane-arcade-fallout/templates/actor/heading/status.hbs"
+                health=system.health
+                stamina=system.stamina
+                actionPoints=system.actionPoints
+                armorClass=system.armorClass
+                damageThreshold=system.damageThreshold
+              }}
+            </td>
+            <td>
+              {{> 
+                "systems/arcane-arcade-fallout/templates/actor/heading/image.hbs"
+                actor=actor
+                caps=system.caps
+              }}
+            </td>
+          </tr>
+        </table>
       </div>
     </header>
-    <table style="margin-top: -40px">
-      <tr>
-        <td colspan="999" class="karmaCap">
-          <input type="checkbox" name="system.karmaCapflipped" {{checked system.karmaCapflipped}} />
-          <input
-            type="checkbox"
-            name="system.karmaCapflipped2"
-            {{checked
-            system.karmaCapflipped2}}
-          />
-          <input
-            type="checkbox"
-            name="system.karmaCapflipped3"
-            {{checked
-            system.karmaCapflipped3}}
-          />
-          <input
-            type="checkbox"
-            name="system.karmaCapflipped4"
-            {{checked
-            system.karmaCapflipped4}}
-          /><input
-            type="checkbox"
-            name="system.karmaCapflipped5"
-            {{checked
-            system.karmaCapflipped5}}
-          /><input
-            type="checkbox"
-            name="system.karmaCapflipped6"
-            {{checked
-            system.karmaCapflipped6}}
-          />
-        </td>
-      </tr>
-    </table>
+    <div class="karmaCaps">
+      {{> "systems/arcane-arcade-fallout/templates/actor/heading/karmaCaps.hbs"}}
+    </div>
     {{!-- Sheet Tab Navigation --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
+    <nav class="sheet-tabs tabs" data-group="primary">
       {{!-- Default tab is specified in actor-sheet.mjs --}}
       <a class="item" data-tab="status">STATUS</a>
       <a class="item" data-tab="perks">PERKS</a>
@@ -309,91 +50,96 @@
       <a class="item" data-tab="backpack">BACKPACK</a>
       <a class="item" data-tab="crafting">CRAFTING</a>
       {{#GM}}<a class="item" data-tab="effects">EFFECTS</a>{{/GM}}
-  </nav>
+    </nav>
 
     {{!-- Sheet Body --}}
-  <section class="sheet-body">
+    <section class="sheet-body">
       <div class="abilities flexcol">
-          <div class="ability flexrow flex-group-center"></div>
+        <div class="ability flexrow flex-group-center"></div>
       </div>
       {{!-- Owned status Tab --}}
       <div class="tab status" data-group="primary" data-tab="status">
+        <section>
+          {{!-- For the main status list, span the right two columns --}}
           <section>
-              {{!-- For the main status list, span the right two columns --}}
-              <section>
-                  <table>
-                      <tr>
-                          {{#each system.abilities as |ability key|}}
-                          <td>
-                              <label for="system.abilities.{{ key }}.value"
-                                     class="resource-label rollable flexlarge align-left"
-                                     data-rollable
-                                     data-roll="d20+{{ ability.mod }}-@penaltyTotal"
-                                     data-label="{{ ability.label }}">{{ ability.label }}</label>
-                          </td>
-                          {{/each}}
-                      </tr>
+            <table>
+              <tr>
+                {{#each system.abilities as |ability key|}}
+                <td>
+                  <label
+                    for="system.abilities.{{ key }}.value"
+                    class="resource-label rollable flexlarge align-left"
+                    data-rollable
+                    data-roll="d20+{{ ability.mod }}-@penaltyTotal"
+                    data-label="{{ ability.label }}"
+                    >{{ ability.label }}</label
+                  >
+                </td>
+                {{/each}}
+              </tr>
 
-                      <tr>
-                          {{#each system.abilities as |ability key|}}
-                          <td>
-                              <input data-set-{{key}}
-                                     type="number"
-                                     name="system.abilities.{{ key }}.value"
-                                     value="{{ ability.value }}"
-                                     data-dtype="Number"
-                                     min="0" />
-                          </td>
-                          {{/each}}
-                      </tr>
-                      <tr>
-                          {{#each system.abilities as |ability key|}}
-                          <td>
-                              <span class="ability-mod" data-label="{{ ability.label }}">
-                                  {{numberFormat ability.mod decimals=0 sign=true }}
-                              </span>
-                          </td>
-                          {{/each}}
-                      </tr>
-                  </table>
+              <tr>
+                {{#each system.abilities as |ability key|}}
+                <td>
+                  <input
+                    data-set-{{key}}
+                    type="number"
+                    name="system.abilities.{{ key }}.value"
+                    value="{{ ability.value }}"
+                    data-dtype="Number"
+                    min="0"
+                  />
+                </td>
+                {{/each}}
+              </tr>
+              <tr>
+                {{#each system.abilities as |ability key|}}
+                <td>
+                  <span class="ability-mod" data-label="{{ ability.label }}">
+                    {{numberFormat ability.mod decimals=0 sign=true }}
+                  </span>
+                </td>
+                {{/each}}
+              </tr>
+            </table>
 
-                  {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and	defined in module/helpers/templates.mjs --}}
-                  {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-status.hbs"}}
-              </section>
+            {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and	defined in module/helpers/templates.mjs --}}
+            {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-status.hbs"}}
           </section>
+        </section>
       </div>
 
       {{!-- Owned Items Tab --}}
       <div class="tab items" data-group="primary" data-tab="items">
-          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
       <div class="tab perks" data-group="primary" data-tab="perks">
-          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
       </div>
 
       {{!-- Owned Perks Tab --}}
       <div class="tab medicine" data-group="primary" data-tab="medicine">
-          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
       </div>
 
       {{!-- Backpack Tab --}}
       <div class="tab backpack" data-group="primary" data-tab="backpack">
-          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
       </div>
 
       {{!-- Crafting Tab --}}
       <div class="tab crafting" data-group="primary" data-tab="crafting">
-          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs"}}
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs"}}
       </div>
       {{#GM}}
       {{!-- Effects Tab --}}
       <div class="tab effects" data-group="primary" data-tab="effects">
-          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
       </div>
       {{/GM}}
-  </section>
+    </section>
   </div>
 </form>
 
