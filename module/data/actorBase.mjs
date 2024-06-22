@@ -6,7 +6,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     const requiredInteger = { required: true, nullable: false, integer: true }
     const schema = {}
     schema.biography = new fields.HTMLField()
-    schema.skillPool = new fields.NumberField({ initial: 6 })
+    schema.skillPool = new fields.NumberField({ initial: 0 })
+    schema.startingSkillpoints = new fields.NumberField({ initial: 6 })
     schema.totalSkillpoints = new fields.NumberField({ initial: 0 })
     schema.health = new fields.SchemaField({
       value: new fields.NumberField({
@@ -251,9 +252,9 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
 
   skilladdition(skill) {
     const actor = this.parent.system
-    const newSkillvalue = this.parent.system.skills[skill].value + 1
-    const skillField = 'system.skills.' + skill + '.value'
-    this.parent.update({ [skillField]: newSkillvalue })
+    const newSkillbase = this.parent.system.skills[skill].base + 1
+    const skillField = 'system.skills.' + skill + '.base'
+    this.parent.update({ [skillField]: newSkillbase })
 
     // update skillpool
     const updatedSkillpool = actor.skillPool - 1
@@ -261,9 +262,9 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   }
   skillsubtraction(skill) {
     const actor = this.parent.system
-    const newSkillvalue = this.parent.system.skills[skill].value - 1
-    const skillField = 'system.skills.' + skill + '.value'
-    this.parent.update({ [skillField]: newSkillvalue })
+    const newSkillbase = this.parent.system.skills[skill].base - 1
+    const skillField = 'system.skills.' + skill + '.base'
+    this.parent.update({ [skillField]: newSkillbase })
 
     // update skillpool
     const updatedSkillpool = actor.skillPool + 1

@@ -35,5 +35,23 @@ export class FalloutZeroActor extends Actor {
       }
       return options.inverse(this);
     })
+
+    // Sum Of
+    Handlebars.registerHelper('Sum', function (v1, v2) {
+      let sum = v1 + v2
+        return sum;
+    })
+    
+    const background = this.items.find(item => item.type === "background")
+    if (background) {
+      const skill1 = background.system.skill1
+      const skill2 = background.system.skill2
+      const skill3 = background.system.skill3
+      const skills = [skill1, skill2, skill3]
+      for (const skill of skills) {
+        this.system.skills[skill.value].modifiers = + 2
+      }
+      this.system.startingSkillpoints = 0
+    }
   }
 }

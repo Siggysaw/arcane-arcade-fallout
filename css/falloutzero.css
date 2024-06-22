@@ -563,8 +563,9 @@ td,
   font-size: 10pt;
 }
 .status .skill-value {
-  width: 75px;
+  width: 80px;
   font-size: 10pt;
+  letter-spacing: 0rem;
 }
 .sheet. table .status-table {
   vertical-align: top;
