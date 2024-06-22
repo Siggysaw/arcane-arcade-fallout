@@ -1,9 +1,8 @@
 <table>
     <tr>
-        {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
-    </tr>
-    <tr>
         <td>
+        {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
+       </td> <td>
             <!-- AMMO Slot -->
             <table class="item-box">
                 <tr>
@@ -15,27 +14,28 @@
                             {{#each ammos as |item id|}}
                             <div style="float:left;" data-item-id="{{ item._id }}">
                                 <div class="item flexrow"
-                                    data-item-id="{{ item._id }}">
+                                     data-item-id="{{ item._id }}">
                                     <div class="item-controls">
                                         <a data-edit
-                                        data-item-id="{{ item._id }}"
-                                        class="item-control"
-                                        title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                           data-item-id="{{ item._id }}"
+                                           class="item-control"
+                                           title="{{localize 'DOCUMENT.Update' type='item'}}">
                                             {{ item.name }} ({{ system.quantity }})
                                         </a>
                                         <a class="item-control item-delete"
-                                        data-item-id="{{ item._id }}"
-                                        title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                           data-item-id="{{ item._id }}"
+                                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             {{/each}}
-                    </td>
-                </tr>
-            </table>
-            </details>
+                        </details>
+                       </td>
+                     </tr>
+                </table>
+            
         </td>
     </tr>
 </table>
@@ -47,7 +47,6 @@
             {{#if item.system.itemEquipped}}
             <div class="item flexrow weapons-div" data-item-id="{{ item._id }}">
                 <table class="item-box weapons-table left">
-                    <tr>
                     <tr>
                         <td>
                             <details {{#if item.system.itemOpen }} open="true" {{/if}}>
@@ -155,6 +154,7 @@
                                             <select style="width:100%;" data-set-ammo data-weapon-id="{{ item._id }}">
                                                 {{selectOptions item.ammos selected=item.system.ammo.consumes.target valueAttr="_id" labelAttr="name" blank="None"}}
                                             </select>
+                                            {{ item._id}} | {{item.system.ammo.consumes.target}}
                                         </td>
                                         <td>
                                             <select style="width:100%;" data-set-skill data-weapon-id="{{ item._id }}">
@@ -204,27 +204,36 @@
                                         </td>
                                     </tr>
                                 </table>
+                                
+                                    <a style="float: right; margin-right: 10px"
+                                       class="item-control item-delete"
+                                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                    <a style="float: right; margin-right: 10px"
+                                       class="item-control"
+                                       data-edit
+                                       data-item-id="{{ item._id }}"
+                                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                        <i class="fas fa-edit"></i>
+                                        </a>
+                                      <a style="float: right; margin-right: 10px"
+                                       data-equip
+                                       data-item-id="{{ item._id }}"
+                                       class="item-control"
+                                       title="Unequip an item">
+                                        <i class="fas fa-tshirt"></i>
+                                    </a>
                             </details>
                         </td>
-                <div class="item-controls">
-                    <a style="float: right; margin-right: 10px"
-                       class="item-control item-delete"
-                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                    <a style="float: right; margin-right: 10px"
-                       class="item-control"
-                       data-edit
-                       data-item-id="{{ item._id }}"
-                       title="{{localize 'DOCUMENT.Update' type='item'}}">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                </div>
-
+                  </td>
+              </tr>
+            <tr>
+        <td>
         </td>
     </tr>
-</table>
-      </div>
+        </table>
+    </div>
 {{/if}}
 {{/each}}
     </td>
@@ -321,28 +330,34 @@
 
 
         </table>
+        <a style="float: right; margin-right: 10px"
+           class="item-control item-delete"
+           title="{{localize 'DOCUMENT.Delete' type='item'}}">
+            <i class="fas fa-trash"></i>
+        </a>
+        <a style="float: right; margin-right: 10px"
+           class="item-control"
+           data-edit
+           data-item-id="{{ item._id }}"
+           title="{{localize 'DOCUMENT.Update' type='item'}}">
+            <i class="fas fa-edit"></i>
+        </a>
+        <a style="float: right; margin-right: 10px"
+           data-equip
+           data-item-id="{{ item._id }}"
+           class="item-control"
+           title="Unequip an item">
+            <i class="fas fa-tshirt"></i>
+        </a>
         </details>
-        <div class="item-controls">
-            <a style="float: right; margin-right: 10px"
-               class="item-control item-delete"
-               title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                <i class="fas fa-trash"></i>
-            </a>
-            <a style="float: right; margin-right: 10px"
-               data-edit
-               data-item-id="{{ item._id }}"
-               class="item-control"
-               title="{{localize 'DOCUMENT.Update' type='item'}}">
-                <i class="fas fa-edit"></i>
-            </a>
-        </div>
+    </div>
 
-        </td>
+</td>
         </tr>
         </table>
     </div>
-    {{/if}}
-    {{/each}}
+{{/if}}
+{{/each}}
 </td>
   </tr>
 </table>

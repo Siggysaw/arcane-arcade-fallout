@@ -607,6 +607,9 @@ td,
   padding: 5px;
   cursor: pointer;
 }
+.window-app .window-content div .nobackground {
+  background: none;
+}
 .sheet .fakebutton:hover,
 .sheet button:hover {
   border: #1d5427;

@@ -39,43 +39,38 @@
                                         </td>
                                         <td colspan="999" style="border-left:none;">
                                             <progress style="width:100%;padding-right:5px;"
-                                                        class="statusbar stamina"
-                                                        value="{{item.system.decay}}"
-                                                        max="10">
+                                                      class="statusbar stamina"
+                                                      value="{{item.system.decay}}"
+                                                      max="10">
                                                 {{item.system.decay}}
                                             </progress>
                                         </td>
                                     </tr>
                                 </table>
-                            </details>
-                            <div class="item-controls">
                                 <a style="float: right; margin-right: 10px"
-                                    class="item-control item-delete"
-                                    data-item-id="{{ item._id }}"
-                                    title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                   class="item-control item-delete"
+                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
                                     <i class="fas fa-trash"></i>
                                 </a>
                                 <a style="float: right; margin-right: 10px"
-                                    data-edit
-                                    data-item-id="{{ item._id }}"
-                                    class="item-control"
-                                    title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                   class="item-control"
+                                   data-edit
+                                   data-item-id="{{ item._id }}"
+                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <a style="float: right; margin-right: 10px"
-                                    data-equip
-                                    data-item-id="{{ item._id }}"
-                                    class="item-control"
-                                    title="Unequip an item">
+                                   data-equip
+                                   data-item-id="{{ item._id }}"
+                                   class="item-control"
+                                   title="Unequip an item">
                                     <i class="fas fa-tshirt"></i>
                                 </a>
+                            </details>
                             </div>
                         </td>
                     </tr>
-                    
                 </table>
-                
             </div>
         {{/if}}
     {{/each}}
-</td>

@@ -29,9 +29,9 @@
                   </td>
                   <td class="skill-label" title="Base: {{skill.base}} Modifier: {{skill.modifiers}}">{{ skill.label }}</td>
                   <td class="skill-value">
-                      <i style="padding:3px;" data-skillsubtraction data-skill="{{skill.id}}" class="fas fa-minus-square"></i>
+                      <i style="padding:3px;" data-skillsubtraction data-skill="{{skill.id}}" class="fas fa-minus-square fakebutton nobackground"></i>
                       {{#Sum skill.modifiers skill.base}}{{/Sum}}
-                      <i style="padding:3px;" data-skilladdition data-skill="{{skill.id}}" class="fas fa-plus-square"></i>
+                      <i style="padding:3px;" data-skilladdition data-skill="{{skill.id}}" class="fas fa-plus-square fakebutton nobackground"></i>
                   </td>
               </tr>
               {{/each}}
