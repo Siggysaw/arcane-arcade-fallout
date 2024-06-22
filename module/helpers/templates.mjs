@@ -20,6 +20,11 @@ export const preloadHandlebarsTemplates = async function () {
     // Actor Items
     'systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs',
 
+    // Actor Heading
+    'systems/arcane-arcade-fallout/templates/actor/heading/bio.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/heading/status.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/heading/karmaCaps.hbs',
+
     // Item partials
     'systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs',
   ])
