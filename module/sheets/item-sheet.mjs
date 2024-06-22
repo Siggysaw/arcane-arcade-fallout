@@ -55,14 +55,22 @@ export class FalloutZeroItemSheet extends ItemSheet {
     return context
   }
 //Upgrades where no parameters needs to change
- async updateUpgradeStatus(newValue,desc,slots){
+ async checkEquip(myUpgrade,newValue,oldValue){
+  let equipped = false;
   
+  if (this.object.system.itemEquipped){
+    equipped = true;
+    await this.unequipItemStats(this.object)
+  }
+  let myItem = await this.changeUpgrade(myUpgrade,newValue,oldValue);
+  if (equipped){
+    await this.equipItemStats(myItem) //Need to pass the item as an object parameter in the function! Otherwise, it takes "this" which is outdated by that point.
+  }
  }
 
 //Modify upgrades on an armor
   async changeUpgrade(myUpgrade,newValue,oldValue){
     let desc = `Nothing happens at Rank 0`;
-    let actorSkill = 0;
     let slots = this.object.system.slots.value;
     let myPack = game.packs[0];
     let dt = this.object.system.damageThreshold.value;
@@ -100,7 +108,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
         if(myPack.find(u => u.name == "Camouflage" + newValue)){upgradeID=myPack.find(u => u.name == "Camouflage" + newValue)._id};
         //update Camouflage
         if (newValue>oldValue){
-          this.object.update({
+          await this.object.update({
             'system.upgrades.camouflage._id' : upgradeID, 
             'system.upgrades.camouflage.name' : 'camo',
             'system.upgrades.camouflage.auto' : auto,
@@ -110,19 +118,13 @@ export class FalloutZeroItemSheet extends ItemSheet {
             'system.slots.value' : slots
           });
         } else{
-          this.object.update({
+          await this.object.update({
             'system.upgrades.camouflage.value' : newValue, 
             'system.upgrades.camouflage.desc' : desc, 
             'system.upgrades.camouflage.auto' : auto,
             'system.charMod.skills.sneak.modifiers' : sneakAmount,
             'system.slots.value' : slots
           });
-        }
-        //This modifies on the actor only if equipped (+ or -)
-        //Custom updates are written long-form to avoid updating multiple times the same objects, which could cause bugs
-        actorSkill = this.actor.system.skills.sneak.value + 3*(newValue-oldValue);
-        if (this.object.isequipped) {
-          this.actor.update({'.system.skills.sneak.modifiers' : actorSkill});
         }
         break;
       case 'light':
@@ -144,7 +146,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
               load = originalLoad - 5;
               strReq = this.object.system.strReq.value - 1;
               dt -= 1;
-              this.object.update({
+              await this.object.update({
                 'system.upgrades.light._id' : upgradeID,  
                 'system.upgrades.light.name' : 'light',
                 'system.upgrades.light.auto' : auto,
@@ -161,7 +163,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
             else{
               originalLoad = this.object.system.upgrades.light.originalLoad;
               load = originalLoad - 5;
-              this.object.update({
+              await this.object.update({
                 'system.upgrades.light.value' : newValue, 
                 'system.upgrades.light.desc' : desc,
                 'system.upgrades.light.auto' : auto,
@@ -175,7 +177,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
             auto = `Load-15(min3), Str Req -1, DT-1` 
             if(newValue>oldValue){
               load = Math.max(this.object.system.upgrades.light.originalLoad-10,3)
-              this.object.update({
+              await this.object.update({
                 'system.upgrades.light.value' : newValue, 
                 'system.upgrades.light.desc' : desc,
                 'system.upgrades.light.auto' : auto,
@@ -183,7 +185,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
               });
             }
             else{
-              this.object.update({
+              await this.object.update({
                 'system.upgrades.light.value' : newValue, 
                 'system.upgrades.light.desc' : desc,
               });
@@ -192,7 +194,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
             //Light3
           case 3 :
             desc = `Load reduced by 15 (min of 3). Strength req. reduced by 1. DT reduced by 1. If you spend at least 4 AP on your turn to move, you can move an additional 10 feet.`
-            this.object.update({
+            await this.object.update({
               'system.upgrades.light.value' : newValue, 
               'system.upgrades.light.desc' : desc,
             });
@@ -203,7 +205,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
             load = this.object.system.upgrades.light.originalLoad;
             strReq = this.object.system.strReq.value + 1;
             dt += 1;
-            this.object.update({
+            await this.object.update({
               'system.upgrades.light.value' : newValue, 
               'system.upgrades.light.desc' : desc,
               'system.load' : load,
@@ -220,7 +222,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
           case 1 :
           desc = `When you take damage from an area of effect, your DT is doubled.`
           if (newValue > oldValue){
-            this.object.update({
+            await this.object.update({
               'system.upgrades.fitted._id' : upgradeID,  
               'system.upgrades.fitted.name' : 'fit',
               'system.upgrades.fitted.auto' : auto,
@@ -230,7 +232,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
             });
           } else {
             auto = `No automated effect`
-            this.object.update({
+            await this.object.update({
               'system.upgrades.fitted.value' : newValue, 
               'system.upgrades.fitted.desc' : desc,
               'system.upgrades.fitted.auto' : auto,
@@ -242,14 +244,14 @@ export class FalloutZeroItemSheet extends ItemSheet {
           desc = `When you take damage from an area of effect, your DT is doubled. Your maximum stamina points increase by a number equal to your level.`
           auto = `+10 Max STA`
           if (newValue>oldValue){
-            this.object.update({
+            await this.object.update({
               'system.upgrades.fitted.value' : newValue, 
               'system.upgrades.fitted.desc' : desc,
               'system.upgrades.fitted.auto' : auto,
               'system.charMod.stamina.modifiers' : this.actor.level,
             });
           } else{
-            this.object.update({
+            await this.object.update({
               'system.upgrades.fitted.value' : newValue, 
               'system.upgrades.fitted.desc' : desc,
             });
@@ -257,7 +259,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
           break;
         case 3:
           desc = `When you take damage from an area of effect, your DT is doubled. Your maximum stamina points increase by a number equal to your level. You have advantage on combat sequence rolls. If you already have advantage, you gain a +5.`
-            this.object.update({
+            await this.object.update({
               'system.upgrades.fitted.value' : newValue, 
               'system.upgrades.fitted.desc' : desc,
             });
@@ -265,7 +267,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
         default :
           desc = 'Nothing happens at Rank 0.'
           auto = `No automated effect`
-          this.object.update({
+          await this.object.update({
             'system.upgrades.fitted.value' : newValue, 
             'system.upgrades.fitted.desc' : desc,
             'system.upgrades.fitted.auto' : auto,
@@ -374,31 +376,31 @@ export class FalloutZeroItemSheet extends ItemSheet {
       if(myPack.find(u => u.name == "Reinforced" + newValue)){upgradeID=myPack.find(u => u.name == "Reinforced" + newValue)._id};
         switch (newValue){
           case 1 :
-            desc = `+1 bonus to DT`
+            desc = `+1 bonus to DT`;
             if(newValue>oldValue){dt+=1}
             else{dt-=1}
-            auto = `+1 bonus to DT`
+            auto = `+1 bonus to DT`;
             break;
           case 2: 
-            desc = `+2 bonus to DT`
+            desc = `+2 bonus to DT`;
             if(newValue>oldValue){dt+=1}
             else{dt-=2}
-            auto = `+2 bonus to DT`
+            auto = `+2 bonus to DT`;
             break;
           case 3:
-            desc = `+4 bonus to DT`
-            dt += 2
-            auto = `+4 bonus to DT`
+            desc = `+4 bonus to DT`;
+            dt += 2;
+            auto = `+4 bonus to DT`;
             break;
           default:
-            desc = ``
+            desc = ``;
             dt -= 1;
-            auto = `No automated effect`
+            auto = `No automated effect`;
             break;
         }
         await this.object.update({
           'system.upgrades.reinforced._id' : upgradeID,
-          'system.upgrades.reinforced.name' : 'pocket',
+          'system.upgrades.reinforced.name' : 'reinf',
           'system.upgrades.reinforced.auto' : auto,
           'system.upgrades.reinforced.desc' : desc,
           'system.upgrades.reinforced.value' : newValue,
@@ -424,15 +426,15 @@ export class FalloutZeroItemSheet extends ItemSheet {
           'system.armorClass.value' : ac,
           'system.slots.value' : slots
         });
-        break; 
+        break;
     }
+    return this.object;
   }
  
 
   //Equip item upgrades (right now, it's just armor upgrades)
-  equipItemStats (){
+  async equipItemStats (myItem){
     const myActor = this.actor.system;
-    const myItem = this.object;
     let AC = myItem.system.armorClass.value;
     let DT = myItem.system.damageThreshold.value;
     
@@ -443,10 +445,19 @@ export class FalloutZeroItemSheet extends ItemSheet {
     if(myItem.system.charMod){
       Object.assign(everyMod.system,myItem.system.charMod)
     }
-    console.log(everyMod)
+    const flattenedItem = flattenObject(everyMod)
+    console.log(flattenedItem)
+    //const newObject = {}
+    for(var path of Object.keys(flattenedItem)){
+      flattenedItem[path] =  await this.getValue(path,this.actor)   + flattenedItem[path]
+    }
     this.actor.update(everyMod)
+    if (flattenedItem['system.penalties.radDC']){
+      myActor.penalties.radDC = flattenedItem.system.penalties.radDC.value
+    }
   }
 
+  //Spits out each address that leads to values
   flattenObject(obj) {
     if (typeof obj !== 'object') {
       return [];
@@ -454,33 +465,33 @@ export class FalloutZeroItemSheet extends ItemSheet {
     
     let paths = [];
     for (let key in obj) {
-      let val = Number(obj[key]);
+      let val = obj[key];
       if (typeof val === 'object') {
         let subPaths = flattenObject(val);
         subPaths.forEach(e => {
           paths.push({
             path: [key, e.path].join('.'),
-            value: Number(e.value)
+            value: e.value
           });
         });
       } else {
-        let path = { path: key, value: Number(val) };
+        let path = { path: key, value: val };
         paths.push(path);
       }
     }
     return paths;
   }
 
-  async getValue (path, obj) { path.split('.').reduce((acc, c) => acc && acc[c], obj);}
+  async getValue (path,obj) {
+    let myPath = path.split('.').reduce((acc, c) => acc && acc[c], obj);
+    return myPath;
+  }
 
-  async unequipItemStats (){
-    const myActor = this.actor.system;
-    const myItem = this.object;
-    let AC = 10; //by default will be 10, but we'll need that to be BASE in case there are other mods
-    let DT = myActor.damageThreshold.value - myItem.system.damageThreshold.value;
-    
+  async unequipItemStats (myItem){
+    let AC = myItem.system.armorClass.value; //by default will be 10, but we'll need that to be BASE in case there are other modifiers
+    let DT = myItem.system.damageThreshold.value;
     const everyMod = { system :
-      {'armorClass.value' : AC,
+      {'armorClass.value' : AC-10,
       'damageThreshold.value' : DT}
     };
     if(myItem.system.charMod){  
@@ -488,15 +499,37 @@ export class FalloutZeroItemSheet extends ItemSheet {
     }
     const flattenedItem = flattenObject(everyMod)
     console.log(flattenedItem)
-    const newObject = {}
+    //const newObject = {}
     for(var path of Object.keys(flattenedItem)){
-      console.log(this.actor)
-      newObject[path] = await this.getValue('system.skills.sneak.modifiers',this.actor)   - flattenedItem[path] 
-      console.log(newObject[path])
+      flattenedItem[path] =  await this.getValue(path,this.actor)-flattenedItem[path] 
     }
-    //console.log(newObject)
-    this.actor.update(newObject);
+    this.actor.update(flattenedItem);
   }
+
+  async swapArmors (otherArmor) {
+    await this.unequipItemStats(otherArmor)
+    otherArmor.update({'system.itemEquipped' : false})
+    await this.equipItemStats(this.object)
+  }
+
+  //Get original state of weapon
+  changeEquipStatus (myItem){
+    if (myItem.type == "armor"){
+      if (myItem.system.itemEquipped){
+        this.unequipItemStats(myItem)
+      }else {
+        let otherArmor = this.actor.items.find(u => u.system.itemEquipped == true)
+        if (otherArmor){
+          this.swapArmors(otherArmor);
+        }else{
+          this.equipItemStats(myItem)
+        }
+      }
+    }
+    
+  }
+  
+  
   
   /* -------------------------------------------- */
 
@@ -517,12 +550,9 @@ export class FalloutZeroItemSheet extends ItemSheet {
          oldValue = this.object.system.upgrades[myUpgrade].value;
       }
       if (oldValue!=0){
-        //UNEQUIP
         let newValue = oldValue - 1;
-        this.changeUpgrade(myUpgrade,newValue,oldValue);
-        //EQUIP
+        this.checkEquip(myUpgrade,newValue,oldValue)
       }
-      
     })
 
     //Increase Upgrade Value
@@ -534,27 +564,16 @@ export class FalloutZeroItemSheet extends ItemSheet {
          oldValue = this.object.system.upgrades[myUpgrade].value;
       }
       if (oldValue!=3){
-        //UNEQUIP this.cancelItemUpgrades()
         let newValue = oldValue + 1;
         if(this.object.system.slots.value > 0 || newValue != 1){
-          this.changeUpgrade(myUpgrade,newValue,oldValue);
+          this.checkEquip(myUpgrade,newValue,oldValue)
         }
-        //EQUIP this.applyItemUpgrades()
       }
     })
 
-    
-
-
-
     //On equip, calculate AC and other things that improve character's stats
     html.on('change','[equipItem]',() => {
-      //Get original state of weapon
-      if (this.object.system.itemEquipped && this.object.type == "armor"){
-        this.unequipItemStats()
-      } else { 
-        this.equipItemStats()
-      }
+      this.changeEquipStatus(this.object)
     })
 
     // Roll handlers, click handlers, etc. would go here.
