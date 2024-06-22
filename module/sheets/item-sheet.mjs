@@ -106,7 +106,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
             'system.upgrades.camouflage.auto' : auto,
             'system.upgrades.camouflage.desc' : desc, 
             'system.upgrades.camouflage.value' : newValue, 
-            'system.charMod.system.skills.sneak.mod' : sneakAmount,
+            'system.charMod.skills.sneak.modifiers' : sneakAmount,
             'system.slots.value' : slots
           });
         } else{
@@ -114,7 +114,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
             'system.upgrades.camouflage.value' : newValue, 
             'system.upgrades.camouflage.desc' : desc, 
             'system.upgrades.camouflage.auto' : auto,
-            'system.charMod.system.skills.sneak.mod' : sneakAmount,
+            'system.charMod.skills.sneak.modifiers' : sneakAmount,
             'system.slots.value' : slots
           });
         }
@@ -122,7 +122,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
         //Custom updates are written long-form to avoid updating multiple times the same objects, which could cause bugs
         actorSkill = this.actor.system.skills.sneak.value + 3*(newValue-oldValue);
         if (this.object.isequipped) {
-          this.actor.update({'.system.skills.sneak.mod' : actorSkill});
+          this.actor.update({'.system.skills.sneak.modifiers' : actorSkill});
         }
         break;
       case 'light':
@@ -234,7 +234,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
               'system.upgrades.fitted.value' : newValue, 
               'system.upgrades.fitted.desc' : desc,
               'system.upgrades.fitted.auto' : auto,
-              'system.charMod.system.stamina.modifiers' : 0,
+              'system.charMod.stamina.modifiers' : 0,
             });
           }
           break;
@@ -246,7 +246,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
               'system.upgrades.fitted.value' : newValue, 
               'system.upgrades.fitted.desc' : desc,
               'system.upgrades.fitted.auto' : auto,
-              'system.charMod.system.stamina.modifiers' : this.actor.level,
+              'system.charMod.stamina.modifiers' : this.actor.level,
             });
           } else{
             this.object.update({
@@ -285,7 +285,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
           'system.upgrades.leadlined.auto' : auto,
           'system.upgrades.leadlined.desc' : desc,
           'system.upgrades.leadlined.value' : newValue, 
-          'system.charMod.system.penalties.radDC.modifiers' : -2*newValue,
+          'system.charMod.penalties.radDC.value' : -2*newValue,
           'system.slots.value' : slots
         });
         break;
@@ -366,7 +366,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
           'system.upgrades.pocketed.auto' : auto,
           'system.upgrades.pocketed.desc' : desc,
           'system.upgrades.pocketed.value' : newValue, 
-          'system.charMod.system.carryLoad.modifiers' : charLoad,
+          'system.charMod.carryLoad.max' : charLoad,
           'system.slots.value' : slots
         });
         break;      
@@ -414,7 +414,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
           if (newValue>oldValue){
             ac += 1
           }else {ac -= 1}
-        }
+        } else {ac -= 1}
         await this.object.update({
           'system.upgrades.hardened._id' : upgradeID,
           'system.upgrades.hardened.name' : 'hard',
@@ -430,37 +430,74 @@ export class FalloutZeroItemSheet extends ItemSheet {
  
 
   //Equip item upgrades (right now, it's just armor upgrades)
-  async equipItemStats (){
+  equipItemStats (){
     const myActor = this.actor.system;
     const myItem = this.object;
-    let AC = myActor.armorClass.value;
-    let DT = myActor.damageThreshold.value
+    let AC = myItem.system.armorClass.value;
+    let DT = myItem.system.damageThreshold.value;
     
-    //Those are always present in armor
-    if (myActor.armorClass.base){AC = myActor.armorClass.base.value} //in case we don't have a base yet
-    if (myActor.damageThreshold.modifiers){AC = myActor.damageThreshold.value} //in case we don't have a base yet
-    AC = myItem.system.armorClass.value
-    DT = myItem.system.damageThreshold.value
-    //I could make a fixed list, but that would include all skills, penalties, etc. with specific addresses to update
-    //Since I can program addresses to be the same, I want to be able to iterate through whatever is in charMod
-    const everyMod = {
-      'system.armorClass.value' : AC,
-      'system.damageThreshold.value' : DT
+    const everyMod = { system :
+      {'armorClass.value' : AC,
+      'damageThreshold.value' : DT}
     };
     if(myItem.system.charMod){
-      await Object.assign(everyMod,myItem.system.charMod.system)
+      Object.assign(everyMod.system,myItem.system.charMod)
     }
-    await this.actor.update(everyMod)
+    console.log(everyMod)
+    this.actor.update(everyMod)
   }
 
+  flattenObject(obj) {
+    if (typeof obj !== 'object') {
+      return [];
+    }
+    
+    let paths = [];
+    for (let key in obj) {
+      let val = Number(obj[key]);
+      if (typeof val === 'object') {
+        let subPaths = flattenObject(val);
+        subPaths.forEach(e => {
+          paths.push({
+            path: [key, e.path].join('.'),
+            value: Number(e.value)
+          });
+        });
+      } else {
+        let path = { path: key, value: Number(val) };
+        paths.push(path);
+      }
+    }
+    return paths;
+  }
+
+  async getValue (path, obj) { path.split('.').reduce((acc, c) => acc && acc[c], obj);}
+
+  async unequipItemStats (){
+    const myActor = this.actor.system;
+    const myItem = this.object;
+    let AC = 10; //by default will be 10, but we'll need that to be BASE in case there are other mods
+    let DT = myActor.damageThreshold.value - myItem.system.damageThreshold.value;
+    
+    const everyMod = { system :
+      {'armorClass.value' : AC,
+      'damageThreshold.value' : DT}
+    };
+    if(myItem.system.charMod){  
+      Object.assign(everyMod.system,myItem.system.charMod)
+    }
+    const flattenedItem = flattenObject(everyMod)
+    console.log(flattenedItem)
+    const newObject = {}
+    for(var path of Object.keys(flattenedItem)){
+      console.log(this.actor)
+      newObject[path] = await this.getValue('system.skills.sneak.modifiers',this.actor)   - flattenedItem[path] 
+      console.log(newObject[path])
+    }
+    //console.log(newObject)
+    this.actor.update(newObject);
+  }
   
-
-
-
-  unequipItemStats(){
-    console.log("unequipped")
-  }
-
   /* -------------------------------------------- */
 
   /** @override */
