@@ -48,24 +48,33 @@
                                     </tr>
                                 </table>
                             </details>
+                            <div class="item-controls">
+                                <a style="float: right; margin-right: 10px"
+                                    class="item-control item-delete"
+                                    data-item-id="{{ item._id }}"
+                                    title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                                <a style="float: right; margin-right: 10px"
+                                    data-edit
+                                    data-item-id="{{ item._id }}"
+                                    class="item-control"
+                                    title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a style="float: right; margin-right: 10px"
+                                    data-equip
+                                    data-item-id="{{ item._id }}"
+                                    class="item-control"
+                                    title="Unequip an item">
+                                    <i class="fas fa-tshirt"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
+                    
                 </table>
-                <div class="item-controls">
-                    <a style="float: right; margin-right: 10px"
-                        class="item-control item-delete"
-                        data-item-id="{{ item._id }}"
-                        title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                    <a style="float: right; margin-right: 10px"
-                        data-edit
-                        data-item-id="{{ item._id }}"
-                        class="item-control"
-                        title="{{localize 'DOCUMENT.Update' type='item'}}">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                </div>
+                
             </div>
         {{/if}}
     {{/each}}

@@ -11,9 +11,16 @@
                        data-item-id="{{ item._id }}"
                        title="{{localize 'DOCUMENT.Update' type='item'}}">
                         {{item.name}}({{item.system.quantity}})
-                    </a>                <a class="item-control item-delete"
-                                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                    </a>                
+                    <a class="item-control item-delete"title="{{localize 'DOCUMENT.Delete' type='item'}}">
                         <i class="fas fa-trash"></i>
+                    </a>
+                    <a style="float: right; margin-left: 10px"
+                        data-equip
+                        data-item-id="{{ item._id }}"
+                        class="item-control"
+                        title="Equip a weapon">
+                        <i class="fas fa-tshirt"></i>
                     </a>
                 </div>
             </li>
@@ -32,6 +39,13 @@
                                            title="{{localize 'DOCUMENT.Delete' type='item'}}">
                         <i class="fas fa-trash"></i>
                     </a>
+                    <a style="float: right; margin-left: 10px"
+                        data-equip
+                        data-item-id="{{ item._id }}"
+                        class="item-control"
+                        title="Equip a weapon">
+                        <i class="fas fa-tshirt"></i>
+                    </a>
                 </div>
             </li>
             {{/unless}}
@@ -48,6 +62,13 @@
                     </a>                <a class="item-control item-delete"
                                            title="{{localize 'DOCUMENT.Delete' type='item'}}">
                         <i class="fas fa-trash"></i>
+                    </a>
+                    <a style="float: right; margin-left: 10px"
+                        data-equip
+                        data-item-id="{{ item._id }}"
+                        class="item-control"
+                        title="Equip an armor">
+                        <i class="fas fa-tshirt"></i>
                     </a>
                 </div>
             </li>

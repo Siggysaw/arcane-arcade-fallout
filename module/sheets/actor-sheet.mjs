@@ -301,6 +301,14 @@ export class FalloutZeroActorSheet extends ActorSheet {
       item.sheet.render(true)
     })
 
+    // Equip or unequip item
+    html.on('click', '[data-equip]', (ev) => {
+      const itemId = ev.currentTarget.dataset.itemId;
+      const item = this.actor.items.get(itemId);
+      item.update({'system.itemEquipped' : !item.system.itemEquipped})
+      item.sheet.changeEquipStatus(item);
+    })
+
     // handles weapon reload
     html.on('click', '[data-reload]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
@@ -362,6 +370,12 @@ export class FalloutZeroActorSheet extends ActorSheet {
       switch (item.type) {
         case 'trait':
           this._onItemDeleteTrait(item)
+          break
+        case 'armor':
+          if (item.system.itemEquipped){
+            console.log("Yes")
+            item.sheet.unequipItemStats(item)
+          }
           break
       }
 

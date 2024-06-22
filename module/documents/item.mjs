@@ -16,7 +16,7 @@ export class FalloutZeroItem extends Item {
   _preCreate(data, options, user){
     super._preCreate(data,options,user)
     if(this.parent){
-      let myItem = this.parent.items.find(u => u.name == this.name);
+      let myItem = this.parent.items.find(u => u.name == this.name && u.type == this.type);
       if (this.system.itemEquipped){
         console.log(this);
         this.system.itemEquipped = false;
