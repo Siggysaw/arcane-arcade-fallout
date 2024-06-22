@@ -1,0 +1,36 @@
+{
+  "name": "{{title}}",
+  "type": "upgrade",
+  "img": "icons/anvil.png",
+  "system": {
+    "requirement": {
+      "value": "{{requirement}}"
+    },
+    "repeat": {
+      "value": "{{repeat}}"
+    },
+    "charMod" : {
+      "skills": ""
+    },
+    "upgrades" : [
+      1,2,3,4,5
+    ],
+    "description": "{{description}}"
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "exportSource": {
+      "world": "fallout-ttrpg",
+      "system": "arcane-arcade-fallout",
+      "coreVersion": "11.315",
+      "systemVersion": "1.0.0"
+    }
+  },
+  "_stats": {
+    "systemId": "arcane-arcade-fallout",
+    "systemVersion": "1.0.0",
+    "coreVersion": "11.315",
+    "lastModifiedBy": "gzYpjX3Fqlrk2eh5"
+  }
+}

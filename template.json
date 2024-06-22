@@ -21,7 +21,8 @@
       "chem",
       "junkItem",
       "material",
-      "miscItem"
+      "miscItem",
+      "upgrade"
     ],
     "htmlFields": ["description"]
   }
