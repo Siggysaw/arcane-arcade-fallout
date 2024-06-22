@@ -1,0 +1,15 @@
+<div class="addRemoveCaps">
+    <button type="button" {{#unless canAddCaps}}disabled{{/unless}} data-add-cap>
+        <i class="fas fa-plus-square"></i>
+    </button>
+    <button type="button" {{#unless canRemoveCaps}}disabled{{/unless}} data-remove-cap>
+        <i class="fas fa-minus-square"></i>
+    </button>
+</div>
+{{#each system.karmaCaps as |flipped key|}}
+<input
+    type="checkbox"
+    name="system.karmaCaps.{{ key }}"
+    {{checked flipped}}
+/>
+{{/each}}
