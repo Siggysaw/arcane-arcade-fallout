@@ -60,15 +60,15 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
         obj[ability] = new fields.SchemaField({
           value: new fields.NumberField({
             ...requiredInteger,
-            initial: 5
+            initial: 5,
           }),
           mod: new fields.NumberField({
             ...requiredInteger,
-            initial: 0
+            initial: 0,
           }),
           base: new fields.NumberField({
             ...requiredInteger,
-            initial: 0
+            initial: 0,
           }),
           modifiers: new fields.NumberField({
             ...requiredInteger,
@@ -91,11 +91,11 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           ability: new fields.ArrayField(new fields.StringField({ required: true })),
           value: new fields.NumberField({
             ...requiredInteger,
-            initial: 0
+            initial: 0,
           }),
           base: new fields.NumberField({
             ...requiredInteger,
-            initial: 0
+            initial: 0,
           }),
           modifiers: new fields.NumberField({
             ...requiredInteger,
@@ -441,9 +441,11 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     // roll to hit
     const dice = hasDisadvantage ? '2d20kl' : 'd20'
 
+    const skillBonusValue = this.skills[weapon.system.skillBonus].value
+    const abilityMod = this.abilities[weapon.system.abilityMod].mod
+    const decayValue = (weapon.system.decay - 10) * -1
     let roll = new Roll(
-      `${dice} + ${this.skills[weapon.system.skillBonus].value} + ${this.abilities[weapon.system.abilityMod].mod} 
-	  - ${this.penaltyTotal} - ${(weapon.system.decay - 10) * -1}+${this.luckmod}`,
+      `${dice} + ${skillBonusValue} + ${abilityMod} - ${this.penaltyTotal} - ${decayValue} + ${this.luckmod}`,
       this.getRollData(),
     )
     roll.toMessage({
