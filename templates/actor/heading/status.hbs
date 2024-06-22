@@ -115,42 +115,5 @@
         </tr>
       </table>
     </td>
-    <td>
-      <table>
-        <tr>
-          <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
-            <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <table class="current-caps">
-              <tr>
-                <td>
-                  <img
-                    title="Bottlecaps"
-                    style="border: none"
-                    class="custom-icon"
-                    src="/systems/arcane-arcade-fallout/assets/caps.webp"
-                  />
-                </td>
-                <td>
-                  <input id="caps" type="number" name="system.caps" value="{{ caps }}" />
-                </td>
-              </tr>
-            </table>
-            {{#GM}}
-            <tr>
-              <td>
-                <div class="fakebutton" data-pc-loot title="Player loots a room or container">
-                  <i class="fa-regular">ROOM LOOT</i>
-                </div>
-              </td>
-            </tr>
-            {{/GM}}
-          </td>
-        </tr>
-      </table>
-    </td>
   </tr>
 </table>

@@ -1,102 +1,100 @@
-<td style="width: 250px" class="left">
-    <table class="bio">
-        <tr>
-            <td colspan="3" class="character-name" style="text-align: left">
-                <input type="text" name="name" value="{{ name }}" /><br /><br />
-            </td>
-        </tr>
-        <tr>
-            <td class="bio-label"><span class="label">Race:</span></td>
-            <td colspan="2" style="border:solid 1px">
-                {{#each races as |item id|}}
-                <div data-item-id="{{ item._id }}">
-                    <div class="item flexrow"
-                            data-item-id="{{ item._id }}">
-                        <div class="item-controls">
-                            <a
-                                data-edit
-                                data-item-id="{{ item._id }}"
-                                class="item-control allcaps"
-                                title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                {{ item.name }}
-                            </a>
-                            <a style="float: right; margin-right: 10px"
-                                class="item-control item-delete"
-                                data-item-id="{{ item._id }}"
-                                title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {{/each}}
-            </td>
-        </tr>
-        <tr>
-            <td class="bio-label"><span class="label">BG:</span></td>
-            <td colspan="2" style="border:solid 1px">
-                {{#each backgrounds as |item id|}}
-                <div data-item-id="{{ item._id }}">
-                    <div class="item flexrow"
+<table class="bio">
+    <tr>
+        <td colspan="3" class="character-name" style="text-align: left">
+            <input type="text" name="name" value="{{ name }}" /><br /><br />
+        </td>
+    </tr>
+    <tr>
+        <td class="bio-label"><span class="label">Race:</span></td>
+        <td colspan="2" style="border:solid 1px">
+            {{#each races as |item id|}}
+            <div data-item-id="{{ item._id }}">
+                <div class="item flexrow"
                         data-item-id="{{ item._id }}">
-                        <div class="item-controls">
-                            <a data-edit
-                                data-item-id="{{ item._id }}"
-                                class="item-control allcaps"
-                                title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                {{ item.name }}
-                            </a>
-                            <a style="float: right; margin-right: 10px"
-                                class="item-control item-delete"
-                                data-item-id="{{ item._id }}"
-                                title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </div>
+                    <div class="item-controls">
+                        <a
+                            data-edit
+                            data-item-id="{{ item._id }}"
+                            class="item-control allcaps"
+                            title="{{localize 'DOCUMENT.Update' type='item'}}">
+                            {{ item.name }}
+                        </a>
+                        <a style="float: right; margin-right: 10px"
+                            class="item-control item-delete"
+                            data-item-id="{{ item._id }}"
+                            title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                            <i class="fas fa-trash"></i>
+                        </a>
                     </div>
                 </div>
-                {{/each}}
-            </td>
-        </tr>
-        <tr>
-            <td class="bio-label"><span class="label">Level:</span></td>
-            <td style="margin:0px;padding:0px;vertical-align:middle;border:solid 1px" colspan="2">
-                <span class="level">{{ level }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="bio-label"><span class="label">XP:</span></td>
-            <td>
-                <input style="width:50%" id="xp" type="number" name="system.xp" value="{{ xp }}" />
-                <div
-                    class="fakebutton leveledUp"
-                    {{#GreaterThan xp 1000}} data-leveledup {{/GreaterThan}}
-                    style="width:50%;float:right;{{#LesserThan xp 1000}}opacity:25%;{{/LesserThan}}"
-                >
-                    Level Up!
+            </div>
+            {{/each}}
+        </td>
+    </tr>
+    <tr>
+        <td class="bio-label"><span class="label">BG:</span></td>
+        <td colspan="2" style="border:solid 1px">
+            {{#each backgrounds as |item id|}}
+            <div data-item-id="{{ item._id }}">
+                <div class="item flexrow"
+                    data-item-id="{{ item._id }}">
+                    <div class="item-controls">
+                        <a data-edit
+                            data-item-id="{{ item._id }}"
+                            class="item-control allcaps"
+                            title="{{localize 'DOCUMENT.Update' type='item'}}">
+                            {{ item.name }}
+                        </a>
+                        <a style="float: right; margin-right: 10px"
+                            class="item-control item-delete"
+                            data-item-id="{{ item._id }}"
+                            title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
                 </div>
-            </td>
-        </tr>
+            </div>
+            {{/each}}
+        </td>
+    </tr>
+    <tr>
+        <td class="bio-label"><span class="label">Level:</span></td>
+        <td style="margin:0px;padding:0px;vertical-align:middle;border:solid 1px" colspan="2">
+            <span class="level">{{ level }}</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="bio-label"><span class="label">XP:</span></td>
         <td>
-            <img
-                title="Carry Load"
-                style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
-                src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png"
-            />
+            <input style="width:50%" id="xp" type="number" name="system.xp" value="{{ xp }}" />
+            <div
+                class="fakebutton leveledUp"
+                {{#GreaterThan xp 1000}} data-leveledup {{/GreaterThan}}
+                style="width:50%;float:right;{{#LesserThan xp 1000}}opacity:25%;{{/LesserThan}}"
+            >
+                Level Up!
+            </div>
         </td>
-        <td style="vertical-align: middle" class="statusnum">
-            <input
-                type="number"
-                name="system.carryLoad.value"
-                value="{{ carryLoad.value }}"
-            />
-            /
-            <input
-                class="statusnum"
-                type="number"
-                name="system.carryLoad.max"
-                value="{{ carryLoad.max }}"
-            />
-        </td>
-    </table>
-</td>
+    </tr>
+    <td>
+        <img
+            title="Carry Load"
+            style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
+            src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png"
+        />
+    </td>
+    <td style="vertical-align: middle" class="statusnum">
+        <input
+            type="number"
+            name="system.carryLoad.value"
+            value="{{ carryLoad.value }}"
+        />
+        /
+        <input
+            class="statusnum"
+            type="number"
+            name="system.carryLoad.max"
+            value="{{ carryLoad.max }}"
+        />
+    </td>
+</table>
