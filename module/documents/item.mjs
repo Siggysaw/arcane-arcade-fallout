@@ -15,12 +15,12 @@ export class FalloutZeroItem extends Item {
   //Checks char items before creating one, stops it and updates quantity if it exists and is not equipped.
   _preCreate(data, options, user){
     super._preCreate(data,options,user)
+    console.log("pre_create");
     if(this.parent){
       let myItem = this.parent.items.find(u => u.name == this.name && u.type == this.type);
-      if (this.system.itemEquipped){
-        console.log(this);
+      if (this.system.itemEquipped == true || this.system.itemEquipped == false){
+        console.log("equipped");
         this.system.itemEquipped = false;
-        console.log(this);
         myItem = this.parent.items.find(u => u.name == this.name && u.system.itemEquipped == false);
         try {this.system.update({'itemEquipped' : false })}
         catch{console.log("Item cannot be updated in this way")}
