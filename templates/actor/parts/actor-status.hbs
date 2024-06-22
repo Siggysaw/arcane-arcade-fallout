@@ -31,7 +31,7 @@
                   <td class="skill-value">
                       <i style="padding:3px;" data-skillsubtraction data-skill="{{skill.id}}" class="fas fa-minus-square"></i>
                       {{#Sum skill.modifiers skill.base}}{{/Sum}}
-                      <i style="padding:3px;" {{#GreaterThan ../system.skillPool 1}} data-skilladdition {{/GreaterThan}} data-skill="{{skill.id}}" class="fas fa-plus-square"></i>
+                      <i style="padding:3px;" data-skilladdition data-skill="{{skill.id}}" class="fas fa-plus-square"></i>
                   </td>
               </tr>
               {{/each}}

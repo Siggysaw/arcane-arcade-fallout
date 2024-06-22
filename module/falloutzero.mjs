@@ -82,6 +82,36 @@ Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase()
 })
 
+// If Player is a GM
+Handlebars.registerHelper('GM', function (options) {
+  if (game.user.role === 4) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+})
+
+// Greater Than or Equal
+Handlebars.registerHelper('GreaterThan', function (v1, v2, options) {
+  if (v1 >= v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+})
+// Less Than
+Handlebars.registerHelper('LesserThan', function (v1, v2, options) {
+  if (v1 < v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+})
+
+// Sum Of
+Handlebars.registerHelper('Sum', function (v1, v2) {
+  let sum = v1 + v2
+  return sum;
+})
+
+
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
