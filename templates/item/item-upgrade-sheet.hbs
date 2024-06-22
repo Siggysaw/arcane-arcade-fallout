@@ -43,9 +43,9 @@
   </header>
 
   {{!-- Sheet Tab Navigation --}}
-  {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="upgrades">Upgrades</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -57,6 +57,16 @@
       rollData prop. --}}
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror"
       editable=editable}}
+    </div>
+    {{!-- Upgrades Tab --}}
+    <div class="tab upgrades" data-group="primary" data-tab="upgrades">
+        <div>This section covers all permanent automatic upgrades which apply upon equipping the item. {{system._id}}</div>
+      <ol>
+        {{#each system.upgrades}}
+        {{/each}}
+      </ol>
+      {{!{{> "systems/arcane-arcade-fallout/templates/item/parts/item-upgrades.hbs"}}
+      
     </div>
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">
