@@ -4,39 +4,10 @@
         {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
        </td> 
         <td>
-            <!-- AMMO Slot -->
-            <table class="item-box">
-                <tr>
-                    <td>
-                        <details open="true">
-                            <summary data-expandtoggle data-itemid="{{item._id}}">
-                                <p class="allcaps">{{ item.name }} AMMO</p>
-                            </summary>
-                            {{#each ammos as |item id|}}
-                            <div style="float:left;" data-item-id="{{ item._id }}">
-                                <div class="item flexrow"
-                                     data-item-id="{{ item._id }}">
-                                    <div class="item-controls">
-                                        <a data-edit
-                                           data-item-id="{{ item._id }}"
-                                           class="item-control"
-                                           title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                            {{ item.name }} ({{ system.quantity }})
-                                        </a>
-                                        <a class="item-control item-delete"
-                                           data-item-id="{{ item._id }}"
-                                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            {{/each}}
-                        </details>
-                       </td>
-                     </tr>
-                </table>
-            
+            {{>
+                "systems/arcane-arcade-fallout/templates/actor/items/ammo.hbs"
+                ammos=ammos
+            }}
         </td>
     </tr>
 </table>
