@@ -487,6 +487,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
     return myPath;
   }
 
+  //Removes modifiers related to Armor
   async unequipItemStats (myItem){
     let AC = myItem.system.armorClass.value; //by default will be 10, but we'll need that to be BASE in case there are other modifiers
     let DT = myItem.system.damageThreshold.value;
@@ -505,6 +506,7 @@ export class FalloutZeroItemSheet extends ItemSheet {
     }
     this.actor.update(flattenedItem);
   }
+
 
   async swapArmors (otherArmor) {
     await this.unequipItemStats(otherArmor)
@@ -528,8 +530,55 @@ export class FalloutZeroItemSheet extends ItemSheet {
     }
     
   }
+
+  async splitObject(myItem){
+    let newItem = myItem;
+    let qty = myItem.system.quantity - 1;
+    let newName = this.object.name;
+    if (!newName.includes("(u)")){ newName += "(u)"};
+    this.object.update({'system.quantity' : 1, 'name' : newName});
+    newItem.name = "(s)";
+    newItem = await Item.create(newItem, { parent: this.actor });
+    await newItem.update({'system.quantity' : qty});
+  }
   
-  
+  splitDialog(myUpgrade,newValue,oldValue){
+    let qty = this.object.quantity
+    let cost = 300
+    let fullCost = qty*cost
+    let d = new Dialog({
+      title: 'Split or upgrade all?',
+      content: `Do you wish to upgrade all ${qty} items, or split it to upgrade only one copy?
+      
+      One upgrade usually costs ${cost}
+      ${qty} upgrades usually costs ${fullCost}`,
+      buttons: {
+        Split: {
+          icon: '<i class="fa-solid fa-split"></i>',
+          label: 'Split',
+          callback: async () => {
+            await this.splitObject(this.object);
+            this.checkEquip(myUpgrade,newValue,oldValue);
+          },
+        },
+        Update: {
+          icon: '<i class="fas fa-check"></i>',
+          label: 'Update all items at once',
+          callback: async () => {
+            this.object.update({'system.groupUpgrade' : true})
+            this.checkEquip(myUpgrade,newValue,oldValue);
+          },
+        },
+      },
+      default: 'Split',
+      render: () => {}
+    },{
+      left: 200,
+      top: 200,
+      width: 600,
+    },)
+    d.render(true)
+  }
   
   /* -------------------------------------------- */
 
@@ -545,13 +594,18 @@ export class FalloutZeroItemSheet extends ItemSheet {
     html.on('click', '[data-tableSubtraction]', (ev) => {
       const myUpgrade = ev.currentTarget.id.replace("lower","").toLowerCase().replace(" ","");
       let oldValue = 0;
-      //This check removes errors in case the fields don't exist and allows players to create their own (eventually)
+      //This check ensures a value is given if field doesn't exist
       if(this.object.system.upgrades[myUpgrade]){
          oldValue = this.object.system.upgrades[myUpgrade].value;
       }
       if (oldValue!=0){
         let newValue = oldValue - 1;
-        this.checkEquip(myUpgrade,newValue,oldValue)
+        if (this.object.system.groupUpgrade == true || this.object.system.quantity < 2){
+          console.log(this.object.system.groupUpgrade);
+          this.checkEquip(myUpgrade,newValue,oldValue);
+        } else {
+          this.splitDialog(myUpgrade,newValue,oldValue)
+        }
       }
     })
 
@@ -559,14 +613,19 @@ export class FalloutZeroItemSheet extends ItemSheet {
     html.on('click', '[data-tableAddition]', (ev) => {
       const myUpgrade = ev.currentTarget.id.replace("higher","").toLowerCase();
       let oldValue = 0;
-      //This check removes errors in case the fields don't exist and allows players to create their own (eventually)
+      //This check ensures a value is given if field doesn't exist
       if(this.object.system.upgrades[myUpgrade]){
          oldValue = this.object.system.upgrades[myUpgrade].value;
       }
       if (oldValue!=3){
         let newValue = oldValue + 1;
         if(this.object.system.slots.value > 0 || newValue != 1){
-          this.checkEquip(myUpgrade,newValue,oldValue)
+          if (this.object.system.groupUpgrade == true || this.object.system.quantity < 2){
+            console.log(this.object.system.groupUpgrade);
+            this.checkEquip(myUpgrade,newValue,oldValue);
+          } else {
+            this.splitDialog(myUpgrade,newValue,oldValue)
+          }
         }
       }
     })
