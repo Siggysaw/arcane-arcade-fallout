@@ -506,7 +506,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     // Reload The Weapon
     const ammoReloaded = capacity - currentMag
     let updatedAmmo = ammoOwned - ammoReloaded
-    if (ammoReloaded > ammoOwned) {
+    if (ammoReloaded > ammoOwned && !weapon.system.energyWeapon) {
       const ammoAvailable = currentMag + ammoOwned
       this.parent.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.capacity.value': ammoAvailable }])
     } else {
