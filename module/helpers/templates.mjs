@@ -31,6 +31,7 @@ export const preloadHandlebarsTemplates = async function () {
     // Actor Status
     'systems/arcane-arcade-fallout/templates/actor/status/special.hbs',
     'systems/arcane-arcade-fallout/templates/actor/status/skills.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/status/penalties.hbs',
 
     // Item partials
     'systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs',
