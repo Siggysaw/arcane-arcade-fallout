@@ -1,3 +1,2 @@
-2024/06/21-11:32:21.832 42b8 Recovering log #144
-2024/06/21-11:32:21.841 42b8 Delete type=0 #144
-2024/06/21-11:32:21.841 42b8 Delete type=3 #143
+2024/06/23-10:45:32.007 7fac Table #127: 48 entries OK
+2024/06/23-10:45:32.016 7fac **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition; recovered 1 files; 6962 bytes. Some data may have been lost. ****

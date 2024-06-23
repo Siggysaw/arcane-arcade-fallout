@@ -1,0 +1,45 @@
+<table>
+  <tr>
+    <td>Healing Rate</td>
+    <td
+      class="resource-label rollable"
+      data-rollable
+      data-roll="d20+@combatSequence+@penaltyTotal+@luckmod"
+      data-label="Performed a Combat Sequence roll!<br> D20 + Combat Sequence - Penalties + Luck Mod / 2"
+    >
+      Combat Sequence
+    </td>
+    <td>Fatigue</td>
+  </tr>
+  <tr>
+    <td>
+      <input type="number" name="system.healingRate" value="{{ healingRate }}" />
+    </td>
+    <td>
+      <input type="number" name="system.combatSequence" value="{{ combatSequence }}" />
+    </td>
+    <td>
+      <input type="number" name="system.penalties.fatigue.value" value="{{ fatigue.value }}" />
+    </td>
+  </tr>
+  <tr>
+    <td>Passive Sense</td>
+    <td>Party Nerve</td>
+    <td>Group Sneak</td>
+  </tr>
+  <tr>
+    <td>
+      <input type="number" name="system.passiveSense" value="{{ passiveSense }}" />
+    </td>
+    <td><input type="number" name="system.partyNerve" value="{{ partyNerve }}" /></td>
+    <td><input type="number" name="system.groupSneak" value="{{ groupSneak }}" /></td>
+  </tr>
+  <tr>
+    <td class="status-notes" colspan="4">
+      {{editor properties target="system.properties" button=true engine="prosemirror"}}
+    </td>
+  </tr>
+  <tr>
+    <td colspan="999">Total Penalties: {{ penaltyTotal }}</td>
+  </tr>
+</table>
