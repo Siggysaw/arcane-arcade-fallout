@@ -1,0 +1,134 @@
+<td style="width: 49%; padding: 5px">
+  <!-- MeleeWeapons Slot -->
+  {{#each meleeWeapons as |item id|}}
+  {{#if item.system.itemEquipped}}
+  <div class="item flexrow" data-item-id="{{ item._id }}">
+    <table class="item-box right">
+      <tr>
+        <td>
+          <details {{#if item.system.itemOpen }} open="true" {{/if}}>
+            <summary data-expandtoggle data-itemid="{{ item._id }}">
+              <p class="allcaps">
+                {{ item.name }}
+              </p>
+            </summary>
+            <table class="equipped-stats">
+              <tr>
+                <td colspan="999">DETAILS</td>
+              </tr>
+              <tr>
+                <td>AP</td>
+                <td>Dmg</td>
+                <td>Crit DV</td>
+                <td>Crit Dmg</td>
+                <td>Load</td>
+                <td>Str Req</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="fakebutton" data-weapon-roll data-weapon-id="{{ item._id }}">
+                    {{ item.system.apCost }}
+                  </div>
+                </td>
+                <td>
+                  <div
+                    class="fakebutton"
+                    class="rollable resource-label"
+                    data-rollable
+                    data-label="OUCH! DMG from a {{ item.name }}"
+                    data-roll="{{ item.system.damage.formula }}"
+                  >
+                    {{ item.system.damage.formula }}
+                  </div>
+                </td>
+                <td>{{ item.system.critical.dice }}</td>
+                <td>{{ item.system.critical.bonus }}</td>
+                <td>{{ item.system.load }}</td>
+                <td>{{ item.system.strengthRequirement }}</td>
+              </tr>
+            </table>
+            {{#if item.system.consumesAmmo}}
+            <table class="equipped-stats">
+              <tr>
+                <td>Type</td>
+                <td>Rounds</td>
+              </tr>
+              <tr>
+                <td>{{ item.system.ammo.type }}</td>
+                <td>{{ item.system.ammo.capacity.value }}</td>
+              </tr>
+            </table>
+            {{/if}}
+            {{#GM}}
+            <table class="equipped-stats">
+              <tr>
+                <td>
+                  <select style="width: 100%" data-set-ability data-weapon-id="{{ item._id }}">
+                    {{selectOptions ../abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
+                  </select>
+                </td>
+                <td>
+                  <select style="width: 100%" data-set-skill data-weapon-id="{{ item._id }}">
+                    {{selectOptions ../skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
+                  </select>
+                </td>
+              </tr>
+              <tr style="vertical-align: middle">
+                <td style="width: 100px; border-right: none">
+                  CND:
+                  <input
+                    title="0 is Broken, 10 is Full Functionality"
+                    style="width: 50px"
+                    type="number"
+                    name="{{ item.system.decay }}"
+                    value="{{ item.system.decay }}"
+                    data-set-decay
+                    data-weapon-id="{{ item._id }}"
+                  />
+                </td>
+                <td colspan="999" style="border-left: none">
+                  <progress
+                    style="width: 100%; padding-right: 5px"
+                    class="statusbar stamina"
+                    value="{{ item.system.decay }}"
+                    max="10"
+                  >
+                    {{ item.system.decay }}
+                  </progress>
+                </td>
+              </tr>
+            </table>
+            {{/GM}}
+            <a
+              style="float: right; margin-right: 10px"
+              class="item-control item-delete"
+              title="{{localize 'DOCUMENT.Delete' type='item'}}"
+            >
+              <i class="fas fa-trash"></i>
+            </a>
+            <a
+              style="float: right; margin-right: 10px"
+              class="item-control"
+              data-edit
+              data-item-id="{{ item._id }}"
+              title="{{localize 'DOCUMENT.Update' type='item'}}"
+            >
+              <i class="fas fa-edit"></i>
+            </a>
+            <a
+              style="float: right; margin-right: 10px"
+              data-equip
+              data-item-id="{{ item._id }}"
+              class="item-control"
+              title="Unequip an item"
+            >
+              <i class="fas fa-tshirt"></i>
+            </a>
+          </details>
+        </td>
+      </tr>
+    </table>
+  </div>
+  {{/if}}
+  {{/each}}
+</td>
