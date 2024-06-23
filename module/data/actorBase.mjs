@@ -464,12 +464,13 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
 
   // Reload Button is Pressed
   reload(weaponId = null) {
+    // Get Weapon Information Array
     const weapon = this.parent.items.get(weaponId)
     if (!weapon) {
       ui.notifications.warn(`Weapon ${weaponId} not found on character / Delete and Readd`)
       return
     }
-
+    // Do you have the AP?
     const newAP = this.actionPoints.value - 6
     if (newAP < 0) {
       ui.notifications.warn(`Not enough action points to reload`)
@@ -479,12 +480,16 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     // Collect Required Ammo Information
     const ammoType = weapon.system.ammo.type
     const ammoFound = this.parent.items.find(item => item.name === ammoType)
+
+    // Do you have Ammo?
     if (!ammoFound) {
       ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
+      return
     }
     const ammoOwned = ammoFound.system.quantity
     if (ammoOwned === 0) {
       ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
+      return
     }
     const ammoID = ammoFound._id
 
@@ -508,7 +513,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       this.parent.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.capacity.value': capacity }])
     }
 
-
+    // Energy Weapon Reload Rules
     if (weapon.system.energyWeapon) {
       updatedAmmo = ammoOwned - 1
       this.parent.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
@@ -516,6 +521,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       this.parent.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     }
 
+    // Pay the AP
     this.parent.update({ 'system.actionPoints.value': Number(newAP) })
 
     // After 10 Reloads, Gain 1 Level of Decay to the Weapon
