@@ -423,7 +423,8 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       }
 
       // Update ammo quantity
-      const foundAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
+      const ammoType = weapon.system.ammo.type
+      const foundAmmo = this.parent.items.find(item => item.name === ammoType)
       if (foundAmmo) {
         const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
         this.parent.updateEmbeddedDocuments('Item', [
@@ -441,7 +442,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     // roll to hit
     const dice = hasDisadvantage ? '2d20kl' : 'd20'
 
-    const skillBonusValue = this.skills[weapon.system.skillBonus].value
+    const skillBonusValue = this.skills[weapon.system.skillBonus].base + this.skills[weapon.system.skillBonus].modifiers
     const abilityMod = this.abilities[weapon.system.abilityMod].mod
     const decayValue = (weapon.system.decay - 10) * -1
     let roll = new Roll(
@@ -461,18 +462,11 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     return roll
   }
 
-  getWeaponsNewCapacity(weapon, consumableAmmo) {
-    if (consumableAmmo && consumableAmmo.system.quantity < weapon.system.ammo.capacity.max) {
-      return consumableAmmo.system.quantity
-    } else {
-      return weapon.system.ammo.capacity.max
-    }
-  }
-
+  // Reload Button is Pressed
   reload(weaponId = null) {
     const weapon = this.parent.items.get(weaponId)
     if (!weapon) {
-      ui.notifications.warn(`Weapon ${weaponId} not found on actor`)
+      ui.notifications.warn(`Weapon ${weaponId} not found on character / Delete and Readd`)
       return
     }
 
@@ -482,51 +476,48 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
       return
     }
 
-    if (weapon.system.capacityAtMax) {
+    // Collect Required Ammo Information
+    const ammoType = weapon.system.ammo.type
+    const ammoFound = this.parent.items.find(item => item.name === ammoType)
+    if (!ammoFound) {
+      ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
+    }
+    const ammoOwned = ammoFound.system.quantity
+    if (ammoOwned === 0) {
+      ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
+    }
+    const ammoID = ammoFound._id
+
+    // Collect Required Weapon Information
+    const currentMag = weapon.system.ammo.capacity.value
+    const capacity = weapon.system.ammo.capacity.max
+
+    // Already Reloaded?
+    if (currentMag == capacity) {
       ui.notifications.warn(`Weapon capacity is already at max`)
       return
     }
 
-    const consumableAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
-    if (!consumableAmmo) {
-      ui.notifications.warn(`No rounds assigned to weapon, set a consumable ammo`)
-      return
-    } else if (
-      consumableAmmo.system.quantity < 1 ||
-      consumableAmmo.system.quantity === weapon.system.ammo.capacity.value
-    ) {
-      ui.notifications.warn(`No rounds left to reload weapon`)
-      return
+    // Reload The Weapon
+    const ammoReloaded = capacity - currentMag
+    let updatedAmmo = ammoOwned - ammoReloaded
+    if (ammoReloaded > ammoOwned) {
+      const ammoAvailable = currentMag + ammoOwned
+      this.parent.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.capacity.value': ammoAvailable }])
+    } else {
+      this.parent.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.capacity.value': capacity }])
     }
 
-    const newCapacity = this.getWeaponsNewCapacity(weapon, consumableAmmo)
-    if (newCapacity < 1) {
-      ui.notifications.warn(`No rounds left to reload weapon`)
-      return
+
+    if (weapon.system.energyWeapon) {
+      updatedAmmo = ammoOwned - 1
+      this.parent.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
+    } else {
+      this.parent.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     }
 
-    // Update ammo quantity
-    const foundAmmo = this.parent.items.get(weapon.system.ammo.consumes.target)
-    const reloader = (ammoType) => {
-      if (ammoType === true) {
-        return 1
-      } else {
-        return weapon.system.ammo.capacity.max - weapon.system.ammo.capacity.value
-      }
-    }
+    this.parent.update({ 'system.actionPoints.value': Number(newAP) })
 
-    if (foundAmmo) {
-      const reloaded = reloader(weapon.system.energyWeapon)
-      const newAmmoQty = Number(foundAmmo.system.quantity - reloaded)
-      this.parent.updateEmbeddedDocuments('Item', [
-        { _id: foundAmmo._id, 'system.quantity': newAmmoQty },
-      ])
-    }
-
-    this.parent.update({ 'system.actionPoints.value': newAP })
-    this.parent.updateEmbeddedDocuments('Item', [
-      { _id: weaponId, 'system.ammo.capacity.value': newCapacity },
-    ])
     // After 10 Reloads, Gain 1 Level of Decay to the Weapon
     const newReloaddecay = weapon.system.reloadDecay + 1
     if (newReloaddecay == 10) {

@@ -2,7 +2,8 @@
     <tr>
         <td>
         {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
-       </td> <td>
+       </td> 
+        <td>
             <!-- AMMO Slot -->
             <table class="item-box">
                 <tr>
@@ -132,15 +133,9 @@
                                         <td>{{ system.range.long }}ft+</td>
                                     </tr>
                                 </table>
+                                {{#GM}}
                                 <table class="equipped-stats">
-                                    <tr>
-                                        <td colspan=3>CONSUMES</td>
-                                        <td>Modifiers</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Type</td>
-                                        <td>Rounds per attack</td>
-                                        <td>Item</td>
+                                        <td>Ability</td>
                                         <td>
                                             <select style="width:100%;" data-set-ability data-weapon-id="{{ item._id }}">
                                                 {{selectOptions ../system.abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
@@ -148,13 +143,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>{{ item.system.ammo.type }}</td>
-                                        <td>{{ item.system.ammo.consumes.amount }}</td>
-                                        <td>
-                                            <select style="width:100%;" data-set-ammo data-weapon-id="{{ item._id }}">
-                                                {{selectOptions item.ammos selected=item.system.ammo.consumes.target valueAttr="_id" labelAttr="name" blank="None"}}
-                                            </select>
-                                        </td>
+                                        <td>Skill</td>
                                         <td>
                                             <select style="width:100%;" data-set-skill data-weapon-id="{{ item._id }}">
                                                 {{selectOptions ../system.skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
@@ -162,24 +151,34 @@
                                         </td>
                                     </tr>
                                 </table>
+                              {{/GM}}
                                 <table class="equipped-stats">
                                     <tr>
                                         <td colspan="2">AMMO</td>
-                                        <td>OWNED</td>
+                                        <td rowspan="3">
+                                            <div 
+                                                 title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay" 
+                                                 class='fakebutton'
+                                                 style="padding-top:20px;padding-bottom:20px;"
+                                                 data-reload 
+                                                 data-weapon-id="{{ item._id }}">
+                                                RELOAD
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ item.system.ammo.type }}</td>
+                                        <td>
+                                           Owned
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            {{ item.system.ammo.capacity.value }} /
-                                            {{ item.system.ammo.capacity.max }}
-                                        </td>
-                                        <td>
-                                            <div title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay" class='fakebutton' data-reload data-weapon-id="{{ item._id }}">RELOAD</div>
+                                            {{ item.system.ammo.capacity.value }} / {{ item.system.ammo.capacity.max }}
                                         </td>
                                         <td>
                                             {{#each item.ammos as |ammo|}}
-                                            {{#if (eq ammo._id item.system.ammo.consumes.target )}}
                                             {{ ammo.system.quantity }}
-                                            {{/if}}
                                             {{/each}}
                                         </td>
                                     </tr>
@@ -295,6 +294,7 @@
                             <tr>
                         </table>
                         {{/if}}
+                        {{#GM}}
                         <table class="equipped-stats">
                             <td>
                                 <select style="width:100%;" data-set-ability data-weapon-id="{{ item._id }}">
@@ -326,9 +326,7 @@
                                 </td>
                 </td>
             </tr>
-
-
-        </table>
+        </table>{{/GM}}
         <a style="float: right; margin-right: 10px"
            class="item-control item-delete"
            title="{{localize 'DOCUMENT.Delete' type='item'}}">
