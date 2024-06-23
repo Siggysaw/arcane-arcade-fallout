@@ -818,3 +818,6 @@ form td .status-notes li:hover {
 .sheet .player-conditions input[type=checkbox] {
   transform: scale(.75);
 }
+.armorbox{
+    padding:5px;
+}

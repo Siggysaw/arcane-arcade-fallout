@@ -1,9 +1,9 @@
 <table>
     <tr>
-        <td>
+        <td class="armorbox"><h3>Armor</h3>
         {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
        </td> 
-        <td>
+        <td class="armorbox"><h3>Ammo</h3>
             {{>
                 "systems/arcane-arcade-fallout/templates/actor/items/ammo.hbs"
                 ammos=ammos
@@ -11,18 +11,26 @@
         </td>
     </tr>
 </table>
+<table>
+    <tr>
+        <td class="armorbox rangedbox"><h3>Ranged Weapons</h3>
 {{>
     "systems/arcane-arcade-fallout/templates/actor/items/equipped-ranged-weapons.hbs"
     rangedWeapons=rangedWeapons
     abilities=system.abilities
     skills=system.skills
 }}
+        </td>
+    <td class="armorbox meleebox"><h3>Melee Weapons</h3>
 {{>
     "systems/arcane-arcade-fallout/templates/actor/items/equipped-melee-weapons.hbs"
     meleeWeapons=meleeWeapons
     abilities=system.abilities
     skills=system.skills
 }}
+        </td>
+     </tr>
+</table>
 {{#if explosives}}
 <table>
     <tr><td colspan="999" ><h3>Explosives</h3></td></tr>
