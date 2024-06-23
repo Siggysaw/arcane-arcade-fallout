@@ -1,10 +1,7 @@
-<table class="item-box">
+<h3>Ammo</h3>
+<table class="item-box ammo-box">
   <tr>
     <td>
-      <details open="true">
-        <summary data-expandtoggle data-itemid="{{ item._id }}">
-          <p class="allcaps">{{ item.name }} AMMO</p>
-        </summary>
         {{#each ammos as |item id|}}
         <div style="float: left" data-item-id="{{ item._id }}">
           <div class="item flexrow" data-item-id="{{ item._id }}">
@@ -28,7 +25,6 @@
           </div>
         </div>
         {{/each}}
-      </details>
     </td>
   </tr>
 </table>

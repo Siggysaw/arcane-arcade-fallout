@@ -13,7 +13,7 @@
 </table>
 <table>
     <tr>
-        <td style="width:49%;padding:5px;">
+        <td style="width:49%;padding:5px;"><h3>Ranged Weapons</h3>
             <!-- Ranged Weapons Slot -->
             {{#each rangedWeapons as |item id|}}
             {{#if item.system.itemEquipped}}
@@ -206,7 +206,7 @@
 {{/if}}
 {{/each}}
     </td>
-<td style="width:49%;padding:5px;">
+<td style="width:49%;padding:5px;"><h3>Melee Weapons</h3>
     <!-- MeleeWeapons Slot -->
     {{#each meleeWeapons as |item id|}}
     {{#if item.system.itemEquipped}}
@@ -329,9 +329,9 @@
 </td>
   </tr>
 </table>
-
-<table class="equipped-stats">
-    <tr><td colspan="999" style="font-size:18pt;">EXPLOSIVES</td></tr>
+{{#if explosives}}
+<table>
+    <tr><td colspan="999" ><h3>Explosives</h3></td></tr>
     <td class="armorbox">
         <!-- Explosives Slot -->
         {{#each explosives as |item id|}}
@@ -448,4 +448,6 @@
     </div>
 {{/each}}
 </td>
-</tr></table>
+</tr>
+</table>
+{{/if}}
