@@ -30,10 +30,11 @@ details > summary {
   cursor: pointer;
   border: solid 1px #ccc;
 }
-.sheet h3 {
+.sheet form h3 {
   display: flex;
   justify-content: center;
   align-items: center;
+  color:#ccc;
   background: #222;
   border: solid 1px #ccc;
   text-transform: uppercase;
@@ -553,7 +554,7 @@ td,
   border: solid 1px;
 }
 .status .skill-table {
-  width: 275px;
+  width: 250px;
 }
 .status .skill-table td {
   vertical-align: middle;
@@ -578,6 +579,9 @@ td,
   padding: 5px;
   width: 100%;
 }
+.sheet form .perk-div h3 {
+  color:#01e998
+}
 .sheet .perk-div .perk-image {
   height: 150px;
 }
@@ -593,7 +597,7 @@ td,
 .sheet div .box-medicines h3{
     height:45px;
 }
-  .sheet .perk-div h3 {
+.sheet .perk-div h3 {
     font-size: 10pt;
     letter-spacing: 0;
   }
@@ -718,19 +722,6 @@ td,
   padding: 20px;
 }
 
-form td .status-notes {
-  height: 334px;
-  text-align: left;
-  overflow: scroll;
-  background-color: #222;
-  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  font-size: 10pt;
-  padding: 20px;
-  letter-spacing: 0rem;
-}
-
 form td .status-notes option,
 form td .status-notes li,
 form td .status-notes li:hover {
@@ -791,7 +782,6 @@ form td .status-notes li:hover {
     margin-top:15px;
     margin:5px;
 }
-
 .dialog .conditioninfo {
   font-family: fixedsys;
   padding: 20px;
@@ -799,4 +789,32 @@ form td .status-notes li:hover {
 }
 .condition{
     cursor:pointer;
+}
+.sheet .fallout-character-notes {
+  height: 700px;
+  text-align: left;
+  overflow: scroll;
+  background-color: #222;
+  font-size: 12pt;
+  padding: 20px;
+  letter-spacing: 0rem;
+}
+.sheet .fallout-character-notes .prosemirror {
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.sheet .player-conditions td{
+  letter-spacing:0;
+  text-align:left;
+  padding:0px;
+  margin:0px;
+  vertical-align:middle;
+  border:none;
+}
+.sheet .player-conditions td span{
+    font-size:10pt;
+}
+.sheet .player-conditions input[type=checkbox] {
+  transform: scale(.75);
 }

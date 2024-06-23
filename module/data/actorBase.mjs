@@ -207,7 +207,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   }
 
   ruleinfo(condition) {
-    const myDialogOptions = { width: 500, height: 300 }
+    const myDialogOptions = { width: 500, height: 300, resizable: true }
     const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1)
     const rule = FALLOUTZERO.rules[conditionFormatted]
     const message = `<div class="conditioninfo">${rule}</div>`

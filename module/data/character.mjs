@@ -49,6 +49,29 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
+    schema.conditions = new fields.SchemaField({
+      Blinded: new fields.BooleanField({ initial: false, }),
+      Bleeding: new fields.BooleanField({ initial: false, }),
+      Burning: new fields.BooleanField({ initial: false, }),
+      Buzzed: new fields.BooleanField({ initial: false, }),
+      Corroded: new fields.BooleanField({ initial: false, }),
+      Dazed: new fields.BooleanField({ initial: false, }),
+      Deafened: new fields.BooleanField({ initial: false, }),
+      Drunk: new fields.BooleanField({ initial: false, }),
+      Frightened: new fields.BooleanField({ initial: false, }),
+      Grappled: new fields.BooleanField({ initial: false, }),
+      Hammered: new fields.BooleanField({ initial: false, }),
+      Heavily_Encumbered: new fields.BooleanField({ initial: false, }),
+      Invisible: new fields.BooleanField({ initial: false, }),
+      Poisoned: new fields.BooleanField({ initial: false, }),
+      Prone: new fields.BooleanField({ initial: false, }),
+      Restrained: new fields.BooleanField({ initial: false, }),
+      Shadowed: new fields.BooleanField({ initial: false, }),
+      Shock: new fields.BooleanField({ initial: false, }),
+      Slowed: new fields.BooleanField({ initial: false, }),
+      Unconscious: new fields.BooleanField({ initial: false, }),
+      Wasted: new fields.BooleanField({ initial: false, }),
+    })
 
     return schema
   }

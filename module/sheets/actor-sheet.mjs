@@ -278,7 +278,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-npc-loot]', () => {
       this.actor.system.npcLoot()
     })
-    //Room loot roll <--- Help! Can't make the button not appear... so at least players can't click it. Signed: Kev
+    //Room loot roll
     html.on('click', '[data-pc-loot]', () => {
       if (game.user.role > 3) {
         this.actor.system.roomLoot()
