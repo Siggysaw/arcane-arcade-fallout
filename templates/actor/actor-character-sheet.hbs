@@ -38,7 +38,10 @@
       </div>
     </header>
     <div class="karmaCaps">
-      {{> "systems/arcane-arcade-fallout/templates/actor/heading/karmaCaps.hbs"}}
+      {{>
+        "systems/arcane-arcade-fallout/templates/actor/heading/karmaCaps.hbs"
+        karmaCaps=system.karmaCaps
+      }}
     </div>
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
@@ -60,52 +63,11 @@
       {{!-- Owned status Tab --}}
       <div class="tab status" data-group="primary" data-tab="status">
         <section>
-          {{!-- For the main status list, span the right two columns --}}
-          <section>
-            <table>
-              <tr>
-                {{#each system.abilities as |ability key|}}
-                <td>
-                  <label
-                    for="system.abilities.{{ key }}.value"
-                    class="resource-label rollable flexlarge align-left"
-                    data-rollable
-                    data-roll="d20+{{ ability.mod }}-@penaltyTotal"
-                    data-label="{{ ability.label }}"
-                    >{{ ability.label }}</label
-                  >
-                </td>
-                {{/each}}
-              </tr>
-
-              <tr>
-                {{#each system.abilities as |ability key|}}
-                <td>
-                  <input
-                    data-set-{{key}}
-                    type="number"
-                    name="system.abilities.{{ key }}.value"
-                    value="{{ ability.value }}"
-                    data-dtype="Number"
-                    min="0"
-                  />
-                </td>
-                {{/each}}
-              </tr>
-              <tr>
-                {{#each system.abilities as |ability key|}}
-                <td>
-                  <span class="ability-mod" data-label="{{ ability.label }}">
-                    {{numberFormat ability.mod decimals=0 sign=true }}
-                  </span>
-                </td>
-                {{/each}}
-              </tr>
-            </table>
-
-            {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and	defined in module/helpers/templates.mjs --}}
-            {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-status.hbs"}}
-          </section>
+          {{>
+            "systems/arcane-arcade-fallout/templates/actor/status/special.hbs"
+            abilities=system.abilities
+          }}
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-status.hbs"}}
         </section>
       </div>
 
