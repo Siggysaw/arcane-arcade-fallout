@@ -581,6 +581,18 @@ td,
 .sheet .perk-div .perk-image {
   height: 150px;
 }
+.sheet div .box-traits,
+.sheet div .box-perks,
+.sheet div .box-medicines{
+  width: 33%;
+  float: left;
+  min-height: 265px;
+}
+.sheet div .box-traits h3,
+.sheet div .box-perks h3,
+.sheet div .box-medicines h3{
+    height:45px;
+}
   .sheet .perk-div h3 {
     font-size: 10pt;
     letter-spacing: 0;
