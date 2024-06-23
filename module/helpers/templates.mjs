@@ -27,6 +27,9 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/arcane-arcade-fallout/templates/actor/heading/image.hbs',
     'systems/arcane-arcade-fallout/templates/actor/heading/karmaCaps.hbs',
 
+    // Actor Status
+    'systems/arcane-arcade-fallout/templates/actor/status/special.hbs',
+
     // Item partials
     'systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs',
   ])
