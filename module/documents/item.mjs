@@ -21,7 +21,7 @@ export class FalloutZeroItem extends Item {
       if (this.system.itemEquipped == true || this.system.itemEquipped == false){
         console.log("equipped");
         this.system.itemEquipped = false;
-        myItem = this.parent.items.find(u => u.name == this.name && u.system.itemEquipped == false);
+        myItem = this.parent.items.find(u => u.name == this.name && u.type == this.type && u.system.itemEquipped == false);
         try {this.system.update({'itemEquipped' : false })}
         catch{console.log("Item cannot be updated in this way")}
       }
