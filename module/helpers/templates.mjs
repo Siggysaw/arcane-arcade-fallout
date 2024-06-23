@@ -19,6 +19,7 @@ export const preloadHandlebarsTemplates = async function () {
 
     // Actor Items
     'systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/items/ammo.hbs',
     'systems/arcane-arcade-fallout/templates/item/item-upgrade-sheet.hbs',
 
     // Actor Heading
