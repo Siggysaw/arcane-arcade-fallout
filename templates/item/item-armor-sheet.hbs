@@ -96,7 +96,12 @@
             </button>
               {{#if system.upgrades.camouflage.value}}{{system.upgrades.camouflage.value}}{{else}}0{{/if}}
             <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherCamouflage" 
-                {{#LesserThan system.slots.value 1}}{{#LesserThan system.upgrades.camouflage.value 1}} disabled {{/LesserThan}}{{/LesserThan}} 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.camouflage.value}}
+                    {{#LesserThan system.upgrades.camouflage.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
                 {{#GreaterThan system.upgrades.camouflage.value 3}} disabled {{/GreaterThan}} >
               <i class="fas fa-plus-square"></i>
             </button>
@@ -118,7 +123,12 @@
             </button>
               {{#if system.upgrades.light.value}}{{system.upgrades.light.value}}{{else}}0{{/if}}
             <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherLight" 
-                {{#LesserThan system.slots.value 1}}{{#LesserThan system.upgrades.light.value 1}} disabled {{/LesserThan}}{{/LesserThan}} 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.light.value}}
+                    {{#LesserThan system.upgrades.light.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
                 {{#GreaterThan system.upgrades.light.value 3}} disabled {{/GreaterThan}} >
               <i class="fas fa-plus-square"></i>
             </button>
@@ -140,7 +150,12 @@
             </button>
               {{#if system.upgrades.fitted.value}}{{system.upgrades.fitted.value}}{{else}}0{{/if}}
             <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherFitted" 
-                {{#LesserThan system.slots.value 1}}{{#LesserThan system.upgrades.fitted.value 1}} disabled {{/LesserThan}}{{/LesserThan}} 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.fitted.value}}
+                    {{#LesserThan system.upgrades.fitted.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
                 {{#GreaterThan system.upgrades.fitted.value 3}} disabled {{/GreaterThan}} >
               <i class="fas fa-plus-square"></i>
             </button>
@@ -162,7 +177,12 @@
             </button>
               {{#if system.upgrades.leadlined.value}}{{system.upgrades.leadlined.value}}{{else}}0{{/if}}
             <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherLeadlined" 
-                {{#LesserThan system.slots.value 1}}{{#LesserThan system.upgrades.leadlined.value 1}} disabled {{/LesserThan}}{{/LesserThan}} 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.leadlined.value}}
+                    {{#LesserThan system.upgrades.leadlined.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
                 {{#GreaterThan system.upgrades.leadlined.value 3}} disabled {{/GreaterThan}} >
               <i class="fas fa-plus-square"></i>
             </button>
@@ -184,7 +204,12 @@
             </button>
               {{#if system.upgrades.strengthened.value}}{{system.upgrades.strengthened.value}}{{else}}0{{/if}}
             <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherStrengthened" 
-                {{#LesserThan system.slots.value 1}}{{#LesserThan system.upgrades.strengthened.value 1}} disabled {{/LesserThan}}{{/LesserThan}} 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.strengthened.value}}
+                    {{#LesserThan system.upgrades.strengthened.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
                 {{#GreaterThan system.upgrades.strengthened.value 3}} disabled {{/GreaterThan}} >
               <i class="fas fa-plus-square"></i>
             </button>
@@ -206,7 +231,12 @@
             </button>
               {{#if system.upgrades.sturdy.value}}{{system.upgrades.sturdy.value}}{{else}}0{{/if}}
             <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherSturdy" 
-                {{#LesserThan system.slots.value 1}}{{#LesserThan system.upgrades.sturdy.value 1}} disabled {{/LesserThan}}{{/LesserThan}} 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.sturdy.value}}
+                    {{#LesserThan system.upgrades.sturdy.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}}
                 {{#GreaterThan system.upgrades.sturdy.value 3}} disabled {{/GreaterThan}} >
               <i class="fas fa-plus-square"></i>
             </button>
@@ -228,7 +258,12 @@
             </button>
               {{#if system.upgrades.pocketed.value}}{{system.upgrades.pocketed.value}}{{else}}0{{/if}}
             <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherPocketed" 
-                {{#LesserThan system.slots.value 1}}{{#LesserThan system.upgrades.pocketed.value 1}} disabled {{/LesserThan}}{{/LesserThan}} 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.pocketed.value}}
+                    {{#LesserThan system.upgrades.pocketed.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}}
                 {{#GreaterThan system.upgrades.pocketed.value 3}} disabled {{/GreaterThan}} >
               <i class="fas fa-plus-square"></i>
             </button>
@@ -250,7 +285,12 @@
             </button>
               {{#if system.upgrades.reinforced.value}}{{system.upgrades.reinforced.value}}{{else}}0{{/if}}
             <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherReinforced" 
-                {{#LesserThan system.slots.value 1}}{{#LesserThan system.upgrades.reinforced.value 1}} disabled {{/LesserThan}}{{/LesserThan}} 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.reinforced.value}}
+                    {{#LesserThan system.upgrades.reinforced.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}}
                 {{#GreaterThan system.upgrades.reinforced.value 3}} disabled {{/GreaterThan}} >
               <i class="fas fa-plus-square"></i>
             </button>
@@ -272,7 +312,12 @@
             </button>
               {{#if system.upgrades.hardened.value}}{{system.upgrades.hardened.value}}{{else}}0{{/if}}
             <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherHardened" 
-                {{#LesserThan system.slots.value 1}}{{#LesserThan system.upgrades.hardened.value 1}} disabled {{/LesserThan}}{{/LesserThan}} 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.hardened.value}}
+                    {{#LesserThan system.upgrades.hardened.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
                 {{#GreaterThan system.upgrades.hardened.value 3}} disabled {{/GreaterThan}} >
               <i class="fas fa-plus-square"></i>
             </button>
@@ -282,7 +327,6 @@
           </td>
         </tr>
       </table>
-	 	  {{!--{{editor system.upgrades target="system.upgrades" button=false engine="prosemirror"}}--}} 
     </div>
 
     {{!-- Effects Tab --}}
