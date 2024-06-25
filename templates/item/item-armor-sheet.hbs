@@ -15,7 +15,6 @@
         Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}" />
         <div>
             Upgrades:
-            
             {{#each system.upgrades as |key|}}
               {{#GreaterThan key.value 1}}
               <a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.world.upgrades.Item.{{key._id}}"
@@ -28,36 +27,30 @@
         </div>
         <table>
             <tr>
-                <td>Cost</td>
-                <td>AC</td>
-                <td>DT</td>
-                <td>Slots</td>
-                <td>Load</td>
-                <td>STR Req.</td>
+              <td>Cost</td>
+              <td>AC</td>
+              <td>DT</td>
+              <td>Slots</td>
+              <td>Load</td>
+              <td>STR Req.</td>
             </tr>
             <tr>
-                <td>
-                    <input type="number"
-                           name="system.baseCost.value"
-                           value="{{ system.baseCost.value }}" />
-                </td>
-                <td>
-                    <input type="number"
-                           name="system.armorClass.value"
-                           value="{{ system.armorClass.value }}" />
-                </td>
-                <td>
-                    <input type="number"
-                           name="system.damageThreshold.value"
-                           value="{{ system.damageThreshold.value }}" />
-                </td>
-                <td>
-                    <input type="number" name="system.slots.value" value="{{ system.slots.value }}" />
-                </td>
-                <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
-                <td>
-                    <input type="number" name="system.strReq.value" value="{{ system.strReq.value }}" />
-                </td>
+              <td>
+                <input type="number" name="system.baseCost.value" value="{{ system.baseCost.value }}" />
+              </td>
+              <td>
+                  <input type="number" name="system.armorClass.value" value="{{ system.armorClass.value }}" />
+              </td>
+              <td>
+                  <input type="number" name="system.damageThreshold.value" value="{{ system.damageThreshold.value }}" />
+              </td>
+              <td>
+                  <input type="number" name="system.slots.value" value="{{ system.slots.value }}" />
+              </td>
+              <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
+              <td>
+                  <input type="number" name="system.strReq.value" value="{{ system.strReq.value }}" />
+              </td>
             </tr>
         </table>
     </div>
@@ -80,135 +73,260 @@
     </div>
     {{!-- Upgrades Tab --}}
     <div class="tab" data-group="primary" data-tab="upgrades">
-      <table>
-        <th style ="min-width:20px">
-          Rank
+      <table class="upgrades-table">
+        <th style="width:21%;">
+          Upgrade
         </th>
-        <th>
-          Upgrade Name
+        <th style="width:5%;">
+          &nbsp;Rank&nbsp;
         </th>
         <th>
           Description
         </th>
         <tr>
-          <td id="valueCamouflage">
-            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerCamouflage" class="fas fa-minus-square"></i>
-            {{system.upgrades.camouflage.value}}
-            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherCamouflage" class="fas fa-plus-square"></i>
-          </td>
           <td>
-            Camouflage
+            camouflage
           </td>
-          <td id="descCamouflage" style = "max-width:200px">
+          <td id="valueCamouflage" class="upgradeBtn">
+            <button type="button" style="margin-left:2px;max-width:15px; float:left" data-tableSubtraction id="lowerCamouflage" 
+                {{#if system.upgrades.camouflage.value}}
+                  {{#LesserThan system.upgrades.camouflage.value 1}} disabled {{/LesserThan}}
+                {{else}} disabled {{/if}}>
+              <i class="fas fa-minus-square"></i>
+            </button>
+              {{#if system.upgrades.camouflage.value}}{{system.upgrades.camouflage.value}}{{else}}0{{/if}}
+            <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherCamouflage" 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.camouflage.value}}
+                    {{#LesserThan system.upgrades.camouflage.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
+                {{#GreaterThan system.upgrades.camouflage.value 3}} disabled {{/GreaterThan}} >
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </td>
+          <td id="desccamouflage">
             {{system.upgrades.camouflage.desc}}
           </td>
         </tr>
         <tr>
-          <td id="valueLight">
-            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerLight" class="fas fa-minus-square"></i>
-            {{system.upgrades.light.value}}
-            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherLight" class="fas fa-plus-square"></i>
-          </td>
           <td>
             Light
           </td>
-          <td id="descLight" style = "max-width:200px">
+          <td id="valueLight" class="upgradeBtn">
+            <button type="button" style="margin-left:2px;max-width:15px; float:left" data-tableSubtraction id="lowerLight" 
+                {{#if system.upgrades.light.value}}
+                  {{#LesserThan system.upgrades.light.value 1}} disabled {{/LesserThan}}
+                {{else}} disabled {{/if}}>
+              <i class="fas fa-minus-square"></i>
+            </button>
+              {{#if system.upgrades.light.value}}{{system.upgrades.light.value}}{{else}}0{{/if}}
+            <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherLight" 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.light.value}}
+                    {{#LesserThan system.upgrades.light.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
+                {{#GreaterThan system.upgrades.light.value 3}} disabled {{/GreaterThan}} >
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </td>
+          <td id="descLight">
             {{system.upgrades.light.desc}}
           </td>
         </tr>
         <tr>
-          <td id="valueFitted">
-            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerFitted" class="fas fa-minus-square"></i>
-            {{system.upgrades.fitted.value}}
-            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherFitted" class="fas fa-plus-square"></i>
-          </td>
           <td>
             Fitted
           </td>
-          <td id="descFitted" style = "max-width:200px">
+          <td id="valueFitted" class="upgradeBtn">
+            <button type="button" style="margin-left:2px;max-width:15px; float:left" data-tableSubtraction id="lowerFitted" 
+                {{#if system.upgrades.fitted.value}}
+                  {{#LesserThan system.upgrades.fitted.value 1}} disabled {{/LesserThan}}
+                {{else}} disabled {{/if}}>
+              <i class="fas fa-minus-square"></i>
+            </button>
+              {{#if system.upgrades.fitted.value}}{{system.upgrades.fitted.value}}{{else}}0{{/if}}
+            <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherFitted" 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.fitted.value}}
+                    {{#LesserThan system.upgrades.fitted.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
+                {{#GreaterThan system.upgrades.fitted.value 3}} disabled {{/GreaterThan}} >
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </td>
+          <td id="descFitted">
             {{system.upgrades.fitted.desc}}
           </td>
         </tr>
         <tr>
-          <td id="valueLeadLined">
-            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerLeadLined" class="fas fa-minus-square"></i>
-            {{system.upgrades.leadlined.value}}
-            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherLeadLined" class="fas fa-plus-square"></i>
-          </td>
           <td>
             Lead Lined
           </td>
-          <td id="descLeadLined" style = "max-width:200px">
+          <td id="valueLeadlined" class="upgradeBtn">
+            <button type="button" style="margin-left:2px;max-width:15px; float:left" data-tableSubtraction id="lowerLeadlined" 
+                {{#if system.upgrades.leadlined.value}}
+                  {{#LesserThan system.upgrades.leadlined.value 1}} disabled {{/LesserThan}}
+                {{else}} disabled {{/if}}>
+              <i class="fas fa-minus-square"></i>
+            </button>
+              {{#if system.upgrades.leadlined.value}}{{system.upgrades.leadlined.value}}{{else}}0{{/if}}
+            <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherLeadlined" 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.leadlined.value}}
+                    {{#LesserThan system.upgrades.leadlined.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
+                {{#GreaterThan system.upgrades.leadlined.value 3}} disabled {{/GreaterThan}} >
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </td>
+          <td id="descLeadLined" >
             {{system.upgrades.leadlined.desc}}
           </td>
         </tr>
         <tr>
-          <td id="valueStrengthened">
-            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerStrengthened" class="fas fa-minus-square"></i>
-            {{system.upgrades.strengthened.value}}
-            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherStrengthened" class="fas fa-plus-square"></i>
-          </td>
           <td>
             Strengthened
           </td>
-          <td id="descStrengthened" style = "max-width:200px">
+          <td id="valueStrengthened" class="upgradeBtn">
+            <button type="button" style="margin-left:2px;max-width:15px; float:left" data-tableSubtraction id="lowerStrengthened" 
+                {{#if system.upgrades.strengthened.value}}
+                  {{#LesserThan system.upgrades.strengthened.value 1}} disabled {{/LesserThan}}
+                {{else}} disabled {{/if}}>
+              <i class="fas fa-minus-square"></i>
+            </button>
+              {{#if system.upgrades.strengthened.value}}{{system.upgrades.strengthened.value}}{{else}}0{{/if}}
+            <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherStrengthened" 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.strengthened.value}}
+                    {{#LesserThan system.upgrades.strengthened.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
+                {{#GreaterThan system.upgrades.strengthened.value 3}} disabled {{/GreaterThan}} >
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </td>
+          <td id="descStrengthened">
             {{system.upgrades.strengthened.desc}}
           </td>
         </tr>
         <tr>
-          <td id="valueSturdy">
-            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerSturdy" class="fas fa-minus-square"></i>
-            {{system.upgrades.sturdy.value}}
-            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherSturdy" class="fas fa-plus-square"></i>
-          </td>
           <td>
             Sturdy
           </td>
-          <td id="descSturdy" style = "max-width:200px">
+          <td id="valueSturdy" class="upgradeBtn">
+            <button type="button" style="margin-left:2px;max-width:15px; float:left" data-tableSubtraction id="lowerSturdy" 
+                {{#if system.upgrades.sturdy.value}}
+                  {{#LesserThan system.upgrades.sturdy.value 1}} disabled {{/LesserThan}}
+                {{else}} disabled {{/if}}>
+              <i class="fas fa-minus-square"></i>
+            </button>
+              {{#if system.upgrades.sturdy.value}}{{system.upgrades.sturdy.value}}{{else}}0{{/if}}
+            <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherSturdy" 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.sturdy.value}}
+                    {{#LesserThan system.upgrades.sturdy.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}}
+                {{#GreaterThan system.upgrades.sturdy.value 3}} disabled {{/GreaterThan}} >
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </td>
+          <td id="descSturdy" >
             {{system.upgrades.sturdy.desc}}
           </td>
         </tr>
         <tr>
-          <td id="valuePocketed">
-            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerPocketed" class="fas fa-minus-square"></i>
-            {{system.upgrades.pocketed.value}}
-            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherPocketed" class="fas fa-plus-square"></i>
-          </td>
           <td>
             Pocketed
           </td>
-          <td id="descPocketed" style = "max-width:200px">
+          <td id="valuePocketed" class="upgradeBtn">
+            <button type="button" style="margin-left:2px;max-width:15px; float:left" data-tableSubtraction id="lowerPocketed" 
+                {{#if system.upgrades.pocketed.value}}
+                  {{#LesserThan system.upgrades.pocketed.value 1}} disabled {{/LesserThan}}
+                {{else}} disabled {{/if}}>
+              <i class="fas fa-minus-square"></i>
+            </button>
+              {{#if system.upgrades.pocketed.value}}{{system.upgrades.pocketed.value}}{{else}}0{{/if}}
+            <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherPocketed" 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.pocketed.value}}
+                    {{#LesserThan system.upgrades.pocketed.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}}
+                {{#GreaterThan system.upgrades.pocketed.value 3}} disabled {{/GreaterThan}} >
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </td>
+          <td id="descPocketed">
             {{system.upgrades.pocketed.desc}}
           </td>
         </tr>
         <tr>
-          <td id="valueReinforced">
-            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerReinforced" class="fas fa-minus-square"></i>
-            {{system.upgrades.reinforced.value}}
-            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherReinforced" class="fas fa-plus-square"></i>
-          </td>
           <td>
             Reinforced
           </td>
-          <td id="descReinforced" style = "max-width:200px">
+          <td id="valueReinforced" class="upgradeBtn">
+            <button type="button" style="margin-left:2px;max-width:15px; float:left" data-tableSubtraction id="lowerReinforced" 
+                {{#if system.upgrades.reinforced.value}}
+                  {{#LesserThan system.upgrades.reinforced.value 1}} disabled {{/LesserThan}}
+                {{else}} disabled {{/if}}>
+              <i class="fas fa-minus-square"></i>
+            </button>
+              {{#if system.upgrades.reinforced.value}}{{system.upgrades.reinforced.value}}{{else}}0{{/if}}
+            <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherReinforced" 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.reinforced.value}}
+                    {{#LesserThan system.upgrades.reinforced.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}}
+                {{#GreaterThan system.upgrades.reinforced.value 3}} disabled {{/GreaterThan}} >
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </td>
+          <td id="descReinforced">
             {{system.upgrades.reinforced.desc}}
           </td>
         </tr>
         <tr>
-          <td id="valueHardened">
-            <i style="padding:3px;cursor: pointer;" data-tableSubtraction id="lowerHardened" class="fas fa-minus-square"></i>
-            {{system.upgrades.hardened.value}}
-            <i style="padding:3px;cursor: pointer;" data-tableAddition id="higherHardened" class="fas fa-plus-square"></i>
-          </td>
           <td>
             Hardened
           </td>
-          <td id="descHardened" style = "max-width:200px">
+          <td id="valueHardened" class="upgradeBtn">
+            <button type="button" style="margin-left:2px;max-width:15px; float:left" data-tableSubtraction id="lowerHardened" 
+                {{#if system.upgrades.hardened.value}}
+                  {{#LesserThan system.upgrades.hardened.value 1}} disabled {{/LesserThan}}
+                {{else}} disabled {{/if}}>
+              <i class="fas fa-minus-square"></i>
+            </button>
+              {{#if system.upgrades.hardened.value}}{{system.upgrades.hardened.value}}{{else}}0{{/if}}
+            <button type="button" style="max-width:15px; float:right" data-tableAddition id="higherHardened" 
+                {{#LesserThan system.slots.value 1}}
+                  {{#if system.upgrades.hardened.value}}
+                    {{#LesserThan system.upgrades.hardened.value 1}} disabled {{/LesserThan}}
+                    {{else}} disabled 
+                  {{/if}}
+                {{/LesserThan}} 
+                {{#GreaterThan system.upgrades.hardened.value 3}} disabled {{/GreaterThan}} >
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </td>
+          <td id="descHardened">
             {{system.upgrades.hardened.desc}}
           </td>
         </tr>
       </table>
-	 	  {{!--{{editor system.upgrades target="system.upgrades" button=false engine="prosemirror"}}--}} 
     </div>
 
     {{!-- Effects Tab --}}

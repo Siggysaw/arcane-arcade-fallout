@@ -355,6 +355,12 @@ export class FalloutZeroActorSheet extends ActorSheet {
       ])
     })
 
+    // Convert Junk to Materials
+    html.on('click', '[data-junkToMat]', (ev) => {
+      const itemID = ev.currentTarget.dataset.itemId;
+      this.actor.system.checkConvert(itemID);
+    })
+
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return
