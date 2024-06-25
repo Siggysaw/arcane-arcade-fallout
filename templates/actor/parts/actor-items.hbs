@@ -1,155 +1,49 @@
 <table>
-    <tr>
-        <td class="armorbox"><h3>Armor</h3>
-        {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
-       </td> 
-        <td class="armorbox"><h3>Ammo</h3>
-            {{>
-                "systems/arcane-arcade-fallout/templates/actor/items/ammo.hbs"
-                ammos=ammos
-            }}
-        </td>
-    </tr>
-</table>
-<table>
-    <tr>
-        <td class="armorbox rangedbox"><h3>Ranged Weapons</h3>
-{{>
-    "systems/arcane-arcade-fallout/templates/actor/items/equipped-ranged-weapons.hbs"
-    rangedWeapons=rangedWeapons
-    abilities=system.abilities
-    skills=system.skills
-}}
-        </td>
-    <td class="armorbox meleebox"><h3>Melee Weapons</h3>
-{{>
-    "systems/arcane-arcade-fallout/templates/actor/items/equipped-melee-weapons.hbs"
-    meleeWeapons=meleeWeapons
-    abilities=system.abilities
-    skills=system.skills
-}}
-        </td>
-     </tr>
-</table>
-{{#if explosives}}
-<table>
-    <tr><td colspan="999" ><h3>Explosives</h3></td></tr>
+  <tr>
     <td class="armorbox">
-        <!-- Explosives Slot -->
-        {{#each explosives as |item id|}}
-        <div style="width:33%;float:left;padding:5px;" class="item flexrow" data-item-id="{{ item._id }}">
-            <table class="item-box">
-                <tr>
-                    <td>
-                        <details {{#if item.system.itemOpen }} open="true" {{/if}}>
-                            <summary data-expandtoggle data-itemid="{{item._id}}">
-                                <p class="allcaps">{{ item.name }}</p>
-                            </summary>
-                            <table class="equipped-stats">
-                                <tr>
-                                    <td>Cost</td>
-                                    <td>Load</td>
-                                    <td>Qty</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ system.cost }}</td>
-                                    <td>{{ system.load }}</td>
-                                    <td>
-                                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                                        {{ system.quantity }}
-                                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class='fakebutton' class="resource-label"
-                                             data-ap-used
-                                             data-weapon-id="{{ item._id }}"
-                                             class="resource-label">
-                                            AP
-                                        </div>
-                                    </td>
-                                    <td>Range</td>
-                                    <td>
-                                        {{#GreaterThan ../system.skills.explosives.value system.armDC}}
-                                        Auto Succeeds ({{system.armDC}})
-                                        {{else}}
-                                        <div class='fakebutton' class="rollable resource-label"
-                                             data-rollable
-                                             data-label="Attempt to Arm a {{ item.name }} They'll need to match or beat a {{system.armDC}}"
-                                             data-roll="d20+ {{../system.skills.explosives.value}} - @penaltyTotal - 10"
-                                             title="d20 + explosives({{../system.skills.explosives.value}}) - penalties({{../system.penaltyTotal}}) - Increased DV of 10" />
-                                        ARM
-        </div>
-        {{/GreaterThan}}
+      <h3>Armor</h3>
+      {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
     </td>
-    </tr>
-    <tr>
-        <td>{{ system.apCost }}</td>
-        <td>{{ system.thrown }}</td>
-        <td>{{ system.armDC}}</td>
-    </tr>
-</table>
-<table class="equipped-stats"><tr><td>AOE: {{ system.aoeRadius }}</td></tr></table>
-<table class="equipped-stats">
-    <tr><td colspan=999>Damage Calculation</td>
-    <tr><td style="width:75px;">DMG 1</td><td>Type</td></tr>
-    <tr>
-        <td>
-            <div class='fakebutton' class="rollable resource-label"
-                 data-rollable
-                 data-label="KABOOM! <span class='allcaps'>{{item.system.damageType1}}</span> DMG from a {{ item.name }}"
-                 data-roll="{{ item.system.damage1 }}">
-                {{ item.system.damage1 }}
-            </div>
-        </td>
-        <td class="allcaps">
-            {{ item.system.damageType1}}
-        </td>
-    </tr>
-    {{#if item.system.damage2 }}
-</table>
-<table class="equipped-stats">
-    <tr>
-        <td style="width:75px;">DMG 2</td>
-        <td>Type</td>
-    </tr>
-    <td>
-        <div class='fakebutton' class="rollable resource-label"
-             data-rollable
-             data-label="KABOOM! <span class='allcaps'>{{item.system.damageType2}}</span> DMG from a {{ item.name }}"
-             data-roll="{{ item.system.damage2 }}">
-            {{ item.system.damage2 }}
-        </div>
+    <td class="armorbox">
+      <h3>Ammo</h3>
+      {{>
+            "systems/arcane-arcade-fallout/templates/actor/items/ammo.hbs"
+            ammos=ammos
+      }}
     </td>
-    <td class="allcaps">
-        {{ item.system.damageType2}}
+  </tr>
+</table>
+<table>
+  <tr>
+    <td class="armorbox rangedbox">
+      <h3>Ranged Weapons</h3>
+      {{>
+            "systems/arcane-arcade-fallout/templates/actor/items/equipped-ranged-weapons.hbs"
+            rangedWeapons=rangedWeapons
+            abilities=system.abilities
+            skills=system.skills
+      }}
+    </td>
+    <td class="armorbox meleebox">
+      <h3>Melee Weapons</h3>
+      {{>
+            "systems/arcane-arcade-fallout/templates/actor/items/equipped-melee-weapons.hbs"
+            meleeWeapons=meleeWeapons
+            abilities=system.abilities
+            skills=system.skills
+      }}
+    </td>
+    {{#if explosives}}
+    <td class="armorbox">
+      <h3>Explosives</h3>
+      {{>
+                "systems/arcane-arcade-fallout/templates/actor/items/explosives.hbs"
+                explosives=explosives
+                abilities=system.abilities
+                skills=system.skills
+                penaltyTotal=penaltyTotal
+      }}
     </td>
     {{/if}}
+  </tr>
 </table>
-<div class="item-controls">
-    <a style="float: right; margin-right: 10px"
-       class="item-control item-delete"
-       data-item-id="{{ item._id }}"
-       title="{{localize 'DOCUMENT.Delete' type='item'}}">
-        <i class="fas fa-trash"></i>
-    </a>
-    <a style="float: right; margin-right: 10px"
-       data-edit
-       data-item-id="{{ item._id }}"
-       class="item-control"
-       title="{{localize 'DOCUMENT.Update' type='item'}}">
-        <i class="fas fa-edit"></i>
-    </a>
-</div>
-</details>
-
-                </td>
-            </tr>
-        </table>
-    </div>
-{{/each}}
-</td>
-</tr>
-</table>
-{{/if}}
