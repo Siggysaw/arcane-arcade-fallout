@@ -38,5 +38,8 @@ export const preloadHandlebarsTemplates = async function () {
 
     // Item partials
     'systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs',
+
+    // Background partials
+    'systems/arcane-arcade-fallout/templates/background/parts/grants.hbs',
   ])
 }

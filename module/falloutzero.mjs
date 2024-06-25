@@ -4,6 +4,7 @@ import { FalloutZeroItem } from './documents/item.mjs'
 // Import sheet classes.
 import { FalloutZeroActorSheet } from './sheets/actor-sheet.mjs'
 import { FalloutZeroItemSheet } from './sheets/item-sheet.mjs'
+import { FalloutZeroBackgroundSheet } from './sheets/background-sheet.mjs'
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs'
 import { FALLOUTZERO } from './config.mjs'
@@ -50,6 +51,7 @@ Hooks.once('init', function () {
     feature: models.FalloutZeroFeature,
     rangedWeapon: models.FalloutZeroRangedWeapon,
     meleeWeapon: models.FalloutZeroMeleeWeapon,
+    background: models.FalloutZeroBackground,
   }
 
   // Active Effects are never copied to the Actor,
@@ -68,6 +70,10 @@ Hooks.once('init', function () {
     makeDefault: true,
     label: 'FALLOUTZERO.SheetLabels.Item',
   })
+  Items.registerSheet('falloutzero', FalloutZeroBackgroundSheet, {
+    makeDefault: true,
+    label: 'FALLOUTZERO.SheetLabels.Background',
+  })
 
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates()
@@ -85,32 +91,31 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 // If Player is a GM
 Handlebars.registerHelper('GM', function (options) {
   if (game.user.role === 4) {
-    return options.fn(this);
+    return options.fn(this)
   }
-  return options.inverse(this);
+  return options.inverse(this)
 })
 
 // Greater Than or Equal
 Handlebars.registerHelper('GreaterThan', function (v1, v2, options) {
   if (v1 >= v2) {
-    return options.fn(this);
+    return options.fn(this)
   }
-  return options.inverse(this);
+  return options.inverse(this)
 })
 // Less Than
 Handlebars.registerHelper('LesserThan', function (v1, v2, options) {
   if (v1 < v2) {
-    return options.fn(this);
+    return options.fn(this)
   }
-  return options.inverse(this);
+  return options.inverse(this)
 })
 
 // Sum Of
 Handlebars.registerHelper('Sum', function (v1, v2) {
   let sum = v1 + v2
-  return sum;
+  return sum
 })
-
 
 /* -------------------------------------------- */
 /*  Ready Hook                                  */

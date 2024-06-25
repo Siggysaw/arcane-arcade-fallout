@@ -10,7 +10,8 @@
     },
     "SheetLabels": {
       "Actor": "falloutzero Actor Sheet",
-      "Item": "falloutzero Item Sheet"
+      "Item": "falloutzero Item Sheet",
+      "Background": "falloutzero Background Sheet"
     },
     "Item": {
       "Spell": {

@@ -303,10 +303,10 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Equip or unequip item
     html.on('click', '[data-equip]', (ev) => {
-      const itemId = ev.currentTarget.dataset.itemId;
-      const item = this.actor.items.get(itemId);
-      item.update({'system.itemEquipped' : !item.system.itemEquipped})
-      item.sheet.changeEquipStatus(item);
+      const itemId = ev.currentTarget.dataset.itemId
+      const item = this.actor.items.get(itemId)
+      item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+      item.sheet.changeEquipStatus(item)
     })
 
     // handles weapon reload
@@ -372,8 +372,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
           this._onItemDeleteTrait(item)
           break
         case 'armor':
-          if (item.system.itemEquipped){
-            console.log("Yes")
+          if (item.system.itemEquipped) {
+            console.log('Yes')
             item.sheet.unequipItemStats(item)
           }
           break
@@ -439,15 +439,33 @@ export class FalloutZeroActorSheet extends ActorSheet {
    * @param {Item} itemData     The item or items requested for creation
    * @protected
    */
-  _onDropItemCreate(itemData) {
+  async _onDropItemCreate(itemData) {
     console.log('_onDropItemCreate', itemData)
     switch (itemData.type) {
       case 'trait':
         this._onDropItemCreateTrait(itemData)
         return
+      case 'background':
+        await this._onDropItemCreateBackgroundGrants(itemData)
+        super._onDropItemCreate(itemData)
+        return
       default:
         super._onDropItemCreate(itemData)
         return
+    }
+  }
+
+  /**
+   * Handle the final creation of dropped background Item data on the Actor.
+   * @param {Item} itemData     The item or items requested for creation
+   * @protected
+   */
+  async _onDropItemCreateBackgroundGrants(itemData) {
+    if (itemData.system.grants.length > 0) {
+      itemData.system.grants.forEach(async (grant) => {
+        const newItem = await fromUuid(grant.key)
+        super._onDropItemCreate(newItem)
+      })
     }
   }
 

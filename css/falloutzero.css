@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import 'base.css';
+@import 'grant.css';
+
 /* Global styles */
 @font-face {
   font-family: 'Monofonto';
@@ -34,7 +37,7 @@ details > summary {
   display: flex;
   justify-content: center;
   align-items: center;
-  color:#ccc;
+  color: #ccc;
   background: #222;
   border: solid 1px #ccc;
   text-transform: uppercase;
@@ -580,27 +583,27 @@ td,
   width: 100%;
 }
 .sheet form .perk-div h3 {
-  color:#01e998
+  color: #01e998;
 }
 .sheet .perk-div .perk-image {
   height: 150px;
 }
 .sheet div .box-traits,
 .sheet div .box-perks,
-.sheet div .box-medicines{
+.sheet div .box-medicines {
   width: 33%;
   float: left;
   min-height: 265px;
 }
 .sheet div .box-traits h3,
 .sheet div .box-perks h3,
-.sheet div .box-medicines h3{
-    height:45px;
+.sheet div .box-medicines h3 {
+  height: 45px;
 }
 .sheet .perk-div h3 {
-    font-size: 10pt;
-    letter-spacing: 0;
-  }
+  font-size: 10pt;
+  letter-spacing: 0;
+}
 .specialroll {
   text-transform: uppercase;
 }
@@ -777,18 +780,18 @@ form td .status-notes li:hover {
 .armorbox {
   width: 50%;
 }
-.sheet table td .ammo-box{
-    background-image:url('/systems/arcane-arcade-fallout/assets/opacity-25.png');
-    margin-top:15px;
-    margin:5px;
+.sheet table td .ammo-box {
+  background-image: url('/systems/arcane-arcade-fallout/assets/opacity-25.png');
+  margin-top: 15px;
+  margin: 5px;
 }
 .dialog .conditioninfo {
   font-family: fixedsys;
   padding: 20px;
   font-size: 14pt;
 }
-.condition{
-    cursor:pointer;
+.condition {
+  cursor: pointer;
 }
 .sheet .fallout-character-notes {
   height: 700px;
@@ -804,20 +807,20 @@ form td .status-notes li:hover {
   background-size: cover;
   background-repeat: no-repeat;
 }
-.sheet .player-conditions td{
-  letter-spacing:0;
-  text-align:left;
-  padding:0px;
-  margin:0px;
-  vertical-align:middle;
-  border:none;
+.sheet .player-conditions td {
+  letter-spacing: 0;
+  text-align: left;
+  padding: 0px;
+  margin: 0px;
+  vertical-align: middle;
+  border: none;
 }
-.sheet .player-conditions td span{
-    font-size:10pt;
+.sheet .player-conditions td span {
+  font-size: 10pt;
 }
-.sheet .player-conditions input[type=checkbox] {
-  transform: scale(.75);
+.sheet .player-conditions input[type='checkbox'] {
+  transform: scale(0.75);
 }
-.armorbox{
-    padding:5px;
+.armorbox {
+  padding: 5px;
 }

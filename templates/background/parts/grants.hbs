@@ -1,0 +1,20 @@
+<div class="grants" data-grant-drop>
+  {{#each grants as |item|}}
+  <div class="flex">
+    <div>
+      {{ item.name }}
+    </div>
+    <div class="item-controls">
+      <div>
+        <button
+          data-delete-grant="{{ item._id }}"
+          title="{{localize 'DOCUMENT.Delete' type='item'}}"
+        >
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
+{{log 'grants' grants}}
