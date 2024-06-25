@@ -537,6 +537,106 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     }
   }
 
+  //Convert junk to Materials as per item stats
+  async convertJunkToMat(item,mats,qty){
+    let compendium = game.packs.find(u => u.metadata.name == "material");
+    let matData, existingMat, newQuantity
+    let material;
+    var i = 0;
+    let newItem;
+    // Create item or add quantity if existing
+    while (i < mats.length){
+      material = mats[i][1].trim()
+      matData = compendium.tree.entries.find(u => u.name.toLowerCase() == material.toLowerCase());
+      existingMat = this.parent.items.find(u => u.name.toLowerCase() == mats[i][1].toLowerCase())
+      if (existingMat){
+        newQuantity = Number(existingMat.system.quantity) + (Number(mats[i][0])*Number(qty))
+        existingMat.update({'system.quantity' : newQuantity})
+      } else {
+        newItem = await Item.create(matData, { parent: this.parent });
+        newItem.update({'system.quantity' : Number(mats[i][0])*Number(qty)});
+      }
+      i++
+    }
+    //Adjust quantity or delete
+    if(item.system.quantity != qty){
+      item.update({'system.quantity' : item.system.quantity - qty});
+    } else {
+      item.delete()
+    }
+  }
+
+  //Material conversion dialog
+  checkConvert(itemID){
+    let item = this.parent.items.find(u => u._id == itemID);
+    let initialQty = item.system.quantity
+    let qtyOptions = []
+    let dialogContent = ``;
+    let mats = [];
+    let qty = 1;
+    console.log(game.packs)
+    let itemName = this.parent.system.formatCompendiumItem("junk",item.name, "This will remove this item from inventory.",).slice(0,-4)
+    var i = 1;
+    if (item){
+      dialogContent = `Are you sure you want to convert ${itemName} into the following materials? <br><br>`
+      while (i < (Object.keys(item.system.junk).length)/2 + 1) {
+        if (item.system.junk["quantity" + i] != 0){
+          dialogContent += `x<b name='qty'>${item.system.junk["quantity" + i]}</b> ` + this.parent.system.formatCompendiumItem(
+            "material",
+            item.system.junk["type" + i],
+            "Material for Crafting",
+          ) + `<br>`;
+          mats.push([item.system.junk["quantity" + i],item.system.junk["type" + i]])
+        }
+        i++;
+      }
+      if (initialQty > 1) {
+        i = 1
+        dialogContent = dialogContent.replace("materials?", "materials, each?")
+        dialogContent += `<br> How many ${itemName} do you want to convert? <br><br>
+        <select style="padding-left:20px" name="matQtyOpt" id = "matQtyOpt">`
+        while (i < initialQty + 1){
+          console.log(i)
+          dialogContent += `<option value='${i}'>${i}</option>`
+          qtyOptions.push(i)
+          i++
+        }
+        dialogContent += `</select><br>`
+      }
+      dialogContent += `<h4> This process is irreversible.</h4>`
+    }
+    let d = new Dialog(
+      {
+        title: 'Convert or not?',
+        content: dialogContent,
+        buttons: {
+          Yes: {
+            icon: '<i class="fas fa-check"></i>',
+            label: 'Yes please! (consult GM)',
+            callback: async () => {this.convertJunkToMat(item,mats,qty);
+            },
+          },
+          No: {
+            icon: '<i class="fa-solid fa-x"></i>',
+            label: 'Not yet...',
+            callback: async () => {}
+            },
+          },
+        default: 'No',
+        render: (html) => {
+          html.find('[name=matQtyOpt]').change(function () {
+            qty = this.value;
+            console.log(qty)
+          })
+        },
+      },
+      {
+        width: 500,
+      },
+    )
+    d.render(true)
+  }
+
   //Roll any table, check if loot is a table and start over or add loot.
   async rollMyTable(table) {
     let roll = await new Roll(
@@ -795,7 +895,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     }
     try {
       compendiumObject = game.packs.find((u) => u.metadata.name == compendium)
-      myItem = compendiumObject.tree.entries.find((u) => u.name == itemName)
+      myItem = compendiumObject.tree.entries.find((u) => u.name.toLowerCase() == itemName.toLowerCase())
       if (myItem) {
         return `<a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
           data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="${myTooltip}"><i class="fas fa-suitcase">

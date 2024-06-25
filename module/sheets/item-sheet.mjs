@@ -573,8 +573,6 @@ export class FalloutZeroItemSheet extends ItemSheet {
       default: 'Split',
       render: () => {}
     },{
-      left: 200,
-      top: 200,
       width: 600,
     },)
     d.render(true)

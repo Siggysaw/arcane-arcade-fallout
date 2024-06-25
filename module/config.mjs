@@ -320,277 +320,6 @@ FALLOUTZERO.penalties = {
 
 FALLOUTZERO.maxKarmaCaps = 7
 
-FALLOUTZERO.armorUpgrades = {
-  camouflage : {
-    name : 'Camouflage',
-    short : 'Camo',
-    cost : 125,
-    craftingTime : '1 hour',
-    rank : {
-      1 : {
-        desc : 'You gain advantage on sneak checks relying on sight. Your passive sneak increases by 3.',
-        auto : '+3 Sneak',
-        craftingDC : '+6',
-        craftingMat : 'x4 paint',
-        charMod : {'system.skills.sneak.modifiers' : 9},
-      },
-      2 : {
-        desc : 'You gain advantage on sneak checks relying on sight and sound. Your passive sneak increases by 6.',
-        auto : '+6 Sneak',
-        craftingDC : '+10',
-        craftingMat : 'x5 paint, x4 rubber',
-        charMod : {'system.skills.sneak.modifiers' : 9},
-      },
-      3 : {
-        desc : 'You gain advantage on sneak checks relying on sight and sound. While in dim light, you become shadowed. Your passive sneak increases by 9.',
-        auto : '+9 Sneak',
-        craftingDC : '+16, or sneak skill bonus equal to +8',
-        craftingMat : 'x3 adhesive, x5 leather, x3 paint',
-        charMod : {'system.skills.sneak.modifiers' : 9},
-      }
-    }
-  },
-  light : {
-    name : 'Light',
-    short : 'Light',
-    cost : 75,
-    craftingTime : '1 hour',
-    rank : {
-      1 : {
-        desc : 'Load reduced by 5. Strength requirement reduced by 1. DT reduced by 1.',
-        auto : 'Load-5, Str Req -1, DT-1',
-        craftingDC : '+8',
-        craftingMat : 'None',
-        upgrades : {
-          'system.originalLoad' : '@load',
-          'system.strReq.value' : -1,
-          'system.damageThreshold.value' : -1,
-          'system.load' : -5
-        }
-      },
-      2 : {
-        desc : 'Load reduced by 15 (min of 3). Strength req. reduced by 1. DT reduced by 1.',
-        auto : 'Load-15(min3), Str Req -1, DT-1',
-        craftingDC : '+13',
-        craftingMat : 'None',
-        upgrades : {
-          'system.strReq.value' : -1,
-          'system.damageThreshold.value' : -1,
-          'system.load' : -5
-        }
-      },
-      3 : {
-        desc : 'Load reduced by 15 (min of 3). Strength req. reduced by 1. DT reduced by 1. If you spend at least 4 AP on your turn to move, you can move an additional 10 feet.',
-        auto : 'Load-15(min3), Str Req -1, DT-1',
-        craftingDC : '+18',
-        craftingMat : 'x6 adhesive, x5 rubber, x4 springs',
-        upgrades : {
-          'system.strReq.value' : -1,
-          'system.damageThreshold.value' : -1,
-          'system.load' : -5
-        }
-      }
-    }
-  },
-  fitted : {
-    name : 'Fitted',
-    short : 'Fit',
-    cost : 175,
-    craftingTime : '1 hour',
-    rank : {
-      1 : {
-        desc : 'When you take damage from an area of effect, your DT is doubled.',
-        auto : 'No automated effect',
-        craftingDC : '+6',
-        craftingMat : 'x5 of each material required to craft the type armor you are modifying',
-        charMod : {'system.stamina.modifiers' : 0 }
-      },
-      2 : {
-        desc : 'When you take damage from an area of effect, your DT is doubled. Your maximum stamina points increase by a number equal to your level.',
-        auto : 'Max STA + @level',
-        craftingDC : '+6',
-        craftingMat : 'x5 of each material required to craft the type armor you are modifying',
-        charMod : {'system.stamina.modifiers' : '@level'}
-      },
-      3 : {
-        desc : 'When you take damage from an area of effect, your DT is doubled. Your maximum stamina points increase by a number equal to your level. You have advantage on combat sequence rolls. If you already have advantage, you gain a +5.',
-        auto : 'Max STA + @level',
-        craftingDC : '+6',
-        craftingMat : 'x8 of each material required to craft the type armor you are modifying',
-        charMod : {'system.stamina.modifiers' : '@level'}
-      }
-    }
-  },
-  leadlined : {
-    name : 'Lead Lined',
-    short : 'Lead',
-    cost : 125,
-    craftingTime : '1 hour',
-    rank : {
-      1 : {
-        desc : 'Radiation DC decreases by -2',
-        auto : 'RadDC -2',
-        craftingDC : '+10',
-        craftingMat : 'x6 lead, x6 adhesive',
-        charMod : {'system.penalties.radDC.value' : -2}
-      },
-      2 : {
-        desc : 'Radiation DC decreases by -4',
-        auto : 'RadDC -4',
-        craftingDC : '+15',
-        craftingMat : 'x6 lead, x6 adhesive',
-        charMod : {'system.penalties.radDC.value' : -4}
-      },
-      3 : {
-        desc : 'Radiation DC decreases by -6',
-        auto : 'RadDC -6',
-        craftingDC : '+20',
-        craftingMat : 'x6 lead, x6 adhesive',
-        charMod : {'system.penalties.radDC.value' : -6}
-      }
-    }
-  },
-  strengthened : {
-    name : 'Strengthened',
-    short : 'Str',
-    cost : 410,
-    craftingTime : '1 hour',
-    rank : {
-      1 : {
-        desc : 'When you take damage from a critical hit, your DT increases by 3.',
-        auto : 'No automated effect',
-        craftingDC : '+6',
-        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive',
-      },
-      2 : {
-        desc : 'When you take damage from a critical hit, your DT increases by 8.',
-        auto : 'No automated effect',
-        craftingDC : '+12',
-        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive',
-      },
-      3 : {
-        desc : 'When you take damage from a critical hit, your DT increases by 8. If you would gain a severe injury, you instead gain a random limb condition.',
-        auto : 'No automated effect',
-        craftingDC : '+18',
-        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive',
-      }
-    }
-  },
-  sturdy : {
-    name : 'Sturdy',
-    short : 'Sturd',
-    cost : 475,
-    craftingTime : '1 hour',
-    rank : {
-      1 : {
-        desc : 'You ignore the negative effects of the first 2 levels of decay for the armor.',
-        auto : 'No automated effect',
-        craftingDC : '+6',
-        craftingMat : 'x3 of each material required to craft the type armor you are modifying, x3 adhesive',
-      },
-      2 : {
-        desc : 'You ignore the negative effects of the first 4 levels of decay for the armor.',
-        auto : 'No automated effect',
-        craftingDC : '+12',
-        craftingMat : 'x3 of each material required to craft the type armor you are modifying, x3 adhesive',
-      },
-      3 : {
-        desc : 'You ignore the negative effects of the first 4 levels of decay for the armor. Your armor no longer decays from being damaged by a critical hit.',
-        auto : 'No automated effect',
-        craftingDC : '+18',
-        craftingMat : 'x3 of each material required to craft the type armor you are modifying, x3 adhesive',
-      }
-    }
-  },
-  pocketed : {
-    name : 'Pocketed',
-    short : 'Pocket',
-    cost : 210,
-    craftingTime : '1 hour',
-    rank : {
-      1 : {
-        desc : 'Your carry load is increased by 10.',
-        auto : 'Carry Load + 10',
-        craftingDC : '+4',
-        craftingMat : 'x4 cloth, x5 leather, x3 adhesive',
-        charMod : {'system.carryLoad.max' : 10}
-      },
-      2 : {
-        desc : 'Your carry load is increased by 25.',
-        auto : 'Carry Load + 25',
-        craftingDC : '+8',
-        craftingMat : 'x6 cloth, x8 leather, x3 adhesive',
-        charMod : {'system.carryLoad.max' : 25}
-      },
-      3 : {
-        desc : 'Your carry load is increased by 50.',
-        auto : 'Carry Load + 50',
-        craftingDC : '+12',
-        craftingMat : 'x8 cloth, x10 leather, x4 adhesive',
-        charMod : {'system.carryLoad.max' : 50}
-      }
-    }
-  },
-  reinforced : {
-    name : 'Reinforced',
-    short : 'Reinf',
-    cost : 125,
-    craftingTime : '1 hour',
-    rank : {
-      1 : {
-        desc : '+1 bonus to DT',
-        auto : '+1 DT',
-        craftingDC : '+12',
-        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive, 5 screws',
-        upgrades : {'system.damageThreshold.value' : 1},
-      },
-      2 : {
-        desc : '+2 bonus to DT',
-        auto : '+2 DT',
-        craftingDC : '+17',
-        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive, 5 screws',
-        upgrades : {'system.damageThreshold.value' : 2},
-      },
-      3 : {
-        desc : '+4 bonus to DT',
-        auto : '+4 DT',
-        craftingDC : '+22',
-        craftingMat : 'x8 of each material required to craft the type armor you are modifying, x8 adhesive, 8 screws',
-        upgrades : {'system.damageThreshold.value' : 4},
-      }
-    }
-  },
-  hardened : {
-    name : 'Hardened',
-    short : 'Hard',
-    cost : 800,
-    craftingTime : '1 hour',
-    rank : {
-      1 : {
-        desc : '1 bonus to AC',
-        auto : '1 AC',
-        craftingDC : '+14',
-        craftingMat : 'x6 of each material required to craft the type armor you are modifying, x6 adhesive, 6 screws',
-        upgrades : {'system.armorClass.value' : 1},
-      },
-      2 : {
-        desc : '2 bonus to AC',
-        auto : '2 AC',
-        craftingDC : '+19',
-        craftingMat : 'x6 of each material required to craft the type armor you are modifying, x6 adhesive, 6 screws',
-        upgrades : {'system.armorClass.value' : 2},
-      },
-      3 : {
-        desc : '3 bonus to AC',
-        auto : '3 AC',
-        craftingDC : '+25',
-        craftingMat : 'x6 of each material required to craft the type armor you are modifying, x6 adhesive, 6 screws',
-        upgrades : {'system.armorClass.value' : 3},
-      }
-    }
-  },
-}
-
 FALLOUTZERO.rules = {
   Addictive:    'If you consume a drink with the Alcoholic property that also has this property, you must succeed an Endurance ability check equal to 5.<br><br> If you fail, you become addicted to alcoholic drinks.<br><br>While you are addicted to alcoholic drinks you always have two levels of exhaustion unless you are drunk.<br><br> You lose your alcohol addiction if you spend a number of weeks equal to 6 minus your Endurance ability ability modifier (minimum 1).<br><br>',
   Alcoholic:    'When you consume a drink with this property, and your Endurance ability score is equal to 5 or higher, you become buzzed for 1d4 hours.<br><br> Endurance ability score is equal to 4 or lower, you become drunk instead.<br><br> If you are already buzzed and you consume another alcoholic or high-proof drink, you become drunk for 1d4 hours.<br><br> If you are drunk, and drink two more alcoholic or high-proof drinks, you become hammered for 1d4 hours.<br><br> If you are hammered, and drink two more alcoholic or high-proof drinks, you become wasted for 1d4 hours.<br><br> ',
@@ -636,13 +365,13 @@ FALLOUTZERO.rules = {
   Deafened: `A deafened creature can't hear and automatically fails any ability check that requires hearing.<br><br>`,
   Dehydration: `Whenever you roll a d20, the total is subtracted by 1 for each level of dehydration you have.<br><br> At the end of each day, or every 24 hours, if you did not consume at least three drinks or a drink with the hydrating property, you gain three levels of dehydration.<br><br> When you gain your tenth level of dehydration, you die.<br><br> `,
   Drunk: `While drunk, you gain the effects of buzzed, you have 2 less AP, and your maximum stamina points increase by a number equal to your level.<br><br> `,
-  Encumbered: `An encumbered creature moves slowly (2 AP per 5 feet).<br><br> The creature’s travel pace is halved, and you gain a level of Fatigue each hour you are encumbered.<br><br> `,
+  Encumbered: `An encumbered creature moves slowly (2 AP per 5 feet).<br><br> The creatureï¿½s travel pace is halved, and you gain a level of Fatigue each hour you are encumbered.<br><br> `,
   Exhaustion: `Whenever you roll a d20, the total is subtracted by 1 for each level of exhaustion you have.<br><br> When you gain your tenth level of exhaustion, you die.<br><br> If you are a human, ghoul, or super mutant; you can remove one level of exhaustion after resting for at least 6 hours.<br><br> If you are a robot or gen-2 synth; you can remove one level of exhaustion after resting for at least 2 hours.<br><br> `,
   Fatigue: `Whenever you roll a d20, the total is subtracted by 1 for each level of fatigue you have.<br><br> You can only ever have a total of nine levels of fatigue.<br><br> At the end of each of your turns you lose one level of fatigue.<br><br> `,
   Frightened:`<p>When a creature becomes frightened, they must succeed an Endurance ability check with the DC equal to 8 + the Intimidation skill bonus of the frightening creature.<br><br> </p><p> If they succeed this check by 5 or more, they are not frightened.<br><br></p><ul><li><p>If they succeed this check, they can choose to become frightened Flight, Fight, Freeze, or Fawn for half (rounded down) the allotted time.<br><br> </p></li><li><p>If they fail this check, they can choose to become frightened Flight, Fight, Freeze, or Fawn for the allotted time.<br><br> </p></li><li><p>If they fail this check by 5 or more, they can choose to become frightened Flight or Freeze for the allotted time.<br><br> </p></li></ul><p>Frightened - Flight.<br><br> A creature with this condition must use their action points on their turn to move as far away from the source of their fear as possible.<br><br> </p><p>Frightened - Fight.<br><br> A creature with this condition must use their action points on their turn to attack with intent to kill towards the source of their fear.<br><br> They cannot spend action points to move away from the source of their fear.<br><br></p><p>Frightened - Freeze.<br><br> A creature with this condition loses half their maximum AP (rounded down) and cannot spend any AP to move.<br><br> </p><p>Frightened - Fawn.<br><br> A creature with this condition uses all their AP on their turn to attack any creatures that are considered enemies to the source of their fear, or takes any other actions that would heal or help the source of their fear.<br><br></p>`,
   Grappled: `A grappled creature cannot spend AP to move.<br><br>`,
   Hammered: `While drunk, you gain the effects of buzzed and drunk.<br><br> Additionally, your maximum stamina points increase by a number equal to your level and whenever you roll a d20 it is subtracted by 5.<br><br> `,
-  Heavily_Encumbered: `A heavily encumbered creature moves slowly (3 AP per 5 feet).<br><br> The creature’s travel pace is halved.<br><br> Every hour a heavily encumbered creature travels reduces their maximum stamina points by 2 (resets upon sleeping) Every day a heavily encumbered creature travels reduces their carry load capacity by 10 (resets upon traveling a day without being encumbered)`,
+  Heavily_Encumbered: `A heavily encumbered creature moves slowly (3 AP per 5 feet).<br><br> The creatureï¿½s travel pace is halved.<br><br> Every hour a heavily encumbered creature travels reduces their maximum stamina points by 2 (resets upon sleeping) Every day a heavily encumbered creature travels reduces their carry load capacity by 10 (resets upon traveling a day without being encumbered)`,
   Hunger: `Whenever you roll a d20, the total is subtracted by 1 for each level of hunger you have.<br><br> At the end of each day, or after 24 hours, if you did not consume at least one food, you gain one level of hunger.<br><br> When you gain your tenth level of hunger, you die.<br><br> `,
   Invisible: `An invisible creature is impossible to see.<br><br> For the purpose of hiding, the creature is heavily obscured.<br><br> The creature's location can be detected by any noise it makes or any tracks it leaves.<br><br> Attack rolls against the creature have disadvantage, and the creature's attack rolls have advantage.<br><br>`,
   Poisoned: `A poisoned creature has disadvantage on all d20 rolls.<br><br>`,
@@ -653,9 +382,281 @@ FALLOUTZERO.rules = {
   Shock: `A creature who goes into shock has their stamina points immediately drop to 0 and starts their next turn with a maximum of 6 AP.<br><br>`,
   Slowed: `A slowed creature starts their turn with a maximum of 6 AP.<br><br>`,
   Unconscious: `When a creature becomes unconscious, it drops anything it was holding and all of its stamina points drop to 0.<br><br> It can't move or speak, and is unaware of its surroundings.<br><br> `,
-  Wasted: `While wasted, you gain the effects of buzzed, drunk, and hammered.<br><br> Additionally, you remember nothing from the time while you’re wasted and you fall unconscious after an hour.<br><br> `,
+  Wasted: `While wasted, you gain the effects of buzzed, drunk, and hammered.<br><br> Additionally, you remember nothing from the time while youï¿½re wasted and you fall unconscious after an hour.<br><br> `,
 }
 
+FALLOUTZERO.armorUpgrades = [
+  {
+    name : 'Camouflage',
+    short : 'Camo',
+    cost : 125,
+    craftingTime : '1 hour',
+    rank : {
+      1 : {
+        desc : 'You gain advantage on sneak checks relying on sight. Your passive sneak increases by 3.',
+        auto : '+3 Sneak',
+        craftingDC : '+6',
+        craftingMat : 'x4 paint',
+        charMod : {'system.skills.sneak.modifiers' : 9},
+      },
+      2 : {
+        desc : 'You gain advantage on sneak checks relying on sight and sound. Your passive sneak increases by 6.',
+        auto : '+6 Sneak',
+        craftingDC : '+10',
+        craftingMat : 'x5 paint, x4 rubber',
+        charMod : {'system.skills.sneak.modifiers' : 9},
+      },
+      3 : {
+        desc : 'You gain advantage on sneak checks relying on sight and sound. While in dim light, you become shadowed. Your passive sneak increases by 9.',
+        auto : '+9 Sneak',
+        craftingDC : '+16, or sneak skill bonus equal to +8',
+        craftingMat : 'x3 adhesive, x5 leather, x3 paint',
+        charMod : {'system.skills.sneak.modifiers' : 9},
+      }
+    }
+  },
+  {
+    name : 'Light',
+    short : 'Light',
+    cost : 75,
+    craftingTime : '1 hour',
+    rank : {
+      1 : {
+        desc : 'Load reduced by 5. Strength requirement reduced by 1. DT reduced by 1.',
+        auto : 'Load-5, Str Req -1, DT-1',
+        craftingDC : '+8',
+        craftingMat : 'None',
+        upgrades : {
+          'system.originalLoad' : '@load',
+          'system.strReq.value' : -1,
+          'system.damageThreshold.value' : -1,
+          'system.load' : -5
+        }
+      },
+      2 : {
+        desc : 'Load reduced by 15 (min of 3). Strength req. reduced by 1. DT reduced by 1.',
+        auto : 'Load-15(min3), Str Req -1, DT-1',
+        craftingDC : '+13',
+        craftingMat : 'None',
+        upgrades : {
+          'system.strReq.value' : -1,
+          'system.damageThreshold.value' : -1,
+          'system.load' : -5
+        }
+      },
+      3 : {
+        desc : 'Load reduced by 15 (min of 3). Strength req. reduced by 1. DT reduced by 1. If you spend at least 4 AP on your turn to move, you can move an additional 10 feet.',
+        auto : 'Load-15(min3), Str Req -1, DT-1',
+        craftingDC : '+18',
+        craftingMat : 'x6 adhesive, x5 rubber, x4 springs',
+        upgrades : {
+          'system.strReq.value' : -1,
+          'system.damageThreshold.value' : -1,
+          'system.load' : -5
+        }
+      }
+    }
+  },
+  {
+    name : 'Fitted',
+    short : 'Fit',
+    cost : 175,
+    craftingTime : '1 hour',
+    rank : {
+      1 : {
+        desc : 'When you take damage from an area of effect, your DT is doubled.',
+        auto : 'No automated effect',
+        craftingDC : '+6',
+        craftingMat : 'x5 of each material required to craft the type armor you are modifying',
+        charMod : {'system.stamina.modifiers' : 0 }
+      },
+      2 : {
+        desc : 'When you take damage from an area of effect, your DT is doubled. Your maximum stamina points increase by a number equal to your level.',
+        auto : 'Max STA + @level',
+        craftingDC : '+6',
+        craftingMat : 'x5 of each material required to craft the type armor you are modifying',
+        charMod : {'system.stamina.modifiers' : '@level'}
+      },
+      3 : {
+        desc : 'When you take damage from an area of effect, your DT is doubled. Your maximum stamina points increase by a number equal to your level. You have advantage on combat sequence rolls. If you already have advantage, you gain a +5.',
+        auto : 'Max STA + @level',
+        craftingDC : '+6',
+        craftingMat : 'x8 of each material required to craft the type armor you are modifying',
+        charMod : {'system.stamina.modifiers' : '@level'}
+      }
+    }
+  },
+  {
+    name : 'Lead Lined',
+    short : 'Lead',
+    cost : 125,
+    craftingTime : '1 hour',
+    rank : {
+      1 : {
+        desc : 'Radiation DC decreases by -2',
+        auto : 'RadDC -2',
+        craftingDC : '+10',
+        craftingMat : 'x6 lead, x6 adhesive',
+        charMod : {'system.penalties.radDC.value' : -2}
+      },
+      2 : {
+        desc : 'Radiation DC decreases by -4',
+        auto : 'RadDC -4',
+        craftingDC : '+15',
+        craftingMat : 'x6 lead, x6 adhesive',
+        charMod : {'system.penalties.radDC.value' : -4}
+      },
+      3 : {
+        desc : 'Radiation DC decreases by -6',
+        auto : 'RadDC -6',
+        craftingDC : '+20',
+        craftingMat : 'x6 lead, x6 adhesive',
+        charMod : {'system.penalties.radDC.value' : -6}
+      }
+    }
+  },
+  {
+    name : 'Strengthened',
+    short : 'Str',
+    cost : 410,
+    craftingTime : '1 hour',
+    rank : {
+      1 : {
+        desc : 'When you take damage from a critical hit, your DT increases by 3.',
+        auto : 'No automated effect',
+        craftingDC : '+6',
+        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive',
+      },
+      2 : {
+        desc : 'When you take damage from a critical hit, your DT increases by 8.',
+        auto : 'No automated effect',
+        craftingDC : '+12',
+        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive',
+      },
+      3 : {
+        desc : 'When you take damage from a critical hit, your DT increases by 8. If you would gain a severe injury, you instead gain a random limb condition.',
+        auto : 'No automated effect',
+        craftingDC : '+18',
+        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive',
+      }
+    }
+  },
+  {
+    name : 'Sturdy',
+    short : 'Sturd',
+    cost : 475,
+    craftingTime : '1 hour',
+    rank : {
+      1 : {
+        desc : 'You ignore the negative effects of the first 2 levels of decay for the armor.',
+        auto : 'No automated effect',
+        craftingDC : '+6',
+        craftingMat : 'x3 of each material required to craft the type armor you are modifying, x3 adhesive',
+      },
+      2 : {
+        desc : 'You ignore the negative effects of the first 4 levels of decay for the armor.',
+        auto : 'No automated effect',
+        craftingDC : '+12',
+        craftingMat : 'x3 of each material required to craft the type armor you are modifying, x3 adhesive',
+      },
+      3 : {
+        desc : 'You ignore the negative effects of the first 4 levels of decay for the armor. Your armor no longer decays from being damaged by a critical hit.',
+        auto : 'No automated effect',
+        craftingDC : '+18',
+        craftingMat : 'x3 of each material required to craft the type armor you are modifying, x3 adhesive',
+      }
+    }
+  },
+  {
+    name : 'Pocketed',
+    short : 'Pocket',
+    cost : 210,
+    craftingTime : '1 hour',
+    rank : {
+      1 : {
+        desc : 'Your carry load is increased by 10.',
+        auto : 'Carry Load + 10',
+        craftingDC : '+4',
+        craftingMat : 'x4 cloth, x5 leather, x3 adhesive',
+        charMod : {'system.carryLoad.max' : 10}
+      },
+      2 : {
+        desc : 'Your carry load is increased by 25.',
+        auto : 'Carry Load + 25',
+        craftingDC : '+8',
+        craftingMat : 'x6 cloth, x8 leather, x3 adhesive',
+        charMod : {'system.carryLoad.max' : 25}
+      },
+      3 : {
+        desc : 'Your carry load is increased by 50.',
+        auto : 'Carry Load + 50',
+        craftingDC : '+12',
+        craftingMat : 'x8 cloth, x10 leather, x4 adhesive',
+        charMod : {'system.carryLoad.max' : 50}
+      }
+    }
+  },
+  {
+    name : 'Reinforced',
+    short : 'Reinf',
+    cost : 125,
+    craftingTime : '1 hour',
+    rank : {
+      1 : {
+        desc : '+1 bonus to DT',
+        auto : '+1 DT',
+        craftingDC : '+12',
+        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive, 5 screws',
+        upgrades : {'system.damageThreshold.value' : 1},
+      },
+      2 : {
+        desc : '+2 bonus to DT',
+        auto : '+2 DT',
+        craftingDC : '+17',
+        craftingMat : 'x5 of each material required to craft the type armor you are modifying, x5 adhesive, 5 screws',
+        upgrades : {'system.damageThreshold.value' : 2},
+      },
+      3 : {
+        desc : '+4 bonus to DT',
+        auto : '+4 DT',
+        craftingDC : '+22',
+        craftingMat : 'x8 of each material required to craft the type armor you are modifying, x8 adhesive, 8 screws',
+        upgrades : {'system.damageThreshold.value' : 4},
+      }
+    }
+  },
+  {
+    name : 'Hardened',
+    short : 'Hard',
+    cost : 800,
+    craftingTime : '1 hour',
+    rank : {
+      1 : {
+        desc : '1 bonus to AC',
+        auto : '1 AC',
+        craftingDC : '+14',
+        craftingMat : 'x6 of each material required to craft the type armor you are modifying, x6 adhesive, 6 screws',
+        upgrades : {'system.armorClass.value' : 1},
+      },
+      2 : {
+        desc : '2 bonus to AC',
+        auto : '2 AC',
+        craftingDC : '+19',
+        craftingMat : 'x6 of each material required to craft the type armor you are modifying, x6 adhesive, 6 screws',
+        upgrades : {'system.armorClass.value' : 2},
+      },
+      3 : {
+        desc : '3 bonus to AC',
+        auto : '3 AC',
+        craftingDC : '+25',
+        craftingMat : 'x6 of each material required to craft the type armor you are modifying, x6 adhesive, 6 screws',
+        upgrades : {'system.armorClass.value' : 3},
+      }
+    }
+  },
+]
+
+//MONSTER LOOT as described in the book (v2.0)
 FALLOUTZERO.monsterLoot = [
   {
     name: 'Glowing One',
