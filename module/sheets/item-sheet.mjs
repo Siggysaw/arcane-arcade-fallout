@@ -1,3 +1,4 @@
+import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 
 /**
@@ -67,6 +68,36 @@ export class FalloutZeroItemSheet extends ItemSheet {
     await this.equipItemStats(myItem) //Need to pass the item as an object parameter in the function! Otherwise, it takes "this" which is outdated by that point.
   }
  }
+
+//Modify upgrades on an armor (New Function, under construction!)
+ async changeUpgradeInProgress(myUpgrade,newValue,oldValue){
+  let slots = this.object.system.slots.value;
+  let dt = this.object.system.damageThreshold.value;
+  let ac = this.object.system.armorClass.value;
+  let upgradeStats = FALLOUTZERO.armorUpgrades.find(u => u.name.toLowerCase() == myUpgrade)
+  let newRank = upgradeStats.rank[newValue]
+  let oldRank = upgradeStats.rank[oldValue]
+  console.log(upgradeStats)
+  let myPath, myValue = ``
+  let modifiers = ['name','short','craftingDC','cost','craftingTime',
+    'auto','desc','value','originalLoad','charMod']
+  let updateData = {}
+  Object.assign(updateData,{system : {[myUpgrade] : upgradeStats}})
+  console.log(updateData);
+  
+  let myPaths = [
+    `system.upgrades.${myUpgrade}.name`,
+    `system.upgrades.${myUpgrade}.auto`,
+    `system.upgrades.${myUpgrade}.desc`,
+    `system.upgrades.${myUpgrade}.value`,
+    `system.upgrades.${myUpgrade}.originalLoad`,
+    `system.upgrades.${myUpgrade}.charMod`,
+    'system.slots.value',
+    'system.strReq.value',
+    'system.damageThreshold.value',
+    'system.slots.value',
+    ]
+  }
 
 //Modify upgrades on an armor
   async changeUpgrade(myUpgrade,newValue,oldValue){
