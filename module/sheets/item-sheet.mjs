@@ -541,8 +541,23 @@ export class FalloutZeroItemSheet extends ItemSheet {
 
   async swapArmors (otherArmor) {
     await this.unequipItemStats(otherArmor)
+    this.toggleEffects(otherArmor,true)
     otherArmor.update({'system.itemEquipped' : false})
     await this.equipItemStats(this.object)
+    this.toggleEffects(this.object,false)
+  }
+
+  async toggleEffects (myItem, equipStatus) {
+    let myEffect
+    let i = 0;
+    if(myItem.collections.effects.contents){
+      let myEffects = myItem.collections.effects.contents
+      while (i < myEffects.length){
+        myEffect = myItem.effects.get(myEffects[i]._id)
+        myEffect.update({ disabled: equipStatus })
+        i++
+      }
+    }
   }
 
   //Get original state of weapon
@@ -550,12 +565,14 @@ export class FalloutZeroItemSheet extends ItemSheet {
     if (myItem.type == "armor"){
       if (myItem.system.itemEquipped){
         this.unequipItemStats(myItem)
+        this.toggleEffects(myItem,true)
       }else {
         let otherArmor = this.actor.items.find(u => u.system.itemEquipped == true)
         if (otherArmor){
           this.swapArmors(otherArmor);
         }else{
           this.equipItemStats(myItem)
+          this.toggleEffects(myItem,false)
         }
       }
     }
@@ -604,9 +621,27 @@ export class FalloutZeroItemSheet extends ItemSheet {
       default: 'Split',
       render: () => {}
     },{
+      left: 200,
+      top: 200,
       width: 600,
     },)
     d.render(true)
+  }
+
+  async modifyUpgrade(ev,positive){
+    const myMat = ev.currentTarget.id
+    let qty = Number(await this.getValue(myMat,this.object));
+    let updateData = {}
+    if (positive){
+      updateData = {[myMat] : qty + 1}
+      await this.object.update(updateData)
+    } 
+    else {
+      if(qty>0 && !positive){
+        updateData = {[myMat] : qty - 1}
+        await this.object.update(updateData)
+      }
+    }
   }
   
   /* -------------------------------------------- */
@@ -630,7 +665,6 @@ export class FalloutZeroItemSheet extends ItemSheet {
       if (oldValue!=0){
         let newValue = oldValue - 1;
         if (this.object.system.groupUpgrade == true || this.object.system.quantity < 2){
-          console.log(this.object.system.groupUpgrade);
           this.checkEquip(myUpgrade,newValue,oldValue);
         } else {
           this.splitDialog(myUpgrade,newValue,oldValue)
@@ -650,13 +684,22 @@ export class FalloutZeroItemSheet extends ItemSheet {
         let newValue = oldValue + 1;
         if(this.object.system.slots.value > 0 || newValue != 1){
           if (this.object.system.groupUpgrade == true || this.object.system.quantity < 2){
-            console.log(this.object.system.groupUpgrade);
             this.checkEquip(myUpgrade,newValue,oldValue);
           } else {
-            this.splitDialog(myUpgrade,newValue,oldValue)
+            this.splitDialog(myUpgrade,newValue,oldValue);
           }
         }
       }
+    })
+
+    //Increase material Value
+    html.on('click', '[data-qty-add]', (ev) => {
+      this.modifyUpgrade(ev,true)
+    })
+
+    //Decrease material Value
+    html.on('click', '[data-qty-subtract]', (ev) => {
+      this.modifyUpgrade(ev,false)
     })
 
     //On equip, calculate AC and other things that improve character's stats

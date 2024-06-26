@@ -1,0 +1,140 @@
+<style>
+  .sheet .editor-content {
+    line-height: 2;
+  }
+</style>
+
+<form class="{{ cssClass }}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{ system.img }}" data-edit="system.img" title="{{ system.img }}" />
+    <div class="header-fields">
+      <h1 class="upgradeName">
+        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+      </h1>
+      <table style = "display: inline-flex"> 
+        <tr>
+          <td>Short name </td>                         
+          <td>Pre-requisite</td>
+          <td>Cost</td>
+        </tr>
+        <tr>
+          <td>
+            <input style = "min-width:200px;" name="system.short" type="text" value="{{system.short}}" placeholder="{{ item.name}} (but shorter)" />
+          </td>
+          <td>
+            <input name="system.requirement" type="text" value="{{ system.requirement }}" placeholder="Requirement" />
+          </td>
+          <td>
+            <input type="number" name="system.cost" value="{{ system.cost }}" />
+          </td>
+        </tr>
+      </table>
+    </div>
+  </header>
+
+
+{{!-- Upgrade Values --}}
+  <table>
+    <tr>
+      <td>AC</td>
+      <td>DT</td>
+      <td>Rank</td>
+      <td>Load</td>
+      <td>STR Req.</td>
+    </tr>
+    <tr>
+      <td>
+          <input type="number" name="system.armorClass" value="{{ system.armorClass }}" />
+      </td>
+      <td>
+          <input type="number" name="system.damageThreshold" value="{{ system.damageThreshold }}" />
+      </td>
+      <td>
+          <input type="number" name="system.rank" value="{{ system.rank }}" />
+      </td>
+      <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
+      <td>
+          <input type="number" name="system.strReq" value="{{ system.strReq }}" />
+      </td>
+    </tr>
+  </table>
+
+
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="crafting">Crafting</a>
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+
+  
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+    {{!-- Description Tab --}}
+    <div class="tab htmlfield" data-group="primary" data-tab="description">
+      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
+      {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+    </div>      
+    <div class="tab crafting" data-group="primary" data-tab="crafting">
+      <table>
+        <th>
+          Crafting time
+        </th>
+        <th>
+          Quantity
+        </th>
+        <th>
+          Required Material 
+        </th>
+        <tr>
+          <td>
+            <input type="text" name="system.craftingTime" value="{{ system.craftingTime }}" />
+          </td>
+          <td id="valueMat1">
+            <i style="padding:3px;cursor: pointer;" data-qty-subtract  id="system.matsReq1.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq1.qty}}
+            <i style="padding:3px;cursor: pointer;" data-qty-add id="system.matsReq1.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq1.mat" value="{{system.matsReq1.mat}}" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Crafting DC
+          </td>
+          <td id="valueMat2">
+            <i style="padding:3px;cursor: pointer;" data-qty-subtract id="system.matsReq2.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq2.qty}}
+            <i style="padding:3px;cursor: pointer;" data-qty-add id="system.matsReq2.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq2.mat" value="{{system.matsReq2.mat}}" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="text" name="system.craftingDC" value="{{system.craftingDC}}" />
+          </td>
+          <td id="valueMat3">
+            <i style="padding:3px;cursor: pointer;" data-qty-subtract id="system.matsReq3.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq3.qty}}
+            <i style="padding:3px;cursor: pointer;" data-qty-add  id="system.matsReq3.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq3.mat" value="{{system.matsReq3.mat}}" />
+          </td>
+        </tr>
+      </table>
+    </div>
+      
+    {{!-- Effects Tab --}}
+    <div class="tab effects" data-group="primary" data-tab="effects">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
+    </div>
+  </section>
+</form>
+
+{{log system}}

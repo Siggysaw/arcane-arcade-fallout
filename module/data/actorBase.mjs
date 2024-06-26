@@ -895,7 +895,7 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
     }
     try {
       compendiumObject = game.packs.find((u) => u.metadata.name == compendium)
-      myItem = compendiumObject.tree.entries.find((u) => u.name.toLowerCase() == itemName.toLowerCase())
+      myItem = compendiumObject.tree.entries.find((u) => u.name == itemName)
       if (myItem) {
         return `<a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
           data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="${myTooltip}"><i class="fas fa-suitcase">
@@ -1096,6 +1096,43 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
           dcLoot =
             `<b>On success (${aMonsterLoot.dice.replace('Lck', '')})</b> : <br>` +
             (await this.parent.system.iterateLoot(aMonsterLoot.loot[1].dc, totLckMod))
+        }
+      } else {
+        console.log("YES")
+        let inventoryLoot = this.parent.collections.items.contents
+        myConcatenatedLoot = npcName + ` drops: <br><br>`
+        let compendium = ``
+        for (var loot of inventoryLoot){
+          switch (loot.type){
+            case 'explosive' :
+              compendium = 'explosives';
+              break;
+            case 'ammo' :
+              compendium = 'ammunition';
+              break;
+            case 'meleeWeapon' :
+              compendium = 'melee-weapons';
+              break;
+            case 'rangedWeapon' :
+                compendium = 'rangedweapons';
+                break;
+            case 'miscItem' :
+              compendium = "miscellaneous";
+              break;
+            case 'chem' :
+              compendium = "chems";
+              break;
+            case 'foodAnddrink' :
+              compendium = "food-and-drinks";
+              break;
+            case 'junkItem' :
+              compendium = "junk";
+              break;
+            default :
+              compendium = loot.type;
+              break;
+          } 
+          myConcatenatedLoot = myConcatenatedLoot.slice(0,-4) + this.formatCompendiumItem(compendium,loot.name)
         }
       }
       let chatData = {

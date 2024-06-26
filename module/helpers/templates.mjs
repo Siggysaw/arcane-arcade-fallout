@@ -39,5 +39,6 @@ export const preloadHandlebarsTemplates = async function () {
 
     // Item partials
     'systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs',
+    'systems/arcane-arcade-fallout/templates/item/item-armorUpgrade-sheet.hbs',
   ])
 }
