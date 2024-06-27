@@ -26,6 +26,8 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     return 'systems/arcane-arcade-fallout/templates/background/background.hbs'
   }
 
+  detailsState = {}
+
   /* -------------------------------------------- */
 
   /** @override */
@@ -42,6 +44,13 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     // Add the item's data to context.data for easier access, as well as flags.
     context.system = itemData.system
     context.flags = itemData.flags
+
+    context.races = itemData.system.races
+
+    for (let race in context.races) {
+      this.detailsState[race] = false
+    }
+    context.detailsState = this.detailsState
 
     // Prepare active effects for easier access
     context.effects = prepareActiveEffectCategories(this.item.effects)
@@ -61,11 +70,18 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
 
     html.on('click', '[data-delete-grant]', (e) => {
       const itemId = e.currentTarget.dataset.deleteGrant
-      if (!itemId) return
+      const raceType = e.currentTarget.dataset.raceType
+      if (!itemId || !raceType) return
 
-      const grants = this.object.system.grants
-      const newGrants = grants.filter((grant) => grant.id === itemId)
-      this.object.update({ 'system.grants': newGrants })
+      const grants = this.object.system.races[raceType].grants
+      const newGrants = grants.filter((grant) => grant._id !== itemId)
+      const dataLocation = `system.races.${raceType}.grants`
+      this.object.update({ [dataLocation]: newGrants })
+    })
+
+    html.on('click', '[data-race-details]', (e) => {
+      const raceType = e.currentTarget.dataset.raceDetails
+      this.detailsState[raceType] = !this.detailsState[raceType]
     })
 
     super.activateListeners(html)
@@ -73,15 +89,19 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
 
   async _onDrop(event) {
     event.preventDefault()
+
+    if (!event?.currentTarget?.dataset) return
+
     let dropData
     try {
       dropData = JSON.parse(event.dataTransfer.getData('text/plain'))
     } catch (err) {
+      console.error(err)
       return false
     }
     if (dropData === undefined || dropData.type !== 'Item') return false
 
-    const permitted = ['armor', 'rangedWeapon', 'meleeWeapon']
+    const permitted = ['armor', 'rangedWeapon', 'meleeWeapon', 'ammo', 'miscItem', 'foodAnddrink']
 
     const item = await fromUuid(dropData.uuid)
 
@@ -90,10 +110,13 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
       return false
     }
 
+    const raceType = event.currentTarget.dataset.grantRace
+    const dataLocation = `system.races.${raceType}.grants`
     this.item.update({
-      'system.grants': [
-        ...this.item.system.grants,
+      [dataLocation]: [
+        ...this.item.system.races[raceType].grants,
         {
+          id: item._id,
           key: item.uuid,
           type: item.type,
           name: item.name,

@@ -1,7 +1,7 @@
-import FalloutZeroActorBase from './actorBase.mjs'
+import FalloutZeroActor from './actor.mjs'
 import { FALLOUTZERO } from '../config.mjs'
 
-export default class FalloutZeroCharacter extends FalloutZeroActorBase {
+export default class FalloutZeroCharacter extends FalloutZeroActor {
   static defineSchema() {
     const fields = foundry.data.fields
     const requiredInteger = { required: true, nullable: false, integer: true }
@@ -51,13 +51,5 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     schema.properties = new fields.HTMLField()
 
     return schema
-  }
-
-  prepareBaseData() {
-    super.prepareBaseData()
-    for (const key in this.penalties) {
-      this.penalties[key].label = FALLOUTZERO.penalties[key]
-    }
-    this.passiveSense = 12 + this.abilities['per'].mod
   }
 }

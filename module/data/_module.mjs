@@ -1,5 +1,5 @@
 // Export Actors
-export { default as FalloutZeroActorBase } from './actorBase.mjs'
+export { default as FalloutZeroActor } from './actor.mjs'
 export { default as FalloutZeroCharacter } from './character.mjs'
 export { default as FalloutZeroNPC } from './npc.mjs'
 

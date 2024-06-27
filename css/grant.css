@@ -1,3 +1,8 @@
 .tab .grants {
   height: 100%;
 }
+
+.grant-drop-area {
+  min-height: 60px;
+  border: 1px green dotted;
+}
