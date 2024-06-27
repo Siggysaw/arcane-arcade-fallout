@@ -240,6 +240,16 @@ export default class FalloutZeroActorBase extends foundry.abstract.TypeDataModel
   //add to a field
   fieldaddition(field, fieldvalue) {
     const newValue = Number(fieldvalue) + 1
+
+    //Irradiated and Radiation Updates
+    if (field === "system.irradiated" && newValue == 10) {
+      const newRads = this.penalties.radiation.value + 1
+      this.parent.update({ 'system.penalties.radiation.value': newRads })
+      this.parent.update({ 'system.irradiated': 0 })
+      return
+    }
+
+    // Update Field Value
     this.parent.update({ [field]: newValue })
   }
 

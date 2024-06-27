@@ -1,7 +1,7 @@
 <table>
     <tr>
         <td class="status-info-label">
-            Hunger
+            <p>Hunger</p>
             <i style="padding: 3px"
                data-subtracted
                data-field="system.penalties.hunger.value"
@@ -16,7 +16,7 @@
             </i>
         </td>
         <td class="status-info-label">
-            Dehydration
+            <p>Dehydration</p>
             <i style="padding: 3px"
                data-subtracted
                data-field="system.penalties.dehydration.value"
@@ -31,28 +31,29 @@
             </i>
         </td>
         <td class="status-info-label">
-            Exhaustion
+            <p>Fatigue</p>
             <i style="padding: 3px"
                data-subtracted
-               data-field="system.penalties.exhaustion.value"
-               data-fieldvalue="{{system.penalties.exhaustion.value}}"
+               data-field="system.penalties.fatigue.value"
+               data-fieldvalue="{{system.penalties.fatigue.value}}"
                class="fas fa-minus-square fakebutton nobackground">
             </i>
             <i style="padding: 3px"
                data-added
-               data-field="system.penalties.exhaustion.value"
-               data-fieldvalue="{{system.penalties.exhaustion.value}}"
+               data-field="system.penalties.fatigue.value"
+               data-fieldvalue="{{system.penalties.fatigue.value}}"
                class="fas fa-plus-square fakebutton nobackground">
             </i>
         </td>
-        <td       class="status-info-label rollable fakebutton"
-                  data-rollable
-                  data-roll="d20-{{ penaltyTotal }}"
-                  data-label="Radiation DC Check: Roll over {{#Sum system.radiationDC.base system.radiationDC.modifiers}}{{/Sum}} to succeed">
-            Rad DC
+        <td class="status-info-label rollable fakebutton"
+            data-rollable
+            data-roll="d20-{{ penaltyTotal }}"
+            data-label="Radiation DC Check: Roll over {{#Sum system.radiationDC.base system.radiationDC.modifiers}}{{/Sum}} to succeed"
+            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{#Sum system.radiationDC.base system.radiationDC.modifiers}}{{/Sum}} to succeed. On Fail gain level of Radiation">
+            <p> Rad DC</p>
         </td>
         <td class="status-info-label" title="10 Levels of Rads = Dead">
-            Radiation
+            <p>Rad LVL</p>
             <i style="padding: 3px"
                data-subtracted
                data-field="system.penalties.radiation.value"
@@ -68,7 +69,7 @@
         </td>
         <td class="status-info-label"
             title="Every 10 levels resets and gives 1 level radiation">
-            Irradiation
+            <p>Irradiation</p>
             <i style="padding: 3px"
                data-subtracted
                data-field="system.irradiated"
@@ -92,7 +93,7 @@
 
         </td>
         <td class="status-info-value">
-            {{ penalties.exhaustion.value }}
+            {{ penalties.fatigue.value }}
         </td>
         <td class="status-info-value" title="Base: {{system.radiationDC.base}} + Modifiers: {{system.radiationDC.modifiers}}">
             {{#Sum system.radiationDC.modifiers system.radiationDC.base}}{{/Sum}}
@@ -102,7 +103,15 @@
 
         </td>
         <td class="status-info-value">
-            {{ irradiated }}
+            <progress title="{{irradiated}} out of 10" class="statusbar"
+                      value="{{ irradiated }}"
+                      max=10>
+                {{ irradiated }}
+            </progress>
+
         </td>
+    </tr>
+    <tr>
+        <td colspan="999">Total Penalties: {{ penaltyTotal }}</td>
     </tr>
 </table>
