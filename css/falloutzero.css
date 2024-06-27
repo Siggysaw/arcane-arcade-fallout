@@ -821,3 +821,10 @@ form td .status-notes li:hover {
 .armorbox{
     padding:5px;
 }
+.sheet table .status-info-value{
+    min-width:80px;
+    vertical-align:middle;
+    text-align:center;
+    font-size:10pt;
+    font-weight:bold;
+}

@@ -313,7 +313,6 @@ FALLOUTZERO.penalties = {
   hunger: 'Hunger',
   dehydration: 'Dehydration',
   exhaustion: 'Exhaustion',
-  radDC: 'Radiation DC',
   radiation: 'Radiation',
   fatigue: 'Fatigue',
 }

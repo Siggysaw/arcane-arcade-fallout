@@ -1,82 +1,108 @@
 <table>
-  <tr>
-    <td class="status-info-label">Hunger Lvl</td>
-    <td class="status-info-label">Dehydration Lvl</td>
-    <td class="status-info-label">Exhaustion Lvl</td>
-    <td class="status-info-label">
-      <span
-        class="rollable"
-        data-rollable
-        data-roll="d20-{{ penaltyTotal }}"
-        data-label="Radiation DC Check: Roll over {{ radDC.value }} to succeed"
-        >Radiation DC</span
-      >
-    </td>
-    <td class="status-info-label">Radiation</td>
-  </tr>
-  <tr>
-    <td class="status-info-value">
-      <input
-        type="number"
-        name="system.penalties.hunger.value"
-        value="{{ penalties.hunger.value }}"
-        min="0"
-      />
-    </td>
-    <td class="status-info-value">
-      <input
-        type="number"
-        name="system.penalties.dehydration.value"
-        value="{{ penalties.dehydration.value }}"
-        min="0"
-      />
-    </td>
-    <td class="status-info-value">
-      <input
-        type="number"
-        name="system.penalties.exhaustion.value"
-        value="{{ penalties.exhaustion.value }}"
-        min="0"
-      />
-    </td>
-    <td class="status-info-value">
-      <input
-        type="number"
-        name="system.penalties.radDC.value"
-        value="{{ penalties.radDC.value }}"
-        min="0"
-      />
-    </td>
-    <td class="status-info-value">
-      <table>
-        <tr>
-          <td>Lvl</td>
-          <td>Rads</td>
-        </tr>
+    <tr>
+        <td class="status-info-label">
+            Hunger
+            <i style="padding: 3px"
+               data-subtracted
+               data-field="system.penalties.hunger.value"
+               data-fieldvalue="{{system.penalties.hunger.value}}"
+               class="fas fa-minus-square fakebutton nobackground">
+            </i>
+            <i style="padding: 3px"
+               data-added
+               data-field="system.penalties.hunger.value"
+               data-fieldvalue="{{system.penalties.hunger.value}}"
+               class="fas fa-plus-square fakebutton nobackground">
+            </i>
+        </td>
+        <td class="status-info-label">
+            Dehydration
+            <i style="padding: 3px"
+               data-subtracted
+               data-field="system.penalties.dehydration.value"
+               data-fieldvalue="{{system.penalties.dehydration.value}}"
+               class="fas fa-minus-square fakebutton nobackground">
+            </i>
+            <i style="padding: 3px"
+               data-added
+               data-field="system.penalties.dehydration.value"
+               data-fieldvalue="{{system.penalties.dehydration.value}}"
+               class="fas fa-plus-square fakebutton nobackground">
+            </i>
+        </td>
+        <td class="status-info-label">
+            Exhaustion
+            <i style="padding: 3px"
+               data-subtracted
+               data-field="system.penalties.exhaustion.value"
+               data-fieldvalue="{{system.penalties.exhaustion.value}}"
+               class="fas fa-minus-square fakebutton nobackground">
+            </i>
+            <i style="padding: 3px"
+               data-added
+               data-field="system.penalties.exhaustion.value"
+               data-fieldvalue="{{system.penalties.exhaustion.value}}"
+               class="fas fa-plus-square fakebutton nobackground">
+            </i>
+        </td>
+        <td       class="status-info-label rollable fakebutton"
+                  data-rollable
+                  data-roll="d20-{{ penaltyTotal }}"
+                  data-label="Radiation DC Check: Roll over {{#Sum system.radiationDC.base system.radiationDC.modifiers}}{{/Sum}} to succeed">
+            Rad DC
+        </td>
+        <td class="status-info-label" title="10 Levels of Rads = Dead">
+            Radiation
+            <i style="padding: 3px"
+               data-subtracted
+               data-field="system.penalties.radiation.value"
+               data-fieldvalue="{{system.penalties.radiation.value}}"
+               class="fas fa-minus-square fakebutton nobackground">
+            </i>
+            <i style="padding: 3px"
+               data-added
+               data-field="system.penalties.radiation.value"
+               data-fieldvalue="{{system.penalties.radiation.value}}"
+               class="fas fa-plus-square fakebutton nobackground">
+            </i>
+        </td>
+        <td class="status-info-label"
+            title="Every 10 levels resets and gives 1 level radiation">
+            Irradiation
+            <i style="padding: 3px"
+               data-subtracted
+               data-field="system.irradiated"
+               data-fieldvalue="{{irradiated}}"
+               class="fas fa-minus-square fakebutton nobackground">
+            </i>
+            <i style="padding: 3px"
+               data-added
+               data-field="system.irradiated"
+               data-fieldvalue="{{irradiated}}"
+               class="fas fa-plus-square fakebutton nobackground">
+            </i>
+        </td>
+    </tr>
+    <tr>
+        <td class="status-info-value">
+            {{ penalties.hunger.value }}
+        </td>
+        <td class="status-info-value">
+            {{ penalties.dehydration.value }}
 
-        <tr>
-          <td>
-            <input
-              style="width: 25px"
-              type="number"
-              name="system.penalties.radiation.value"
-              value="{{ penalties.radiation.value }}"
-              min="0"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              style="width: 25px"
-              name="system.irradiated"
-              value="{{ irradiated }}"
-              min="0"
-              max="10"
-              title="For when you get Irradiated: at 10, reset to 0 and add 1 to Rad Lvl"
-            />
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
+        </td>
+        <td class="status-info-value">
+            {{ penalties.exhaustion.value }}
+        </td>
+        <td class="status-info-value" title="Base: {{system.radiationDC.base}} + Modifiers: {{system.radiationDC.modifiers}}">
+            {{#Sum system.radiationDC.modifiers system.radiationDC.base}}{{/Sum}}
+        </td>
+        <td class="status-info-value">
+            {{ penalties.radiation.value }}
+
+        </td>
+        <td class="status-info-value">
+            {{ irradiated }}
+        </td>
+    </tr>
 </table>
