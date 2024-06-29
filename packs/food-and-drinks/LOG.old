@@ -1,3 +1,5 @@
-2024/06/21-11:32:21.967 42b8 Recovering log #63
-2024/06/21-11:32:21.976 42b8 Delete type=0 #63
-2024/06/21-11:32:21.977 42b8 Delete type=3 #62
+2024/06/29-09:38:09.690438 30afe2000 Log #317: 0 ops saved to Table #318 OK
+2024/06/29-09:38:09.690542 30afe2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/food-and-drinks/000317.log: OK
+2024/06/29-09:38:09.690908 30afe2000 Table #314: 82 entries OK
+2024/06/29-09:38:09.691082 30afe2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/food-and-drinks/MANIFEST-000315: OK
+2024/06/29-09:38:09.691337 30afe2000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/food-and-drinks; recovered 1 files; 19568 bytes. Some data may have been lost. ****

@@ -1,2 +1,5 @@
-2024/06/23-10:45:32.007 7fac Table #127: 48 entries OK
-2024/06/23-10:45:32.016 7fac **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition; recovered 1 files; 6962 bytes. Some data may have been lost. ****
+2024/06/29-09:38:09.669427 30afe2000 Log #151: 0 ops saved to Table #152 OK
+2024/06/29-09:38:09.669547 30afe2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/ammunition/000151.log: OK
+2024/06/29-09:38:09.669823 30afe2000 Table #148: 48 entries OK
+2024/06/29-09:38:09.669958 30afe2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/ammunition/MANIFEST-000149: OK
+2024/06/29-09:38:09.670449 30afe2000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/ammunition; recovered 1 files; 8327 bytes. Some data may have been lost. ****

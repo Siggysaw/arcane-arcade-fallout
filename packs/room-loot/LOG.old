@@ -1,3 +1,5 @@
-2024/06/21-11:32:22.129 42b8 Recovering log #133
-2024/06/21-11:32:22.139 42b8 Delete type=0 #133
-2024/06/21-11:32:22.139 42b8 Delete type=3 #132
+2024/06/29-09:38:09.719147 30b7e5000 Log #140: 0 ops saved to Table #141 OK
+2024/06/29-09:38:09.719221 30b7e5000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/room-loot/000140.log: OK
+2024/06/29-09:38:09.719890 30b7e5000 Table #137: 402 entries OK
+2024/06/29-09:38:09.720014 30b7e5000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/room-loot/MANIFEST-000138: OK
+2024/06/29-09:38:09.720204 30b7e5000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/room-loot; recovered 1 files; 54928 bytes. Some data may have been lost. ****
