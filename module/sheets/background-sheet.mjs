@@ -83,12 +83,12 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     })
 
     html.on('click', '[data-race-details]', (e) => {
-      if (e.target !== e.currentTarget) return
       const raceType = e.currentTarget.dataset.raceDetails
       this.detailsState[raceType] = !this.detailsState[raceType]
     })
 
     html.on('click', '[data-decrease-quantity]', (e) => {
+      e.stopPropagation()
       const { grantRace, grantItemIndex } = e.currentTarget.dataset
       if (!grantRace || !grantItemIndex) return
 
@@ -96,6 +96,7 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     })
 
     html.on('click', '[data-increase-quantity]', (e) => {
+      e.stopPropagation()
       const { grantRace, grantItemIndex } = e.currentTarget.dataset
       if (!grantRace || !grantItemIndex) return
 
@@ -117,8 +118,9 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     })
   }
 
-  async _onDrop(event) {
-    event.preventDefault()
+  async _onDrop(e) {
+    e.stopPropagation()
+    e.preventDefault()
     const grantRace = event.currentTarget.dataset.grantRace
 
     if (!grantRace) return false
@@ -140,6 +142,7 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
       'miscItem',
       'foodAnddrink',
       'medicine',
+      'chem',
     ]
 
     const item = await fromUuid(dropData.uuid)
