@@ -198,102 +198,102 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const newLck = Number(ev.target.value)
       const currentLck = this.actor.system.abilities.lck.value
       if (currentLck === 9 && newLck === 10) {
-        this.actor.system.addCap()
+        this.actor.addCap()
       } else if (currentLck === 10 && newLck === 9) {
-        this.actor.system.removeCap()
+        this.actor.removeCap()
       }
     })
     //add to an item quantity
     html.on('click', '[data-itemaddition]', (ev) => {
       const item = ev.currentTarget.dataset.item
-      this.actor.system.itemaddition(item)
+      this.actor.itemaddition(item)
     })
     //subtract from an item quantity
     html.on('click', '[data-itemsubtraction]', (ev) => {
       const item = ev.currentTarget.dataset.item
-      this.actor.system.itemsubtraction(item)
+      this.actor.itemsubtraction(item)
     })
     //add to a field quantity
     html.on('click', '[data-added]', (ev) => {
       const field = ev.currentTarget.dataset.field
-      const fieldvalue=ev.currentTarget.dataset.fieldvalue
-      this.actor.system.fieldaddition(field,fieldvalue)
+      const fieldvalue = ev.currentTarget.dataset.fieldvalue
+      this.actor.fieldaddition(field, fieldvalue)
     })
     //subtract from a field quantity
     html.on('click', '[data-subtracted]', (ev) => {
       const field = ev.currentTarget.dataset.field
       const fieldvalue = ev.currentTarget.dataset.fieldvalue
-      this.actor.system.fieldsubtraction(field, fieldvalue)
+      this.actor.fieldsubtraction(field, fieldvalue)
     })
     //Set Expanded
     html.on('click', '[data-expandtoggle]', (ev) => {
       const item = ev.currentTarget.dataset.itemid
-      this.actor.system.expandtoggle(item)
+      this.actor.expandtoggle(item)
     })
     //show rule information
     html.on('click', '[data-condition]', (ev) => {
       const condition = ev.currentTarget.dataset.condition
-      this.actor.system.ruleinfo(condition)
+      this.actor.ruleinfo(condition)
     })
     //ap use
     html.on('click', '[data-ap-used]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
-      this.actor.system.apUsed(weaponId)
+      this.actor.apUsed(weaponId)
     })
     //health update
     html.on('click', '[data-health]', (ev) => {
       const health = ev.currentTarget.dataset.health
-      this.actor.system.healthupdate(health)
+      this.actor.healthupdate(health)
     })
     //stamina update
     html.on('click', '[data-stamina]', (ev) => {
       const stamina = ev.currentTarget.dataset.stamina
-      this.actor.system.staminaupdate(stamina)
+      this.actor.staminaupdate(stamina)
     })
     //action points update
     html.on('click', '[data-action]', (ev) => {
       const action = ev.currentTarget.dataset.action
-      this.actor.system.actionupdate(action)
+      this.actor.actionupdate(action)
     })
 
     //ap refill
     html.on('click', '[data-refill-ap]', () => {
-      this.actor.system.refillAp()
+      this.actor.refillAp()
     })
 
     //ap recycle
     html.on('click', '[data-recycle-ap]', () => {
-      this.actor.system.recycleAp()
+      this.actor.recycleAp()
     })
     //Level Up!
     html.on('click', '[data-leveledup]', () => {
-      this.actor.system.levelUp()
+      this.actor.levelUp()
     })
     //Skill Updated
     html.on('click', '[data-skilladdition]', (ev) => {
       const skill = ev.currentTarget.dataset.skill
-      this.actor.system.skilladdition(skill)
+      this.actor.skilladdition(skill)
     })
     html.on('click', '[data-skillsubtraction]', (ev) => {
       const skill = ev.currentTarget.dataset.skill
-      this.actor.system.skillsubtraction(skill)
+      this.actor.skillsubtraction(skill)
     })
     //Add Cap
     html.on('click', '[data-add-cap]', () => {
-      this.actor.system.addCap()
+      this.actor.addCap()
     })
     //Remove Cap
     html.on('click', '[data-remove-cap]', () => {
-      this.actor.system.removeCap()
+      this.actor.removeCap()
     })
     //Monster loot roll
     html.on('click', '[data-npc-loot]', () => {
-      this.actor.system.npcLoot()
+      this.actor.npcLoot()
     })
     //Room loot roll
     html.on('click', '[data-pc-loot]', () => {
       if (game.user.role > 3) {
-        this.actor.system.roomLoot()
+        this.actor.roomLoot()
       } else {
         alert('Nice try, Player')
       }
@@ -303,7 +303,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       const hasDisadvantage = Boolean(ev.currentTarget.dataset.disadvantage)
-      this.actor.system.rollWeapon(weaponId, hasDisadvantage)
+      this.actor.rollWeapon(weaponId, hasDisadvantage)
     })
 
     // Render the item sheet for viewing/editing prior to the editable check.
@@ -315,16 +315,16 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Equip or unequip item
     html.on('click', '[data-equip]', (ev) => {
-      const itemId = ev.currentTarget.dataset.itemId;
-      const item = this.actor.items.get(itemId);
-      item.update({'system.itemEquipped' : !item.system.itemEquipped})
-      item.sheet.changeEquipStatus(item);
+      const itemId = ev.currentTarget.dataset.itemId
+      const item = this.actor.items.get(itemId)
+      item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+      item.sheet.changeEquipStatus(item)
     })
 
     // handles weapon reload
     html.on('click', '[data-reload]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
-      this.actor.system.reload(weaponId)
+      this.actor.reload(weaponId)
     })
 
     // handles changing ammo on weapon
@@ -369,8 +369,8 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Convert Junk to Materials
     html.on('click', '[data-junkToMat]', (ev) => {
-      const itemID = ev.currentTarget.dataset.itemId;
-      this.actor.system.checkConvert(itemID);
+      const itemID = ev.currentTarget.dataset.itemId
+      this.actor.checkConvert(itemID)
     })
 
     // -------------------------------------------------------------
@@ -390,11 +390,31 @@ export class FalloutZeroActorSheet extends ActorSheet {
           this._onItemDeleteTrait(item)
           break
         case 'armor':
-          if (item.system.itemEquipped){
-            console.log("Yes")
+          if (item.system.itemEquipped) {
             item.sheet.unequipItemStats(item)
           }
           break
+        case 'background':
+          return new Dialog({
+            title: `Delete background ${item.name}`,
+            content: 'Delete items granted by background as well?',
+            buttons: {
+              close: {
+                icon: '<i class="fas fa-times"></i>',
+                label: 'No',
+                callback: () => item.delete(),
+              },
+              continue: {
+                icon: '<i class="fas fa-chevron-right"></i>',
+                label: 'Yes',
+                callback: () => {
+                  item.delete()
+                  this._deleteGrantedItems(item)
+                },
+              },
+            },
+            default: 'close',
+          }).render(true)
       }
 
       item.delete()
@@ -423,6 +443,14 @@ export class FalloutZeroActorSheet extends ActorSheet {
         li.addEventListener('dragstart', handler, false)
       })
     }
+  }
+
+  _deleteGrantedItems(item) {
+    item.system.grantedItems.forEach((itemId) => {
+      const item = this.actor.items.get(itemId)
+      if (!item) return
+      item.delete()
+    })
   }
 
   /**
@@ -457,16 +485,40 @@ export class FalloutZeroActorSheet extends ActorSheet {
    * @param {Item} itemData     The item or items requested for creation
    * @protected
    */
-  _onDropItemCreate(itemData) {
-    console.log('_onDropItemCreate', itemData)
+  async _onDropItemCreate(itemData) {
     switch (itemData.type) {
       case 'trait':
         this._onDropItemCreateTrait(itemData)
+        return
+      case 'background':
+        if (!this.actor.getRaceType()) {
+          return ui.notifications.warn('First add race to actor')
+        }
+        this._onDropItemCreateBackgroundGrants(itemData)
         return
       default:
         super._onDropItemCreate(itemData)
         return
     }
+  }
+
+  /**
+   * Handle the final creation of dropped background Item data on the Actor.
+   * @param {Item} itemData     The item or items requested for creation
+   * @protected
+   */
+  async _onDropItemCreateBackgroundGrants(itemData) {
+    const race = this.actor.getRaceType()
+    const createdIds = await Promise.all(
+      itemData.system.races[race].grants.map(async (grant) => {
+        const newItem = await fromUuid(grant.key)
+        const itemClone = newItem.clone()
+        const createdItems = await super._onDropItemCreate(itemClone)
+        return createdItems[0].id
+      }),
+    )
+    itemData.system.grantedItems = [...createdIds]
+    super._onDropItemCreate(itemData)
   }
 
   /**
@@ -485,13 +537,13 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // If trait is gifted, add cap
     if (itemData.name === 'Gifted') {
-      this.actor.system.addCap()
+      this.actor.addCap()
     }
   }
 
   _onItemDeleteTrait(itemData) {
     if (itemData.name === 'Gifted') {
-      this.actor.system.removeCap()
+      this.actor.removeCap()
     }
   }
 

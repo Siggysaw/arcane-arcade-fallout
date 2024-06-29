@@ -1,5 +1,5 @@
 // Export Actors
-export { default as FalloutZeroActorBase } from './actorBase.mjs'
+export { default as FalloutZeroActor } from './actor.mjs'
 export { default as FalloutZeroCharacter } from './character.mjs'
 export { default as FalloutZeroNPC } from './npc.mjs'
 
@@ -12,5 +12,9 @@ export { default as FalloutZeroWeapon } from './weapon.mjs'
 export { default as FalloutZeroRangedWeapon } from './rangedWeapon.mjs'
 export { default as FalloutZeroMeleeWeapon } from './meleeWeapon.mjs'
 export { default as FalloutZeroMaterial } from './material.mjs'
+
+// Export Misc
+export { default as FalloutZeroBackground } from './background.mjs'
+export { default as FalloutZeroRace } from './race.mjs'
 export { default as FalloutZeroArmorUpgrade } from './armorUpgrade.mjs'
 export { default as FalloutZeroWeaponUpgrade } from './weaponUpgrade.mjs'

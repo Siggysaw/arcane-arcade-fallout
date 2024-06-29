@@ -1,3 +1,5 @@
-2024/06/21-11:32:21.889 42ac Recovering log #83
-2024/06/21-11:32:21.899 42ac Delete type=0 #83
-2024/06/21-11:32:21.899 42ac Delete type=3 #82
+2024/06/29-09:38:09.679224 30afe2000 Log #90: 0 ops saved to Table #91 OK
+2024/06/29-09:38:09.679300 30afe2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/race/000090.log: OK
+2024/06/29-09:38:09.679562 30afe2000 Table #87: 8 entries OK
+2024/06/29-09:38:09.679682 30afe2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/race/MANIFEST-000088: OK
+2024/06/29-09:38:09.679860 30afe2000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/race; recovered 1 files; 16035 bytes. Some data may have been lost. ****

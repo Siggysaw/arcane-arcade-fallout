@@ -1,7 +1,7 @@
-import FalloutZeroActorBase from './actorBase.mjs'
+import FalloutZeroActor from './actor.mjs'
 import { FALLOUTZERO } from '../config.mjs'
 
-export default class FalloutZeroCharacter extends FalloutZeroActorBase {
+export default class FalloutZeroCharacter extends FalloutZeroActor {
   static defineSchema() {
     const fields = foundry.data.fields
     const requiredInteger = { required: true, nullable: false, integer: true }
@@ -35,8 +35,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
         initial: 0,
       }),
     })
-    schema.background = new fields.StringField({ initial: '', blank: true })
-    schema.race = new fields.StringField({ initial: '', blank: true })
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0 })
     schema.groupSneak = new fields.NumberField({ initial: 0 })
@@ -50,27 +48,27 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
     schema.conditions = new fields.SchemaField({
-      Blinded: new fields.BooleanField({ initial: false, }),
-      Bleeding: new fields.BooleanField({ initial: false, }),
-      Burning: new fields.BooleanField({ initial: false, }),
-      Buzzed: new fields.BooleanField({ initial: false, }),
-      Corroded: new fields.BooleanField({ initial: false, }),
-      Dazed: new fields.BooleanField({ initial: false, }),
-      Deafened: new fields.BooleanField({ initial: false, }),
-      Drunk: new fields.BooleanField({ initial: false, }),
-      Frightened: new fields.BooleanField({ initial: false, }),
-      Grappled: new fields.BooleanField({ initial: false, }),
-      Hammered: new fields.BooleanField({ initial: false, }),
-      Heavily_Encumbered: new fields.BooleanField({ initial: false, }),
-      Invisible: new fields.BooleanField({ initial: false, }),
-      Poisoned: new fields.BooleanField({ initial: false, }),
-      Prone: new fields.BooleanField({ initial: false, }),
-      Restrained: new fields.BooleanField({ initial: false, }),
-      Shadowed: new fields.BooleanField({ initial: false, }),
-      Shock: new fields.BooleanField({ initial: false, }),
-      Slowed: new fields.BooleanField({ initial: false, }),
-      Unconscious: new fields.BooleanField({ initial: false, }),
-      Wasted: new fields.BooleanField({ initial: false, }),
+      Blinded: new fields.BooleanField({ initial: false }),
+      Bleeding: new fields.BooleanField({ initial: false }),
+      Burning: new fields.BooleanField({ initial: false }),
+      Buzzed: new fields.BooleanField({ initial: false }),
+      Corroded: new fields.BooleanField({ initial: false }),
+      Dazed: new fields.BooleanField({ initial: false }),
+      Deafened: new fields.BooleanField({ initial: false }),
+      Drunk: new fields.BooleanField({ initial: false }),
+      Frightened: new fields.BooleanField({ initial: false }),
+      Grappled: new fields.BooleanField({ initial: false }),
+      Hammered: new fields.BooleanField({ initial: false }),
+      Heavily_Encumbered: new fields.BooleanField({ initial: false }),
+      Invisible: new fields.BooleanField({ initial: false }),
+      Poisoned: new fields.BooleanField({ initial: false }),
+      Prone: new fields.BooleanField({ initial: false }),
+      Restrained: new fields.BooleanField({ initial: false }),
+      Shadowed: new fields.BooleanField({ initial: false }),
+      Shock: new fields.BooleanField({ initial: false }),
+      Slowed: new fields.BooleanField({ initial: false }),
+      Unconscious: new fields.BooleanField({ initial: false }),
+      Wasted: new fields.BooleanField({ initial: false }),
     })
 
     return schema
@@ -97,6 +95,29 @@ export default class FalloutZeroCharacter extends FalloutZeroActorBase {
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     if (this.luckmod < 0) {
       this.luckmod = -1
+    }
+  }
+
+  /**
+   * @override
+   * Augment the actor source data with additional dynamic data. Typically,
+   * you'll want to handle most of your calculated/derived data in this step.
+   * Data calculated in this step should generally not exist in template.json
+   * (such as ability modifiers rather than ability scores) and should be
+   * available both inside and outside of character sheets (such as if an actor
+   * is queried and has a roll executed directly from it).
+   */
+  prepareDerivedData() {
+    super.prepareDerivedData()
+    // Loop through ability scores, and add their modifiers to our sheet output.
+    for (const key in this.abilities) {
+      // Calculate the modifier using d20 rules.
+      this.abilities[key].mod = Math.floor(this.abilities[key].value - 5)
+    }
+
+    // Loop through skill scores, and add their modifiers to our sheet output.
+    for (const key in this.skills) {
+      this.skills[key].ability = FALLOUTZERO.skills[key].ability
     }
   }
 }

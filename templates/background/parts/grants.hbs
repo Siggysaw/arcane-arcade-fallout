@@ -1,0 +1,55 @@
+<div class="grants">
+  {{log 'races' races}}
+  {{#each races as |race|}}
+  <div>
+    <details data-race-details="{{ race.id }}" {{#if (lookup ../detailsState race.id)}}open{{/if}}>
+      <summary>
+        <div>
+          {{ race.label }}
+        </div>
+      </summary>
+      <div class="grant-drop-area" data-grant-drop data-grant-race="{{ race.id }}">
+        <div class="grant-item-grid">
+          <div >Name</div>
+          <div >Quantity</div>
+          <div >Delete</div>
+          {{#each race.grants as |item|}}
+          <div >
+            {{ item.name }}
+          </div>
+          <div class="flex">
+            <button
+              class="mx-1"
+              type="button"
+              data-increase-quantity
+              data-grant-race="{{ race.id }}"
+              data-grant-item-index="{{@index}}"
+            >
+              <i class="fas fa-plus-square"></i></button
+            ><span>{{ item.quantity }}</span>
+            <button
+              class="mx-1"
+              type="button"
+              data-decrease-quantity
+              data-grant-race="{{ race.id }}"
+              data-grant-item-index="{{@index}}"
+            >
+              <i class="fas fa-minus-square"></i>
+            </button>
+          </div>
+          <div class="flex">
+            <button
+              data-race-type="{{ race.id }}"
+              data-delete-grant="{{ item._id }}"
+              title="{{localize 'DOCUMENT.Delete' type='item'}}"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </details>
+  </div>
+  {{/each}}
+</div>

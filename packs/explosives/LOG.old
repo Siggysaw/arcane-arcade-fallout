@@ -1,3 +1,5 @@
-2024/06/21-11:32:21.851 42ac Recovering log #69
-2024/06/21-11:32:21.859 42ac Delete type=0 #69
-2024/06/21-11:32:21.859 42ac Delete type=3 #68
+2024/06/29-09:38:09.673421 30b7e5000 Log #62: 0 ops saved to Table #63 OK
+2024/06/29-09:38:09.673556 30b7e5000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/explosives/000062.log: OK
+2024/06/29-09:38:09.673649 30b7e5000 Table #59: 16 entries OK
+2024/06/29-09:38:09.673784 30b7e5000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/explosives/MANIFEST-000060: OK
+2024/06/29-09:38:09.674113 30b7e5000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/explosives; recovered 1 files; 3890 bytes. Some data may have been lost. ****

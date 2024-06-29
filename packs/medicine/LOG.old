@@ -1,3 +1,5 @@
-2024/06/21-11:32:21.942 42ac Recovering log #118
-2024/06/21-11:32:21.952 42ac Delete type=0 #118
-2024/06/21-11:32:21.952 42ac Delete type=3 #116
+2024/06/29-09:38:09.686682 30b7e5000 Log #246: 0 ops saved to Table #247 OK
+2024/06/29-09:38:09.686980 30b7e5000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine/000246.log: OK
+2024/06/29-09:38:09.687182 30b7e5000 Table #243: 18 entries OK
+2024/06/29-09:38:09.687309 30b7e5000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine/MANIFEST-000244: OK
+2024/06/29-09:38:09.687481 30b7e5000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine; recovered 1 files; 6969 bytes. Some data may have been lost. ****
