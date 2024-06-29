@@ -5,6 +5,7 @@ import { FalloutZeroItem } from './documents/item.mjs'
 import { FalloutZeroActorSheet } from './sheets/actor-sheet.mjs'
 import { FalloutZeroItemSheet } from './sheets/item-sheet.mjs'
 import { FalloutZeroBackgroundSheet } from './sheets/background-sheet.mjs'
+import { FalloutZeroRaceSheet } from './sheets/race-sheet.mjs'
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs'
 import { FALLOUTZERO } from './config.mjs'
@@ -52,6 +53,7 @@ Hooks.once('init', function () {
     rangedWeapon: models.FalloutZeroRangedWeapon,
     meleeWeapon: models.FalloutZeroMeleeWeapon,
     background: models.FalloutZeroBackground,
+    race: models.FalloutZeroRace,
   }
 
   // Active Effects are never copied to the Actor,
@@ -72,7 +74,13 @@ Hooks.once('init', function () {
   })
   Items.registerSheet('falloutzero', FalloutZeroBackgroundSheet, {
     makeDefault: true,
+    types: ['background'],
     label: 'FALLOUTZERO.SheetLabels.Background',
+  })
+  Items.registerSheet('falloutzero', FalloutZeroRaceSheet, {
+    makeDefault: true,
+    types: ['race'],
+    label: 'FALLOUTZERO.SheetLabels.Race',
   })
 
   // Preload Handlebars templates.

@@ -19,6 +19,10 @@ export class FalloutZeroActor extends Actor {
     return data
   }
 
+  getRaceType() {
+    return this.items.contents.find((c) => c.type === 'race')?.system?.type
+  }
+
   addCap() {
     const caps = this.system.karmaCaps
     this.update({ 'system.karmaCaps': [...caps, true] })

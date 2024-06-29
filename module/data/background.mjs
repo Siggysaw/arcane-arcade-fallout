@@ -19,6 +19,7 @@ export default class FalloutZeroBackground extends foundry.abstract.TypeDataMode
               key: new fields.StringField({ initial: undefined }),
               type: new fields.StringField(),
               name: new fields.StringField(),
+              quantity: new fields.NumberField({ initial: 1, min: 1 }),
             }),
           ),
         })

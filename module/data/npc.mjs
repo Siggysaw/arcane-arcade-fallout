@@ -38,8 +38,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         initial: 0,
       }),
     })
-    schema.background = new fields.StringField({ initial: '', blank: true })
-    schema.race = new fields.StringField({ initial: '', blank: true })
     schema.xp = new fields.NumberField({ initial: 0, min: 0 })
     schema.combatSequence = new fields.NumberField({ initial: 0, min: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0, min: 0 })

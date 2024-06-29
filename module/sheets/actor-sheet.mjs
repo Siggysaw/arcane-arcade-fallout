@@ -479,6 +479,9 @@ export class FalloutZeroActorSheet extends ActorSheet {
         this._onDropItemCreateTrait(itemData)
         return
       case 'background':
+        if (!this.actor.getRaceType()) {
+          return ui.notifications.warn('First add race to actor')
+        }
         this._onDropItemCreateBackgroundGrants(itemData)
         return
       default:
@@ -493,8 +496,9 @@ export class FalloutZeroActorSheet extends ActorSheet {
    * @protected
    */
   async _onDropItemCreateBackgroundGrants(itemData) {
+    const race = this.actor.getRaceType()
     const createdIds = await Promise.all(
-      itemData.system.grants.map(async (grant) => {
+      itemData.system.races[race].grants.map(async (grant) => {
         const newItem = await fromUuid(grant.key)
         const itemClone = newItem.clone()
         const createdItems = await super._onDropItemCreate(itemClone)

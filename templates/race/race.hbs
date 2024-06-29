@@ -11,6 +11,12 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
+      <div class="flex">
+        <span>Type: </span>
+        <select name="system.type">
+          {{selectOptions racesOptions selected=item.system.type}}
+        </select>
+      </div>
     </div>
   </header>
 

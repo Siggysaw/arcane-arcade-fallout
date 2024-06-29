@@ -47,8 +47,10 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
 
     context.races = itemData.system.races
 
-    for (let race in context.races) {
-      this.detailsState[race] = false
+    if (!Object.keys(this.detailsState).length) {
+      for (let race in context.races) {
+        this.detailsState[race] = true
+      }
     }
     context.detailsState = this.detailsState
 
@@ -69,6 +71,7 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     dragDrop.bind(html[0])
 
     html.on('click', '[data-delete-grant]', (e) => {
+      e.stopPropagation()
       const itemId = e.currentTarget.dataset.deleteGrant
       const raceType = e.currentTarget.dataset.raceType
       if (!itemId || !raceType) return
@@ -80,17 +83,45 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     })
 
     html.on('click', '[data-race-details]', (e) => {
+      if (e.target !== e.currentTarget) return
       const raceType = e.currentTarget.dataset.raceDetails
       this.detailsState[raceType] = !this.detailsState[raceType]
+    })
+
+    html.on('click', '[data-decrease-quantity]', (e) => {
+      const { grantRace, grantItemIndex } = e.currentTarget.dataset
+      if (!grantRace || !grantItemIndex) return
+
+      this._onGrantQuantityUpdate(false, grantRace, grantItemIndex)
+    })
+
+    html.on('click', '[data-increase-quantity]', (e) => {
+      const { grantRace, grantItemIndex } = e.currentTarget.dataset
+      if (!grantRace || !grantItemIndex) return
+
+      this._onGrantQuantityUpdate(true, grantRace, grantItemIndex)
     })
 
     super.activateListeners(html)
   }
 
+  _onGrantQuantityUpdate(increment = true, grantRace, grantItemIndex) {
+    const grantsArray = this.item.system.races[grantRace].grants
+    grantsArray[grantItemIndex].quantity = increment
+      ? grantsArray[grantItemIndex].quantity + 1
+      : grantsArray[grantItemIndex].quantity - 1
+
+    const dataLocation = `system.races.${grantRace}.grants`
+    this.item.update({
+      [dataLocation]: grantsArray,
+    })
+  }
+
   async _onDrop(event) {
     event.preventDefault()
+    const grantRace = event.currentTarget.dataset.grantRace
 
-    if (!event?.currentTarget?.dataset) return
+    if (!grantRace) return false
 
     let dropData
     try {
@@ -101,7 +132,15 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     }
     if (dropData === undefined || dropData.type !== 'Item') return false
 
-    const permitted = ['armor', 'rangedWeapon', 'meleeWeapon', 'ammo', 'miscItem', 'foodAnddrink']
+    const permitted = [
+      'armor',
+      'rangedWeapon',
+      'meleeWeapon',
+      'ammo',
+      'miscItem',
+      'foodAnddrink',
+      'medicine',
+    ]
 
     const item = await fromUuid(dropData.uuid)
 
@@ -110,15 +149,15 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
       return false
     }
 
-    const raceType = event.currentTarget.dataset.grantRace
-    const dataLocation = `system.races.${raceType}.grants`
+    const dataLocation = `system.races.${grantRace}.grants`
     this.item.update({
       [dataLocation]: [
-        ...this.item.system.races[raceType].grants,
+        ...this.item.system.races[grantRace].grants,
         {
           id: item._id,
           key: item.uuid,
           type: item.type,
+          quantity: item.system.quantity,
           name: item.name,
         },
       ],

@@ -2,7 +2,39 @@
   height: 100%;
 }
 
+.tab .grants button {
+  display: flex;
+  padding: 0;
+  line-height: normal;
+}
+
+.tab .grants details {
+  margin-bottom: 20px;
+}
+
+.tab .grants summary {
+  min-height: 40px;
+}
+
 .grant-drop-area {
   min-height: 60px;
-  border: 1px green dotted;
+}
+
+.grant-item-grid button {
+  width: auto;
+}
+
+.grant-item-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1px;
+  text-align: center;
+  border-top: 1px solid green;
+  border-left: 1px solid green;
+}
+
+.grant-item-grid > div {
+  border-bottom: 1px solid green;
+  border-right: 1px solid green;
+  justify-content: center;
 }

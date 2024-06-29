@@ -15,3 +15,4 @@ export { default as FalloutZeroMaterial } from './material.mjs'
 
 // Export Misc
 export { default as FalloutZeroBackground } from './background.mjs'
+export { default as FalloutZeroRace } from './race.mjs'
