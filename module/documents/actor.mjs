@@ -58,7 +58,7 @@ export class FalloutZeroActor extends Actor {
 
     //Irradiated and Radiation Updates
     if (field === 'system.irradiated' && newValue == 10) {
-      const newRads = this.penalties.radiation.value + 1
+      const newRads = this.system.penalties.radiation.value + 1
       this.update({ 'system.penalties.radiation.value': newRads })
       this.update({ 'system.irradiated': 0 })
       return
