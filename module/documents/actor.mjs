@@ -29,7 +29,7 @@ export class FalloutZeroActor extends Actor {
   }
 
   removeCap() {
-    const newCaps = this.parent.system.karmaCaps
+    const newCaps = this.system.karmaCaps
     if (newCaps.length === 1) return
     newCaps.splice(newCaps.length - 1, 1)
     this.update({ 'system.karmaCaps': newCaps })
@@ -37,7 +37,7 @@ export class FalloutZeroActor extends Actor {
 
   //add item
   itemaddition(importeditem) {
-    const item = this.parent.items.get(importeditem)
+    const item = this.items.get(importeditem)
     const updatedQty = Number(item.system.quantity) + 1
     item.update({ 'system.quantity': updatedQty })
   }
@@ -269,7 +269,7 @@ export class FalloutZeroActor extends Actor {
   }
 
   rollWeapon(weaponId, hasDisadvantage = false) {
-    const currentAp = this.actionPoints.value
+    const currentAp = this.system.actionPoints.value
     const weapon = this.items.get(weaponId)
     const apCost = weapon.system.apCost
     const newAP = Number(currentAp) - Number(apCost)
@@ -308,11 +308,12 @@ export class FalloutZeroActor extends Actor {
     const dice = hasDisadvantage ? '2d20kl' : 'd20'
 
     const skillBonusValue =
-      this.skills[weapon.system.skillBonus].base + this.skills[weapon.system.skillBonus].modifiers
-    const abilityMod = this.abilities[weapon.system.abilityMod].mod
+      this.system.skills[weapon.system.skillBonus].base +
+      this.system.skills[weapon.system.skillBonus].modifiers
+    const abilityMod = this.system.abilities[weapon.system.abilityMod].mod
     const decayValue = (weapon.system.decay - 10) * -1
     let roll = new Roll(
-      `${dice} + ${skillBonusValue} + ${abilityMod} - ${this.penaltyTotal} - ${decayValue} + ${this.luckmod}`,
+      `${dice} + ${skillBonusValue} + ${abilityMod} - ${this.system.penaltyTotal} - ${decayValue} + ${this.system.luckmod}`,
       this.getRollData(),
     )
     roll.toMessage({
@@ -337,7 +338,7 @@ export class FalloutZeroActor extends Actor {
       return
     }
     // Do you have the AP?
-    const newAP = this.actionPoints.value - 6
+    const newAP = this.system.actionPoints.value - 6
     if (newAP < 0) {
       ui.notifications.warn(`Not enough action points to reload`)
       return
@@ -445,9 +446,11 @@ export class FalloutZeroActor extends Actor {
     let mats = []
     let qty = 1
     console.log(game.packs)
-    let itemName = this.system
-      .formatCompendiumItem('junk', item.name, 'This will remove this item from inventory.')
-      .slice(0, -4)
+    let itemName = this.formatCompendiumItem(
+      'junk',
+      item.name,
+      'This will remove this item from inventory.',
+    ).slice(0, -4)
     var i = 1
     if (item) {
       dialogContent = `Are you sure you want to convert ${itemName} into the following materials? <br><br>`
@@ -455,7 +458,7 @@ export class FalloutZeroActor extends Actor {
         if (item.system.junk['quantity' + i] != 0) {
           dialogContent +=
             `x<b name='qty'>${item.system.junk['quantity' + i]}</b> ` +
-            this.system.formatCompendiumItem(
+            this.formatCompendiumItem(
               'material',
               item.system.junk['type' + i],
               'Material for Crafting',
@@ -523,11 +526,7 @@ export class FalloutZeroActor extends Actor {
       //Goes back in the loop if results are tables
       loot +=
         ' ' +
-        (await this.system.rollContainer(
-          myResult,
-          customResults.roll._total,
-          customResults.roll._formula,
-        ))
+        (await this.rollContainer(myResult, customResults.roll._total, customResults.roll._formula))
       console.log(`${table.name} : Rolled ${customResults.roll._total} total for ${myResult.text}`)
     }
     return loot
@@ -535,7 +534,7 @@ export class FalloutZeroActor extends Actor {
 
   //All loot container types are rolled here and exceptions are managed, loot is returned
   async rollContainer(result, myTotal = 0, formula = 0) {
-    let table = await this.system.findTable(result.text)
+    let table = await this.findTable(result.text)
     let myLoot = ``
     let myTooltip = ``
     //Exception : Result is to roll multiple times on multiple tables
@@ -557,9 +556,9 @@ export class FalloutZeroActor extends Actor {
         var i = 0
         while (i < roll.total) {
           //get as many results as roll for specific junk table
-          table = await this.system.findTable(subResults[2] + ' ' + subResults[3])
+          table = await this.findTable(subResults[2] + ' ' + subResults[3])
           if (table) {
-            myLoot += await this.system.rollMyTable(table)
+            myLoot += await this.rollMyTable(table)
           }
           i++
         }
@@ -568,19 +567,19 @@ export class FalloutZeroActor extends Actor {
       else {
         if (table) {
           //roll table if one is found and reiterate
-          myLoot += await this.system.rollMyTable(table)
+          myLoot += await this.rollMyTable(table)
         }
         //Or format loot result, whether it is an object or text
         else {
           myTooltip = `Rolled <b><u>${myTotal}</b></u> total on<div>${result.parent.name} table (${formula})</div>`
           if (result.documentCollection) {
-            myLoot += await this.system.formatCompendiumItem(
+            myLoot += await this.formatCompendiumItem(
               result.documentCollection.replace(`arcane-arcade-fallout.`, ``),
               result.text,
               myTooltip,
             )
           } else {
-            myLoot += await this.system.formatCompendiumItem('', result.text, myTooltip)
+            myLoot += await this.formatCompendiumItem('', result.text, myTooltip)
           }
         }
       }
@@ -590,13 +589,13 @@ export class FalloutZeroActor extends Actor {
 
   //Room loot starts and ends here with chat message.
   async rollRoomLoot(tableName) {
-    const table = await this.system.findTable(tableName)
+    const table = await this.findTable(tableName)
     let roll = await new Roll(table.formula)
     const customResults = await table.roll({ roll })
     console.log('LOOT TABLE ASYNCHRONOUS RESULTS : (MAY APPEAR IN REVERSE ORDER)')
     let myConcatenatedLoot = `Room Loot: `
     for (var result of customResults.results) {
-      myConcatenatedLoot += await this.system.rollContainer(result)
+      myConcatenatedLoot += await this.rollContainer(result)
     }
     myConcatenatedLoot = myConcatenatedLoot.split('<br>').join('')
     customResults.roll.toMessage({ flavor: myConcatenatedLoot })
@@ -616,7 +615,7 @@ export class FalloutZeroActor extends Actor {
         tablesList += myTables[i] + ', '
         while (j < myValues[i]) {
           formattedResult = { text: myTables[i], documentCollection: '' }
-          myConcatenatedLoot += await this.system.rollContainer(formattedResult)
+          myConcatenatedLoot += await this.rollContainer(formattedResult)
           j++
         }
       }
@@ -685,7 +684,7 @@ export class FalloutZeroActor extends Actor {
             icon: '<i class="fas fa-check"></i>',
             label: 'Random Room Loot',
             callback: async () => {
-              this.system.rollRoomLoot('Room Loot')
+              this.rollRoomLoot('Room Loot')
             },
           },
           Custom: {
@@ -693,7 +692,7 @@ export class FalloutZeroActor extends Actor {
             label: 'Custom Rolls',
             callback: async () => {
               if (myValues.reduce((partialSum, a) => partialSum + a, 0) != 0) {
-                this.system.rollCustomLoot(myValues, myTables)
+                this.rollCustomLoot(myValues, myTables)
               } else {
                 alert(`You need at least one non-zero value for a custom roll. 
             
@@ -744,14 +743,14 @@ export class FalloutZeroActor extends Actor {
             .filter((u) => u.role < 3)
             .find((u) => u.character.name == selectPC.name).name
         }
-        this.system.determineNpcLoot(selectPC.actor.name, true, playerName)
+        this.determineNpcLoot(selectPC.actor.name, true, playerName)
       } catch {
         // public chat loot
-        this.system.determineNpcLoot(selectPC.actor.name, false, '')
+        this.determineNpcLoot(selectPC.actor.name, false, '')
       }
     }
     // ask for character and player if none selected
-    this.system.pcLuckDialog()
+    this.pcLuckDialog()
   }
 
   formatDice(formula) {
@@ -763,7 +762,7 @@ export class FalloutZeroActor extends Actor {
     if (itemName.includes('[[')) {
       try {
         myRoll = itemName.replace('[[/r ', '').replace(']]', '')
-        itemName = this.system.formatDice(myRoll)
+        itemName = this.formatDice(myRoll)
       } catch {
         console.log('Incorrect dice, not converted')
       }
@@ -792,7 +791,7 @@ export class FalloutZeroActor extends Actor {
       case 'qty':
         if (itemName.includes('[')) {
           myRoll = itemName.replace('[', '')
-          return this.system.formatDice(myRoll)
+          return this.formatDice(myRoll)
         } else {
           return itemName
         }
@@ -803,13 +802,13 @@ export class FalloutZeroActor extends Actor {
       case 'money':
         if (itemName.includes('[')) {
           myRoll = itemName.replace('[', '')
-          return this.system.formatDice(myRoll) + `<br>`
+          return this.formatDice(myRoll) + `<br>`
         } else {
           return `${itemName}<br>`
         }
         break
       default:
-        return this.system.formatCompendiumItem(compendium, itemName)
+        return this.formatCompendiumItem(compendium, itemName)
         break
     }
   }
@@ -825,9 +824,9 @@ export class FalloutZeroActor extends Actor {
         allLoot =
           allLoot.slice(0, allLoot.length - 4) +
           ' ' +
-          this.system.formatCompendiumItem(compendium, itemName)
+          this.formatCompendiumItem(compendium, itemName)
       } else {
-        allLoot = allLoot + this.system.createChatObject(compendium, itemName)
+        allLoot = allLoot + this.createChatObject(compendium, itemName)
       }
 
       i++
@@ -844,13 +843,13 @@ export class FalloutZeroActor extends Actor {
         allLoot =
           allLoot.slice(0, allLoot.length - 4) +
           ' ' +
-          this.system.formatCompendiumItem(compendium, loot.text)
+          this.formatCompendiumItem(compendium, loot.text)
       } else {
         if (loot.text.endsWith('x')) {
-          allLoot = allLoot + this.system.formatCompendiumItem(compendium, loot.text)
+          allLoot = allLoot + this.formatCompendiumItem(compendium, loot.text)
           allLoot = allLoot.slice(0, allLoot.length - 4) + ' '
         } else {
-          allLoot = allLoot + this.system.formatCompendiumItem(compendium, loot.text)
+          allLoot = allLoot + this.formatCompendiumItem(compendium, loot.text)
         }
       }
     }
@@ -887,14 +886,14 @@ export class FalloutZeroActor extends Actor {
           icon: '<i class="fas fa-check"></i>',
           label: 'Public',
           callback: async () => {
-            this.system.determineNpcLoot(selectedCharacter, false, game.user)
+            this.determineNpcLoot(selectedCharacter, false, game.user)
           },
         },
         Whisper: {
           icon: '<i class="fas fa-times"></i>',
           label: 'Whisper',
           callback: async () => {
-            this.system.determineNpcLoot(selectedCharacter, true, selectedPlayer)
+            this.determineNpcLoot(selectedCharacter, true, selectedPlayer)
           },
         },
       },
@@ -944,13 +943,13 @@ export class FalloutZeroActor extends Actor {
     let myRollMode = CONST.DICE_ROLL_MODES.PRIVATE
     let myConcatenatedLoot = ``
     const collection = await game.packs.find((u) => u.metadata.label == 'Monster Loot')
-    let table = await this.system.findTable(npcName)
+    let table = await this.findTable(npcName)
     if (table) {
       // World & Compendium rollTables (can be customized by user or homebrew)
       const roll = await new Roll(table.formula)
       const customResults = await table.roll({ roll })
       myConcatenatedLoot =
-        npcName + ` drops: <br>` + (await this.system.iterateResults(customResults.results))
+        npcName + ` drops: <br>` + (await this.iterateResults(customResults.results))
       if (!whisper) {
         myRollMode = CONST.DICE_ROLL_MODES.PUBLIC
       }
@@ -963,20 +962,17 @@ export class FalloutZeroActor extends Actor {
       const aMonsterLoot = FALLOUTZERO.monsterLoot.find((u) => u.name == npcName)
       if (aMonsterLoot) {
         //Official monsters
-        myConcatenatedLoot = await this.parent.system.iterateLoot(
-          aMonsterLoot.loot[0].all,
-          totLckMod,
-        )
+        myConcatenatedLoot = await this.iterateLoot(aMonsterLoot.loot[0].all, totLckMod)
         if (aMonsterLoot.loot.length > 1) {
           //Luck Roll with DC if specified
-          myConcatenatedLoot += `<div><b>${myActor}</b> can roll ${this.system.formatDice('1d20+' + totLckMod)} for more loot.</div>`
+          myConcatenatedLoot += `<div><b>${myActor}</b> can roll ${this.formatDice('1d20+' + totLckMod)} for more loot.</div>`
           dcLoot =
             `<b>On success (${aMonsterLoot.dice.replace('Lck', '')})</b> : <br>` +
-            (await this.system.iterateLoot(aMonsterLoot.loot[1].dc, totLckMod))
+            (await this.iterateLoot(aMonsterLoot.loot[1].dc, totLckMod))
         }
       } else {
         console.log('YES')
-        let inventoryLoot = this.parent.collections.items.contents
+        let inventoryLoot = this.collections.items.contents
         myConcatenatedLoot = npcName + ` drops: <br><br>`
         let compendium = ``
         for (var loot of inventoryLoot) {
