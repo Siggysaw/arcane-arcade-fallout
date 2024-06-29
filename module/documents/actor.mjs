@@ -52,6 +52,27 @@ export class FalloutZeroActor extends Actor {
     item.update({ 'system.quantity': updatedQty })
   }
 
+  //add to a field
+  fieldaddition(field, fieldvalue) {
+    const newValue = Number(fieldvalue) + 1
+
+    //Irradiated and Radiation Updates
+    if (field === 'system.irradiated' && newValue == 10) {
+      const newRads = this.penalties.radiation.value + 1
+      this.update({ 'system.penalties.radiation.value': newRads })
+      this.update({ 'system.irradiated': 0 })
+      return
+    }
+
+    // Update Field Value
+    this.update({ [field]: newValue })
+  }
+
+  fieldsubtraction(field, fieldvalue) {
+    const newValue = Number(fieldvalue) - 1
+    this.update({ [field]: newValue })
+  }
+
   ruleinfo(condition) {
     const myDialogOptions = { width: 500, height: 300, resizable: true }
     const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1)
@@ -952,6 +973,44 @@ export class FalloutZeroActor extends Actor {
           dcLoot =
             `<b>On success (${aMonsterLoot.dice.replace('Lck', '')})</b> : <br>` +
             (await this.system.iterateLoot(aMonsterLoot.loot[1].dc, totLckMod))
+        }
+      } else {
+        console.log('YES')
+        let inventoryLoot = this.parent.collections.items.contents
+        myConcatenatedLoot = npcName + ` drops: <br><br>`
+        let compendium = ``
+        for (var loot of inventoryLoot) {
+          switch (loot.type) {
+            case 'explosive':
+              compendium = 'explosives'
+              break
+            case 'ammo':
+              compendium = 'ammunition'
+              break
+            case 'meleeWeapon':
+              compendium = 'melee-weapons'
+              break
+            case 'rangedWeapon':
+              compendium = 'rangedweapons'
+              break
+            case 'miscItem':
+              compendium = 'miscellaneous'
+              break
+            case 'chem':
+              compendium = 'chems'
+              break
+            case 'foodAnddrink':
+              compendium = 'food-and-drinks'
+              break
+            case 'junkItem':
+              compendium = 'junk'
+              break
+            default:
+              compendium = loot.type
+              break
+          }
+          myConcatenatedLoot =
+            myConcatenatedLoot.slice(0, -4) + this.formatCompendiumItem(compendium, loot.name)
         }
       }
       let chatData = {

@@ -40,7 +40,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.groupSneak = new fields.NumberField({ initial: 0 })
     schema.combatSequence = new fields.NumberField({ initial: 0 })
     schema.partyNerve = new fields.NumberField({ initial: 0 })
-    schema.irradiated = new fields.NumberField({ initial: 0 })
+    schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.passiveSense = new fields.NumberField({
       ...requiredInteger,
       initial: 0,
@@ -79,7 +79,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     for (const key in this.penalties) {
       this.penalties[key].label = FALLOUTZERO.penalties[key]
     }
-    // this.penalties.radDC.value = 12 - this.abilities['end'].mod
+    this.radiationDC.base = 12 - this.abilities['end'].mod
+    this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
     this.healingRate = Math.floor((this.level + this.abilities['end'].value) / 2)
     this.penaltyTotal =
       this.penalties.hunger.value +

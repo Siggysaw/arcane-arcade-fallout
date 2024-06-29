@@ -7,7 +7,7 @@
             data-label="Performed a Combat Sequence roll!<br> D20 + Combat Sequence - Penalties + Luck Mod / 2">
             Combat Sequence
         </td>
-        <td>Fatigue</td>
+        <td>Exhaustion</td>
     </tr>
     <tr>
         <td>
@@ -17,7 +17,7 @@
             <input type="number" name="system.combatSequence" value="{{ combatSequence }}" />
         </td>
         <td>
-            <input type="number" name="system.penalties.fatigue.value" value="{{ fatigue.value }}" />
+            <input type="number" name="system.penalties.exhaustion.value" value="{{ system.penalties.exhaustion.value }}" />
         </td>
     </tr>
     <tr>
@@ -94,14 +94,7 @@
         <td><span class='condition' data-condition='Unconscious'>Unconscious</span></td>
         <td><input type='checkbox' name='system.conditions.Wasted' {{checked system.conditions.Wasted}} /></td>
         <td><span class='condition' data-condition='Wasted'>Wasted</span></td>
-
-
-
-
 </table>
     </td>
-  </tr>
-  <tr>
-    <td colspan="999">Total Penalties: {{ penaltyTotal }}</td>
   </tr>
 </table>

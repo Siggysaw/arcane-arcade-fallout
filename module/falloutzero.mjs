@@ -54,6 +54,8 @@ Hooks.once('init', function () {
     meleeWeapon: models.FalloutZeroMeleeWeapon,
     background: models.FalloutZeroBackground,
     race: models.FalloutZeroRace,
+    armorUpgrade: models.FalloutZeroArmorUpgrade,
+    wepaonUpgrade: models.FalloutZeroWeaponUpgrade,
   }
 
   // Active Effects are never copied to the Actor,

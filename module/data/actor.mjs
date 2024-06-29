@@ -132,6 +132,14 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     )
 
     schema.armorClass = new fields.SchemaField({
+      base: new fields.NumberField({
+        ...requiredInteger,
+        initial: 10,
+      }),
+      modifiers: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
       value: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
@@ -143,11 +151,34 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     })
 
     schema.damageThreshold = new fields.SchemaField({
+      base: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+      modifiers: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
       value: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
       min: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+    })
+
+    schema.radiationDC = new fields.SchemaField({
+      base: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+      modifiers: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+      value: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),

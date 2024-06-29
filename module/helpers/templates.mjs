@@ -24,6 +24,7 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/arcane-arcade-fallout/templates/actor/items/equipped-melee-weapons.hbs',
     'systems/arcane-arcade-fallout/templates/actor/items/explosives.hbs',
     'systems/arcane-arcade-fallout/templates/item/item-upgrade-sheet.hbs',
+    'systems/arcane-arcade-fallout/templates/item/item-armorUpgrade-sheet.hbs',
 
     // Actor Heading
     'systems/arcane-arcade-fallout/templates/actor/heading/bio.hbs',

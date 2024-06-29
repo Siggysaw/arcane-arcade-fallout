@@ -1,5 +1,7 @@
-2024/06/29-09:38:09.712523 30afe2000 Log #37: 0 ops saved to Table #38 OK
-2024/06/29-09:38:09.712602 30afe2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/material/000037.log: OK
-2024/06/29-09:38:09.712828 30afe2000 Table #34: 27 entries OK
-2024/06/29-09:38:09.712938 30afe2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/material/MANIFEST-000035: OK
-2024/06/29-09:38:09.713114 30afe2000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/material; recovered 1 files; 4900 bytes. Some data may have been lost. ****
+2024/06/26-17:05:30.039 4a3c Log #27: 0 ops saved to Table #28 OK
+2024/06/26-17:05:30.039 4a3c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\material/000027.log: OK
+2024/06/26-17:05:30.039 4a3c Table #4: 27 entries OK
+2024/06/26-17:05:30.039 4a3c Table #15: 27 entries OK
+2024/06/26-17:05:30.039 4a3c Table #21: 27 entries OK
+2024/06/26-17:05:30.043 4a3c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\material/MANIFEST-000026: OK
+2024/06/26-17:05:30.048 4a3c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\material; recovered 3 files; 13671 bytes. Some data may have been lost. ****

@@ -16,3 +16,5 @@ export { default as FalloutZeroMaterial } from './material.mjs'
 // Export Misc
 export { default as FalloutZeroBackground } from './background.mjs'
 export { default as FalloutZeroRace } from './race.mjs'
+export { default as FalloutZeroArmorUpgrade } from './armorUpgrade.mjs'
+export { default as FalloutZeroWeaponUpgrade } from './weaponUpgrade.mjs'

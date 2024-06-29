@@ -22,7 +22,8 @@
       "junkItem",
       "material",
       "miscItem",
-      "upgrade"
+      "armorUpgrade",
+      "weaponUpgrade"
     ],
     "htmlFields": ["description"]
   }

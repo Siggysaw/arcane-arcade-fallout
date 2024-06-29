@@ -213,7 +213,19 @@ export class FalloutZeroActorSheet extends ActorSheet {
       const item = ev.currentTarget.dataset.item
       this.actor.itemsubtraction(item)
     })
-    //subtract from an item quantity
+    //add to a field quantity
+    html.on('click', '[data-added]', (ev) => {
+      const field = ev.currentTarget.dataset.field
+      const fieldvalue = ev.currentTarget.dataset.fieldvalue
+      this.actor.fieldaddition(field, fieldvalue)
+    })
+    //subtract from a field quantity
+    html.on('click', '[data-subtracted]', (ev) => {
+      const field = ev.currentTarget.dataset.field
+      const fieldvalue = ev.currentTarget.dataset.fieldvalue
+      this.actor.fieldsubtraction(field, fieldvalue)
+    })
+    //Set Expanded
     html.on('click', '[data-expandtoggle]', (ev) => {
       const item = ev.currentTarget.dataset.itemid
       this.actor.expandtoggle(item)
