@@ -79,22 +79,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     for (const key in this.penalties) {
       this.penalties[key].label = FALLOUTZERO.penalties[key]
     }
-    this.radiationDC.base = 12 - this.abilities['end'].mod
-    this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
-    this.healingRate = Math.floor((this.level + this.abilities['end'].value) / 2)
-    this.penaltyTotal =
-      this.penalties.hunger.value +
-      this.penalties.dehydration.value +
-      this.penalties.exhaustion.value +
-      this.penalties.radiation.value +
-      this.penalties.fatigue.value
-    this.passiveSense = 12 + this.abilities['per'].mod
-    this.carryLoad.max = this.abilities['str'].value * 10
-
-    this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
-    if (this.luckmod < 0) {
-      this.luckmod = -1
-    }
   }
 
   /**
@@ -117,6 +101,23 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     // Loop through skill scores, and add their modifiers to our sheet output.
     for (const key in this.skills) {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
+    }
+
+    this.radiationDC.base = 12 - this.abilities['end'].mod
+    this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
+    this.healingRate = Math.floor((this.level + this.abilities['end'].value) / 2)
+    this.penaltyTotal =
+      this.penalties.hunger.value +
+      this.penalties.dehydration.value +
+      this.penalties.exhaustion.value +
+      this.penalties.radiation.value +
+      this.penalties.fatigue.value
+    this.passiveSense = 12 + this.abilities['per'].mod
+    this.carryLoad.max = this.abilities['str'].value * 10
+
+    this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
+    if (this.luckmod < 0) {
+      this.luckmod = -1
     }
   }
 }
