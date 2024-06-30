@@ -3,6 +3,8 @@
  * Extend the base Actor class to implement additional system-specific logic.
  * @extends {Actor}
  */
+
+import { FALLOUTZERO } from '../config.mjs'
 export class FalloutZeroActor extends Actor {
   getRollData() {
     // Starts off by populating the roll data with a shallow copy of `this.system`
@@ -15,7 +17,6 @@ export class FalloutZeroActor extends Actor {
         data[k] = foundry.utils.deepClone(v)
       }
     }
-
     return data
   }
 

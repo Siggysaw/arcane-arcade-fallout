@@ -824,7 +824,7 @@ form td .status-notes li:hover {
 .armorbox {
   padding: 5px;
 }
-.sheet table .status-info-value {
+.sheet table .skill-value {
   min-width: 80px;
   vertical-align: middle;
   text-align: center;
@@ -834,3 +834,10 @@ form td .status-notes li:hover {
 .sheet table .status-info-label{
     font-size:10pt;
 }
+.sheet table .upgradeBtn button {
+    background:none;
+    margin-top:-10px;
+}
+
+
+
