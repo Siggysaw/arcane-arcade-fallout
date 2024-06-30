@@ -15,30 +15,23 @@ export class FalloutZeroItem extends Item {
   //Checks char items before creating one, stops it and updates quantity if it exists and is not equipped.
   _preCreate(data, options, user){
     super._preCreate(data,options,user)
-    console.log("pre_create");
-    if (this.type == 'armorUpgrade' || this.type == 'weaponUpgrade'){
-      console.log('This item does not belong in character sheet. Try adding it to a weapon or armor instead!')
-      return false;
-    }
-    else{
-      if(this.parent){
-        let myItem = this.parent.items.find(u => u.name == this.name && u.type == this.type);
-        if (this.system.itemEquipped == true || this.system.itemEquipped == false){
-          console.log("equipped");
-          this.system.itemEquipped = false;
-          myItem = this.parent.items.find(u => u.name == this.name && u.type == this.type && u.system.itemEquipped == false);
-          try {this.system.update({'itemEquipped' : false })}
-          catch{console.log("Item cannot be updated in this way")}
-        }
-        let qty = 0;
-        if (myItem){
-          qty = myItem.system.quantity;
-          qty ++
-          myItem.update({'system.quantity' : qty });
-          return false;
-        }
+    if(this.parent){
+      let myItem = this.parent.items.find(u => u.name == this.name && u.type == this.type);
+      if (this.system.itemEquipped == true || this.system.itemEquipped == false){
+        console.log("equipped");
+        this.system.itemEquipped = false;
+        myItem = this.parent.items.find(u => u.name == this.name && u.type == this.type && u.system.itemEquipped == false);
+        try {this.system.update({'itemEquipped' : false })}
+        catch{console.log("Item cannot be updated in this way")}
       }
-    } 
+      let qty = 0;
+      if (myItem){
+        qty = myItem.system.quantity;
+        qty ++
+        myItem.update({'system.quantity' : qty });
+        return false;
+      }
+    }
     
   }
 

@@ -12,6 +12,7 @@ export { default as FalloutZeroWeapon } from './weapon.mjs'
 export { default as FalloutZeroRangedWeapon } from './rangedWeapon.mjs'
 export { default as FalloutZeroMeleeWeapon } from './meleeWeapon.mjs'
 export { default as FalloutZeroMaterial } from './material.mjs'
+export { default as FalloutZeroArmor } from './armor.mjs'
 
 // Export Misc
 export { default as FalloutZeroBackground } from './background.mjs'
