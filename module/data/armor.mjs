@@ -112,7 +112,6 @@ async getMyItem (pack, id){
 }
 
 async addUpgrade(myItem,myUpgrade){
-  console.log(myItem)
   let myData = {}
   let myValues = ['armorClass','damageThreshold','baseCost','strReq','slots','load']
   //Upgrade name and ID
@@ -123,8 +122,6 @@ async addUpgrade(myItem,myUpgrade){
     if (myUpgrade.system[val] != 0){
       switch (val){
         case 'load':
-          console.log(Number(myItem.system[val]))
-          console.log(Number(myUpgrade.system[val]))
           if (myUpgrade.name.slice(0,-1) == 1 && myItem.system.baseLoad == 0) {
             //Assign Base Load if not already set.
             myPath = 'system.baseLoad'
@@ -194,11 +191,9 @@ async removeUpgrade(myItem,myUpgrade,removeCost,key){
           if (removeCost) {
             myPath = `system.${val}.value`
             if(typeof Number(myUpgrade.name.slice(-1)) === 'number'){
-              console.log('multiplied')
               myValue = Number(myItem.system.baseCost.value) - (Number(myUpgrade.name.slice(-1)) * Number(myUpgrade.system.baseCost))
             }
             else {
-              console.log('not multiplied')
               myValue = Number(myItem.system.baseCost.value) - myUpgrade.system.baseCost
             }
           }
@@ -216,11 +211,9 @@ async removeUpgrade(myItem,myUpgrade,removeCost,key){
     Object.assign(myData,{[myPath]:myValue})
   }
   //Update values of item
-  console.log(myData)
   await myItem.update(myData)
   //Active Effects
   for (var e of myItem.effects._source){
-    console.log(e.origin.replace("Item.",""))
     if (e.origin.replace("Item.","") == myUpgrade._id){
       myIDs.push(e._id)
     }
@@ -233,13 +226,15 @@ async removeUpgrade(myItem,myUpgrade,removeCost,key){
 async checkUpgrade(armor,pack, id){
   let myUpgrade = await pack.getDocument(id);
   let preReq = pack.find(u => u.name == myUpgrade.system.requirement)
-  let myKey, newItem
+  let myKey,comment
   let myData = {}
   let wasEquipped = armor.isEquipped
   let oldUpgrade = myUpgrade
   let valid = false;
   if (myUpgrade.system.requirement == "None") {
-    valid = true
+    if (armor.system.slots.value >0){
+      valid = true
+    } else {comment ='You do not have any slots left for this upgrade.'}
   }
   else {
     if (preReq){
@@ -250,7 +245,7 @@ async checkUpgrade(armor,pack, id){
           valid = true
         }
       }
-    }
+    } else {comment = 'You do not meet the pre-requesite for this upgrade.'}
   }
   if (valid){
     for (var key of Object.keys(armor.system.upgrades)){
@@ -275,404 +270,12 @@ async checkUpgrade(armor,pack, id){
       }
     }
   } else {
-    alert("You do not meet the pre-requesite for this upgrade.")
+    alert(comment)
   }
 }
   
 
-//Modify upgrades on an armor (New Function, under construction!)
- async changeUpgradeInProgress(myItem, myUpgrade,newValue,oldValue){
-  let slots = myItem.system.slots.value;
-  let dt = myItem.system.damageThreshold.value;
-  let ac = myItem.system.armorClass.value;
-  let upgradeStats = FALLOUTZERO.armorUpgrades.find(u => u.name.toLowerCase() == myUpgrade)
-  let newRank = upgradeStats.rank[newValue]
-  let oldRank = upgradeStats.rank[oldValue]
-  console.log(upgradeStats)
-  let myPath, myValue = ``
-  let modifiers = ['name','short','craftingDC','cost','craftingTime',
-    'auto','desc','value','originalLoad','charMod']
-  let updateData = {}
-  Object.assign(updateData,{system : {[myUpgrade] : upgradeStats}})
-  console.log(updateData);
-  
-  let myPaths = [
-    `system.upgrades.${myUpgrade}.name`,
-    `system.upgrades.${myUpgrade}.auto`,
-    `system.upgrades.${myUpgrade}.desc`,
-    `system.upgrades.${myUpgrade}.value`,
-    `system.upgrades.${myUpgrade}.originalLoad`,
-    `system.upgrades.${myUpgrade}.charMod`,
-    'system.slots.value',
-    'system.strReq.value',
-    'system.damageThreshold.value',
-    'system.slots.value',
-    ]
-  }
 
-//Modify upgrades on an armor
-  async changeUpgradeOld(myItem, myUpgrade,newValue,oldValue){
-    let desc = `Nothing happens at Rank 0`;
-    let slots = myItem.system.slots.value;
-    let myPack = game.packs[0];
-    let dt = myItem.system.damageThreshold.value;
-    let ac = myItem.system.armorClass.value;
-    let auto = `No automated effect`
-    if (game.packs.find(u => u.metadata.label == "Upgrades")){
-      myPack = game.packs.find(u => u.metadata.label == "Upgrades").tree.entries
-    }
-    let upgradeID;
-    if (newValue == 1 && newValue>oldValue){
-      slots -=1
-    }
-    if (newValue == 0){
-      slots += 1
-    }
-    switch (myUpgrade) {
-      case 'camouflage':
-        let sneakAmount = 3*newValue
-        auto = '+' + sneakAmount + " Sneak"
-        switch (newValue){
-          case 1 :
-            desc = `You gain advantage on sneak checks relying on sight. Your passive sneak increases by 3.`
-            break;
-          case 2 :
-            desc = `You gain advantage on sneak checks relying on sight and sound. Your passive sneak increases by 6.`
-            break;
-          case 3 :
-            desc = `You gain advantage on sneak checks relying on sight and sound. While in dim light, you become shadowed. Your passive sneak increases by 9.`
-            break;
-          default :
-            desc = 'Nothing happens at Rank 0.';
-            auto = `No automated effect`;
-            break;
-        }
-        if(myPack.find(u => u.name == "Camouflage" + newValue)){upgradeID=myPack.find(u => u.name == "Camouflage" + newValue)._id};
-        //update Camouflage
-        if (newValue>oldValue){
-          await myItem.update({
-            'system.upgrades.camouflage._id' : upgradeID, 
-            'system.upgrades.camouflage.name' : 'camo',
-            'system.upgrades.camouflage.auto' : auto,
-            'system.upgrades.camouflage.desc' : desc, 
-            'system.upgrades.camouflage.value' : newValue, 
-            'system.charMod.skills.sneak.modifiers' : sneakAmount,
-            'system.slots.value' : slots
-          });
-        } else{
-          await myItem.update({
-            'system.upgrades.camouflage.value' : newValue, 
-            'system.upgrades.camouflage.desc' : desc, 
-            'system.upgrades.camouflage.auto' : auto,
-            'system.charMod.skills.sneak.modifiers' : sneakAmount,
-            'system.slots.value' : slots
-          });
-        }
-        break;
-      case 'light':
-        let originalLoad = 0;
-        let load = 0;
-        let strReq = 0;
-        if(myPack.find(u => u.name == "Light" + newValue)){upgradeID=myPack.find(u => u.name == "Light" + newValue)._id};
-        switch (newValue){
-          case 1 :
-            //Light1 +
-            desc = `Load reduced by 5. Strength req. reduced by 1. DT reduced by 1.`
-            auto = `Load-5, Str Req -1, DT-1` 
-            if(newValue>oldValue){
-              if (myItem.system.upgrades.light){
-                originalLoad = myItem.system.upgrades.light.originalLoad;
-              } else{
-                originalLoad = myItem.system.load;
-              }
-              load = originalLoad - 5;
-              strReq = myItem.system.strReq.value - 1;
-              dt -= 1;
-              await myItem.update({
-                'system.upgrades.light._id' : upgradeID,  
-                'system.upgrades.light.name' : 'light',
-                'system.upgrades.light.auto' : auto,
-                'system.upgrades.light.desc' : desc,
-                'system.upgrades.light.value' : newValue,
-                'system.upgrades.light.originalLoad' : originalLoad,
-                'system.load' : load,
-                'system.strReq.value' :  strReq,
-                'system.damageThreshold.value' : dt,
-                'system.slots.value' : slots
-              });
-            }
-            //Light1 -
-            else{
-              originalLoad = myItem.system.upgrades.light.originalLoad;
-              load = originalLoad - 5;
-              await myItem.update({
-                'system.upgrades.light.value' : newValue, 
-                'system.upgrades.light.desc' : desc,
-                'system.upgrades.light.auto' : auto,
-                'system.load' : load,
-              });
-            }
-            break;
-            //Light2
-          case 2 :
-            desc = `Load reduced by 15 (min of 3). Strength req. reduced by 1. DT reduced by 1.`
-            auto = `Load-15(min3), Str Req -1, DT-1` 
-            if(newValue>oldValue){
-              load = Math.max(myItem.system.upgrades.light.originalLoad-10,3)
-              await myItem.update({
-                'system.upgrades.light.value' : newValue, 
-                'system.upgrades.light.desc' : desc,
-                'system.upgrades.light.auto' : auto,
-                'system.load' : load,
-              });
-            }
-            else{
-              await myItem.update({
-                'system.upgrades.light.value' : newValue, 
-                'system.upgrades.light.desc' : desc,
-              });
-            }
-            break;
-            //Light3
-          case 3 :
-            desc = `Load reduced by 15 (min of 3). Strength req. reduced by 1. DT reduced by 1. If you spend at least 4 AP on your turn to move, you can move an additional 10 feet.`
-            await myItem.update({
-              'system.upgrades.light.value' : newValue, 
-              'system.upgrades.light.desc' : desc,
-            });
-            break;
-            //Light0
-          default :
-            desc = 'Nothing happens at Rank 0.';
-            load = myItem.system.upgrades.light.originalLoad;
-            strReq = myItem.system.strReq.value + 1;
-            dt += 1;
-            await myItem.update({
-              'system.upgrades.light.value' : newValue, 
-              'system.upgrades.light.desc' : desc,
-              'system.load' : load,
-              'system.strReq.value' :  strReq,
-              'system.damageThreshold.value' : dt,
-              'system.slots.value' : slots
-            });
-            break;
-          } 
-        break;
-      case 'fitted': 
-        if(myPack.find(u => u.name == "Fitted" + newValue)){upgradeID=myPack.find(u => u.name == "Fitted" + newValue)._id};
-        switch (newValue){
-          case 1 :
-          desc = `When you take damage from an area of effect, your DT is doubled.`
-          if (newValue > oldValue){
-            await myItem.update({
-              'system.upgrades.fitted._id' : upgradeID,  
-              'system.upgrades.fitted.name' : 'fit',
-              'system.upgrades.fitted.auto' : auto,
-              'system.upgrades.fitted.desc' : desc,
-              'system.upgrades.fitted.value' : newValue, 
-              'system.slots.value' : slots
-            });
-          } else {
-            auto = `No automated effect`
-            await myItem.update({
-              'system.upgrades.fitted.value' : newValue, 
-              'system.upgrades.fitted.desc' : desc,
-              'system.upgrades.fitted.auto' : auto,
-              'system.charMod.stamina.modifiers' : 0,
-            });
-          }
-          break;
-        case 2 :
-          desc = `When you take damage from an area of effect, your DT is doubled. Your maximum stamina points increase by a number equal to your level.`
-          auto = `+10 Max STA`
-          if (newValue>oldValue){
-            await myItem.update({
-              'system.upgrades.fitted.value' : newValue, 
-              'system.upgrades.fitted.desc' : desc,
-              'system.upgrades.fitted.auto' : auto,
-              'system.charMod.stamina.modifiers' : myItem.parent.level,
-            });
-          } else{
-            await myItem.update({
-              'system.upgrades.fitted.value' : newValue, 
-              'system.upgrades.fitted.desc' : desc,
-            });
-          }
-          break;
-        case 3:
-          desc = `When you take damage from an area of effect, your DT is doubled. Your maximum stamina points increase by a number equal to your level. You have advantage on combat sequence rolls. If you already have advantage, you gain a +5.`
-            await myItem.update({
-              'system.upgrades.fitted.value' : newValue, 
-              'system.upgrades.fitted.desc' : desc,
-            });
-          break;
-        default :
-          desc = 'Nothing happens at Rank 0.'
-          auto = `No automated effect`
-          await myItem.update({
-            'system.upgrades.fitted.value' : newValue, 
-            'system.upgrades.fitted.desc' : desc,
-            'system.upgrades.fitted.auto' : auto,
-            'system.slots.value' : slots
-          })
-          break;
-        }
-        break;
-      case 'leadlined': 
-        if(myPack.find(u => u.name == "Lead Lined" + newValue)){upgradeID=myPack.find(u => u.name == "Lead Lined" + newValue)._id};
-        let radDC = -2*newValue
-        desc = `Radiation DC decreases by ` + radDC
-        auto = `radDC -` + radDC
-        await myItem.update({
-          'system.upgrades.leadlined._id' : upgradeID,  
-          'system.upgrades.leadlined.name' : 'lead',
-          'system.upgrades.leadlined.auto' : auto,
-          'system.upgrades.leadlined.desc' : desc,
-          'system.upgrades.leadlined.value' : newValue, 
-          'system.charMod.penalties.radDC.value' : -2*newValue,
-          'system.slots.value' : slots
-        });
-        break;
-      case 'strengthened': 
-        auto = `No automated effect`
-        if(myPack.find(u => u.name == "Strengthened" + newValue)){upgradeID=myPack.find(u => u.name == "Strengthened" + newValue)._id};
-        switch (newValue){
-          case 1 :
-            desc = `When you take damage from a critical hit, your DT increases by 3`
-            break;
-          case 2: 
-            desc = `When you take damage from a critical hit, your DT increases by 8.`
-            break;
-          case 3:
-            desc = `When you take damage from a critical hit, your DT increases by 8. If you would gain a severe injury, you instead gain a random limb condition`
-            break;
-        }
-        await myItem.update({
-          'system.upgrades.strengthened._id' : upgradeID,  
-          'system.upgrades.strengthened.name' : 'str',
-          'system.upgrades.strengthened.auto' : auto,
-          'system.upgrades.strengthened.desc' : desc,
-          'system.upgrades.strengthened.value' : newValue, 
-          'system.slots.value' : slots
-        });
-        break;
-      case 'sturdy': 
-        auto = `No automated effect`
-        if(myPack.find(u => u.name == "Sturdy" + newValue)){upgradeID=myPack.find(u => u.name == "Sturdy" + newValue)._id};
-        switch (newValue){
-          case 1 :
-            desc = `You ignore the negative effects of the first 2 levels of decay for the armor.`
-            break;
-          case 2: 
-            desc = `You ignore the negative effects of the first 4 levels of decay for the armor. `
-            break;
-          case 3:
-            desc = `You ignore the negative effects of the first 4 levels of decay for the armor. Your armor no longer decays from being damaged by a critical hit.`
-            break;
-        }
-        await myItem.update({
-          'system.upgrades.sturdy._id' : upgradeID,  
-          'system.upgrades.sturdy.name' : 'sturd',
-          'system.upgrades.sturdy.auto' : auto,
-          'system.upgrades.sturdy.desc' : desc,
-          'system.upgrades.sturdy.value' : newValue, 
-          'system.slots.value' : slots
-        });
-        break;
-      case 'pocketed': 
-      if(myPack.find(u => u.name == "Pocketed" + newValue)){upgradeID=myPack.find(u => u.name == "Porcketed" + newValue)._id};
-        let charLoad = 0;
-        switch (newValue){
-          case 1 :
-            desc = `Your carry load is increased by 10.`
-            charLoad = 10;
-            auto = `carry Load Max +10`
-            break;
-          case 2: 
-            desc = `Your carry load is increased by 25. `
-            charLoad = 25;
-            auto = `carry Load Max +25`
-            break;
-          case 3:
-            desc = `Your carry load is increased by 50`
-            charLoad = 50;
-            auto = `carry Load Max +50`
-            break;
-          default:
-            desc = ``
-            charLoad = 0;
-            auto = `No automated effect`
-            break;
-        }
-        await myItem.update({
-          'system.upgrades.pocketed._id' : upgradeID,
-          'system.upgrades.pocketed.name' : 'pocket',
-          'system.upgrades.pocketed.auto' : auto,
-          'system.upgrades.pocketed.desc' : desc,
-          'system.upgrades.pocketed.value' : newValue, 
-          'system.charMod.carryLoad.max' : charLoad,
-          'system.slots.value' : slots
-        });
-        break;      
-      case 'reinforced': 
-      if(myPack.find(u => u.name == "Reinforced" + newValue)){upgradeID=myPack.find(u => u.name == "Reinforced" + newValue)._id};
-        switch (newValue){
-          case 1 :
-            desc = `+1 bonus to DT`;
-            if(newValue>oldValue){dt+=1}
-            else{dt-=1}
-            auto = `+1 bonus to DT`;
-            break;
-          case 2: 
-            desc = `+2 bonus to DT`;
-            if(newValue>oldValue){dt+=1}
-            else{dt-=2}
-            auto = `+2 bonus to DT`;
-            break;
-          case 3:
-            desc = `+4 bonus to DT`;
-            dt += 2;
-            auto = `+4 bonus to DT`;
-            break;
-          default:
-            desc = ``;
-            dt -= 1;
-            auto = `No automated effect`;
-            break;
-        }
-        await myItem.update({
-          'system.upgrades.reinforced._id' : upgradeID,
-          'system.upgrades.reinforced.name' : 'reinf',
-          'system.upgrades.reinforced.auto' : auto,
-          'system.upgrades.reinforced.desc' : desc,
-          'system.upgrades.reinforced.value' : newValue,
-          'system.damageThreshold.value' : dt,
-          'system.slots.value' : slots
-        });
-        break;  
-      case 'hardened':
-        if(myPack.find(u => u.name == "Hardened" + newValue)){upgradeID=myPack.find(u => u.name == "Hardened" + newValue)._id};
-        if (newValue != 0){
-          desc = `+${newValue} bonus to AC`
-          auto = desc
-          if (newValue>oldValue){
-            ac += 1
-          }else {ac -= 1}
-        } else {ac -= 1}
-        await myItem.update({
-          'system.upgrades.hardened._id' : upgradeID,
-          'system.upgrades.hardened.name' : 'hard',
-          'system.upgrades.hardened.auto' : auto,
-          'system.upgrades.hardened.desc' : desc,
-          'system.upgrades.hardened.value' : newValue, 
-          'system.armorClass.value' : ac,
-          'system.slots.value' : slots
-        });
-        break;
-    }
-    return myItem;
-  }
- 
 
   //Equip item upgrades (right now, it's just armor upgrades)
   async equipItemStats (myItem){
@@ -720,7 +323,6 @@ async checkUpgrade(armor,pack, id){
 
   //Removes modifiers related to Armor
   async unequipItemStats (myItem){
-    console.log(myItem)
     let AC = Math.ceil(myItem.parent.system.armorClass.min, 10) //by default will be 10, but we'll need that to be BASE in case there are other modifiers
     let DT = myItem.parent.system.damageThreshold.value - myItem.system.damageThreshold.value;
     const everyMod = { system :
@@ -759,7 +361,7 @@ async checkUpgrade(armor,pack, id){
         this.unequipItemStats(myItem)
         this.toggleEffects(myItem,true)
       }else {
-        let otherArmor = myItem.parent.items.find(u => u.system.itemEquipped == true && u.name == myItem.name)
+        let otherArmor = myItem.parent.items.find(u => u.system.itemEquipped == true && u.type =='armor')
         if (otherArmor){
           this.swapArmors(myItem,otherArmor);
         }else{
