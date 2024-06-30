@@ -1,4 +1,4 @@
-import { prepareActiveEffectCategories } from '../helpers/effects.mjs'
+import { prepareActiveEffectCategories, onManageActiveEffect } from '../helpers/effects.mjs'
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -102,6 +102,9 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
 
       this._onGrantQuantityUpdate(true, grantRace, grantItemIndex)
     })
+
+    // Active Effect management
+    html.on('click', '.effect-control', (ev) => onManageActiveEffect(ev, this.item))
 
     super.activateListeners(html)
   }
