@@ -1,5 +1,11 @@
-2024/06/29-09:38:09.686682 30b7e5000 Log #246: 0 ops saved to Table #247 OK
-2024/06/29-09:38:09.686980 30b7e5000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine/000246.log: OK
-2024/06/29-09:38:09.687182 30b7e5000 Table #243: 18 entries OK
-2024/06/29-09:38:09.687309 30b7e5000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine/MANIFEST-000244: OK
-2024/06/29-09:38:09.687481 30b7e5000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine; recovered 1 files; 6969 bytes. Some data may have been lost. ****
+2024/06/30-12:47:07.478566 309fdc000 Delete type=3 #1
+2024/06/30-13:03:49.402796 314268000 Level-0 table #257: started
+2024/06/30-13:03:49.402807 314268000 Level-0 table #257: 0 bytes OK
+2024/06/30-13:03:49.403063 314268000 Delete type=0 #255
+2024/06/30-13:03:49.404791 314268000 Manual compaction at level-0 from '!items!0djoGBUStJ1fZ3hs' @ 72057594037927935 : 1 .. '!items!wtHB2oaobNI8BMSq' @ 0 : 0; will stop at '!items!wtHB2oaobNI8BMSq' @ 68 : 1
+2024/06/30-13:03:49.404795 314268000 Compacting 1@0 + 0@1 files
+2024/06/30-13:03:49.404962 314268000 Generated table #258@0: 18 keys, 6969 bytes
+2024/06/30-13:03:49.404966 314268000 Compacted 1@0 + 0@1 files => 6969 bytes
+2024/06/30-13:03:49.404999 314268000 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/06/30-13:03:49.405026 314268000 Delete type=2 #252
+2024/06/30-13:03:49.405095 314268000 Manual compaction at level-0 from '!items!wtHB2oaobNI8BMSq' @ 68 : 1 .. '!items!wtHB2oaobNI8BMSq' @ 0 : 0; will stop at (end)
