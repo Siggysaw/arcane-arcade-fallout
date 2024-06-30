@@ -1,4 +1,4 @@
-import { prepareActiveEffectCategories } from '../helpers/effects.mjs'
+import { prepareActiveEffectCategories, onManageActiveEffect } from '../helpers/effects.mjs'
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -45,9 +45,16 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     context.system = itemData.system
     context.flags = itemData.flags
 
-    context.races = itemData.system.races
+    context.races = {
+      allRaces: {
+        id: 'allRaces',
+        label: 'All Races',
+        grants: [],
+      },
+      ...itemData.system.races,
+    }
 
-    if (!Object.keys(this.detailsState).length) {
+    if (Object.keys(this.detailsState).length === 1) {
       for (let race in context.races) {
         this.detailsState[race] = true
       }
@@ -102,6 +109,9 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
 
       this._onGrantQuantityUpdate(true, grantRace, grantItemIndex)
     })
+
+    // Active Effect management
+    html.on('click', '.effect-control', (ev) => onManageActiveEffect(ev, this.item))
 
     super.activateListeners(html)
   }

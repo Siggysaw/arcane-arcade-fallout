@@ -1,7 +1,11 @@
-2024/06/26-17:05:30.039 4a3c Log #27: 0 ops saved to Table #28 OK
-2024/06/26-17:05:30.039 4a3c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\material/000027.log: OK
-2024/06/26-17:05:30.039 4a3c Table #4: 27 entries OK
-2024/06/26-17:05:30.039 4a3c Table #15: 27 entries OK
-2024/06/26-17:05:30.039 4a3c Table #21: 27 entries OK
-2024/06/26-17:05:30.043 4a3c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\material/MANIFEST-000026: OK
-2024/06/26-17:05:30.048 4a3c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\material; recovered 3 files; 13671 bytes. Some data may have been lost. ****
+2024/06/30-12:47:07.506418 309fdc000 Delete type=3 #1
+2024/06/30-13:03:49.410864 314268000 Level-0 table #48: started
+2024/06/30-13:03:49.410959 314268000 Level-0 table #48: 0 bytes OK
+2024/06/30-13:03:49.411101 314268000 Delete type=0 #46
+2024/06/30-13:03:49.414626 314268000 Manual compaction at level-0 from '!items!0rhSD57YPtWYPxIp' @ 72057594037927935 : 1 .. '!items!zmaDCSQmU4IrxVAQ' @ 0 : 0; will stop at '!items!zmaDCSQmU4IrxVAQ' @ 54 : 1
+2024/06/30-13:03:49.414630 314268000 Compacting 1@0 + 0@1 files
+2024/06/30-13:03:49.414788 314268000 Generated table #49@0: 27 keys, 4900 bytes
+2024/06/30-13:03:49.414792 314268000 Compacted 1@0 + 0@1 files => 4900 bytes
+2024/06/30-13:03:49.414824 314268000 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/06/30-13:03:49.414846 314268000 Delete type=2 #43
+2024/06/30-13:03:49.414913 314268000 Manual compaction at level-0 from '!items!zmaDCSQmU4IrxVAQ' @ 54 : 1 .. '!items!zmaDCSQmU4IrxVAQ' @ 0 : 0; will stop at (end)
