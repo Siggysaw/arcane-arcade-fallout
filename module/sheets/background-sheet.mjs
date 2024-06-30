@@ -45,9 +45,16 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
     context.system = itemData.system
     context.flags = itemData.flags
 
-    context.races = itemData.system.races
+    context.races = {
+      allRaces: {
+        id: 'allRaces',
+        label: 'All Races',
+        grants: [],
+      },
+      ...itemData.system.races,
+    }
 
-    if (!Object.keys(this.detailsState).length) {
+    if (Object.keys(this.detailsState).length === 1) {
       for (let race in context.races) {
         this.detailsState[race] = true
       }

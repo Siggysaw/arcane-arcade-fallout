@@ -397,7 +397,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
         case 'background':
           return new Dialog({
             title: `Delete background ${item.name}`,
-            content: 'Delete items granted by background as well?',
+            content: 'Delete starting equipment from background as well?',
             buttons: {
               close: {
                 icon: '<i class="fas fa-times"></i>',
@@ -509,11 +509,16 @@ export class FalloutZeroActorSheet extends ActorSheet {
    */
   async _onDropItemCreateBackgroundGrants(itemData) {
     const race = this.actor.getRaceType()
+    const itemsToGrant = [
+      ...itemData.system.races['allRaces'].grants,
+      ...itemData.system.races[race].grants,
+    ]
     const createdIds = await Promise.all(
-      itemData.system.races[race].grants.map(async (grant) => {
+      itemsToGrant.map(async (grant) => {
         const newItem = await fromUuid(grant.key)
         const itemClone = newItem.clone()
         const createdItems = await super._onDropItemCreate(itemClone)
+        await createdItems[0].update({ 'system.quantity': grant.quantity })
         return createdItems[0].id
       }),
     )
