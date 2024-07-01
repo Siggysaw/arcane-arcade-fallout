@@ -153,6 +153,8 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
       'foodAnddrink',
       'medicine',
       'chem',
+      'explosive',
+      'trait'
     ]
 
     const item = await fromUuid(dropData.uuid)

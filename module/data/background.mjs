@@ -3,6 +3,7 @@ export default class FalloutZeroBackground extends foundry.abstract.TypeDataMode
   static defineSchema() {
     const fields = foundry.data.fields
     const schema = {}
+    schema.description = new fields.HTMLField()
 
     function generateRaceSchema(id, label) {
       return new fields.SchemaField({

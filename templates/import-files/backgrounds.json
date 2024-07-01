@@ -3,22 +3,93 @@
   "type": "background",
   "img": "systems/arcane-arcade-fallout/assets/vaultboy/backgrounds-icon.png",
   "system": {
-    "skill1": {
-      "value": "{{skill1}}"
+    "description": "{{description}}",
+    "races": {
+      "allRaces": {
+        "id": "allRaces",
+        "label": "All Races",
+        "grants": []
+      },
+      "human": {
+        "id": "human",
+        "label": "Human",
+        "grants": []
+      },
+      "ghoul": {
+        "id": "ghoul",
+        "label": "Ghoul",
+        "grants": []
+      },
+      "superMutant": {
+        "id": "superMutant",
+        "label": "Super Mutant",
+        "grants": []
+      },
+      "gen2Synth": {
+        "id": "gen2Synth",
+        "label": "Gen-2 Synth",
+        "grants": []
+      },
+      "robot": {
+        "id": "robot",
+        "label": "Robot",
+        "grants": []
+      },
+      "custom": {
+        "id": "custom",
+        "label": "Custom",
+        "grants": []
+      },
+      "description": "{{description}}"
     },
-    "skill2": {
-      "value": "{{skill2}}"
-    },
-    "skill3": {
-      "value": "{{skill3}}"
-    },
-    "description": "{{description}}"
+    "grantedItems": []
   },
-  "effects": [],
-  "folder": null,
-  "flags": {
-  },
-  "_stats": {
-    "systemId": "arcane-arcade-fallout"
-  }
+  "effects": [
+    {
+      "name": "Starter Skills",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "img": "icons/svg/aura.svg",
+      "_id": "8BqMMNewRwoWJ2Sp",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.{{skill1}}.modifiers",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.skills.{{skill2}}.modifiers",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.skills.{{skill3}}.modifiers",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.startingSkillpoints",
+          "mode": 3,
+          "value": "0",
+          "priority": null
+        }
+      ],
+      "description": "{{description}}",
+      "tint": "#ffffff",
+      "transfer": true
+    }
+  ]
 }

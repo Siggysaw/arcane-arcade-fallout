@@ -34,6 +34,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         ...requiredInteger,
         initial: 0,
       }),
+      modifiers: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
     })
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0 })
@@ -98,6 +102,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.abilities[key].mod = Math.floor(this.abilities[key].value - 5)
     }
 
+
+
     // Loop through skill scores, and add their modifiers to our sheet output.
     for (const key in this.skills) {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
@@ -113,7 +119,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.penalties.radiation.value +
       this.penalties.fatigue.value
     this.passiveSense = 12 + this.abilities['per'].mod
-    this.carryLoad.max = this.abilities['str'].value * 10
+    this.carryLoad.modifiers = this.abilities['str'].value * 10
 
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     if (this.luckmod < 0) {

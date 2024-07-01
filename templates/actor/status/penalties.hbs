@@ -94,8 +94,8 @@
         <td class="status-info-label rollable fakebutton"
             data-rollable
             data-roll="d20-{{ penaltyTotal }}"
-            data-label="Radiation DC Check: Roll over {{#Sum system.radiationDC.base system.radiationDC.modifiers}}{{/Sum}} to succeed"
-            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{#Sum system.radiationDC.base system.radiationDC.modifiers}}{{/Sum}} to succeed. On Fail gain level of Radiation">
+            data-label="Radiation DC Check: Roll over {{system.radiationDC.value}} to succeed"
+            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{system.radiationDC.value}} to succeed. On Fail gain level of Radiation}}">
             {{#Sum system.radiationDC.modifiers system.radiationDC.base}}{{/Sum}}
         </td>
         <td class="status-info-value">
