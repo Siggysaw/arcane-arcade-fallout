@@ -54,6 +54,7 @@ Hooks.once('init', function () {
     meleeWeapon: models.FalloutZeroMeleeWeapon,
     background: models.FalloutZeroBackground,
     race: models.FalloutZeroRace,
+    armor: models.FalloutZeroArmor,
     armorUpgrade: models.FalloutZeroArmorUpgrade,
     wepaonUpgrade: models.FalloutZeroWeaponUpgrade,
   }

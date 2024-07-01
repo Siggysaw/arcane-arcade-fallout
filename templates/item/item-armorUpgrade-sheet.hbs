@@ -25,7 +25,7 @@
             <input name="system.requirement" type="text" value="{{ system.requirement }}" placeholder="Requirement" />
           </td>
           <td>
-            <input type="number" name="system.cost" value="{{ system.cost }}" />
+            <input type="number" name="system.baseCost" value="{{ system.baseCost }}" />
           </td>
         </tr>
       </table>
@@ -40,21 +40,26 @@
       <td>DT</td>
       <td>Rank</td>
       <td>Load</td>
+      <td>Slot</td>
       <td>STR Req.</td>
     </tr>
     <tr>
       <td>
-          <input type="number" name="system.armorClass" value="{{ system.armorClass }}" />
+        <input type="number" name="system.armorClass" value="{{ system.armorClass }}" />
       </td>
       <td>
-          <input type="number" name="system.damageThreshold" value="{{ system.damageThreshold }}" />
+        <input type="number" name="system.damageThreshold" value="{{ system.damageThreshold }}" />
       </td>
       <td>
-          <input type="number" name="system.rank" value="{{ system.rank }}" />
+        <input type="number" name="system.rank" value="{{ system.rank }}" />
       </td>
-      <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
       <td>
-          <input type="number" name="system.strReq" value="{{ system.strReq }}" />
+        <input type="number" name="system.load" value="{{ system.load }}" />
+      </td>
+      <td>
+        <input type="number" name="system.slots" value="{{ system.slots }}" /></td>
+      <td>
+        <input type="number" name="system.strReq" value="{{ system.strReq }}" />
       </td>
     </tr>
   </table>

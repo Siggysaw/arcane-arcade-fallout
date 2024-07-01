@@ -1,5 +1,6 @@
 import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
+import FalloutZeroArmor from '../data/armor.mjs'
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -315,10 +316,10 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Equip or unequip item
     html.on('click', '[data-equip]', (ev) => {
-      const itemId = ev.currentTarget.dataset.itemId
-      const item = this.actor.items.get(itemId)
-      item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-      item.sheet.changeEquipStatus(item)
+      const itemId = ev.currentTarget.dataset.itemId;
+      const item = this.actor.items.get(itemId);
+      item.update({'system.itemEquipped' : !item.system.itemEquipped})
+      FalloutZeroArmor.prototype.changeEquipStatus(item);
     })
 
     // handles weapon reload
@@ -391,7 +392,7 @@ export class FalloutZeroActorSheet extends ActorSheet {
           break
         case 'armor':
           if (item.system.itemEquipped) {
-            item.sheet.unequipItemStats(item)
+            FalloutZeroArmor.prototype.unequipItemStats(item)
           }
           break
         case 'background':
