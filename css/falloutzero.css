@@ -429,7 +429,9 @@ details > summary {
   letter-spacing: 0rem;
 }
 .window-app .window-content div .fakebutton,
-.window-app .window-content button {
+.window-app .window-content button,
+.window-app .window-content select,
+.window-app .window-content option {
   background: #222;
 }
 .sheet.journal-entry .journal-entry-content,
