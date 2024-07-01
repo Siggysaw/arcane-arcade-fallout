@@ -10,19 +10,18 @@
             {{#each races as |item id|}}
             <div data-item-id="{{ item._id }}">
                 <div class="item flexrow"
-                        data-item-id="{{ item._id }}">
+                     data-item-id="{{ item._id }}">
                     <div class="item-controls">
-                        <a
-                            data-edit
-                            data-item-id="{{ item._id }}"
-                            class="item-control allcaps"
-                            title="{{localize 'DOCUMENT.Update' type='item'}}">
+                        <a data-edit
+                           data-item-id="{{ item._id }}"
+                           class="item-control allcaps"
+                           title="{{localize 'DOCUMENT.Update' type='item'}}">
                             {{ item.name }}
                         </a>
                         <a style="float: right; margin-right: 10px"
-                            class="item-control item-delete"
-                            data-item-id="{{ item._id }}"
-                            title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                           class="item-control item-delete"
+                           data-item-id="{{ item._id }}"
+                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
@@ -37,18 +36,18 @@
             {{#each backgrounds as |item id|}}
             <div data-item-id="{{ item._id }}">
                 <div class="item flexrow"
-                    data-item-id="{{ item._id }}">
+                     data-item-id="{{ item._id }}">
                     <div class="item-controls">
                         <a data-edit
-                            data-item-id="{{ item._id }}"
-                            class="item-control allcaps"
-                            title="{{localize 'DOCUMENT.Update' type='item'}}">
+                           data-item-id="{{ item._id }}"
+                           class="item-control allcaps"
+                           title="{{localize 'DOCUMENT.Update' type='item'}}">
                             {{ item.name }}
                         </a>
                         <a style="float: right; margin-right: 10px"
-                            class="item-control item-delete"
-                            data-item-id="{{ item._id }}"
-                            title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                           class="item-control item-delete"
+                           data-item-id="{{ item._id }}"
+                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
@@ -67,34 +66,19 @@
         <td class="bio-label"><span class="label">XP:</span></td>
         <td>
             <input style="width:50%" id="xp" type="number" name="system.xp" value="{{ xp }}" />
-            <div
-                class="fakebutton leveledUp"
-                {{#GreaterThan xp 1000}} data-leveledup {{/GreaterThan}}
-                style="width:50%;float:right;{{#LesserThan xp 1000}}opacity:25%;{{/LesserThan}}"
-            >
+            <div class="fakebutton leveledUp"
+                 {{#GreaterThan xp 1000}} data-leveledup {{/GreaterThan}}
+                 style="width:50%;float:right;{{#LesserThan xp 1000}}opacity:25%;{{/LesserThan}}">
                 Level Up!
             </div>
         </td>
     </tr>
     <td>
-        <img
-            title="Carry Load"
-            style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
-            src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png"
-        />
+        <img title="Carry Load"
+             style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
+             src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png" />
     </td>
-    <td style="vertical-align: middle" class="statusnum">
-        <input
-            type="number"
-            name="system.carryLoad.value"
-            value="{{ carryLoad.value }}"
-        />
-        /
-        <input
-            class="statusnum"
-            type="number"
-            name="system.carryLoad.max"
-            value="{{ carryLoad.max }}"
-        />
+    <td style="vertical-align: middle;text-align:left;" class="statusnum">
+        {{ carryLoad.value }} / {{#Sum carryLoad.max carryLoad.modifiers}}{{/Sum}}
     </td>
 </table>
