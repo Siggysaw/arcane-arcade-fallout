@@ -107,6 +107,15 @@ Handlebars.registerHelper('GM', function (options) {
   return options.inverse(this)
 })
 
+// If Character is a NPC
+Handlebars.registerHelper('NPC', function (actorType, options) {
+  console.log(actorType)
+  if (actorType == "npc") {
+    return options.fn(this)
+  }
+  return options.inverse(this)
+})
+
 // Greater Than or Equal
 Handlebars.registerHelper('GreaterThan', function (v1, v2, options) {
   if (v1 >= v2) {

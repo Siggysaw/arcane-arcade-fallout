@@ -97,9 +97,29 @@
               </td>
             </tr>
             <tr>
-              <td>0 - {{ item.system.range.short }}ft</td>
+              {{#NPC ../actor.type}}
+              <td>0 - <input
+                  id="range-form"
+                  type="number"
+                  name="system.range.short"
+                  style="max-width:35px"
+                  value="{{ item.system.range.short }}"
+                />ft</td>
               <td>{{ item.system.range.short }} ft - {{ system.range.long }}ft</td>
-              <td>{{ system.range.long }}ft+</td>
+              <td>
+                <input
+                  id="range-form"
+                  type="number"
+                  name="system.range.long"
+                  style="max-width:35px"
+                  value="{{ item.system.range.long }}"
+                />ft+ 
+              </td>
+              {{else}}
+                <td>0 - {{ item.system.range.short }}ft</td>
+                <td>{{ item.system.range.short }} ft - {{ system.range.long }}ft</td>
+                <td>{{ system.range.long }}ft+</td>
+              {{/NPC}}
             </tr>
           </table>
           {{#GM}}

@@ -274,7 +274,6 @@ export class FalloutZeroActor extends Actor {
     const weapon = this.items.get(weaponId)
     const apCost = weapon.system.apCost
     const newAP = Number(currentAp) - Number(apCost)
-
     // if action would reduce AP below 0
     if (newAP < 0) {
       ui.notifications.warn(`Not enough AP for action`)
@@ -307,10 +306,12 @@ export class FalloutZeroActor extends Actor {
 
     // roll to hit
     const dice = hasDisadvantage ? '2d20kl' : 'd20'
-
-    const skillBonusValue =
+    let skillBonusValue =
       this.system.skills[weapon.system.skillBonus].base +
       this.system.skills[weapon.system.skillBonus].modifiers
+    if (this.type == "npc" ){
+      skillBonusValue = this.system.skills[weapon.system.skillBonus].value
+    }
     const abilityMod = this.system.abilities[weapon.system.abilityMod].mod
     const decayValue = (weapon.system.decay - 10) * -1
     let roll = new Roll(
@@ -321,10 +322,6 @@ export class FalloutZeroActor extends Actor {
       speaker: ChatMessage.getSpeaker({ actor: this }),
       flavor: `BOOM! Attack with a ${weapon.name}`,
       rollMode: game.settings.get('core', 'rollMode'),
-    })
-
-    console.log('ACTOR UPDATE', {
-      'system.actionPoints.value': newAP,
     })
 
     return roll
@@ -446,7 +443,6 @@ export class FalloutZeroActor extends Actor {
     let dialogContent = ``
     let mats = []
     let qty = 1
-    console.log(game.packs)
     let itemName = this.formatCompendiumItem(
       'junk',
       item.name,
@@ -475,7 +471,6 @@ export class FalloutZeroActor extends Actor {
         dialogContent += `<br> How many ${itemName} do you want to convert? <br><br>
         <select style="padding-left:20px" name="matQtyOpt" id = "matQtyOpt">`
         while (i < initialQty + 1) {
-          console.log(i)
           dialogContent += `<option value='${i}'>${i}</option>`
           qtyOptions.push(i)
           i++
@@ -506,7 +501,6 @@ export class FalloutZeroActor extends Actor {
         render: (html) => {
           html.find('[name=matQtyOpt]').change(function () {
             qty = this.value
-            console.log(qty)
           })
         },
       },
@@ -972,7 +966,6 @@ export class FalloutZeroActor extends Actor {
             (await this.iterateLoot(aMonsterLoot.loot[1].dc, totLckMod))
         }
       } else {
-        console.log('YES')
         let inventoryLoot = this.collections.items.contents
         myConcatenatedLoot = npcName + ` drops: <br><br>`
         let compendium = ``
