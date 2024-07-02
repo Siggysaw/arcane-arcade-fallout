@@ -182,8 +182,13 @@
     <nav class="sheet-tabs tabs" data-group="primary">
       {{!-- Default tab is specified in actor-sheet.mjs --}}
       <a class="item" data-tab="status">STATUS</a>
+      <a class="item" data-tab="perks">PERKS</a>
       <a class="item" data-tab="items">COMBAT</a>
-      <a class="item" data-tab="backpack">BACKPACK</a>	  
+      <a class="item" data-tab="medicine">AID</a>
+      <a class="item" data-tab="backpack">BACKPACK</a>
+      <a class="item" data-tab="crafting">CRAFTING</a>
+      <a class="item" data-tab="notes">NOTES</a>
+      {{#GM}}<a class="item" data-tab="effects">EFFECTS</a>{{/GM}}
     </nav>
 
     {{!-- Sheet Body --}}
@@ -249,10 +254,37 @@
       <div class="tab items" data-group="primary" data-tab="items">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
       </div>
+
+      {{!-- Perks Tab --}}
+      <div class="tab perks" data-group="primary" data-tab="perks">
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
+      </div>
+
+      {{!-- Medicine Tab --}}
+      <div class="tab medicine" data-group="primary" data-tab="medicine">
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
+      </div>
+
       {{!-- Backpack Tab --}}
       <div class="tab backpack" data-group="primary" data-tab="backpack">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
-      </div>	  
+      </div>
+
+      {{!-- Crafting Tab --}}
+      <div class="tab crafting" data-group="primary" data-tab="crafting">
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs"}}
+      </div>
+      {{!-- Notes Tab --}}
+      <div class="tab notes" data-group="primary" data-tab="notes">
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-notes.hbs"}}
+      </div>
+
+      {{#GM}}
+      {{!-- Effects Tab --}}
+      <div class="tab effects" data-group="primary" data-tab="effects">
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs"}}
+      </div>
+      {{/GM}}	  
     </section>
   </div>
 </form>
