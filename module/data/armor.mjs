@@ -13,6 +13,7 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
       }),
     })
     schema.itemEquipped = new fields.BooleanField({initial: false})
+    schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
     schema.img = new fields.StringField({
       initial: 'systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp',
     })
@@ -24,6 +25,7 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
         initial: 0,
       }),
     })
+
 
     schema.damageThreshold = new fields.SchemaField({
       value: new fields.NumberField({

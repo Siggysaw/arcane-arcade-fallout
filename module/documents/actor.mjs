@@ -256,7 +256,10 @@ export class FalloutZeroActor extends Actor {
     }
   }
   apUsed(weaponId) {
-    const currentAp = this.actionPoints.value
+    console.log(this.system.actionPoints.value)
+    try { currentAp = this.actionPoints.value }
+    //NPCs have it under system for some reason.
+    catch {currentAp = this.system.actionPoints.value} 
     const weapon = this.items.get(weaponId)
     const apCost = weapon.system.apCost
     const newAP = Number(currentAp) - Number(apCost)
@@ -312,7 +315,11 @@ export class FalloutZeroActor extends Actor {
     if (this.type == "npc" ){
       skillBonusValue = this.system.skills[weapon.system.skillBonus].value
     }
-    const abilityMod = this.system.abilities[weapon.system.abilityMod].mod
+    let abilityMod = 0
+    if(weapon.system.abilityMod != ""){
+      abilityMod = this.system.abilities[weapon.system.abilityMod].mod
+    }
+    
     const decayValue = (weapon.system.decay - 10) * -1
     let roll = new Roll(
       `${dice} + ${skillBonusValue} + ${abilityMod} - ${this.system.penaltyTotal} - ${decayValue} + ${this.system.luckmod}`,
