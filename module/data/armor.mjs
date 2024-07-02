@@ -12,6 +12,7 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
         initial: 0,
       }),
     })
+    schema.itemEquipped = new fields.BooleanField({initial: false})
     schema.img = new fields.StringField({
       initial: 'systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp',
     })
@@ -204,7 +205,7 @@ async findUpgradeKey(armor, upgradeName){
 //Clicking + or - changes rank of upgrade
 async changeRank(myItem,upgradeId,nextRank,removeCost){
   const pack = await game.packs.find(p => p.metadata.name == "upgrades")
-  let wasEquipped = myItem.isEquipped
+  let wasEquipped = myItem.system.itemEquipped
   if(pack){
     let myUpgrade = await pack.getDocument(upgradeId);
     let key1 = await this.findUpgradeKey(myItem,myUpgrade.name)
@@ -245,6 +246,7 @@ async deleteWholeUpgrade (armor,myId){
     const myUpgrade = await pack.getDocument(myId)
     let keys = Object.keys(armor.system.upgrades)
     let key = 'Upgrade1';
+    let wasEquipped = armor.system.itemEquipped
     for (var k of keys){
       if (armor.system.upgrades[k].name == myUpgrade.name){
         key = k
@@ -263,8 +265,10 @@ async deleteWholeUpgrade (armor,myId){
     Object.assign(myData,{[myPath]:0})
     myPath = 'system.updates.' + key + '.description'
     Object.assign(myData,{[myPath]:myValue})
+    if (wasEquipped){await this.unequipItemStats(armor)}
     await armor.update(myData)
     await this.removeUpgrade(armor,myUpgrade,true,key,true)
+    if (wasEquipped){await this.equipItemStats(armor)}
   } 
   else
   { 
@@ -335,7 +339,8 @@ async checkUpgrade(armor,pack, id){
   let preReq = pack.find(u => u.name == myUpgrade.system.requirement)
   let myKey,comment
   let myData = {}
-  let wasEquipped = armor.isEquipped
+  let wasEquipped = armor.system.itemEquipped
+  console.log(wasEquipped)
   let oldUpgrade = myUpgrade
   let valid = false;
   if (myUpgrade.system.requirement == "None") {
@@ -359,13 +364,14 @@ async checkUpgrade(armor,pack, id){
       if (armor.system.upgrades[key].id == "" || armor.system.upgrades[key].name == oldUpgrade.name){
         //unequip
         if (wasEquipped){await this.unequipItemStats(armor)}
-        //add and remove upgrades
+
+        //Remove upgrades if needed
         if (oldUpgrade.name != myUpgrade.name){
           await this.removeUpgrade(armor,oldUpgrade,false,key)
-          await this.addUpgrade(armor,myUpgrade);
-        } else {
-          await this.addUpgrade(armor,myUpgrade);
         }
+        //add upgrade
+        await this.addUpgrade(armor,myUpgrade);
+
         //equip
         if (wasEquipped){await this.equipItemStats(armor)}
         myKey = 'system.upgrades.' + key + '.id';
@@ -403,12 +409,12 @@ async seeUpgrade (id){
     const myActor = myItem.parent;
     let AC = myItem.system.armorClass.value;
     let DT = myItem.parent.system.damageThreshold.value + myItem.system.damageThreshold.value;
-    
     const everyMod = { system :
       { 'armorClass.min' : myItem.parent.system.armorClass.value,
         'armorClass.value' : AC,
         'damageThreshold.value' : DT}
     };
+    console.log(everyMod)
     myActor.update(everyMod)
   }
 
@@ -444,7 +450,7 @@ async seeUpgrade (id){
 
   //Removes modifiers related to Armor
   async unequipItemStats (myItem){
-    let AC = Math.ceil(myItem.parent.system.armorClass.min, 10) //by default will be 10, but we'll need that to be BASE in case there are other modifiers
+    let AC = Math.max(myItem.parent.system.armorClass.min, 10) //by default will be 10, but we'll need that to be BASE in case there are other modifiers
     let DT = myItem.parent.system.damageThreshold.value - myItem.system.damageThreshold.value;
     const everyMod = { system :
       {'armorClass.value' : AC,
