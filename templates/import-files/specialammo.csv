@@ -1,0 +1,62 @@
+﻿title,cost,properties,load,type
+SettingFields,1,Some Stuff,0.1,Not a Number
+.308 Explosive,60,Each creature and object within 5 feet of the target takes 3d6 explosive damage. The target falls prone unless their Strength ability score is greater than 10.,0.1,.308
+.308 FMJ,30,"The weapon’s damage is increased by 2. If this damage brings a creature to 0 HP, the attack also targets the next creature behind them in a line.",0.1,.308
+.308 Hollow Point,40,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,.308
+.308 JSP,20,The weapon gains Breakable and its damage is increased by 3.,0.1,.308
+.50 Explosive,120,Each creature and object within 5 feet of the target takes 3d6 explosive damage. The target falls prone unless their Strength ability score is greater than 10.,0.1,.50
+.50 Incendiary,80,The weapon gains Incendiary,0.1,.50
+.50 Match,40,"The weapon’s damage is increased by 5, the short range modifier is reduced by 2.",0.1,.50
+.357 FMJ,15,"The weapon’s damage is increased by 2. If this damage brings a creature to 0 HP, the attack also targets the next creature behind them in a line.",0.1,.357
+.357 Hollow Point,20,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,.357
+.357 JFP,15,The weapon gains Destructive.,0.1,.357
+.44 Hollow Point,32,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,.44
+.45 Hollow Point,8,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,.44
+.45-70 Hollow Point,48,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,.45-70
+10mm FMJ,12,"The weapon’s damage is increased by 2. If this damage brings a creature to 0 HP, the attack also targets the next creature behind them in a line.",0.1,10mm
+10mm Hollow Point,16,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,10mm
+10mm Rubber,2,"The weapon’s damage is instead 1d4+2 and you do not add your agility modifier, if this damage dealt to a target creature’s hit points, they take one level of fatigue. Additionally, if a rubber bullet brings a creature to 0 hit points, they automatically heal 1 point unless the attack was a targeted attack to the head or eyes.",0.1,10mm
+12 guage Cap Shot,20,The weapon gains the Destructive and Mangle properties. The weapon’s damage ignores 2 points of DT.,0.1,12 guage
+12 guage Dragon's Breath,10,The weapon deals half as much damage but gains Incendiary.,0.1,12 guage
+12 guage Flechette,10,The weapon’s damage total is reduced by 1 but ignores up to 6 points of DT.,0.1,12 guage
+12 guage Magnum,10,"The weapon’s damage is increased by 3, ignores 3 points of DT, and its range modifiers are each increased by 2. However, after every second attack; the weapon gains a level of decay.",0.1,12 guage
+12 guage Slug,20,"The weapon’s range modifiers are each tripled and it gains the Accurate and Destructive properties. However, it loses its Spread and Powerful properties.",0.1,12 guage
+12 guage Pulse Slug,30,"The weapon gains the same effects as the Slug ammunition type. Additionally, when dealing damage to a Robot or a creature in Power Armor; the damage is doubled.",0.1,12 guage
+12.7mm FMJ,36,"The weapon’s damage is increased by 2. If this damage brings a creature to 0 HP, the attack also targets the next creature behind them in a line.",0.1,12.7mm
+12.7mm Hollow Point,48,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,12.7mm
+12.7mm Rubber,6,"The weapon’s damage is instead 1d4+2 and you do not add your agility modifier, if this damage dealt to a target creature’s hit points, they take one level of fatigue. Additionally, if a rubber bullet brings a creature to 0 hit points, they automatically heal 1 point unless the attack was a targeted attack to the head or eyes.",0.1,12.7mm
+20 guage Magnum,6,"The weapon’s damage is increased by 3, ignores 3 points of DT, and its range modifiers are each increased by 2. However, after every second attack; the weapon gains a level of decay.",0.1,20 guage
+20 guage Slug,8,"The weapon’s range modifiers are each tripled and it gains the Accurate and Destructive properties. However, it loses its Spread and Powerful properties.",0.1,20 guage
+20 guage Pulse Slug,12,"The weapon gains the same effects as the Slug ammunition type. Additionally, when dealing damage to a Robot or a creature in Power Armor; the damage is doubled.",0.1,20 guage
+5.56mm  Hollow Point,8,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,5.56mm
+5.56mm  Match,4,"The weapon’s damage is increased by 5, the short range modifier is reduced by 2.",0.1,5.56mm
+5mm FMJ,15,"The weapon’s damage is increased by 2. If this damage brings a creature to 0 HP, the attack also targets the next creature behind them in a line.",0.1,5mm
+5mm Hollow Point,20,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,5mm
+5mm JSP,10,The weapon gains Breakable and its damage is increased by 3.,0.1,5mm
+5mm Rubber,2,"The weapon’s damage is instead 1d4+2 and you do not add your agility modifier, if this damage dealt to a target creature’s hit points, they take one level of fatigue. Additionally, if a rubber bullet brings a creature to 0 hit points, they automatically heal 1 point unless the attack was a targeted attack to the head or eyes.",0.1,5mm
+9mm FMJ,6,"The weapon’s damage is increased by 2. If this damage brings a creature to 0 HP, the attack also targets the next creature behind them in a line.",0.1,9mm
+9mm Hollow Point,8,"If the weapon deals damage to a target creature's hit points, it deals extra damage equal to its critical hit damage. If the damage is subtracted by the target’s DT, the damage gains no critical hit bonus and is halved.",0.1,9mm
+9mm JSP,4,The weapon gains Breakable and its damage is increased by 3.,0.1,9mm
+9mm Rubber,1,"The weapon’s damage is instead 1d4+2 and you do not add your agility modifier, if this damage dealt to a target creature’s hit points, they take one level of fatigue. Additionally, if a rubber bullet brings a creature to 0 hit points, they automatically heal 1 point unless the attack was a targeted attack to the head or eyes.",0.1,9mm
+Energy Cell Bulk,15,The weapon’s damage is reduced by 3. The weapon gains Durable.,0.1,Energy Cell
+Energy Cell Optimized,60,The weapon’s damage is increased by 1 and ignores 1 point of DT.,0.1,Energy Cell
+Energy Cell Overcharged,90,The weapon’s damage is increased by 2 and ignores 2 points of DT. The weapon gains Breakable.,0.1,Energy Cell
+Energy Cell Max Charge,150,The weapon’s damage is increased by 4 and ignores 4 points of DT. The weapon gains Breakable and after every third attack; the weapon gains a level of decay,0.1,Energy Cell
+Microfusion Cell Bulk,17,The weapon’s damage is reduced by 3. The weapon gains Durable.,0.1,Microfusion Cell
+Microfusion Cell Optimized,70,The weapon’s damage is increased by 1 and ignores 1 point of DT.,0.1,Microfusion Cell
+Microfusion Cell Overcharged,115,The weapon’s damage is increased by 2 and ignores 2 points of DT. The weapon gains Breakable.,0.1,Microfusion Cell
+Microfusion Cell Max Charge,175,The weapon’s damage is increased by 4 and ignores 4 points of DT. The weapon gains Breakable and after every third attack; the weapon gains a level of decay,0.1,Microfusion Cell
+Missile Explosive,300,Each creature and object within 5 feet of the target takes 3d6 explosive damage. The target falls prone unless their Strength ability score is greater than 10.,0.1,Missile
+Missile Incendiary,200,The weapon gains Incendiary,0.1,Missile
+Syringer Stimpak Loader,25,"This syringe allows you to load it with a stimpak, the target gains the effects of the stimpak.",0.1,Syringe
+Syringer ChemLoader,25,"This syringe allows you to load it with a chem, the target gains the effects of the chem.",0.1,Syringe
+Syringer Radscorpion Venom,35,Target becomes poisoned for 3 turns and takes 1d6 poison damage at the start of each of their turns. ,0.1,Syringe
+Syringer Endangerol,40,Target’s DT is reduced by 3 for 1 minute.,0.1,Syringe
+Syringer Yellow Belly,50,Target becomes frightened for 3 rounds. (see page #),0.1,Syringe
+Syringer Berserk,55,Target spends all of its AP on its next turn to attack the nearest creature to it. ,0.1,Syringe
+Syringer Hemorrhage,75,Target gains one level of Bleeding.,0.1,Syringe
+Syringer Lock Joint,85,Target becomes slowed for 2 turns.,0.1,Syringe
+Syringer  Sclerosis,110,Target becomes Deafened for 3 rounds.,0.1,Syringe
+Syringer Myopic Serum,160,Target becomes Blinded for 3 rounds.,0.1,Syringe
+Syringer Mind Cloud,175,All creatures beyond 30 feet of the target creature become invisible to them for 1 minute.,0.1,Syringe
+Syringer Tranquilizer,500,"If the target’s endurance is a 4 or below, they fall unconscious for 1 hour. Otherwise, they become Dazed for their next two turns and fall unconscious for 1 hour at the end of their third turn. Creature’s dazed in this way can remove this condition and prevent falling unconscious by using any chem with the stimulant property.",0.1,Syringe

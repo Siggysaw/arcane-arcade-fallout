@@ -11,22 +11,5 @@
     "type": "{{type}}"
   },
   "effects": [],
-  "folder": null,
-  "flags": {
-    "core": {},
-    "exportSource": {
-      "world": "fallout-ttrpg",
-      "system": "arcane-arcade-fallout",
-      "coreVersion": "11.315",
-      "systemVersion": "1.0.0"
-    }
-  },
-  "_stats": {
-    "systemId": "arcane-arcade-fallout",
-    "systemVersion": "1.0.0",
-    "coreVersion": "11.315",
-    "createdTime": 1715545202005,
-    "modifiedTime": 1715545288910,
-    "lastModifiedBy": "gzYpjX3Fqlrk2eh5"
-  }
+  "folder": null
 }
