@@ -573,6 +573,9 @@ td,
   font-size: 10pt;
   letter-spacing: 0rem;
 }
+.sheet .status-info-value{
+    font-size:10pt;
+}
 .sheet. table .status-table {
   vertical-align: top;
 }

@@ -33,8 +33,10 @@
             skills=system.skills
       }}
     </td>
+      </tr>
+    <tr>
     {{#if explosives}}
-    <td class="armorbox">
+    <td class="armorbox" colspan="999">
       <h3>Explosives</h3>
       {{>
             "systems/arcane-arcade-fallout/templates/actor/items/explosives.hbs"
@@ -43,7 +45,6 @@
             skills=system.skills
             penaltyTotal=penaltyTotal
       }}
-    </td>
     {{/if}}
   </tr>
 </table>

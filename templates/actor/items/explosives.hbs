@@ -7,151 +7,134 @@
   <table class="item-box">
     <tr>
       <td>
-        <details {{#if item.system.itemOpen }} open="true" {{/if}}>
-          <summary data-expandtoggle data-itemid="{{ item._id }}">
-            <p class="allcaps">{{ item.name }}</p>
-          </summary>
-          <table class="equipped-stats">
-            <tr>
-              <td>Cost</td>
-              <td>Load</td>
-              <td>Qty</td>
-            </tr>
-            <tr>
-              <td>{{ item.system.cost }}</td>
-              <td>{{ item.system.load }}</td>
-              <td>
-                <i
-                  style="padding: 3px"
-                  data-itemsubtraction
-                  data-item="{{ item._id }}"
-                  class="fas fa-minus-square"
-                ></i>
-                {{ item.system.quantity }}
-                <i
-                  style="padding: 3px"
-                  data-itemaddition
-                  data-item="{{ item._id }}"
-                  class="fas fa-plus-square"
-                ></i>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div
-                  class="fakebutton"
-                  class="resource-label"
-                  data-ap-used
-                  data-weapon-id="{{ item._id }}"
-                  class="resource-label"
-                >
-                  AP
-                </div>
-              </td>
-              <td>Range</td>
-              <td>
-                {{#GreaterThan ../skills.explosives.value item.armDC}}
-                Auto Succeeds ({{ item.armDC }})
-                {{else}}
-                <div
-                  class="fakebutton"
-                  class="rollable resource-label"
-                  data-rollable
-                  data-label="Attempt to Arm a {{ item.name }} They'll need to match or beat a {{
-                    item.armDC
-                  }}"
-                  data-roll="d20+ {{../skills.explosives.value}} - @penaltyTotal - 10"
-                  title="d20 + explosives({{../skills.explosives.value}}) - penalties({{../penaltyTotal}}) - Increased DV of 10"
-                />
-                ARM
-                {{/GreaterThan}}
-              </td>
-            </tr>
-          </table>
-          <table>
-            <tr>
-              <td>{{ item.apCost }}</td>
-              <td>{{ item.thrown }}</td>
-              <td>{{ item.armDC }}</td>
-            </tr>
-          </table>
+          <details {{#if item.system.itemOpen }} open="true" {{/if}}>
+              <summary data-expandtoggle data-itemid="{{ item._id }}">
+                  <p class="allcaps">{{ item.name }}</p>
+              </summary>
+              <table class="equipped-stats">
+                  <tr>
+                      <td>Cost</td>
+                      <td>Load</td>
+                      <td>Qty</td>
+                  </tr>
+                  <tr>
+                      <td>{{ item.system.cost }}</td>
+                      <td>{{ item.system.load }}</td>
+                      <td>
+                          <i style="padding: 3px"
+                             data-itemsubtraction
+                             data-item="{{ item._id }}"
+                             class="fas fa-minus-square"></i>
+                          {{ item.system.quantity }}
+                          <i style="padding: 3px"
+                             data-itemaddition
+                             data-item="{{ item._id }}"
+                             class="fas fa-plus-square"></i>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <div class="fakebutton"
+                               class="resource-label"
+                               data-ap-used
+                               data-weapon-id="{{ item._id }}"
+                               class="resource-label">
+                              AP
+                          </div>
+                      </td>
+                      <td>Range</td>
+                      <td rowspan="2">
+                          {{#GreaterThan ../skills.explosives.value item.system.armDC}}
+                          Auto Succeeds
+                          {{else}}
+                          {{#GreaterThan item.system.armDC 1}}
+                          <div class="rollable resource-label fakebutton"
+                               style="padding-top: 15px; padding-bottom: 15px"
+                               data-rollable
+                               data-label="Attempt to Arm a {{ item.name }} They'll need to match or beat a {{#Sum item.system.armDC 10}}{{/Sum}}"
+                               data-roll="d20+ {{../skills.explosives.value}}+@per.mod - @penaltyTotal"
+                               title="d20 + explosives({{../skills.explosives.value}}) - penalties({{../penaltyTotal}})" />
+                          ARM DC: {{#Sum item.system.armDC 10}}{{/Sum}}
+                          {{else}}
+                          Auto Succeeds
+                          {{/GreaterThan}}
+                          {{/GreaterThan}}
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>{{ item.system.apCost }}</td>
+                      <td>{{#GreaterThan item.system.thrown 1}}{{ item.system.thrown }}ft.{{else}}NA{{/GreaterThan}}</td>
+                  </tr>
+              </table>
 
-          <table class="equipped-stats">
-            <tr>
-              <td>AOE: {{ item.aoeRadius }}</td>
-            </tr>
-          </table>
-          <table class="equipped-stats">
-            <tr>
-              <td colspan="999">Damage Calculation</td>
-            </tr>
-            <tr>
-              <td style="width: 75px">DMG 1</td>
-              <td>Type</td>
-            </tr>
-            <tr>
-              <td>
-                <div
-                  class="fakebutton"
-                  class="rollable resource-label"
-                  data-rollable
-                  data-label="KABOOM! <span class='allcaps'>{{
+              <table class="equipped-stats">
+                  <tr>
+                      <td>
+                          <span class="condition" data-condition ="Area_of_Effect">AOE: {{ item.system.aoeRadius }}</span>
+                      </td>
+                  </tr>
+              </table>
+              <table class="equipped-stats">
+                  <tr>
+                      <td colspan="999">Damage Calculation</td>
+                  </tr>
+                  <tr>
+                      <td style="width: 75px">DMG 1</td>
+                      <td>Type</td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <div class="fakebutton"
+                               class="rollable resource-label"
+                               data-rollable
+                               data-label="KABOOM! <span class='allcaps'>{{
                     item.system.damageType1
                   }}</span> DMG from a {{ item.name }}"
-                  data-roll="{{ item.system.damage1 }}"
-                >
-                  {{ item.system.damage1 }}
-                </div>
-              </td>
-              <td class="allcaps">
-                {{ item.system.damageType1 }}
-              </td>
-            </tr>
-            {{#if item.system.damage2 }}
-          </table>
-          <table class="equipped-stats">
-            <tr>
-              <td style="width: 75px">DMG 2</td>
-              <td>Type</td>
-            </tr>
-            <td>
-              <div
-                class="fakebutton"
-                class="rollable resource-label"
-                data-rollable
-                data-label="KABOOM! <span class='allcaps'>{{
-                  item.system.damageType2
-                }}</span> DMG from a {{ item.name }}"
-                data-roll="{{ item.system.damage2 }}"
-              >
-                {{ item.system.damage2 }}
+                               data-roll="{{ item.system.damage1 }}">
+                              {{ item.system.damage1 }}
+                          </div>
+                      </td>
+                      <td class="allcaps">
+                          {{ item.system.damageType1 }}
+                      </td>
+                  </tr>
+                  {{#if item.system.damage2 }}
+              </table>
+              <table class="equipped-stats">
+                  <tr>
+                      <td style="width: 75px">DMG 2</td>
+                      <td>Type</td>
+                  </tr>
+                  <td>
+                      <div class="fakebutton"
+                           class="rollable resource-label"
+                           data-rollable
+                           data-label="KABOOM! <span class='allcaps'>{{item.system.damageType2}}</span> DMG from a {{ item.name }}"
+                           data-roll="{{ item.system.damage2 }}">
+                          {{ item.system.damage2 }}
+                      </div>
+                  </td>
+                  <td class="allcaps">
+                      {{ item.system.damageType2 }}
+                  </td>
+                  {{/if}}
+              </table>
+              <div class="item-controls">
+                  <a style="float: right; margin-right: 10px"
+                     class="item-control item-delete"
+                     data-item-id="{{ item._id }}"
+                     title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                      <i class="fas fa-trash"></i>
+                  </a>
+                  <a style="float: right; margin-right: 10px"
+                     data-edit
+                     data-item-id="{{ item._id }}"
+                     class="item-control"
+                     title="{{localize 'DOCUMENT.Update' type='item'}}">
+                      <i class="fas fa-edit"></i>
+                  </a>
               </div>
-            </td>
-            <td class="allcaps">
-              {{ item.system.damageType2 }}
-            </td>
-            {{/if}}
-          </table>
-          <div class="item-controls">
-            <a
-              style="float: right; margin-right: 10px"
-              class="item-control item-delete"
-              data-item-id="{{ item._id }}"
-              title="{{localize 'DOCUMENT.Delete' type='item'}}"
-            >
-              <i class="fas fa-trash"></i>
-            </a>
-            <a
-              style="float: right; margin-right: 10px"
-              data-edit
-              data-item-id="{{ item._id }}"
-              class="item-control"
-              title="{{localize 'DOCUMENT.Update' type='item'}}"
-            >
-              <i class="fas fa-edit"></i>
-            </a>
-          </div>
-        </details>
+          </details>
       </td>
     </tr>
   </table>

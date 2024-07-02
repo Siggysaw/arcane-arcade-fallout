@@ -133,7 +133,7 @@ Handlebars.registerHelper('LesserThan', function (v1, v2, options) {
 
 // Sum Of
 Handlebars.registerHelper('Sum', function (v1, v2) {
-  let sum = v1 + v2
+  let sum = Number(v1) + Number(v2)
   return sum
 })
 

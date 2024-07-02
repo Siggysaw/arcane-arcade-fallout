@@ -35,7 +35,7 @@ Points: {{#Sum startingSkillpoints skillPool}}{{/Sum}}
         data-skill="{{ skill.id }}"
         class="fas fa-minus-square fakebutton nobackground"
       ></i>
-      {{#Sum skill.modifiers skill.base}}{{/Sum}}
+      {{skill.value}}
       <i
         style="padding: 3px"
         data-skilladdition
