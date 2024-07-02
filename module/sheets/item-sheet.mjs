@@ -98,6 +98,28 @@ export class FalloutZeroItemSheet extends ItemSheet {
       }
     })
 
+    //Increase upgrade rank
+    html.on('click', '[upgradeRank]', (ev) => {
+      let currentRank = ev.currentTarget.getAttribute("name")
+      let upgradeID = ev.currentTarget.id
+      if (Number(currentRank) < 3) {
+        FalloutZeroArmor.prototype.changeRank(this.object, upgradeID, Number(currentRank)+1,false)
+      } else{
+        alert("Upgrade ranks end at 3.")
+      }
+    })
+
+    //Decrease upgrade rank
+    html.on('click', '[downgradeRank]', (ev) => {
+      let currentRank = ev.currentTarget.getAttribute("name")
+      let upgradeID = ev.currentTarget.id
+      if (Number(currentRank) > 1) {
+        FalloutZeroArmor.prototype.changeRank(this.object, upgradeID, Number(currentRank)-1,true)
+      } else{
+        FalloutZeroArmor.prototype.deleteWholeUpgrade (this.object,upgradeID)
+      }
+    })
+
     //Add Upgrade
     html.on('click', '[addUpgradeBtn]', (ev) => {
       var select = document.getElementById('upgradesSelector');
@@ -128,9 +150,16 @@ export class FalloutZeroItemSheet extends ItemSheet {
       });
     });
 
+    //Remove upgrade button
     html.on('click', '[deleteUpgrade]', (ev) => {
       let myId = ev.currentTarget.id.replace("delete","")
         FalloutZeroArmor.prototype.deleteWholeUpgrade (this.object,myId)
+    })
+
+    //Click to see Upgrade from compendium
+    html.on('click', '[seeUpgrade]', (ev) => {
+      let myId = ev.currentTarget.id
+        FalloutZeroArmor.prototype.seeUpgrade (myId)
     })
 
     //On equip, calculate AC and other things that improve character's stats

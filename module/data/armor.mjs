@@ -53,40 +53,76 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
     schema.upgrades = new fields.SchemaField({
       upgrade1 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade2 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade3 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade4 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade5 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade6 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade7 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade8 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade9 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade10 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade11 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})}),
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
       upgrade12 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,})})
+        id : new fields.StringField({initial: ``,}),
+        description : new fields.StringField({initial: ``,}),
+        rank : new fields.NumberField({initial: 1,}),
+        img : new fields.StringField({initial: ``,})}),
     })
     return schema
   }
@@ -100,15 +136,13 @@ async getMyItem (pack, id){
   var cost = document.getElementById('upgradeCost');
   var details = document.getElementById('upgradeDetails');
   let myItem = await pack.getDocument(id);
-  cost.innerHTML = myItem.system.baseCost
-  details.innerHTML = `<a class="content-link" style="color:black" draggable="true" data-uuid="${myItem.uuid}"
-  data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="Click for details">
+  cost.innerHTML = `  (${myItem.system.baseCost} caps)` 
+  details.innerHTML = `
+    <a class="content-link" style="color:black" draggable="true" data-uuid="${myItem.uuid}"
+      data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="Click for details">
     <i class="fas fa-suitcase">
     </i>${myItem.name}
-  </a>
-  <a class="item-control upgrade-delete" deleteUpgrade title="Delete Upgrade" id="delete${myItem.name}>
-    <i class="fas fa-trash"></i>
-  </a>`
+    </a>`
 }
 
 async addUpgrade(myItem,myUpgrade){
@@ -117,6 +151,15 @@ async addUpgrade(myItem,myUpgrade){
   //Upgrade name and ID
   let myPath = ""
   let myValue = ""
+  //If first upgrade, then set base values
+  if (myItem.system.baseCost.base == 0){
+    Object.assign(myData,{'system.baseCost.base' : myItem.system.baseCost.value});
+    Object.assign(myData,{'system.armorClass.base' : myItem.system.armorClass.value});
+    Object.assign(myData,{'system.damageThreshold.base' : myItem.system.damageThreshold.value});
+    Object.assign(myData,{'system.slots.base' : myItem.system.slots.value});
+    Object.assign(myData,{'system.strReq.base' : myItem.system.strReq.value});
+    Object.assign(myData,{'system.baseLoad' : myItem.system.load});
+    }
   //Upgrade values (Cost and load are slightly different)
   for (var val of myValues){
     if (myUpgrade.system[val] != 0){
@@ -143,6 +186,57 @@ async addUpgrade(myItem,myUpgrade){
   await myItem.update(myData)
   //Active Effects
   await myItem.createEmbeddedDocuments('ActiveEffect',myUpgrade.effects._source);
+  document.getElementById('upgradesTab').click();
+}
+
+async findUpgradeKey(armor, upgradeName){
+  let keys = Object.keys(armor.system.upgrades)
+  let key = 'Upgrade1';
+  for (var k of keys){
+    if (armor.system.upgrades[k].name == upgradeName){
+      key = k
+      break;
+    }
+  }
+  return key
+}
+
+//Clicking + or - changes rank of upgrade
+async changeRank(myItem,upgradeId,nextRank,removeCost){
+  const pack = await game.packs.find(p => p.metadata.name == "upgrades")
+  let wasEquipped = myItem.isEquipped
+  if(pack){
+    let myUpgrade = await pack.getDocument(upgradeId);
+    let key1 = await this.findUpgradeKey(myItem,myUpgrade.name)
+    let newUpgradeName = myUpgrade.name.replace(myUpgrade.name.slice(-1),nextRank)
+    let newUpgrade = pack.tree.entries.find(u => u.name == newUpgradeName)
+    if(newUpgrade){
+      newUpgrade = await pack.getDocument(newUpgrade._id);
+      if (wasEquipped){await this.unequipItemStats(myItem)}
+      await this.removeUpgrade(myItem,myUpgrade,removeCost,key1)
+      let myData = {}
+      let myKey = 'system.upgrades.' + key1 + '.id';
+      Object.assign(myData, {[myKey] : newUpgrade._id});
+      myKey = 'system.upgrades.' + key1 + '.name';
+      Object.assign(myData, {[myKey] : newUpgrade.name});
+      myKey = 'system.upgrades.' + key1 + '.img';
+      Object.assign(myData, {[myKey] : newUpgrade.system.img});
+      myKey = 'system.upgrades.' + key1 + '.rank';
+      Object.assign(myData, {[myKey] : newUpgrade.system.rank});
+      myKey = 'system.upgrades.' + key1 + '.description';
+      let strippedString = newUpgrade.system.description.replace(/(<([^>]+)>)/gi, "");
+      Object.assign(myData, {[myKey] : strippedString});
+      myKey = 'systems.slots.value'
+      Object.assign(myData, {[myKey] : myItem.system.slots.value + 1});
+      await myItem.update(myData);
+      await this.addUpgrade(myItem,newUpgrade);
+      if (wasEquipped){await this.equipItemStats(myItem)}
+    } else{
+      alert('Could not find next upgrade on the list. Make sure the name of the upgrade ends with the rank number.')
+    }
+  } else{
+    alert('Pack not found. Make sure you install the system properly.')
+  }
 }
 
 async deleteWholeUpgrade (armor,myId){
@@ -158,12 +252,19 @@ async deleteWholeUpgrade (armor,myId){
       }
     }
     let myData = {}
-    let myKey = 'system.upgrades.' + key + '.id';
-    Object.assign(myData, {[myKey] : ""})
-    myKey = 'system.upgrades.' + key + '.name';
-    Object.assign(myData, {[myKey] : ""})
+    let myPath = 'system.upgrades.' + key + '.id';
+    let myValue = ""
+    Object.assign(myData,{[myPath]:myValue})
+    myPath = 'system.updates.' + key + '.name'
+    Object.assign(myData,{[myPath]:myValue})
+    myPath = 'system.updates.' + key + '.img'
+    Object.assign(myData,{[myPath]:myValue})
+    myPath = 'system.updates.' + key + '.rank'
+    Object.assign(myData,{[myPath]:0})
+    myPath = 'system.updates.' + key + '.description'
+    Object.assign(myData,{[myPath]:myValue})
     await armor.update(myData)
-    await this.removeUpgrade(armor,myUpgrade,true,key)
+    await this.removeUpgrade(armor,myUpgrade,true,key,true)
   } 
   else
   { 
@@ -172,15 +273,21 @@ async deleteWholeUpgrade (armor,myId){
   
 }
 
-async removeUpgrade(myItem,myUpgrade,removeCost,key){
+async removeUpgrade(myItem,myUpgrade,removeCost,key,wholeUpgrade=false){
   let myIDs = []
   let myData = {}
   let myValues = ['armorClass','damageThreshold','baseCost','strReq','slots','load']
   //Upgrade name and ID
   let myPath = 'system.updates.' + key + '.name'
-  let myValue = "0"
+  let myValue = ""
   Object.assign(myData,{[myPath]:myValue})
   myPath = 'system.updates.' + key + '.id'
+  Object.assign(myData,{[myPath]:myValue})
+  myPath = 'system.updates.' + key + '.img'
+  Object.assign(myData,{[myPath]:myValue})
+  myPath = 'system.updates.' + key + '.rank'
+  Object.assign(myData,{[myPath]:0})
+  myPath = 'system.updates.' + key + '.description'
   Object.assign(myData,{[myPath]:myValue})
   await myItem.update(myData)
   //Upgrade values (Cost and load are slightly different)
@@ -190,11 +297,11 @@ async removeUpgrade(myItem,myUpgrade,removeCost,key){
         case 'baseCost':
           if (removeCost) {
             myPath = `system.${val}.value`
-            if(typeof Number(myUpgrade.name.slice(-1)) === 'number'){
-              myValue = Number(myItem.system.baseCost.value) - (Number(myUpgrade.name.slice(-1)) * Number(myUpgrade.system.baseCost))
+            if(typeof Number(myUpgrade.name.slice(-1)) === 'number' && wholeUpgrade){
+              myValue = Math.max(myItem.system.baseCost.base, Number(myItem.system.baseCost.value) - (Number(myUpgrade.name.slice(-1)) * Number(myUpgrade.system.baseCost)))
             }
             else {
-              myValue = Number(myItem.system.baseCost.value) - myUpgrade.system.baseCost
+              myValue = Math.max(myItem.system.baseCost.base, Number(myItem.system.baseCost.value) - (2 * Number(myUpgrade.system.baseCost)))
             }
           }
           break;
@@ -262,19 +369,33 @@ async checkUpgrade(armor,pack, id){
         //equip
         if (wasEquipped){await this.equipItemStats(armor)}
         myKey = 'system.upgrades.' + key + '.id';
-        Object.assign(myData, {[myKey] : myUpgrade._id})
+        Object.assign(myData, {[myKey] : myUpgrade._id});
         myKey = 'system.upgrades.' + key + '.name';
-        Object.assign(myData, {[myKey] : myUpgrade.name})
-        await armor.update(myData)
+        Object.assign(myData, {[myKey] : myUpgrade.name});
+        myKey = 'system.upgrades.' + key + '.img';
+        Object.assign(myData, {[myKey] : myUpgrade.system.img});
+        myKey = 'system.upgrades.' + key + '.rank';
+        Object.assign(myData, {[myKey] : myUpgrade.system.rank});
+        myKey = 'system.upgrades.' + key + '.description';
+        let strippedString = myUpgrade.system.description.replace(/(<([^>]+)>)/gi, "");
+        Object.assign(myData, {[myKey] : strippedString});
+        await armor.update(myData);
         break;
       }
     }
   } else {
+    if (!comment) { comment = 'You do not meet some requirements for this upgrade.'}
     alert(comment)
   }
 }
   
-
+async seeUpgrade (id){
+  const pack = game.packs.find(p => p.metadata.name == "upgrades");
+  if (pack){
+    const upgrade = await pack.getDocument(id)
+    upgrade.sheet.render(true)
+  }
+}
 
 
   //Equip item upgrades (right now, it's just armor upgrades)

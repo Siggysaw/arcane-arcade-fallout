@@ -12,20 +12,28 @@
         <h1 class="charname">
             <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
         </h1>
-        Equipped: <input type="checkbox" equipItem name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
-        Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}" />
-        <div>
-            Upgrades:
-            {{#each system.upgrades as |key|}}
-              {{#GreaterThan key.rank 1}}
-              <a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.world.upgrades.Item.{{key._id}}"
-                data-id="{{key._id}}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="{{key.auto}}">
-                  <i class="fas fa-suitcase">
-                  </i>{{ key.name }}{{ key.value }}
-              </a>
-              {{/GreaterThan}}
-            {{/each}}
-        </div>
+        <table style="text-align:left">
+          <tr>
+            <td style="text-align:left">
+              Equipped: <input type="checkbox" equipItem name="system.itemEquipped" {{checked system.itemEquipped}} /><br>
+            </td>
+            <td>
+              <button style ="max-width:fit-content;text-align:left" class="fakeButton" addUpgradeBtn id="addUpgradeBtn">ADD</button>
+                <select name="upgradesSelector" id="upgradesSelector">
+                  <option value="Upgrades">Upgrades</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align:left">
+              Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}" />
+            </td>
+            <td style="display:inline-block">
+                <span id="upgradeDetails" name="upgradeDetails"></span>
+                <span id="upgradeCost" name="upgradeCost"></span>
+            </td>
+          </tr>
+        </table>
         <table>
             <tr>
               <td>Cost</td>
@@ -60,7 +68,7 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="upgrades">Upgrades</a>
+    <a class="item" data-tab="upgrades" id="upgradesTab">Upgrades</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -74,55 +82,61 @@
     </div>
     {{!-- Upgrades Tab --}}
     <div class="tab" data-armor-id data-group="primary" data-tab="upgrades">
-        <table>
-          <th>
-            
-          </th>
-          <th>
-            Upgrade name
-          </th>
-          <th>
-            Cost
-          </th>
-          <th>
-            Details
-          </th>
-          <tr>
-            <td>
-              <button addUpgradeBtn id="addUpgradeBtn">Add</button>
-            </td>
-            <td>
-              <select name="upgradesSelector" id="upgradesSelector">
-                <option value="Refresh">Refresh Upgrades List</option>
-              </select>
-            </td>
-            <td>
-              <div id="upgradeCost" name="upgradeCost">
-              </div>
-            </td>
-            <td>
-              <div id="upgradeDetails" name="upgradeDetails">
-              </div>
-            </td>
-          </tr>
-        </table>
+      {{#LesserThan system.baseCost.base 1}}
+        <div>Select an upgrade and press the ADD button above to upgrade your weapon. Upgrades will appear here as you add them. </div>
+        {{else}}
         <ol>
           {{#each system.upgrades as |key|}}
             {{#if key.id}}
-          <li>
-              <a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.arcane-arcade-fallout.upgrades.Item.{{key.id}}"
-                data-id="{{key.id}}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="Click for details">
-                <i class="fas fa-suitcase">
-                </i>{{ key.name }}
-              </a>
-              <a class="item-control upgrade-delete" deleteUpgrade title="Delete Upgrade" id="delete{{key.id}}">
-                <i class="fas fa-trash"></i>
-              </a>
-              </a>
-          </li>
+            <div class="box-perks">
+              <li class="item flexrow" data-item-id="{{ key.id }}">
+                <table class="perk-table" style="border: solid 1px">
+                  <tr>
+                    <td>
+                      <div class="perk-div">
+                        <h3>{{ key.name }}</h3>
+                        <a
+                          class="item-control"
+                          seeUpgrade
+                          id="{{ key.id }}"
+                          title="View Item Details"
+                        >
+                          <img title="{{key.description}}" class="perk-image" src="{{key.img}}" />
+                        </a>
+                      </div>
+                      <div class="perk-div">
+                        <i
+                          style="padding: 3px"
+                          downgradeRank
+                          id="{{key.id}}"
+                          name="{{ key.rank }}"
+                          class="fas fa-minus-square"
+                        ></i>
+                        {{ key.rank }}
+                        <i
+                          style="padding: 3px"
+                          upgradeRank
+                          id="{{key.id}}"
+                          name="{{ key.rank }}"
+                          class="fas fa-plus-square"
+                        ></i>
+                      </div>
+                      <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <div class="item-controls" style="background: black">
+                          <a class="item-control upgrade-delete" deleteUpgrade title="Delete Upgrade" id="delete{{key.id}}">
+                            <i class="fas fa-trash"></i>
+                          </a>
+                        </div>
+                      </li>
+                    </td>
+                  </tr>
+                </table>
+              </li>
+            </div>
             {{/if}}
           {{/each}}
         </ol>
+        {{/LesserThan}}
     </div>
 
     {{!-- Effects Tab --}}
