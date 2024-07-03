@@ -323,7 +323,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           content: {
             options: { mode },
           },
-          default: 'accept',
           buttons: {
             Roll: {
               icon: '<i class="fas fa-check"></i>',
@@ -332,7 +331,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
                 event.preventDefault()
                 const form = html[0].querySelector('form')
                 const rollState = form.elements['mode'].value
-                this.actor.rollWeapon(weaponId, { rollState })
+
+                if (form.elements['targeted'].value) {
+                  this._targetedAttack(weaponId, rollState)
+                } else {
+                  this.actor.rollWeapon(weaponId, { rollState })
+                }
               },
             },
           },
@@ -484,6 +488,58 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         li.addEventListener('dragstart', handler, false)
       })
     }
+  }
+
+  /**
+   * @param {string} rollState - normal - advantage - disadvantage - hailmary
+   */
+  _targetedAttack(weaponId, rollState) {
+    return new Dialog(
+      {
+        title: `Targeted Attack`,
+        content: {
+          targets: [
+            {
+              label: 'Head',
+            },
+            {
+              label: 'Eyes',
+            },
+            {
+              label: 'Arm',
+            },
+            {
+              label: 'Torso',
+            },
+            {
+              label: 'Groin',
+            },
+            {
+              label: 'Leg',
+            },
+            {
+              label: 'Held or carried object',
+            },
+          ],
+        },
+        buttons: {
+          Roll: {
+            icon: '<i class="fas fa-check"></i>',
+            label: 'Roll!',
+            callback: (html, event) => {
+              event.preventDefault()
+              this.actor.rollWeapon(weaponId, { rollState })
+            },
+          },
+        },
+      },
+      {
+        classes: ['dialog'],
+        width: 400,
+        height: 500,
+        template: 'systems/arcane-arcade-fallout/templates/actor/dialog/targeted-attack.hbs',
+      },
+    ).render(true)
   }
 
   _deleteGrantedItems(item) {

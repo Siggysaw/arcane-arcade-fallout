@@ -1,0 +1,81 @@
+.targeted-attack {
+  display: flex;
+  flex-direction: column;
+}
+
+.targeted-attack form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  height: 100%;
+}
+
+.targeted-attack .vault-boy-target {
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy.webp');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.targeted-attack .targeted-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  grid-template-areas:
+    '. . head-top head-top . .'
+    '. . eyes eyes . .'
+    'left-arm left-arm head-bottom head-bottom right-arm right-arm'
+    'left-arm left-arm torso torso right-arm right-arm'
+    '. . torso torso . . '
+    '. . groin groin . .'
+    '. left-leg left-leg right-leg right-leg .'
+    '. left-leg left-leg right-leg right-leg .';
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.targeted-attack .targeted-grid .head-top {
+  grid-area: head-top;
+}
+.targeted-attack .targeted-grid .eyes {
+  grid-area: eyes;
+}
+.targeted-attack .targeted-grid .head-bottom {
+  grid-area: head-bottom;
+}
+.targeted-attack .targeted-grid .eyes {
+  grid-area: eyes;
+}
+.targeted-attack .targeted-grid .left-arm {
+  grid-area: left-arm;
+}
+.targeted-attack .targeted-grid .torso {
+  grid-area: torso;
+}
+.targeted-attack .targeted-grid .right-arm {
+  grid-area: right-arm;
+}
+.targeted-attack .targeted-grid .groin {
+  grid-area: groin;
+}
+.targeted-attack .targeted-grid .left-leg {
+  grid-area: left-leg;
+}
+.targeted-attack .targeted-grid .right-leg {
+  grid-area: right-leg;
+}
+
+.targeted-attack .targeted-grid button {
+  background: transparent !important;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+.targeted-attack .targeted-grid button:hover {
+  border: 3px dotted green;
+  cursor: crosshair;
+}

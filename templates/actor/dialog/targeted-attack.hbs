@@ -1,0 +1,25 @@
+<div class="targeted-attack">
+    <form autocomplete="off">
+        <div class="vault-boy-target"></div>
+        <div class="targeted-grid">
+            <div class="head-top"><button data-tooltip="Head"></button></div>
+            <div class="eyes"><button data-tooltip="Eyes"></button></div>
+            <div class="head-bottom"><button data-tooltip="Head"></button></div>
+            <div class="left-arm"><button data-tooltip="Arm"></button></div>
+            <div class="torso"><button data-tooltip="Torso"></button></div>
+            <div class="right-arm"><button data-tooltip="Arm"></button></div>
+            <div class="groin"><button data-tooltip="Groin"></button></div>
+            <div class="left-leg"><button data-tooltip="Leg"></button></div>
+            <div class="right-leg"><button data-tooltip="Leg"></button></div>
+        </div>
+    </form>
+
+    <div class="dialog-buttons">
+        {{#each buttons as |button id|}}
+        <button class="dialog-button" data-button="{{id}}">
+            {{{button.icon}}}
+            {{{button.label}}}
+        </button>
+        {{/each}}
+    </div>
+</div>
