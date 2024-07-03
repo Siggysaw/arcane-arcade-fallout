@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import 'base.css';
+@import 'dialog.css';
 @import 'grant.css';
 
 /* Global styles */
@@ -836,10 +837,10 @@ form td .status-notes li:hover {
   font-size: 10pt;
   font-weight: bold;
 }
-.sheet table .status-info-label{
-    font-size:10pt;
+.sheet table .status-info-label {
+  font-size: 10pt;
 }
 .sheet table .upgradeBtn button {
-    background:none;
-    margin-top:-10px;
+  background: none;
+  margin-top: -10px;
 }

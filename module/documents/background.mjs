@@ -2,7 +2,7 @@
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
  */
-export class FalloutZeroBackground extends Item {
+export default class FalloutZeroBackground extends Item {
   /**
    * Augment the basic Item data model with additional dynamic data.
    */

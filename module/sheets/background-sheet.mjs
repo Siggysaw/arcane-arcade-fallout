@@ -4,7 +4,7 @@ import { prepareActiveEffectCategories, onManageActiveEffect } from '../helpers/
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class FalloutZeroBackgroundSheet extends ItemSheet {
+export default class FalloutZeroBackgroundSheet extends ItemSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
@@ -154,7 +154,7 @@ export class FalloutZeroBackgroundSheet extends ItemSheet {
       'medicine',
       'chem',
       'explosive',
-      'trait'
+      'trait',
     ]
 
     const item = await fromUuid(dropData.uuid)

@@ -1,0 +1,41 @@
+<form autocomplete="off">
+    {{ log 'here' content.options.mode}}
+    <div class="form-group">
+        <label for="bonus">Situational bonus</label>
+        <input type="text" name="bonus" value="" placeholder="1d4"/>
+    </div>
+    <div class="form-group">
+        <fieldset>
+        <legend>Select normal/advantage/disadvantage</legend>
+        <div>
+            <input type="radio" id="normal" name="mode" value="normal" {{{setChecked content.options.mode 'normal'}}}/>
+            <label for="normal">Normal</label>
+        </div>
+        <div>
+            <input type="radio" id="advantage" name="mode" value="advantage" {{{setChecked content.options.mode 'advantage'}}}/>
+            <label for="advantage">Advantage</label>
+        </div>
+        <div>
+            <input type="radio" id="disadvantage" name="mode" value="disadvantage" {{{setChecked content.options.mode 'disadvantage'}}}/>
+            <label for="disadvantage">Disadvantage</label>
+        </div>
+        <div data-tooltip="Target beyond long range, Nat 20 required to hit">
+            <input type="radio" id="hailmary" name="mode" value="normal" {{{setChecked content.options.mode 'hailmary'}}}/>
+            <label for="hailmary">Hail Mary!</label>
+        </div>
+    </div>
+    <div>
+    <div class="form-group">
+        <label>Targeted attack?</label>
+        <input type="checkbox" name="targeted" value="false" placeholder="1d4"/>
+    </div>
+</form>
+
+<div class="dialog-buttons">
+    {{#each buttons as |button id|}}
+    <button class="dialog-button" data-button="{{id}}">
+        {{{button.icon}}}
+        {{{button.label}}}
+    </button>
+    {{/each}}
+</div>
