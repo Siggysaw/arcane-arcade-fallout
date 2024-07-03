@@ -844,3 +844,79 @@ form td .status-notes li:hover {
   background: none;
   margin-top: -10px;
 }
+
+.roll-table-config table.table-results .table-result .result-range input {
+  width: 20px;
+  float: none;
+}
+
+.roll-table-config table.table-results input {
+  width: 100px;
+  float: left;
+}
+
+.roll-table-config table.table-results select {
+  width: 100px;
+  float: left;
+}
+
+.roll-table-config table.table-results .table-result {
+  border: solid 1px #1d5427;
+}
+
+.roll-table-config .stacked {
+  display: none;
+}
+
+.sheet td .limb {
+  min-height: 100px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.sheet td .head {
+  height: 135px;
+  width: 115px;
+  margin-left: 171px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/head.png');
+}
+
+.sheet td .l-arm {
+  margin-left: 39px;
+  margin-top: -27px;
+  height: 20px;
+  width: 150px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/arm1.png');
+}
+
+.sheet td .torso {
+  margin-left: 166px;
+  margin-top: -99px;
+  height: 125px;
+  width: 122px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/torso.png');
+}
+
+.sheet td .r-arm {
+  margin-left: 265px;
+  margin-top: -125px;
+  height: 100px;
+  width: 137px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/arm2.png');
+}
+
+.sheet td .l-leg {
+  margin-left: 62px;
+  margin-top: 14px;
+  height: 132px;
+  width: 167px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg1.png');
+}
+
+.sheet td .r-leg {
+  margin-left: 213px;
+  margin-top: -143px;
+  height: 142px;
+  width: 106px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg2.png');
+}
