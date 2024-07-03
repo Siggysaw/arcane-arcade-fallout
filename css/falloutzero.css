@@ -7,6 +7,7 @@
   font-family: 'Monofonto';
   src: url('/systems/arcane-arcade-fallout/assets/fonts/monofonto.otf');
 }
+
 @font-face {
   font-family: 'fixedsys';
   src: url('/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf');
@@ -33,6 +34,7 @@ details > summary {
   cursor: pointer;
   border: solid 1px #ccc;
 }
+
 .sheet form h3 {
   display: flex;
   justify-content: center;
@@ -43,6 +45,7 @@ details > summary {
   text-transform: uppercase;
   padding: 5px;
 }
+
 .rollable:hover,
 .rollable:focus {
   color: #1d5427;
@@ -247,6 +250,7 @@ details > summary {
 .falloutzero .item-form {
   font-family: 'Monofonto', sans-serif;
 }
+
 .falloutzero .sheet-header {
   flex: 0 auto;
   overflow: hidden;
@@ -255,42 +259,52 @@ details > summary {
   flex-wrap: wrap;
   justify-content: flex-start;
 }
-.falloutzero .sheet-header .profile-img {
-  flex: 0 0 100px;
-  height: 100px;
-  margin-right: 10px;
-}
-.falloutzero .sheet-header .header-fields {
-  flex: 1;
-}
-.falloutzero .sheet-header h1.charname {
-  height: 50px;
-  padding: 0px;
-  margin: 5px 0;
-  border-bottom: 0;
-}
-.falloutzero .sheet-header h1.charname input {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
+
+  .falloutzero .sheet-header .profile-img {
+    flex: 0 0 100px;
+    height: 100px;
+    margin-right: 10px;
+  }
+
+  .falloutzero .sheet-header .header-fields {
+    flex: 1;
+  }
+
+  .falloutzero .sheet-header h1.charname {
+    height: 50px;
+    padding: 0px;
+    margin: 5px 0;
+    border-bottom: 0;
+  }
+
+    .falloutzero .sheet-header h1.charname input {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
 .falloutzero .sheet-tabs {
   flex: 0;
 }
+
 .falloutzero .sheet-body,
 .falloutzero .sheet-body .tab,
 .falloutzero .sheet-body .tab .editor {
   height: 100%;
 }
+
 .falloutzero .tox .tox-editor-container {
   background: #fff;
 }
+
 .falloutzero .tox .tox-edit-area {
   padding: 0 8px;
 }
+
 .falloutzero .resource-label {
   font-weight: bold;
 }
+
 .falloutzero .items-header {
   margin: 2px 0;
   padding: 0;
@@ -299,16 +313,19 @@ details > summary {
   border: 2px groove #eeede0;
   font-weight: bold;
 }
-.falloutzero .items-header > * {
-  font-size: 14px;
-  text-align: center;
-}
-.falloutzero .items-header .item-name {
-  font-weight: bold;
-  padding-left: 5px;
-  text-align: left;
-  display: flex;
-}
+
+  .falloutzero .items-header > * {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .falloutzero .items-header .item-name {
+    font-weight: bold;
+    padding-left: 5px;
+    text-align: left;
+    display: flex;
+  }
+
 .falloutzero .items-list {
   list-style: none;
   margin: 0;
@@ -317,79 +334,94 @@ details > summary {
   scrollbar-width: thin;
   color: #444;
 }
-.falloutzero .items-list .item-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.falloutzero .items-list .item-name {
-  flex: 2;
-  margin: 0;
-  overflow: hidden;
-  font-size: 13px;
-  text-align: left;
-  align-items: center;
-  display: flex;
-}
-.falloutzero .items-list .item-name h3,
-.falloutzero .items-list .item-name h4 {
-  margin: 0;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-.falloutzero .items-list .item-controls {
-  display: flex;
-  justify-content: flex-end;
-}
-.falloutzero .items-list .item-controls a {
-  font-size: 12px;
-  text-align: center;
-  margin: 0 6px;
-}
-.falloutzero .items-list .item {
-  align-items: center;
-  padding: 0 2px;
-  border-bottom: 1px solid #c9c7b8;
-}
-.falloutzero .items-list .item:last-child {
-  border-bottom: none;
-}
-.falloutzero .items-list .item .item-name {
-  color: #191813;
-}
-.falloutzero .items-list .item .item-name .item-image {
-  flex: 0 0 30px;
-  height: 30px;
-  background-size: 30px;
-  border: none;
-  margin-right: 5px;
-}
-.falloutzero .items-list .item-prop {
-  text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
-  font-size: 12px;
-}
-.falloutzero .items-list .items-header {
-  margin: 2px 0;
-  padding: 0;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
-  font-weight: bold;
-}
-.falloutzero .items-list .items-header > * {
-  font-size: 12px;
-  text-align: center;
-}
-.falloutzero .items-list .items-header .item-name {
-  padding-left: 5px;
-  text-align: left;
-}
+
+  .falloutzero .items-list .item-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .falloutzero .items-list .item-name {
+    flex: 2;
+    margin: 0;
+    overflow: hidden;
+    font-size: 13px;
+    text-align: left;
+    align-items: center;
+    display: flex;
+  }
+
+    .falloutzero .items-list .item-name h3,
+    .falloutzero .items-list .item-name h4 {
+      margin: 0;
+      white-space: nowrap;
+      overflow-x: hidden;
+    }
+
+  .falloutzero .items-list .item-controls {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+    .falloutzero .items-list .item-controls a {
+      font-size: 12px;
+      text-align: center;
+      margin: 0 6px;
+    }
+
+  .falloutzero .items-list .item {
+    align-items: center;
+    padding: 0 2px;
+    border-bottom: 1px solid #c9c7b8;
+  }
+
+    .falloutzero .items-list .item:last-child {
+      border-bottom: none;
+    }
+
+    .falloutzero .items-list .item .item-name {
+      color: #191813;
+    }
+
+      .falloutzero .items-list .item .item-name .item-image {
+        flex: 0 0 30px;
+        height: 30px;
+        background-size: 30px;
+        border: none;
+        margin-right: 5px;
+      }
+
+  .falloutzero .items-list .item-prop {
+    text-align: center;
+    border-left: 1px solid #c9c7b8;
+    border-right: 1px solid #c9c7b8;
+    font-size: 12px;
+  }
+
+  .falloutzero .items-list .items-header {
+    margin: 2px 0;
+    padding: 0;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px groove #eeede0;
+    font-weight: bold;
+  }
+
+    .falloutzero .items-list .items-header > * {
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .falloutzero .items-list .items-header .item-name {
+      padding-left: 5px;
+      text-align: left;
+    }
+
 .falloutzero .item-formula {
   flex: 0 0 200px;
   padding: 0 8px;
 }
+
 .falloutzero .effects .item .effect-source,
 .falloutzero .effects .item .effect-duration,
 .falloutzero .effects .item .effect-controls {
@@ -398,9 +430,11 @@ details > summary {
   border-right: 1px solid #c9c7b8;
   font-size: 12px;
 }
+
 .falloutzero .effects .item .effect-controls {
   border: none;
 }
+
 .window-app .window-content,
 .window-app .window-content .dialog option {
   background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
@@ -408,11 +442,13 @@ details > summary {
   background-size: 100% 100%;
   color: #01e998;
 }
+
 .dialog option,
 .dialog optgroup,
 .window-app .dialog ul {
   background-color: #1d5427;
 }
+
 .window-app .window-content input,
 .window-app .window-content .fakebutton,
 .window-app .window-content button,
@@ -428,12 +464,14 @@ details > summary {
   color: #01e998;
   letter-spacing: 0rem;
 }
+
 .window-app .window-content div .fakebutton,
 .window-app .window-content button,
 .window-app .window-content select,
 .window-app .window-content option {
   background: #222;
 }
+
 .sheet.journal-entry .journal-entry-content,
 .prosemirror.menu-dialog form {
   background-image: url('/systems/arcane-arcade-fallout/assets/terminal.png');
@@ -441,6 +479,7 @@ details > summary {
   color: #01e998;
   font-family: Fixedsys;
 }
+
 #chat .chat-message,
 #keybindings .binding .key,
 #keybindings .binding .key.uneditable {
@@ -448,12 +487,15 @@ details > summary {
   color: #01e998;
   font-family: Fixedsys;
 }
+
 .sheet.journal-entry .title {
   display: none;
 }
+
 .sheet.journal-entry .journal-entry-content img {
   border: #ff6059 solid 2px;
 }
+
 .character,
 .character input,
 .sheet h1,
@@ -467,9 +509,11 @@ form .title,
 .journal-entry-content {
   color: #01e998;
 }
+
 .journal-entry-content {
   letter-spacing: 0rem;
 }
+
 .sheet .character-name input {
   border: none;
   font-size: 20pt;
@@ -480,25 +524,31 @@ form .title,
   border: solid 1px #1d5427;
   font-size: 10pt;
 }
+
 .statusnum input {
   width: 50px;
 }
+
 .sheet table tr,
 .sheet table td {
   background: none;
 }
+
 .sheet table td {
   vertical-align: top;
   text-align: center;
 }
+
 table .bio-label {
   text-align: left;
   font-size: 14pt;
   margin-right: 5px;
 }
+
 .sheet .statusbar {
   background: none;
 }
+
 .sheet .current-stats,
 .sheet .current-caps {
   width: 90%;
@@ -514,6 +564,7 @@ table .bio-label {
 .sheet .current-caps input {
   margin-top: 3px;
 }
+
 .sheet .modify {
   width: 35px;
 }
@@ -525,8 +576,10 @@ table .bio-label {
   object-fit: cover;
   border: solid 2px #1d5427;
 }
+
 .sheet header.sheet-header .profile-image-td img {
 }
+
 .sheet header.sheet-header .custom-icon {
   height: 30px;
   max-width: 30px;
@@ -535,16 +588,19 @@ table .bio-label {
 .sheet td .modify {
   width: 75px;
 }
+
 .sheet ::placeholder {
   color: #1d5427;
   opacity: 1;
 }
+
 table,
 tr,
 td,
 .sheet img {
   background: none;
 }
+
 .sheet .character-status td {
   letter-spacing: 0rem;
 }
@@ -554,45 +610,57 @@ td,
   padding: 5px;
   font-size: 8pt;
 }
+
 .status .skill-table td,
 .status .status-table td {
   border: solid 1px;
 }
+
 .status .skill-table {
   width: 250px;
 }
-.status .skill-table td {
-  vertical-align: middle;
-}
+
+  .status .skill-table td {
+    vertical-align: middle;
+  }
+
 .status .skill-label {
   text-transform: uppercase;
   font-size: 10pt;
 }
+
 .status .skill-value {
   width: 80px;
   font-size: 10pt;
   letter-spacing: 0rem;
 }
-.sheet .status-info-value{
-    font-size:10pt;
+
+.sheet .status-info-value {
+  font-size: 10pt;
 }
+
 .sheet. table .status-table {
   vertical-align: top;
 }
+
 .sheet .perk-table td {
   padding: 5px;
 }
+
 .sheet .perk-div {
   background: black;
   padding: 5px;
   width: 100%;
 }
+
 .sheet form .perk-div h3 {
   color: #01e998;
 }
+
 .sheet .perk-div .perk-image {
   height: 150px;
 }
+
 .sheet div .box-traits,
 .sheet div .box-perks,
 .sheet div .box-medicines {
@@ -600,71 +668,88 @@ td,
   float: left;
   min-height: 265px;
 }
-.sheet div .box-traits h3,
-.sheet div .box-perks h3,
-.sheet div .box-medicines h3 {
-  height: 45px;
-}
+
+  .sheet div .box-traits h3,
+  .sheet div .box-perks h3,
+  .sheet div .box-medicines h3 {
+    height: 45px;
+  }
+
 .sheet .perk-div h3 {
   font-size: 10pt;
   letter-spacing: 0;
 }
+
 .specialroll {
   text-transform: uppercase;
 }
+
 .sheet {
   background: #333;
   background-size: cover;
 }
-.sheet .equipped-stats td {
-  border: solid 1px;
-  vertical-align: middle;
-  padding: 2px;
-  letter-spacing: 0rem;
-}
-.sheet .fas {
-  cursor: pointer;
-}
-.sheet .fakebutton,
-.sheet button {
-  border: #1d5427;
-  padding: 5px;
-  cursor: pointer;
-}
+
+  .sheet .equipped-stats td {
+    border: solid 1px;
+    vertical-align: middle;
+    padding: 2px;
+    letter-spacing: 0rem;
+  }
+
+  .sheet .fas {
+    cursor: pointer;
+  }
+
+  .sheet .fakebutton,
+  .sheet button {
+    border: #1d5427;
+    padding: 5px;
+    cursor: pointer;
+  }
+
 .window-app .window-content div .nobackground {
   background: none;
 }
+
 .sheet .fakebutton:hover,
 .sheet button:hover {
   border: #1d5427;
   background: #1d5427;
   color: white;
 }
+
 .sheet .fakebutton:active,
 .sheet button:active {
   border: #1d5427;
   background: white;
   color: #1d5427;
 }
+
 .sheet-tabs .active {
   text-decoration: underline;
   font-weight: bold;
 }
+
 .sheet .karma {
   width: 60px;
 }
+
 .allcaps {
   text-transform: uppercase;
 }
+
 .sheet table td select {
   background: none;
 }
+
 :root {
   --color-bg-option: #1d5427;
 }
+
 .window-content :root {
   --color-bg-option: none;
 }
+
 .sheet .item-controls {
   vertical-align: bottom;
   padding: 10px;
@@ -673,11 +758,13 @@ td,
 .backpack .item-controls {
   float: left;
 }
+
 .td-controls {
   width: 60px;
   margin: 0px;
   padding: 0px;
 }
+
 .spacer {
   border: none;
   width: 10px;
@@ -688,39 +775,40 @@ td,
   align-items: center;
 }
 
-.sheet .karmaCaps input[type='checkbox'] {
-  content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
-  appearance: none;
-  display: block;
-  width: 50px;
-  height: 50px;
-  border: none;
-}
+  .sheet .karmaCaps input[type='checkbox'] {
+    content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
+    appearance: none;
+    display: block;
+    width: 50px;
+    height: 50px;
+    border: none;
+  }
 
-.sheet .karmaCaps input[type='checkbox']:checked {
-  content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
-}
+    .sheet .karmaCaps input[type='checkbox']:checked {
+      content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
+    }
 
 .sheet .addRemoveCaps button {
   display: flex;
   padding: 0;
 }
-.sheet .addRemoveCaps button:disabled {
-  opacity: 25%;
-  cursor: not-allowed;
-}
 
-.sheet .addRemoveCaps button:disabled:hover {
-  opacity: 25%;
-  cursor: not-allowed;
-  border: initial;
-  background: #222;
-  color: #01e998;
-}
+  .sheet .addRemoveCaps button:disabled {
+    opacity: 25%;
+    cursor: not-allowed;
+  }
 
-.sheet .addRemoveCaps button:disabled i {
-  cursor: not-allowed;
-}
+    .sheet .addRemoveCaps button:disabled:hover {
+      opacity: 25%;
+      cursor: not-allowed;
+      border: initial;
+      background: #222;
+      color: #01e998;
+    }
+
+    .sheet .addRemoveCaps button:disabled i {
+      cursor: not-allowed;
+    }
 
 .sheet .addRemoveCaps > button > i {
   margin: 0;
@@ -745,59 +833,73 @@ form td .status-notes li:hover {
   --color-hover-bg: #222;
   background: #222;
 }
+
 .chat-message .table-draw .table-results .table-result .result-text a {
   color: black;
   padding: 5px;
 }
+
 .item .item-box {
   max-width: 425px;
 }
+
 .alwaysopen {
   float: left;
 }
+
 .sheet .smallinput {
   width: 50px;
 }
+
 .sheet .mediuminput {
   width: 100px;
 }
+
 .directory .directory-header .header-search input {
   flex: 1;
   margin: 0 3px;
   background: #222;
   color: #01e998;
 }
+
 .ammoitem,
 .explosiveitem {
   font-size: 9pt;
 }
+
 .explosivecollection,
 .ammocollection {
   float: left;
   margin: 0px;
   padding: 0px;
 }
+
 .ammunition-and-explosives-box {
   max-height: 200px;
   width: 100%;
   overflow: scroll;
 }
+
 .armorbox {
   width: 50%;
 }
+
 .sheet table td .ammo-box {
   background-image: url('/systems/arcane-arcade-fallout/assets/opacity-25.png');
   margin-top: 15px;
   margin: 5px;
 }
+
 .dialog .conditioninfo {
   font-family: fixedsys;
   padding: 20px;
   font-size: 14pt;
 }
+
 .condition {
   cursor: pointer;
 }
+
 .sheet .fallout-character-notes {
   height: 700px;
   text-align: left;
@@ -807,11 +909,13 @@ form td .status-notes li:hover {
   padding: 20px;
   letter-spacing: 0rem;
 }
-.sheet .fallout-character-notes .prosemirror {
-  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-}
+
+  .sheet .fallout-character-notes .prosemirror {
+    background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy-icon.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
 .sheet .player-conditions td {
   letter-spacing: 0;
   text-align: left;
@@ -820,15 +924,19 @@ form td .status-notes li:hover {
   vertical-align: middle;
   border: none;
 }
-.sheet .player-conditions td span {
-  font-size: 10pt;
-}
+
+  .sheet .player-conditions td span {
+    font-size: 10pt;
+  }
+
 .sheet .player-conditions input[type='checkbox'] {
   transform: scale(0.75);
 }
+
 .armorbox {
   padding: 5px;
 }
+
 .sheet table .skill-value {
   min-width: 80px;
   vertical-align: middle;
@@ -836,10 +944,86 @@ form td .status-notes li:hover {
   font-size: 10pt;
   font-weight: bold;
 }
-.sheet table .status-info-label{
-    font-size:10pt;
+
+.sheet table .status-info-label {
+  font-size: 10pt;
 }
+
 .sheet table .upgradeBtn button {
-    background:none;
-    margin-top:-10px;
+  background: none;
+  margin-top: -10px;
+}
+
+.roll-table-config table.table-results .table-result .result-range input {
+  width: 20px;
+  float: none;
+}
+
+.roll-table-config table.table-results input {
+  width: 100px;
+  float: left;
+}
+
+.roll-table-config table.table-results select {
+  width: 100px;
+  float: left;
+}
+
+.roll-table-config table.table-results .table-result {
+  border: solid 1px #1d5427;
+}
+
+.roll-table-config .stacked {
+  display: none;
+}
+
+.sheet td .limb {
+  min-height: 100px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.sheet td .head {
+  height: 135px;
+  width: 115px;
+  margin-left: 171px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/head.png');
+}
+
+.sheet td .l-arm {
+  margin-left: 39px;
+  margin-top: -27px;
+  height: 20px;
+  width: 150px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/arm1.png');
+}
+.sheet td .torso {
+  margin-left:166px;
+  margin-top:-99px;
+  height:125px;
+  width:122px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/torso.png');
+}
+.sheet td .r-arm {
+  margin-left:265px;
+  margin-top:-125px;
+  height:100px;
+  width:137px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/arm2.png');
+}
+
+.sheet td .l-leg {
+  margin-left:62px;
+  margin-top:14px;
+  height:132px;
+  width:167px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg1.png');
+}
+
+.sheet td .r-leg {
+  margin-left:213px;
+  margin-top:-143px;
+  height:142px;
+  width:106px;
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg2.png');
 }
