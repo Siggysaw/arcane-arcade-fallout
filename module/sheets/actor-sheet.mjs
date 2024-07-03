@@ -200,6 +200,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html)
 
+    // Limb Clicked On
+    html.on('click', '[data-limb]', (ev) => {
+      const limb = ev.currentTarget.dataset.limb
+      this.actor.limbcondition(limb)
+    })
+
     //on change of luck ability
     html.on('change', '[data-set-lck]', (ev) => {
       const newLck = Number(ev.target.value)

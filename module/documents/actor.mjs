@@ -20,6 +20,11 @@ export default class FalloutZeroActor extends Actor {
     return data
   }
 
+
+  limbcondition(limb) {
+    ui.notifications.notify(`${limb} was Clicked!`)
+  }
+
   getRaceType() {
     return this.items.contents.find((c) => c.type === 'race')?.system?.type
   }
