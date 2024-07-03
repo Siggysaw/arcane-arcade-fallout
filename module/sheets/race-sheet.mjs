@@ -5,7 +5,7 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class FalloutZeroRaceSheet extends ItemSheet {
+export default class FalloutZeroRaceSheet extends ItemSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {

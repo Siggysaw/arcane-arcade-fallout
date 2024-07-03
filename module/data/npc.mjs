@@ -1,4 +1,4 @@
-  import FalloutZeroActor from './actorBase.mjs'
+import FalloutZeroActor from './actorBase.mjs'
 import { FALLOUTZERO } from '../config.mjs'
 
 export default class FalloutZeroNPC extends FalloutZeroActor {
@@ -74,8 +74,6 @@ export default class FalloutZeroNPC extends FalloutZeroActor {
       this.abilities[key].mod = Math.floor(this.abilities[key].value - 5)
     }
 
-
-
     // Loop through skill scores, and add their modifiers to our sheet output.
     for (const key in this.skills) {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
@@ -99,4 +97,3 @@ export default class FalloutZeroNPC extends FalloutZeroActor {
     }
   }
 }
-
