@@ -1155,55 +1155,73 @@ FALLOUTZERO.conditions = {
 
 FALLOUTZERO.specialammo = {
   '.308': {
-    available: ['Explosive,FMJ,Hollow Point,JSP'],
+    available: ['.308','Explosive','FMJ','Hollow Point','JSP'],
   },
   '.50': {
-    available: ['Explosive,Incendiary,Match'],
+    available: ['.50','Explosive','Incendiary','Match'],
   },
   '.357': {
-    available: ['FMJ,Hollow Point,JFP'],
+    available: ['.357','FMJ','Hollow Point','JFP'],
   },
   '.44': {
-    available: ['Hollow Point'],
+    available: ['.44','Hollow Point'],
   },
   '.45': {
-    available: ['Hollow Point'],
+    available: ['.45','Hollow Point'],
   },
   '.45-70': {
-    available: ['Hollow Point'],
+    available: ['.45-70','Hollow Point'],
   },
   '10mm': {
-    available: ['FMJ,Hollow Point,Rubber'],
+    available: ['10mm','FMJ','Hollow Point','Rubber'],
   },
   '12 gauge': {
-    available: ['Cap shot,Dragon’s Breath,Flechette,Magnum,Slug,Pulse Slug'],
+    available: ['12 gauge','Cap shot','Dragon’s Breath','Flechette','Magnum','Slug','Pulse Slug'],
   },
   '12.7mm': {
-    available: ['FMJ,Hollow Point'],
+    available: ['12.7mm','FMJ','Hollow Point'],
   },
   '20 gauge': {
-    available: ['Magnum,Slug,Pulse Slug'],
+    available: ['20 gauge','Magnum','Slug','Pulse Slug'],
   },
   '5.56mm': {
-    available: ['Hollow Point,Match'],
+    available: ['5.56mm','Hollow Point','Match'],
   },
   '5mm': {
-    available: ['FMJ,Hollow Point,JSP,Rubber'],
+    available: ['5mm','FMJ','Hollow Point','JSP','Rubber'],
   },
   '9mm': {
-    available: ['FMJ,Hollow Point,Rubber'],
+    available: ['9mm','FMJ', 'Hollow Point','Rubber'],
   },
   'Energy Cell': {
-    available: ['Bulk,Optimized,Overcharged,Max Charge'],
+    available: ['Energy Cell','Bulk','Optimized','Overcharged','Max Charge'],
   },
   'Microfusion Cell': {
-    available: ['Bulk,Optimized,Overcharged,Max Charge'],
+    available: ['Microfusion Cell','Bulk','Optimized','Overcharged','Max Charge'],
   },
   'Missile': {
-    available: ['Explosive, Incendiary'],
+    available: ['Missile','Explosive','Incendiary'],
   },
   'Syringer': {
-    available: ['Stimpak Loader,ChemLoader,Radscorpion Venom,Endangerol,Yellow Belly,Berserk,Hemorrhage,Lock Joint,Sclerosis,Myopic Serum,Mind Cloud,Tranquilizer'],
+    available: ['Syringer', 'Stimpak Loader', 'ChemLoader', 'Radscorpion Venom', 'Endangerol', 'Yellow Belly', 'Berserk', 'Hemorrhage', 'Lock Joint', 'Sclerosis', 'Myopic Serum', 'Mind Cloud', 'Tranquilizer'],
+  },
+  'Cryo Cell': {
+    available: ['Cryo Cell'],
+  },
+  'Gamma Cell': {
+    available: ['Gamma Cell'],
+  },
+  'Nails': {
+    available: ['Nails'],
+  },
+  'Flares': {
+    available: ['Flares'],
+  },
+  'Sunlight': {
+    available: ['Sunlight'],
+  },
+  'Junk Jet': {
+    available: ['Any item that is smaller than cubic foot'],
   },
 
 }

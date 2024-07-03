@@ -39,6 +39,7 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     })
     schema.ammo = new fields.SchemaField({
       type: new fields.StringField({ initial: '9mm' }),
+      assigned: new fields.StringField({}),
       capacity: new fields.SchemaField({
         value: new fields.NumberField({
           ...requiredInteger,

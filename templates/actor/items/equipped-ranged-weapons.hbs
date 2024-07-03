@@ -145,21 +145,27 @@
           <table class="equipped-stats">
             <tr>
               <td colspan="2">AMMO</td>
-              <td rowspan="3">
-                <div
-                  title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
-                  class="fakebutton"
-                  style="padding-top: 20px; padding-bottom: 20px"
-                  data-reload
-                  data-weapon-id="{{ item._id }}"
-                >
-                  RELOAD
-                </div>
+              <td>
+                  <div title="Swap Your Current Ammo"
+                       class="fakebutton"
+                       data-ammoswap
+                       data-weapon-id="{{ item._id }}">
+                      SWAP AMMO
+                  </div>
               </td>
             </tr>
             <tr>
-              <td>{{ item.system.ammo.type }}</td>
-              <td>Owned</td>
+                <td>{{ item.system.ammo.assigned }}</td>
+                <td>Owned</td>
+                <td rowspan="2" style="background:#222;">
+                    <div class="fakebutton"
+                         title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+                         style="padding:10px;"
+                         data-reload
+                         data-weapon-id="{{ item._id }}">
+                        RELOAD
+                    </div>
+                </td>
             </tr>
             <tr>
               <td>{{ item.system.ammo.capacity.value }} / {{ item.system.ammo.capacity.max }}</td>
@@ -168,6 +174,7 @@
                 {{ ammo.system.quantity }}
                 {{/each}}
               </td>
+
             </tr>
             <tr style="vertical-align: middle">
               <td style="width: 100px; border-right: none">

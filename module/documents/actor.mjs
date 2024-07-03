@@ -257,7 +257,6 @@ export class FalloutZeroActor extends Actor {
     }
   }
   apUsed(weaponId) {
-    console.log(this.system.actionPoints.value)
     try { currentAp = this.actionPoints.value }
     //NPCs have it under system for some reason.
     catch {currentAp = this.system.actionPoints.value} 
@@ -335,6 +334,58 @@ export class FalloutZeroActor extends Actor {
     return roll
   }
 
+  // Ammo Swap Button is Pressed
+  ammoswap(weaponId) {
+    const weapon = this.items.get(weaponId)
+    const actor = this
+    const ammoBase = weapon.system.ammo.type
+    const myDialogOptions = { width: 400, height: 300 }
+    let message = "<select id='ammoselect' name=chosenammo>"
+    const ammoList = FALLOUTZERO.specialammo[ammoBase]
+    for (let ammo of ammoList.available) {
+      let ammoFullname = `${ammoBase} ${ammo}`
+      if (ammoBase === ammo) {
+        ammoFullname=ammoBase
+      }
+      let ammoFound = this.items.find((item) => item.name === ammoFullname)
+
+      if (ammoFound) {
+        message += `<option value="${ammoFullname}">${ammoFullname}: ${ammoFound.system.quantity}</option><br>`
+      }
+    }
+    message += "</select>"
+    new Dialog({
+      title: "My Dialog Title",
+      content: message,
+      buttons: {
+        button1: {
+          label: "Display Value",
+          callback: (html) => setammo(html),
+          icon: `<i class="fas fa-check"></i>`
+        }
+      }
+    }).render(true);
+
+    function setammo(html) {
+      const chosenAmmo = html.find("select#ammoselect").val();
+      const currentType = weapon.system.ammo.assigned
+      const currentItem = actor.items.find((item) => item.name === currentType)
+      const currentMag = weapon.system.ammo.capacity.value
+      if (currentItem) {
+        const currentQty = currentItem.system.quantity + currentMag
+        if (!weapon.system.energyWeapon) {
+          actor.updateEmbeddedDocuments('Item', [{ _id: currentItem._id, 'system.quantity': currentQty },])
+        }
+      }
+
+      
+      actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.assigned': chosenAmmo },])
+      actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.capacity.value': 0 },])
+      
+    }
+  }
+ 
+
   // Reload Button is Pressed
   reload(weaponId = null) {
     // Get Weapon Information Array
@@ -351,7 +402,7 @@ export class FalloutZeroActor extends Actor {
     }
 
     // Collect Required Ammo Information
-    const ammoType = weapon.system.ammo.type
+    const ammoType = weapon.system.ammo.assigned
     const ammoFound = this.items.find((item) => item.name === ammoType)
 
     // Do you have Ammo?

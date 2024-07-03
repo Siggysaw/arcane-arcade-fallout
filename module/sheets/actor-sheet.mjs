@@ -173,8 +173,11 @@ export class FalloutZeroActorSheet extends ActorSheet {
     })
     context.miscItems = miscItems
     context.rangedWeapons = rangedWeapons.map((weapon) => {
-      weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
-      if (this.actor.type != 'npc') {
+      if (!weapon.system.ammo.assigned) {
+        this.actor.updateEmbeddedDocuments('Item', [{ _id: weapon._id, 'system.ammo.assigned': weapon.system.ammo.type }])
+      }
+      weapon.ammos = ammos.filter((ammo) => ammo.name === weapon.system.ammo.assigned)
+     if (this.actor.type != 'npc') {
       weapon.system.range.short =
         this.actor.system.abilities['per'].value * weapon.system.range.short
       weapon.system.range.long = this.actor.system.abilities['per'].value * weapon.system.range.long
@@ -329,13 +332,15 @@ export class FalloutZeroActorSheet extends ActorSheet {
     })
 
     // handles changing ammo on weapon
-    html.on('change', '[data-set-ammo]', (ev) => {
+    html.on('click', '[data-ammoswap]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
-      this.actor.updateEmbeddedDocuments('Item', [
-        { _id: weaponId, 'system.ammo.consumes.target': ev.target.value },
-      ])
+      this.actor.ammoswap(weaponId)
     })
-
+    html.on('click', '[data-ammochosen]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId
+      const ammochoice = ev.currentTarget.dataset.ammochoice
+      this.actor.setammo(weaponId)
+    })
     // handles changing skill on weapon
     html.on('change', '[data-set-skill]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
