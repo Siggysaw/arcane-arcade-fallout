@@ -1,15 +1,8 @@
-// Import document classes.
-import { FalloutZeroActor } from './documents/actor.mjs'
-import { FalloutZeroItem } from './documents/item.mjs'
-// Import sheet classes.
-import { FalloutZeroActorSheet } from './sheets/actor-sheet.mjs'
-import { FalloutZeroItemSheet } from './sheets/item-sheet.mjs'
-import { FalloutZeroBackgroundSheet } from './sheets/background-sheet.mjs'
-import { FalloutZeroRaceSheet } from './sheets/race-sheet.mjs'
-// Import helper/utility classes and constants.
-import { preloadHandlebarsTemplates } from './helpers/templates.mjs'
 import { FALLOUTZERO } from './config.mjs'
 import * as models from './data/_module.mjs'
+import * as documents from './documents/_module.mjs'
+import * as sheets from './sheets/_module.mjs'
+import { preloadHandlebarsTemplates } from './helpers/templates.mjs'
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -35,8 +28,8 @@ Hooks.once('init', function () {
   }
 
   // Define custom Document classes
-  CONFIG.Actor.documentClass = FalloutZeroActor
-  CONFIG.Item.documentClass = FalloutZeroItem
+  CONFIG.Actor.documentClass = documents.FalloutZeroActor
+  CONFIG.Item.documentClass = documents.FalloutZeroItem
 
   // Note that you don't need to declare a DataModel
   // for the base actor/item classes - they are included
@@ -45,18 +38,17 @@ Hooks.once('init', function () {
     character: models.FalloutZeroCharacter,
     npc: models.FalloutZeroNPC,
   }
-  CONFIG.Item.documentClass = FalloutZeroItem
   CONFIG.Item.dataModels = {
     item: models.FalloutZeroItem,
     ammo: models.FalloutZeroItemAmmo,
     feature: models.FalloutZeroFeature,
-    rangedWeapon: models.FalloutZeroRangedWeapon,
-    meleeWeapon: models.FalloutZeroMeleeWeapon,
     background: models.FalloutZeroBackground,
     race: models.FalloutZeroRace,
     armor: models.FalloutZeroArmor,
     armorUpgrade: models.FalloutZeroArmorUpgrade,
-    wepaonUpgrade: models.FalloutZeroWeaponUpgrade,
+    weaponUpgrade: models.FalloutZeroWeaponUpgrade,
+    rangedWeapon: models.FalloutZeroRangedWeapon,
+    meleeWeapon: models.FalloutZeroMeleeWeapon,
   }
 
   // Active Effects are never copied to the Actor,
@@ -66,21 +58,21 @@ Hooks.once('init', function () {
 
   // Register sheet application classes
   Actors.unregisterSheet('core', ActorSheet)
-  Actors.registerSheet('falloutzero', FalloutZeroActorSheet, {
+  Actors.registerSheet('falloutzero', sheets.FalloutZeroActorSheet, {
     makeDefault: true,
     label: 'FALLOUTZERO.SheetLabels.Actor',
   })
   Items.unregisterSheet('core', ItemSheet)
-  Items.registerSheet('falloutzero', FalloutZeroItemSheet, {
+  Items.registerSheet('falloutzero', sheets.FalloutZeroItemSheet, {
     makeDefault: true,
     label: 'FALLOUTZERO.SheetLabels.Item',
   })
-  Items.registerSheet('falloutzero', FalloutZeroBackgroundSheet, {
+  Items.registerSheet('falloutzero', sheets.FalloutZeroBackgroundSheet, {
     makeDefault: true,
     types: ['background'],
     label: 'FALLOUTZERO.SheetLabels.Background',
   })
-  Items.registerSheet('falloutzero', FalloutZeroRaceSheet, {
+  Items.registerSheet('falloutzero', sheets.FalloutZeroRaceSheet, {
     makeDefault: true,
     types: ['race'],
     label: 'FALLOUTZERO.SheetLabels.Race',
@@ -99,6 +91,11 @@ Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase()
 })
 
+Handlebars.registerHelper('setChecked', function (value, test) {
+  if (value == undefined) return ''
+  return value == test ? 'checked' : ''
+})
+
 // If Player is a GM
 Handlebars.registerHelper('GM', function (options) {
   if (game.user.role === 4) {
@@ -110,7 +107,7 @@ Handlebars.registerHelper('GM', function (options) {
 // If Character is a NPC
 Handlebars.registerHelper('NPC', function (actorType, options) {
   console.log(actorType)
-  if (actorType == "npc") {
+  if (actorType == 'npc') {
     return options.fn(this)
   }
   return options.inverse(this)

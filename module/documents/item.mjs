@@ -2,7 +2,7 @@
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
  */
-export class FalloutZeroItem extends Item {
+export default class FalloutZeroItem extends Item {
   /**
    * Augment the basic Item data model with additional dynamic data.
    */
@@ -13,26 +13,30 @@ export class FalloutZeroItem extends Item {
   }
 
   //Checks char items before creating one, stops it and updates quantity if it exists and is not equipped.
-  _preCreate(data, options, user){
-    super._preCreate(data,options,user)
-    if(this.parent){
-      let myItem = this.parent.items.find(u => u.name == this.name && u.type == this.type);
-      if (this.system.itemEquipped == true || this.system.itemEquipped == false){
-        console.log("equipped");
-        this.system.itemEquipped = false;
-        myItem = this.parent.items.find(u => u.name == this.name && u.type == this.type && u.system.itemEquipped == false);
-        try {this.system.update({'itemEquipped' : false })}
-        catch{console.log("Item cannot be updated in this way")}
+  _preCreate(data, options, user) {
+    super._preCreate(data, options, user)
+    if (this.parent) {
+      let myItem = this.parent.items.find((u) => u.name == this.name && u.type == this.type)
+      if (this.system.itemEquipped == true || this.system.itemEquipped == false) {
+        console.log('equipped')
+        this.system.itemEquipped = false
+        myItem = this.parent.items.find(
+          (u) => u.name == this.name && u.type == this.type && u.system.itemEquipped == false,
+        )
+        try {
+          this.system.update({ itemEquipped: false })
+        } catch {
+          console.log('Item cannot be updated in this way')
+        }
       }
-      let qty = 0;
-      if (myItem){
-        qty = myItem.system.quantity;
-        qty ++
-        myItem.update({'system.quantity' : qty });
-        return false;
+      let qty = 0
+      if (myItem) {
+        qty = myItem.system.quantity
+        qty++
+        myItem.update({ 'system.quantity': qty })
+        return false
       }
     }
-    
   }
 
   /**
@@ -50,45 +54,5 @@ export class FalloutZeroItem extends Item {
     rollData.actor = this.actor.getRollData()
 
     return rollData
-  }
-
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  async roll() {
-    const item = this
-
-    // Initialize chat data.
-    const speaker = ChatMessage.getSpeaker({ actor: this.actor })
-    const rollMode = game.settings.get('core', 'rollMode')
-    const label = `[${item.type}] ${item.name}`
-
-    // If there's no roll data, send a chat message.
-    if (!this.system.formula) {
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: item.system.description ?? '',
-      })
-    }
-    // Otherwise, create a roll and send a chat message from it.
-    else {
-      // Retrieve roll data.
-      const rollData = this.getRollData()
-
-      // Invoke the roll and submit it to chat.
-      const roll = new Roll(rollData.formula, rollData)
-      // If you need to store the value first, uncomment the next line.
-      // const result = await roll.evaluate();
-      roll.toMessage({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-      })
-      return roll
-    }
   }
 }

@@ -1,4 +1,3 @@
-import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
 
@@ -6,7 +5,7 @@ import FalloutZeroArmor from '../data/armor.mjs'
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class FalloutZeroItemSheet extends ItemSheet {
+export default class FalloutZeroItemSheet extends ItemSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
@@ -68,30 +67,30 @@ export class FalloutZeroItemSheet extends ItemSheet {
     //Add upgrades options
     html.find('[name=upgradesSelector]').click(function () {
       var select = document.getElementById('upgradesSelector')
-      if(select.childElementCount < 3){
+      if (select.childElementCount < 3) {
         select.removeChild(select.lastElementChild)
-        let upgradeOptions = game.packs.find(p => p.metadata.name == "upgrades")
-      if (upgradeOptions) {
-        for (var upgrade of upgradeOptions.tree.entries){
-          var opt = document.createElement('option')
-          opt.value = upgrade.name
-          opt.innerHTML = upgrade.name
-          select.appendChild(opt);
+        let upgradeOptions = game.packs.find((p) => p.metadata.name == 'upgrades')
+        if (upgradeOptions) {
+          for (var upgrade of upgradeOptions.tree.entries) {
+            var opt = document.createElement('option')
+            opt.value = upgrade.name
+            opt.innerHTML = upgrade.name
+            select.appendChild(opt)
+          }
         }
-      }
       }
     })
 
     //Choose upgrade
     html.find('[name=upgradesSelector]').change(function () {
-      var select = document.getElementById('upgradesSelector');
-      const pack = game.packs.find(p => p.metadata.name == "upgrades");
+      var select = document.getElementById('upgradesSelector')
+      const pack = game.packs.find((p) => p.metadata.name == 'upgrades')
       if (pack) {
-        const myUpgrade = pack.tree.entries.find(u => u.name == select.value)
-        if(myUpgrade){
+        const myUpgrade = pack.tree.entries.find((u) => u.name == select.value)
+        if (myUpgrade) {
           FalloutZeroArmor.prototype.getMyItem(pack, myUpgrade._id)
         } else {
-          alert("Could not find a upgrade named " + select.value)
+          alert('Could not find a upgrade named ' + select.value)
         }
       } else {
         alert("Could not find a compendium named 'upgrades'")
@@ -100,70 +99,74 @@ export class FalloutZeroItemSheet extends ItemSheet {
 
     //Increase upgrade rank
     html.on('click', '[upgradeRank]', (ev) => {
-      let currentRank = ev.currentTarget.getAttribute("name")
+      let currentRank = ev.currentTarget.getAttribute('name')
       let upgradeID = ev.currentTarget.id
       if (Number(currentRank) < 3) {
-        FalloutZeroArmor.prototype.changeRank(this.object, upgradeID, Number(currentRank)+1,false)
-      } else{
-        alert("Upgrade ranks end at 3.")
+        FalloutZeroArmor.prototype.changeRank(
+          this.object,
+          upgradeID,
+          Number(currentRank) + 1,
+          false,
+        )
+      } else {
+        alert('Upgrade ranks end at 3.')
       }
     })
 
     //Decrease upgrade rank
     html.on('click', '[downgradeRank]', (ev) => {
-      let currentRank = ev.currentTarget.getAttribute("name")
+      let currentRank = ev.currentTarget.getAttribute('name')
       let upgradeID = ev.currentTarget.id
       if (Number(currentRank) > 1) {
-        FalloutZeroArmor.prototype.changeRank(this.object, upgradeID, Number(currentRank)-1,true)
-      } else{
-        FalloutZeroArmor.prototype.deleteWholeUpgrade (this.object,upgradeID)
+        FalloutZeroArmor.prototype.changeRank(this.object, upgradeID, Number(currentRank) - 1, true)
+      } else {
+        FalloutZeroArmor.prototype.deleteWholeUpgrade(this.object, upgradeID)
       }
     })
 
     //Add Upgrade
     html.on('click', '[addUpgradeBtn]', (ev) => {
-      var select = document.getElementById('upgradesSelector');
-      const pack = game.packs.find(p => p.metadata.name == "upgrades");
+      var select = document.getElementById('upgradesSelector')
+      const pack = game.packs.find((p) => p.metadata.name == 'upgrades')
       if (pack) {
-        const myUpgrade = pack.tree.entries.find(u => u.name == select.value)
-        if(myUpgrade){
-          if (this.object.system.quantity > 1 && this.object.system.upgrade1 == ''){
+        const myUpgrade = pack.tree.entries.find((u) => u.name == select.value)
+        if (myUpgrade) {
+          if (this.object.system.quantity > 1 && this.object.system.upgrade1 == '') {
             FalloutZeroArmor.prototype.splitDialog(this.object, pack, myUpgrade._id)
           } else {
             FalloutZeroArmor.prototype.checkUpgrade(this.object, pack, myUpgrade._id)
           }
         } else {
-          alert("Could not find a upgrade named " + select.value)
+          alert('Could not find a upgrade named ' + select.value)
         }
       } else {
         alert("Could not find a compendium named 'upgrades'")
       }
-      
     })
     //Prevent submit on pressing enter
-    $(document).ready(function() {
-      $(window).keydown(function(event){
-        if(event.keyCode == 13) {
-          event.preventDefault();
-          return false;
+    $(document).ready(function () {
+      $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+          event.preventDefault()
+          return false
         }
-      });
-    });
+      })
+    })
 
     //Remove upgrade button
     html.on('click', '[deleteUpgrade]', (ev) => {
-      let myId = ev.currentTarget.id.replace("delete","")
-        FalloutZeroArmor.prototype.deleteWholeUpgrade (this.object,myId)
+      let myId = ev.currentTarget.id.replace('delete', '')
+      FalloutZeroArmor.prototype.deleteWholeUpgrade(this.object, myId)
     })
 
     //Click to see Upgrade from compendium
     html.on('click', '[seeUpgrade]', (ev) => {
       let myId = ev.currentTarget.id
-        FalloutZeroArmor.prototype.seeUpgrade (myId)
+      FalloutZeroArmor.prototype.seeUpgrade(myId)
     })
 
     //On equip, calculate AC and other things that improve character's stats
-    html.on('change','[equipItem]',() => {
+    html.on('change', '[equipItem]', () => {
       FalloutZeroArmor.prototype.changeEquipStatus(this.object, this.actor)
     })
 
@@ -173,5 +176,3 @@ export class FalloutZeroItemSheet extends ItemSheet {
     html.on('click', '.effect-control', (ev) => onManageActiveEffect(ev, this.item))
   }
 }
-
-

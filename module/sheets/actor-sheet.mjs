@@ -6,7 +6,7 @@ import FalloutZeroArmor from '../data/armor.mjs'
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class FalloutZeroActorSheet extends ActorSheet {
+export default class FalloutZeroActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
@@ -174,13 +174,16 @@ export class FalloutZeroActorSheet extends ActorSheet {
     context.miscItems = miscItems
     context.rangedWeapons = rangedWeapons.map((weapon) => {
       if (!weapon.system.ammo.assigned) {
-        this.actor.updateEmbeddedDocuments('Item', [{ _id: weapon._id, 'system.ammo.assigned': weapon.system.ammo.type }])
+        this.actor.updateEmbeddedDocuments('Item', [
+          { _id: weapon._id, 'system.ammo.assigned': weapon.system.ammo.type },
+        ])
       }
       weapon.ammos = ammos.filter((ammo) => ammo.name === weapon.system.ammo.assigned)
-     if (this.actor.type != 'npc') {
-      weapon.system.range.short =
-        this.actor.system.abilities['per'].value * weapon.system.range.short
-      weapon.system.range.long = this.actor.system.abilities['per'].value * weapon.system.range.long
+      if (this.actor.type != 'npc') {
+        weapon.system.range.short =
+          this.actor.system.abilities['per'].value * weapon.system.range.short
+        weapon.system.range.long =
+          this.actor.system.abilities['per'].value * weapon.system.range.long
       }
       return weapon
     })
@@ -306,8 +309,34 @@ export class FalloutZeroActorSheet extends ActorSheet {
     // weapon roll
     html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
-      const hasDisadvantage = Boolean(ev.currentTarget.dataset.disadvantage)
-      this.actor.rollWeapon(weaponId, hasDisadvantage)
+      const mode = ev.currentTarget.dataset.disadvantage ? 'disadvantage' : 'normal'
+      const item = this.actor.items.get(weaponId)
+      return new Dialog(
+        {
+          title: `Attack roll with ${item.name}`,
+          content: {
+            options: { mode },
+          },
+          default: 'accept',
+          buttons: {
+            Roll: {
+              icon: '<i class="fas fa-check"></i>',
+              label: 'Roll!',
+              callback: (html, event) => {
+                event.preventDefault()
+                const form = html[0].querySelector('form')
+                const rollState = form.elements['mode'].value
+                this.actor.rollWeapon(weaponId, { rollState })
+              },
+            },
+          },
+        },
+        {
+          classes: ['dialog'],
+          width: 400,
+          template: 'systems/arcane-arcade-fallout/templates/actor/dialog/attack.hbs',
+        },
+      ).render(true)
     })
 
     // Render the item sheet for viewing/editing prior to the editable check.
@@ -319,10 +348,10 @@ export class FalloutZeroActorSheet extends ActorSheet {
 
     // Equip or unequip item
     html.on('click', '[data-equip]', (ev) => {
-      const itemId = ev.currentTarget.dataset.itemId;
-      const item = this.actor.items.get(itemId);
-      item.update({'system.itemEquipped' : !item.system.itemEquipped})
-      FalloutZeroArmor.prototype.changeEquipStatus(item);
+      const itemId = ev.currentTarget.dataset.itemId
+      const item = this.actor.items.get(itemId)
+      item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+      FalloutZeroArmor.prototype.changeEquipStatus(item)
     })
 
     // handles weapon reload

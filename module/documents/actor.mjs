@@ -1,11 +1,11 @@
+import { FALLOUTZERO } from '../config.mjs'
 /**
 /**
  * Extend the base Actor class to implement additional system-specific logic.
  * @extends {Actor}
  */
 
-import { FALLOUTZERO } from '../config.mjs'
-export class FalloutZeroActor extends Actor {
+export default class FalloutZeroActor extends Actor {
   getRollData() {
     // Starts off by populating the roll data with a shallow copy of `this.system`
     const data = { ...this.system }
@@ -77,7 +77,7 @@ export class FalloutZeroActor extends Actor {
   ruleinfo(condition) {
     const myDialogOptions = { width: 500, height: 300, resizable: true }
     const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1)
-    let title = conditionFormatted.replaceAll("_", " ");
+    let title = conditionFormatted.replaceAll('_', ' ')
     const rule = FALLOUTZERO.rules[conditionFormatted]
     const message = `<div class="conditioninfo">${rule}</div>`
     new Dialog(
@@ -145,6 +145,7 @@ export class FalloutZeroActor extends Actor {
     const actor = this.system
     let skillPool = actor.skillPool
 
+    let skillMod = 0
     if (actor.abilities.int.mod > 0) {
       skillMod = 5
     }
@@ -154,7 +155,7 @@ export class FalloutZeroActor extends Actor {
     if (actor.abilities.int.mod < 0) {
       skillMod = 3
     }
-    updatedSkillpool = skillPool + skillMod
+    const updatedSkillpool = skillPool + skillMod
     this.update({ 'system.skillPool': updatedSkillpool })
   }
 
@@ -174,10 +175,7 @@ export class FalloutZeroActor extends Actor {
 
     const earnedSkillpoints = this.system.skillPool
     let skillPointsMod = ''
-    let SkillPointsUsed = ''
-    const SkillPoolUsed = ''
     let updatedSkillpool = ''
-    let updatedSkillpoints = this.system.totalSkillpoints
 
     // Levels that increase skill points
     if (actor.level % 4 === 0) {
@@ -257,9 +255,12 @@ export class FalloutZeroActor extends Actor {
     }
   }
   apUsed(weaponId) {
-    try { currentAp = this.actionPoints.value }
-    //NPCs have it under system for some reason.
-    catch {currentAp = this.system.actionPoints.value} 
+    let currentAp
+    if (this.type === 'character') {
+      currentAp = this.actionPoints.value
+    } else {
+      currentAp = this.system.actionPoints.value
+    }
     const weapon = this.items.get(weaponId)
     const apCost = weapon.system.apCost
     const newAP = Number(currentAp) - Number(apCost)
@@ -272,7 +273,7 @@ export class FalloutZeroActor extends Actor {
     this.update({ 'system.actionPoints.value': Number(newAP) })
   }
 
-  rollWeapon(weaponId, hasDisadvantage = false) {
+  rollWeapon(weaponId, options = { rollMode: 'normal' }) {
     const currentAp = this.system.actionPoints.value
     const weapon = this.items.get(weaponId)
     const apCost = weapon.system.apCost
@@ -289,7 +290,6 @@ export class FalloutZeroActor extends Actor {
         ui.notifications.warn(`Weapon ammo is empty, need to reload`)
         return
       }
-
       // Update ammo quantity
       const ammoType = weapon.system.ammo.type
       const foundAmmo = this.items.find((item) => item.name === ammoType)
@@ -308,21 +308,8 @@ export class FalloutZeroActor extends Actor {
     this.update({ 'system.actionPoints.value': Number(newAP) })
 
     // roll to hit
-    const dice = hasDisadvantage ? '2d20kl' : 'd20'
-    let skillBonusValue =
-      this.system.skills[weapon.system.skillBonus].base +
-      this.system.skills[weapon.system.skillBonus].modifiers
-    if (this.type == "npc" ){
-      skillBonusValue = this.system.skills[weapon.system.skillBonus].value
-    }
-    let abilityMod = 0
-    if(weapon.system.abilityMod != ""){
-      abilityMod = this.system.abilities[weapon.system.abilityMod].mod
-    }
-    
-    const decayValue = (weapon.system.decay - 10) * -1
     let roll = new Roll(
-      `${dice} + ${skillBonusValue} + ${abilityMod} - ${this.system.penaltyTotal} - ${decayValue} + ${this.system.luckmod}`,
+      this.getWeaponRollFormula(weaponId, { rollState: options.rollState }),
       this.getRollData(),
     )
     roll.toMessage({
@@ -334,18 +321,36 @@ export class FalloutZeroActor extends Actor {
     return roll
   }
 
+  getWeaponRollFormula(weaponId, options = { rollState: 'normal' }) {
+    const weapon = this.items.get(weaponId)
+    const { rollState } = options
+    let skillBonusValue
+    if (this.type === 'character') {
+      skillBonusValue =
+        this.system.skills[weapon.system.skillBonus].base +
+        this.system.skills[weapon.system.skillBonus].modifiers
+    } else {
+      skillBonusValue = this.system.skills[weapon.system.skillBonus].value
+    }
+    const abilityMod = this.system.abilities[weapon.system.abilityMod].mod ?? 0
+
+    const decayValue = (weapon.system.decay - 10) * -1
+    const dice =
+      rollState === 'advantage' ? '2d20kh' : rollState === 'disadvantage' ? '2d20kl' : '1d20'
+    return `${dice} + ${skillBonusValue} + ${abilityMod} - ${this.system.penaltyTotal} - ${decayValue} + ${this.system.luckmod}`
+  }
+
   // Ammo Swap Button is Pressed
   ammoswap(weaponId) {
     const weapon = this.items.get(weaponId)
     const actor = this
     const ammoBase = weapon.system.ammo.type
-    const myDialogOptions = { width: 400, height: 300 }
     let message = "<select id='ammoselect' name=chosenammo>"
     const ammoList = FALLOUTZERO.specialammo[ammoBase]
     for (let ammo of ammoList.available) {
       let ammoFullname = `${ammoBase} ${ammo}`
       if (ammoBase === ammo) {
-        ammoFullname=ammoBase
+        ammoFullname = ammoBase
       }
       let ammoFound = this.items.find((item) => item.name === ammoFullname)
 
@@ -353,38 +358,37 @@ export class FalloutZeroActor extends Actor {
         message += `<option value="${ammoFullname}">${ammoFullname}: ${ammoFound.system.quantity}</option><br>`
       }
     }
-    message += "</select>"
+    message += '</select>'
     new Dialog({
-      title: "My Dialog Title",
+      title: 'My Dialog Title',
       content: message,
       buttons: {
         button1: {
-          label: "Display Value",
+          label: 'Display Value',
           callback: (html) => setammo(html),
-          icon: `<i class="fas fa-check"></i>`
-        }
-      }
-    }).render(true);
+          icon: `<i class="fas fa-check"></i>`,
+        },
+      },
+    }).render(true)
 
     function setammo(html) {
-      const chosenAmmo = html.find("select#ammoselect").val();
+      const chosenAmmo = html.find('select#ammoselect').val()
       const currentType = weapon.system.ammo.assigned
       const currentItem = actor.items.find((item) => item.name === currentType)
       const currentMag = weapon.system.ammo.capacity.value
       if (currentItem) {
         const currentQty = currentItem.system.quantity + currentMag
         if (!weapon.system.energyWeapon) {
-          actor.updateEmbeddedDocuments('Item', [{ _id: currentItem._id, 'system.quantity': currentQty },])
+          actor.updateEmbeddedDocuments('Item', [
+            { _id: currentItem._id, 'system.quantity': currentQty },
+          ])
         }
       }
 
-      
-      actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.assigned': chosenAmmo },])
-      actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.capacity.value': 0 },])
-      
+      actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.assigned': chosenAmmo }])
+      actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.capacity.value': 0 }])
     }
   }
- 
 
   // Reload Button is Pressed
   reload(weaponId = null) {
@@ -849,10 +853,8 @@ export class FalloutZeroActor extends Actor {
         } else {
           return itemName
         }
-        break
       case 'text':
         return `${itemName}<br>` //Bring back on same line as last
-        break
       case 'money':
         if (itemName.includes('[')) {
           myRoll = itemName.replace('[', '')
@@ -860,10 +862,8 @@ export class FalloutZeroActor extends Actor {
         } else {
           return `${itemName}<br>`
         }
-        break
       default:
         return this.formatCompendiumItem(compendium, itemName)
-        break
     }
   }
 
