@@ -118,8 +118,10 @@ export default class FalloutZeroActor extends Actor {
     let newAction = ''
     if (operator === 'plus') {
       newAction = this.system.actionPoints.value + 1
-    } else {
+    } else if (operator === 'minus') {
       newAction = this.system.actionPoints.value - 1
+    } else {
+      return
     }
     this.update({ 'system.actionPoints.value': newAction })
   }
