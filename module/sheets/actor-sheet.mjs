@@ -206,6 +206,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this.actor.limbcondition(limb)
     })
 
+    //notes popout
+    html.on('click', '[data-opentab]', (ev) => {
+      this.actor.opennotes()
+    })
+
     //on change of luck ability
     html.on('change', '[data-set-lck]', (ev) => {
       const newLck = Number(ev.target.value)
@@ -614,9 +619,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       itemsToGrant.map(async (grant) => {
         const newItem = await fromUuid(grant.key)
         const itemClone = newItem.clone()
-        const createdItems = await super._onDropItemCreate(itemClone)
-        await createdItems[0].update({ 'system.quantity': grant.quantity })
-        return createdItems[0].id
+        try {
+          const createdItems = await super._onDropItemCreate(itemClone)
+          await createdItems[0].update({ 'system.quantity': grant.quantity })
+          return createdItems[0].id
+        } catch (error) {
+          ui.notifications.warn(`error creating item from ${itemClone.name}`)
+          console.error(`error creating item from ${itemClone.name}`, error)
+          return
+        }
       }),
     )
     itemData.system.grantedItems = [...createdIds]

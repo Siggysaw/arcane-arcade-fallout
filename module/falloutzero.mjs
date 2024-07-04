@@ -106,7 +106,6 @@ Handlebars.registerHelper('GM', function (options) {
 
 // If Character is a NPC
 Handlebars.registerHelper('NPC', function (actorType, options) {
-  console.log(actorType)
   if (actorType == 'npc') {
     return options.fn(this)
   }

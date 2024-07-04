@@ -921,3 +921,11 @@ form td .status-notes li:hover {
   width: 106px;
   background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg2.png');
 }
+.falloutzero .tox .tox-editor-container button{
+  background-color:white;
+}
+.falloutzero .tmce body{
+    color:blue;
+}
+
+
