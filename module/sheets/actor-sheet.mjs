@@ -206,6 +206,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this.actor.limbcondition(limb)
     })
 
+    //notes popout
+    html.on('click', '[data-opentab]', (ev) => {
+      this.actor.opennotes()
+    })
+
     //on change of luck ability
     html.on('change', '[data-set-lck]', (ev) => {
       const newLck = Number(ev.target.value)
