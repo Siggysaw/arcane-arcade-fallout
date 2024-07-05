@@ -45,9 +45,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.combatSequence = new fields.NumberField({ initial: 0 })
     schema.partyNerve = new fields.NumberField({ initial: 0 })
     schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
-    schema.passiveSense = new fields.NumberField({
-      ...requiredInteger,
-      initial: 0,
+    schema.combatActionsexpanded = new fields.BooleanField({ initial: false })
+    schema.passiveSense = new fields.NumberField({...requiredInteger,   initial: 0,
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()

@@ -19,8 +19,16 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
-
-
+  combatexpandetoggle() {
+    const currentState = this.system.combatActionsexpanded
+    if (currentState == true) {
+      this.update({ 'system.combatActionsexpanded': false })
+    } else if (currentState == false) {
+      this.update({ 'system.combatActionsexpanded': true })
+    } else {
+      return
+    }
+  }
   limbcondition(limb) {
     ui.notifications.notify(`${limb} was Clicked!`)
   }
@@ -124,6 +132,15 @@ export default class FalloutZeroActor extends Actor {
       return
     }
     this.update({ 'system.actionPoints.value': newAction })
+  }
+  generalAPuse(cost) {
+    const currentAP = this.system.actionPoints.value
+    const newAP = Number(currentAP) - Number(cost)
+    if (newAP < 0) {
+      ui.notifications.warn(`You don't have enough AP to perform this action!`)
+      return
+    }
+    this.update({ 'system.actionPoints.value': newAP })
   }
 
   skilladdition(skill) {

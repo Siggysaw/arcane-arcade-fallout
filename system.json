@@ -2,22 +2,19 @@
   "id": "arcane-arcade-fallout",
   "title": "The Arcane Arcade Fallout TTRPG",
   "description": "Foundry version of Arcane Arcade's Fallout TTRPG system by Jacob Budz. Inspired by the game series of the same name by Interplay and Bethesda.",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "compatibility": {
-    "minimum": 11,
-    "verified": "11.315"
+    "minimum": "11",
+    "verified": "12.327"
   },
-  "minimumCoreVersion": "11",
-  "compatibleCoreVersion": "12",
-  "manifestPlusVersion": "1.0.0",
   "url": "https://github.com/Siggysaw/fallout-arcane-arcade.git",
   "manifest": "https://github.com/Siggysaw/fallout-arcane-arcade/releases/latest/download/system.json",
   "download": "https://github.com/Siggysaw/fallout-arcane-arcade/releases/latest/download/system.zip",
   "bugs": "https://github.com/Siggysaw/fallout-arcane-arcade/issues",
-  "allowBugReporter": true,
   "authors": [
     {
-      "name": "Fallout TTRPG Foundry Dev Team"
+      "name": "Fallout TTRPG Foundry Dev Team",
+      "flags": {}
     }
   ],
   "changelog": "CHANGELOG.md",
@@ -25,16 +22,23 @@
     {
       "type": "setup",
       "url": "systems/arcane-arcade-fallout/assets/anvil-impact.png",
-      "thumbnail": "systems/arcane-arcade-fallout/assets/anvil-impact.png"
+      "thumbnail": "systems/arcane-arcade-fallout/assets/anvil-impact.png",
+      "loop": false,
+      "flags": {}
     }
   ],
-  "esmodules": [ "module/falloutzero.mjs" ],
-  "styles": [ "css/falloutzero.css" ],
+  "esmodules": [
+    "module/falloutzero.mjs"
+  ],
+  "styles": [
+    "css/falloutzero.css"
+  ],
   "languages": [
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json"
+      "path": "lang/en.json",
+      "flags": {}
     }
   ],
   "packFolders": [
@@ -46,7 +50,9 @@
         "background",
         "perks",
         "traits"
-      ]
+      ],
+      "color": null,
+      "folders": []
     },
     {
       "name": "Equipment",
@@ -58,8 +64,9 @@
         "explosives",
         "armor",
         "miscellaneous"
-
-      ]
+      ],
+      "color": null,
+      "folders": []
     },
     {
       "name": "Consumables",
@@ -68,7 +75,9 @@
         "food-and-drinks",
         "medicine",
         "chems"
-      ]
+      ],
+      "color": null,
+      "folders": []
     },
     {
       "name": "NPCs",
@@ -77,7 +86,9 @@
         "enemies",
         "monsterloot",
         "roomloot"
-      ]
+      ],
+      "color": null,
+      "folders": []
     },
     {
       "name": "Crafting",
@@ -86,7 +97,9 @@
         "junk",
         "material",
         "upgrades"
-      ]
+      ],
+      "color": null,
+      "folders": []
     }
   ],
   "packs": [
@@ -96,7 +109,11 @@
       "name": "perks",
       "path": "packs/perks",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Armor",
@@ -104,7 +121,11 @@
       "name": "armor",
       "path": "packs/armor",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Ammunition",
@@ -112,7 +133,11 @@
       "name": "ammunition",
       "path": "packs/ammunition",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Explosives",
@@ -120,7 +145,11 @@
       "name": "explosives",
       "path": "packs/explosives",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Background",
@@ -128,7 +157,11 @@
       "name": "background",
       "path": "packs/background",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Race",
@@ -136,7 +169,11 @@
       "name": "race",
       "path": "packs/race",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Chems",
@@ -144,7 +181,11 @@
       "name": "chems",
       "path": "packs/chems",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Medicine",
@@ -152,7 +193,11 @@
       "name": "medicine",
       "path": "packs/medicine",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Food and Drinks",
@@ -160,7 +205,11 @@
       "name": "food-and-drinks",
       "path": "packs/food-and-drinks",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Melee Weapons",
@@ -168,7 +217,11 @@
       "name": "melee-weapons",
       "path": "packs/melee-weapons",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Ranged Weapons",
@@ -176,7 +229,11 @@
       "name": "rangedweapons",
       "path": "packs/rangedweapons",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Traits",
@@ -184,7 +241,11 @@
       "name": "traits",
       "path": "packs/traits",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Enemies",
@@ -192,7 +253,11 @@
       "name": "enemies",
       "path": "packs/enemies",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Junk",
@@ -200,7 +265,11 @@
       "name": "junk",
       "path": "packs/junk",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Material",
@@ -208,7 +277,11 @@
       "name": "material",
       "path": "packs/material",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Miscellaneous",
@@ -216,7 +289,11 @@
       "name": "miscellaneous",
       "path": "packs/misc",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Room Loot",
@@ -224,7 +301,11 @@
       "name": "roomloot",
       "path": "packs/room-loot",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Monster Loot",
@@ -232,7 +313,11 @@
       "name": "monsterloot",
       "path": "packs/monster-loot",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Upgrades",
@@ -240,15 +325,18 @@
       "name": "upgrades",
       "path": "packs/upgrades",
       "system": "arcane-arcade-fallout",
-      "banner": ""
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     }
-
-
   ],
-  "socket": false,
   "background": "systems/arcane-arcade-fallout/assets/anvil-impact.png",
-  "gridDistance": 5,
-  "gridUnits": "ft",
   "primaryTokenAttribute": "health",
-  "secondaryTokenAttribute": "stamina"
+  "secondaryTokenAttribute": "stamina",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  }
 }

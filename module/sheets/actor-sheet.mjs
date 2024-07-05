@@ -248,6 +248,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const item = ev.currentTarget.dataset.itemid
       this.actor.expandtoggle(item)
     })
+    //Set Expanded
+    html.on('click', '[data-combatExpand]', (ev) => {
+      this.actor.combatexpandetoggle()
+    })
     //show rule information
     html.on('click', '[data-condition]', (ev) => {
       const condition = ev.currentTarget.dataset.condition
@@ -268,10 +272,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const stamina = ev.currentTarget.dataset.stamina
       this.actor.staminaupdate(stamina)
     })
-    //action points update
+    //action points +/- functionality
     html.on('click', '[data-action]', (ev) => {
       const action = ev.currentTarget.dataset.action
       this.actor.actionupdate(action)
+    })
+    //general action points update
+    html.on('click', '[data-apusage]', (ev) => {
+      const cost = ev.currentTarget.dataset.apusage
+      this.actor.generalAPuse(cost)
     })
 
     //ap refill
