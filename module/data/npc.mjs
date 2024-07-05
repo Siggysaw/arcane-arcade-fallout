@@ -39,7 +39,7 @@ export default class FalloutZeroNPC extends FalloutZeroActor {
       }),
     })
     schema.xp = new fields.NumberField({ initial: 0, min: 0 })
-    schema.combatSequence = new fields.NumberField({ initial: 0, min: 0 })
+    schema.combatSequence = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0, min: 0 })
     schema.npcPassivesense = new fields.NumberField({
       ...requiredInteger,
