@@ -346,7 +346,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
                 event.preventDefault()
                 const form = html[0].querySelector('form')
                 const rollState = form.elements['mode'].value
-                this.actor.rollWeapon(weaponId, { rollState })
+                const freeAttack = form.elements['freeAttack'].value
+                const bonusDice = form.elements['bonusDice'].value
+                this.actor.rollWeapon(weaponId, { rollState },freeAttack,bonusDice)
               },
             },
           },

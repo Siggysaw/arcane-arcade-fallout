@@ -2,7 +2,12 @@
     {{ log 'here' content.options.mode}}
     <div class="form-group">
         <label for="bonus">Situational bonus</label>
-        <input type="text" name="bonus" value="" placeholder="1d4"/>
+        <input title="
+               Use this to add more dice to the roll.
+               1d4 will add a d4 to the roll
+               1d4kh is keep high for advantage
+               1d4kl is keep low for disadvantage
+               You can also just put a number in to add a flat value" type="text" name="bonusDice" value="" placeholder="1d4"/>
     </div>
     <div class="form-group">
         <fieldset>
@@ -25,10 +30,19 @@
         </div>
     </div>
     <div>
-    <div class="form-group">
-        <label>Targeted attack?</label>
-        <input type="checkbox" name="targeted" value="false" placeholder="1d4"/>
-    </div>
+        <div class="form-group" style="text-align:right;">
+            <table style="background:none;border:none;">
+                <tr style="background:none;border:none;">
+                    <td><label>Targeted Attack: </label></td>
+                    <td><input type="checkbox" name="targeted" value="false" /></td>
+                </tr>
+                <tr style="background:none;border:none;">
+                    <td><label>Free Attack: </label></td>
+                    <td><input type="checkbox" name="freeAttack" value="false" /></td>
+                </tr>
+            </table>
+
+</div>
 </form>
 
 <div class="dialog-buttons">
