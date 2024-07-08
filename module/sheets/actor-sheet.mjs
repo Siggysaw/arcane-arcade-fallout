@@ -329,7 +329,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // weapon roll
     html.on('click', '[data-weapon-roll]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
-      const mode = ev.currentTarget.dataset.disadvantage ? 'disadvantage' : 'normal'
+      const mode = ev.currentTarget.dataset.disadvantage ? 'disadvantage' : ev.currentTarget.dataset.hailmary ? 'hailmary' : 'normal'
       const item = this.actor.items.get(weaponId)
       return new Dialog(
         {

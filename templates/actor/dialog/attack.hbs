@@ -1,13 +1,16 @@
 <form autocomplete="off">
     {{ log 'here' content.options.mode}}
     <div class="form-group">
-        <label for="bonus">Situational bonus</label>
-        <input title="
-               Use this to add more dice to the roll.
-               1d4 will add a d4 to the roll
-               1d4kh is keep high for advantage
-               1d4kl is keep low for disadvantage
-               You can also just put a number in to add a flat value" type="text" name="bonusDice" value="" placeholder="1d4"/>
+        <label for="bonus">Roll Modifiers:</label>
+        <input title="Modify the roll based on the situation:
+               2 = will add 2
+               -2 = will subtract 2
+               1d4 = will add 1d4
+               -1d4 = will subtract 1d4
+               1d4 + 1d6 = will add both a 1d4 and 1d6 to your roll
+               1d20kh = will roll an extra dice at advantage
+               1d20kl = will roll an extra dice at disadvantage
+Full Example: 2d10 - 5 + 2d20kh + 1d4kl" type="text" name="bonusDice" value="" placeholder=" Bonus or Penalties"/>
     </div>
     <div class="form-group">
         <fieldset>
