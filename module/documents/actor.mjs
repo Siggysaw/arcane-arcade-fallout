@@ -611,6 +611,7 @@ export default class FalloutZeroActor extends Actor {
 
   //All loot container types are rolled here and exceptions are managed, loot is returned
   async rollContainer(result, myTotal = 0, formula = 0) {
+    console.log(this)
     let table = await this.findTable(result.text)
     let myLoot = ``
     let myTooltip = ``
@@ -619,9 +620,9 @@ export default class FalloutZeroActor extends Actor {
       var substrings = result.text.split('&')
       for (var matches of substrings) {
         var match = matches.match(/\{(.*?)\}/)
-        table = await this.system.findTable(match[1])
+        table = await this.findTable(match[1])
         if (table) {
-          myLoot += await this.system.rollMyTable(table)
+          myLoot += await this.rollMyTable(table)
         }
       }
     } else {
@@ -825,9 +826,10 @@ export default class FalloutZeroActor extends Actor {
         // public chat loot
         this.determineNpcLoot(selectPC.actor.name, false, '')
       }
+    } else {
+      // ask for character and player if none selected
+      this.pcLuckDialog()
     }
-    // ask for character and player if none selected
-    this.pcLuckDialog()
   }
 
   formatDice(formula) {
@@ -850,7 +852,7 @@ export default class FalloutZeroActor extends Actor {
         (u) => u.name.toLowerCase() == itemName.toLowerCase(),
       )
       if (myItem) {
-        return `<a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
+        return `<a class="content-link" style="color:black" draggable="true" data-link data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
           data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="${myTooltip}"><i class="fas fa-suitcase">
           </i>${itemName}</a><br>`
       } else {
