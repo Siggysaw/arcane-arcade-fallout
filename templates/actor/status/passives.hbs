@@ -42,7 +42,10 @@
     <tr>
         <td><input type='checkbox' name='system.conditions.Blinded' {{checked system.conditions.Blinded }} /></td>
         <td><span class='condition' data-condition='Blinded'>Blinded </span></td>
-        <td><input type='checkbox' name='system.conditions.Bleeding' {{checked system.conditions.Bleeding}} /></td>
+        <td>
+            <input style="text-align:center;width:25px;" min="0" type="number" name="system.conditions.BleedingLvls" value="{{system.conditions.BleedingLvls}}"
+            <input type='checkbox' name='system.conditions.Bleeding' {{checked system.conditions.Bleeding}} />
+        </td>
         <td><span class='condition' data-condition='Bleeding'>Bleeding</span></td>
         <td><input type='checkbox' name='system.conditions.Burning' {{checked system.conditions.Burning}} /></td>
         <td><span class='condition' data-condition='Burning'>Burning</span></td>
