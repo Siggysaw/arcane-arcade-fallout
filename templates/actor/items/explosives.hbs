@@ -34,13 +34,7 @@
                   </tr>
                   <tr>
                       <td>
-                          <div class="fakebutton"
-                               class="resource-label"
-                               data-ap-used
-                               data-weapon-id="{{ item._id }}"
-                               class="resource-label">
                               AP
-                          </div>
                       </td>
                       <td>Range</td>
                       <td rowspan="2">
@@ -50,10 +44,13 @@
                           {{#GreaterThan item.system.armDC 1}}
                           <div class="rollable resource-label fakebutton"
                                style="padding-top: 15px; padding-bottom: 15px"
+                              {{#GreaterThan item.system.quantity 1}}
                                data-rollable
+                               data-lowerInventory
                                data-label="Attempt to Arm a {{ item.name }} They'll need to match or beat a {{#Sum item.system.armDC 10}}{{/Sum}}"
-                               data-roll="d20+ {{../skills.explosives.value}}+@per.mod - @penaltyTotal"
-                               title="d20 + explosives({{../skills.explosives.value}}) - penalties({{../penaltyTotal}})" />
+                               data-roll="d20+ {{../skills.explosives.value}}+@per.mod - @penaltyTotal + @luckmod"
+                               {{/GreaterThan}}
+                               title="d20 + explosives({{../skills.explosives.value}}) - penalties({{../penaltyTotal}}) + Luck Modifier ({{../luckmod}})" />
                           ARM DC: {{#Sum item.system.armDC 10}}{{/Sum}}
                           {{else}}
                           Auto Succeeds
@@ -62,7 +59,21 @@
                       </td>
                   </tr>
                   <tr>
-                      <td>{{ item.system.apCost }}</td>
+                      <td>
+                      <div class="fakebutton resource-label"
+                           {{#GreaterThan item.system.quantity 1}}    
+                            data-ap-used
+                            data-weapon-id="{{ item._id }}"
+                            data-rollable
+                            data-lowerInventory="{{item._id}}"
+                            data-label="Threw a {{ item.name }}"
+                            data-roll="d20 + {{../skills.explosives.value}}+@per.mod - @penaltyTotal +@luckmod"
+                           {{/GreaterThan}}
+                           
+                               
+                               >{{ item.system.apCost }}
+                          </div>
+</td>
                       <td>{{#GreaterThan item.system.thrown 1}}{{ item.system.thrown }}ft.{{else}}NA{{/GreaterThan}}</td>
                   </tr>
               </table>
@@ -87,9 +98,7 @@
                           <div class="fakebutton"
                                class="rollable resource-label"
                                data-rollable
-                               data-label="KABOOM! <span class='allcaps'>{{
-                    item.system.damageType1
-                  }}</span> DMG from a {{ item.name }}"
+                               data-label="KABOOM! <span class='allcaps'>{{item.system.damageType1}}</span> DMG from a {{ item.name }}"
                                data-roll="{{ item.system.damage1 }}">
                               {{ item.system.damage1 }}
                           </div>

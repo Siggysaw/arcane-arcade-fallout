@@ -101,3 +101,63 @@
   <button>Cancel</button>
   <button>Roll</button>
 </div>
+
+    {{!-- NOT SURE HOW TO ADD THIS --}}
+
+    {{!-- {{ log 'here' content.options.mode}}
+    <div class="form-group">
+        <label for="bonus">Roll Modifiers:</label>
+        <input title="Modify the roll based on the situation:
+               2 = will add 2
+               -2 = will subtract 2
+               1d4 = will add 1d4
+               -1d4 = will subtract 1d4
+               1d4 + 1d6 = will add both a 1d4 and 1d6 to your roll
+               1d20kh = will roll an extra dice at advantage
+               1d20kl = will roll an extra dice at disadvantage
+Full Example: 2d10 - 5 + 2d20kh + 1d4kl" type="text" name="bonusDice" value="" placeholder=" Bonus or Penalties"/>
+    </div>
+    <div class="form-group">
+        <fieldset>
+        <legend>Select normal/advantage/disadvantage</legend>
+        <div>
+            <input type="radio" id="normal" name="mode" value="normal" {{{setChecked content.options.mode 'normal'}}}/>
+            <label for="normal">Normal</label>
+        </div>
+        <div>
+            <input type="radio" id="advantage" name="mode" value="advantage" {{{setChecked content.options.mode 'advantage'}}}/>
+            <label for="advantage">Advantage</label>
+        </div>
+        <div>
+            <input type="radio" id="disadvantage" name="mode" value="disadvantage" {{{setChecked content.options.mode 'disadvantage'}}}/>
+            <label for="disadvantage">Disadvantage</label>
+        </div>
+        <div data-tooltip="Target beyond long range, Nat 20 required to hit">
+            <input type="radio" id="hailmary" name="mode" value="normal" {{{setChecked content.options.mode 'hailmary'}}}/>
+            <label for="hailmary">Hail Mary!</label>
+        </div>
+    </div>
+    <div>
+        <div class="form-group" style="text-align:right;">
+            <table style="background:none;border:none;">
+                <tr style="background:none;border:none;">
+                    <td><label>Targeted Attack: </label></td>
+                    <td><input type="checkbox" name="targeted" value="false" /></td>
+                </tr>
+                <tr style="background:none;border:none;">
+                    <td><label>Free Attack: </label></td>
+                    <td><input type="checkbox" name="freeAttack" value="false" /></td>
+                </tr>
+            </table>
+
+</div>
+</form>
+
+<div class="dialog-buttons">
+    {{#each buttons as |button id|}}
+    <button class="dialog-button" data-button="{{id}}">
+        {{{button.icon}}}
+        {{{button.label}}}
+    </button>
+    {{/each}}
+</div> --}}

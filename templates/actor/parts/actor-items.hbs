@@ -5,11 +5,9 @@
       {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
     </td>
     <td class="armorbox">
-      <h3>Ammo</h3>
-      {{>
-            "systems/arcane-arcade-fallout/templates/actor/items/ammo.hbs"
-            ammos=ammos
-      }}
+      <details {{#if system.combatActionsexpanded }} open="true" {{/if}}><summary data-combatExpand style="padding:7.5px;">Combat Actions</summary>
+      {{> "systems/arcane-arcade-fallout/templates/actor/items/combat-actions.hbs" }}
+        </details>
     </td>
   </tr>
 </table>
