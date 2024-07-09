@@ -84,7 +84,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
    *
    * @return {undefined}
    */
-  _prepareCharacterData(context) {}
+  _prepareCharacterData() {}
 
   /**
    * Organize and classify Items for Character sheets.
@@ -248,6 +248,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const item = ev.currentTarget.dataset.itemid
       this.actor.expandtoggle(item)
     })
+    //Set Expanded
+    html.on('click', '[data-combatExpand]', (ev) => {
+      this.actor.combatexpandetoggle()
+    })
     //show rule information
     html.on('click', '[data-condition]', (ev) => {
       const condition = ev.currentTarget.dataset.condition
@@ -268,10 +272,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const stamina = ev.currentTarget.dataset.stamina
       this.actor.staminaupdate(stamina)
     })
-    //action points update
+    //action points +/- functionality
     html.on('click', '[data-action]', (ev) => {
       const action = ev.currentTarget.dataset.action
       this.actor.actionupdate(action)
+    })
+    //general action points update
+    html.on('click', '[data-apusage]', (ev) => {
+      const cost = ev.currentTarget.dataset.apusage
+      this.actor.generalAPuse(cost)
     })
 
     //ap refill
@@ -318,40 +327,45 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
 
     // weapon roll
-    html.on('click', '[data-weapon-roll]', (ev) => {
+    html.on('click', '[data-weapon-roll]', async (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
-      const mode = ev.currentTarget.dataset.disadvantage ? 'disadvantage' : 'normal'
-      const item = this.actor.items.get(weaponId)
-      return new Dialog(
-        {
-          title: `Attack roll with ${item.name}`,
-          content: {
-            options: { mode },
-          },
-          buttons: {
-            Roll: {
-              icon: '<i class="fas fa-check"></i>',
-              label: 'Roll!',
-              callback: (html, event) => {
-                event.preventDefault()
-                const form = html[0].querySelector('form')
-                const rollState = form.elements['mode'].value
+      const advantageMode = ev.currentTarget.dataset.disadvantage ? '2' : '1'
+      const weapon = this.actor.items.get(weaponId)
 
-                if (form.elements['targeted'].value) {
-                  this._targetedAttack(weaponId, rollState)
-                } else {
-                  this.actor.rollWeapon(weaponId, { rollState })
-                }
-              },
-            },
-          },
-        },
-        {
-          classes: ['dialog'],
-          width: 400,
-          template: 'systems/arcane-arcade-fallout/templates/actor/dialog/attack.hbs',
-        },
-      ).render(true)
+      weapon.rollAttack({ advantageMode })
+
+      // TODO i'm not sure how to incorporate all this
+      //
+      // const mode = ev.currentTarget.dataset.disadvantage ? 'disadvantage' : ev.currentTarget.dataset.hailmary ? 'hailmary' : 'normal'
+      // const item = this.actor.items.get(weaponId)
+      // return new Dialog(
+      //   {
+      //     title: `Attack roll with ${item.name}`,
+      //     content: {
+      //       options: { mode },
+      //     },
+      //     default: 'accept',
+      //     buttons: {
+      //       Roll: {
+      //         icon: '<i class="fas fa-check"></i>',
+      //         label: 'Roll!',
+      //         callback: (html, event) => {
+      //           event.preventDefault()
+      //           const form = html[0].querySelector('form')
+      //           const rollState = form.elements['mode'].value
+      //           const freeAttack = form.elements['freeAttack'].value
+      //           const bonusDice = form.elements['bonusDice'].value
+      //           this.actor.rollWeapon(weaponId, { rollState },freeAttack,bonusDice)
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     classes: ['dialog'],
+      //     width: 400,
+      //     template: 'systems/arcane-arcade-fallout/templates/actor/dialog/attack.hbs',
+      //   },
+      // ).render(true)
     })
 
     // Render the item sheet for viewing/editing prior to the editable check.
@@ -493,58 +507,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         li.addEventListener('dragstart', handler, false)
       })
     }
-  }
-
-  /**
-   * @param {string} rollState - normal - advantage - disadvantage - hailmary
-   */
-  _targetedAttack(weaponId, rollState) {
-    return new Dialog(
-      {
-        title: `Targeted Attack`,
-        content: {
-          targets: [
-            {
-              label: 'Head',
-            },
-            {
-              label: 'Eyes',
-            },
-            {
-              label: 'Arm',
-            },
-            {
-              label: 'Torso',
-            },
-            {
-              label: 'Groin',
-            },
-            {
-              label: 'Leg',
-            },
-            {
-              label: 'Held or carried object',
-            },
-          ],
-        },
-        buttons: {
-          Roll: {
-            icon: '<i class="fas fa-check"></i>',
-            label: 'Roll!',
-            callback: (html, event) => {
-              event.preventDefault()
-              this.actor.rollWeapon(weaponId, { rollState })
-            },
-          },
-        },
-      },
-      {
-        classes: ['dialog'],
-        width: 400,
-        height: 500,
-        template: 'systems/arcane-arcade-fallout/templates/actor/dialog/targeted-attack.hbs',
-      },
-    ).render(true)
   }
 
   _deleteGrantedItems(item) {

@@ -19,8 +19,22 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
-
-
+  lowerInventory(itemId) {
+    const item = this.items.get(itemId)
+    console.log(item)
+    const updatedQty = item.system.quantity - 1
+    item.update({ 'system.quantity': updatedQty })
+  }
+  combatexpandetoggle() {
+    const currentState = this.system.combatActionsexpanded
+    if (currentState == true) {
+      this.update({ 'system.combatActionsexpanded': false })
+    } else if (currentState == false) {
+      this.update({ 'system.combatActionsexpanded': true })
+    } else {
+      return
+    }
+  }
   limbcondition(limb) {
     ui.notifications.notify(`${limb} was Clicked!`)
   }
@@ -118,10 +132,21 @@ export default class FalloutZeroActor extends Actor {
     let newAction = ''
     if (operator === 'plus') {
       newAction = this.system.actionPoints.value + 1
-    } else {
+    } else if (operator === 'minus') {
       newAction = this.system.actionPoints.value - 1
+    } else {
+      return
     }
     this.update({ 'system.actionPoints.value': newAction })
+  }
+  generalAPuse(cost) {
+    const currentAP = this.system.actionPoints.value
+    const newAP = Number(currentAP) - Number(cost)
+    if (newAP < 0) {
+      ui.notifications.warn(`You don't have enough AP to perform this action!`)
+      return
+    }
+    this.update({ 'system.actionPoints.value': newAP })
   }
 
   skilladdition(skill) {
@@ -260,12 +285,7 @@ export default class FalloutZeroActor extends Actor {
     }
   }
   apUsed(weaponId) {
-    let currentAp
-    if (this.type === 'character') {
-      currentAp = this.actionPoints.value
-    } else {
-      currentAp = this.system.actionPoints.value
-    }
+    const currentAp = this.system.actionPoints.value
     const weapon = this.items.get(weaponId)
     const apCost = weapon.system.apCost
     const newAP = Number(currentAp) - Number(apCost)
@@ -278,10 +298,13 @@ export default class FalloutZeroActor extends Actor {
     this.update({ 'system.actionPoints.value': Number(newAP) })
   }
 
-  rollWeapon(weaponId, options = { rollMode: 'normal' }) {
+  rollWeapon(weaponId, options = { rollMode: 'normal' }, freeAttack, bonusDice) {
     const currentAp = this.system.actionPoints.value
     const weapon = this.items.get(weaponId)
-    const apCost = weapon.system.apCost
+    let apCost = weapon.system.apCost
+    if (freeAttack) {
+      apCost = 0
+    }
     const newAP = Number(currentAp) - Number(apCost)
     // if action would reduce AP below 0
     if (newAP < 0) {
@@ -314,7 +337,7 @@ export default class FalloutZeroActor extends Actor {
 
     // roll to hit
     let roll = new Roll(
-      this.getWeaponRollFormula(weaponId, { rollState: options.rollState }),
+      this.getWeaponRollFormula(weaponId, { rollState: options.rollState }, bonusDice),
       this.getRollData(),
     )
     roll.toMessage({
@@ -326,23 +349,15 @@ export default class FalloutZeroActor extends Actor {
     return roll
   }
 
-  getWeaponRollFormula(weaponId, options = { rollState: 'normal' }) {
+  getWeaponRollFormula(weaponId, options = { rollState: 'normal' }, bonusDice) {
     const weapon = this.items.get(weaponId)
     const { rollState } = options
-    let skillBonusValue
-    if (this.type === 'character') {
-      skillBonusValue =
-        this.system.skills[weapon.system.skillBonus].base +
-        this.system.skills[weapon.system.skillBonus].modifiers
-    } else {
-      skillBonusValue = this.system.skills[weapon.system.skillBonus].value
-    }
+    let skillBonusValue = this.system.skills[weapon.system.skillBonus].value
     const abilityMod = this.system.abilities[weapon.system.abilityMod].mod ?? 0
-
     const decayValue = (weapon.system.decay - 10) * -1
     const dice =
       rollState === 'advantage' ? '2d20kh' : rollState === 'disadvantage' ? '2d20kl' : '1d20'
-    return `${dice} + ${skillBonusValue} + ${abilityMod} - ${this.system.penaltyTotal} - ${decayValue} + ${this.system.luckmod}`
+    return `${dice} + ${bonusDice}+ ${skillBonusValue} + ${abilityMod} - ${this.system.penaltyTotal} - ${decayValue} + ${this.system.luckmod}`
   }
 
   // Ammo Swap Button is Pressed
@@ -597,6 +612,7 @@ export default class FalloutZeroActor extends Actor {
 
   //All loot container types are rolled here and exceptions are managed, loot is returned
   async rollContainer(result, myTotal = 0, formula = 0) {
+    console.log(this)
     let table = await this.findTable(result.text)
     let myLoot = ``
     let myTooltip = ``
@@ -605,9 +621,9 @@ export default class FalloutZeroActor extends Actor {
       var substrings = result.text.split('&')
       for (var matches of substrings) {
         var match = matches.match(/\{(.*?)\}/)
-        table = await this.system.findTable(match[1])
+        table = await this.findTable(match[1])
         if (table) {
-          myLoot += await this.system.rollMyTable(table)
+          myLoot += await this.rollMyTable(table)
         }
       }
     } else {
@@ -811,9 +827,10 @@ export default class FalloutZeroActor extends Actor {
         // public chat loot
         this.determineNpcLoot(selectPC.actor.name, false, '')
       }
+    } else {
+      // ask for character and player if none selected
+      this.pcLuckDialog()
     }
-    // ask for character and player if none selected
-    this.pcLuckDialog()
   }
 
   formatDice(formula) {
@@ -836,7 +853,7 @@ export default class FalloutZeroActor extends Actor {
         (u) => u.name.toLowerCase() == itemName.toLowerCase(),
       )
       if (myItem) {
-        return `<a class="content-link" style="color:black" draggable="true" data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
+        return `<a class="content-link" style="color:black" draggable="true" data-link data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
           data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="${myTooltip}"><i class="fas fa-suitcase">
           </i>${itemName}</a><br>`
       } else {

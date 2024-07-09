@@ -141,7 +141,7 @@ async getMyItem (pack, id){
   let myItem = await pack.getDocument(id);
   cost.innerHTML = `  (${myItem.system.baseCost} caps)` 
   details.innerHTML = `
-    <a class="content-link" style="color:black" draggable="true" data-uuid="${myItem.uuid}"
+    <a class="content-link" style="color:black" draggable="true" data-link data-uuid="${myItem.uuid}"
       data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="Click for details">
     <i class="fas fa-suitcase">
     </i>${myItem.name}

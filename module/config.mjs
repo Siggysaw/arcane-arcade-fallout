@@ -203,6 +203,53 @@ FALLOUTZERO.skills = {
   },
 }
 
+FALLOUTZERO.limbdamage = {
+  Eye_Gouged: {
+    label:'Eye Gouged',
+    description: `The target’s Perception ability score is reduced by 2. If both eyes are gouged, the target creature is permanently blinded. (But can take the Blind Devil perk!) Concussion. The target has three permanent levels of exhaustion for a number of days equal to the target’s Endurance ability score - 10 (to a minimum of 1).`
+  },
+  Broken_Arm: {
+    label: 'Broken Arm',
+    description: `The target has disadvantage on any ability check, skill check, or attack roll that uses Strength or Agility that require two arms. This condition can be removed with a doctor’s bag.`
+  },
+  Severed_Arm_or_Hand: {
+    label: 'Severed Arm/Hand',
+    description: `The target loses a hand if their Luck score is equal to 6 or higher. The target loses an arm if their Luck score is equal to 5 or lower. If the target loses their hand: they go into shock, gain two levels of bleeding, and their Agility ability score is reduced by 2. If the target loses their arm: they go into shock, gain four levels of bleeding, and their Agility ability score is reduced by 2 and their Strength ability score is reduced by 2. (But can take the Adaptive Reflexes perk!)`
+  },
+  Rattled: {
+    label: 'Rattled',
+    description: `The target becomes frightened for 3 turns`
+  },
+  Sliced_Jugular: {
+    label: 'Sliced Jugular',
+    description: `The target gains four levels of bleeding and gains two at the start of each of their turns until all levels of bleeding are healed.`
+  },
+  Temporary_Blindness: {
+    label: 'Blindness',
+    description: `The target becomes blinded for the next hour or until all of their hit points are healed.`
+  },
+  Internal_Bleeding: {
+    label: 'Bleeding',
+    description: `The target gains one level of bleeding and gains one at the start of each of their turns until all levels of bleeding are healed.`
+  },
+  Intense_Agony: {
+    label: 'Intense Agony',
+    description: `The target goes into shock and is dazed for 2 turns.`
+  },
+  Severed_Leg_or_Foot: {
+    label: 'Severed Leg/Foot',
+    description: `The target loses a foot if their Luck score is equal to 6 or higher. The target loses their leg if their Luck score is equal to 5 or lower. If the target loses their foot: they go into shock, gain two levels of bleeding, and their Agility ability score is reduced by 2. If the target loses their leg: they go into shock, gain four levels of bleeding, and their Agility ability score is reduced by 2 and their Strength ability score is reduced by 2. (But can take the Adaptive Reflexes perk!). Additionally, a creature who loses their foot or leg can only move a maximum of 20 feet on a turn. If the target loses all of their feet or legs, they fall prone and their only movement option is to crawl.`
+  },
+  Gut_Wallop: {
+    label: 'Gut Wallop',
+    description: `The target becomes dazed for the next 2 turns.`
+  },
+  Painful_Collapse: {
+    label: 'Painful Collapse',
+    description: `The target falls prone and becomes dazed until the end of their next turn. Leg Cripple. The target can only move a maximum of 20 feet on a turn until all their hit points are healed.`
+  }
+}
+
 FALLOUTZERO.materials = {
   acid: {
     label: 'Acid',
@@ -451,8 +498,24 @@ FALLOUTZERO.rules = {
   Fatigue_and_Exhaustion:
     '<p>Fatigue</p><p>Whenever you roll a d20, the total is subtracted by 1 for each level of fatigue you have. You can only ever have a total of nine levels of fatigue. At the end of each of your turns you lose one level of fatigue.</p><p></p><p>Exhaustion</p><p>Whenever you roll a d20, the total is subtracted by 1 for each level of  exhaustion you have. When you gain your tenth level of exhaustion, you die. If you are a human, ghoul, or super mutant; you can remove one level of exhaustion after resting for at least 6 hours. If you are a robot or gen-2 synth; you can remove one level of exhaustion after resting for at least 2 hours.</p>',
   Irradiation: '10 Levels of Irradiation = 1 added level of Radiation.',
-  Area_of_Effect:
-    'Each creature and object in the radius of the first range that isn’t behind full cover takes full damage, while each creature and object in the radius of the second range that isn’t behind full cover takes half as much damage.<br><br>If an explosive only has one number listed, each creature or object in the radius takes full damage.',
+  Area_of_Effect: 'Each creature and object in the radius of the first range that isn’t behind full cover takes full damage, while each creature and object in the radius of the second range that isn’t behind full cover takes half as much damage.<br><br>If an explosive only has one number listed, each creature or object in the radius takes full damage.',
+  Dodge: `You prepare to move quickly out of the way of an attack or explosion. Until the start of your next turn, any attack roll made against you has disadvantage if you can see the attacker. Additionally, you can move up to 15 feet in reaction to any other creature's action one time before the start of your next turn. You lose this benefit if you are dying or you cannot spend AP to move.`,
+  Equip_a_Weapon: `. You take a weapon from your inventory and prepare to attack with it with any hands you have free. If you have a weapon in your hands already and have not stowed it, you drop it on the ground. `,
+  Escape_a_Grapple: `. If you are grappled, you make a contested Strength or Agility check against your grapplers Strength check to escape.`,
+  Grapple: `You use your appendages to hold someone in place, you must contest a Strength check against their Strength or Agility`,
+  Help: `You can lend your aid to another creature in the completion of a task. When you use your AP to Help, the creature you aid gains advantage on the next ability check it makes to perform the task you are helping with, provided that it makes the check before the start of your next turn. Alternatively, you can aid a friendly creature in attacking a creature within 5 feet of you. You feint, distract the target, or in some other way team up to make your ally’s attack more effective. If your ally attacks the target before your next turn, the first attack roll is made with advantage.`,
+  Hide: `When you take the Hide action, you make a Sneak check with the DC equal to any nearby enemies passive sense scores. In order to hide you must be heavily obscured or within full cover. You are hidden from any enemies that have a lower passive sense compared to your sneak roll. If you succeed, you gain certain benefits, as described in the “Unseen Attackers and Targets” section. While hiding, you are acting unpredictably to confuse your enemy. Enemies still know your general location and can move to try and make line of sight again to notice you. If you are no longer within full cover of an enemy you are hidden from, you are no longer hidden.`,
+  Interact_With_Object: `Interacting with an object falls under many categories of things you can do.<ul><li>open or close a door</li><li>pick up a dropped shiv</li><li>take a bottle cap from a table</li><li>pushing a button</li><li>extinguish a small flame</li><li>don a mask</li><li>pull the hood of your jacket up and over your head</li><li>put your ear to a door</li><li>kick a small stone</li><li>turn a key in a lock</li><li>hand an item to another character</li></ul>`,
+  Move_5_Feet: `You move 5 feet in any direction so long as your movement isn’t impeded or the area isn’t difficult terrain.`,
+  Ready: `You prepare an action with a trigger. You must specify what the trigger is and spend the necessary AP with an additional 2 AP. When the trigger occurs, you may perform the action. You cannot perform the action on a different trigger, nor do you regain the AP if the trigger never occurs. `,
+  Search: `You make an active perception check to look for someone or something hidden.`,
+  Shove: `You knock a target prone or push it away from you. The target must be no more than one size larger than you and must be within your reach. Instead of making an attack roll, you make an Unarmed check contested by the target’s Unarmed check or Agility check (the target chooses the ability to use). If you win the contest, you either knock the target prone or push it 5 feet away from you.`,
+  Sprint: `You can spend 5 action points on your turn to sprint. When you sprint, you move 50 feet in a line. If you stop or are obstructed before you move 50 feet, your movement ends and you do not regain any action points.`,
+  Stand_Up_From_Prone: `You stand back up from being prone`,
+  Stow_a_Weapon: `You take a weapon you are holding and put it into your inventory`,
+  Take_Cover: `If you only have three quarters or half cover, you can spend 3 AP to squat, kneel, or duck into cover to gain full cover. If you attack while taking cover, you no longer have full cover. `,
+  Unarmed_Strike: `You punch, kick, jab, slap, or perform any kind of attack to another creature within 5 feet of you.`,
+  Use_a_Chem:`When you take this action, you take the chem out of your inventory and use it. You don’t need to interact with the object or equip the chem in order to use it.`
 }
 
 //MONSTER LOOT as described in the book (v2.0)

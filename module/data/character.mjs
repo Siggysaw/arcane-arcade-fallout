@@ -23,6 +23,15 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         return obj
       }, {}),
     )
+    schema.limbdamage = new fields.SchemaField(
+      Object.keys(FALLOUTZERO.limbdamage).reduce((obj, damage) => {
+        obj[damage] = new fields.SchemaField({
+          label: new fields.StringField({ required: true }),
+          description: new fields.StringField({}),
+        })
+        return obj
+      }, {}),
+    )
 
     schema.carryLoad = new fields.SchemaField({
       value: new fields.NumberField({
@@ -45,15 +54,15 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.combatSequence = new fields.NumberField({ initial: 0 })
     schema.partyNerve = new fields.NumberField({ initial: 0 })
     schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
-    schema.passiveSense = new fields.NumberField({
-      ...requiredInteger,
-      initial: 0,
+    schema.combatActionsexpanded = new fields.BooleanField({ initial: false })
+    schema.passiveSense = new fields.NumberField({...requiredInteger,   initial: 0,
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
     schema.conditions = new fields.SchemaField({
       Blinded: new fields.BooleanField({ initial: false }),
       Bleeding: new fields.BooleanField({ initial: false }),
+      BleedingLvls: new fields.NumberField({ initial: 0 }),
       Burning: new fields.BooleanField({ initial: false }),
       Buzzed: new fields.BooleanField({ initial: false }),
       Corroded: new fields.BooleanField({ initial: false }),
@@ -82,6 +91,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     super.prepareBaseData()
     for (const key in this.penalties) {
       this.penalties[key].label = FALLOUTZERO.penalties[key]
+    }
+    for (const key in this.limbdamage) {
+      this.limbdamage[key].description = FALLOUTZERO.limbdamage[key].description
+      this.limbdamage[key].label = FALLOUTZERO.limbdamage[key].label
+     
     }
   }
 

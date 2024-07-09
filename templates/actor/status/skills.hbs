@@ -1,48 +1,46 @@
 Points: {{#Sum startingSkillpoints skillPool}}{{/Sum}}
 <table>
-  <tr>
-    {{#each skills as |skill key|}}
-  </tr>
+    <tr>
+        {{#each skills as |skill key|}}
+    </tr>
 
-  <tr>
-    <td>
-      {{#each skill.ability as |abilityKey|}}
+    <tr>
+        <td>
+            {{#each skill.ability as |abilityKey|}}
 
-      <p class="specialroll">
-        <label
-          for="{{ abilityKey }}"
-          class="resource-label rollable"
-          data-rollable
-          data-roll="d20+{{#Sum skill.base skill.modifiers}}{{/Sum}}+{{#with (lookup ../../abilities [abilityKey])}} {{
+            <p class="specialroll">
+                <label for="{{ abilityKey }}"
+                       class="resource-label rollable"
+                       data-rollable
+                       data-roll="d20+{{#Sum skill.base skill.modifiers}}{{/Sum}}+{{#with (lookup ../../abilities [abilityKey])}} {{
             mod
           }} {{/with}}-{{../../penaltyTotal}}+@luckmod"
-          data-label="Performed a {{
+                       data-label="Performed a {{
             skill.label
-          }} roll using {{#with (lookup ../../abilities [abilityKey])}}{{ label }} {{/with}}"
-        >
-          {{ abilityKey }}
-        </label>
-      </p>
-      {{/each}}
-    </td>
-    <td class="skill-label" title="Base: {{ skill.base }} Modifier: {{ skill.modifiers }}">
-      {{ skill.label }}
-    </td>
-    <td class="skill-value">
-      <i
-        style="padding: 3px"
-        data-skillsubtraction
-        data-skill="{{ skill.id }}"
-        class="fas fa-minus-square fakebutton nobackground"
-      ></i>
-      {{skill.value}}
-      <i
-        style="padding: 3px"
-        data-skilladdition
-        data-skill="{{ skill.id }}"
-        class="fas fa-plus-square fakebutton nobackground"
-      ></i>
-    </td>
-  </tr>
-  {{/each}}
+          }} roll using {{#with (lookup ../../abilities [abilityKey])}}{{ label }} {{/with}}">
+                    {{ abilityKey }}
+                </label>
+            </p>
+            {{/each}}
+        </td>
+        <td class="skill-label" title="Base: {{ skill.base }} Modifier: {{ skill.modifiers }}">
+            {{ skill.label }}
+        </td>
+        <td class="skill-value">
+            <i style="padding: 3px"
+               data-skillsubtraction
+               data-skill="{{ skill.id }}"
+               class="fas fa-minus-square fakebutton nobackground"></i>
+            {{skill.value}}
+            <i style="padding: 3px"
+               data-skilladdition
+               data-skill="{{ skill.id }}"
+               class="fas fa-plus-square fakebutton nobackground"></i>
+        </td>
+    </tr>
+    {{/each}}
 </table>
+
+{{#each penalties}}
+{{penalty.label}}<br />
+{{/each}}
