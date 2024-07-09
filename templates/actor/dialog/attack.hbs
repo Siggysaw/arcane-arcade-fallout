@@ -1,40 +1,103 @@
 <form autocomplete="off">
-    <div class="form-group">
-        <label for="bonus">Situational bonus</label>
-        <input type="text" name="bonus" value="" placeholder="1d4"/>
+  <div class="form-group">
+    <fieldset>
+      <legend>Bonuses / Penalties</legend>
+      <div class="flex space-between">
+        <div>Skill Bonus:</div>
+        <div>{{ skillBonus }}</div>
+      </div>
+      <div class="flex space-between">
+        <div>Ability Bonus:</div>
+        <div>{{ abilityBonus }}</div>
+      </div>
+      <div class="flex space-between">
+        <div>Decay Penalty:</div>
+        <div>{{ decayPenalty }}</div>
+      </div>
+      <div class="flex space-between">
+        <div>Luck:</div>
+        <div>{{ actorLuck }}</div>
+      </div>
+      <div class="flex space-between">
+        <div>Penalties:</div>
+        <div>{{ actorPenalties }}</div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="form-group">
+    <fieldset>
+      <legend>Select normal / advantage / disadvantage</legend>
+      <div>
+        <input
+          type="radio"
+          id="normal"
+          name="advantageMode"
+          value="1"
+          {{{setChecked
+          advantageMode
+          1}}}
+        />
+        <label for="normal">Normal</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="advantage"
+          name="advantageMode"
+          value="2"
+          {{{setChecked
+          advantageMode
+          2}}}
+        />
+        <label for="advantage">Advantage</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="disadvantage"
+          name="advantageMode"
+          value="3"
+          {{{setChecked
+          advantageMode
+          3}}}
+        />
+        <label for="disadvantage">Disadvantage</label>
+      </div>
+      <div data-tooltip="Target beyond long range, Nat 20 required to hit">
+        <input
+          type="radio"
+          id="hailmary"
+          name="advantageMode"
+          value="4"
+          {{{setChecked
+          advantageMode
+          4}}}
+        />
+        <label for="hailmary">Hail Mary!</label>
+      </div>
+    </fieldset>
+  </div>
+  <div class="form-group">
+    <label for="bonus">Situational bonus</label>
+    <input type="text" name="bonus" value="{{ bonus }}" placeholder="1d4" />
+  </div>
+  <div class="form-group">
+    {{#unless targeted}}
+    <button type="button" data-add-target>Add Target</button>
+    {{else}}
+    <div class="targeted flex">
+      <div>
+        <div>Target: {{ targeted }}</div>
+      </div>
+      <div>
+        <button type="button" data-remove-target><i class="fas fa-trash"></i></button>
+      </div>
     </div>
-    <div class="form-group">
-        <fieldset>
-        <legend>Select normal/advantage/disadvantage</legend>
-        <div>
-            <input type="radio" id="normal" name="mode" value="normal" {{{setChecked content.options.mode 'normal'}}}/>
-            <label for="normal">Normal</label>
-        </div>
-        <div>
-            <input type="radio" id="advantage" name="mode" value="advantage" {{{setChecked content.options.mode 'advantage'}}}/>
-            <label for="advantage">Advantage</label>
-        </div>
-        <div>
-            <input type="radio" id="disadvantage" name="mode" value="disadvantage" {{{setChecked content.options.mode 'disadvantage'}}}/>
-            <label for="disadvantage">Disadvantage</label>
-        </div>
-        <div data-tooltip="Target beyond long range, Nat 20 required to hit">
-            <input type="radio" id="hailmary" name="mode" value="normal" {{{setChecked content.options.mode 'hailmary'}}}/>
-            <label for="hailmary">Hail Mary!</label>
-        </div>
-    </div>
-    <div>
-    <div class="form-group">
-        <label>Targeted attack?</label>
-        <input type="checkbox" name="targeted" value="false" placeholder="1d4"/>
-    </div>
+    {{/unless}}
+  </div>
 </form>
 
-<div class="dialog-buttons">
-    {{#each buttons as |button id|}}
-    <button class="dialog-button" data-button="{{id}}">
-        {{{button.icon}}}
-        {{{button.label}}}
-    </button>
-    {{/each}}
+<div class="dialog-buttons flex">
+  <button>Cancel</button>
+  <button>Roll</button>
 </div>

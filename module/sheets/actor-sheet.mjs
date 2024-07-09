@@ -84,7 +84,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
    *
    * @return {undefined}
    */
-  _prepareCharacterData(context) {}
+  _prepareCharacterData() {}
 
   /**
    * Organize and classify Items for Character sheets.
@@ -318,40 +318,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
 
     // weapon roll
-    html.on('click', '[data-weapon-roll]', (ev) => {
+    html.on('click', '[data-weapon-roll]', async (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
-      const mode = ev.currentTarget.dataset.disadvantage ? 'disadvantage' : 'normal'
-      const item = this.actor.items.get(weaponId)
-      return new Dialog(
-        {
-          title: `Attack roll with ${item.name}`,
-          content: {
-            options: { mode },
-          },
-          buttons: {
-            Roll: {
-              icon: '<i class="fas fa-check"></i>',
-              label: 'Roll!',
-              callback: (html, event) => {
-                event.preventDefault()
-                const form = html[0].querySelector('form')
-                const rollState = form.elements['mode'].value
+      const advantageMode = ev.currentTarget.dataset.disadvantage ? '2' : '1'
+      const weapon = this.actor.items.get(weaponId)
 
-                if (form.elements['targeted'].value) {
-                  this._targetedAttack(weaponId, rollState)
-                } else {
-                  this.actor.rollWeapon(weaponId, { rollState })
-                }
-              },
-            },
-          },
-        },
-        {
-          classes: ['dialog'],
-          width: 400,
-          template: 'systems/arcane-arcade-fallout/templates/actor/dialog/attack.hbs',
-        },
-      ).render(true)
+      weapon.rollAttack({ advantageMode })
     })
 
     // Render the item sheet for viewing/editing prior to the editable check.
@@ -493,58 +465,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         li.addEventListener('dragstart', handler, false)
       })
     }
-  }
-
-  /**
-   * @param {string} rollState - normal - advantage - disadvantage - hailmary
-   */
-  _targetedAttack(weaponId, rollState) {
-    return new Dialog(
-      {
-        title: `Targeted Attack`,
-        content: {
-          targets: [
-            {
-              label: 'Head',
-            },
-            {
-              label: 'Eyes',
-            },
-            {
-              label: 'Arm',
-            },
-            {
-              label: 'Torso',
-            },
-            {
-              label: 'Groin',
-            },
-            {
-              label: 'Leg',
-            },
-            {
-              label: 'Held or carried object',
-            },
-          ],
-        },
-        buttons: {
-          Roll: {
-            icon: '<i class="fas fa-check"></i>',
-            label: 'Roll!',
-            callback: (html, event) => {
-              event.preventDefault()
-              this.actor.rollWeapon(weaponId, { rollState })
-            },
-          },
-        },
-      },
-      {
-        classes: ['dialog'],
-        width: 400,
-        height: 500,
-        template: 'systems/arcane-arcade-fallout/templates/actor/dialog/targeted-attack.hbs',
-      },
-    ).render(true)
   }
 
   _deleteGrantedItems(item) {

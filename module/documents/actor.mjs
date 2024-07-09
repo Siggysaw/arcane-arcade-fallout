@@ -20,7 +20,6 @@ export default class FalloutZeroActor extends Actor {
     return data
   }
 
-
   limbcondition(limb) {
     ui.notifications.notify(`${limb} was Clicked!`)
   }
@@ -278,11 +277,31 @@ export default class FalloutZeroActor extends Actor {
     this.update({ 'system.actionPoints.value': Number(newAP) })
   }
 
-  rollWeapon(weaponId, options = { rollMode: 'normal' }) {
+  getTargetedApCost(target) {
+    switch (target) {
+      case 'eyes':
+        return 5
+      case 'head':
+        return 4
+      case 'arm':
+        return 3
+      case 'torso':
+        return 2
+      case 'groin':
+        return 3
+      case 'leg':
+        return 2
+      case 'object':
+        return 3
+    }
+  }
+
+  rollWeapon(weapon, options = { rollMode: 'normal', target: null, bonus: '' }) {
     const currentAp = this.system.actionPoints.value
-    const weapon = this.items.get(weaponId)
-    const apCost = weapon.system.apCost
-    const newAP = Number(currentAp) - Number(apCost)
+    const newAP =
+      Number(currentAp) -
+      (options.target ? this.getTargetedApCost(options.target) : Number(weapon.system.apCost))
+
     // if action would reduce AP below 0
     if (newAP < 0) {
       ui.notifications.warn(`Not enough AP for action`)
@@ -313,36 +332,17 @@ export default class FalloutZeroActor extends Actor {
     this.update({ 'system.actionPoints.value': Number(newAP) })
 
     // roll to hit
-    let roll = new Roll(
-      this.getWeaponRollFormula(weaponId, { rollState: options.rollState }),
-      this.getRollData(),
-    )
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this }),
-      flavor: `BOOM! Attack with a ${weapon.name}`,
-      rollMode: game.settings.get('core', 'rollMode'),
-    })
+    // let roll = new Roll(
+    //   this.getWeaponRollFormula(weaponId, { rollState: options.rollState }),
+    //   this.getRollData(),
+    // )
+    // roll.toMessage({
+    //   speaker: ChatMessage.getSpeaker({ actor: this }),
+    //   flavor: `BOOM! Attack with a ${weapon.name}`,
+    //   rollMode: game.settings.get('core', 'rollMode'),
+    // })
 
-    return roll
-  }
-
-  getWeaponRollFormula(weaponId, options = { rollState: 'normal' }) {
-    const weapon = this.items.get(weaponId)
-    const { rollState } = options
-    let skillBonusValue
-    if (this.type === 'character') {
-      skillBonusValue =
-        this.system.skills[weapon.system.skillBonus].base +
-        this.system.skills[weapon.system.skillBonus].modifiers
-    } else {
-      skillBonusValue = this.system.skills[weapon.system.skillBonus].value
-    }
-    const abilityMod = this.system.abilities[weapon.system.abilityMod].mod ?? 0
-
-    const decayValue = (weapon.system.decay - 10) * -1
-    const dice =
-      rollState === 'advantage' ? '2d20kh' : rollState === 'disadvantage' ? '2d20kl' : '1d20'
-    return `${dice} + ${skillBonusValue} + ${abilityMod} - ${this.system.penaltyTotal} - ${decayValue} + ${this.system.luckmod}`
+    // return roll
   }
 
   // Ammo Swap Button is Pressed
