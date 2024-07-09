@@ -101,13 +101,18 @@ export default class AttackRoll extends FormApplication {
 
   activateListeners($html) {
     const html = $html[0]
+
     const addTarget = html.querySelector('[data-add-target]')
     addTarget?.addEventListener('click', () => this.renderTargetedDialog())
+
     const removeTarget = html.querySelector('[data-remove-target]')
     removeTarget?.addEventListener('click', () => {
       this.formDataCache.targeted = false
       this.render()
     })
+
+    const closeButton = html.querySelector('[data-close]')
+    closeButton?.addEventListener('click', this.close())
   }
 
   async _updateObject(event, formData) {
@@ -118,8 +123,10 @@ export default class AttackRoll extends FormApplication {
       return
     }
 
+    const { skillBonus, abilityBonus, decayPenalty, actorLuck, actorPenalties, bonus } =
+      this.formDataCache
     const roll = new Roll(
-      `${this.getDice()} + ${this.weaponRoll} + ${this.formDataCache.bonus || 0}`,
+      `${this.getDice()} + ${skillBonus} + ${abilityBonus} + ${actorLuck} + ${bonus || 0} - ${actorPenalties} - ${decayPenalty}`,
       this.actor.getRollData(),
     )
     roll.toMessage({
