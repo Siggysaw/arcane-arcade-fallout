@@ -2,6 +2,8 @@
 @import 'base.css';
 @import 'dialog.css';
 @import 'grant.css';
+@import 'attack-roll.css';
+@import 'targeted-attack.css';
 
 /* Global styles */
 @font-face {
@@ -574,8 +576,8 @@ td,
   font-size: 10pt;
   letter-spacing: 0rem;
 }
-.sheet .status-info-value{
-    font-size:10pt;
+.sheet .status-info-value {
+  font-size: 10pt;
 }
 .sheet. table .status-table {
   vertical-align: top;
@@ -920,11 +922,9 @@ form td .status-notes li:hover {
   width: 106px;
   background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg2.png');
 }
-.falloutzero .tox .tox-editor-container button{
-  background-color:white;
+.falloutzero .tox .tox-editor-container button {
+  background-color: white;
 }
-.falloutzero .tmce body{
-    color:blue;
+.falloutzero .tmce body {
+  color: blue;
 }
-
-

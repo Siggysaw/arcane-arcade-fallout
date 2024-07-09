@@ -1,3 +1,5 @@
+import AttackRoll from '../dice/attack-roll.mjs'
+
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -38,6 +40,11 @@ export default class FalloutZeroItem extends Item {
     }
   }
 
+  /** @inheritDoc */
+  prepareDerivedData() {
+    super.prepareDerivedData()
+  }
+
   /**
    * Prepare a data object which defines the data schema used by dice roll commands against this Item
    * @override
@@ -53,5 +60,45 @@ export default class FalloutZeroItem extends Item {
     rollData.actor = this.actor.getRollData()
 
     return rollData
+  }
+
+  getSkillBonus() {
+    if (this.actor.type === 'character') {
+      return (
+        this.actor.system.skills[this.system.skillBonus].base +
+        this.actor.system.skills[this.system.skillBonus].modifiers
+      )
+    } else {
+      return this.actor.system.skills[this.system.skillBonus].value
+    }
+  }
+
+  getAbilityBonus() {
+    return this.actor.system.abilities[this.system.abilityMod].mod ?? 0
+  }
+
+  getDecayValue() {
+    return (this.system.decay - 10) * -1
+  }
+
+  getActorLuck() {
+    return this.actor.system.luckmod
+  }
+
+  getActorPenalties() {
+    return this.actor.system.penaltyTotal
+  }
+
+  getWeaponRollFormula() {
+    let skillBonusValue = this.getSkillBonus(this.system.skillBonus)
+    const abilityMod = this.getAbilityBonus(this.system.abilityMod)
+
+    const decayValue = this.getDecayValue()
+    return `${skillBonusValue} + ${abilityMod} - ${this.getActorPenalties()} - ${decayValue} + ${this.getActorLuck()}`
+  }
+
+  async rollAttack({ advantageMode }) {
+    const roll = await new AttackRoll(this.actor, this, { advantageMode }, () => {})
+    await roll.render(true)
   }
 }

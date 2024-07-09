@@ -24,7 +24,6 @@ export default class FalloutZeroActor extends Actor {
     console.log(item)
     const updatedQty = item.system.quantity - 1
     item.update({ 'system.quantity': updatedQty })
-    
   }
   combatexpandetoggle() {
     const currentState = this.system.combatActionsexpanded
@@ -299,7 +298,7 @@ export default class FalloutZeroActor extends Actor {
     this.update({ 'system.actionPoints.value': Number(newAP) })
   }
 
-  rollWeapon(weaponId, options = { rollMode: 'normal' },freeAttack,bonusDice) {
+  rollWeapon(weaponId, options = { rollMode: 'normal' }, freeAttack, bonusDice) {
     const currentAp = this.system.actionPoints.value
     const weapon = this.items.get(weaponId)
     let apCost = weapon.system.apCost
@@ -338,7 +337,7 @@ export default class FalloutZeroActor extends Actor {
 
     // roll to hit
     let roll = new Roll(
-      this.getWeaponRollFormula(weaponId, { rollState: options.rollState },bonusDice),
+      this.getWeaponRollFormula(weaponId, { rollState: options.rollState }, bonusDice),
       this.getRollData(),
     )
     roll.toMessage({
@@ -350,10 +349,10 @@ export default class FalloutZeroActor extends Actor {
     return roll
   }
 
-  getWeaponRollFormula(weaponId, options = { rollState: 'normal' },bonusDice) {
+  getWeaponRollFormula(weaponId, options = { rollState: 'normal' }, bonusDice) {
     const weapon = this.items.get(weaponId)
     const { rollState } = options
-    let skillBonusValue =this.system.skills[weapon.system.skillBonus].value
+    let skillBonusValue = this.system.skills[weapon.system.skillBonus].value
     const abilityMod = this.system.abilities[weapon.system.abilityMod].mod ?? 0
     const decayValue = (weapon.system.decay - 10) * -1
     const dice =
