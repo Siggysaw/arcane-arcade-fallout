@@ -87,35 +87,41 @@
                 <div>
                 <tr><td>Name</td><td style="width:80px;">Qty</td><td>Properties</td><td></td></tr>
                 {{#each foodAnddrinks as |item id|}}
-                <tr>
-                    <td style="width: 100px">
-                        <a class="item-control"
-                           data-edit
-                           data-item-id="{{ item._id }}"
-                           title="{{localize 'DOCUMENT.Update' type='item'}}">
-                            {{ item.name }}
-                        </a>
-                    </td>
-                    <td>
-                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                        {{ system.quantity }}
-                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
-                    </td>
+            <tr>
+                <td style="width: 100px">
+                    <a class="item-control"
+                       data-edit
+                       data-item-id="{{ item._id }}"
+                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                        {{ item.name }}
+                    </a>
+                </td>
+                <td>
+                    <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
+                    {{ system.quantity }}
+                    <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
+                </td>
 
-                    <td data-properties="{{item.system.description}}">
-                        {{{ item.system.description }}}
-                    </td>
-                    <td class="td-controls" style="padding:0px;margin:0px;">
-                        <li class="item flexrow" data-item-id="{{ item._id }}">
-                            <div class="item-controls">
-                                <a class="item-control item-delete"
-                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </td>
-                </tr>
+                <td data-properties="{{item.system.description}}">
+                    {{{ item.system.description }}}
+                </td>
+                <td class="item-control">
+                    <span {{#GreaterThan item.system.quantity 1}}
+                          data-rollable
+                          data-lowerInventory="{{item._id}}"
+                          {{/GreaterThan}}>
+                        <i title="Eat/Drink" class="fas fa-drumstick-bite fakebutton nobackground"></i>
+                    </span>
+                    <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <div class="item-controls">
+                            <a class="item-control item-delete"
+                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                </td>
+            </tr>
                 {{/each}}
             </table>
             </div><br />
@@ -141,7 +147,13 @@
                     <td>
                         {{{ item.system.description }}}
                     </td>
-                    <td class="td-controls">
+                    <td class="item-control">
+                        <span {{#GreaterThan item.system.quantity 1}}
+                              data-rollable
+                              data-lowerInventory="{{item._id}}"
+                              {{/GreaterThan}}>
+                            <i title="Use Chem" class="fas fa-syringe fakebutton nobackground"></i>
+                            </span>
                         <li class="item flexrow" data-item-id="{{ item._id }}">
                             <div class="item-controls">
                                 <a class="item-control item-delete"

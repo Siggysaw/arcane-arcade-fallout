@@ -19,6 +19,13 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+  lowerInventory(itemId) {
+    const item = this.items.get(itemId)
+    console.log(item)
+    const updatedQty = item.system.quantity - 1
+    item.update({ 'system.quantity': updatedQty })
+    
+  }
   combatexpandetoggle() {
     const currentState = this.system.combatActionsexpanded
     if (currentState == true) {
@@ -279,12 +286,7 @@ export default class FalloutZeroActor extends Actor {
     }
   }
   apUsed(weaponId) {
-    let currentAp
-    if (this.type === 'character') {
-      currentAp = this.actionPoints.value
-    } else {
-      currentAp = this.system.actionPoints.value
-    }
+    const currentAp = this.system.actionPoints.value
     const weapon = this.items.get(weaponId)
     const apCost = weapon.system.apCost
     const newAP = Number(currentAp) - Number(apCost)
