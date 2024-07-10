@@ -47,6 +47,16 @@ export default class AttackRoll extends FormApplication {
     HAILMARY: 4,
   }
 
+  static TARGET_COST = {
+    eyes: 5,
+    head: 4,
+    arm: 3,
+    torso: 2,
+    groin: 3,
+    leg: 2,
+    carried: 3,
+  }
+
   async getData() {
     return {
       ...(await super.getData()),
@@ -116,25 +126,8 @@ export default class AttackRoll extends FormApplication {
     closeButton?.addEventListener('click', this.close())
   }
 
-  getTargetedApCost(target) {
-    switch (target) {
-      case 'eyes':
-        return 5
-      case 'head':
-        return 4
-      case 'arm':
-        return 3
-      case 'torso':
-        return 2
-      case 'groin':
-        return 3
-      case 'leg':
-        return 2
-      case 'carried':
-        return 3
-      default:
-        return 0
-    }
+  getTargetedApCost(target, isMelee = false) {
+    return AttackRoll.TARGET_COST[target] - isMelee ? 1 : 0
   }
 
   async _updateObject(event, formData) {
@@ -157,7 +150,9 @@ export default class AttackRoll extends FormApplication {
      * Apply AP consumption
      */
     if (formData.consumesAp) {
-      const apCost = this.weapon.system.apCost + this.getTargetedApCost(this.formDataCache.targeted)
+      const apCost =
+        this.weapon.system.apCost +
+        this.getTargetedApCost(this.formDataCache.targeted, this.weapon.type === 'meleeWeapon')
       const canAfford = this.actor.applyApCost(apCost)
       if (!canAfford) return
     }
