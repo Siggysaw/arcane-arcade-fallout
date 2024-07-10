@@ -292,57 +292,6 @@ export default class FalloutZeroActor extends Actor {
     }
   }
 
-  rollWeapon(weaponId, options = { rollMode: 'normal' }, freeAttack, bonusDice) {
-    const currentAp = this.system.actionPoints.value
-    const weapon = this.items.get(weaponId)
-    let apCost = weapon.system.apCost
-    if (freeAttack) {
-      apCost = 0
-    }
-    const newAP = Number(currentAp) - Number(apCost)
-    // if action would reduce AP below 0
-    if (newAP < 0) {
-      ui.notifications.warn(`Not enough AP for action`)
-      return
-    }
-
-    if (weapon.system.consumesAmmo) {
-      // if weapon ammo capacity is 0
-      if (weapon.system.ammo.capacity.value < 1) {
-        ui.notifications.warn(`Weapon ammo is empty, need to reload`)
-        return
-      }
-      // Update ammo quantity
-      const ammoType = weapon.system.ammo.type
-      const foundAmmo = this.items.find((item) => item.name === ammoType)
-      if (foundAmmo) {
-        const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
-        this.updateEmbeddedDocuments('Item', [
-          {
-            _id: weapon._id,
-            'system.ammo.capacity.value': newWeaponAmmoCapacity,
-          },
-        ])
-      }
-    }
-
-    // update actor AP
-    this.update({ 'system.actionPoints.value': Number(newAP) })
-
-    // roll to hit
-    let roll = new Roll(
-      this.getWeaponRollFormula(weaponId, { rollState: options.rollState }, bonusDice),
-      this.getRollData(),
-    )
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this }),
-      flavor: `BOOM! Attack with a ${weapon.name}`,
-      rollMode: game.settings.get('core', 'rollMode'),
-    })
-
-    return roll
-  }
-
   getWeaponRollFormula(weaponId, options = { rollState: 'normal' }, bonusDice) {
     const weapon = this.items.get(weaponId)
     const { rollState } = options
