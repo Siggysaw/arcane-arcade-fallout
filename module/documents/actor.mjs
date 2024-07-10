@@ -380,7 +380,12 @@ export default class FalloutZeroActor extends Actor {
     const ammoFound = this.items.find((item) => item.name === ammoType)
 
     // Do you have Ammo?
-    if (!ammoFound || ammoFound.system.quantity === 0) {
+    if (!ammoFound) {
+      ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
+      return
+    }
+    const ammoOwned = ammoFound.system.quantity
+    if (ammoOwned === 0) {
       ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
       return
     }
