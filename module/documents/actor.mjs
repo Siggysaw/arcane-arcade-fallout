@@ -23,11 +23,12 @@ export default class FalloutZeroActor extends Actor {
     const item = this.items.get(itemId)
     const updatedQty = item.system.quantity - 1
     item.update({ 'system.quantity': updatedQty })
-
+    const description=item.system.description
+    let details = description.replace("<p>", "<p>Gained: ");
     let chatData = {
       user: game.user._id,
       speaker: ChatMessage.getSpeaker(),
-      flavor: `${item.name} used`,
+      flavor: `${item.name} used, ${details}`,
     }
     ChatMessage.create(chatData, {})
   }
