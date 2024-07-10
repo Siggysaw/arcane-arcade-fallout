@@ -265,8 +265,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
     //ap use
     html.on('click', '[data-ap-used]', (ev) => {
-      const cost = ev.currentTarget.dataset.apused
-      this.actor.applyApCost(cost)
+      const apused = ev.currentTarget.dataset.apused
+      console.log(apused)
+      this.actor.applyApCost(apused)
     })
     //health update
     html.on('click', '[data-health]', (ev) => {
