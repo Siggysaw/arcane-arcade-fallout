@@ -54,3 +54,6 @@
   margin-block-end: -4px;
   font-style: italic;
 }
+  .chat-sidebar .message-header .title {
+    color: #01e998
+  }
