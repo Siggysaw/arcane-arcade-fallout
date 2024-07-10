@@ -89,6 +89,32 @@ export default class FalloutZeroItem extends Item {
     return this.actor.system.penaltyTotal
   }
 
+  applyAmmoCost() {
+    if (this.system.ammo.capacity.value < 1) {
+      ui.notifications.warn(`Weapon ammo is empty, need to reload`)
+      return false
+    }
+
+    // Find ammo
+    const ammoType = this.system.ammo.type
+    const foundAmmo = this.actor.items.find((item) => item.name === ammoType)
+
+    if (!foundAmmo) {
+      ui.notifications.warn(`No ammo found for weapon`)
+      return false
+    }
+
+    // Update ammo quantity
+    const newWeaponAmmoCapacity = Number(this.system.ammo.capacity.value - 1)
+    this.actor.updateEmbeddedDocuments('Item', [
+      {
+        _id: this._id,
+        'system.ammo.capacity.value': newWeaponAmmoCapacity,
+      },
+    ])
+    return true
+  }
+
   getWeaponRollFormula() {
     let skillBonusValue = this.getSkillBonus(this.system.skillBonus)
     const abilityMod = this.getAbilityBonus(this.system.abilityMod)

@@ -146,11 +146,19 @@ export default class AttackRoll extends FormApplication {
     }
 
     /**
-     * Reduce AP if applicable
+     * Apply ammo consumption
+     */
+    if (this.weapon.system.consumesAmmo) {
+      const canAfford = this.weapon.applyAmmoCost()
+      if (!canAfford) return
+    }
+
+    /**
+     * Apply AP consumption
      */
     if (formData.consumesAp) {
       const apCost = this.weapon.system.apCost + this.getTargetedApCost(this.formDataCache.targeted)
-      const canAfford = this.actor.apCost(apCost)
+      const canAfford = this.actor.applyApCost(apCost)
       if (!canAfford) return
     }
 
@@ -172,39 +180,3 @@ export default class AttackRoll extends FormApplication {
     this.close()
   }
 }
-
-// const currentAp = this.system.actionPoints.value
-// const weapon = this.items.get(weaponId)
-// let apCost = weapon.system.apCost
-// if (freeAttack) {
-//   apCost = 0
-// }
-// const newAP = Number(currentAp) - Number(apCost)
-// // if action would reduce AP below 0
-// if (newAP < 0) {
-//   ui.notifications.warn(`Not enough AP for action`)
-//   return
-// }
-
-// if (weapon.system.consumesAmmo) {
-//   // if weapon ammo capacity is 0
-//   if (weapon.system.ammo.capacity.value < 1) {
-//     ui.notifications.warn(`Weapon ammo is empty, need to reload`)
-//     return
-//   }
-//   // Update ammo quantity
-//   const ammoType = weapon.system.ammo.type
-//   const foundAmmo = this.items.find((item) => item.name === ammoType)
-//   if (foundAmmo) {
-//     const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
-//     this.updateEmbeddedDocuments('Item', [
-//       {
-//         _id: weapon._id,
-//         'system.ammo.capacity.value': newWeaponAmmoCapacity,
-//       },
-//     ])
-//   }
-// }
-
-// // update actor AP
-// this.update({ 'system.actionPoints.value': Number(newAP) })
