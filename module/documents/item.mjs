@@ -99,10 +99,6 @@ export default class FalloutZeroItem extends Item {
     const ammoType = this.system.ammo.type
     const foundAmmo = this.actor.items.find((item) => item.name === ammoType)
 
-    if (!foundAmmo) {
-      ui.notifications.warn(`No ammo found for weapon`)
-      return false
-    }
 
     // Update ammo quantity
     const newWeaponAmmoCapacity = Number(this.system.ammo.capacity.value - 1)

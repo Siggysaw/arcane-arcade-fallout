@@ -21,9 +21,15 @@ export default class FalloutZeroActor extends Actor {
   }
   lowerInventory(itemId) {
     const item = this.items.get(itemId)
-    console.log(item)
     const updatedQty = item.system.quantity - 1
     item.update({ 'system.quantity': updatedQty })
+
+    let chatData = {
+      user: game.user._id,
+      speaker: ChatMessage.getSpeaker(),
+      flavor: `${item.name} used`,
+    }
+    ChatMessage.create(chatData, {})
   }
   combatexpandetoggle() {
     const currentState = this.system.combatActionsexpanded
@@ -424,12 +430,7 @@ export default class FalloutZeroActor extends Actor {
     const ammoFound = this.items.find((item) => item.name === ammoType)
 
     // Do you have Ammo?
-    if (!ammoFound) {
-      ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
-      return
-    }
-    const ammoOwned = ammoFound.system.quantity
-    if (ammoOwned === 0) {
+    if (!ammoFound || ammoFound.system.quantity === 0) {
       ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
       return
     }

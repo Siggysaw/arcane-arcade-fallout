@@ -103,8 +103,8 @@ export default class AttackRoll extends FormApplication {
       },
       {
         template: 'systems/arcane-arcade-fallout/templates/actor/dialog/targeted-attack.hbs',
-        width: 400,
-        height: 600,
+        width: 500,
+        height: 500,
         resizable: true,
       },
     ).render(true)

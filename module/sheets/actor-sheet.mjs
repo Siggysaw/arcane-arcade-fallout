@@ -200,6 +200,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html)
 
+    // Consume an Item
+    html.on('click', '[data-lowerInventory]', (ev) => {
+      const item = ev.currentTarget.dataset.lowerinventory
+      this.actor.lowerInventory(item)
+    })
+
     // Limb Clicked On
     html.on('click', '[data-limb]', (ev) => {
       const limb = ev.currentTarget.dataset.limb
