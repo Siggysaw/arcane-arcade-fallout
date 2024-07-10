@@ -139,14 +139,21 @@ export default class FalloutZeroActor extends Actor {
     }
     this.update({ 'system.actionPoints.value': newAction })
   }
-  generalAPuse(cost) {
+
+  /**
+   *
+   * @param {number} cost
+   * @returns true if successful or false if not enough AP
+   */
+  apCost(cost) {
     const currentAP = this.system.actionPoints.value
     const newAP = Number(currentAP) - Number(cost)
     if (newAP < 0) {
       ui.notifications.warn(`You don't have enough AP to perform this action!`)
-      return
+      return false
     }
     this.update({ 'system.actionPoints.value': newAP })
+    return true
   }
 
   skilladdition(skill) {
@@ -283,19 +290,6 @@ export default class FalloutZeroActor extends Actor {
         'system.actionPoints.value': 15,
       })
     }
-  }
-  apUsed(weaponId) {
-    const currentAp = this.system.actionPoints.value
-    const weapon = this.items.get(weaponId)
-    const apCost = weapon.system.apCost
-    const newAP = Number(currentAp) - Number(apCost)
-
-    if (newAP < 0) {
-      ui.notifications.warn(`Not enough AP for action`)
-      return
-    }
-
-    this.update({ 'system.actionPoints.value': Number(newAP) })
   }
 
   rollWeapon(weaponId, options = { rollMode: 'normal' }, freeAttack, bonusDice) {

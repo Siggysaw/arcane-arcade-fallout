@@ -6,6 +6,7 @@ export default class AttackRoll extends FormApplication {
     this.actor = actor
 
     this.formDataCache = {
+      consumesAp: true,
       skillBonus: this.weapon.getSkillBonus(),
       abilityBonus: this.weapon.getAbilityBonus(),
       decayPenalty: this.weapon.getDecayValue(),
@@ -115,6 +116,27 @@ export default class AttackRoll extends FormApplication {
     closeButton?.addEventListener('click', this.close())
   }
 
+  getTargetedApCost(target) {
+    switch (target) {
+      case 'eyes':
+        return 5
+      case 'head':
+        return 4
+      case 'arm':
+        return 3
+      case 'torso':
+        return 2
+      case 'groin':
+        return 3
+      case 'leg':
+        return 2
+      case 'carried':
+        return 3
+      default:
+        return 0
+    }
+  }
+
   async _updateObject(event, formData) {
     Object.assign(this.formDataCache, formData)
 
@@ -123,12 +145,23 @@ export default class AttackRoll extends FormApplication {
       return
     }
 
+    /**
+     * Reduce AP if applicable
+     */
+    if (formData.consumesAp) {
+      const apCost = this.weapon.system.apCost + this.getTargetedApCost(this.formDataCache.targeted)
+      const canAfford = this.actor.apCost(apCost)
+      if (!canAfford) return
+    }
+
     const { skillBonus, abilityBonus, decayPenalty, actorLuck, actorPenalties, bonus } =
       this.formDataCache
+
     const roll = new Roll(
       `${this.getDice()} + ${skillBonus} + ${abilityBonus} + ${actorLuck} + ${bonus || 0} - ${actorPenalties} - ${decayPenalty}`,
       this.actor.getRollData(),
     )
+
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: `BOOM! Attack with ${this.weapon.name}`,
@@ -139,3 +172,39 @@ export default class AttackRoll extends FormApplication {
     this.close()
   }
 }
+
+// const currentAp = this.system.actionPoints.value
+// const weapon = this.items.get(weaponId)
+// let apCost = weapon.system.apCost
+// if (freeAttack) {
+//   apCost = 0
+// }
+// const newAP = Number(currentAp) - Number(apCost)
+// // if action would reduce AP below 0
+// if (newAP < 0) {
+//   ui.notifications.warn(`Not enough AP for action`)
+//   return
+// }
+
+// if (weapon.system.consumesAmmo) {
+//   // if weapon ammo capacity is 0
+//   if (weapon.system.ammo.capacity.value < 1) {
+//     ui.notifications.warn(`Weapon ammo is empty, need to reload`)
+//     return
+//   }
+//   // Update ammo quantity
+//   const ammoType = weapon.system.ammo.type
+//   const foundAmmo = this.items.find((item) => item.name === ammoType)
+//   if (foundAmmo) {
+//     const newWeaponAmmoCapacity = Number(weapon.system.ammo.capacity.value - 1)
+//     this.updateEmbeddedDocuments('Item', [
+//       {
+//         _id: weapon._id,
+//         'system.ammo.capacity.value': newWeaponAmmoCapacity,
+//       },
+//     ])
+//   }
+// }
+
+// // update actor AP
+// this.update({ 'system.actionPoints.value': Number(newAP) })

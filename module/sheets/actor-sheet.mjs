@@ -259,8 +259,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
     //ap use
     html.on('click', '[data-ap-used]', (ev) => {
-      const weaponId = ev.currentTarget.dataset.weaponId
-      this.actor.apUsed(weaponId)
+      const cost = ev.currentTarget.dataset.apused
+      this.actor.apCost(cost)
     })
     //health update
     html.on('click', '[data-health]', (ev) => {
@@ -280,7 +280,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     //general action points update
     html.on('click', '[data-apusage]', (ev) => {
       const cost = ev.currentTarget.dataset.apusage
-      this.actor.generalAPuse(cost)
+      this.actor.apCost(cost)
     })
 
     //ap refill
@@ -333,39 +333,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const weapon = this.actor.items.get(weaponId)
 
       weapon.rollAttack({ advantageMode })
-
-      // TODO i'm not sure how to incorporate all this
-      //
-      // const mode = ev.currentTarget.dataset.disadvantage ? 'disadvantage' : ev.currentTarget.dataset.hailmary ? 'hailmary' : 'normal'
-      // const item = this.actor.items.get(weaponId)
-      // return new Dialog(
-      //   {
-      //     title: `Attack roll with ${item.name}`,
-      //     content: {
-      //       options: { mode },
-      //     },
-      //     default: 'accept',
-      //     buttons: {
-      //       Roll: {
-      //         icon: '<i class="fas fa-check"></i>',
-      //         label: 'Roll!',
-      //         callback: (html, event) => {
-      //           event.preventDefault()
-      //           const form = html[0].querySelector('form')
-      //           const rollState = form.elements['mode'].value
-      //           const freeAttack = form.elements['freeAttack'].value
-      //           const bonusDice = form.elements['bonusDice'].value
-      //           this.actor.rollWeapon(weaponId, { rollState },freeAttack,bonusDice)
-      //         },
-      //       },
-      //     },
-      //   },
-      //   {
-      //     classes: ['dialog'],
-      //     width: 400,
-      //     template: 'systems/arcane-arcade-fallout/templates/actor/dialog/attack.hbs',
-      //   },
-      // ).render(true)
     })
 
     // Render the item sheet for viewing/editing prior to the editable check.
