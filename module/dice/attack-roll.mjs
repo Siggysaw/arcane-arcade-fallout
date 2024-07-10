@@ -127,7 +127,11 @@ export default class AttackRoll extends FormApplication {
   }
 
   getTargetedApCost(target, isMelee = false) {
-    return AttackRoll.TARGET_COST[target] - isMelee ? 1 : 0
+    let apCost = AttackRoll.TARGET_COST?.[target] ?? 0
+    if (isMelee && apCost > 2) {
+      return apCost - 2
+    }
+    return apCost
   }
 
   async _updateObject(event, formData) {
