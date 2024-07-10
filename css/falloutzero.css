@@ -4,6 +4,7 @@
 @import 'grant.css';
 @import 'attack-roll.css';
 @import 'targeted-attack.css';
+@import 'chat.css';
 
 /* Global styles */
 @font-face {

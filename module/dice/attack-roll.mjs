@@ -134,6 +134,27 @@ export default class AttackRoll extends FormApplication {
     return apCost
   }
 
+  async displayDamageCard() {
+    const html = await renderTemplate(
+      'systems/arcane-arcade-fallout/templates/chat/damage-card.hbs',
+      this.formDataCache,
+    )
+
+    // Create the ChatMessage data object
+    const token = this.actor.token
+    const chatData = {
+      user: game.user.id,
+      content: html,
+      speaker: ChatMessage.getSpeaker({ actor: this.actor, token }),
+      flags: { 'core.canPopout': true },
+    }
+
+    // Apply the roll mode to adjust message visibility
+    ChatMessage.applyRollMode(chatData, game.settings.get('core', 'rollMode'))
+
+    return chatData
+  }
+
   async _updateObject(event, formData) {
     Object.assign(this.formDataCache, formData)
 
@@ -174,6 +195,8 @@ export default class AttackRoll extends FormApplication {
       flavor: `BOOM! Attack with ${this.weapon.name}`,
       rollMode: game.settings.get('core', 'rollMode'),
     })
+
+    this.displayDamageCard()
 
     this.onSubmitCallback()
     this.close()

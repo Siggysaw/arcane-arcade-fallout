@@ -30,6 +30,7 @@ Hooks.once('init', function () {
   // Define custom Document classes
   CONFIG.Actor.documentClass = documents.FalloutZeroActor
   CONFIG.Item.documentClass = documents.FalloutZeroItem
+  CONFIG.ChatMessage.documentClass = documents.FalloutZeroChatMessage
 
   // Note that you don't need to declare a DataModel
   // for the base actor/item classes - they are included
