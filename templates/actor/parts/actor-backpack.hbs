@@ -74,6 +74,30 @@
             </li>
             {{/unless}}
             {{/each}}
+            {{#each powerArmors as |item id|}}
+            {{#unless item.system.itemEquipped}}
+            <li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
+                <div class="item-controls">
+                    <a class="item-control"
+                       data-edit
+                       data-item-id="{{ item._id }}"
+                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                        {{item.name}}({{item.system.quantity}})
+                    </a>                <a class="item-control item-delete"
+                                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                    <a style="float: right; margin-left: 10px"
+                       data-equip
+                       data-item-id="{{ item._id }}"
+                       class="item-control"
+                       title="Enter Power Armor (cost: 6AP)">
+                        <i class="fas fa-tshirt"></i>
+                    </a>
+                </div>
+            </li>
+            {{/unless}}
+            {{/each}}
         </td>
     </tr>
     {{> "systems/arcane-arcade-fallout/templates/actor/items/ammo.hbs" ammos=ammos}}

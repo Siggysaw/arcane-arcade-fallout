@@ -131,7 +131,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       if (pack) {
         const myUpgrade = pack.tree.entries.find((u) => u.name == select.value)
         if (myUpgrade) {
-          if (this.object.system.quantity > 1 && this.object.system.upgrade1 == '') {
+          if (this.object.system.quantity > 1 && this.object.system.baseCost.base == 0) {
             FalloutZeroArmor.prototype.splitDialog(this.object, pack, myUpgrade._id)
           } else {
             FalloutZeroArmor.prototype.checkUpgrade(this.object, pack, myUpgrade._id)

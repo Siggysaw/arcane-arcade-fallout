@@ -15,7 +15,7 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
     schema.itemEquipped = new fields.BooleanField({initial: false})
     schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
     schema.img = new fields.StringField({
-      initial: 'systems/arcane-arcade-fallout/assets/vaultboy/ranged-weapon-icon.webp',
+      initial: 'systems/arcane-arcade-fallout/assets/vaultboy/armor-icon.png',
     })
     schema.armorClass = new fields.SchemaField({
       value: new fields.NumberField({
@@ -156,13 +156,22 @@ async addUpgrade(myItem,myUpgrade){
   let myValue = ""
   //If first upgrade, then set base values
   if (myItem.system.baseCost.base == 0){
+    if (!myItem.name.includes("(u)")){
+      let newName = myItem.name + " (u)"
+      Object.assign(myData,{'name' : newName});
+    }
     Object.assign(myData,{'system.baseCost.base' : myItem.system.baseCost.value});
     Object.assign(myData,{'system.armorClass.base' : myItem.system.armorClass.value});
-    Object.assign(myData,{'system.damageThreshold.base' : myItem.system.damageThreshold.value});
     Object.assign(myData,{'system.slots.base' : myItem.system.slots.value});
-    Object.assign(myData,{'system.strReq.base' : myItem.system.strReq.value});
-    Object.assign(myData,{'system.baseLoad' : myItem.system.load});
+    if (myItem.type == 'armor') {
+      Object.assign(myData,{'system.baseLoad' : myItem.system.load});
+      Object.assign(myData,{'system.damageThreshold.base' : myItem.system.damageThreshold.value});
+      Object.assign(myData,{'system.strReq.base' : myItem.system.strReq.value});
+    };
+    //Update values of item
+    await myItem.update(myData)
     }
+  console.log(myUpgrade)
   //Upgrade values (Cost and load are slightly different)
   for (var val of myValues){
     if (myUpgrade.system[val] != 0){
@@ -295,7 +304,9 @@ async removeUpgrade(myItem,myUpgrade,removeCost,key,wholeUpgrade=false){
   Object.assign(myData,{[myPath]:0})
   myPath = 'system.updates.' + key + '.description'
   Object.assign(myData,{[myPath]:myValue})
-  await myItem.update(myData)
+  let noMoreUpgrades = false;
+  //Update update values for item
+  //await myItem.update(myData)
   //Upgrade values (Cost and load are slightly different)
   for (var val of myValues){
     if (myUpgrade.system[val] != 0){
@@ -305,6 +316,7 @@ async removeUpgrade(myItem,myUpgrade,removeCost,key,wholeUpgrade=false){
             myPath = `system.${val}.value`
             if(typeof Number(myUpgrade.name.slice(-1)) === 'number' && wholeUpgrade){
               myValue = Math.max(myItem.system.baseCost.base, Number(myItem.system.baseCost.value) - (Number(myUpgrade.name.slice(-1)) * Number(myUpgrade.system.baseCost)))
+              if (myValue == myItem.system.baseCost.base) {noMoreUpgrades = true} 
             }
             else {
               myValue = Math.max(myItem.system.baseCost.base, Number(myItem.system.baseCost.value) - (2 * Number(myUpgrade.system.baseCost)))
@@ -323,7 +335,11 @@ async removeUpgrade(myItem,myUpgrade,removeCost,key,wholeUpgrade=false){
     }
     Object.assign(myData,{[myPath]:myValue})
   }
-  //Update values of item
+  //Update name if this was the last upgrade
+  if (noMoreUpgrades && myItem.name.includes("(u)")){
+    myValue = myItem.name.replace("(u)","")
+    Object.assign(myData,{'name':myValue})
+  }
   await myItem.update(myData)
   //Active Effects
   for (var e of myItem.effects._source){
@@ -342,7 +358,6 @@ async checkUpgrade(armor,pack, id){
   let myKey,comment
   let myData = {}
   let wasEquipped = armor.system.itemEquipped
-  console.log(wasEquipped)
   let oldUpgrade = myUpgrade
   let valid = false;
   if (myUpgrade.system.requirement == "None") {
@@ -366,7 +381,6 @@ async checkUpgrade(armor,pack, id){
       if (armor.system.upgrades[key].id == "" || armor.system.upgrades[key].name == oldUpgrade.name){
         //unequip
         if (wasEquipped){await this.unequipItemStats(armor)}
-
         //Remove upgrades if needed
         if (oldUpgrade.name != myUpgrade.name){
           await this.removeUpgrade(armor,oldUpgrade,false,key)
@@ -408,56 +422,23 @@ async seeUpgrade (id){
 
   //Equip item upgrades (right now, it's just armor upgrades)
   async equipItemStats (myItem){
-    const myActor = myItem.parent;
     let AC = myItem.system.armorClass.value;
-    let DT = myItem.parent.system.damageThreshold.value + myItem.system.damageThreshold.value;
-    const everyMod = { system :
-      { 'armorClass.min' : myItem.parent.system.armorClass.value,
-        'armorClass.value' : AC,
-        'damageThreshold.value' : DT}
-    };
-    console.log(everyMod)
-    myActor.update(everyMod)
-  }
-
-  //Spits out each address that leads to values -- DEPRECATED
-  flattenObject(obj) {
-    if (typeof obj !== 'object') {
-      return [];
+    let everyMod = {'system.armorClass.min' : myItem.parent.system.armorClass.min, 'system.armorClass.value' : AC}
+    if (myItem.type == 'armor') {
+      let DT = myItem.parent.system.damageThreshold.value + myItem.system.damageThreshold.value;
+      Object.assign(everyMod,{'system.damageThreshold.value' : DT})
     }
-    
-    let paths = [];
-    for (let key in obj) {
-      let val = obj[key];
-      if (typeof val === 'object') {
-        let subPaths = flattenObject(val);
-        subPaths.forEach(e => {
-          paths.push({
-            path: [key, e.path].join('.'),
-            value: e.value
-          });
-        });
-      } else {
-        let path = { path: key, value: val };
-        paths.push(path);
-      }
-    }
-    return paths;
-  }
-  //-- DEPRECATED
-  async getValue (path,obj) {
-    let myPath = path.split('.').reduce((acc, c) => acc && acc[c], obj);
-    return myPath;
+    myItem.parent.update(everyMod)
   }
 
   //Removes modifiers related to Armor
   async unequipItemStats (myItem){
     let AC = Math.max(myItem.parent.system.armorClass.min, 10) //by default will be 10, but we'll need that to be BASE in case there are other modifiers
-    let DT = myItem.parent.system.damageThreshold.value - myItem.system.damageThreshold.value;
-    const everyMod = { system :
-      {'armorClass.value' : AC,
-      'damageThreshold.value' : DT}
-    };
+    let everyMod = {'system.armorClass.value' : AC}
+    if(myItem.type == 'armor') {
+      let DT = myItem.parent.system.damageThreshold.value - myItem.system.damageThreshold.value;
+      Object.assign(everyMod,{'system.damageThreshold.value' : DT})
+    }
     myItem.parent.update(everyMod);
   }
 
@@ -485,12 +466,15 @@ async seeUpgrade (id){
 
   //Get original state of weapon
   changeEquipStatus (myItem){
-    if (myItem.type == "armor"){
+    if ((myItem.type == "armor" || myItem.type == "powerArmor") && myItem.parent){
       if (myItem.system.itemEquipped){
         this.unequipItemStats(myItem)
         this.toggleEffects(myItem,true)
-      }else {
-        let otherArmor = myItem.parent.items.find(u => u.system.itemEquipped == true && u.type =='armor')
+      } else {
+        if (myItem.system.quantity > 1 ) {
+          this.splitObject(myItem,"equip")
+        }
+        let otherArmor = myItem.parent.items.find(u => u.system.itemEquipped == true && (u.type =='armor' || u.type =='powerArmor'))
         if (otherArmor){
           this.swapArmors(myItem,otherArmor);
         }else{
@@ -501,15 +485,21 @@ async seeUpgrade (id){
     }
   }
 
-  async splitObject(myItem){
+  async splitObject(myItem,type=""){
     let newItem = myItem;
     let qty = myItem.system.quantity - 1;
     let newName = myItem.name;
-    if (!newName.includes("(u)")){ newName += "(u)"};
-    myItem.update({'system.quantity' : 1, 'name' : newName});
-    newItem.name = "(s)";
-    newItem = await Item.create(newItem, { parent: myItem.parent });
-    await newItem.update({'system.quantity' : qty});
+    if (!newName.includes("(u)") && type == "upgrade"){
+      newName += " (u)"
+      await myItem.update({'system.quantity' : 1, 'name' : newName});
+    }
+    if (type == "equip") {
+      newName += " " 
+      await myItem.update({'system.quantity' : 1, 'system.itemEquipped' : true, 'name' : newName});
+    }
+    newItem.name = ""; // this is required so it registers as a different item
+    newItem = await Item.create(newItem, {parent: myItem.parent});
+    await newItem.update({'system.quantity' : qty, 'system.itemEquipped' : false});
   }
   
   splitDialog(myItem,myUpgrade,myId){
@@ -527,7 +517,7 @@ async seeUpgrade (id){
           icon: '<i class="fa-solid fa-split"></i>',
           label: 'Split',
           callback: async () => {
-            await this.splitObject(myItem);
+            await this.splitObject(myItem,"upgrade");
             this.checkUpgrade(myItem,myUpgrade,myId);
           },
         },
