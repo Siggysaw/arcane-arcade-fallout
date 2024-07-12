@@ -170,6 +170,24 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       FalloutZeroArmor.prototype.changeEquipStatus(this.object, this.actor)
     })
 
+    //Change crafting materials quantity (up!)
+    html.on('click', '[data-mat-add]', (ev) => {
+      let matQty = ev.currentTarget.dataset.mat
+      let myMat = matQty.split('.')
+      let myItem = this.item
+      let qty = myItem.system[myMat[1]].qty += 1
+      this.item.update({ [matQty]: qty })
+    })
+
+    //Change crafting materials quantity (down!)
+    html.on('click', '[data-mat-subtract]', (ev) => {
+      let matQty = ev.currentTarget.dataset.mat
+      let myMat = matQty.split('.')
+      let myItem = this.item
+      let qty = myItem.system[myMat[1]].qty -= 1
+      this.item.update({ [matQty]: qty })
+    })
+
     // Roll handlers, click handlers, etc. would go here.
 
     // Active Effect management

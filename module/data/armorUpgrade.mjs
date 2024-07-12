@@ -20,6 +20,7 @@ export default class FalloutZeroArmorUpgrade extends FalloutZeroItemBase {
     schema.strReq = new fields.NumberField({ initial:0})
     schema.craftingTime = new fields.StringField({ initial: '1 hour'})
     schema.craftingDC = new fields.StringField({ initial: '+0'})
+    schema.upgradeType = new fields.StringField({ initial: 'armor'})
     schema.matsReq1 = new fields.SchemaField({
       mat: new fields.StringField({}),
       qty: new fields.NumberField({
@@ -35,6 +36,20 @@ export default class FalloutZeroArmorUpgrade extends FalloutZeroItemBase {
       }),
     })
     schema.matsReq3 = new fields.SchemaField({
+      mat: new fields.StringField({}),
+      qty: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+    })
+    schema.matsReq4 = new fields.SchemaField({
+      mat: new fields.StringField({}),
+      qty: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+    })
+    schema.matsReq5 = new fields.SchemaField({
       mat: new fields.StringField({}),
       qty: new fields.NumberField({
         ...requiredInteger,
