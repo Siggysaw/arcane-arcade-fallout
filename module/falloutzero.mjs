@@ -143,6 +143,15 @@ Hooks.once('ready', function () {
   Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot))
 })
 
+/* --------------------------------------------  */
+/*  Other Hooks                                  */
+/* --------------------------------------------  */
+
+Hooks.on('renderPause', (app, [html]) => {
+  const img = html.querySelector('img')
+  img.src = 'systems/arcane-arcade-fallout/assets/vaultboy/vaultboy.webp'
+})
+
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */
