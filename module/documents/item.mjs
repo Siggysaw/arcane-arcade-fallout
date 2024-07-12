@@ -95,11 +95,6 @@ export default class FalloutZeroItem extends Item {
       return false
     }
 
-    // Find ammo
-    const ammoType = this.system.ammo.type
-    const foundAmmo = this.actor.items.find((item) => item.name === ammoType)
-
-
     // Update ammo quantity
     const newWeaponAmmoCapacity = Number(this.system.ammo.capacity.value - 1)
     this.actor.updateEmbeddedDocuments('Item', [

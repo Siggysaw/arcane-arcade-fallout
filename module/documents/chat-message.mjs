@@ -21,9 +21,10 @@ export default class FalloutZeroChatMessage extends ChatMessage {
    * @type {boolean}
    */
   get canApplyDamage() {
-    // const type = this.flags?.aafo?.roll?.type
+    // const type = this.flags?.falloutzero?.roll?.type
     // if (type && type !== 'damage') return false
     // return this.isRoll && this.isContentVisible && !!canvas.tokens?.controlled.length
+    return false
   }
 
   /* -------------------------------------------- */
@@ -35,6 +36,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   get canSelectTargets() {
     // if (this.flags?.aafo?.roll?.type !== 'attack') return false
     // return this.isRoll && this.isContentVisible
+    return false
   }
 
   /* -------------------------------------------- */
@@ -53,6 +55,11 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       default:
         return false
     }
+  }
+
+  get actor() {
+    const { scene: sceneId, token: tokenId, actor: actorId } = this.speaker
+    return game.scenes.get(sceneId)?.tokens.get(tokenId)?.actor ?? game.actors.get(actorId)
   }
 
   /* -------------------------------------------- */
@@ -241,14 +248,26 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     html.querySelector('.whisper-to')?.remove()
 
     // Context menu
-    const metadata = html.querySelector('.message-metadata')
-    metadata.querySelector('.message-delete')?.remove()
-    const anchor = document.createElement('a')
+    // const metadata = html.querySelector('.message-metadata')
+    // metadata.querySelector('.message-delete')?.remove()
+    // const anchor = document.createElement('a')
     // anchor.setAttribute('aria-label', game.i18n.localize('AAFO.AdditionalControls'))
-    anchor.classList.add('chat-control')
-    anchor.dataset.contextMenu = ''
-    anchor.innerHTML = '<i class="fas fa-ellipsis-vertical fa-fw"></i>'
-    metadata.appendChild(anchor)
+    // anchor.classList.add('chat-control')
+    // anchor.dataset.contextMenu = ''
+    // anchor.innerHTML = '<i class="fas fa-ellipsis-vertical fa-fw"></i>'
+    // metadata.appendChild(anchor)
+
+    // Add damage card
+    if (
+      this.flags?.falloutzero?.roll?.type === 'attack' &&
+      this.flags?.falloutzero?.roll?.damageFormula
+    ) {
+      const messageContent = html.querySelector('.message-content')
+      const buttonContainer = document.createElement('div')
+      buttonContainer.classList.add('card-buttons')
+      buttonContainer.innerHTML = `<button data-roll-damage=${this.flags?.falloutzero?.roll?.damageFormula}>Roll damage <i class="fa-light fa-dice-d20"></i></button>`
+      messageContent.appendChild(buttonContainer)
+    }
 
     // SVG icons
     // html.querySelectorAll('i.aafo-icon').forEach((el) => {
@@ -307,6 +326,9 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     //   html.querySelectorAll('.dice-roll').forEach((el) => el.classList.add('secret-roll'))
     // }
 
+    html.querySelectorAll('.card-buttons [data-roll-damage]').forEach((button) => {
+      button.addEventListener('click', this._onRollDamage)
+    })
     avatar.addEventListener('click', this._onTargetMouseDown.bind(this))
     avatar.addEventListener('pointerover', this._onTargetHoverIn.bind(this))
     avatar.addEventListener('pointerout', this._onTargetHoverOut.bind(this))
@@ -570,6 +592,21 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   }
 
   /* -------------------------------------------- */
+
+  /**
+   * Handle damage button click.
+   * @param {Event} event   The triggering event.
+   * @protected
+   */
+  _onRollDamage(event) {
+    const roll = new Roll(event.target.dataset.rollDamage)
+
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: `KAPOW! Damage!`,
+      rollMode: game.settings.get('core', 'rollMode'),
+    })
+  }
 
   /**
    * Handle target selection and panning.
