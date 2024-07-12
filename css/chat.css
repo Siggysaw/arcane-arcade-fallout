@@ -1,3 +1,4 @@
+/* MESSAGE HEADER */
 .chat-sidebar .message-header {
   margin-bottom: 0.375rem;
 }
@@ -54,6 +55,11 @@
   margin-block-end: -4px;
   font-style: italic;
 }
-  .chat-sidebar .message-header .title {
-    color: #01e998
-  }
+.chat-sidebar .message-header .title {
+  color: #01e998;
+}
+
+/* MESSAGE CONTENT */
+.chat-sidebar .message-content .card-buttons {
+  margin-top: 10px;
+}

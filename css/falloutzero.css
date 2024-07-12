@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import 'variables.css';
 @import 'base.css';
 @import 'dialog.css';
 @import 'grant.css';
@@ -486,7 +487,7 @@ form .title,
 }
 .statusnum input {
   width: 50px;
-  color:
+  color:;
 }
 .sheet table tr,
 .sheet table td {
