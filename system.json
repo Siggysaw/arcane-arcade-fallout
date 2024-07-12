@@ -84,6 +84,7 @@
       "sorting": "m",
       "packs": [
         "enemies",
+        "community_enemies",
         "monsterloot",
         "roomloot"
       ],
@@ -252,6 +253,18 @@
       "type": "Actor",
       "name": "enemies",
       "path": "packs/enemies",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Community Enemies",
+      "type": "Actor",
+      "name": "community_enemies",
+      "path": "packs/community_enemies",
       "system": "arcane-arcade-fallout",
       "ownership": {
         "PLAYER": "OBSERVER",
