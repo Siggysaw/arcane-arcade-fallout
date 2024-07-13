@@ -34,94 +34,33 @@
     </tr>
     <tr>
         <td colspan="4">
-            <table class="player-conditions">
-
-
-
-
-    <tr>
-        <td><input type='checkbox' name='system.conditions.Blinded' {{checked system.conditions.Blinded }} /></td>
-        <td><span class='condition' data-condition='Blinded'>Blinded </span></td>
-        <td>
-            <input style="text-align:center;width:25px;" min="0" type="number" name="system.conditions.BleedingLvls" value="{{system.conditions.BleedingLvls}}"
-            <input type='checkbox' name='system.conditions.Bleeding' {{checked system.conditions.Bleeding}} />
-        </td>
-        <td><span class='condition' data-condition='Bleeding'>Bleeding</span></td>
-        <td><input type='checkbox' name='system.conditions.Burning' {{checked system.conditions.Burning}} /></td>
-        <td><span class='condition' data-condition='Burning'>Burning</span></td>
-    </tr>
-    <tr>
-        <td><input type='checkbox' name='system.conditions.Buzzed' {{checked system.conditions.Buzzed}} /></td>
-        <td><span class='condition' data-condition='Buzzed'>Buzzed</span></td>
-        <td><input type='checkbox' name='system.conditions.Corroded' {{checked system.conditions.Corroded}} /></td>
-        <td><span class='condition' data-condition='Corroded'>Corroded</span></td>
-        <td><input type='checkbox' name='system.conditions.Dazed' {{checked system.conditions.Dazed}} /></td>
-        <td><span class='condition' data-condition='Dazed'>Dazed</span></td>
-    </tr>
-    <tr>
-        <td><input type='checkbox' name='system.conditions.Deafened' {{checked system.conditions.Deafened}} /></td>
-        <td><span class='condition' data-condition='Deafened'>Deafened</span></td>
-        <td><input type='checkbox' name='system.conditions.Drunk' {{checked system.conditions.Drunk}} /></td>
-        <td><span class='condition' data-condition='Drunk'>Drunk</span></td>
-        <td><input type='checkbox' name='system.conditions.Frightened' {{checked system.conditions.Frightened}} /></td>
-        <td><span class='condition' data-condition='Frightened'>Frightened</span></td>
-    </tr>
-    <tr>
-        <td><input type='checkbox' name='system.conditions.Grappled' {{checked system.conditions.Grappled}} /></td>
-        <td><span class='condition' data-condition='Grappled'>Grappled</span></td>
-        <td><input type='checkbox' name='system.conditions.Hammered' {{checked system.conditions.Hammered}} /></td>
-        <td><span class='condition' data-condition='Hammered'>Hammered</span></td>
-        <td><input type='checkbox' name='system.conditions.Heavily_Encumbered' {{checked system.conditions.Heavily_Encumbered}} /></td>
-        <td><span class='condition' data-condition='Heavily_Encumbered'>Heavily Encumbered</span></td>
-    </tr>
-    <tr>
-        <td><input type='checkbox' name='system.conditions.Invisible' {{checked system.conditions.Invisible}} /></td>
-        <td><span class='condition' data-condition='Invisible'>Invisible</span></td>
-        <td><input type='checkbox' name='system.conditions.Poisoned' {{checked system.conditions.Poisoned}} /></td>
-        <td><span class='condition' data-condition='Poisoned'>Poisoned</span></td>
-        <td><input type='checkbox' name='system.conditions.Prone' {{checked system.conditions.Prone}} /></td>
-        <td><span class='condition' data-condition='Prone'>Prone</span></td>
-    </tr>
-    <tr>
-        <td><input type='checkbox' name='system.conditions.Restrained' {{checked system.conditions.Restrained}} /></td>
-        <td><span class='condition' data-condition='Restrained'>Restrained</span></td>
-        <td><input type='checkbox' name='system.conditions.Shadowed' {{checked system.conditions.Shadowed}} /></td>
-        <td><span class='condition' data-condition='Shadowed'>Shadowed</span></td>
-        <td><input type='checkbox' name='system.conditions.Shock' {{checked system.conditions.Shock}} /></td>
-        <td><span class='condition' data-condition='Shock'>Shock</span></td>
-    </tr>
-    <tr>
-        <td><input type='checkbox' name='system.conditions.Slowed' {{checked system.conditions.Slowed}} /></td>
-        <td><span class='condition' data-condition='Slowed'>Slowed</span></td>
-        <td><input type='checkbox' name='system.conditions.Unconscious' {{checked system.conditions.Unconscious}} /></td>
-        <td><span class='condition' data-condition='Unconscious'>Unconscious</span></td>
-        <td><input type='checkbox' name='system.conditions.Wasted' {{checked system.conditions.Wasted}} /></td>
-        <td><span class='condition' data-condition='Wasted'>Wasted</span></td>
-</table>
     </td>
   </tr>
 </table>
 
-<table style="display:none;">
+<table>
+    <tr><th>Conditions</th></tr>
     <tr>
-        <td>
-            <div>
-                <div 
-                     class="limb head"
-                     data-limb="head"></div>
-                <div 
-                     class="limb l-arm"
-                     data-limb="l-arm"></div>
-                <div class="limb torso"
-                     data-limb="torso"></div>
-                <div class="limb r-arm"
-                     data-limb="r-arm"></div>
-                <div class="limb l-leg"
-                     data-limb="l-leg"></div>
-                <div class="limb r-leg"
-                     data-limb="r-leg"></div>
-
+        <td class="condition-box">
+            {{#each conditions as |item condition|}}
+            {{#GreaterThan system.quantity 1}}
+            <div class="active-conditions">
+                <li class="item flexrow" data-item-id="{{ item._id }}">
+                    <div class="item-controls">
+                        <a class="item-control"
+                           data-edit
+                           data-item-id="{{ item._id }}"
+                           title="{{localize 'DOCUMENT.Update' type='item'}}">
+                            {{item.name}}{{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}
+                        </a><hr />
+                        <a class="item-control item-delete">
+                            <div class="fakebutton">Clear</div>
+                        </a>
+                    </div>
+                </li>
             </div>
+            {{/GreaterThan}}
+            {{/each}}
         </td>
     </tr>
 </table>

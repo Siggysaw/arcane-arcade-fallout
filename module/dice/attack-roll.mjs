@@ -143,14 +143,6 @@ export default class AttackRoll extends FormApplication {
     }
 
     /**
-     * Apply ammo consumption
-     */
-    if (this.weapon.system.consumesAmmo) {
-      const canAfford = this.weapon.applyAmmoCost()
-      if (!canAfford) return
-    }
-
-    /**
      * Apply AP consumption
      */
     if (formData.consumesAp) {
@@ -160,6 +152,14 @@ export default class AttackRoll extends FormApplication {
       const canAfford = this.actor.applyApCost(apCost)
       if (!canAfford) return
     }
+    /**
+     * Apply ammo consumption
+     */
+    if (this.weapon.system.consumesAmmo) {
+      const canAfford = this.weapon.applyAmmoCost()
+      if (!canAfford) return
+    }
+
 
     const { skillBonus, abilityBonus, decayPenalty, actorLuck, actorPenalties, bonus } =
       this.formDataCache

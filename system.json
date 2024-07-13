@@ -21,8 +21,8 @@
   "media": [
     {
       "type": "setup",
-      "url": "systems/arcane-arcade-fallout/assets/anvil-impact.png",
-      "thumbnail": "systems/arcane-arcade-fallout/assets/anvil-impact.png",
+      "url": "systems/arcane-arcade-fallout/assets/arcane-fallout.png",
+      "thumbnail": "systems/arcane-arcade-fallout/assets/arcane-fallout.png",
       "loop": false,
       "flags": {}
     }
@@ -49,7 +49,8 @@
         "race",
         "background",
         "perks",
-        "traits"
+        "traits",
+        "conditions"
       ],
       "color": null,
       "folders": []
@@ -309,6 +310,18 @@
       "flags": {}
     },
     {
+      "label": "Conditions",
+      "type": "Item",
+      "name": "conditions",
+      "path": "packs/conditions",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
       "label": "Room Loot",
       "type": "RollTable",
       "name": "roomloot",
@@ -345,7 +358,7 @@
       "flags": {}
     }
   ],
-  "background": "systems/arcane-arcade-fallout/assets/anvil-impact.png",
+  "background": "systems/arcane-arcade-fallout/assets/arcane-fallout.png",
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stamina",
   "grid": {

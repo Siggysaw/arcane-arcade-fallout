@@ -1,0 +1,9 @@
+{
+  "name": "{{title}}",
+  "type": "condition",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "quantity": 1,
+    "description": "{{properties}}"
+  }
+}

@@ -140,7 +140,11 @@ export default class FalloutZeroItemSheet extends ItemSheet {
         }
       })
     })
-
+    //show rule information
+    html.on('click', '[data-condition]', (ev) => {
+      const condition = ev.currentTarget.dataset.condition
+      this.actor.ruleinfo(condition)
+    })
     //Remove upgrade button
     html.on('click', '[deleteUpgrade]', (ev) => {
       let myId = ev.currentTarget.id.replace('delete', '')

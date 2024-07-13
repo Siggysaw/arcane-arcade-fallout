@@ -451,7 +451,7 @@ details > summary {
 #keybindings .binding .key.uneditable {
   background: #222;
   color: #01e998;
-  font-family: Fixedsys;
+  font-family: Monofonto;
 }
 .sheet.journal-entry .title {
   display: none;
@@ -925,9 +925,11 @@ form td .status-notes li:hover {
   width: 106px;
   background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg2.png');
 }
-.falloutzero .tox .tox-editor-container button {
-  background-color: white;
-}
-.falloutzero .tmce body {
-  color: blue;
+.sheet .active-conditions{
+    width:33.3%;
+    height:100px;
+    float:left;
+    font-size:9pt;
+    border:solid 1px;
+    padding:10px 0px 10px 0px
 }

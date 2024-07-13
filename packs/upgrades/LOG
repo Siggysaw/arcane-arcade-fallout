@@ -1,3 +1,5 @@
-2024/07/07-21:04:42.986 6fcc Recovering log #59
-2024/07/07-21:04:42.994 6fcc Delete type=0 #59
-2024/07/07-21:04:42.994 6fcc Delete type=3 #58
+2024/07/12-17:56:12.578 2c30 Recovering log #67
+2024/07/12-17:56:12.578 2c30 Level-0 table #69: started
+2024/07/12-17:56:12.586 2c30 Level-0 table #69: 2887 bytes OK
+2024/07/12-17:56:12.589 2c30 Delete type=0 #67
+2024/07/12-17:56:12.589 2c30 Delete type=3 #66
