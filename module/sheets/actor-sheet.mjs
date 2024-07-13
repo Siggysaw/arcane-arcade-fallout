@@ -57,12 +57,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     }
 
     // Calculate Carry Load
-    actorData.system.carryLoad.value =
+    actorData.system.carryLoad.base =
       actorData.items.reduce((acc, item) => {
         const { load = 0, quantity = 1 } = item.system
         acc += Math.floor(load * quantity)
         return Math.round(acc * 10) / 10
       }, 0) + Math.floor(actorData.system.caps / 50)
+
+    actorData.system.carryLoad.value = actorData.system.carryLoad.base + actorData.system.carryLoad.modifiers
+    actorData.system.carryLoad.max = actorData.system.carryLoad.baseMax + actorData.system.carryLoad.modifiersMax
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData()
@@ -99,6 +102,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const features = []
     const perks = []
     const armors = []
+    const powerArmors = []
     const rangedWeapons = []
     const meleeWeapons = []
     const medicines = []
@@ -124,7 +128,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         perks.push(i)
       } else if (i.type === 'armor') {
         armors.push(i)
-      } else if (i.type === 'rangedWeapon') {
+      } else if (i.type === 'powerArmor') {
+        powerArmors.push(i)
+      }else if (i.type === 'rangedWeapon') {
         rangedWeapons.push(i)
       } else if (i.type === 'meleeWeapon') {
         meleeWeapons.push(i)
@@ -158,6 +164,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     context.features = features
     context.perks = perks
     context.armors = armors
+    context.powerArmors = powerArmors
     context.medicines = medicines
     context.foodAnddrinks = foodAnddrinks
     context.ammos = ammos
@@ -353,8 +360,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-equip]', (ev) => {
       const itemId = ev.currentTarget.dataset.itemId
       const item = this.actor.items.get(itemId)
-      item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-      FalloutZeroArmor.prototype.changeEquipStatus(item)
+      let enoughAP = true
+      if (item.type == 'powerArmor'){enoughAP = this.actor.applyApCost(6)}
+      if (enoughAP) {
+        item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+        FalloutZeroArmor.prototype.changeEquipStatus(item)
+      }
     })
 
     // handles weapon reload
@@ -426,12 +437,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       switch (item.type) {
         case 'trait':
           this._onItemDeleteTrait(item)
-          break
+          break;
         case 'armor':
           if (item.system.itemEquipped) {
-            FalloutZeroArmor.prototype.unequipItemStats(item)
+            FalloutZeroArmor.prototype.changeEquipStatus(item)
           }
-          break
+          break;
+        case 'powerArmor':
+          if (item.system.itemEquipped) {
+            FalloutZeroArmor.prototype.changeEquipStatus(item)
+          }
+          break;
         case 'background':
           return new Dialog({
             title: `Delete background ${item.name}`,

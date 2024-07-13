@@ -6,7 +6,7 @@
 
 <form class="{{ cssClass }}" autocomplete="off">
   <header class="sheet-header">
-    <img class="profile-img" src="{{ system.img }}" data-edit="system.img" title="{{ system.img }}" />
+    <img class="profile-img" src="{{ item.system.img }}" data-edit="img" title="{{ item.system.img }}" />
     <div class="header-fields">
       <h1 class="upgradeName">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
@@ -15,14 +15,18 @@
         <tr>
           <td>Short name </td>                         
           <td>Pre-requisite</td>
+          <td>Type</td>
           <td>Cost</td>
         </tr>
         <tr>
           <td>
-            <input style = "min-width:200px;" name="system.short" type="text" value="{{system.short}}" placeholder="{{ item.name}} (but shorter)" />
+            <input name="system.short" type="text" value="{{system.short}}" placeholder="{{ item.name}} (but shorter)" />
           </td>
           <td>
             <input name="system.requirement" type="text" value="{{ system.requirement }}" placeholder="Requirement" />
+          </td>
+          <td>
+            <input name="system.upgradeType" type="text" value="{{ system.upgradeType }}" title="'armor' or 'powerArmor' must be entered here" placeholder="armor or powerArmor" />
           </td>
           <td>
             <input type="number" name="system.baseCost" value="{{ system.baseCost }}" />
@@ -98,9 +102,9 @@
             <input type="text" name="system.craftingTime" value="{{ system.craftingTime }}" />
           </td>
           <td id="valueMat1">
-            <i style="padding:3px;cursor: pointer;" data-qty-subtract  id="system.matsReq1.qty" class="fas fa-minus-square"></i>
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq1.qty" class="fas fa-minus-square"></i>
             {{system.matsReq1.qty}}
-            <i style="padding:3px;cursor: pointer;" data-qty-add id="system.matsReq1.qty" class="fas fa-plus-square"></i>
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq1.qty" class="fas fa-plus-square"></i>
           </td>
           <td>
             <input type="text" name="system.matsReq1.mat" value="{{system.matsReq1.mat}}" />
@@ -111,9 +115,9 @@
             Crafting DC
           </td>
           <td id="valueMat2">
-            <i style="padding:3px;cursor: pointer;" data-qty-subtract id="system.matsReq2.qty" class="fas fa-minus-square"></i>
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq2.qty" class="fas fa-minus-square"></i>
             {{system.matsReq2.qty}}
-            <i style="padding:3px;cursor: pointer;" data-qty-add id="system.matsReq2.qty" class="fas fa-plus-square"></i>
+            <i style="padding:3px;cursor: pointer;"  data-mat-add data-mat="system.matsReq2.qty" class="fas fa-plus-square"></i>
           </td>
           <td>
             <input type="text" name="system.matsReq2.mat" value="{{system.matsReq2.mat}}" />
@@ -124,12 +128,38 @@
             <input type="text" name="system.craftingDC" value="{{system.craftingDC}}" />
           </td>
           <td id="valueMat3">
-            <i style="padding:3px;cursor: pointer;" data-qty-subtract id="system.matsReq3.qty" class="fas fa-minus-square"></i>
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq3.qty"  class="fas fa-minus-square"></i>
             {{system.matsReq3.qty}}
-            <i style="padding:3px;cursor: pointer;" data-qty-add  id="system.matsReq3.qty" class="fas fa-plus-square"></i>
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq3.qty" class="fas fa-plus-square"></i>
           </td>
           <td>
             <input type="text" name="system.matsReq3.mat" value="{{system.matsReq3.mat}}" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+
+          </td>
+          <td id="valueMat4">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq4.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq4.qty}}
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq4.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq4.mat" value="{{system.matsReq4.mat}}" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+
+          </td>
+          <td id="valueMat5">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq5.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq5.qty}}
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq5.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq5.mat" value="{{system.matsReq5.mat}}" />
           </td>
         </tr>
       </table>

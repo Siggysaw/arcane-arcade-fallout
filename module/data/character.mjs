@@ -34,12 +34,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     )
 
     schema.carryLoad = new fields.SchemaField({
-      value: new fields.NumberField({
-        ...requiredInteger,
-        initial: 0,
-        min: 0,
-      }),
-      max: new fields.NumberField({
+      base: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
@@ -47,6 +42,25 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         ...requiredInteger,
         initial: 0,
       }),
+      value: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+        min: 0,
+      }),
+      baseMax: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+      modifiersMax: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+      max: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+      
+      
     })
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0 })
@@ -135,7 +149,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.penalties.radiation.value +
       this.penalties.fatigue.value
     this.passiveSense = 12 + this.abilities['per'].mod
-    this.carryLoad.modifiers = this.abilities['str'].value * 10
+    this.carryLoad.baseMax = this.abilities['str'].value * 10
+    this.carryLoad.max = this.carryLoad.baseMax + this.carryLoad.modifiersMax
 
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     if (this.luckmod < 0) {

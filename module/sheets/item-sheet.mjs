@@ -131,7 +131,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       if (pack) {
         const myUpgrade = pack.tree.entries.find((u) => u.name == select.value)
         if (myUpgrade) {
-          if (this.object.system.quantity > 1 && this.object.system.upgrade1 == '') {
+          if (this.object.system.quantity > 1 && this.object.system.baseCost.base == 0) {
             FalloutZeroArmor.prototype.splitDialog(this.object, pack, myUpgrade._id)
           } else {
             FalloutZeroArmor.prototype.checkUpgrade(this.object, pack, myUpgrade._id)
@@ -168,6 +168,24 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     //On equip, calculate AC and other things that improve character's stats
     html.on('change', '[equipItem]', () => {
       FalloutZeroArmor.prototype.changeEquipStatus(this.object, this.actor)
+    })
+
+    //Change crafting materials quantity (up!)
+    html.on('click', '[data-mat-add]', (ev) => {
+      let matQty = ev.currentTarget.dataset.mat
+      let myMat = matQty.split('.')
+      let myItem = this.item
+      let qty = myItem.system[myMat[1]].qty += 1
+      this.item.update({ [matQty]: qty })
+    })
+
+    //Change crafting materials quantity (down!)
+    html.on('click', '[data-mat-subtract]', (ev) => {
+      let matQty = ev.currentTarget.dataset.mat
+      let myMat = matQty.split('.')
+      let myItem = this.item
+      let qty = myItem.system[myMat[1]].qty -= 1
+      this.item.update({ [matQty]: qty })
     })
 
     // Roll handlers, click handlers, etc. would go here.

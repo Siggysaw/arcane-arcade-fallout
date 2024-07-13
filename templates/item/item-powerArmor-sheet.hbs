@@ -8,7 +8,11 @@
 <form class="{{ cssClass }}" autocomplete="off">
   <header class="sheet-header">
     <div style="max-width:100px;text-align:center">
-      <img class="profile-img" style="max-height:100px;" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
+      <img class="profile-img" style="max-height:100px;" src="{{ item.system.img }}" data-edit="img" title="{{ item.name }}" />
+      <div>
+        Load
+      </div>
+      <input  type="number" name="system.load" value="{{ system.load }}" />
       <div>
         CND
       </div>
@@ -49,10 +53,10 @@
             <tr>
               <td>Cost</td>
               <td>AC</td>
-              <td>DT</td>
+              <td>DP</td>
               <td>Slots</td>
-              <td>Load</td>
-              <td>STR Req.</td>
+              <td>Repair</td>
+              <td>Time</td>
             </tr>
             <tr>
               <td>
@@ -62,14 +66,16 @@
                   <input type="number" name="system.armorClass.value" value="{{ system.armorClass.value }}" />
               </td>
               <td>
-                  <input type="number" name="system.damageThreshold.value" value="{{ system.damageThreshold.value }}" />
+                  <input type="number" name="system.defensePoint.value" value="{{ system.defensePoint.value }}" />
               </td>
               <td>
                   <input type="number" name="system.slots.value" value="{{ system.slots.value }}" />
               </td>
-              <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
               <td>
-                  <input type="number" name="system.strReq.value" value="{{ system.strReq.value }}" />
+                <input type="number" name="system.repairDC.value" value="{{ system.repairDC.value }}" />
+              </td>
+              <td>
+                  <input type="text" name="system.allotedTime.value" value="{{ system.allotedTime.value }}" />
               </td>
             </tr>
         </table>
