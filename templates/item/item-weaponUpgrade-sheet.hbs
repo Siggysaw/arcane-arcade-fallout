@@ -1,0 +1,199 @@
+<style>
+  .sheet .editor-content {
+    line-height: 2;
+  }
+</style>
+
+<form class="{{ cssClass }}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.img }}" />
+    <div class="header-fields">
+      <h1 class="upgradeName">
+        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+      </h1>
+      <table style = "display: inline-flex; width:100%"> 
+        <tr>
+          <td>Type</td>
+          <td>Slots</td>
+          <td>Equip Time</td>
+        </tr>
+        <tr>
+          <td>
+            <input name="system.upgradeType" type="text" value="{{ system.upgradeType }}" title="'melee' or 'ranged' must be entered here" placeholder="'melee' or 'ranged'?"/>
+          </td>
+          <td>
+            <input name="system.slots" type="number" value="{{ system.slots }}" />
+          </td>
+          <td style="width:70%">
+            <input  name="system.equipTime" type="text" value="{{system.equipTime}}"/>
+          </td>
+        </tr>
+      </table>
+      <table style = "width:100%">
+        <tr>
+          <td>Base Cost</td>                 
+          <td>Equippable Weapons</td>
+        <tr>
+          <td>
+            <input name="system.baseCost" type="text" value="{{ system.baseCost }}" />
+          </td>
+          <td style="width:70%">
+            <input name="system.equipWeapons" type="text" value="{{ system.equipWeapons }}"/>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </header>
+
+
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="crafting">Crafting</a>
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+
+  
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+    {{!-- Description Tab --}}
+    <div class="tab htmlfield" data-group="primary" data-tab="description">
+      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
+      {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+    </div>      
+    <div class="tab crafting" data-group="primary" data-tab="crafting">
+      <table>
+        <th>
+          Crafting time
+        </th>
+        <th>
+          Quantity
+        </th>
+        <th>
+          Required Material 
+        </th>
+        <tr>
+          <td>
+            <input type="text" name="system.craftingTime" value="{{ system.craftingTime }}" />
+          </td>
+          <td id="valueMat1">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq1.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq1.qty}}
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq1.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq1.mat" value="{{system.matsReq1.mat}}" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Crafting DC
+          </td>
+          <td id="valueMat2">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq2.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq2.qty}}
+            <i style="padding:3px;cursor: pointer;"  data-mat-add data-mat="system.matsReq2.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq2.mat" value="{{system.matsReq2.mat}}" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="text" name="system.craftingDC" value="{{system.craftingDC}}" />
+          </td>
+          {{#GreaterThan system.matsReq2.qty 1 }}
+          <td id="valueMat3">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq3.qty"  class="fas fa-minus-square"></i>
+            {{system.matsReq3.qty}}
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq3.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq3.mat" value="{{system.matsReq3.mat}}" />
+          </td>
+          {{/GreaterThan}}
+        </tr>
+        {{#GreaterThan system.matsReq3.qty 1 }}
+        <tr>
+          <td>
+
+          </td>
+          <td id="valueMat4">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq4.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq4.qty}}
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq4.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq4.mat" value="{{system.matsReq4.mat}}" />
+          </td>
+        </tr>
+        {{/GreaterThan}}
+        {{#GreaterThan system.matsReq4.qty 1 }}
+        <tr>
+          <td>
+          </td>
+          <td id="valueMat5">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq5.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq5.qty}}
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq5.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq5.mat" value="{{system.matsReq5.mat}}" />
+          </td>
+        </tr>
+        {{/GreaterThan}}
+        {{#GreaterThan system.matsReq5.qty 1 }}
+        <tr>
+          <td>
+          </td>
+          <td id="valueMat6">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq6.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq6.qty}}
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq6.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq6.mat" value="{{system.matsReq6.mat}}" />
+          </td>
+        </tr>
+        {{/GreaterThan}}
+        {{#GreaterThan system.matsReq6.qty 1 }}
+        <tr>
+          <td>
+          </td>
+          <td id="valueMat7">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq7.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq7.qty}}
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq7.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq7.mat" value="{{system.matsReq7.mat}}" />
+          </td>
+        </tr>
+        {{/GreaterThan}}
+        {{#GreaterThan system.matsReq7.qty 1 }}
+        <tr>
+          <td>
+          </td>
+          <td id="valueMat8">
+            <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.matsReq8.qty" class="fas fa-minus-square"></i>
+            {{system.matsReq8.qty}}
+            <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.matsReq8.qty" class="fas fa-plus-square"></i>
+          </td>
+          <td>
+            <input type="text" name="system.matsReq8.mat" value="{{system.matsReq8.mat}}" />
+          </td>
+        </tr>
+        {{/GreaterThan}}
+      </table>
+    </div>
+      
+    {{!-- Effects Tab --}}
+    <div class="tab effects" data-group="primary" data-tab="effects">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
+    </div>
+  </section>
+</form>
+
+{{log system}}
