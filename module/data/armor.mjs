@@ -133,6 +133,27 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
   prepareDerivedData() {    
   }
 
+//Get list of upgrades for armor type
+async getUpgradeList (tag){
+  let select = document.getElementById('upgradesSelector')
+  let upgrade, opt
+  if (select.childElementCount < 3) {
+    select.removeChild(select.lastElementChild)
+    console.log(tag.getAttribute('data-armorType'))
+    const upgradeOptions = game.packs.find((p) => p.metadata.name == 'upgrades')
+    if (upgradeOptions) {
+      for (var packItem of upgradeOptions.tree.entries) {
+        upgrade = await upgradeOptions.getDocument(packItem._id)
+        if (upgrade.system.upgradeType == tag.getAttribute('data-armorType')){
+          opt = document.createElement('option')
+          opt.value = upgrade.name
+          opt.innerHTML = upgrade.name
+          select.appendChild(opt)
+        }
+      }
+    }
+  }
+}
 
 //Get full item from compendium
 async getMyItem (pack, id){

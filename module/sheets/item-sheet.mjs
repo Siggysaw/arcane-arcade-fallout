@@ -66,19 +66,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     //Add upgrades options
     html.find('[name=upgradesSelector]').click(function () {
-      var select = document.getElementById('upgradesSelector')
-      if (select.childElementCount < 3) {
-        select.removeChild(select.lastElementChild)
-        let upgradeOptions = game.packs.find((p) => p.metadata.name == 'upgrades')
-        if (upgradeOptions) {
-          for (var upgrade of upgradeOptions.tree.entries) {
-            var opt = document.createElement('option')
-            opt.value = upgrade.name
-            opt.innerHTML = upgrade.name
-            select.appendChild(opt)
-          }
-        }
-      }
+      FalloutZeroArmor.prototype.getUpgradeList(this)
     })
 
     //Choose upgrade
