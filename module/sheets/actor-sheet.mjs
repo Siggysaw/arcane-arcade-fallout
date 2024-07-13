@@ -116,6 +116,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const miscItems = []
     const backgrounds = []
     const races = []
+    const conditions = []
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -156,6 +157,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         backgrounds.push(i)
       } else if (i.type === 'race') {
         races.push(i)
+      } else if (i.type === 'condition') {
+        conditions.push(i)
       }
     }
 
@@ -173,6 +176,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     context.traits = traits
     context.chems = chems
     context.races = races
+    context.conditions = conditions
     context.backgrounds = backgrounds
     context.explosives = explosives.map((weapon) => {
       weapon.system.thrown = this.actor.system.abilities['str'].value * weapon.system.range
