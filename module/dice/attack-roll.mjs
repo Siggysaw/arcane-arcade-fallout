@@ -173,9 +173,10 @@ export default class AttackRoll extends FormApplication {
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: `BOOM! Attack with ${this.weapon.name}`,
       rollMode: game.settings.get('core', 'rollMode'),
-      'flags.falloutzero.roll': {
-        type: 'attack',
-        damageFormula: this.weapon.system.damage.formula,
+      'flags.falloutzero.damage': {
+        type: this.weapon.system.damage.type,
+        regular: `${this.weapon.system.damage.formula} + ${abilityBonus}`,
+        critical: `${this.weapon.system.damage.formula} + ${abilityBonus} * ${this.weapon.system.critical.multiplier}`,
       },
     })
 

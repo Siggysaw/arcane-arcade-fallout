@@ -257,15 +257,28 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // anchor.innerHTML = '<i class="fas fa-ellipsis-vertical fa-fw"></i>'
     // metadata.appendChild(anchor)
 
-    // Add damage card
-    if (
-      this.flags?.falloutzero?.roll?.type === 'attack' &&
-      this.flags?.falloutzero?.roll?.damageFormula
-    ) {
+    // Add damage buttons
+    if (this.flags?.falloutzero?.damage?.regular) {
       const messageContent = html.querySelector('.message-content')
       const buttonContainer = document.createElement('div')
       buttonContainer.classList.add('card-buttons')
-      buttonContainer.innerHTML = `<button data-roll-damage=${this.flags?.falloutzero?.roll?.damageFormula}>Roll damage <i class="fa-light fa-dice-d20"></i></button>`
+
+      // regular damage button
+      if (this.flags.falloutzero.damage.regular) {
+        const button = document.createElement('button')
+        button.innerHTML = '<span>Roll damage</span> <i class="fa-light fa-dice-d20">'
+        button.dataset.rollDamage = this.flags.falloutzero.damage.regular
+        buttonContainer.appendChild(button)
+      }
+
+      // critical multiplier damage button
+      if (this.flags?.falloutzero?.damage?.critical) {
+        const button = document.createElement('button')
+        button.innerHTML = '<span>Roll critical damage</span> <i class="fa-light fa-dice-d20">'
+        button.dataset.rollDamage = this.flags.falloutzero.damage.critical
+        buttonContainer.appendChild(button)
+      }
+
       messageContent.appendChild(buttonContainer)
     }
 
@@ -327,7 +340,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // }
 
     html.querySelectorAll('.card-buttons [data-roll-damage]').forEach((button) => {
-      button.addEventListener('click', this._onRollDamage)
+      button.addEventListener('click', this._onRollDamage.bind(this))
     })
     avatar.addEventListener('click', this._onTargetMouseDown.bind(this))
     avatar.addEventListener('pointerover', this._onTargetHoverIn.bind(this))
@@ -596,14 +609,15 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   /**
    * Handle damage button click.
    * @param {Event} event   The triggering event.
+   * @returns {Promise}     A promise that resolves once roll message sent
    * @protected
    */
-  _onRollDamage(event) {
-    const roll = new Roll(event.target.dataset.rollDamage)
+  async _onRollDamage(event) {
+    const roll = new Roll(event.currentTarget.dataset.rollDamage, this.actor.getRollData())
 
-    roll.toMessage({
+    return roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `KAPOW! Damage!`,
+      flavor: `KAPOW! ${this.flags?.falloutzero?.damage?.type} damage!`,
       rollMode: game.settings.get('core', 'rollMode'),
     })
   }
