@@ -160,7 +160,6 @@ export default class AttackRoll extends FormApplication {
       if (!canAfford) return
     }
 
-
     const { skillBonus, abilityBonus, decayPenalty, actorLuck, actorPenalties, bonus } =
       this.formDataCache
 
@@ -173,10 +172,13 @@ export default class AttackRoll extends FormApplication {
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: `BOOM! Attack with ${this.weapon.name}`,
       rollMode: game.settings.get('core', 'rollMode'),
-      'flags.falloutzero.damage': {
-        type: this.weapon.system.damage.type,
-        regular: `${this.weapon.system.damage.formula} + ${abilityBonus}`,
-        critical: `${this.weapon.system.damage.formula} + ${abilityBonus} * ${this.weapon.system.critical.multiplier}`,
+      'flags.falloutzero': {
+        targeted: this.formDataCache.targeted,
+        damage: {
+          type: this.weapon.system.damage.type,
+          regular: `${this.weapon.system.damage.formula} + ${abilityBonus}`,
+          critical: `(${this.weapon.system.damage.formula} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier}`,
+        },
       },
     })
 
