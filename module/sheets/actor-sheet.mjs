@@ -372,6 +372,19 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       }
     })
 
+    // Send an item's description to Chat.
+    html.on('click', '[data-sendToChat]', (ev) => {
+      const itemId = ev.currentTarget.dataset.itemId
+      const item = this.actor.items.get(itemId)
+      console.log(item)
+      let chatData = {
+        author: game.user._id,
+        speaker: ChatMessage.getSpeaker(),
+        flavor: `${item.system.description}`,
+      }
+      ChatMessage.create(chatData, {})
+    })
+
     // handles weapon reload
     html.on('click', '[data-reload]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
