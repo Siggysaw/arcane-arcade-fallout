@@ -279,6 +279,15 @@ export default class FalloutZeroChatMessage extends ChatMessage {
         buttonContainer.appendChild(button)
       }
 
+      // add targeted condition roll
+      if (this.flags?.falloutzero?.targeted) {
+        const button = document.createElement('button')
+        button.innerHTML =
+          '<span>Roll targeted attack condition</span> <i class="fa-light fa-dice-d4">'
+        button.dataset.rollCondition = '1d4'
+        buttonContainer.appendChild(button)
+      }
+
       messageContent.appendChild(buttonContainer)
     }
 
@@ -342,6 +351,9 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     html.querySelectorAll('.card-buttons [data-roll-damage]').forEach((button) => {
       button.addEventListener('click', this._onRollDamage.bind(this))
     })
+    html
+      .querySelector('.card-buttons [data-roll-condition]')
+      ?.addEventListener('click', this._onRollCondition.bind(this))
     avatar.addEventListener('click', this._onTargetMouseDown.bind(this))
     avatar.addEventListener('pointerover', this._onTargetHoverIn.bind(this))
     avatar.addEventListener('pointerout', this._onTargetHoverOut.bind(this))
@@ -606,18 +618,35 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /* -------------------------------------------- */
 
+  _onRollCondition(event) {
+    const roll = new Roll(event.currentTarget.dataset.rollCondition, this.actor.getRollData())
+
+    return roll.toMessage({
+      flavor: 'Condition effect roll!',
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      rollMode: game.settings.get('core', 'rollMode'),
+    })
+  }
+
   /**
    * Handle damage button click.
    * @param {Event} event   The triggering event.
    * @returns {Promise}     A promise that resolves once roll message sent
    * @protected
    */
-  async _onRollDamage(event) {
+  _onRollDamage(event) {
     const roll = new Roll(event.currentTarget.dataset.rollDamage, this.actor.getRollData())
 
+    let flavor = `KAPOW! ${this.flags?.falloutzero?.damage?.type} damage`
+    if (this.flags?.falloutzero?.targeted) {
+      flavor += ` to the ${this.flags?.falloutzero?.targeted}!`
+    } else {
+      flavor += '!'
+    }
+
     return roll.toMessage({
+      flavor,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `KAPOW! ${this.flags?.falloutzero?.damage?.type} damage!`,
       rollMode: game.settings.get('core', 'rollMode'),
     })
   }
