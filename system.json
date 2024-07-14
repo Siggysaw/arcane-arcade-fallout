@@ -87,7 +87,10 @@
         "enemies",
         "community_enemies",
         "monsterloot",
-        "roomloot"
+        "roomloot",
+        "npc-attacks",
+        "npc-actions-sample",
+        "targeted-attacks"
       ],
       "color": null,
       "folders": []
@@ -256,7 +259,6 @@
       "path": "packs/enemies",
       "system": "arcane-arcade-fallout",
       "ownership": {
-        "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       },
       "flags": {}
@@ -268,7 +270,6 @@
       "path": "packs/community_enemies",
       "system": "arcane-arcade-fallout",
       "ownership": {
-        "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       },
       "flags": {}
@@ -328,7 +329,6 @@
       "path": "packs/room-loot",
       "system": "arcane-arcade-fallout",
       "ownership": {
-        "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       },
       "flags": {}
@@ -340,7 +340,28 @@
       "path": "packs/monster-loot",
       "system": "arcane-arcade-fallout",
       "ownership": {
-        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Targeted Attacks",
+      "type": "RollTable",
+      "name": "targeted-attacks",
+      "path": "packs/targeted-attacks",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "NPC Attacks",
+      "type": "Item",
+      "name": "npc-attacks",
+      "path": "packs/npc-attacks",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
         "ASSISTANT": "OWNER"
       },
       "flags": {}
