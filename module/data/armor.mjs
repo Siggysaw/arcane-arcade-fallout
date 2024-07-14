@@ -139,12 +139,12 @@ async getUpgradeList (tag){
   let upgrade, opt
   if (select.childElementCount < 3) {
     select.removeChild(select.lastElementChild)
-    console.log(tag.getAttribute('data-armorType'))
+    console.log(tag.getAttribute('data-itemType'))
     const upgradeOptions = game.packs.find((p) => p.metadata.name == 'upgrades')
     if (upgradeOptions) {
       for (var packItem of upgradeOptions.tree.entries) {
         upgrade = await upgradeOptions.getDocument(packItem._id)
-        if (upgrade.system.upgradeType == tag.getAttribute('data-armorType')){
+        if (upgrade.system.upgradeType == tag.getAttribute('data-itemType')){
           opt = document.createElement('option')
           opt.value = upgrade.name
           opt.innerHTML = upgrade.name
