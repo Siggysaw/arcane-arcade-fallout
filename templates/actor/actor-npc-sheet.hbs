@@ -9,166 +9,137 @@
               <td style="width: 250px" class="left">
                 <table class="bio">
                   <tr>
-                    <td colspan="3" class="character-name" style="text-align: left">
-                      <input type="text" name="name" value="{{ actor.name }}" /><br /><br />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="bio-label"><span class="label">Race:</span></td>
-                    <td colspan="2">
-                      <input
-                        style="text-transform: captialize"
-                        type="text"
-                        name="system.race"
-                        value="{{ system.race }}"
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="bio-label"><span class="label">BG:</span></td>
-                    <td colspan="2">
-                      <input type="text" name="system.background" value="{{ system.background }}" />
-                    </td>
+                      <td colspan="2">
+                          <table>
+                              <tr>
+                                  <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
+                                      <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" /><br />
+                                      <input type="text" name="name" value="{{ actor.name }}" />
+                                  </td>
+                              </tr>
+                              <tr></tr>
+                              <tr>
+                                  <td>
+                                      <div class="fakebutton" data-npc-loot title="Send loot to chat">
+                                          <i class="fa-regular">LOOT</i>
+                                      </div>
+                                  </td>
+                              </tr>
+                          </table>
+                      </td>
                   </tr>
                 </table>
               </td>
               <td>
                 <table>
                   <tr>
-                    <td>
-                      <table>
-                        <tr>
-                          <td colspan="2">
-                            <span class="status-label">HP</span>
-                            <progress
-                              style="width: 90%; float: right"
-                              class="statusbar health"
-                              value="{{ system.health.value }}"
-                              max="{{ system.health.max }}"
-                            >
-                              {{ system.health.value }}
-                            </progress>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="statusnum" colspan="2">
-                            <input
-                              type="number"
-                              name="system.health.value"
-                              value="{{ system.health.value }}"
-                              max="{{ system.health.max }}"
-                            />
-                            /
-                            <input
-                              type="number"
-                              name="system.health.max"
-                              value="{{ system.health.max }}"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            <span class="status-label">SP</span
-                            ><progress
-                              style="width: 90%; float: right"
-                              class="statusbar stamina"
-                              value="{{ system.stamina.value }}"
-                              max="{{ system.stamina.max }}"
-                            >
-                              {{ system.stamina.value }}
-                            </progress>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2" class="statusnum">
-                            <input
-                              type="number"
-                              name="system.stamina.value"
-                              value="{{ system.stamina.value }}"
-                            />
-                            /
-                            <input
-                              type="number"
-                              name="system.stamina.max"
-                              value="{{ system.stamina.max }}"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            <span class="status-label">AP</span
-                            ><progress
-                              style="width: 90%; float: right"
-                              class="statusbar stamina"
-                              value="{{ system.actionPoints.value }}"
-                              max="{{ system.actionPoints.max }}"
-                            >
-                              {{ system.actionPoints.value }}
-                            </progress>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2" class="statusnum">
-                            <input
-                              type="number"
-                              name="system.actionPoints.value"
-                              value="{{ system.actionPoints.value }}"
-                            />
-                            /
-                            <input
-                              type="number"
-                              name="system.actionPoints.max"
-                              value="{{ system.actionPoints.max }}"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="fakebutton" data-recycle-ap title="Refresh AP During Combat">
-                                    <i class="fa-solid fa-recycle"></i>
-                            </td>
-                            <td>
-                                <div class="fakebutton" data-refill-ap title="Refresh AP Outside of Combat">
-                                    <i class="fa-regular fa-arrow-up-right-dots"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input
-                              id="armorClass-form"
-                              type="number"
-                              name="system.armorClass.value"
-                              value="{{ system.armorClass.value }}"
-                            />AC
-                          </td>
-                          <td>
-                            <input
-                              id="damageThreshold-form"
-                              type="number"
-                              name="system.damageThreshold.value"
-                              value="{{ system.damageThreshold.value }}"
-                            />DT
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                    <td>
-                      <table>
-                        <tr>
-                          <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
-                            <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
-                          </td>
-                        </tr>
-                        <tr></tr>
-                        <tr>
-                          <td>
-                              <div class = "fakebutton" data-npc-loot title="Send loot to chat">
-                                  <i class="fa-regular">LOOT</i>
-                              </div>
-                          </td>
-                      </tr>
-                      </table>
-                    </td>
+                      <td>
+                          <table>
+                              <tr>
+                                  <td>
+                                      <table class="character-status" style="max-width:400px;">
+                                          <tr>
+                                              <td colspan="2">
+                                                  <span class="status-label">HP</span>
+                                                  <i data-health="minus" class="fas fa-minus-square"></i>
+                                                  <i data-health="plus" class="fas fa-plus-square"></i>
+                                                  <progress style="width: 80%; float: right"
+                                                            class="statusbar health"
+                                                            value="{{ system.health.value }}"
+                                                            max="{{ system.health.max }}">
+                                                      {{ system.health.value }}
+                                                  </progress>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td class="statusnum" colspan="2">
+                                                  <input type="number"
+                                                         class="numberwithbuttons"
+                                                         name="system.health.value"
+                                                         value="{{ system.health.value }}" />
+                                                  /
+                                                  <input type="number"
+                                                         class="numberwithbuttons"
+                                                         name="system.health.max"
+                                                         value="{{ system.health.max }}" />
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td colspan="2">
+                                                  <span class="status-label">SP</span>
+                                                  <i data-stamina="minus" class="fas fa-minus-square"></i>
+                                                  <i data-stamina="plus" class="fas fa-plus-square"></i>
+                                                  <progress style="width: 80%; float: right"
+                                                            class="statusbar stamina"
+                                                            value="{{ system.stamina.value }}"
+                                                            max="{{ system.stamina.max }}">
+                                                      {{ system.stamina.value }}
+                                                  </progress>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td colspan="2" class="statusnum">
+                                                  <input type="number" name="system.stamina.value" value="{{ system.stamina.value }}" />
+                                                  /
+
+                                                  <input type="number" name="system.stamina.max" value="{{ system.stamina.max }}" />
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td colspan="2">
+                                                  <span class="status-label">AP</span>
+                                                  <i data-action="minus" class="fas fa-minus-square"></i>
+                                                  <i data-action="plus" class="fas fa-plus-square"></i>
+                                                  <progress style="width: 80%; float: right"
+                                                            class="statusbar stamina"
+                                                            value="{{ system.actionPoints.value }}"
+                                                            max="{{ system.actionPoints.max }}">
+                                                      {{ system.actionPoints.value }}
+                                                  </progress>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td colspan="2" class="statusnum">
+                                                  <input type="number"
+                                                         name="system.actionPoints.value"
+                                                         value="{{ system.actionPoints.value }}" />
+                                                  /
+                                                  <input type="number" name="system.actionPoints.max" value="{{ system.actionPoints.max }}" />
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                                  <div class="fakebutton" data-recycle-ap title="Refresh AP During Combat">
+                                                      <i class="fa-solid fa-recycle"></i>
+                                                  </div>
+                                              </td>
+                                              <td>
+                                                  <div class="fakebutton" data-refill-ap title="Refresh AP Outside of Combat">
+                                                      <i class="fa-regular fa-arrow-up-right-dots"></i>
+                                                  </div>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                                  <input id="armorClass-form"
+                                                         type="number"
+                                                         name="system.armorClass.value"
+                                                         value="{{ system.armorClass.value }}" />AC
+                                              </td>
+                                              <td>
+                                                  <input id="damageThreshold-form"
+                                                         type="number"
+                                                         name="system.damageThreshold.value"
+                                                         value="{{ system.damageThreshold.value }}" />DT
+                                              </td>
+                                          </tr>
+                                      </table>
+                                  </td>
+                              </tr>
+                          </table>
+
+
+                      </td>
                   </tr>
                 </table>
               </td>
