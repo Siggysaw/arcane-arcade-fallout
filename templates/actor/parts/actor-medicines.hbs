@@ -32,12 +32,21 @@
           </div>
           <div class="perk-div">
             <a
-              style="float: right; margin-right: 10px; margin-top: -20px"
+              style="float: right; margin-right: 30px; margin-top: -20px"
               class="item-control item-delete"
               title="{{localize 'DOCUMENT.Delete' type='item'}}"
             >
               <i class="fas fa-trash"></i>
             </a>
+            {{#DifferentFrom item.system.description ""}}
+              <a style="float: right; margin-right: 5px; margin-top: -20px"
+              data-sendToChat
+              data-item-id="{{ item._id }}"
+              class="item-control"
+              title="Send description to Chat">
+                  <i class="fa-solid fa-comment"></i>
+              </a>
+          {{/DifferentFrom}}
           </div>
         </td>
       </tr>

@@ -121,6 +121,15 @@
             >
               <i class="fas fa-tshirt"></i>
             </a>
+            {{#DifferentFrom item.system.description ""}}
+              <a style="float: right; margin-right: 10px"
+              data-sendToChat
+              data-item-id="{{ item._id }}"
+              class="item-control"
+              title="Send description to Chat">
+                  <i class="fa-solid fa-comment"></i>
+              </a>
+            {{/DifferentFrom}}
           </details>
         </td>
       </tr>

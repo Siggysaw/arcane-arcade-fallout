@@ -376,11 +376,13 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-sendToChat]', (ev) => {
       const itemId = ev.currentTarget.dataset.itemId
       const item = this.actor.items.get(itemId)
-      console.log(item)
+      let theContent = item.system.description
+      if (item.type == "explosive"){theContent = item.system.properties}
       let chatData = {
-        author: game.user._id,
+        user: game.user._id,
         speaker: ChatMessage.getSpeaker(),
-        flavor: `${item.system.description}`,
+        flavor: `${item.name} description :`,
+        content: theContent,
       }
       ChatMessage.create(chatData, {})
     })

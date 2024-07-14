@@ -26,6 +26,15 @@
                                title="{{localize 'DOCUMENT.Delete' type='item'}}">
                                 <i class="fas fa-trash"></i>
                             </a>
+                            {{#DifferentFrom item.system.description ""}}
+                                <a style="float: right; margin-left: 5px"
+                                data-sendToChat
+                                data-item-id="{{ item._id }}"
+                                class="item-control"
+                                title="Send description to Chat">
+                                    <i class="fa-solid fa-comment"></i>
+                                </a>
+                            {{/DifferentFrom}}
                         </div>
                     </li>
                 </td>
@@ -69,6 +78,15 @@
                                    title="Convert Junk to Materials">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
                                 </a>
+                                {{#DifferentFrom item.system.description ""}}
+                                    <a style="float: right; margin-left: 5px"
+                                    data-sendToChat
+                                    data-item-id="{{ item._id }}"
+                                    class="item-control"
+                                    title="Send description to Chat">
+                                        <i class="fa-solid fa-comment"></i>
+                                    </a>
+                                {{/DifferentFrom}}
                             </div>
                         </li>
                     </td>
