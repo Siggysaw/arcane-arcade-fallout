@@ -7,7 +7,6 @@ export default class FalloutZeroArmorUpgrade extends FalloutZeroItemBase {
     const requiredInteger = { required: true, nullable: false, integer: true }
     const schema = super.defineSchema()
     schema.img = new fields.StringField({
-      initial: 'systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/inshiningarmor.png',
     })
     schema.short = new fields.StringField({required: true, nullable: false, initial: ''})
     schema.baseCost = new fields.NumberField({ initial:0, min:0})

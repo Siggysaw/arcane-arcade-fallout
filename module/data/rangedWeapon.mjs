@@ -5,8 +5,7 @@ export default class FalloutZeroRangedWeapon extends FalloutZeroWeapon {
     const fields = foundry.data.fields
     const schema = super.defineSchema()
 
-    schema.abilityMod = new fields.StringField({ initial: 'agi' })
-    schema.upgrades = new fields.HTMLField({})	
+    schema.abilityMod = new fields.StringField({ initial: 'agi' })	
     schema.skillBonus = new fields.StringField({ initial: 'guns' })
     schema.quantity = new fields.StringField({ initial: '1'})	
     schema.consumesAmmo = new fields.BooleanField({ initial: true })

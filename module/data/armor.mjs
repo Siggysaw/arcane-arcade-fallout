@@ -133,42 +133,6 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
   prepareDerivedData() {    
   }
 
-//Get list of upgrades for armor type
-async getUpgradeList (tag){
-  let select = document.getElementById('upgradesSelector')
-  let upgrade, opt
-  if (select.childElementCount < 3) {
-    select.removeChild(select.lastElementChild)
-    console.log(tag.getAttribute('data-itemType'))
-    const upgradeOptions = game.packs.find((p) => p.metadata.name == 'upgrades')
-    if (upgradeOptions) {
-      for (var packItem of upgradeOptions.tree.entries) {
-        upgrade = await upgradeOptions.getDocument(packItem._id)
-        if (upgrade.system.upgradeType == tag.getAttribute('data-itemType')){
-          opt = document.createElement('option')
-          opt.value = upgrade.name
-          opt.innerHTML = upgrade.name
-          select.appendChild(opt)
-        }
-      }
-    }
-  }
-}
-
-//Get full item from compendium
-async getMyItem (pack, id){
-  var cost = document.getElementById('upgradeCost');
-  var details = document.getElementById('upgradeDetails');
-  let myItem = await pack.getDocument(id);
-  cost.innerHTML = `  (${myItem.system.baseCost} caps)` 
-  details.innerHTML = `
-    <a class="content-link" style="color:black" draggable="true" data-link data-uuid="${myItem.uuid}"
-      data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="Click for details">
-    <i class="fas fa-suitcase">
-    </i>${myItem.name}
-    </a>`
-}
-
 async addUpgrade(myItem,myUpgrade){
   let myData = {}
   let myValues = ['armorClass','damageThreshold','baseCost','strReq','slots','load']
@@ -245,7 +209,10 @@ async changeRank(myItem,upgradeId,nextRank,removeCost){
     let newUpgrade = pack.tree.entries.find(u => u.name == newUpgradeName)
     if(newUpgrade){
       newUpgrade = await pack.getDocument(newUpgrade._id);
-      if (wasEquipped){await this.unequipItemStats(myItem)}
+      if (wasEquipped){
+        await this.unequipItemStats(myItem)
+        FalloutZeroItem.prototype.toggleEffects(myItem,true)
+      }
       await this.removeUpgrade(myItem,myUpgrade,removeCost,key1)
       let myData = {}
       let myKey = 'system.upgrades.' + key1 + '.id';
@@ -263,7 +230,10 @@ async changeRank(myItem,upgradeId,nextRank,removeCost){
       Object.assign(myData, {[myKey] : myItem.system.slots.value + 1});
       await myItem.update(myData);
       await this.addUpgrade(myItem,newUpgrade);
-      if (wasEquipped){await this.equipItemStats(myItem)}
+      if (wasEquipped){
+        await this.equipItemStats(myItem)
+        FalloutZeroItem.prototype.toggleEffects(myItem,false)
+      }
     } else{
       alert('Could not find next upgrade on the list. Make sure the name of the upgrade ends with the rank number.')
     }
@@ -466,23 +436,10 @@ async seeUpgrade (id){
 
   async swapArmors (myItem,otherArmor) {
     await this.unequipItemStats(otherArmor)
-    this.toggleEffects(otherArmor,true)
+    FalloutZeroItem.prototype.toggleEffects(otherArmor,true)
     otherArmor.update({'system.itemEquipped' : false})
     await this.equipItemStats(myItem)
-    this.toggleEffects(myItem,false)
-  }
-
-  async toggleEffects (myItem, equipStatus) {
-    let myEffect
-    let i = 0;
-    if(myItem.collections.effects.contents){
-      let myEffects = myItem.collections.effects.contents
-      while (i < myEffects.length){
-        myEffect = myItem.effects.get(myEffects[i]._id)
-        myEffect.update({ disabled: equipStatus })
-        i++
-      }
-    }
+    FalloutZeroItem.prototype.toggleEffects(myItem,false)
   }
 
   //Get original state of weapon
@@ -490,7 +447,7 @@ async seeUpgrade (id){
     if ((myItem.type == "armor" || myItem.type == "powerArmor") && myItem.parent){
       if (myItem.system.itemEquipped){
         this.unequipItemStats(myItem)
-        this.toggleEffects(myItem,true)
+        FalloutZeroItem.prototype.toggleEffects(myItem,true)
       } else {
         if (myItem.system.quantity > 1 ) {
           this.splitObject(myItem,"equip")
@@ -500,7 +457,7 @@ async seeUpgrade (id){
           this.swapArmors(myItem,otherArmor);
         }else{
           this.equipItemStats(myItem)
-          this.toggleEffects(myItem,false)
+          FalloutZeroItem.prototype.toggleEffects(myItem,false)
         }
       }
     }
