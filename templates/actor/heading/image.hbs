@@ -27,7 +27,7 @@
           <div class="fakebutton" data-pc-loot title="Player loots a room or container">
               <i class="fa-regular">ROOM LOOT</i>
           </div>
-      <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll">
+      <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll;overflow-x:hidden;">
           {{#each conditions as |item condition|}}
           {{#GreaterThan system.quantity 1}}
           <div class="active-conditions">

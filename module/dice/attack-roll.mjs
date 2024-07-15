@@ -24,7 +24,7 @@ export default class AttackRoll extends FormApplication {
     const options = super.defaultOptions
 
     options.classes = ['falloutzero', 'dialog', 'attack-roll']
-    options.title = 'title'
+    options.title = 'V.A.T.S'
     options.template = 'systems/arcane-arcade-fallout/templates/actor/dialog/attack.hbs'
     options.width = 'auto'
     options.submitOnChange = true

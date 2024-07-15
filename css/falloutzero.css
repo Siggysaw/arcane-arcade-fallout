@@ -630,7 +630,8 @@ td,
   padding: 2px;
   letter-spacing: 0rem;
 }
-.sheet .fas {
+.sheet .fas,
+.sheet .fa{
   cursor: pointer;
 }
 .sheet .fakebutton,
@@ -941,4 +942,19 @@ form td .status-notes li:hover {
 .sheet header.sheet-header .condition-icon {
   width: 100%;
   height: auto;
+}
+.sheet .content-link{
+    background:none;
+    font-style:italic;
+    border:none;
+}
+.item .content-link{
+    text-decoration:underline;
+    border:solid 1px #01e998;
+}
+
+a.content-link,
+a.inline-roll {
+  background: none;
+  border:solid 1px #01e998;
 }
