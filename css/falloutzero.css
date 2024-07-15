@@ -695,7 +695,7 @@ td,
 .sheet .karmaCaps {
   display: flex;
   align-items: center;
-  margin-top:-75px;
+  margin-top:-50px;
   z-index:1;
 }
 
