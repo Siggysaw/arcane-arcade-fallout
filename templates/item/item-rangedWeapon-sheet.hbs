@@ -7,34 +7,42 @@
 <form class="{{ cssClass }}" autocomplete="off">
   <header class="sheet-header">
     <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
-    <div class="header-fields">
+    <div class="header-fields" >
         <h1 class="charname">
             <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
         </h1>
-        Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}" /><br />
-        <table>
-            <tr>
-                <td>Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} /></td>
-                <td>Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /></td>
-                <td>Energy Weapon: <input type="checkbox" name="system.energyWeapon" {{checked system.energyWeapon}} /></td>
-            </tr>
-        </table>
-        <table class="equipped-stats">
-            <tr>
-                <td>Ability</td>
-                <td>
-                        <input style="width:200px;" type="text" name="system.abilityMod" value="{{system.abilityMod}}" />
-                </td>
-            </tr>
-        </table>
-
+        <table >
+          <tr>
+            <td style="text-align:left">
+              Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} />
+              <br>Slots : <input style="text-align:center;width:35px;" type="number" name="system.slots" value="{{system.slots}}"/>
+              <br>Number Owned:<input style="text-align:center;width:35px;" type="number" name="system.quantity" value="{{system.quantity}}" />
+              <br>Keep Expanded: <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />
+            </td>
+            <td>
+              <button style ="max-width:fit-content;text-align:left" class="fakeButton" addUpgradeBtn id="addUpgradeBtn">ADD</button>
+                <select name="upgradesSelector" data-itemType="ranged" id="upgradesSelector">
+                  <option value="Upgrades">Upgrades</option>
+              </select>
+              <div id="upgradeDetails" name="upgradeDetails"></div>
+              <div id="upgradeCost" name="upgradeCost"></div>
+              <br>Energy Weapon: <input type="checkbox" name="system.energyWeapon" {{checked system.energyWeapon}} />
+            </td>
+          </tr>
+          </table>
+          <table class="equipped-stats">
+            <td>Ability</td>
+            <td>
+              <input style="width:200px;" type="text" name="system.abilityMod" value="{{system.abilityMod}}" />
+            </td>
+          </table>
     </div>
   </header>
 
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="upgrades">Upgrades</a>
+    <a class="item" data-tab="upgrades" id="upgradesTab">Upgrades</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -128,10 +136,49 @@
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
     </div>
     {{!-- Upgrades Tab --}}
-    <div class="tab" data-group="primary" data-tab="upgrades">
-	Upgradeables are on the way! Until then, add your modifications to this box and manually update your stats.
-	 	  {{editor system.upgrades target="system.upgrades" button=true engine="prosemirror"}} 	
-	</div>
+    <div class="tab" data-armor-id data-group="primary" data-tab="upgrades">
+      {{#LesserThan system.baseCost.base 1}}
+        <div>Select an upgrade and press the ADD button above to upgrade your weapon. Upgrades will appear here as you add them. </div>
+        {{else}}
+        <ol>
+          {{#each system.upgrades as |key|}}
+            {{#if key.id}}
+            <div class="box-perks">
+              <li class="item flexrow" data-item-id="{{ key.id }}">
+                <table class="perk-table" style="border: solid 1px">
+                  <tr>
+                    <td>
+                      <div class="perk-div">
+                        <h3>{{ key.name }}</h3>
+                        <a
+                          class="item-control"
+                          seeUpgrade
+                          id="{{ key.id }}"
+                          title="View Item Details"
+                        >
+                          <img title="{{key.description}}" class="perk-image" src="{{key.img}}" />
+                        </a>
+                      </div>
+                      <div class="perk-div">
+                        {{ key.rank }}
+                      </div>
+                      <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <div class="item-controls" style="background: black">
+                          <a class="item-control upgrade-delete" deleteUpgrade title="Delete Upgrade" id="delete{{key.id}}">
+                            <i class="fas fa-trash"></i>
+                          </a>
+                        </div>
+                      </li>
+                    </td>
+                  </tr>
+                </table>
+              </li>
+            </div>
+            {{/if}}
+          {{/each}}
+        </ol>
+        {{/LesserThan}}
+    </div>
 
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">

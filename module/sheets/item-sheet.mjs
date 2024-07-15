@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
-
+import FalloutZeroItem from '../documents/item.mjs'
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -66,17 +66,17 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     //Add upgrades options
     html.find('[name=upgradesSelector]').click(function () {
-      FalloutZeroArmor.prototype.getUpgradeList(this)
+      FalloutZeroItem.prototype.getUpgradeList(this)
     })
 
     //Choose upgrade
-    html.find('[name=upgradesSelector]').change(function () {
+    html.on('change','[name=upgradesSelector]', (ev) => {
       var select = document.getElementById('upgradesSelector')
       const pack = game.packs.find((p) => p.metadata.name == 'upgrades')
       if (pack) {
         const myUpgrade = pack.tree.entries.find((u) => u.name == select.value)
         if (myUpgrade) {
-          FalloutZeroArmor.prototype.getMyItem(pack, myUpgrade._id)
+          FalloutZeroItem.prototype.getMyItem(pack, myUpgrade._id, this.object)
         } else {
           alert('Could not find a upgrade named ' + select.value)
         }
@@ -122,14 +122,15 @@ export default class FalloutZeroItemSheet extends ItemSheet {
           if (this.object.system.quantity > 1 && this.object.system.baseCost.base == 0) {
             FalloutZeroArmor.prototype.splitDialog(this.object, pack, myUpgrade._id)
           } else {
-            FalloutZeroArmor.prototype.checkUpgrade(this.object, pack, myUpgrade._id)
+              FalloutZeroItem.prototype.checkUpgradeType(this.object, pack, myUpgrade._id)
           }
-        } else {
+        } 
+        else {
           alert('Could not find a upgrade named ' + select.value)
         }
-      } else {
-        alert("Could not find a compendium named 'upgrades'")
-      }
+    } else {
+      alert("Could not find a compendium named 'upgrades'")
+    }
     })
     //Prevent submit on pressing enter
     $(document).ready(function () {
@@ -148,7 +149,12 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     //Remove upgrade button
     html.on('click', '[deleteUpgrade]', (ev) => {
       let myId = ev.currentTarget.id.replace('delete', '')
-      FalloutZeroArmor.prototype.deleteWholeUpgrade(this.object, myId)
+      if (this.object.type =="armor" || this.object.type=="powerArmor"){
+        FalloutZeroArmor.prototype.deleteWholeUpgrade(this.object, myId)
+      } else {
+        FalloutZeroItem.prototype.deleteWholeUpgrade(this.object, myId)
+      }
+      
     })
 
     //Click to see Upgrade from compendium

@@ -39,7 +39,7 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="upgrades">Upgrades</a>
+    <a class="item" data-tab="upgrades" id="upgradesTab">Upgrades</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -157,23 +157,6 @@
                         >
                           <img title="{{key.description}}" class="perk-image" src="{{key.img}}" />
                         </a>
-                      </div>
-                      <div class="perk-div">
-                        <i
-                          style="padding: 3px"
-                          downgradeRank
-                          id="{{key.id}}"
-                          name="{{ key.rank }}"
-                          class="fas fa-minus-square"
-                        ></i>
-                        {{ key.rank }}
-                        <i
-                          style="padding: 3px"
-                          upgradeRank
-                          id="{{key.id}}"
-                          name="{{ key.rank }}"
-                          class="fas fa-plus-square"
-                        ></i>
                       </div>
                       <li class="item flexrow" data-item-id="{{ item._id }}">
                         <div class="item-controls" style="background: black">

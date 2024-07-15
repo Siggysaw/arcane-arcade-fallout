@@ -8,9 +8,6 @@ export default class FalloutZeroWeaponUpgrade extends FalloutZeroItemBase {
     const fields = foundry.data.fields
     const requiredInteger = { required: true, nullable: false, integer: true }
     const schema = super.defineSchema()
-    schema.img = new fields.StringField({
-      initial: 'systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/systems/arcane-arcade-fallout/assets/NPC-Attacks/arm-blade.png',
-    })
     schema.name = new fields.StringField({ initial: 'Camouflage'})
     schema.baseCost = new fields.StringField({ initial:'90%'})
     schema.equipTime = new fields.StringField({ initial:'15 minutes'})
