@@ -1,4 +1,4 @@
-<table>
+<table style="max-width:200px;">
   <tr>
     <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
       <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
@@ -22,13 +22,35 @@
         </tr>
       </table>
       {{#GM}}
-      <tr>
-        <td>
+  <tr>
+      <td>
           <div class="fakebutton" data-pc-loot title="Player loots a room or container">
-            <i class="fa-regular">ROOM LOOT</i>
+              <i class="fa-regular">ROOM LOOT</i>
           </div>
-        </td>
-      </tr>
+      <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll">
+          {{#each conditions as |item condition|}}
+          {{#GreaterThan system.quantity 1}}
+          <div class="active-conditions">
+              <li class="item flexrow" data-item-id="{{ item._id }}">
+                  <div class="item-controls individual-condition" style="padding:0px;">
+                      {{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}<br />
+                      <a class="item-control"
+                         data-edit
+                         data-item-id="{{ item._id }}"
+                         title="{{item.name}}">
+                          <img class="condition-icon" src="{{ item.img }}" title="{{ item.name }}" />
+                      </a><br />
+                      <a class="item-control item-delete">
+                          <i class="fa fa-close"></i>
+                      </a>
+                  </div>
+              </li>
+          </div>
+          {{/GreaterThan}}
+          {{/each}}
+      </div>
+      </div>
+  </tr>
       {{/GM}}
     </td>
   </tr>

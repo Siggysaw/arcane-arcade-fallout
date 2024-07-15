@@ -415,7 +415,7 @@ details > summary {
 }
 .dialog option,
 .dialog optgroup,
-.window-app .dialog ul {
+.window-app .dialog ul{
   background-color: #1d5427;
 }
 .window-app .window-content input,
@@ -429,7 +429,7 @@ details > summary {
 #chat .chat-message .message-header,
 .prosemirror.menu-dialog form p,
 .prosemirror.menu-dialog form button,
-.prosemirror.menu-dialog form input {
+.prosemirror.menu-dialog form input{
   color: #01e998;
   letter-spacing: 0rem;
 }
@@ -469,7 +469,9 @@ details > summary {
 .sheet li,
 form .title,
 .falloutzero .items-list .item .item-name,
-.journal-entry-content {
+.journal-entry-content,
+form .form-group span.units,
+form div label{
   color: #01e998;
 }
 .journal-entry-content {
@@ -692,6 +694,8 @@ td,
 .sheet .karmaCaps {
   display: flex;
   align-items: center;
+  margin-top:-75px;
+  z-index:1;
 }
 
 .sheet .karmaCaps input[type='checkbox'] {
@@ -925,11 +929,16 @@ form td .status-notes li:hover {
   width: 106px;
   background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg2.png');
 }
-.sheet .active-conditions{
-    width:33.3%;
-    height:100px;
-    float:left;
-    font-size:9pt;
-    border:solid 1px;
-    padding:10px 0px 10px 0px
+.sheet .active-conditions {
+  float: left;
+  margin: 2px;
+  padding: 0px;
+  text-align:center;
+  width:17.5%;
+  position:relative;
+  z-index:3
+}
+.sheet header.sheet-header .condition-icon {
+  width: 100%;
+  height: auto;
 }

@@ -37,31 +37,3 @@
     </td>
   </tr>
 </table>
-
-<table>
-    <tr><th>Conditions</th></tr>
-    <tr>
-        <td class="condition-box">
-            {{#each conditions as |item condition|}}
-            {{#GreaterThan system.quantity 1}}
-            <div class="active-conditions">
-                <li class="item flexrow" data-item-id="{{ item._id }}">
-                    <div class="item-controls">
-                        <a class="item-control"
-                           data-edit
-                           data-item-id="{{ item._id }}"
-                           title="{{localize 'DOCUMENT.Update' type='item'}}">
-                            {{item.name}}{{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}
-                        </a><hr />
-                        <a class="item-control item-delete">
-                            <div class="fakebutton">Clear</div>
-                        </a>
-                    </div>
-                </li>
-            </div>
-            {{/GreaterThan}}
-            {{/each}}
-        </td>
-    </tr>
-</table>
-
