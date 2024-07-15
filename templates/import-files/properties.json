@@ -1,0 +1,8 @@
+{
+  "name": "{{title}}",
+  "type": "property",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "{{properties}}"
+  }
+}
