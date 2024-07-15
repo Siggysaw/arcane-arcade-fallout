@@ -1,9 +1,0 @@
-2024/07/15-11:18:24.227 92c Recovering log #113
-2024/07/15-11:18:24.228 92c Level-0 table #115: started
-2024/07/15-11:18:24.231 92c Level-0 table #115: 31233 bytes OK
-2024/07/15-11:18:24.231 92c Recovering log #115
-2024/07/15-11:18:24.231 92c Level-0 table #116: started
-2024/07/15-11:18:24.238 92c Level-0 table #116: 770 bytes OK
-2024/07/15-11:18:24.242 92c Delete type=0 #113
-2024/07/15-11:18:24.242 92c Delete type=0 #115
-2024/07/15-11:18:24.242 92c Delete type=3 #112
