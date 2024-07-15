@@ -64,7 +64,8 @@
         "melee-weapons",
         "explosives",
         "armor",
-        "miscellaneous"
+        "miscellaneous",
+        "properties"
       ],
       "color": null,
       "folders": []
@@ -315,6 +316,18 @@
       "type": "Item",
       "name": "conditions",
       "path": "packs/conditions",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Properties",
+      "type": "Item",
+      "name": "properties",
+      "path": "packs/properties",
       "system": "arcane-arcade-fallout",
       "ownership": {
         "PLAYER": "OBSERVER",

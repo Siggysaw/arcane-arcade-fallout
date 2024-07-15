@@ -333,7 +333,7 @@ export default class FalloutZeroActor extends Actor {
     }
     message += '</select>'
     new Dialog({
-      title: 'My Dialog Title',
+      title: 'Swap Ammunition',
       content: message,
       buttons: {
         button1: {

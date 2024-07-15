@@ -25,7 +25,8 @@
       "miscItem",
       "armorUpgrade",
       "weaponUpgrade",
-      "condition"
+      "condition",
+      "property"
     ],
     "htmlFields": ["description"]
   }

@@ -1,3 +1,7 @@
-2024/07/06-09:20:54.042 89ec Recovering log #316
-2024/07/06-09:20:54.055 89ec Delete type=0 #316
-2024/07/06-09:20:54.055 89ec Delete type=3 #315
+2024/07/15-13:18:12.388 23dc Recovering log #327
+2024/07/15-13:18:12.388 23dc Level-0 table #329: started
+2024/07/15-13:18:12.391 23dc Level-0 table #329: 1462 bytes OK
+2024/07/15-13:18:12.391 23dc Recovering log #330
+2024/07/15-13:18:12.396 23dc Delete type=0 #327
+2024/07/15-13:18:12.396 23dc Delete type=0 #330
+2024/07/15-13:18:12.396 23dc Delete type=3 #325

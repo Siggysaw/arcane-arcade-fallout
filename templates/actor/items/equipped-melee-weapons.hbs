@@ -59,7 +59,8 @@
             </table>
             {{/if}}
             <table class="equipped-stats">
-              <tr>
+              {{#GM}}
+                <tr>
                 <td>
                   <select style="width: 100%" data-set-ability data-weapon-id="{{ item._id }}">
                     {{selectOptions ../abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
@@ -71,6 +72,7 @@
                   </select>
                 </td>
               </tr>
+                {{/GM}}
               <tr style="vertical-align: middle">
                 <td style="width: 100px; border-right: none">
                   CND:
