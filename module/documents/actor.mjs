@@ -787,7 +787,7 @@ export default class FalloutZeroActor extends Actor {
   }
 
   formatDice(formula) {
-    return `<a style="color:black" class="inline-roll roll" data-mode="roll" data-flavor="" data-tooltip="Click to roll" data-formula=${formula}><i class="fas fa-dice-d20" ></i>${formula}</a class="roll">`
+    return `<a class="inline-roll roll" data-mode="roll" data-flavor="" data-tooltip="Click to roll" data-formula=${formula}><i class="fas fa-dice-d20" ></i>${formula}</a class="roll">`
   }
 
   formatCompendiumItem(compendium, itemName, myTooltip = 'Item') {
@@ -806,7 +806,7 @@ export default class FalloutZeroActor extends Actor {
         (u) => u.name.toLowerCase() == itemName.toLowerCase(),
       )
       if (myItem) {
-        return `<a class="content-link" style="color:black" draggable="true" data-link data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
+        return `<a class="content-link"  draggable="true" data-link data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
           data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="${myTooltip}"><i class="fas fa-suitcase">
           </i>${itemName}</a><br>`
       } else {
