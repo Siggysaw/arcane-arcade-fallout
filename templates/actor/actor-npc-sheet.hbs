@@ -23,6 +23,27 @@
                                       <div class="fakebutton" data-npc-loot title="Send loot to chat">
                                           <i class="fa-regular">LOOT</i>
                                       </div>
+                                      <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll;overflow-x:hidden;">
+                                          {{#each conditions as |item condition|}}
+                                          {{#GreaterThan system.quantity 1}}
+                                          <div class="active-conditions">
+                                              <li class="item flexrow" data-item-id="{{ item._id }}">
+                                                  <div class="item-controls individual-condition" style="padding:0px;">
+                                                      {{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}<br />
+                                                      <a class="item-control"
+                                                         data-edit
+                                                         data-item-id="{{ item._id }}"
+                                                         title="{{item.name}}">
+                                                          <img class="condition-icon" src="{{ item.img }}" title="{{ item.name }}" />
+                                                      </a><br />
+                                                      <a class="item-control item-delete">
+                                                          <i class="fa fa-close"></i>
+                                                      </a>
+                                                  </div>
+                                              </li>
+                                          </div>
+                                          {{/GreaterThan}}
+                                          {{/each}}
                                   </td>
                               </tr>
                           </table>
