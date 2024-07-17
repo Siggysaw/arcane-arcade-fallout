@@ -77,6 +77,7 @@ export default class FalloutZeroNPC extends FalloutZeroActor {
     // Loop through skill scores, and add their modifiers to our sheet output.
     for (const key in this.skills) {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
+      this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
     }
 
     this.radiationDC.base = 12 - this.abilities['end'].mod
