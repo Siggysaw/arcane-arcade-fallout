@@ -14,7 +14,7 @@
                               <tr>
                                   <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
                                       <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" /><br />
-                                      <input type="text" name="name" value="{{ actor.name }}" />
+                                      <input type="text" name="name" value="{{ actor.name }}" />LVL:{{system.level}}
                                   </td>
                               </tr>
                               <tr></tr>
@@ -206,8 +206,7 @@
                 {{#each system.abilities as |ability key|}}
                 <td>
                   <span class="ability-mod" data-label="{{ ability.label }}">
-                    {{numberFormat ability.mod
-									decimals=0 sign=true}}</span
+                    {{numberFormat ability.mod decimals=0 sign=true}}</span
                   >
                 </td>
                 {{/each}}

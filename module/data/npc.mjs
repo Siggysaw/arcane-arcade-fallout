@@ -39,6 +39,7 @@ export default class FalloutZeroNPC extends FalloutZeroActor {
       }),
     })
     schema.xp = new fields.NumberField({ initial: 0, min: 0 })
+    schema.size = new fields.StringField({initial:"medium"})
     schema.combatSequence = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0, min: 0 })
     schema.npcPassivesense = new fields.NumberField({
@@ -77,7 +78,7 @@ export default class FalloutZeroNPC extends FalloutZeroActor {
     // Loop through skill scores, and add their modifiers to our sheet output.
     for (const key in this.skills) {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
-      this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
+      //this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
     }
 
     this.radiationDC.base = 12 - this.abilities['end'].mod

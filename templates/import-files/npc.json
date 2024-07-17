@@ -64,85 +64,85 @@
     "skills": {
       "barter": {
         "ability": [],
-        "value": "{{barter}}",
+        "base": "{{barter}}",
         "label": "Barter"
       },
       "breach": {
         "ability": [],
-        "value": "{{breach}}",
+        "base": "{{breach}}",
         "label": "Breach"
       },
       "crafting": {
         "ability": [],
-        "value": "{{crafting}}",
+        "base": "{{crafting}}",
         "label": "Crafting"
       },
       "energy_weapons": {
         "ability": [],
-        "value": "{{energyWeapons}}",
+        "base": "{{energyWeapons}}",
         "label": "Energy Weapons"
       },
       "explosives": {
         "ability": [],
-        "value": "{{explosives}}",
+        "base": "{{explosives}}",
         "label": "Explosives"
       },
       "guns": {
         "ability": [],
-        "value": "{{guns}}",
+        "base": "{{guns}}",
         "label": "Guns"
       },
       "intimidation": {
         "ability": [],
-        "value": "{{intimidation}}",
+        "base": "{{intimidation}}",
         "label": "Intimidation"
       },
       "medicine": {
         "ability": [],
-        "value": "{{medicine}}",
+        "base": "{{medicine}}",
         "label": "Medicine"
       },
       "melee_weapons": {
         "ability": [],
-        "value": "{{meleeWeapons}}",
+        "base": "{{meleeWeapons}}",
         "label": "Melee Weapons"
       },
       "science": {
         "ability": [],
-        "value": "{{science}}",
+        "base": "{{science}}",
         "label": "Science"
       },
       "sneak": {
         "ability": [],
-        "value": "{{sneak}}",
+        "base": "{{sneak}}",
         "label": "Sneak"
       },
       "speech": {
         "ability": [],
-        "value": "{{speech}}",
+        "base": "{{speech}}",
         "label": "Speech"
       },
       "survival": {
         "ability": [],
-        "value": "{{survival}}",
+        "base": "{{survival}}",
         "label": "Survival"
       },
       "unarmed": {
         "ability": [],
-        "value": "{{unarmed}}",
+        "base": "{{unarmed}}",
         "label": "Unarmed"
       }
     },
     "armorClass": {
-      "value": "{{armorClass}}",
+      "base": "{{armorClass}}",
       "min": 0
     },
     "damageThreshold": {
-      "value": "{{damageThreshold}}",
+      "base": "{{damageThreshold}}",
       "min": 0
     },
     "caps": 0,
-    "level": 1,
+    "level": "{{level}}",
     "penalties": {
       "hunger": {
         "label": "",
@@ -181,7 +181,8 @@
     "combatSequence": 1,
     "npcPassivesense": "{{passiveSense}}",
     "penaltyTotal": 0,
-    "properties": "{{properties}}"
+    "size": "{{size}}",
+    "properties": "{{properties}}<br><p>Source: {{source}}"
   },
   "prototypeToken": {
     "name": "{{name}}",
@@ -208,7 +209,7 @@
       "attribute": "health"
     },
     "bar2": {
-      "attribute": "power"
+      "attribute": "stamina"
     },
     "light": {
       "alpha": 0.5,
@@ -245,24 +246,5 @@
     "detectionModes": [],
     "flags": {},
     "randomImg": false
-  },
-  "items": [],
-  "effects": [],
-  "folder": null,
-  "flags": {
-    "exportSource": {
-      "world": "fallout-ttrpg",
-      "system": "arcane-arcade-fallout",
-      "coreVersion": "11.315",
-      "systemVersion": "1.0.0"
-    }
-  },
-  "_stats": {
-    "systemId": "arcane-arcade-fallout",
-    "systemVersion": "1.0.0",
-    "coreVersion": "11.315",
-    "createdTime": 1716065004017,
-    "modifiedTime": 1716066084751,
-    "lastModifiedBy": "gzYpjX3Fqlrk2eh5"
   }
 }
