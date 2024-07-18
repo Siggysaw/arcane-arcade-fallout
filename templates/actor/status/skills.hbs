@@ -12,7 +12,7 @@ Points: {{#Sum startingSkillpoints skillPool}}{{/Sum}}
                 <label for="{{ abilityKey }}"
                        class="resource-label rollable"
                        data-rollable
-                       data-roll="d20+{{#Sum skill.base skill.modifiers}}{{/Sum}}+{{#with (lookup ../../abilities [abilityKey])}} {{mod}} {{/with}}{{#GreaterThan penaltyTotal 1}}-@penaltyTotal{{/GreaterThan}}{{#GreaterThan luckmod 1}}+@luckmod{{/GreaterThan}}"
+                       data-roll="d20+{{#Sum skill.base skill.modifiers}}{{/Sum}}+{{#with (lookup ../../abilities [abilityKey])}} {{mod}} {{/with}}-@penaltyTotal+@luckmod"
                        data-label="Performed a {{
             skill.label
           }} roll using {{#with (lookup ../../abilities [abilityKey])}}{{ label }} {{/with}}">
