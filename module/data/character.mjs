@@ -129,9 +129,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       // Calculate the modifier using d20 rules.
       this.abilities[key].mod = Math.floor(this.abilities[key].value - 5)
     }
-
-
-
     // Loop through skill scores, and add their modifiers to our sheet output.
     for (const key in this.skills) {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability

@@ -43,7 +43,9 @@ export default class FalloutZeroItem extends Item {
   /** @inheritDoc */
   prepareDerivedData() {
     super.prepareDerivedData()
+    console.log(game.actors)
   }
+
 
 //Get list of upgrades for item  type
 async getUpgradeList (tag){
@@ -245,7 +247,6 @@ async deleteWholeUpgrade (weapon,myId){
 
     return rollData
   }
-
   getSkillBonus() {
     if (this.actor.type === 'character') {
       return (

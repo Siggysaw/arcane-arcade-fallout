@@ -19,6 +19,34 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+
+  trade(itemId) {
+    const item = this.items.get(itemId)
+    const characters = game.actors.filter((u) => u.type === 'character')
+    let message = "Give an Item to: <select id='actorselect'>"
+    for (let actor of characters) {
+      message += `<option value=${actor._id}>${actor.name}</option>`
+    }
+    message += "</select>"
+    new Dialog({
+      title: 'Give Item',
+      content: message,
+      buttons: {
+        button1: {
+          label: 'Send Item',
+          callback: (html) => giveitem(html),
+          icon: `<i class="fas fa-check"></i>`,
+        },
+      },
+    }).render(true)
+
+    function giveitem(html) {
+      const chosenActor = html.find('select#actorselect').val()
+      ui.notifications.notify(chosenActor)
+      }
+  }
+
+
   lowerInventory(itemId) {
     const item = this.items.get(itemId)
     const updatedQty = item.system.quantity - 1

@@ -146,6 +146,11 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       const condition = ev.currentTarget.dataset.condition
       this.actor.ruleinfo(condition)
     })
+    //show rule information
+    html.on('click', '[data-trade]', (ev) => {
+      const item = ev.currentTarget.dataset.trade
+      this.actor.trade(item)
+    })
     //Remove upgrade button
     html.on('click', '[deleteUpgrade]', (ev) => {
       let myId = ev.currentTarget.id.replace('delete', '')

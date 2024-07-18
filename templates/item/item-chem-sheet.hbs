@@ -1,12 +1,15 @@
 <form class="{{ cssClass }}" autocomplete="off">
-  <header class="sheet-header">
-    <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
-    <div class="header-fields">
-      <h1 class="charname">
-        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
-      </h1>
-    </div>
-  </header>
+    <header class="sheet-header">
+        <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+            </h1>
+        </div>
+        {{#each game.actors as |actor id|}}
+        {{actor.key}}
+        {{/each}}
+    </header>
   <table style="width: 200px">
     <tr>
       <td>Cost</td>
