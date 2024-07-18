@@ -138,7 +138,11 @@ Handlebars.registerHelper('DifferentFrom', function (v1, v2, options) {
 })
 
 // Sum Of
-Handlebars.registerHelper('Sum', function (v1, v2, v3) {
+Handlebars.registerHelper('Sum', function (v1, v2) {
+  let sum = Number(v1) + Number(v2)
+  return sum
+})
+Handlebars.registerHelper('Sum3', function (v1, v2, v3) {
   let sum = Number(v1) + Number(v2) + Number(v3)
   return sum
 })
