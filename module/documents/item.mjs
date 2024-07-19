@@ -18,17 +18,25 @@ export default class FalloutZeroItem extends Item {
   _preCreate(data, options, user) {
     super._preCreate(data, options, user)
     if (this.parent) {
-      let myItem = this.parent.items.find((u) => u.name == this.name && u.type == this.type)
+      let myItem
       if (this.system.itemEquipped == true || this.system.itemEquipped == false) {
         this.system.itemEquipped = false
-        myItem = this.parent.items.find(
-          (u) => u.name == this.name && u.type == this.type && u.system.itemEquipped == false,
-        )
+        if (this.system.upgrades){
+          myItem = this.parent.items.find(
+            (u) => u.name == this.name && u.type == this.type && u.system.itemEquipped == false && u.system.decay == 10 && u.system.upgrades.upgrade1.id == "",
+          )
+        } else {
+          myItem = this.parent.items.find(
+            (u) => u.name == this.name && u.type == this.type && u.system.itemEquipped == false && u.system.decay == 10,
+          )
+        }
         try {
-          this.system.update({ itemEquipped: false })
+          this.update({ 'system.itemEquipped': false })
         } catch {
           console.log('Item cannot be updated in this way')
         }
+      } else{
+        myItem = this.parent.items.find((u) => u.name == this.name && u.type == this.type)
       }
       let qty = 0
       if (myItem) {
@@ -43,7 +51,6 @@ export default class FalloutZeroItem extends Item {
   /** @inheritDoc */
   prepareDerivedData() {
     super.prepareDerivedData()
-    console.log(game.actors)
   }
 
 
@@ -69,7 +76,7 @@ async getUpgradeList (tag){
   }
 }
 
-//Get full item from compendium
+//Display upgrade before addition
 async getMyItem (pack, id, myItem){
   var cost = document.getElementById('upgradeCost');
   var details = document.getElementById('upgradeDetails');
@@ -88,7 +95,7 @@ async getMyItem (pack, id, myItem){
   }
   
   details.innerHTML = `
-    <a class="content-link" style="color:black" draggable="true" data-link data-uuid="${myUpgrade.uuid}"
+    <a class="content-link" draggable="true" data-link data-uuid="${myUpgrade.uuid}"
       data-id="${myUpgrade._id}" data-type="Item" data-pack="arcane-arcade-fallout.upgrades" data-tooltip="Click for details">
     <i class="fas fa-suitcase">
     </i>${myUpgrade.name}

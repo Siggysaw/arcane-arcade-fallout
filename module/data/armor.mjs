@@ -146,7 +146,7 @@ async addUpgrade(myItem,myUpgrade){
       let newName = myItem.name + " (u)"
       Object.assign(myData,{'name' : newName});
     }
-    Object.assign(myData,{'system.baseCost.base' : myItem.system.baseCost.value});
+    Object.assign(myData,{'system.baseCost.base' : myItem.system.cost});
     Object.assign(myData,{'system.armorClass.base' : myItem.system.armorClass.value});
     Object.assign(myData,{'system.slots.base' : myItem.system.slots.value});
     if (myItem.type == 'armor') {
@@ -171,6 +171,10 @@ async addUpgrade(myItem,myUpgrade){
           }
           myPath = `system.${val}`
           myValue = Math.max(3,Number(myItem.system[val]) + Number(myUpgrade.system[val])) //Min of 3 as per Light 2 
+        break;
+        case 'baseCost':
+          myPath = 'system.cost'
+          myValue = Number(myItem.system.cost) + Number(myUpgrade.system[val])
         break;
         default:
           myPath = `system.${val}.value`
@@ -199,6 +203,19 @@ async findUpgradeKey(armor, upgradeName){
   return key
 }
 
+async toggleEffects (myItem, equipStatus) {
+  let myEffect
+  let i = 0;
+  if(myItem.collections.effects.contents){
+    let myEffects = myItem.collections.effects.contents
+    while (i < myEffects.length){
+      myEffect = myItem.effects.get(myEffects[i]._id)
+      myEffect.update({ disabled: equipStatus })
+      i++
+    }
+  }
+}
+
 //Clicking + or - changes rank of upgrade
 async changeRank(myItem,upgradeId,nextRank,removeCost){
   const pack = await game.packs.find(p => p.metadata.name == "upgrades")
@@ -212,7 +229,7 @@ async changeRank(myItem,upgradeId,nextRank,removeCost){
       newUpgrade = await pack.getDocument(newUpgrade._id);
       if (wasEquipped){
         await this.unequipItemStats(myItem)
-        FalloutZeroItem.prototype.toggleEffects(myItem,true)
+        await this.toggleEffects(myItem,true)
       }
       await this.removeUpgrade(myItem,myUpgrade,removeCost,key1)
       let myData = {}
@@ -233,7 +250,7 @@ async changeRank(myItem,upgradeId,nextRank,removeCost){
       await this.addUpgrade(myItem,newUpgrade);
       if (wasEquipped){
         await this.equipItemStats(myItem)
-        FalloutZeroItem.prototype.toggleEffects(myItem,false)
+        await this.toggleEffects(myItem,false)
       }
     } else{
       alert('Could not find next upgrade on the list. Make sure the name of the upgrade ends with the rank number.')
@@ -268,10 +285,16 @@ async deleteWholeUpgrade (armor,myId){
     Object.assign(myData,{[myPath]:0})
     myPath = 'system.updates.' + key + '.description'
     Object.assign(myData,{[myPath]:myValue})
-    if (wasEquipped){await this.unequipItemStats(armor)}
+    if (wasEquipped){
+      await this.unequipItemStats(armor)
+      await this.toggleEffects(armor,true)
+    }
     await armor.update(myData)
     await this.removeUpgrade(armor,myUpgrade,true,key,true)
-    if (wasEquipped){await this.equipItemStats(armor)}
+    if (wasEquipped){
+      await this.equipItemStats(armor)
+      await this.toggleEffects(armor,false)
+    }
   } 
   else
   { 
@@ -305,13 +328,13 @@ async removeUpgrade(myItem,myUpgrade,removeCost,key,wholeUpgrade=false){
       switch (val){
         case 'baseCost':
           if (removeCost) {
-            myPath = `system.${val}.value`
+            myPath = `system.cost`
             if(typeof Number(myUpgrade.name.slice(-1)) === 'number' && wholeUpgrade){
-              myValue = Math.max(myItem.system.baseCost.base, Number(myItem.system.baseCost.value) - (Number(myUpgrade.name.slice(-1)) * Number(myUpgrade.system.baseCost)))
+              myValue = Math.max(myItem.system.baseCost.base, Number(myItem.system.cost) - (Number(myUpgrade.name.slice(-1)) * Number(myUpgrade.system.baseCost)))
               if (myValue == myItem.system.baseCost.base) {noMoreUpgrades = true} 
             }
             else {
-              myValue = Math.max(myItem.system.baseCost.base, Number(myItem.system.baseCost.value) - (2 * Number(myUpgrade.system.baseCost)))
+              myValue = Math.max(myItem.system.baseCost.base, Number(myItem.system.cost) - (2 * Number(myUpgrade.system.baseCost)))
             }
           }
           break;
@@ -372,7 +395,10 @@ async checkUpgrade(armor,pack, id){
     for (var key of Object.keys(armor.system.upgrades)){
       if (armor.system.upgrades[key].id == "" || armor.system.upgrades[key].name == oldUpgrade.name){
         //unequip
-        if (wasEquipped){await this.unequipItemStats(armor)}
+        if (wasEquipped){
+          await this.unequipItemStats(armor)
+          await this.toggleEffects(armor,true)
+        }
         //Remove upgrades if needed
         if (oldUpgrade.name != myUpgrade.name){
           await this.removeUpgrade(armor,oldUpgrade,false,key)
@@ -381,7 +407,10 @@ async checkUpgrade(armor,pack, id){
         await this.addUpgrade(armor,myUpgrade);
 
         //equip
-        if (wasEquipped){await this.equipItemStats(armor)}
+        if (wasEquipped){
+          await this.equipItemStats(armor)
+          await this.toggleEffects(armor,false)
+        }
         myKey = 'system.upgrades.' + key + '.id';
         Object.assign(myData, {[myKey] : myUpgrade._id});
         myKey = 'system.upgrades.' + key + '.name';
@@ -437,18 +466,18 @@ async seeUpgrade (id){
 
   async swapArmors (myItem,otherArmor) {
     await this.unequipItemStats(otherArmor)
-    FalloutZeroItem.prototype.toggleEffects(otherArmor,true)
+    await this.toggleEffects(otherArmor,true)
     otherArmor.update({'system.itemEquipped' : false})
     await this.equipItemStats(myItem)
-    FalloutZeroItem.prototype.toggleEffects(myItem,false)
+    await this.toggleEffects(myItem,false)
   }
 
   //Get original state of weapon
-  changeEquipStatus (myItem){
+  async changeEquipStatus (myItem){
     if ((myItem.type == "armor" || myItem.type == "powerArmor") && myItem.parent){
-      if (myItem.system.itemEquipped){
-        this.unequipItemStats(myItem)
-        FalloutZeroItem.prototype.toggleEffects(myItem,true)
+      if (myItem.system.itemEquipped == true){
+        await this.unequipItemStats(myItem)
+        await this.toggleEffects(myItem,true)
       } else {
         if (myItem.system.quantity > 1 ) {
           this.splitObject(myItem,"equip")
@@ -457,47 +486,56 @@ async seeUpgrade (id){
         if (otherArmor){
           this.swapArmors(myItem,otherArmor);
         }else{
-          this.equipItemStats(myItem)
-          FalloutZeroItem.prototype.toggleEffects(myItem,false)
+          await this.equipItemStats(myItem)
+          await this.toggleEffects(myItem,false)
         }
       }
     }
   }
 
   async splitObject(myItem,type=""){
+    let currentName = myItem.name
+    await myItem.update({'name' : "TEMP"});
     let newItem = myItem;
     let qty = myItem.system.quantity - 1;
     let newName = myItem.name;
+    newItem.name = "TempName"; // this is required so it registers as a different item
     if (!newName.includes("(u)") && type == "upgrade"){
       newName += " (u)"
-      await myItem.update({'system.quantity' : 1, 'name' : newName});
+      newItem = await Item.create(newItem, {parent: myItem.parent});
+      await myItem.update({'system.quantity' : 1, 'name' : currentName});
+      await newItem.update({'system.quantity' : qty, 'name' : currentName, 'system.itemEquipped' : false});
+    } else {
+      if (type == "equip") {
+        newName += "(e)" 
+        newItem = await Item.create(newItem, {parent: myItem.parent});
+        await myItem.update({'system.quantity' : qty, 'name' : currentName});
+        await newItem.update({'system.quantity' : 1, 'name' : currentName});
+      } else {
+        alert ("Could not split items. Check quantities, unequip and try again.")
+      }
     }
-    if (type == "equip") {
-      newName += " " 
-      await myItem.update({'system.quantity' : 1, 'system.itemEquipped' : true, 'name' : newName});
-    }
-    newItem.name = ""; // this is required so it registers as a different item
-    newItem = await Item.create(newItem, {parent: myItem.parent});
-    await newItem.update({'system.quantity' : qty, 'system.itemEquipped' : false});
   }
   
-  splitDialog(myItem,myUpgrade,myId){
-    let qty = myItem.quantity
-    let cost = myUpgrade.baseCost
+  async splitDialog(myItem,myPack,myId){
+    let qty = myItem.system.quantity
+    console.log(qty)
+    let myUpgrade = await myPack.getDocument(myId);
+    let cost = myUpgrade.system.baseCost
     let fullCost = qty*cost
     let d = new Dialog({
       title: 'Split or upgrade all?',
       content: `Do you wish to upgrade all ${qty} items, or split it to upgrade only one copy?
       
-      One upgrade usually costs ${cost}
-      ${qty} upgrades usually costs ${fullCost}`,
+      One upgrade usually costs ${cost} caps.
+      ${qty} upgrades would typically cost ${fullCost} caps`,
       buttons: {
         Split: {
           icon: '<i class="fa-solid fa-split"></i>',
           label: 'Split',
           callback: async () => {
             await this.splitObject(myItem,"upgrade");
-            this.checkUpgrade(myItem,myUpgrade,myId);
+            this.checkUpgrade(myItem,myPack,myId);
           },
         },
         Update: {
@@ -505,16 +543,13 @@ async seeUpgrade (id){
           label: 'Update all items at once',
           callback: async () => {
             myItem.update({'system.groupUpgrade' : true})
-            this.checkUpgrade(myItem,myUpgrade,myId);
+            this.checkUpgrade(myItem,myPack,myId);
           },
         },
       },
       default: 'Split',
       render: () => {}
     },{
-      left: 200,
-      top: 200,
-      width: 600,
     },)
     d.render(true)
   }

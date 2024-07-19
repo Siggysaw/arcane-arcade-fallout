@@ -472,6 +472,9 @@ export default class FalloutZeroActor extends Actor {
 
   //Convert junk to Materials as per item stats
   async convertJunkToMat(item, mats, qty) {
+    console.log(item)
+    console.log(mats)
+    console.log(qty)
     let compendium = game.packs.find((u) => u.metadata.name == 'material')
     let matData, existingMat, newQuantity
     let material
@@ -516,6 +519,7 @@ export default class FalloutZeroActor extends Actor {
     if (item) {
       dialogContent = `Are you sure you want to convert ${itemName} into the following materials? <br><br>`
       while (i < Object.keys(item.system.junk).length / 2 + 1) {
+        console.log(item.system.junk['quantity' + i])
         if (item.system.junk['quantity' + i] != 0) {
           dialogContent +=
             `x<b name='qty'>${item.system.junk['quantity' + i]}</b> ` +
@@ -1062,7 +1066,7 @@ export default class FalloutZeroActor extends Actor {
               break
           }
           myConcatenatedLoot =
-            myConcatenatedLoot.slice(0, -4) + this.formatCompendiumItem(compendium, loot.name)
+            myConcatenatedLoot.slice(0, -4) + " " + this.formatCompendiumItem(compendium, loot.name)
         }
       }
       let chatData = {
