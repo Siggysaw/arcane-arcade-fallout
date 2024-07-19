@@ -12,6 +12,7 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
         initial: 0,
       }),
     })
+    schema.cost = new fields.NumberField({initial: 0})
     schema.itemEquipped = new fields.BooleanField({initial: false})
     schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
     schema.img = new fields.StringField({
