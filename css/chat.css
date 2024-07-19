@@ -67,3 +67,9 @@
 .chat-sidebar .message-content .card-buttons button:not(:first-of-type) {
   margin-top: 10px;
 }
+.chat-sidebar .item-piles-chat-card li:nth-child(odd),
+.chat-sidebar .item-piles-chat-card li:nth-child(even),
+.chat-sidebar .item-piles-chat-card li:nth-child(odd) {
+  background-color: #222;
+  border: solid 1px;
+}

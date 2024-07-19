@@ -2,3 +2,4 @@
 /.vscode
 .tool-versions
 /dist
+packs/
