@@ -429,7 +429,8 @@ details > summary {
 #chat .chat-message .message-header,
 .prosemirror.menu-dialog form p,
 .prosemirror.menu-dialog form button,
-.prosemirror.menu-dialog form input{
+.prosemirror.menu-dialog form input,
+.sheet .item-piles-config-container p {
   color: #01e998;
   letter-spacing: 0rem;
 }
@@ -954,7 +955,17 @@ form td .status-notes li:hover {
 }
 
 a.content-link,
-a.inline-roll {
+a.inline-roll,
+.chat-message .table-draw .table-results .table-result .result-text a {
   background: none;
-  border:solid 1px #01e998;
+  color:inherit;
+  border: solid 1px #01e998;
+}
+
+.sheet .item-piles-item-row.svelte-tse-1o95obs.item-piles-child-even-color > *,
+.sheet .item-piles-item-row.svelte-tse-1o95obs.item-piles-child-odd-color > *,
+.sheet .item-piles-even-color:nth-child(even),
+.sheet .item-piles-even-color:nth-child(odd) {
+  background: none;
+  border: solid 1px;
 }
