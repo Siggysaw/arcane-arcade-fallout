@@ -30,11 +30,7 @@ export default class FalloutZeroItem extends Item {
             (u) => u.name == this.name && u.type == this.type && u.system.itemEquipped == false && u.system.decay == 10,
           )
         }
-        try {
-          this.update({ 'system.itemEquipped': false })
-        } catch {
-          console.log('Item cannot be updated in this way')
-        }
+        this.update({ 'system.itemEquipped': false })
       } else{
         myItem = this.parent.items.find((u) => u.name == this.name && u.type == this.type)
       }
@@ -60,7 +56,6 @@ async getUpgradeList (tag){
   let upgrade, opt
   if (select.childElementCount < 3) {
     select.removeChild(select.lastElementChild)
-    console.log(tag.getAttribute('data-itemType'))
     const upgradeOptions = game.packs.find((p) => p.metadata.name == 'upgrades')
     if (upgradeOptions) {
       for (var packItem of upgradeOptions.tree.entries) {
@@ -83,7 +78,6 @@ async getMyItem (pack, id, myItem){
   let myUpgrade = await pack.getDocument(id);
   let newCost
   if (typeof myUpgrade.system.baseCost == "string"){
-    //console.log(myItem)
     newCost = await this.calcUpgradeCost(myUpgrade,myItem)
     if(myItem.type=="rangedWeapon"){
       cost.innerHTML = `  (${newCost} &#13;&#10; caps)` 
@@ -150,7 +144,6 @@ async checkUpgrade(weapon,pack, id){
         if (wasEquipped){await this.toggleEffects(weapon,false)}
         //add upgrade to weapon
         if (weapon.system.baseCost == 0){
-          console.log("Base cost of 0!")
           myKey = 'system.baseCost'
           Object.assign(myData, {[myKey] : Number(weapon.system.cost)});
         }
@@ -169,7 +162,6 @@ async checkUpgrade(weapon,pack, id){
         myKey = 'system.upgrades.' + key + '.description';
         let strippedString = myUpgrade.system.description.replace(/(<([^>]+)>)/gi, "");
         Object.assign(myData, {[myKey] : strippedString});
-        console.log(myData)
         await weapon.update(myData);
         break;
       }
