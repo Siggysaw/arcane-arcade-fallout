@@ -1,3 +1,5 @@
+import { getTableFromPack } from '../helpers/tables.mjs'
+
 export default class FalloutZeroChatMessage extends ChatMessage {
   /** @inheritDoc */
   _initialize(options = {}) {
@@ -267,7 +269,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       if (this.flags.falloutzero.damage?.rolls) {
         const button = document.createElement('button')
         button.innerHTML = '<span>Roll damage</span> <i class="fa-light fa-dice-d20">'
-        button.dataset.rollDamage = this.flags.falloutzero.damage.rolls
+        button.dataset.rollDamage = ''
         buttonContainer.appendChild(button)
       }
 
@@ -284,7 +286,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
         const button = document.createElement('button')
         button.innerHTML =
           '<span>Roll targeted attack condition</span> <i class="fa-light fa-dice-d4">'
-        button.dataset.rollCondition = '1d4'
+        button.dataset.rollCondition = ''
         buttonContainer.appendChild(button)
       }
 
@@ -621,11 +623,15 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /* -------------------------------------------- */
 
-  _onRollCondition(event) {
-    const roll = new Roll(event.currentTarget.dataset.rollCondition, this.actor.getRollData())
+  async _onRollCondition() {
+    const table = await getTableFromPack(
+      'arcane-arcade-fallout.targeted-attacks',
+      this.flags?.falloutzero?.targeted?.target,
+    )
+    const conditionRoll = await table.roll()
 
-    return roll.toMessage({
-      flavor: 'Condition effect roll!',
+    return conditionRoll.roll.toMessage({
+      flavor: conditionRoll.results[0].text,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       rollMode: game.settings.get('core', 'rollMode'),
     })

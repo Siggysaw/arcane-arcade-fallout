@@ -11,6 +11,10 @@
   width: auto;
 }
 
+.w-full {
+  width: 100%;
+}
+
 .mx-1 {
   margin: 0 5px;
 }
