@@ -258,16 +258,16 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // metadata.appendChild(anchor)
 
     // Add damage buttons
-    if (this.flags?.falloutzero?.damage?.regular) {
+    if (this.flags?.falloutzero?.damage) {
       const messageContent = html.querySelector('.message-content')
       const buttonContainer = document.createElement('div')
       buttonContainer.classList.add('card-buttons')
 
       // regular damage button
-      if (this.flags.falloutzero.damage.regular) {
+      if (this.flags.falloutzero.damage?.rolls) {
         const button = document.createElement('button')
         button.innerHTML = '<span>Roll damage</span> <i class="fa-light fa-dice-d20">'
-        button.dataset.rollDamage = this.flags.falloutzero.damage.regular
+        button.dataset.rollDamage = this.flags.falloutzero.damage.rolls
         buttonContainer.appendChild(button)
       }
 
@@ -275,7 +275,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       if (this.flags?.falloutzero?.damage?.critical) {
         const button = document.createElement('button')
         button.innerHTML = '<span>Roll critical damage</span> <i class="fa-light fa-dice-d20">'
-        button.dataset.rollDamage = this.flags.falloutzero.damage.critical
+        button.dataset.rollCritical = this.flags.falloutzero.damage.critical
         buttonContainer.appendChild(button)
       }
 
@@ -350,6 +350,9 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
     html.querySelectorAll('.card-buttons [data-roll-damage]').forEach((button) => {
       button.addEventListener('click', this._onRollDamage.bind(this))
+    })
+    html.querySelectorAll('.card-buttons [data-roll-critical]').forEach((button) => {
+      button.addEventListener('click', this._onRollCriticalDamage.bind(this))
     })
     html
       .querySelector('.card-buttons [data-roll-condition]')
@@ -634,16 +637,50 @@ export default class FalloutZeroChatMessage extends ChatMessage {
    * @returns {Promise}     A promise that resolves once roll message sent
    * @protected
    */
-  _onRollDamage(event) {
-    const roll = new Roll(event.currentTarget.dataset.rollDamage, this.actor.getRollData())
+  async _onRollDamage() {
+    try {
+      const abilityBonus = this.flags.falloutzero?.abilityBonus || 0
+      const damageTypes = this.flags.falloutzero.damage.rolls
+        .map((damage) => damage.type)
+        .join(', ')
+      const damageRolls = this.flags.falloutzero.damage.rolls
+        .map((damage) => damage.formula)
+        .join('+ ')
 
-    let flavor = `KAPOW! ${this.flags?.falloutzero?.damage?.type} damage`
+      return this._rollDamage(`${damageRolls} + ${abilityBonus}`, damageTypes)
+    } catch (error) {
+      console.error('Error rolling damage', error)
+    }
+  }
+
+  /**
+   * Handle damage button click.
+   * @param {Event} event   The triggering event.
+   * @returns {Promise}     A promise that resolves once roll message sent
+   * @protected
+   */
+  async _onRollCriticalDamage(event) {
+    try {
+      const damageTypes = this.flags.falloutzero.damage.rolls
+        .map((damage) => damage.type)
+        .join(', ')
+
+      return this._rollDamage(event.currentTarget.dataset.rollCritical, damageTypes)
+    } catch (error) {
+      console.error('Error rolling critical damage', error)
+    }
+  }
+
+  async _rollDamage(formula, types) {
+    let flavor = `KAPOW! ${types} damage`
     if (this.flags?.falloutzero?.targeted) {
-      flavor += ` to the ${this.flags?.falloutzero?.targeted}!`
+      flavor += ` to the ${this.flags?.falloutzero?.targeted.target}!`
     } else {
       flavor += '!'
     }
 
+    const roll = new Roll(formula, this.actor.getRollData())
+    await roll.evaluate()
     return roll.toMessage({
       flavor,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),

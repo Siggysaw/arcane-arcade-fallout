@@ -59,8 +59,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         ...requiredInteger,
         initial: 0,
       }),
-      
-      
     })
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0 })
@@ -69,8 +67,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.partyNerve = new fields.NumberField({ initial: 0 })
     schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.combatActionsexpanded = new fields.BooleanField({ initial: false })
-    schema.passiveSense = new fields.NumberField({...requiredInteger,   initial: 0,
-    })
+    schema.passiveSense = new fields.NumberField({ ...requiredInteger, initial: 0 })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
     schema.conditions = new fields.SchemaField({
@@ -109,7 +106,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     for (const key in this.limbdamage) {
       this.limbdamage[key].description = FALLOUTZERO.limbdamage[key].description
       this.limbdamage[key].label = FALLOUTZERO.limbdamage[key].label
-     
     }
   }
 
@@ -134,7 +130,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
       this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
     }
-
 
     this.radiationDC.base = 12 - this.abilities['end'].mod
     this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
