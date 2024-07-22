@@ -1,0 +1,76 @@
+<fieldset>
+  <legend>Damage</legend>
+  <div>
+    <button class="w-auto" data-add-damage>Add Damage <i class="fas fa-plus"></i></button>
+  </div>
+  <div class="grid grid-4col">
+    <div>Remove</div>
+    <div>Type</div>
+    <div>Alt Type</div>
+    <div>Formula</div>
+    {{#each system.damages as |damage key| }}
+    <div>
+      <button class="w-auto" type="button" data-remove-damage="{{ key }}">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div>
+      <select name="system.damages.{{ key }}.type">
+        {{selectOptions ../damageTypes selected=damage.type blank="None"}}
+      </select>
+    </div>
+    <div>
+      <select name="system.damages.{{ key }}.altType">
+        {{selectOptions ../damageTypes selected=damage.altType blank="None"}}
+      </select>
+    </div>
+    <div>
+      <input
+        placeholder="1d4"
+        type="text"
+        name="system.damages.{{ key }}.formula"
+        value="{{ damage.formula }}"
+      />
+    </div>
+    {{/each}}
+  </div>
+</fieldset>
+<fieldset>
+  <legend>Critical</legend>
+  <div class="grid grid-4col">
+    <div>Critical DV</div>
+    <div>Multiplier</div>
+    <div>Formula</div>
+    <div>Condition</div>
+
+    <div>
+      <input
+        placeholder="20"
+        type="text"
+        name="system.critical.dice"
+        value="{{ system.critical.dice }}"
+      />
+    </div>
+    <div>
+      <input
+        placeholder="1"
+        type="number"
+        name="system.critical.multiplier"
+        value="{{ system.critical.multiplier }}"
+      />
+    </div>
+    <div>
+      <input
+        placeholder="1d4"
+        type="text"
+        name="system.critical.formula"
+        value="{{ system.critical.formula }}"
+      />
+    </div>
+    <div>
+      <select name="system.critical.condition">
+        {{selectOptions conditions selected=system.critical.condition blank="None"}}
+      </select>
+    </div>
+  </div>
+</fieldset>

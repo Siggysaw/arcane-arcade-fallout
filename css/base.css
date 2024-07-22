@@ -7,6 +7,10 @@
   justify-content: space-between;
 }
 
+.w-auto {
+  width: auto;
+}
+
 .mx-1 {
   margin: 0 5px;
 }

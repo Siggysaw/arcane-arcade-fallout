@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import 'variables.css';
 @import 'base.css';
+@import 'grid.css';
 @import 'dialog.css';
 @import 'grant.css';
 @import 'attack-roll.css';
@@ -53,154 +54,6 @@ details > summary {
   color: #1d5427;
   text-shadow: 0 0 10px #1d5427;
   cursor: pointer;
-}
-
-.grid,
-.grid-2col {
-  display: grid;
-  grid-column: span 2 / span 2;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 10px 0;
-  padding: 0;
-}
-
-.grid-3col {
-  grid-column: span 3 / span 3;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.grid-4col {
-  grid-column: span 4 / span 4;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.grid-5col {
-  grid-column: span 5 / span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-
-.grid-6col {
-  grid-column: span 6 / span 6;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-
-.grid-7col {
-  grid-column: span 7 / span 7;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-}
-
-.grid-8col {
-  grid-column: span 8 / span 8;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-}
-
-.grid-9col {
-  grid-column: span 9 / span 9;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
-}
-
-.grid-10col {
-  grid-column: span 10 / span 10;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-
-.grid-11col {
-  grid-column: span 11 / span 11;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
-}
-
-.grid-12col {
-  grid-column: span 12 / span 12;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-.grid-start-2 {
-  grid-column-start: 2;
-}
-
-.grid-start-3 {
-  grid-column-start: 3;
-}
-
-.grid-start-4 {
-  grid-column-start: 4;
-}
-
-.grid-start-5 {
-  grid-column-start: 5;
-}
-
-.grid-start-6 {
-  grid-column-start: 6;
-}
-
-.grid-start-7 {
-  grid-column-start: 7;
-}
-
-.grid-start-8 {
-  grid-column-start: 8;
-}
-
-.grid-start-9 {
-  grid-column-start: 9;
-}
-
-.grid-start-10 {
-  grid-column-start: 10;
-}
-
-.grid-start-11 {
-  grid-column-start: 11;
-}
-
-.grid-start-12 {
-  grid-column-start: 12;
-}
-
-.grid-span-2 {
-  grid-column-end: span 2;
-}
-
-.grid-span-3 {
-  grid-column-end: span 3;
-}
-
-.grid-span-4 {
-  grid-column-end: span 4;
-}
-
-.grid-span-5 {
-  grid-column-end: span 5;
-}
-
-.grid-span-6 {
-  grid-column-end: span 6;
-}
-
-.grid-span-7 {
-  grid-column-end: span 7;
-}
-
-.grid-span-8 {
-  grid-column-end: span 8;
-}
-
-.grid-span-9 {
-  grid-column-end: span 9;
-}
-
-.grid-span-10 {
-  grid-column-end: span 10;
-}
-
-.grid-span-11 {
-  grid-column-end: span 11;
-}
-
-.grid-span-12 {
-  grid-column-end: span 12;
 }
 
 .flex-group-center,
@@ -415,7 +268,7 @@ details > summary {
 }
 .dialog option,
 .dialog optgroup,
-.window-app .dialog ul{
+.window-app .dialog ul {
   background-color: #1d5427;
 }
 .window-app .window-content input,
@@ -472,7 +325,7 @@ form .title,
 .falloutzero .items-list .item .item-name,
 .journal-entry-content,
 form .form-group span.units,
-form div label{
+form div label {
   color: #01e998;
 }
 .journal-entry-content {
@@ -632,7 +485,7 @@ td,
   letter-spacing: 0rem;
 }
 .sheet .fas,
-.sheet .fa{
+.sheet .fa {
   cursor: pointer;
 }
 .sheet .fakebutton,
@@ -696,8 +549,8 @@ td,
 .sheet .karmaCaps {
   display: flex;
   align-items: center;
-  margin-top:-50px;
-  z-index:1;
+  margin-top: -50px;
+  z-index: 1;
 }
 
 .sheet .karmaCaps input[type='checkbox'] {
@@ -935,30 +788,30 @@ form td .status-notes li:hover {
   float: left;
   margin: 2px;
   padding: 0px;
-  text-align:center;
-  width:17.5%;
-  position:relative;
-  z-index:3
+  text-align: center;
+  width: 17.5%;
+  position: relative;
+  z-index: 3;
 }
 .sheet header.sheet-header .condition-icon {
   width: 100%;
   height: auto;
 }
-.sheet .content-link{
-    background:none;
-    font-style:italic;
-    border:none;
+.sheet .content-link {
+  background: none;
+  font-style: italic;
+  border: none;
 }
-.item .content-link{
-    text-decoration:underline;
-    border:solid 1px #01e998;
+.item .content-link {
+  text-decoration: underline;
+  border: solid 1px #01e998;
 }
 
 a.content-link,
 a.inline-roll,
 .chat-message .table-draw .table-results .table-result .result-text a {
   background: none;
-  color:inherit;
+  color: inherit;
   border: solid 1px #01e998;
 }
 
@@ -969,7 +822,6 @@ a.inline-roll,
   background: none;
   border: solid 1px;
 }
-.sheet .combat-actions .fakebutton{
-    padding:12px;
-
+.sheet .combat-actions .fakebutton {
+  padding: 12px;
 }

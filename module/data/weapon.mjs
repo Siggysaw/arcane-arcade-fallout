@@ -8,19 +8,28 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
 
     schema.load = new fields.NumberField({ required: true, nullable: false, initial: 0.1, min: 0 })
     schema.cost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
-    schema.baseCost = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
+    schema.baseCost = new fields.NumberField({
+      required: true,
+      nullable: false,
+      initial: 0,
+      min: 0,
+    })
     schema.apCost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
     schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
     schema.reloadDecay = new fields.NumberField({ initial: 0, min: 0, max: 10 })
-    schema.itemOpen = new fields.BooleanField()	
-    schema.slots = new fields.NumberField({ initial: 6, min: 0})
-    schema.energyWeapon = new fields.BooleanField()	
+    schema.itemOpen = new fields.BooleanField()
+    schema.slots = new fields.NumberField({ initial: 6, min: 0 })
+    schema.energyWeapon = new fields.BooleanField()
     schema.properties = new fields.HTMLField()
-    schema.strengthRequirement = new fields.NumberField({ initial: 0 })	
-    schema.damage = new fields.SchemaField({
-      type: new fields.StringField({ initial: 'piercing' }),
-      formula: new fields.StringField({ initial: '2d4' }),
-    })
+    schema.strengthRequirement = new fields.NumberField({ initial: 0 })
+    schema.damages = new fields.ArrayField(
+      new fields.SchemaField({
+        type: new fields.StringField({ initial: 'piercing' }),
+        altType: new fields.StringField({ initial: null, nullable: true }),
+        formula: new fields.StringField({ initial: '1d4' }),
+      }),
+      { initial: [{ type: 'piercing', formula: '1d4' }] },
+    )
     // schema.roll = new fields.SchemaField({
     //     diceNum: new fields.NumberField({ ...requiredInteger, initial: 1, min: 1 }),
     //     diceSize: new fields.StringField({ initial: "d20" }),
@@ -32,12 +41,9 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     })
     schema.critical = new fields.SchemaField({
       dice: new fields.NumberField({ initial: 20, blank: true }),
-      bonus: new fields.StringField({ initial: '2d4' }),
-      multiplier: new fields.NumberField({ initial: 1 }),
-      roll: new fields.SchemaField({
-        diceNum: new fields.NumberField({ initial: 1, min: 1 }),
-        diceSize: new fields.StringField({ initial: 'd4' }),
-      }),
+      multiplier: new fields.NumberField({ initial: 1, nullable: false }),
+      formula: new fields.StringField({ initial: null, nullable: true }),
+      condition: new fields.StringField({ initial: null, nullable: true }),
     })
     schema.ammo = new fields.SchemaField({
       type: new fields.StringField({ initial: '9mm' }),
@@ -69,81 +75,91 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     })
 
     schema.upgrades = new fields.SchemaField({
-      upgrade1 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade2 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade3 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade4 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade5 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade6 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade7 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade8 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade9 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade10 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade11 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
-      upgrade12 : new fields.SchemaField({
-        name : new fields.StringField({initial: ``,}),
-        id : new fields.StringField({initial: ``,}),
-        description : new fields.StringField({initial: ``,}),
-        rank : new fields.NumberField({initial: 1,}),
-        img : new fields.StringField({initial: ``,})}),
+      upgrade1: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade2: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade3: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade4: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade5: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade6: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade7: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade8: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade9: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade10: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade11: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
+      upgrade12: new fields.SchemaField({
+        name: new fields.StringField({ initial: `` }),
+        id: new fields.StringField({ initial: `` }),
+        description: new fields.StringField({ initial: `` }),
+        rank: new fields.NumberField({ initial: 1 }),
+        img: new fields.StringField({ initial: `` }),
+      }),
     })
-
-
 
     return schema
   }
