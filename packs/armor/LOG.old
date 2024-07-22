@@ -1,9 +1,13 @@
-2024/07/19-12:58:57.232 d2c Delete type=3 #1
-2024/07/19-12:58:57.233 4690 Compacting 4@0 + 0@1 files
-2024/07/19-12:58:57.236 4690 Generated table #675@0: 20 keys, 15793 bytes
-2024/07/19-12:58:57.236 4690 Compacted 4@0 + 0@1 files => 15793 bytes
-2024/07/19-12:58:57.238 4690 compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/07/19-12:58:57.238 4690 Delete type=2 #623
-2024/07/19-12:58:57.238 4690 Delete type=2 #661
-2024/07/19-12:58:57.238 4690 Delete type=2 #665
-2024/07/19-12:58:57.238 4690 Delete type=2 #672
+2024/07/21-19:08:38.475 8698 Delete type=3 #1
+2024/07/21-19:08:38.476 3374 Compacting 4@0 + 0@1 files
+2024/07/21-19:08:38.481 3374 Generated table #696@0: 20 keys, 15791 bytes
+2024/07/21-19:08:38.481 3374 Compacted 4@0 + 0@1 files => 15791 bytes
+2024/07/21-19:08:38.486 3374 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/07/21-19:08:38.486 3374 Delete type=2 #675
+2024/07/21-19:08:38.487 3374 Delete type=2 #677
+2024/07/21-19:08:38.487 3374 Delete type=2 #691
+2024/07/21-19:08:38.487 3374 Delete type=2 #692
+2024/07/21-22:29:24.300 3374 Level-0 table #698: started
+2024/07/21-22:29:24.300 3374 Level-0 table #698: 0 bytes OK
+2024/07/21-22:29:24.304 3374 Delete type=0 #695
+2024/07/21-22:29:24.313 3374 Manual compaction at level-0 from '!items!3VSZN9bW1SJHgU9n' @ 72057594037927935 : 1 .. '!items.effects!ofJ31ZteGa6dGhLk.U9ZFVtHqtdoYEocY' @ 0 : 0; will stop at (end)
