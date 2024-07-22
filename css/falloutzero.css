@@ -969,3 +969,7 @@ a.inline-roll,
   background: none;
   border: solid 1px;
 }
+.sheet .combat-actions .fakebutton{
+    padding:12px;
+
+}
