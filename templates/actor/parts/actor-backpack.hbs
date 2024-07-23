@@ -144,104 +144,101 @@
         <td style="width:60%;padding:5px;">
             <table class="equipped-stats">
                 <tr><td colspan="999"><h3>Food and Drinks</h3></td></tr>
-                <div>
-                <tr><td>Name</td><td style="width:80px;">Qty</td><td>Properties</td><td></td></tr>
+                <tr><td>Name</td><td style="width:100px;" style="width:100px;">Qty</td><td style="width:150px;">Properties</td><td></td></tr>
                 {{#each foodAnddrinks as |item id|}}
-            <tr>
-                <td style="width: 100px">
-                    <a class="item-control"
-                       data-edit
-                       data-item-id="{{ item._id }}"
-                       title="{{localize 'DOCUMENT.Update' type='item'}}">
-                        {{ item.name }}
-                    </a>
-                </td>
-                <td>
-                    <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                    {{ system.quantity }}
-                    <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
-                </td>
-
-                <td data-properties="{{item.system.description}}">
-                    {{{ item.system.description }}}
-                </td>
-                <td class="item-control">
-                    <span {{#GreaterThan item.system.quantity 1}}
-                          data-rollable
-                          data-lowerInventory="{{item._id}}"
-                          {{/GreaterThan}}>
-                        <i title="Eat/Drink" class="fas fa-drumstick-bite fakebutton nobackground"></i>
-                    </span>
-                    <li class="item flexrow" data-item-id="{{ item._id }}">
-                        <div class="item-controls">
-                            <a class="item-control item-delete"
-                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        {{#DifferentFrom item.system.description ""}}
-                            <a style="float: right; margin-left: 5px"
-                            data-sendToChat
-                            data-item-id="{{ item._id }}"
-                            class="item-control"
-                            title="Send description to Chat">
-                                <i class="fa-solid fa-comment"></i>
-                            </a>
-                        {{/DifferentFrom}}
-                        </div>
-                    </li>
-                </td>
-            </tr>
-                {{/each}}
-            </table>
-            </div><br />
-            <table class="equipped-stats">
-                <tr><td colspan=999><h3>CHEMS</h3></td></tr>
-                <tr><td>Name</td><td>Qty</td><td>Properties</td><td></td></tr>
-                {{#each chems as |item id|}}
+                {{#unless item.system.itemEquipped}}
                 <tr>
-                    <td style="width: 100px">
-                        <a class="item-control"
-                           data-edit
-                           data-item-id="{{ item._id }}"
-                           title="{{localize 'DOCUMENT.Update' type='item'}}">
-                            <span class="label"> {{ item.name }}</span>
-                        </a>
-                    </td>
                     <td>
-                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                        {{ system.quantity }}
-                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
+                        <li class="item flexrow" data-item-id="{{ item._id }}">
+                            <div class="item-controls">
+                                {{#DifferentFrom item.system.description ""}}
+                                <a data-sendToChat
+                                   style="float:left;"
+                                   data-item-id="{{ item._id }}"
+                                   class="item-control"
+                                   title="Send description to Chat">
+                                    <i class="fa-solid fa-comment"></i>
+                                </a>
+                                {{/DifferentFrom}}
+                                <a class="item-control"
+                                   data-edit
+                                   data-item-id="{{ item._id }}"
+                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                    {{item.name}}
+                                </a>
+                            </div>
+                        </li>
                     </td>
 
                     <td>
-                        {{{ item.system.description }}}
+                        <i data-itemaddition data-item="{{item._id}}" class="fas fa-plus fakebutton backpack-qty-button"></i>
+                        {{ system.quantity }}
+                        <i data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus fakebutton backpack-qty-button"></i>
+
                     </td>
-                    <td class="item-control">
-                        <span {{#GreaterThan item.system.quantity 1}}
-                              data-rollable
-                              data-lowerInventory="{{item._id}}"
-                              {{/GreaterThan}}>
-                            <i title="Use Chem" class="fas fa-syringe fakebutton nobackground"></i>
-                            </span>
+                    <td>{{{item.system.description}}}</td>
+                    <td>
                         <li class="item flexrow" data-item-id="{{ item._id }}">
                             <div class="item-controls">
                                 <a class="item-control item-delete"
                                    title="{{localize 'DOCUMENT.Delete' type='item'}}">
                                     <i class="fas fa-trash"></i>
                                 </a>
-                            {{#DifferentFrom item.system.description ""}}
-                                <a style="float: right; margin-left: 5px"
-                                data-sendToChat
-                                data-item-id="{{ item._id }}"
-                                class="item-control"
-                                title="Send description to Chat">
-                                    <i class="fa-solid fa-comment"></i>
-                                </a>
-                            {{/DifferentFrom}}
                             </div>
                         </li>
                     </td>
                 </tr>
+                {{/unless}}
+                {{/each}}
+            </table>
+            <br />
+            <table class="equipped-stats">
+                <tr><td colspan="999"><h3>Chems</h3></td></tr>
+                <tr><td>Name</td><td style="width:100px;">Qty</td><td style="width:150px;">Properties</td><td></td></tr>
+                {{#each chems as |item id|}}
+                {{#unless item.system.itemEquipped}}
+            <tr>
+                <td>
+                    <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <div class="item-controls">
+                            {{#DifferentFrom item.system.description ""}}
+                            <a data-sendToChat
+                               data-item-id="{{ item._id }}"
+                               style="float:left;"
+                               class="item-control"
+                               title="Send desc  ription to Chat">
+                                <i class="fa-solid fa-comment"></i>
+                            </a>
+                            {{/DifferentFrom}}
+                            <a class="item-control"
+                               data-edit
+                               data-item-id="{{ item._id }}"
+                               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                {{item.name}}
+                            </a>
+                        </div>
+                    </li>
+                </td>
+
+                <td>
+                    <i data-itemaddition data-item="{{item._id}}" class="fas fa-plus fakebutton backpack-qty-button"></i>
+                    {{ system.quantity }}
+                    <i data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus fakebutton backpack-qty-button"></i>
+
+                </td>
+                <td>{{{item.system.description}}}</td>
+                <td>
+                    <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <div class="item-controls">
+                            <a class="item-control item-delete"
+                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                </td>
+            </tr>
+                {{/unless}}
                 {{/each}}
             </table>
         </td>
@@ -249,48 +246,52 @@
             <div>
                 <table class="equipped-stats">
                     <tr><td colspan=999><h3>MISC ITEMS</h3></td></tr>
-                    <tr><td>Name</td><td style="width:80px">Qty</td><td></td></tr>
+                    <tr><td>Name</td><td style="width:80px" style="width:100px;">Qty</td><td></td></tr>
                     {{#each miscItems as |item id|}}
+                    {{#unless item.system.itemEquipped}}
                     <tr>
-                        <td class="item-label">
-                            <span class="label" style="margin-right: 5px">
-                                <a class="item-control"
-                                   data-edit
-                                   data-item-id="{{ item._id }}"
-                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                    {{item.name}}
-                                </a>
-                            </span>
+                        <td>
+                            <li class="item flexrow" data-item-id="{{ item._id }}">
+                                <div class="item-controls">
+                                    {{#DifferentFrom item.system.description ""}}
+                                    <a data-sendToChat
+                                       style="float:left;"
+                                       data-item-id="{{ item._id }}"
+                                       class="item-control"
+                                       title="Send description to Chat">
+                                        <i class="fa-solid fa-comment"></i>
+                                    </a>
+                                    {{/DifferentFrom}}
+                                    <a class="item-control"
+                                       data-edit
+                                       data-item-id="{{ item._id }}"
+                                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                        {{item.name}}
+                                    </a>
+                                </div>
+                            </li>
                         </td>
 
                         <td>
-                            <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
+                            <i data-itemaddition data-item="{{item._id}}" class="fas fa-plus fakebutton backpack-qty-button"></i>
                             {{ system.quantity }}
-                            <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
+                            <i data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus fakebutton backpack-qty-button"></i>
+
                         </td>
-                        <td class="td-controls">
+                        <td>
                             <li class="item flexrow" data-item-id="{{ item._id }}">
                                 <div class="item-controls">
                                     <a class="item-control item-delete"
                                        title="{{localize 'DOCUMENT.Delete' type='item'}}">
                                         <i class="fas fa-trash"></i>
                                     </a>
-                                {{#DifferentFrom item.system.description ""}}
-                                    <a style="float: right; margin-left: 5px"
-                                    data-sendToChat
-                                    data-item-id="{{ item._id }}"
-                                    class="item-control"
-                                    title="Send description to Chat">
-                                        <i class="fa-solid fa-comment"></i>
-                                    </a>
-                                {{/DifferentFrom}}
                                 </div>
                             </li>
                         </td>
-            </td>
-         </tr>
-    {{/each}}
-</table>
+                    </tr>
+                    {{/unless}}
+                    {{/each}}
+                </table>
 
       </div>
     </td>

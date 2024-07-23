@@ -7,7 +7,7 @@
             <td>
                 <details {{#if item.system.itemOpen }} open="true" {{/if}}>
                     <summary data-expandtoggle data-itemid="{{ item._id }}">
-                        <p class="allcaps">{{ item.name }}</p>
+                        <p draggable="true" class="allcaps">{{ item.name }}</p>
                     </summary>
                     <table class="equipped-stats">
                         <tr>

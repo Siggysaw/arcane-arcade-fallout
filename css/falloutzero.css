@@ -964,12 +964,18 @@ a.inline-roll,
 
 .sheet .item-piles-item-row.svelte-tse-1o95obs.item-piles-child-even-color > *,
 .sheet .item-piles-item-row.svelte-tse-1o95obs.item-piles-child-odd-color > *,
-.sheet .item-piles-even-color:nth-child(even),
-.sheet .item-piles-even-color:nth-child(odd) {
+.window-content .item-piles-even-color:nth-child(even),
+.window-content .item-piles-even-color:nth-child(odd) {
   background: none;
   border: solid 1px;
 }
 .sheet .combat-actions .fakebutton{
     padding:12px;
 
+}
+.sheet .backpack-qty-button {
+  font-size: 14pt;
+  padding: 3px;
+  width: 100%;
+  background:#1d5427
 }
