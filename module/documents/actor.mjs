@@ -472,14 +472,11 @@ export default class FalloutZeroActor extends Actor {
 
   //Convert junk to Materials as per item stats
   async convertJunkToMat(item, mats, qty) {
-    console.log(item)
-    console.log(mats)
-    console.log(qty)
     let compendium = game.packs.find((u) => u.metadata.name == 'material')
     let matData, existingMat, newQuantity
     let material
     var i = 0
-    let newItem
+    
     // Create item or add quantity if existing
     while (i < mats.length) {
       material = mats[i][1].trim()
@@ -489,7 +486,7 @@ export default class FalloutZeroActor extends Actor {
         newQuantity = Number(existingMat.system.quantity) + Number(mats[i][0]) * Number(qty)
         existingMat.update({ 'system.quantity': newQuantity })
       } else {
-        newItem = await Item.create(matData)
+        let newItem = await Item.create(matData, {parent: item.parent})
         newItem.update({ 'system.quantity': Number(mats[i][0]) * Number(qty) })
       }
       i++
@@ -519,7 +516,6 @@ export default class FalloutZeroActor extends Actor {
     if (item) {
       dialogContent = `Are you sure you want to convert ${itemName} into the following materials? <br><br>`
       while (i < Object.keys(item.system.junk).length / 2 + 1) {
-        console.log(item.system.junk['quantity' + i])
         if (item.system.junk['quantity' + i] != 0) {
           dialogContent +=
             `x<b name='qty'>${item.system.junk['quantity' + i]}</b> ` +
@@ -597,7 +593,6 @@ export default class FalloutZeroActor extends Actor {
 
   //All loot container types are rolled here and exceptions are managed, loot is returned
   async rollContainer(result, myTotal = 0, formula = 0) {
-    console.log(this)
     let table = await this.findTable(result.text)
     let myLoot = ``
     let myTooltip = ``

@@ -157,7 +157,6 @@ async addUpgrade(myItem,myUpgrade){
     //Update values of item
     await myItem.update(myData)
     }
-  console.log(myUpgrade)
   //Upgrade values (Cost and load are slightly different)
   for (var val of myValues){
     if (myUpgrade.system[val] != 0){
@@ -519,7 +518,6 @@ async seeUpgrade (id){
   
   async splitDialog(myItem,myPack,myId){
     let qty = myItem.system.quantity
-    console.log(qty)
     let myUpgrade = await myPack.getDocument(myId);
     let cost = myUpgrade.system.baseCost
     let fullCost = qty*cost
