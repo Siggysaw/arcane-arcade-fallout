@@ -1298,6 +1298,38 @@ FALLOUTZERO.damageTypes = {
     id: 'bludgeoning',
     label: 'Bludgeoning',
   },
+  electricity: {
+    id: 'electricity',
+    label: 'Electricity',
+  },
+  plasma: {
+    id: 'plasma',
+    label: 'Plasma',
+  },
+  fire: {
+    id: 'fire',
+    label: 'Fire',
+  },
+  acid: {
+    id: 'acid',
+    label: 'Acid',
+  },
+  explosive: {
+    id: 'explosive',
+    label: 'Explosive',
+  },
+  laser: {
+    id: 'laser',
+    label: 'Laser',
+  },
+  radiation: {
+    id: 'radiation',
+    label: 'Radiation',
+  },
+  cryo: {
+    id: 'cryo',
+    label: 'Cryo',
+  },
 }
 
 FALLOUTZERO.specialammo = {
