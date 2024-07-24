@@ -33,7 +33,9 @@
           id="normal"
           name="advantageMode"
           value="1"
-          {{{setChecked advantageMode  1}}}
+          {{{setChecked
+          advantageMode
+          1}}}
         />
         <label for="normal">Normal</label>
       </div>
@@ -43,7 +45,9 @@
           id="advantage"
           name="advantageMode"
           value="2"
-          {{{setChecked advantageMode 2}}}
+          {{{setChecked
+          advantageMode
+          2}}}
         />
         <label for="advantage">Advantage</label>
       </div>
@@ -53,7 +57,9 @@
           id="disadvantage"
           name="advantageMode"
           value="3"
-          {{{setChecked advantageMode  3}}}
+          {{{setChecked
+          advantageMode
+          3}}}
         />
         <label for="disadvantage">Disadvantage</label>
       </div>
@@ -63,10 +69,72 @@
           id="hailmary"
           name="advantageMode"
           value="4"
-          {{{setChecked  advantageMode  4}}}
+          {{{setChecked
+          advantageMode
+          4}}}
         />
         <label for="hailmary">Hail Mary!</label>
       </div>
+    </fieldset>
+  </div>
+
+  <div class="form-group">
+    <fieldset>
+      <legend>AP Cost</legend>
+      <div class="flex space-between">
+        <label for="consumesAp">Consume AP</label>
+        <input type="checkbox" name="consumesAp" checked="{{ consumesAp }}" />
+      </div>
+      <div class="flex space-between">
+        <div>Weapon:</div>
+        <div>{{ apCost }}</div>
+      </div>
+      {{#if targeted}}
+      <div class="flex space-between">
+        <div>Targeted({{ targeted.target }}):</div>
+        <div>{{ targeted.cost }}</div>
+      </div>
+      {{/if}}
+      <div class="flex space-between">
+        <div>Total:</div>
+        <div>{{ totalApCost }}</div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="form-group">
+    <fieldset>
+      <legend>Damage</legend>
+      {{#each damages as |damage key|}}
+      <div class="flex space-between">
+        <div>Type:</div>
+        {{#if damage.altType}}
+        <select name="damage.{{ key }}.selectedDamageType">
+          <option>{{ damage.type }}</option>
+          <option>{{ damage.altType }}</option>
+        </select>
+        {{else}}
+        {{ damage.selectedDamageType }}
+        {{/if}}
+      </div>
+      <div class="flex space-between">
+        <div>Formula:</div>
+        <div>{{ damage.formula }}</div>
+      </div>
+      {{/each}}
+      <div class="flex space-between">
+        <div>Critical Formula:</div>
+        <div>{{ critical.formula }}</div>
+      </div>
+      <div class="flex space-between">
+        <div>Critical Multiplier:</div>
+        <div>{{ critical.multiplier }}</div>
+      </div>
+      {{#if critical.condition}}
+      <div class="flex space-between">
+        <div>Applies Condition:</div>
+        <div>{{ critical.condition }}</div>
+      </div>
+      {{/if}}
     </fieldset>
   </div>
   <div class="form-group">
@@ -74,16 +142,12 @@
     <input type="text" name="bonus" value="{{ bonus }}" placeholder="1d4" />
   </div>
   <div class="form-group">
-    <label for="consumesAp">Consume AP</label>
-    <input type="checkbox" name="consumesAp" checked="{{ consumesAp }}" />
-  </div>
-  <div class="form-group">
     {{#unless targeted}}
     <button type="button" data-add-target>Add Target</button>
     {{else}}
     <div class="targeted flex">
       <div>
-        <div>Target: {{ targeted }}</div>
+        <div>Target: {{ targeted.target }}</div>
       </div>
       <div>
         <button type="button" data-remove-target><i class="fas fa-trash"></i></button>
@@ -96,3 +160,4 @@
     <button type="submit">Roll</button>
   </div>
 </form>
+{{ log 'attack' this}}

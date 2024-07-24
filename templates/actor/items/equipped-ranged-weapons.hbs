@@ -17,9 +17,6 @@
             </tr>
             <tr>
               <td>AP</td>
-              <td>Dmg</td>
-              <td>Crit DV</td>
-              <td>Crit Dmg</td>
               <td>Load</td>
               <td>Str</td>
             </tr>
@@ -27,29 +24,6 @@
               <td>
                 <div>
                   {{ item.system.apCost }}
-                </div>
-              </td>
-              <td>
-                <div
-                  class="fakebutton"
-                  class="rollable resource-label"
-                  data-rollable
-                  data-label="OUCH! DMG from a {{ item.name }}"
-                  data-roll="{{ item.system.damage.formula }} + @{{item.system.abilityMod}}.mod"
-                >
-                  {{ item.system.damage.formula }}
-                </div>
-              </td>
-              <td>{{ item.system.critical.dice }}</td>
-              <td>
-                <div
-                  class="fakebutton"
-                  class="rollable resource-label"
-                  data-rollable
-                  data-label="CRITICAL! Crit Damage for {{ item.name }}"
-                  data-roll="{{ item.system.critical.bonus }}"
-                >
-                  {{ item.system.critical.bonus }}
                 </div>
               </td>
               <td>{{ item.system.load }}</td>

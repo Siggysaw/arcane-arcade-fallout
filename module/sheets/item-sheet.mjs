@@ -52,6 +52,9 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     // Prepare active effects for easier access
     context.effects = prepareActiveEffectCategories(this.item.effects)
 
+    context.damageTypes = CONFIG.FALLOUTZERO.damageTypes
+    context.conditions = CONFIG.FALLOUTZERO.conditions
+
     return context
   }
 
@@ -70,7 +73,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     })
 
     //Choose upgrade
-    html.on('change','[name=upgradesSelector]', (ev) => {
+    html.on('change', '[name=upgradesSelector]', (ev) => {
       var select = document.getElementById('upgradesSelector')
       const pack = game.packs.find((p) => p.metadata.name == 'upgrades')
       if (pack) {
@@ -122,15 +125,14 @@ export default class FalloutZeroItemSheet extends ItemSheet {
           if (this.object.system.quantity > 1 && this.object.system.baseCost.base == 0) {
             FalloutZeroArmor.prototype.splitDialog(this.object, pack, myUpgrade._id)
           } else {
-              FalloutZeroItem.prototype.checkUpgradeType(this.object, pack, myUpgrade._id)
+            FalloutZeroItem.prototype.checkUpgradeType(this.object, pack, myUpgrade._id)
           }
-        } 
-        else {
+        } else {
           alert('Could not find a upgrade named ' + select.value)
         }
-    } else {
-      alert("Could not find a compendium named 'upgrades'")
-    }
+      } else {
+        alert("Could not find a compendium named 'upgrades'")
+      }
     })
     //Prevent submit on pressing enter
     $(document).ready(function () {
@@ -154,12 +156,11 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     //Remove upgrade button
     html.on('click', '[deleteUpgrade]', (ev) => {
       let myId = ev.currentTarget.id.replace('delete', '')
-      if (this.object.type =="armor" || this.object.type=="powerArmor"){
+      if (this.object.type == 'armor' || this.object.type == 'powerArmor') {
         FalloutZeroArmor.prototype.deleteWholeUpgrade(this.object, myId)
       } else {
         FalloutZeroItem.prototype.deleteWholeUpgrade(this.object, myId)
       }
-      
     })
 
     //Click to see Upgrade from compendium
@@ -178,7 +179,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       let matQty = ev.currentTarget.dataset.mat
       let myMat = matQty.split('.')
       let myItem = this.item
-      let qty = myItem.system[myMat[1]].qty += 1
+      let qty = (myItem.system[myMat[1]].qty += 1)
       this.item.update({ [matQty]: qty })
     })
 
@@ -187,7 +188,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       let matQty = ev.currentTarget.dataset.mat
       let myMat = matQty.split('.')
       let myItem = this.item
-      let qty = myItem.system[myMat[1]].qty -= 1
+      let qty = (myItem.system[myMat[1]].qty -= 1)
       this.item.update({ [matQty]: qty })
     })
 
@@ -195,5 +196,33 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     // Active Effect management
     html.on('click', '.effect-control', (ev) => onManageActiveEffect(ev, this.item))
+
+    // Weapon listeners
+    this.initWeaponListeners(html)
+  }
+
+  initWeaponListeners(html) {
+    // Add Damage
+    html.on('click', '[data-add-damage]', () => {
+      this.item.system.damages.push({
+        type: null,
+        altType: null,
+        formula: '',
+      })
+      this.item.update({
+        ['system.damages']: this.item.system.damages,
+      })
+    })
+    // Remove Damage
+    html.on('click', '[data-remove-damage]', (ev) => {
+      const index = ev.currentTarget.dataset.removeDamage
+      if (!index) return
+
+      this.item.system.damages.splice(index, 1)
+
+      this.item.update({
+        ['system.damages']: this.item.system.damages,
+      })
+    })
   }
 }

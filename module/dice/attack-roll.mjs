@@ -13,8 +13,17 @@ export default class AttackRoll extends FormApplication {
       actorLuck: this.weapon.getActorLuck(),
       actorPenalties: this.weapon.getActorPenalties(),
       bonus: '',
-      targeted: false,
+      targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
+      apCost: this.weapon.system.apCost,
+      totalApCost: this.weapon.system.apCost,
+      critical: this.weapon.system.critical,
+      damages: this.weapon.system.damages.map((damage) => {
+        return {
+          ...damage,
+          selectedDamageType: damage.type,
+        }
+      }),
     }
 
     this.onSubmitCallback = callback
@@ -27,6 +36,7 @@ export default class AttackRoll extends FormApplication {
     options.title = 'V.A.T.S'
     options.template = 'systems/arcane-arcade-fallout/templates/actor/dialog/attack.hbs'
     options.width = 'auto'
+    options.height = 'auto'
     options.submitOnChange = true
     options.closeOnSubmit = false
     options.resizable = true
@@ -94,7 +104,12 @@ export default class AttackRoll extends FormApplication {
           const buttons = html[0].querySelectorAll('button')
           buttons.forEach((button) => {
             button.addEventListener('click', (e) => {
-              this.formDataCache.targeted = e.target.name
+              const targetedAp = this.getTargetedApCost(e.target.name)
+              this.formDataCache.targeted = {
+                target: e.target.name,
+                cost: targetedAp,
+              }
+              this.formDataCache.totalApCost = this.formDataCache.apCost + targetedAp
               this.render()
               dlg.close()
             })
@@ -118,7 +133,8 @@ export default class AttackRoll extends FormApplication {
 
     const removeTarget = html.querySelector('[data-remove-target]')
     removeTarget?.addEventListener('click', () => {
-      this.formDataCache.targeted = false
+      this.formDataCache.targeted = null
+      this.formDataCache.totalApCost = this.formDataCache.apCost
       this.render()
     })
 
@@ -126,7 +142,8 @@ export default class AttackRoll extends FormApplication {
     closeButton?.addEventListener('click', this.close())
   }
 
-  getTargetedApCost(target, isMelee = false) {
+  getTargetedApCost(target) {
+    const isMelee = this.weapon.type === 'meleeWeapon'
     let apCost = AttackRoll.TARGET_COST?.[target] ?? 0
     if (isMelee && apCost > 2) {
       return apCost - 2
@@ -145,11 +162,8 @@ export default class AttackRoll extends FormApplication {
     /**
      * Apply AP consumption
      */
-    if (formData.consumesAp) {
-      const apCost =
-        this.weapon.system.apCost +
-        this.getTargetedApCost(this.formDataCache.targeted, this.weapon.type === 'meleeWeapon')
-      const canAfford = this.actor.applyApCost(apCost)
+    if (this.formDataCache.consumesAp) {
+      const canAfford = this.actor.applyApCost(this.formDataCache.totalApCost)
       if (!canAfford) return
     }
     /**
@@ -168,16 +182,23 @@ export default class AttackRoll extends FormApplication {
       this.actor.getRollData(),
     )
 
+    const damageRolls = this.formDataCache.damages.map((damage) => {
+      return {
+        type: damage.selectedDamageType,
+        formula: damage.formula,
+      }
+    })
+
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: `BOOM! Attack with ${this.weapon.name}`,
       rollMode: game.settings.get('core', 'rollMode'),
       'flags.falloutzero': {
+        abilityBonus,
         targeted: this.formDataCache.targeted,
         damage: {
-          type: this.weapon.system.damage.type,
-          regular: `${this.weapon.system.damage.formula} + ${abilityBonus}`,
-          critical: `(${this.weapon.system.damage.formula} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier}`,
+          rolls: damageRolls,
+          critical: `(${this.weapon.system.combinedDamageFormula} + ${this.weapon.system.critical.formula || 0} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier}`,
         },
       },
     })

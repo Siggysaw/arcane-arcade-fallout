@@ -64,8 +64,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         return Math.round(acc * 10) / 10
       }, 0) + Math.floor(actorData.system.caps / 50)
 
-    actorData.system.carryLoad.value = actorData.system.carryLoad.base + actorData.system.carryLoad.modifiers
-    actorData.system.carryLoad.max = actorData.system.carryLoad.baseMax + actorData.system.carryLoad.modifiersMax
+    actorData.system.carryLoad.value =
+      actorData.system.carryLoad.base + actorData.system.carryLoad.modifiers
+    actorData.system.carryLoad.max =
+      actorData.system.carryLoad.baseMax + actorData.system.carryLoad.modifiersMax
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData()
@@ -132,7 +134,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         armors.push(i)
       } else if (i.type === 'powerArmor') {
         powerArmors.push(i)
-      }else if (i.type === 'rangedWeapon') {
+      } else if (i.type === 'rangedWeapon') {
         rangedWeapons.push(i)
       } else if (i.type === 'meleeWeapon') {
         meleeWeapons.push(i)
@@ -369,7 +371,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const itemId = ev.currentTarget.dataset.itemId
       const item = this.actor.items.get(itemId)
       let enoughAP = true
-      if (item.type == 'powerArmor'){enoughAP = this.actor.applyApCost(6)}
+      if (item.type == 'powerArmor') {
+        enoughAP = this.actor.applyApCost(6)
+      }
       if (enoughAP) {
         item.update({ 'system.itemEquipped': !item.system.itemEquipped })
         FalloutZeroArmor.prototype.changeEquipStatus(item)
@@ -381,7 +385,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const itemId = ev.currentTarget.dataset.itemId
       const item = this.actor.items.get(itemId)
       let theContent = item.system.description
-      if (item.type == "explosive"){theContent = item.system.properties}
+      if (item.type == 'explosive') {
+        theContent = item.system.properties
+      }
       let chatData = {
         user: game.user._id,
         speaker: ChatMessage.getSpeaker(),
@@ -460,17 +466,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       switch (item.type) {
         case 'trait':
           this._onItemDeleteTrait(item)
-          break;
+          break
         case 'armor':
           if (item.system.itemEquipped) {
             FalloutZeroArmor.prototype.changeEquipStatus(item)
           }
-          break;
+          break
         case 'powerArmor':
           if (item.system.itemEquipped) {
             FalloutZeroArmor.prototype.changeEquipStatus(item)
           }
-          break;
+          break
         case 'background':
           return new Dialog({
             title: `Delete background ${item.name}`,
