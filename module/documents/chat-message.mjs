@@ -679,8 +679,12 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   async _rollDamage(formula, types) {
     let flavor = `KAPOW! ${types} damage`
+    const target =
+      this.flags?.falloutzero?.targeted.target === 'carried'
+        ? `${this.flags?.falloutzero?.targeted.target} item`
+        : this.flags?.falloutzero?.targeted.target
     if (this.flags?.falloutzero?.targeted) {
-      flavor += ` to the ${this.flags?.falloutzero?.targeted.target}!`
+      flavor += ` to the ${target}!`
     } else {
       flavor += '!'
     }

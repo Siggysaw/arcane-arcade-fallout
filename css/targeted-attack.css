@@ -26,8 +26,8 @@
   grid-template-areas:
     '. . head-top head-top . .'
     '. . eyes eyes . .'
-    'left-arm left-arm head-bottom head-bottom right-arm right-arm'
-    'left-arm left-arm torso torso right-arm right-arm'
+    'left-hand left-arm head-bottom head-bottom right-arm right-hand'
+    'left-hand left-arm torso torso right-arm right-hand'
     '. . torso torso . . '
     '. . groin groin . .'
     '. left-leg left-leg right-leg right-leg .'
@@ -53,11 +53,17 @@
 .targeted-attack .targeted-grid .left-arm {
   grid-area: left-arm;
 }
+.targeted-attack .targeted-grid .left-hand {
+  grid-area: left-hand;
+}
 .targeted-attack .targeted-grid .torso {
   grid-area: torso;
 }
 .targeted-attack .targeted-grid .right-arm {
   grid-area: right-arm;
+}
+.targeted-attack .targeted-grid .right-hand {
+  grid-area: right-hand;
 }
 .targeted-attack .targeted-grid .groin {
   grid-area: groin;
