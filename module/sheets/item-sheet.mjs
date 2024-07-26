@@ -72,8 +72,43 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       FalloutZeroItem.prototype.getUpgradeList(this)
     })
 
+    html.find('[id=customEffectsNav]').click(function() {
+      console.log("effects")
+      var mySelectors = document.getElementsByClassName("pathSelector")
+      if (mySelectors[0].childElementCount < 2){
+        for (var select of mySelectors){
+          FalloutZeroItem.prototype.listModPaths(select)
+        }
+      }
+    })
+
+    //Save Attributes (This has to be done to prevent losing info when modifying other parts of the item sheet)
+    html.on('click','[id=effectSaveBtn]', () => {
+      let myData = {}
+      //Save paths
+      let tag = document.getElementsByClassName("pathSelector")
+      let newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
+      Object.assign(myData,newData)
+      //Save ModTypes
+      tag = document.getElementsByClassName("modSelector")
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
+      Object.assign(myData,newData)
+      //Save Values
+      tag = document.getElementsByClassName("valueBox")
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
+      Object.assign(myData,newData)
+      let saveMessage = document.getElementById("savedMessage")
+      if (this.object.update(myData)){
+        console.log("SAVED")
+        saveMessage.innerHTML = "Attributes saved successfully."
+      } else {
+        console.log("COULD NOT SAVE")
+        saveMessage.innerHTML = "Could NOT save. Please check values again."
+      }
+    })
+
     //Choose upgrade
-    html.on('change', '[name=upgradesSelector]', (ev) => {
+    html.on('change','[name=upgradesSelector]', (ev) => {
       var select = document.getElementById('upgradesSelector')
       const pack = game.packs.find((p) => p.metadata.name == 'upgrades')
       if (pack) {
@@ -125,14 +160,15 @@ export default class FalloutZeroItemSheet extends ItemSheet {
           if (this.object.system.quantity > 1 && this.object.system.baseCost.base == 0) {
             FalloutZeroArmor.prototype.splitDialog(this.object, pack, myUpgrade._id)
           } else {
-            FalloutZeroItem.prototype.checkUpgradeType(this.object, pack, myUpgrade._id)
+              FalloutZeroItem.prototype.checkUpgradeType(this.object, pack, myUpgrade._id)
           }
-        } else {
+        } 
+        else {
           alert('Could not find a upgrade named ' + select.value)
         }
-      } else {
-        alert("Could not find a compendium named 'upgrades'")
-      }
+    } else {
+      alert("Could not find a compendium named 'upgrades'")
+    }
     })
     //Prevent submit on pressing enter
     $(document).ready(function () {

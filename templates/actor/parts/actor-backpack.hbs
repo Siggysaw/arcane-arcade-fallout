@@ -177,16 +177,22 @@
 
                     </td>
                     <td>{{{item.system.description}}}</td>
-                    <td>
-                        <li class="item flexrow" data-item-id="{{ item._id }}">
-                            <div class="item-controls">
-                                <a class="item-control item-delete"
-                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </td>
+                    <td class="item-control">
+                    <span {{#GreaterThan item.system.quantity 1}}
+                          data-rollable
+                          data-lowerInventory="{{item._id}}"
+                          {{/GreaterThan}}>
+                        <i title="Eat/Drink" class="fas fa-drumstick-bite fakebutton nobackground"></i>
+                    </span>
+                    <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <div class="item-controls">
+                            <a class="item-control item-delete"
+                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                </td>
                 </tr>
                 {{/unless}}
                 {{/each}}
@@ -227,11 +233,17 @@
 
                 </td>
                 <td>{{{item.system.description}}}</td>
-                <td>
+                <td class="item-control">
+                    <span {{#GreaterThan item.system.quantity 1}}
+                            data-rollable
+                            data-lowerInventory="{{item._id}}"
+                            {{/GreaterThan}}>
+                        <i title="Use Chem" class="fas fa-syringe fakebutton nobackground"></i>
+                    </span>
                     <li class="item flexrow" data-item-id="{{ item._id }}">
                         <div class="item-controls">
                             <a class="item-control item-delete"
-                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                                title="{{localize 'DOCUMENT.Delete' type='item'}}">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
