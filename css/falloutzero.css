@@ -498,13 +498,15 @@ td,
   background: none;
 }
 .sheet .fakebutton:hover,
-.sheet button:hover {
+.sheet button:hover,
+.sheet .character-status i:hover{
   border: #1d5427;
   background: #1d5427;
   color: white;
 }
 .sheet .fakebutton:active,
-.sheet button:active {
+.sheet button:active,
+.sheet .character-status i:active{
   border: #1d5427;
   background: white;
   color: #1d5427;
@@ -549,7 +551,6 @@ td,
 .sheet .karmaCaps {
   display: flex;
   align-items: center;
-  margin-top: -50px;
   z-index: 1;
 }
 
@@ -789,7 +790,7 @@ form td .status-notes li:hover {
   margin: 2px;
   padding: 0px;
   text-align: center;
-  width: 17.5%;
+  width: 25px;
   position: relative;
   z-index: 3;
 }
@@ -830,4 +831,28 @@ a.inline-roll,
   padding: 3px;
   width: 100%;
   background:#1d5427
+}
+.sheet .character-status{
+    width:200px;
+}
+.sheet .character-status input {
+  width: 50px;
+  height: 50px;
+}
+.sheet .character-status i {
+  font-size: 20pt;
+  display: block;
+  width: 100%;
+}
+.sheet #xpbar progress::-webkit-progress-value {
+  display: inline-block;
+  float: left;
+  height: 11px;
+  margin: 0px -10px 0 0;
+  background: #1d5427;
+  border-radius: 15px;
+  box-shadow: 0px 0px 6px #777 inset;
+}
+.sheet .bio td{
+    padding-right:10px;
 }

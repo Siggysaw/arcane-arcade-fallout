@@ -222,6 +222,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const item = ev.currentTarget.dataset.lowerinventory
       this.actor.lowerInventory(item)
     })
+    // Consume an Item
+    html.on('click', '[data-inspect-carryload]', (ev) => {
+      this.actor.inspectCarryload()
+    })
 
     // Limb Clicked On
     html.on('click', '[data-limb]', (ev) => {

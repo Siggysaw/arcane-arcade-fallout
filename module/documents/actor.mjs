@@ -20,31 +20,34 @@ export default class FalloutZeroActor extends Actor {
     return data
   }
 
-  trade(itemId) {
-    const item = this.items.get(itemId)
-    const characters = game.actors.filter((u) => u.type === 'character')
-    let message = "Give an Item to: <select id='actorselect'>"
-    for (let actor of characters) {
-      message += `<option value=${actor._id}>${actor.name}</option>`
-    }
-    message += "</select>"
-    new Dialog({
-      title: 'Give Item',
-      content: message,
-      buttons: {
-        button1: {
-          label: 'Send Item',
-          callback: (html) => giveitem(html),
-          icon: `<i class="fas fa-check"></i>`,
-        },
-      },
-    }).render(true)
-
-    function giveitem(html) {
-      const chosenActor = html.find('select#actorselect').val()
-      ui.notifications.notify(chosenActor)
+  inspectCarryload() {
+    const myDialogOptions = { width: 500, height: 300, resizable: true }
+    let load = Math.floor(this.system.caps / 50)
+    let message = `<table style="text-align:center"><tr><th>Item</th><th>Qty x Load</th><th>Total</th></tr><tr><td>Caps</td><td>${this.system.caps}/50</td><td>${load}</td>`
+    let overall= load
+    this.items.reduce((acc, item) => {
+      if (item.system.load > 0) {
+        let name = item.name
+        let qty = item.system.quantity
+        load = item.system.load
+        if (item.system.worn) {
+          load = 0
+        }
+        let total = Number(load) * Number(qty)
+        overall = overall + Math.floor(total)
+        message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${Math.floor(total)}</td></tr>`
       }
+    }, 0)
+    new Dialog(
+      {
+        title: `Carry Load Details: ${this.name}`,
+        content: `${message}<tr><td>Total</td><td></td><td>${overall}</td></tr></table>`,
+        buttons: {},
+      },
+      myDialogOptions,
+    ).render(true)
   }
+    
 
 
   lowerInventory(itemId) {

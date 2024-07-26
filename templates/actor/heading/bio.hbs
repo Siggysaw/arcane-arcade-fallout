@@ -1,65 +1,50 @@
-<table class="bio">
+<table class="bio" style="max-width:300px;">
     <tr>
         <td colspan="3" class="character-name" style="text-align: left">
-            <input type="text" name="name" value="{{ name }}" /><br /><br />
+            <input type="text" name="name" value="{{ name }}" />
         </td>
     </tr>
     <tr>
-        <td class="bio-label"><span class="label">Race:</span></td>
-        <td colspan="2" style="border:solid 1px">
-            {{#each races as |item id|}}
-            <div data-item-id="{{ item._id }}">
-                <div class="item flexrow"
-                     data-item-id="{{ item._id }}">
-                    <div class="item-controls">
-                        <a data-edit
-                           data-item-id="{{ item._id }}"
-                           class="item-control allcaps"
-                           title="{{localize 'DOCUMENT.Update' type='item'}}">
-                            {{ item.name }}
-                        </a>
-                        <a style="float: right; margin-right: 10px"
-                           class="item-control item-delete"
+        <td colspan="999" style="text-align:left;">
+            <div>
+                Level {{system.level}}
+                {{#each races as |item id|}}
+                <a data-edit
+                   data-item-id="{{ item._id }}"
+                   title="{{localize 'DOCUMENT.Update' type='item'}}">
+                    {{ item.name }}
+                </a>
+                {{#GM}} <a class="item-control item-delete"
                            data-item-id="{{ item._id }}"
                            title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
-        </td>
-    </tr>
-    <tr>
-        <td class="bio-label"><span class="label">BG:</span></td>
-        <td colspan="2" style="border:solid 1px">
-            {{#each backgrounds as |item id|}}
-            <div data-item-id="{{ item._id }}">
-                <div class="item flexrow"
-                     data-item-id="{{ item._id }}">
-                    <div class="item-controls">
-                        <a data-edit
-                           data-item-id="{{ item._id }}"
-                           class="item-control allcaps"
-                           title="{{localize 'DOCUMENT.Update' type='item'}}">
-                            {{ item.name }}
-                        </a>
-                        <a style="float: right; margin-right: 10px"
-                           class="item-control item-delete"
+                    <i class="fas fa-trash"></i>
+                </a>
+                {{/GM}}
+
+                {{/each}}
+                {{#each backgrounds as |item id|}}
+                <a data-edit
+                   data-item-id="{{ item._id }}"
+                   title="{{localize 'DOCUMENT.Update' type='item'}}">
+                    {{ item.name }}
+                </a>
+                {{#GM}} <a class="item-control item-delete"
                            data-item-id="{{ item._id }}"
                            title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
+                    <i class="fas fa-trash"></i>
+                </a>
+                {{/GM}}
+                {{/each}}
         </td>
     </tr>
     <tr>
-        <td class="bio-label"><span class="label">Level:</span></td>
-        <td style="margin:0px;padding:0px;vertical-align:middle;border:solid 1px" colspan="2">
-            <span class="level">{{ level }}</span>
+        <td colspan="999" id="xpbar">
+            <progress class="statusbar"
+                      value="{{ system.xp }}"
+                      max="1000"
+                      style="width:100%;height:5px;background:white;">
+                {{ system.xp }}
+            </progress>
         </td>
     </tr>
     <tr>
@@ -73,12 +58,41 @@
             </div>
         </td>
     </tr>
-    <td>
-        <img title="Carry Load"
-             style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
-             src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png" />
-    </td>
-    <td style="vertical-align: middle;text-align:left;" class="statusnum" title="Current = {{carryLoad.base}} + {{carryLoad.modifiers}} / Max = {{carryLoad.baseMax}} + {{carryLoad.modifiersMax}}">
-        {{ carryLoad.value }} / {{carryLoad.max}}
-    </td>
+    <tr>
+        <td colspan="999">
+            <fieldset><legend>Conditions</legend>
+            <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll;overflow-x:hidden;">
+                {{#each conditions as |item condition|}}
+                {{#GreaterThan system.quantity 1}}
+                <div class="active-conditions">
+                    <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <div class="item-controls individual-condition" style="padding:0px;">
+                            {{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}<br />
+                            <a class="item-control"
+                               data-edit
+                               data-item-id="{{ item._id }}"
+                               title="{{item.name}}">
+                                <img class="condition-icon" src="{{ item.img }}" title="{{ item.name }}" />
+                            </a><br />
+                            <a class="item-control item-delete">
+                                <i class="fa fa-close"></i>
+                            </a>
+                        </div>
+                    </li>
+                </div>
+                {{/GreaterThan}}
+                {{/each}}
+            </div>
+            </fieldset>
+        </td>
+    </tr>
+    <tr>
+        <td data-inspect-carryload>
+            <img title="Carry Load"
+                 style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
+                 src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png" />
+        </td>
+        <td style="vertical-align: middle;text-align:left;" class="statusnum" title="Current = {{carryLoad.base}} + {{carryLoad.modifiers}} / Max = {{carryLoad.baseMax}} + {{carryLoad.modifiersMax}}">
+            {{ carryLoad.value }} / {{carryLoad.max}}
+        </td>
 </table>
