@@ -97,7 +97,6 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       tag = document.getElementsByClassName("valueBox")
       newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
       Object.assign(myData,newData)
-      console.log(myData)
       let saveMessage = document.getElementById("savedMessage")
       if (this.object.update(myData)){
         console.log("SAVED")

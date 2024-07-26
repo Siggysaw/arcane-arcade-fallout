@@ -48,27 +48,48 @@ export default class FalloutZeroActor extends Actor {
     ).render(true)
   }
     
-  async addCustomEffect(path,modType,consumValue){
-    let actorValue = this[path]
-    //Add Number validation to allow formulas?
-    consumValue = Number(consumValue)
-    console.log(actorValue) 
-    switch(modType){
-      case "Add":
+  deep_value (obj, path){
+    for (var i=0, path=path.split('.'), len=path.length; i<len; i++){
+        obj = obj[path[i]];
+    };
+    return obj;
+  };
+
+  addCustomEffect(path,modType,initialValue){
+    let actorValue = this.deep_value(this,path)
+    let consumValue
+    if (typeof actorValue === "number") {
+      if (initialValue.charAt(0) == "@"){//Find the value
+        let newPath =  initialValue.replace("@","");
+        consumValue = this.deep_value(this,newPath);
+      } else {
+        consumValue = Number(initialValue);
+      }
+    } else {
+      consumValue = initialValue;
+    }
+    if (typeof actorValue != typeof consumValue){
+      alert("Check Custom Effect Values for your consumable. If field is a Number, you need a Number as value or specify dependent stat using @ (ex.: @system.level or @system.abilities.luck.value) ")
+      return;
+    }
+    if(modType == "Add"){ //This should work with numbers and/or strings
+      if (path == "system.irradiated"){
+        console.log("system.irradiated", actorValue, consumValue)
+        this.handleIrradiated("system.irradiated", actorValue, consumValue)        
+      } 
+      else {
         actorValue = actorValue + consumValue
-        break;
-      case "Downgrade":
-        if (actorValue > consumValue){actorValue = consumValue}
-        break;
-      case "Upgrade":
-        if (actorValue > consumValue){actorValue = consumValue}
-      break;
-      case "Override":
-        actorValue = consumValue
-      break;
-      case "Multiply":
-        actorValue = actorValue * consumValue
-      break; 
+      }
+    } else { //If not Add
+      if (typeof consumValue == Number){
+        if (modType == "Upgrade" && actorValue > consumValue ||
+          modType == "Downgrade" && actorValue > consumValue ||
+          modType == "Override"
+         ) {actorValue = consumValue}
+        if (modType == "Multiply") {
+          actorValue = actorValue * consumValue
+        }
+      } else {actorValue = consumValue}
     }
     this.update({[path] : actorValue})
   }
@@ -82,8 +103,8 @@ export default class FalloutZeroActor extends Actor {
     if (item.type != "explosive") {
       details = description.replace("<p>", "<p>Gained: ")
       if (item.system.modifiers.path1){
-        
-        if (item.system.modifiers.path1 != "" && item.system.modifiers.value1 != ""){this.addCustomEffect(
+        if (item.system.modifiers.path1 != "" && item.system.modifiers.value1 != ""){
+          this.addCustomEffect(
           item.system.modifiers.path1, item.system.modifiers.modType1, item.system.modifiers.value1 
         )}
         if (item.system.modifiers.path2 != "" && item.system.modifiers.value2 != ""){this.addCustomEffect(
@@ -104,7 +125,7 @@ export default class FalloutZeroActor extends Actor {
     }
     ChatMessage.create(chatData, {})
   }
-  
+
   combatexpandetoggle() {
     const currentState = this.system.combatActionsexpanded
     if (currentState == true) {
@@ -152,25 +173,48 @@ export default class FalloutZeroActor extends Actor {
     item.update({ 'system.quantity': updatedQty })
   }
 
-  //add to a field
-  fieldaddition(field, fieldvalue) {
-    const newValue = Number(fieldvalue) + 1
+  //Handle irradiation from custom effects
+  async handleIrradiated (field, fieldvalue, addValue){
+    //Make sure radiation goes up at 10
+    var i = 0
+    if (addValue > 0){
+      while (i < addValue){
+        await this.fieldaddition(field,fieldvalue)
+        i++
+      }
+    } else {
+      while (i > addValue){
+        await this.fieldsubtraction(field,fieldvalue)
+        i--
+      }
+    }
+     
+  }
 
+  //add to a field
+  async fieldaddition(field, fieldvalue) {
+    const newValue = Number(fieldvalue) + 1
     //Irradiated and Radiation Updates
     if (field === 'system.irradiated' && newValue == 10) {
       const newRads = this.system.penalties.radiation.value + 1
-      this.update({ 'system.penalties.radiation.value': newRads })
-      this.update({ 'system.irradiated': 0 })
+      this.update({ 'system.penalties.radiation.value': newRads,'system.irradiated': 0})
       return
+    } else {
+      // Update Field Value
+      this.update({ [field]: newValue })
     }
-
-    // Update Field Value
-    this.update({ [field]: newValue })
   }
 
-  fieldsubtraction(field, fieldvalue) {
+  async fieldsubtraction(field, fieldvalue) {
     const newValue = Number(fieldvalue) - 1
-    this.update({ [field]: newValue })
+    //Irradiated and Radiation Updates
+    if (field === 'system.irradiated' && newValue == -1) {
+      const newRads = this.system.penalties.radiation.value - 1
+      this.update({ 'system.penalties.radiation.value': newRads,'system.irradiated': 9 })
+      return
+    } else {
+      this.update({ [field]: newValue })
+    }
   }
 
   ruleinfo(condition) {

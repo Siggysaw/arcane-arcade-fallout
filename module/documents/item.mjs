@@ -98,7 +98,6 @@ flattenObject(obj) {
 async listModPaths (tag){
   let opt
   if (tag.childElementCount < 2) {
-    console.log(game.actors.filter(a => a.type =="character")[0].system.conditions)
     let pathList = (this.flattenObject(game.actors.filter(a => a.type =="character")[0]))
     //pathList.push(this.flattenObject(game.actors.filter(a => a.type =="character")[0].system.conditions))
     if (pathList) {
@@ -157,11 +156,6 @@ async calcUpgradeCost (myUpgrade, myItem){
   } else {
     return Number(myUpgrade.system.baseCost.split("c").join(""))
   }
-}
-
-//This should update effects on the item ()
-async updateEffectsTag(tag1, tag2, tag3){
-
 }
 
 //Get the modifiers path and value for given select or input tags
