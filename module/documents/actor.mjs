@@ -48,7 +48,30 @@ export default class FalloutZeroActor extends Actor {
     ).render(true)
   }
     
-
+  async addCustomEffect(path,modType,consumValue){
+    let actorValue = this[path]
+    //Add Number validation to allow formulas?
+    consumValue = Number(consumValue)
+    console.log(actorValue) 
+    switch(modType){
+      case "Add":
+        actorValue = actorValue + consumValue
+        break;
+      case "Downgrade":
+        if (actorValue > consumValue){actorValue = consumValue}
+        break;
+      case "Upgrade":
+        if (actorValue > consumValue){actorValue = consumValue}
+      break;
+      case "Override":
+        actorValue = consumValue
+      break;
+      case "Multiply":
+        actorValue = actorValue * consumValue
+      break; 
+    }
+    this.update({[path] : actorValue})
+  }
 
   lowerInventory(itemId) {
     const item = this.items.get(itemId)
@@ -58,6 +81,21 @@ export default class FalloutZeroActor extends Actor {
     let details = '';
     if (item.type != "explosive") {
       details = description.replace("<p>", "<p>Gained: ")
+      if (item.system.modifiers.path1){
+        
+        if (item.system.modifiers.path1 != "" && item.system.modifiers.value1 != ""){this.addCustomEffect(
+          item.system.modifiers.path1, item.system.modifiers.modType1, item.system.modifiers.value1 
+        )}
+        if (item.system.modifiers.path2 != "" && item.system.modifiers.value2 != ""){this.addCustomEffect(
+          item.system.modifiers.path2, item.system.modifiers.modType2, item.system.modifiers.value2 
+        )}
+        if (item.system.modifiers.path3 != "" && item.system.modifiers.value3 != ""){this.addCustomEffect(
+          item.system.modifiers.path3, item.system.modifiers.modType3, item.system.modifiers.value3 
+        )}
+        if (item.system.modifiers.path4 != "" && item.system.modifiers.value4 != ""){this.addCustomEffect(
+          item.system.modifiers.path4, item.system.modifiers.modType4, item.system.modifiers.value4 
+        )}
+      }
     }
     let chatData = {
       user: game.user._id,
@@ -66,6 +104,7 @@ export default class FalloutZeroActor extends Actor {
     }
     ChatMessage.create(chatData, {})
   }
+  
   combatexpandetoggle() {
     const currentState = this.system.combatActionsexpanded
     if (currentState == true) {
