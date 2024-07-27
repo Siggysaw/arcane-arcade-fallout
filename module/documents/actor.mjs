@@ -102,7 +102,7 @@ export default class FalloutZeroActor extends Actor {
     let details = '';
     if (item.type != "explosive") {
       details = description.replace("<p>", "<p>Gained: ")
-      if (item.system.modifiers.path1){
+      if (typeof item.system.modifiers != "undefined"){
         if (item.system.modifiers.path1 != "" && item.system.modifiers.value1 != ""){
           this.addCustomEffect(
           item.system.modifiers.path1, item.system.modifiers.modType1, item.system.modifiers.value1 

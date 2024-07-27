@@ -393,7 +393,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         theContent = item.system.properties
       }
       let chatData = {
-        user: game.user._id,
+        author: game.user._id,
         speaker: ChatMessage.getSpeaker(),
         flavor: `${item.name} description :`,
         content: theContent,
@@ -586,6 +586,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
    * @protected
    */
   async _onDropItemCreate(itemData) {
+    
     switch (itemData.type) {
       case 'trait':
         this._onDropItemCreateTrait(itemData)
@@ -597,6 +598,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         this._onDropItemCreateBackgroundGrants(itemData)
         return
       default:
+        if (itemData.system.itemEquipped){
+          itemData.system.itemEquipped = false;
+        }
         super._onDropItemCreate(itemData)
         return
     }
