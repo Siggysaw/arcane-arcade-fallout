@@ -64,6 +64,18 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     return game.scenes.get(sceneId)?.tokens.get(tokenId)?.actor ?? game.actors.get(actorId)
   }
 
+  get damage() {
+    return this.flags?.falloutzero?.damage ?? null
+  }
+
+  get targeted() {
+    return this.flags?.falloutzero?.targeted ?? null
+  }
+
+  get abilityBonus() {
+    return this.flags?.abilityBonus ?? null
+  }
+
   /* -------------------------------------------- */
   /*  Rendering                                   */
   /* -------------------------------------------- */
@@ -260,13 +272,13 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // metadata.appendChild(anchor)
 
     // Add damage buttons
-    if (this.flags?.falloutzero?.damage) {
+    if (this.damage) {
       const messageContent = html.querySelector('.message-content')
       const buttonContainer = document.createElement('div')
       buttonContainer.classList.add('card-buttons')
 
       // regular damage button
-      if (this.flags.falloutzero.damage?.rolls) {
+      if (this.damage.rolls) {
         const button = document.createElement('button')
         button.innerHTML = '<span>Roll damage</span> <i class="fa-light fa-dice-d20">'
         button.dataset.rollDamage = ''
@@ -274,15 +286,15 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       }
 
       // critical multiplier damage button
-      if (this.flags?.falloutzero?.damage?.critical) {
+      if (this.damage.critical) {
         const button = document.createElement('button')
         button.innerHTML = '<span>Roll critical damage</span> <i class="fa-light fa-dice-d20">'
-        button.dataset.rollCritical = this.flags.falloutzero.damage.critical
+        button.dataset.rollCritical = this.critical
         buttonContainer.appendChild(button)
       }
 
       // add targeted condition roll
-      if (this.flags?.falloutzero?.targeted) {
+      if (this.targeted) {
         const button = document.createElement('button')
         button.innerHTML =
           '<span>Roll targeted attack condition</span> <i class="fa-light fa-dice-d4">'
@@ -626,7 +638,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   async _onRollCondition() {
     const table = await getTableFromPack(
       'arcane-arcade-fallout.targeted-attacks',
-      this.flags?.falloutzero?.targeted?.target,
+      this.targeted.target,
     )
     const conditionRoll = await table.roll()
 
@@ -645,13 +657,9 @@ export default class FalloutZeroChatMessage extends ChatMessage {
    */
   async _onRollDamage() {
     try {
-      const abilityBonus = this.flags.falloutzero?.abilityBonus || 0
-      const damageTypes = this.flags.falloutzero.damage.rolls
-        .map((damage) => damage.type)
-        .join(', ')
-      const damageRolls = this.flags.falloutzero.damage.rolls
-        .map((damage) => damage.formula)
-        .join('+ ')
+      const abilityBonus = this.abilityBonus || 0
+      const damageTypes = this.damage.rolls.map((damage) => damage.type).join(', ')
+      const damageRolls = this.damage.rolls.map((damage) => damage.formula).join('+ ')
 
       return this._rollDamage(`${damageRolls} + ${abilityBonus}`, damageTypes)
     } catch (error) {
@@ -665,13 +673,11 @@ export default class FalloutZeroChatMessage extends ChatMessage {
    * @returns {Promise}     A promise that resolves once roll message sent
    * @protected
    */
-  async _onRollCriticalDamage(event) {
+  async _onRollCriticalDamage() {
     try {
-      const damageTypes = this.flags.falloutzero.damage.rolls
-        .map((damage) => damage.type)
-        .join(', ')
+      const damageTypes = this.damage.rolls.map((damage) => damage.type).join(', ')
 
-      return this._rollDamage(event.currentTarget.dataset.rollCritical, damageTypes)
+      return this._rollDamage(this.damage.critical, damageTypes)
     } catch (error) {
       console.error('Error rolling critical damage', error)
     }
@@ -679,11 +685,9 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   async _rollDamage(formula, types) {
     let flavor = `KAPOW! ${types} damage`
-    const target =
-      this.flags?.falloutzero?.targeted.target === 'carried'
-        ? `${this.flags?.falloutzero?.targeted.target} item`
-        : this.flags?.falloutzero?.targeted.target
-    if (this.flags?.falloutzero?.targeted) {
+    if (this.targeted) {
+      const target =
+        this.targeted.target === 'carried' ? `${this.targeted.target} item` : this.targeted.target
       flavor += ` to the ${target}!`
     } else {
       flavor += '!'

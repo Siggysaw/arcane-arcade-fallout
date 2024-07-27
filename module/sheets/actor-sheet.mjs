@@ -401,6 +401,19 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       ChatMessage.create(chatData, {})
     })
 
+    // context list
+    const items = [
+      {
+        icon: '<i class="fas fa-trash" style="color:red"></i>',
+        name: 'Delete',
+        callback: () => {
+          console.log('here')
+        },
+      },
+    ]
+
+    new ContextMenu(html, '[data-context-menu]', items, { eventName: 'click' })
+
     // handles weapon reload
     html.on('click', '[data-reload]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
