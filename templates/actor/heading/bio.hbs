@@ -5,37 +5,44 @@
         </td>
     </tr>
     <tr>
-        <td colspan="999" style="text-align:left;">
+        <td colspan="999" style="text-align:left;font-size:10pt;">
             <div>
-                Level {{system.level}}
+                 <span style="float:left;margin-right:7px;display:block">Lvl {{system.level}}</span>
                 {{#each races as |item id|}}
-                <a data-edit
-                   data-item-id="{{ item._id }}"
-                   title="{{localize 'DOCUMENT.Update' type='item'}}">
-                    {{ item.name }}
-                </a>
-                {{#GM}} <a class="item-control item-delete"
-                           data-item-id="{{ item._id }}"
-                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                    <i class="fas fa-trash"></i>
-                </a>
-                {{/GM}}
+                <li style="float: left; margin-right: 4px; display:block;" class="item flexrow addcap" data-item-id="{{ item._id }}">
+                    <a data-edit
+                       data-item-id="{{ item._id }}"
+                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                        {{ item.name }}
+                    </a>
+                    {{#GM}}
 
+                    <a class="item-control item-delete"
+                       data-item-id="{{ item._id }}"
+                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                    {{/GM}}
+                </li>
                 {{/each}}
                 {{#each backgrounds as |item id|}}
-                <a data-edit
-                   data-item-id="{{ item._id }}"
-                   title="{{localize 'DOCUMENT.Update' type='item'}}">
-                    {{ item.name }}
-                </a>
-                {{#GM}} <a class="item-control item-delete"
-                           data-item-id="{{ item._id }}"
-                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                    <i class="fas fa-trash"></i>
-                </a>
-                {{/GM}}
+                <li style="float: left; margin-right: 4px; display:block" class="item flexrow" data-item-id="{{ item._id }}">
+                    <a data-edit
+                       data-item-id="{{ item._id }}"
+                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                        {{ item.name }}
+                    </a>
+                    {{#GM}}
+
+                    <a class="item-control item-delete"
+                       data-item-id="{{ item._id }}"
+                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                    {{/GM}}
+                </li>
                 {{/each}}
-        </td>
+</td>
     </tr>
     <tr>
         <td colspan="999" id="xpbar">

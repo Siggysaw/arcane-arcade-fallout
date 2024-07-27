@@ -46,7 +46,16 @@
               title="Send description to Chat">
                   <i class="fa-solid fa-comment"></i>
               </a>
-          {{/DifferentFrom}}
+            {{/DifferentFrom}}
+            {{#GreaterThan item.system.quantity 1}}
+            <a style="float: right; margin-right: 5px; margin-top: -20px"
+              data-rollable
+              data-lowerInventory="{{item._id}}"
+              class="item-control"
+              title="Use Medicine">
+              <i class="fas fa-syringe fakebutton nobackground"></i>
+            </a>
+            {{/GreaterThan}}
           </div>
         </td>
       </tr>

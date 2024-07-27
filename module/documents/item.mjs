@@ -50,12 +50,11 @@ export default class FalloutZeroItem extends Item {
   }
 
 
-//Get list of upgrades for item  type
+//Get list of upgrades for item type
 async getUpgradeList (tag){
-  let select = document.getElementById('upgradesSelector')
   let upgrade, opt
-  if (select.childElementCount < 3) {
-    select.removeChild(select.lastElementChild)
+  if (tag.childElementCount < 3) {
+    tag.removeChild(tag.lastElementChild)
     const upgradeOptions = game.packs.find((p) => p.metadata.name == 'upgrades')
     if (upgradeOptions) {
       for (var packItem of upgradeOptions.tree.entries) {
@@ -64,8 +63,49 @@ async getUpgradeList (tag){
           opt = document.createElement('option')
           opt.value = upgrade.name
           opt.innerHTML = upgrade.name
-          select.appendChild(opt)
+          tag.appendChild(opt)
         }
+      }
+    }
+  }
+}
+
+//Get addresses for a typical actor
+flattenObject(obj) {
+  if (typeof obj !== 'object') {
+    return [];
+  }
+  let paths = [];
+  for (let key in obj) {
+    let val = obj[key];
+    if (typeof val === 'object') {
+      let subPaths = this.flattenObject(val);
+      subPaths.forEach(e => {
+        paths.push({
+          path: [key, e.path].join('.'),
+          value: e.value
+        });
+      });
+    } else {
+      let path = { path: key, value: val };
+      paths.push(path);
+    }
+  }
+  return paths;
+}
+
+//Get list of paths one has access to
+async listModPaths (tag){
+  let opt
+  if (tag.childElementCount < 2) {
+    let pathList = (this.flattenObject(game.actors.filter(a => a.type =="character")[0]))
+    //pathList.push(this.flattenObject(game.actors.filter(a => a.type =="character")[0].system.conditions))
+    if (pathList) {
+      for (var pathValue of pathList) {
+          opt = document.createElement('option')
+          opt.value = pathValue.path
+          opt.innerHTML = pathValue.path
+          tag.appendChild(opt)
       }
     }
   }
@@ -116,6 +156,19 @@ async calcUpgradeCost (myUpgrade, myItem){
   } else {
     return Number(myUpgrade.system.baseCost.split("c").join(""))
   }
+}
+
+//Get the modifiers path and value for given select or input tags
+//Normal input data-item format gave way to unwanted refresh and instability
+updateCustomEffects(tags){
+  let myData = {}
+  let mod, myKey
+  for (var tag of tags){
+    mod = tag.getAttribute('name')
+    myKey = `system.modifiers.${mod}`
+    Object.assign(myData, {[myKey] : tag.value});
+  }
+  return myData
 }
 
 //Check for upgrades for ranged and melee weapons  (armors are handled in armor.mjs because they are more complex)
