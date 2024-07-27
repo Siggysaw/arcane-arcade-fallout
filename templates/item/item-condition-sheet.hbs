@@ -17,6 +17,7 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
+    <a class="item" id ="customEffectsNav" data-tab="customEffects">Reactions</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -25,6 +26,90 @@
     {{!-- Description Tab --}}
     <div class="tab" data-group="primary" data-tab="description">
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+    </div>
+    {{!-- Reactions Tab --}}
+    <div class="tab customEffects" data-group="primary" data-tab="customEffects">
+      <table>
+        <tr>
+          <td>Attribute Key</td>
+          <td>Change Mode</td>
+          <td>Effect</td>
+        </tr>
+        <tr>
+          <td>
+            <select class = "pathSelector" name="path1" data-itemType="foodAnddrink" id="pathSelector1" value="{{ system.modifiers.path1 }}"> 
+              <option value="{{ system.modifiers.path1 }}">{{ system.modifiers.path1 }}</option>
+            </select>
+          </td>
+          <td>
+            <select class = "modSelector" name="modType1" data-itemType="foodAnddrink" id="modSelector1" value="{{ system.modifiers.modType1}}">
+              <option value="{{ system.modifiers.modType1 }}">{{ system.modifiers.modType1 }}</option>
+              <option value="Multiply">Multiply</option>
+              <option value="Add">Add</option>
+              <option value="Downgrade">Downgrade</option>
+              <option value="Upgrade">Upgrade</option>
+              <option value="Override">Override</option>
+            </select>
+          </td>
+          <td><input class="valueBox" type="text" name="value1" value="{{ system.modifiers.value1 }}" /></td>
+        </tr>
+        <tr>
+          <td>
+            <select class = "pathSelector" name="path2" data-itemType="foodAnddrink" id="pathSelector2">
+              <option value="{{ system.modifiers.path2 }}">{{ system.modifiers.path2 }}</option>
+            </select>
+          </td>
+          <td>
+            <select class = "modSelector" name="modType2" data-itemType="foodAnddrink" id="modSelector2" value="{{ system.modifiers.modType2}}">
+            <option value="{{ system.modifiers.modType2 }}">{{ system.modifiers.modType2 }}</option>
+            <option value="Multiply">Multiply</option>
+            <option value="Add">Add</option>
+            <option value="Downgrade">Downgrade</option>
+            <option value="Upgrade">Upgrade</option>
+            <option value="Override">Override</option>
+            </select>
+          </td>
+          <td><input class="valueBox" type="text" name="value2" value="{{ system.modifiers.value2 }}" /></td>
+        </tr>
+        <tr>
+          <td>
+            <select class = "pathSelector" name="path3" data-itemType="foodAnddrink" id="pathSelector3">
+              <option value="{{ system.modifiers.path3 }}">{{ system.modifiers.path3 }}</option>
+            </select>
+          </td>
+          <td>
+            <select class = "modSelector" name="modType3" data-itemType="foodAnddrink" id="modSelector3" value="{{ system.modifiers.modType3}}">
+            <option value="{{ system.modifiers.modType3 }}">{{ system.modifiers.modType3 }}</option>
+            <option value="Multiply">Multiply</option>
+            <option value="Add">Add</option>
+            <option value="Downgrade">Downgrade</option>
+            <option value="Upgrade">Upgrade</option>
+            <option value="Override">Override</option>
+            </select>
+          </td>
+          <td><input class="valueBox" type="text" name="value3" value="{{ system.modifiers.value3 }}" /></td>
+        </tr>
+        <tr>
+          <td>
+            <select class = "pathSelector" name="path4" data-itemType="foodAnddrink" id="pathSelector4">
+              <option value="{{ system.modifiers.path4 }}">{{ system.modifiers.path4 }}</option>
+            </select>
+          </td>
+          <td>
+            <select class = "modSelector" name="modType4" data-itemType="foodAnddrink" id="modSelector4" value="{{ system.modifiers.modType4}}">
+            <option value="{{ system.modifiers.modType4 }}">{{ system.modifiers.modType4 }}</option>
+            <option value="Multiply">Multiply</option>
+            <option value="Add">Add</option>
+            <option value="Downgrade">Downgrade</option>
+            <option value="Upgrade">Upgrade</option>
+            <option value="Override">Override</option>
+            </select>
+          </td>
+          <td><input class="valueBox" type="text" name="value4" value="{{ system.modifiers.value4 }}" /></td>
+        </tr>
+      </table>
+      <button id="effectSaveBtn">SAVE</button>
+      <div id="savedMessage"></div>
     </div>
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">
