@@ -379,8 +379,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         enoughAP = this.actor.applyApCost(6)
       }
       if (enoughAP) {
-        item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-        FalloutZeroArmor.prototype.changeEquipStatus(item)
+        item.update({ 'system.itemEquipped': !item.system.itemEquipped})
+        if ((item.type == "armor" || item.type == "powerArmor") && item.parent){
+          FalloutZeroArmor.prototype.changeEquipStatus(item)
+        } else {
+          FalloutZeroArmor.prototype.toggleEffects(myItem,item.system.itemEquipped)
+        }
       }
     })
 

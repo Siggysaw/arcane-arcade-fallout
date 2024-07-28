@@ -77,6 +77,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       if (mySelectors[0].childElementCount < 2){
         for (var select of mySelectors){
           FalloutZeroItem.prototype.listModPaths(select)
+          
         }
       }
     })
@@ -206,7 +207,11 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     //On equip, calculate AC and other things that improve character's stats
     html.on('change', '[equipItem]', () => {
-      FalloutZeroArmor.prototype.changeEquipStatus(this.object, this.actor)
+      if ((item.type == "armor" || item.type == "powerArmor") && item.parent){
+        FalloutZeroArmor.prototype.changeEquipStatus(this.object)
+      } else {
+        FalloutZeroArmor.prototype.toggleEffects(this.object,this.object.system.itemEquipped)
+      }
     })
 
     //Change crafting materials quantity (up!)

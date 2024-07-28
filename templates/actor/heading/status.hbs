@@ -7,15 +7,29 @@
             <i data-health="minus" class="fas fa-minus-square"></i>
         </td>
         <td>
-            <input type="number"
-                   class="numberwithbuttons"
-                   name="system.health.value"
-                   value="{{ health.value }}" />
-            /
-            <input type="number"
-                   class="numberwithbuttons"
-                   name="system.health.max"
-                   value="{{ health.max }}" />
+            <table>
+                <tr>
+                    <input style="height:30px;" 
+                    type="number"
+                    class="numberwithbuttons"
+                    name="system.health.value"
+                    value="{{ health.value }}" />
+                    /
+                    <input style="height:30px" 
+                    type="number"
+                    class="numberwithbuttons"
+                    name="system.health.max"
+                    value="{{ health.max }}" />
+                </tr>
+                <tr>
+                           Temp HP :
+                    <input style="height:20px" 
+                    type="number"
+                    class="numberwithbuttons"
+                    name="system.health.temp"
+                    value="{{ health.temp }}" />
+                </tr>                
+            </table>
         </td>
     </tr>
     <tr>
@@ -26,15 +40,30 @@
             <i data-stamina="minus" class="fas fa-minus-square"></i>
         </td>
         <td>
-            <input type="number"
-                   class="numberwithbuttons"
-                   name="system.stamina.value"
-                   value="{{ stamina.value }}" />
-            /
-            <input type="number"
-                   class="numberwithbuttons"
-                   name="system.stamina.max"
-                   value="{{ stamina.max }}" />
+            <table>
+                <tr>
+                    <input style="height:30px" 
+                    type="number"
+                    class="numberwithbuttons"
+                    name="system.stamina.value"
+                    value="{{ stamina.value }}" />
+                    /
+                    <input style="height:30px"  
+                    type="number"
+                    class="numberwithbuttons"
+                    name="system.stamina.max"
+                    value="{{ stamina.max }}" />
+                </tr>
+                <tr>
+                    Temp SP :
+                    <input style="height:20px"  
+                    type="number"
+                    class="numberwithbuttons"
+                    name="system.stamina.modifiers"
+                    value="{{ stamina.temp }}" />            
+                </tr>
+            </table>
+            
         </td>
     </tr>
     <tr>
@@ -45,15 +74,29 @@
             <i data-action="minus" class="fas fa-minus-square"></i>
         </td>
         <td>
-            <input type="number"
-                   class="numberwithbuttons"
-                   name="system.abilityPoints.value"
-                   value="{{ system.actionPoints.value }}" />
-            /
-            <input type="number"
-                   class="numberwithbuttons"
-                   name="system.abilityPoins.max"
-                   value="{{ system.actionPoints.max }}" />
+            <table>
+                <tr>
+                    <input style="height:30px"  
+                    type="number"
+                    class="numberwithbuttons"
+                    name="system.abilityPoints.value"
+                    value="{{ system.actionPoints.value }}" />
+                    /
+                    <input style="height:30px"  
+                    type="number"
+                    class="numberwithbuttons"
+                    name="system.abilityPoins.max"
+                    value="{{ system.actionPoints.max }}" />
+                </tr>
+                <tr>
+                    Bonus AP:
+                    <input style="height:20px"  
+                    type="number"
+                    class="numberwithbuttons"
+                    name="system.stamina.modifiers"
+                    value="{{ system.actionPoints.temp }}" />
+                </tr>
+            </table>  
         </td>
     </tr>
     </table>

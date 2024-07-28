@@ -473,21 +473,19 @@ async seeUpgrade (id){
 
   //Get original state of weapon
   async changeEquipStatus (myItem){
-    if ((myItem.type == "armor" || myItem.type == "powerArmor") && myItem.parent){
-      if (myItem.system.itemEquipped == true){
-        await this.unequipItemStats(myItem)
-        await this.toggleEffects(myItem,true)
-      } else {
-        if (myItem.system.quantity > 1 ) {
-          this.splitObject(myItem,"equip")
-        }
-        let otherArmor = myItem.parent.items.find(u => u.system.itemEquipped == true && (u.type =='armor' || u.type =='powerArmor'))
-        if (otherArmor){
-          this.swapArmors(myItem,otherArmor);
-        }else{
-          await this.equipItemStats(myItem)
-          await this.toggleEffects(myItem,false)
-        }
+    if (myItem.system.itemEquipped == true){
+      await this.unequipItemStats(myItem)
+      await this.toggleEffects(myItem,true)
+    } else {
+      if (myItem.system.quantity > 1 ) {
+        this.splitObject(myItem,"equip")
+      }
+      let otherArmor = myItem.parent.items.find(u => u.system.itemEquipped == true && (u.type =='armor' || u.type =='powerArmor'))
+      if (otherArmor){
+        this.swapArmors(myItem,otherArmor);
+      }else{
+        await this.equipItemStats(myItem)
+        await this.toggleEffects(myItem,false)
       }
     }
   }

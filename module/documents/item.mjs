@@ -76,7 +76,7 @@ flattenObject(obj) {
   let paths = [];
   for (let key in obj) {
     let val = obj[key];
-    if (typeof val === 'object') {
+    if (typeof val === 'object' && val !=null) {
       let subPaths = this.flattenObject(val);
       subPaths.forEach(e => {
         paths.push({
@@ -85,25 +85,41 @@ flattenObject(obj) {
         });
       });
     } else {
-      let path = { path: key, value: val };
-      paths.push(path);
+      val = 0
+      let path = { path:  key, value: val };
+      let pathTest = key.split(".")
+      if (pathTest[pathTest.length-1] != "label" &&
+          pathTest[pathTest.length-1] != "description" && 
+          pathTest[pathTest.length-1] != "id" &&
+          pathTest[pathTest.length-1] != "img" &&
+          pathTest[pathTest.length-1] != "name" &&
+          pathTest[pathTest.length-1] != "sort" &&
+          pathTest[pathTest.length-1] != "type"
+        ){
+        paths.push(path);
+      }
     }
   }
   return paths;
 }
 
 //Get list of paths one has access to
-async listModPaths (tag){
+async listModPaths (tag, item){
   let opt
-  if (tag.childElementCount < 2) {
-    let pathList = (this.flattenObject(game.actors.filter(a => a.type =="character")[0]))
-    //pathList.push(this.flattenObject(game.actors.filter(a => a.type =="character")[0].system.conditions))
-    if (pathList) {
-      for (var pathValue of pathList) {
-          opt = document.createElement('option')
-          opt.value = pathValue.path
-          opt.innerHTML = pathValue.path
-          tag.appendChild(opt)
+  let num = tag.getAttribute("name").slice(-1)
+  let pathList = (this.flattenObject(game.actors.filter(a => a.type =="character")[0]))
+  if (pathList) {
+    tag.removeChild(tag.lastElementChild)
+    let myPaths = pathList.map(p => p.path)
+    myPaths.push("")
+    for (var pathValue of myPaths.sort()) {
+      if (!pathValue.includes("_") && 
+          !pathValue.includes("overrides") && 
+          !pathValue.includes("ownership")){
+        opt = document.createElement('option')
+        opt.value = pathValue
+        opt.innerHTML = pathValue
+        tag.appendChild(opt)
       }
     }
   }
