@@ -640,6 +640,12 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       'arcane-arcade-fallout.targeted-attacks',
       this.targeted.target,
     )
+
+    if (!table) {
+      ui.notifications.warn(`Failed to get roll table for target condition ${this.targeted.target}`)
+      return false
+    }
+
     const conditionRoll = await table.roll()
 
     return conditionRoll.roll.toMessage({
