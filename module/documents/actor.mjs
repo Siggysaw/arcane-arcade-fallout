@@ -484,8 +484,14 @@ export default class FalloutZeroActor extends Actor {
       ui.notifications.warn(`Weapon ${weaponId} not found on character / Delete and Readd`)
       return
     }
+
+    // Manually Reloaded?
+    const manualReload = weapon.system.description.includes("Manual Reload");
+
     // Do you have the AP?
-    const newAP = this.system.actionPoints.value - 6
+    let apCost = 6
+    if (manualReload) { apCost = 1 }
+    const newAP = this.system.actionPoints.value - apCost
     if (newAP < 0) {
       ui.notifications.warn(`Not enough action points to reload`)
       return
@@ -509,7 +515,7 @@ export default class FalloutZeroActor extends Actor {
 
     // Collect Required Weapon Information
     const currentMag = weapon.system.ammo.capacity.value
-    const capacity = weapon.system.ammo.capacity.max
+    let capacity = weapon.system.ammo.capacity.max
 
     // Already Reloaded?
     if (currentMag == capacity) {
@@ -518,7 +524,7 @@ export default class FalloutZeroActor extends Actor {
     }
 
     // Reload The Weapon
-    const ammoReloaded = capacity - currentMag
+    let ammoReloaded = capacity - currentMag
     let updatedAmmo = ammoOwned - ammoReloaded
     if (ammoReloaded > ammoOwned && !weapon.system.energyWeapon) {
       const ammoAvailable = currentMag + ammoOwned
@@ -526,13 +532,14 @@ export default class FalloutZeroActor extends Actor {
         { _id: weaponId, 'system.ammo.capacity.value': ammoAvailable },
       ])
     } else {
+      if (manualReload) { capacity = currentMag + 1 }
       this.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.ammo.capacity.value': capacity },
       ])
     }
 
     // Energy Weapon Reload Rules
-    if (weapon.system.energyWeapon) {
+    if (weapon.system.energyWeapon || manualReload) {
       updatedAmmo = ammoOwned - 1
       this.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     } else {

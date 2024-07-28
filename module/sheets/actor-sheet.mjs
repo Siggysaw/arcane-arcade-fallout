@@ -217,6 +217,51 @@ export default class FalloutZeroActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html)
 
+    // context list
+    const itemContextMenu = [
+      {
+        name: "Edit",
+        icon: '<i class="fas fa-edit"></i>',
+        condition: (element) =>element.closest('.item').data('item-id'),
+        callback: (element) => {
+          const itemId = element.closest('.item').data('item-id')
+          const item = this.actor.items.get(itemId)
+          item.sheet.render(true)
+        },
+      },
+      {
+        name: "Delete",
+        icon: '<i class="fas fa-trash"></i>',
+        condition: (element) => element.closest('.item').data('item-id'),
+        callback: (element) => {
+          const itemId = element.closest('.item').data('item-id')
+          this.actor.deleteEmbeddedDocuments('Item', [itemId])
+        },
+      },
+      {
+        name: "Send to Chat",
+        icon: '<i class="fa-solid fa-comment"></i>',
+        condition: (element) => element.closest('.item').data('item-id'),
+        callback: (element) => {
+          const itemId = element.closest('.item').data('item-id')
+          const item = this.actor.items.get(itemId)
+          let theContent = item.system.description
+          if (item.type == 'explosive') {
+            theContent = item.system.properties
+          }
+          let chatData = {
+            author: game.user._id,
+            speaker: ChatMessage.getSpeaker(),
+            flavor: `${item.name} description :`,
+            content: theContent,
+          }
+          ChatMessage.create(chatData, {})
+        },
+      },
+    ]
+
+    new ContextMenu(html, '.item', itemContextMenu)
+
     // Consume an Item
     html.on('click', '[data-lowerInventory]', (ev) => {
       const item = ev.currentTarget.dataset.lowerinventory
@@ -404,19 +449,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       }
       ChatMessage.create(chatData, {})
     })
-
-    // context list
-    const items = [
-      {
-        icon: '<i class="fas fa-trash" style="color:red"></i>',
-        name: 'Delete',
-        callback: () => {
-          console.log('here')
-        },
-      },
-    ]
-
-    new ContextMenu(html, '[data-context-menu]', items, { eventName: 'click' })
 
     // handles weapon reload
     html.on('click', '[data-reload]', (ev) => {
