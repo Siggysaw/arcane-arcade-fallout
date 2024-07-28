@@ -184,8 +184,8 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       this.actor.ruleinfo(condition)
     })
     //show rule information
-    html.on('click', '[data-trade]', (ev) => {
-      const item = ev.currentTarget.dataset.trade
+    html.on('click', '[data-worn]', (ev) => {
+      const item = ev.currentTarget.dataset.worn
       this.actor.trade(item)
     })
     //Remove upgrade button
@@ -206,18 +206,14 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     //On equip, calculate AC and other things that improve character's stats
     html.on('change', '[equipItem]', () => {
-      if ((item.type == "armor" || item.type == "powerArmor") && item.parent){
+      if ((item.type == "armor" || item.type == "powerArmor") && item.parent) {
         FalloutZeroItem.prototype.changeEquipStatus(this.object)
-      } else {
-        if (item.name != "Bag, Backpack" && 
-            item.name != "Bag, Camping Backpack" &&
-            item.name != "Bandolier" &&
-            item.name != "Hazmat Suit" &&
-            item.name != "Hazmat Suit, Powered"
-          ) {
-          FalloutZeroItem.prototype.toggleEffects(this.object,this.object.system.itemEquipped)
-        }
       }
+    })
+
+    //On worn, activate effects
+    html.on('change', '[worn]', () => {
+          FalloutZeroItem.prototype.toggleEffects(this.object, this.object.system.worn)
     })
 
     //Change crafting materials quantity (up!)
