@@ -106,7 +106,6 @@ flattenObject(obj) {
 //Get list of paths one has access to
 async listModPaths (tag, item){
   let opt
-  let num = tag.getAttribute("name").slice(-1)
   let pathList = (this.flattenObject(game.actors.filter(a => a.type =="character")[0]))
   if (pathList) {
     tag.removeChild(tag.lastElementChild)

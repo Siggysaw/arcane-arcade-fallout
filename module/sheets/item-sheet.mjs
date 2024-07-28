@@ -72,14 +72,13 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       FalloutZeroItem.prototype.getUpgradeList(this)
     })
 
-    html.find('[id=customEffectsNav]').click(function() {
+    html.on('click','[id=customEffectsNav]', () => {
       var mySelectors = document.getElementsByClassName("pathSelector")
-      if (mySelectors[0].childElementCount < 2){
         for (var select of mySelectors){
+          let num = select.getAttribute("name").slice(-1)
           FalloutZeroItem.prototype.listModPaths(select)
-          
+          select.value = this.object.system.modifiers[`path${num}`]
         }
-      }
     })
 
     //Save Attributes (This has to be done to prevent losing info when modifying other parts of the item sheet)
@@ -208,9 +207,16 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     //On equip, calculate AC and other things that improve character's stats
     html.on('change', '[equipItem]', () => {
       if ((item.type == "armor" || item.type == "powerArmor") && item.parent){
-        FalloutZeroArmor.prototype.changeEquipStatus(this.object)
+        FalloutZeroItem.prototype.changeEquipStatus(this.object)
       } else {
-        FalloutZeroArmor.prototype.toggleEffects(this.object,this.object.system.itemEquipped)
+        if (item.name != "Bag, Backpack" && 
+            item.name != "Bag, Camping Backpack" &&
+            item.name != "Bandolier" &&
+            item.name != "Hazmat Suit" &&
+            item.name != "Hazmat Suit, Powered"
+          ) {
+          FalloutZeroItem.prototype.toggleEffects(this.object,this.object.system.itemEquipped)
+        }
       }
     })
 
