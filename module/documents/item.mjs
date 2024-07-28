@@ -20,17 +20,15 @@ export default class FalloutZeroItem extends Item {
     if (this.parent) {
       let myItem
       if (this.system.itemEquipped == true || this.system.itemEquipped == false) {
-        this.system.itemEquipped = false
         if (this.system.upgrades){
           myItem = this.parent.items.find(
             (u) => u.name == this.name && u.type == this.type && u.system.itemEquipped == false && u.system.decay == 10 && u.system.upgrades.upgrade1.id == "",
           )
         } else {
           myItem = this.parent.items.find(
-            (u) => u.name == this.name && u.type == this.type && u.system.itemEquipped == false && u.system.decay == 10,
+            (u) => u.name == this.name && u.type == this.type && u.system.itemEquipped == false
           )
         }
-        this.update({ 'system.itemEquipped': false })
       } else{
         myItem = this.parent.items.find((u) => u.name == this.name && u.type == this.type)
       }

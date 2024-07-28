@@ -73,7 +73,6 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     })
 
     html.find('[id=customEffectsNav]').click(function() {
-      console.log("effects")
       var mySelectors = document.getElementsByClassName("pathSelector")
       if (mySelectors[0].childElementCount < 2){
         for (var select of mySelectors){

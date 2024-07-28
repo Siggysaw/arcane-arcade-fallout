@@ -1,6 +1,6 @@
 import { FalloutZeroItemBase,FalloutZeroItem } from './_module.mjs'
 
-export default class FalloutZeroFoodDrink extends FalloutZeroItemBase {
+export default class FalloutZeroCondition extends FalloutZeroItemBase {
   static defineSchema() {
     const fields = foundry.data.fields
     const requiredInteger = { required: true, nullable: false, integer: true }
@@ -24,7 +24,7 @@ export default class FalloutZeroFoodDrink extends FalloutZeroItemBase {
       value4: new fields.StringField({initial: ""}),
     })
     schema.img = new fields.StringField({
-      initial: 'systems/arcane-arcade-fallout/assets/vaultboy/wasteland camel.png',
+      initial: 'systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/chemresistant.png',
     })
 
     return schema
