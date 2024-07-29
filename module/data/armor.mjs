@@ -495,7 +495,7 @@ async seeUpgrade (id){
       if (type == "equip") {
         newName += "(e)" 
         newItem = await Item.create(newItem, {parent: myItem.parent});
-        await myItem.update({'system.quantity' : qty, 'name' : currentName});
+        await myItem.update({'system.quantity' : qty, 'name' : currentName, 'system.itemEquipped' : false});
         await newItem.update({'system.quantity' : 1, 'name' : currentName});
       } else {
         alert ("Could not split items. Check quantities, unequip and try again.")

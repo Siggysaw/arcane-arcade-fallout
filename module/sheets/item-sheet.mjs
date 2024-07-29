@@ -206,14 +206,54 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     //On equip, calculate AC and other things that improve character's stats
     html.on('change', '[equipItem]', () => {
-      if ((item.type == "armor" || item.type == "powerArmor") && item.parent) {
-        FalloutZeroItem.prototype.changeEquipStatus(this.object)
+      if ((this.object.type == "armor" || this.object.type == "powerArmor") && this.object.parent) {
+        FalloutZeroArmor.prototype.changeEquipStatus(this.object)
       }
     })
 
     //On worn, activate effects
     html.on('change', '[worn]', () => {
           FalloutZeroItem.prototype.toggleEffects(this.object, this.object.system.worn)
+    })
+
+    //Drag and drop items into description box creates a link to it, whether it's a compendium or someone else's inventory.
+    html.on('click','[item-description]', () => {
+      if (this.object.system.description.includes("@UUID")){
+        // Original link example : `@UUID[Compendium.arcane-arcade-fallout.junk.Item.n7OMTyzznsUINuMi]{Adjustable Wrench}`
+        let UUID = ""
+        let ID = ""
+        let descStr = this.object.system.description
+        let itemName = descStr.match(/\{(.*?)\}/);
+        let item_name = itemName[1].split(" ").join("_")
+        let matches = []
+        //This catches errors where there is a space within ONE item name
+        if (itemName){
+          descStr = descStr.split(itemName[1]).join(item_name)
+        }
+        let desc = descStr.split(" ")
+        for (var str of desc){
+          if (str.includes("@UUID")) {
+            matches = str.match(/\[(.*?)\]/);
+            if (matches) {
+                UUID = matches[1];
+                ID = UUID.split(".");
+                let newLink = `<a class="content-link" 
+                draggable="true" data-link="" 
+                data-uuid="${UUID}" 
+                data-id="${ID[ID.length -1]}" 
+                data-type="Item" 
+                data-pack="arcane-arcade-fallout.conditions" 
+                data-tooltip="Click for details."
+                >
+                ${itemName[1]}
+                </a>`;
+                descStr = this.object.system.description.split(`@UUID[${UUID}]{${itemName[1]}}`).join(newLink);
+                this.object.update({'system.description' : descStr});
+                return;
+            }
+          }
+        }
+      }
     })
 
     //Change crafting materials quantity (up!)

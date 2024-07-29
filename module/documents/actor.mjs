@@ -74,7 +74,6 @@ export default class FalloutZeroActor extends Actor {
     }
     if(modType == "Add"){ //This should work with numbers and/or strings
       if (path == "system.irradiated"){
-        console.log("system.irradiated", actorValue, consumValue)
         this.handleIrradiated("system.irradiated", actorValue, consumValue)        
       } 
       else {
