@@ -124,18 +124,13 @@
       </table>
       <table>
         <th>
-          Impose a check
+          Ask for a check
         </th>
         <th>
-          Targeted Ability
+          Difficulty (DC)
         </th>
-        <th>
-          Difficulty Class (DC)
-        </th>
+        <th>Condition</th>
         <tr>
-          <td>
-            1d20 + modifiers +
-          </td>
           <td>
             <select class = "checkSelector" name="check1" data-itemType={{type}} id="check1" value="{{system.checks.check1}}">
               <option value="{{ system.checks.check1 }}">{{ system.checks.check1 }}</option>
@@ -152,12 +147,12 @@
           <td>
             <input class="dcBox" type="text" name="dc1" value="{{system.checks.dc1}}" />
           </td>
+          <td>
+            <input class="condition" type="text" name="condition1" value="{{system.checks.condition1}}" />
+          </td>
         </tr>
         {{#DifferentFrom system.checks.check1 ""}}
         <tr>
-          <td>
-            1d20 + modifiers +
-          </td>
           <td>
             <select class = "checkSelector" name="check2" data-itemType={{type}} id="check2" value="{{system.checks.check2}}">
               <option value="{{ system.checks.check2 }}">{{ system.checks.check2 }}</option>
@@ -174,13 +169,13 @@
           <td>
             <input class="dcBox" type="text" name="dc2" value="{{system.checks.dc2}}" />
           </td>
+          <td>
+            <input class="condition" type="text" name="condition2" value="{{system.checks.condition2}}" />
+          </td>
         </tr>
         {{/DifferentFrom}}
         {{#DifferentFrom system.checks.check2 ""}}
         <tr>
-          <td>
-            1d20 + modifiers +
-          </td>
           <td>
             <select class = "checkSelector" name="check3" data-itemType={{type}} id="check3" value="{{system.checks.check3}}">
               <option value="{{ system.checks.check3 }}">{{ system.checks.check3 }}</option>
@@ -196,6 +191,9 @@
           </td>
           <td>
             <input class="dcBox" type="text" name="dc3" value="{{system.checks.dc3}}" />
+          </td>
+          <td>
+            <input class="condition" type="text" name="condition3" value="{{system.checks.condition3}}" />
           </td>
         </tr>
         {{/DifferentFrom}}

@@ -60,9 +60,12 @@ export default class FalloutZeroActor extends Actor {
     let actorValue = this.deep_value(this,path)
     let consumValue
     if (typeof actorValue === "number") {
-      if (initialValue.charAt(0) == "@"){//Find the value
-        let newPath =  initialValue.replace("@","");
-        consumValue = this.deep_value(this,newPath);
+      if (initialValue.includes("@")){//Find the value
+        try{
+          consumValue = this.evaluateAtFormula(initialValue)
+        } catch{
+          consumValue = initialValue
+        }
       } else {
         consumValue = Number(initialValue);
       }
@@ -94,18 +97,34 @@ export default class FalloutZeroActor extends Actor {
     this.update({[path] : actorValue})
   }
 
-  askForCheck(ability,dc){
-    let abiSplit = ability.split(".")
-    let abiName = abiSplit[abiSplit.length -2 ].toUpperCase()
-    if (dc.includes("@") && this){
-      dc = this.deep_value(this,dc.split("@").join(""))
+  evaluateAtFormula(string){
+    let strList = string.split(" ")
+    string = ""
+      for (var str of strList){
+        if (str.includes("@")){
+          console.log("@")
+          str = this.deep_value(this,str.split("@").join(""))
+        }
+        string += str + " "
+      }
+      return eval(string)
+    }
+
+  askForCheck(ability,dc, condition){
+    let abilityLabel = this.deep_value(this,ability.replace("mod","label"))
+    if (dc.includes("@")){
+      try{
+        dc = this.evaluateAtFormula(dc)
+      } catch{
+        dc = dc
+      }
     }
     //const button = `<button data-action="applyDamage" data-value= data=tags id="boirePotion">Roll ${ability}Check (DC${dc}</span> <i class="fa-light fa-dice-d20"></button>`
     const button = `
     <div class="card-buttons">
-      <button type="button" data-action="check" id="askForRoll" data-ability="${ability}" data-dc="${dc}">
+      <button type="button" data-condition="${condition}" data-action="check" id="askForRoll" data-ability="${ability}" data-dc="${dc}">
         <i class="fas fa-shield-heart"></i>
-        <span class="visible-dc">DC${dc} ${abiName} Check</span>
+        <span class="visible-dc">DC${dc} ${abilityLabel} Check for ${condition}</span>
       </button>
     </div>`
     return button
@@ -136,13 +155,13 @@ export default class FalloutZeroActor extends Actor {
       }
       if (typeof item.system.checks != "undefined"){
         if (item.system.checks.check1 != "" && item.system.checks.dc1 != ""){
-          chatContent += this.askForCheck(item.system.checks.check1, item.system.checks.dc1)
+          chatContent += this.askForCheck(item.system.checks.check1, item.system.checks.dc1, item.system.checks.condition1)
         }
         if (item.system.checks.check2 != "" && item.system.checks.dc2 != ""){
-          chatContent += this.askForCheck(item.system.checks.check2, item.system.checks.dc2)
+          chatContent += this.askForCheck(item.system.checks.check2, item.system.checks.dc2, item.system.checks.condition2)
         }
         if (item.system.checks.check3 != "" && item.system.checks.dc3 != ""){
-          chatContent += this.askForCheck(item.system.checks.check3, item.system.checks.dc3)
+          chatContent += this.askForCheck(item.system.checks.check3, item.system.checks.dc3, item.system.checks.condition3)
         }
       }
     }
@@ -151,7 +170,7 @@ export default class FalloutZeroActor extends Actor {
         if(this){
           //FalloutZeroActorSheet.prototype.roll(ev)
           let path = ev.currentTarget.dataset.ability
-          let ability = path.toUpperCase().split(".")
+          let abilityLabel = this.deep_value(this,path.replace("mod","label"))
           let mod = this.deep_value(this,path)
           let lckMod = Math.floor(this.deep_value(this,'system.abilities.lck.mod')/2)
           let penaltyTotal = this.deep_value(this,'system.penaltyTotal')
@@ -159,10 +178,9 @@ export default class FalloutZeroActor extends Actor {
           let roll = new Roll(`d20+@str.mod+-@penaltyTotal+${lckMod}`, this.getRollData())
           roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor: this}),
-            flavor: `${this.name} rolls a ${ability[ability.length - 2]} Check, DC ${dc}` ,
+            flavor: `${this.name} rolls a ${abilityLabel} Check, DC ${dc} for ${ev.currentTarget.dataset.condition}` ,
             rollMode: game.settings.get('core', 'rollMode'),
           })
-          console.log(mod, lckMod, penaltyTotal,dc)
         }
       })
     })
