@@ -23,6 +23,14 @@ export default class FalloutZeroCondition extends FalloutZeroItemBase {
       modType4: new fields.StringField({initial: ""}),
       value4: new fields.StringField({initial: ""}),
     })
+    schema.checks = new fields.SchemaField ({
+      check1: new fields.StringField({initial: ""}),
+      dc1: new fields.StringField({initial: ""}),
+      check2: new fields.StringField({initial: ""}),
+      dc2: new fields.StringField({initial: ""}),
+      check3: new fields.StringField({initial: ""}),
+      dc3: new fields.StringField({initial: ""}),
+    })
     schema.img = new fields.StringField({
       initial: 'systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/chemresistant.png',
     })

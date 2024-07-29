@@ -74,11 +74,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     html.on('click','[id=customEffectsNav]', () => {
       var mySelectors = document.getElementsByClassName("pathSelector")
-        for (var select of mySelectors){
-          let num = select.getAttribute("name").slice(-1)
-          FalloutZeroItem.prototype.listModPaths(select)
-          select.value = this.object.system.modifiers[`path${num}`]
-        }
+      FalloutZeroItem.prototype.getMods(mySelectors, this.object)
     })
 
     //Save Attributes (This has to be done to prevent losing info when modifying other parts of the item sheet)
@@ -86,25 +82,28 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       let myData = {}
       //Save paths
       let tag = document.getElementsByClassName("pathSelector")
-      let newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
+      let newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "modifiers")
       Object.assign(myData,newData)
       //Save ModTypes
       tag = document.getElementsByClassName("modSelector")
-      newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "modifiers")
       Object.assign(myData,newData)
       //Save Values
       tag = document.getElementsByClassName("valueBox")
-      newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "modifiers")
       Object.assign(myData,newData)
+      //Save Checks
+      tag = document.getElementsByClassName("checkSelector")
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "checks")
+      Object.assign(myData,newData)
+      //Save Checks
+      tag = document.getElementsByClassName("dcBox")
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "checks")
+      Object.assign(myData,newData)
+      let mySelectors = document.getElementsByClassName("pathSelector")
       let saveMessage = document.getElementById("savedMessage")
-      if (this.object.update(myData)){
-        console.log("SAVED")
-        saveMessage.innerHTML = "Attributes saved successfully."
-      } else {
-        console.log("COULD NOT SAVE")
-        saveMessage.innerHTML = "Could NOT save. Please check values again."
-      }
-    })
+      FalloutZeroItem.prototype.checkSaveReactions(mySelectors, myData, saveMessage, this.object)
+      })
 
     //Choose upgrade
     html.on('change','[name=upgradesSelector]', (ev) => {

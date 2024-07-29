@@ -9,7 +9,11 @@
   </header>
   <table style="width: 100px">
     <tr>
+      {{#DifferentFrom type "condition"}}
+      <td>Qty:</td>
+      {{else}}
       <td>Level:</td>
+      {{/DifferentFrom}}
       <td style="width:50px;"><input type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
     </tr>
   </table>
@@ -37,76 +41,164 @@
         </tr>
         <tr>
           <td>
-            <select class = "pathSelector" name="path1" data-itemType="foodAnddrink" id="pathSelector1" value="{{ system.modifiers.path1 }}"> 
+            <select class = "pathSelector" name="path1" data-itemType={{type}} id="pathSelector1" value="{{ system.modifiers.path1 }}"> 
               <option value="{{ system.modifiers.path1 }}">{{ system.modifiers.path1 }}</option>
             </select>
           </td>
           <td>
-            <select class = "modSelector" name="modType1" data-itemType="foodAnddrink" id="modSelector1" value="{{ system.modifiers.modType1}}">
+            <select class = "modSelector" name="modType1" data-itemType={{type}} id="modSelector1" value="{{ system.modifiers.modType1}}">
               <option value="{{ system.modifiers.modType1 }}">{{ system.modifiers.modType1 }}</option>
               <option value="Multiply">Multiply</option>
               <option value="Add">Add</option>
               <option value="Downgrade">Downgrade</option>
               <option value="Upgrade">Upgrade</option>
               <option value="Override">Override</option>
+              <option value=""></option>
             </select>
           </td>
           <td><input class="valueBox" type="text" name="value1" value="{{ system.modifiers.value1 }}" /></td>
         </tr>
+        {{#DifferentFrom system.modifiers.path1 ""}}
         <tr>
           <td>
-            <select class = "pathSelector" name="path2" data-itemType="foodAnddrink" id="pathSelector2">
+            <select class = "pathSelector" name="path2" data-itemType={{type}} id="pathSelector2">
               <option value="{{ system.modifiers.path2 }}">{{ system.modifiers.path2 }}</option>
             </select>
           </td>
           <td>
-            <select class = "modSelector" name="modType2" data-itemType="foodAnddrink" id="modSelector2" value="{{ system.modifiers.modType2}}">
+            <select class = "modSelector" name="modType2" data-itemType={{type}} id="modSelector2" value="{{ system.modifiers.modType2}}">
             <option value="{{ system.modifiers.modType2 }}">{{ system.modifiers.modType2 }}</option>
             <option value="Multiply">Multiply</option>
             <option value="Add">Add</option>
             <option value="Downgrade">Downgrade</option>
             <option value="Upgrade">Upgrade</option>
             <option value="Override">Override</option>
+            <option value=""></option>
             </select>
           </td>
           <td><input class="valueBox" type="text" name="value2" value="{{ system.modifiers.value2 }}" /></td>
         </tr>
+        {{/DifferentFrom}}
+        {{#DifferentFrom system.modifiers.path2 ""}}
         <tr>
           <td>
-            <select class = "pathSelector" name="path3" data-itemType="foodAnddrink" id="pathSelector3">
+            <select class = "pathSelector" name="path3" data-itemType={{type}} id="pathSelector3">
               <option value="{{ system.modifiers.path3 }}">{{ system.modifiers.path3 }}</option>
             </select>
           </td>
           <td>
-            <select class = "modSelector" name="modType3" data-itemType="foodAnddrink" id="modSelector3" value="{{ system.modifiers.modType3}}">
+            <select class = "modSelector" name="modType3" data-itemType={{type}} id="modSelector3" value="{{ system.modifiers.modType3}}">
             <option value="{{ system.modifiers.modType3 }}">{{ system.modifiers.modType3 }}</option>
             <option value="Multiply">Multiply</option>
             <option value="Add">Add</option>
             <option value="Downgrade">Downgrade</option>
             <option value="Upgrade">Upgrade</option>
             <option value="Override">Override</option>
+            <option value=""></option>
             </select>
           </td>
           <td><input class="valueBox" type="text" name="value3" value="{{ system.modifiers.value3 }}" /></td>
         </tr>
+        {{/DifferentFrom}}
+        {{#DifferentFrom system.modifiers.path3 ""}}
         <tr>
           <td>
-            <select class = "pathSelector" name="path4" data-itemType="foodAnddrink" id="pathSelector4">
+            <select class = "pathSelector" name="path4" data-itemType={{type}} id="pathSelector4">
               <option value="{{ system.modifiers.path4 }}">{{ system.modifiers.path4 }}</option>
             </select>
           </td>
           <td>
-            <select class = "modSelector" name="modType4" data-itemType="foodAnddrink" id="modSelector4" value="{{ system.modifiers.modType4}}">
+            <select class = "modSelector" name="modType4" data-itemType={{type}} id="modSelector4" value="{{ system.modifiers.modType4}}">
             <option value="{{ system.modifiers.modType4 }}">{{ system.modifiers.modType4 }}</option>
             <option value="Multiply">Multiply</option>
             <option value="Add">Add</option>
             <option value="Downgrade">Downgrade</option>
             <option value="Upgrade">Upgrade</option>
             <option value="Override">Override</option>
+            <option value=""></option>
             </select>
           </td>
           <td><input class="valueBox" type="text" name="value4" value="{{ system.modifiers.value4 }}" /></td>
         </tr>
+        {{/DifferentFrom}}
+      </table>
+      <table>
+        <th>
+          Impose a check
+        </th>
+        <th>
+          Targeted Ability
+        </th>
+        <th>
+          Difficulty Class (DC)
+        </th>
+        <tr>
+          <td>
+            1d20 + modifiers +
+          </td>
+          <td>
+            <select class = "checkSelector" name="check1" data-itemType={{type}} id="check1" value="{{system.checks.check1}}">
+              <option value="{{ system.checks.check1 }}">{{ system.checks.check1 }}</option>
+              <option value="system.abilities.str.mod">system.abilities.str.mod</option>
+              <option value="system.abilities.per.mod">system.abilities.per.mod</option>
+              <option value="system.abilities.end.mod">system.abilities.end.mod</option>
+              <option value="system.abilities.cha.mod">system.abilities.cha.mod</option>
+              <option value="system.abilities.int.mod">system.abilities.int.mod</option>
+              <option value="system.abilities.agi.mod">system.abilities.agi.mod</option>
+              <option value="system.abilities.lck.mod">system.abilities.lck.mod</option>
+              <option value=""></option>
+            </select>
+          </td>
+          <td>
+            <input class="dcBox" type="text" name="dc1" value="{{system.checks.dc1}}" />
+          </td>
+        </tr>
+        {{#DifferentFrom system.checks.check1 ""}}
+        <tr>
+          <td>
+            1d20 + modifiers +
+          </td>
+          <td>
+            <select class = "checkSelector" name="check2" data-itemType={{type}} id="check2" value="{{system.checks.check2}}">
+              <option value="{{ system.checks.check2 }}">{{ system.checks.check2 }}</option>
+              <option value="system.abilities.str.mod">system.abilities.str.mod</option>
+              <option value="system.abilities.per.mod">system.abilities.per.mod</option>
+              <option value="system.abilities.end.mod">system.abilities.end.mod</option>
+              <option value="system.abilities.cha.mod">system.abilities.cha.mod</option>
+              <option value="system.abilities.int.mod">system.abilities.int.mod</option>
+              <option value="system.abilities.agi.mod">system.abilities.agi.mod</option>
+              <option value="system.abilities.lck.mod">system.abilities.lck.mod</option>
+              <option value=""></option>
+            </select>
+          </td>
+          <td>
+            <input class="dcBox" type="text" name="dc2" value="{{system.checks.dc2}}" />
+          </td>
+        </tr>
+        {{/DifferentFrom}}
+        {{#DifferentFrom system.checks.check2 ""}}
+        <tr>
+          <td>
+            1d20 + modifiers +
+          </td>
+          <td>
+            <select class = "checkSelector" name="check3" data-itemType={{type}} id="check3" value="{{system.checks.check3}}">
+              <option value="{{ system.checks.check3 }}">{{ system.checks.check3 }}</option>
+              <option value="system.abilities.str.mod">system.abilities.str.mod</option>
+              <option value="system.abilities.per.mod">system.abilities.per.mod</option>
+              <option value="system.abilities.end.mod">system.abilities.end.mod</option>
+              <option value="system.abilities.cha.mod">system.abilities.cha.mod</option>
+              <option value="system.abilities.int.mod">system.abilities.int.mod</option>
+              <option value="system.abilities.agi.mod">system.abilities.agi.mod</option>
+              <option value="system.abilities.lck.mod">system.abilities.lck.mod</option>
+              <option value=""></option>
+            </select>
+          </td>
+          <td>
+            <input class="dcBox" type="text" name="dc3" value="{{system.checks.dc3}}" />
+          </td>
+        </tr>
+        {{/DifferentFrom}}
       </table>
       <button id="effectSaveBtn">SAVE</button>
       <div id="savedMessage"></div>

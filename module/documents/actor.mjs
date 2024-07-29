@@ -1,4 +1,5 @@
 import { FALLOUTZERO } from '../config.mjs'
+import FalloutZeroActorSheet from '../sheets/actor-sheet.mjs'
 /**
 /**
  * Extend the base Actor class to implement additional system-specific logic.
@@ -93,12 +94,30 @@ export default class FalloutZeroActor extends Actor {
     this.update({[path] : actorValue})
   }
 
+  askForCheck(ability,dc){
+    let abiSplit = ability.split(".")
+    let abiName = abiSplit[abiSplit.length -2 ].toUpperCase()
+    if (dc.includes("@") && this){
+      dc = this.deep_value(this,dc.split("@").join(""))
+    }
+    //const button = `<button data-action="applyDamage" data-value= data=tags id="boirePotion">Roll ${ability}Check (DC${dc}</span> <i class="fa-light fa-dice-d20"></button>`
+    const button = `
+    <div class="card-buttons">
+      <button type="button" data-action="check" id="askForRoll" data-ability="${ability}" data-dc="${dc}">
+        <i class="fas fa-shield-heart"></i>
+        <span class="visible-dc">DC${dc} ${abiName} Check</span>
+      </button>
+    </div>`
+    return button
+  }
+
   lowerInventory(itemId) {
     const item = this.items.get(itemId)
     const updatedQty = item.system.quantity - 1
     item.update({ 'system.quantity': updatedQty })
     const description = item.system.description
     let details = '';
+    let chatContent = ``
     if (item.type != "explosive") {
       details = description.replace("<p>", "<p>Gained: ")
       if (typeof item.system.modifiers != "undefined"){
@@ -115,13 +134,46 @@ export default class FalloutZeroActor extends Actor {
           item.system.modifiers.path4, item.system.modifiers.modType4, item.system.modifiers.value4 
         )}
       }
+      if (typeof item.system.checks != "undefined"){
+        if (item.system.checks.check1 != "" && item.system.checks.dc1 != ""){
+          chatContent += this.askForCheck(item.system.checks.check1, item.system.checks.dc1)
+        }
+        if (item.system.checks.check2 != "" && item.system.checks.dc2 != ""){
+          chatContent += this.askForCheck(item.system.checks.check2, item.system.checks.dc2)
+        }
+        if (item.system.checks.check3 != "" && item.system.checks.dc3 != ""){
+          chatContent += this.askForCheck(item.system.checks.check3, item.system.checks.dc3)
+        }
+      }
     }
+    Hooks.once('renderChatMessage', (chatItem, html) => {
+      html.find("#askForRoll").click((ev) => {
+        if(this){
+          //FalloutZeroActorSheet.prototype.roll(ev)
+          let path = ev.currentTarget.dataset.ability
+          let ability = path.toUpperCase().split(".")
+          let mod = this.deep_value(this,path)
+          let lckMod = Math.floor(this.deep_value(this,'system.abilities.lck.mod')/2)
+          let penaltyTotal = this.deep_value(this,'system.penaltyTotal')
+          let dc = ev.currentTarget.dataset.dc
+          let roll = new Roll(`d20+@str.mod+-@penaltyTotal+${lckMod}`, this.getRollData())
+          roll.toMessage({
+            speaker: ChatMessage.getSpeaker({ actor: this}),
+            flavor: `${this.name} rolls a ${ability[ability.length - 2]} Check, DC ${dc}` ,
+            rollMode: game.settings.get('core', 'rollMode'),
+          })
+          console.log(mod, lckMod, penaltyTotal,dc)
+        }
+      })
+    })
     let chatData = {
       user: game.user._id,
       speaker: ChatMessage.getSpeaker(),
+      content: chatContent,
       flavor: `${item.name} used ${details}`,
     }
     ChatMessage.create(chatData, {})
+    Hooks.once();
   }
 
   combatexpandetoggle() {
