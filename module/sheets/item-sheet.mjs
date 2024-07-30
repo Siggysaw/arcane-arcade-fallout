@@ -301,6 +301,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       if (!index) return
 
       this.item.system.damages.splice(index, 1)
+      console.log(index)
 
       this.item.update({
         ['system.damages']: this.item.system.damages,

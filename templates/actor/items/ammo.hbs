@@ -1,74 +1,25 @@
 <tr>
     <td>
         {{#each ammos as |item id|}}
-        {{#unless item.system.itemEquipped}}
-        <li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
-            <div class="item-controls">
-                <a class="item-control"
-                   data-edit
+                <span 
+                   class="context-menu backpack-item"
                    data-item-id="{{ item._id }}"
                    title="{{localize 'DOCUMENT.Update' type='item'}}">
                     {{item.name}}({{item.system.quantity}})
-                </a>
-                <a class="item-control item-delete" title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                    <i class="fas fa-trash"></i>
-                </a>
-                <a style="float: right; margin-left: 5px"
-                   data-equip
-                   data-item-id="{{ item._id }}"
-                   class="item-control"
-                   title="Equip a weapon">
-                    <i class="fas fa-tshirt"></i>
-                </a>
-                {{#DifferentFrom item.system.description ""}}
-                <a style="float: right; margin-left: 5px"
-                   data-sendToChat
-                   data-item-id="{{ item._id }}"
-                   class="item-control"
-                   title="Send description to Chat">
-                    <i class="fa-solid fa-comment"></i>
-                </a>
-                {{/DifferentFrom}}
-            </div>
-        </li>
-        {{/unless}}
+                </span>
         {{/each}}
     </td>
 </tr>
 <tr>
     <td>
         {{#each explosives as |item id|}}
-        {{#unless item.system.itemEquipped}}
-        <li style="float:left;" class="item flexrow" data-item-id="{{ item._id }}">
-            <div class="item-controls">
-                <a class="item-control"
-                   data-edit
-                   data-item-id="{{ item._id }}"
-                   title="{{localize 'DOCUMENT.Update' type='item'}}">
-                    {{item.name}}({{item.system.quantity}})
-                </a>
-                <a class="item-control item-delete" title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                    <i class="fas fa-trash"></i>
-                </a>
-                <a style="float: right; margin-left: 5px"
-                   data-equip
-                   data-item-id="{{ item._id }}"
-                   class="item-control"
-                   title="Equip a weapon">
-                    <i class="fas fa-tshirt"></i>
-                </a>
-                {{#DifferentFrom item.system.description ""}}
-                <a style="float: right; margin-left: 5px"
-                   data-sendToChat
-                   data-item-id="{{ item._id }}"
-                   class="item-control"
-                   title="Send description to Chat">
-                    <i class="fa-solid fa-comment"></i>
-                </a>
-                {{/DifferentFrom}}
-            </div>
-        </li>
-        {{/unless}}
+        <span
+              class="context-menu backpack-item"
+              data-item-id="{{ item._id }}"
+              title="{{localize 'DOCUMENT.Update' type='item'}}">
+            {{item.name}}({{item.system.quantity}})
+        </span>
+
         {{/each}}
     </td>
 </tr>

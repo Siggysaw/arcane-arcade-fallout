@@ -185,7 +185,7 @@ export default class AttackRoll extends FormApplication {
     const damageRolls = this.formDataCache.damages.map((damage) => {
       return {
         type: damage.selectedDamageType,
-        formula: damage.formula,
+        formula: `${damage.formula} + ${abilityBonus}`,
       }
     })
 

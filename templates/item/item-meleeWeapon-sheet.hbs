@@ -5,55 +5,49 @@
 </style>
 
 <form class="{{ cssClass }}" autocomplete="off">
-  <header class="sheet-header">
-    <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
-    <div class="header-fields">
-      <h1 class="charname">
-        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
-      </h1>
-      <table style="text-align: left">
-        <tr>
-          <td style="text-align: left">
-            Equipped:
-            <input
-              type="checkbox"
-              equipItem
-              name="system.itemEquipped"
-              {{checked
-              system.itemEquipped}}
-            /><br />
-          </td>
-          <td>
-            <button
-              style="max-width: fit-content; text-align: left"
-              class="fakeButton"
-              addUpgradeBtn
-              id="addUpgradeBtn"
-            >
-              ADD
-            </button>
-            <select name="upgradesSelector" data-itemType="melee" id="upgradesSelector">
-              <option value="Upgrades">Upgrades</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: left">
-            Number Owned:<input
-              style="text-align: center; width: 35px"
-              type="number"
-              name="system.quantity"
-              value="{{ system.quantity }}"
-            />
-          </td>
-          <td style="display: inline-block">
-            <span id="upgradeDetails" name="upgradeDetails"></span>
-            <span id="upgradeCost" name="upgradeCost"></span>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </header>
+    <header class="sheet-header">
+        <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" /><br />
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+            </h1>
+            <table style="text-align: left">
+                <tr>
+                    <td style="text-align: left">
+                        Equipped:
+                        <input type="checkbox"
+                               equipItem
+                               name="system.itemEquipped"
+                               {{checked system.itemEquipped}} /><br />
+                        CND: <input style="width:50px;" type="number" name="system.decay" value="{{system.decay}}" max="10" min="0" />
+                    </td>
+                    <td>
+                        <button style="max-width: fit-content; text-align: left"
+                                class="fakeButton"
+                                addUpgradeBtn
+                                id="addUpgradeBtn">
+                            ADD
+                        </button>
+                        <select name="upgradesSelector" data-itemType="melee" id="upgradesSelector">
+                            <option value="Upgrades">Upgrades</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left">
+                        Number Owned:<input style="text-align: center; width: 35px"
+                                            type="number"
+                                            name="system.quantity"
+                                            value="{{ system.quantity }}" />
+                    </td>
+                    <td style="display: inline-block">
+                        <span id="upgradeDetails" name="upgradeDetails"></span>
+                        <span id="upgradeCost" name="upgradeCost"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </header>
 
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">

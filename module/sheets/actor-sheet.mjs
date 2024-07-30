@@ -222,9 +222,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       {
         name: "Edit",
         icon: '<i class="fas fa-edit"></i>',
-        condition: (element) =>element.closest('.item').data('item-id'),
+        condition: (element) =>element.closest('.context-menu').data('item-id'),
         callback: (element) => {
-          const itemId = element.closest('.item').data('item-id')
+          const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
           item.sheet.render(true)
         },
@@ -232,18 +232,24 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       {
         name: "Delete",
         icon: '<i class="fas fa-trash"></i>',
-        condition: (element) => element.closest('.item').data('item-id'),
+        condition: (element) => element.closest('.context-menu').data('item-id'),
         callback: (element) => {
-          const itemId = element.closest('.item').data('item-id')
+          const itemId = element.closest('.context-menu').data('item-id')
           this.actor.deleteEmbeddedDocuments('Item', [itemId])
         },
       },
       {
         name: "Send to Chat",
         icon: '<i class="fa-solid fa-comment"></i>',
-        condition: (element) => element.closest('.item').data('item-id'),
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.system.description.length > 0) {
+            return true
+          }
+        },
         callback: (element) => {
-          const itemId = element.closest('.item').data('item-id')
+          const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
           let theContent = item.system.description
           if (item.type == 'explosive') {
@@ -258,16 +264,76 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           ChatMessage.create(chatData, {})
         },
       },
+      {
+        name: "Eat/Drink",
+        icon: '<i class="fas fa-drumstick-bite"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.type == "foodAnddrink") {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          this.actor.lowerInventory(itemId)
+        },
+      }, {
+        name: "Use Chem",
+        icon: '<i class="fas fa-syringe"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.type == "chem") {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          this.actor.lowerInventory(itemId)
+        },
+      }, {
+        name: "Equip",
+        icon: '<i class="fas fa-tshirt"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.type === "rangedWeapon" ||
+            item.type === "meleeWeapon" ||
+            item.type === "armor" ||
+            item.type === "powerArmor") {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          let enoughAP = true
+          if (item.type == 'powerArmor') {
+            enoughAP = this.actor.applyApCost(6)
+          }
+          if (enoughAP) {
+            item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+            if ((item.type == "armor" || item.type == "powerArmor") && item.parent) {
+              FalloutZeroArmor.prototype.changeEquipStatus(item)
+            } else {
+              FalloutZeroArmor.prototype.toggleEffects(myItem, item.system.itemEquipped)
+            }
+          }
+        },
+      },
     ]
 
-    new ContextMenu(html, '.item', itemContextMenu)
+    new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click' })
 
     // Consume an Item
     html.on('click', '[data-lowerInventory]', (ev) => {
       const item = ev.currentTarget.dataset.lowerinventory
       this.actor.lowerInventory(item)
     })
-    // Consume an Item
+    // Carry Load Breakdown
     html.on('click', '[data-inspect-carryload]', (ev) => {
       this.actor.inspectCarryload()
     })
