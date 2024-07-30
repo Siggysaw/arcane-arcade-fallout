@@ -870,3 +870,6 @@ a.inline-roll,
 .sheet .context-menu li {
   font-size: 10pt;
 }
+.sheet .perk-context li{
+    font-size:8pt;
+}

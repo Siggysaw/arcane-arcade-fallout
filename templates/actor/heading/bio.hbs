@@ -7,40 +7,20 @@
     <tr>
         <td colspan="999" style="text-align:left;font-size:10pt;">
             <div>
-                 <span style="float:left;margin-right:7px;display:block">Lvl {{system.level}}</span>
+                <span>Lvl {{system.level}}</span>
                 {{#each races as |item id|}}
-                <li style="float: left; margin-right: 4px; display:block;" class="item flexrow addcap" data-item-id="{{ item._id }}">
-                    <a data-edit
-                       data-item-id="{{ item._id }}"
-                       title="{{localize 'DOCUMENT.Update' type='item'}}">
-                        {{ item.name }}
-                    </a>
-                    {{#GM}}
-
-                    <a class="item-control item-delete"
-                       data-item-id="{{ item._id }}"
-                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                    {{/GM}}
-                </li>
+                <span class="context-menu"
+                      data-item-id="{{ item._id }}"
+                      title="{{localize 'DOCUMENT.Update' type='item'}}">
+                    {{item.name}}
+                </span>
                 {{/each}}
                 {{#each backgrounds as |item id|}}
-                <li style="float: left; margin-right: 4px; display:block" class="item flexrow" data-item-id="{{ item._id }}">
-                    <a data-edit
-                       data-item-id="{{ item._id }}"
-                       title="{{localize 'DOCUMENT.Update' type='item'}}">
-                        {{ item.name }}
-                    </a>
-                    {{#GM}}
-
-                    <a class="item-control item-delete"
-                       data-item-id="{{ item._id }}"
-                       title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                    {{/GM}}
-                </li>
+                <span class="context-menu"
+                      data-item-id="{{ item._id }}"
+                      title="{{localize 'DOCUMENT.Update' type='item'}}">
+                    {{item.name}}
+                </span>
                 {{/each}}
 </td>
     </tr>
