@@ -87,6 +87,10 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
           abbr: new fields.StringField({
             initial: FALLOUTZERO.abilities[ability].abbreviation,
           }),
+          advantage: new fields.NumberField({
+            ...requiredInteger,
+            initial: 0,
+          }),
         })
         return obj
       }, {}),
@@ -114,12 +118,17 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
           id: new fields.StringField({
             initial: FALLOUTZERO.skills[skill].id,
           }),
+          advantage : new fields.NumberField({
+            ...requiredInteger,
+            initial: 0,
+          }),
         })
         return obj
       }, {}),
     )
 
-    schema.materials = new fields.SchemaField(
+      //Deprecated.
+    /*schema.materials = new fields.SchemaField(
       Object.keys(FALLOUTZERO.materials).reduce((obj, material) => {
         obj[material] = new fields.SchemaField({
           value: new fields.NumberField({
@@ -136,7 +145,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         })
         return obj
       }, {}),
-    )
+    )*/
 
     schema.armorClass = new fields.SchemaField({
       base: new fields.NumberField({

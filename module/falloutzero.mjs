@@ -52,7 +52,9 @@ Hooks.once('init', function () {
     rangedWeapon: models.FalloutZeroRangedWeapon,
     meleeWeapon: models.FalloutZeroMeleeWeapon,
     condition: models.FalloutZeroCondition,
-    foodAnddrink: models.FalloutZeroFoodDrink,
+    foodAnddrink: models.FalloutZeroCondition,
+    chem: models.FalloutZeroCondition,
+    medicine: models.FalloutZeroCondition,
   }
 
   // Active Effects are never copied to the Actor,

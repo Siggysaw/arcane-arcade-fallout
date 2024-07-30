@@ -118,8 +118,32 @@ flattenObject(obj) {
   return paths;
 }
 
+//Checks if reactions saved in the item, then refreshes selectors
+async checkSaveReactions(mySelectors, myData, saveMessage, myItem){
+  console.log(mySelectors, myData, saveMessage, myItem)
+  let isSaved = await myItem.update(myData)
+  if (isSaved){
+    console.log("SAVED")
+    saveMessage.innerHTML = "Attributes saved successfully."
+  } else {
+    console.log("COULD NOT SAVE")
+    saveMessage.innerHTML = "Could NOT save. Please check values again."
+  }
+  this.getMods(mySelectors, myItem)
+}
+
+//Get mods to update from selectors
+getMods (mySelectors, myItem){
+  for (var select of mySelectors){
+    let num = select.getAttribute("name").slice(-1)
+    this.listModPaths(select)
+    select.value = myItem.system.modifiers[`path${num}`]
+  }
+}
+
+
 //Get list of paths one has access to
-async listModPaths (tag, item){
+listModPaths (tag){
   let opt
   let pathList = (this.flattenObject(game.actors.filter(a => a.type =="character")[0]))
   if (pathList) {
@@ -188,12 +212,12 @@ async calcUpgradeCost (myUpgrade, myItem){
 
 //Get the modifiers path and value for given select or input tags
 //Normal input data-item format gave way to unwanted refresh and instability
-updateCustomEffects(tags){
+updateCustomEffects(tags,path){
   let myData = {}
   let mod, myKey
   for (var tag of tags){
     mod = tag.getAttribute('name')
-    myKey = `system.modifiers.${mod}`
+    myKey = `system.${path}.${mod}`
     Object.assign(myData, {[myKey] : tag.value});
   }
   return myData
