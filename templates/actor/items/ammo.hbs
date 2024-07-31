@@ -4,6 +4,7 @@
                 <span 
                    class="context-menu backpack-item"
                    data-item-id="{{ item._id }}"
+                      draggable="true"
                    title="{{localize 'DOCUMENT.Update' type='item'}}">
                     {{item.name}}({{item.system.quantity}})
                 </span>
@@ -16,6 +17,7 @@
         <span
               class="context-menu backpack-item"
               data-item-id="{{ item._id }}"
+              draggable="true"
               title="{{localize 'DOCUMENT.Update' type='item'}}">
             {{item.name}}({{item.system.quantity}})
         </span>

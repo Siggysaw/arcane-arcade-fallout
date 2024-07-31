@@ -296,6 +296,21 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
+        name: "Break Down",
+        icon: '<i class="fa-solid fa-screwdriver-wrench"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.type == "junkItem" && item.system.quantity > 0) {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          this.actor.checkConvert(itemId)
+        },
+      }, {
         name: "Use Med",
         icon: '<i class="fas fa-medkit"></i>',
         condition: (element) => {
@@ -310,7 +325,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           const item = this.actor.items.get(itemId)
           this.actor.lowerInventory(itemId)
         },
-      }, {
+      },
+      {
         name: "Equip",
         icon: '<i class="fas fa-tshirt"></i>',
         condition: (element) => {
