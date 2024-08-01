@@ -151,9 +151,54 @@ export default class AttackRoll extends FormApplication {
     return apCost
   }
 
+  getTargetedDamage(formula) {
+    const [diceCount, ...rest] = formula
+    switch (this.formDataCache.targeted?.target) {
+      case 'head':
+        return `${Number(diceCount) + 1}${rest.join('')}`
+      case 'arm':
+      case 'leg':
+        return `${Number(diceCount) - 1}${rest.join('')}`
+      case 'carried':
+        return 0
+      default:
+        return formula
+    }
+  }
+
+  getFlavor(target) {
+    let flavor = 'BOOM! Attack with ${this.weapon.name}'
+    if (!target) {
+      return flavor
+    }
+
+    if (target === 'carried') {
+      flavor += ` aiming for the carried item`
+    } else {
+      flavor += ` aiming for the ${target}`
+    }
+  }
+
+  /**
+   * Combine all damage formulas and targeted adjustment
+   */
+  getCombinedDamageFormula() {
+    return this.weapon.system.damages.reduce((total, damage, index) => {
+      if (index === 0) {
+        total += this.getTargetedDamage(damage.formula)
+      } else {
+        total += `+ ${this.getTargetedDamage(damage.formula)}`
+      }
+      return total
+    }, '')
+  }
+
   async _updateObject(event, formData) {
     Object.assign(this.formDataCache, formData)
 
+    /**
+     * Rerender form if update and not submitted
+     */
     if (event.type !== 'submit') {
       this.render()
       return
@@ -174,31 +219,45 @@ export default class AttackRoll extends FormApplication {
       if (!canAfford) return
     }
 
+    /**
+     * Deconstruct dialog form
+     */
     const { skillBonus, abilityBonus, decayPenalty, actorLuck, actorPenalties, bonus } =
       this.formDataCache
 
+    /**
+     * Roll to hit
+     */
     const roll = new Roll(
       `${this.getDice()} + ${skillBonus} + ${abilityBonus} + ${actorLuck} + ${bonus || 0} - ${actorPenalties} - ${decayPenalty}`,
       this.actor.getRollData(),
     )
 
+    /**
+     * Generate damage rolls
+     */
     const damageRolls = this.formDataCache.damages.map((damage) => {
       return {
         type: damage.selectedDamageType,
-        formula: damage.formula,
+        formula: this.formDataCache.targeted
+          ? this.getTargetedDamage(damage.formula)
+          : damage.formula,
       }
     })
 
+    /**
+     * Display roll to hit chat message
+     */
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `BOOM! Attack with ${this.weapon.name}`,
+      flavor: this.getFlavor(this.formDataCache.targeted.target),
       rollMode: game.settings.get('core', 'rollMode'),
       'flags.falloutzero': {
         abilityBonus,
         targeted: this.formDataCache.targeted,
         damage: {
           rolls: damageRolls,
-          critical: `(${this.weapon.system.combinedDamageFormula} + ${this.weapon.system.critical.formula || 0} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier}`,
+          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || 0} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier}`,
         },
       },
     })
