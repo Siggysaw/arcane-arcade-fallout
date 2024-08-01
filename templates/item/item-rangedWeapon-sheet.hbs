@@ -6,32 +6,29 @@
 
 <form class="{{ cssClass }}" autocomplete="off">
   <header class="sheet-header">
-    <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
+    <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" /><br />
     <div class="header-fields">
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
       <table>
         <tr>
-          <td style="text-align: left">
-            Equipped:
-            <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} />
-            <br />Slots :
-            <input
-              style="text-align: center; width: 35px"
-              type="number"
-              name="system.slots"
-              value="{{ system.slots }}"
-            />
-            <br />Number Owned:<input
-              style="text-align: center; width: 35px"
-              type="number"
-              name="system.quantity"
-              value="{{ system.quantity }}"
-            />
-            <br />Keep Expanded:
-            <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />
-          </td>
+            <td style="text-align: left">
+                Equipped:
+                <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br />
+                CND: <input style="width:50px;" type="number" name="system.decay" value="{{system.decay}}"max="10" min="0" />
+                <br />Slots :
+                <input style="text-align: center; width: 35px"
+                       type="number"
+                       name="system.slots"
+                       value="{{ system.slots }}" />
+                <br />Number Owned:<input style="text-align: center; width: 35px"
+                                          type="number"
+                                          name="system.quantity"
+                                          value="{{ system.quantity }}" />
+                <br />Keep Expanded:
+                <input type="checkbox" name="system.itemOpen" {{checked system.itemOpen}} />
+            </td>
           <td>
             <button
               style="max-width: fit-content; text-align: left"
@@ -75,7 +72,7 @@
   {{!-- Sheet Body --}}
   <section class="sheet-body">
     {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
+    <div class="tab" item-description  data-group="primary" data-tab="description">
       <table>
         <tr>
           <td>Cost</td>

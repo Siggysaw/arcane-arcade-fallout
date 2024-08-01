@@ -142,7 +142,6 @@
             </div>
             {{/if}}
             {{/each}}
-
             {{#each rangedWeapons as |item id|}}
             {{#if item.system.itemEquipped}}
             <div class="item flexrow weapons-div" data-item-id="{{ item._id }}">
@@ -167,7 +166,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <div class="fakebutton" data-weapon-roll data-weapon-id="{{ item._id }}">
+                                            <div>
                                                 {{ item.system.apCost }}
                                             </div>
                                         </td>
@@ -178,36 +177,6 @@
                                 <table class="equipped-stats">
                                     <tr>
                                         <td colspan="999">RANGE</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="fakebutton"
-                                                 class="rollable resource-label"
-                                                 data-weapon-roll
-                                                 data-weapon-id="{{ item._id }}"
-                                                 class="resource-label">
-                                                IN RANGE
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="fakebutton"
-                                                 class="rollable resource-label"
-                                                 data-weapon-roll
-                                                 data-disadvantage="true"
-                                                 data-weapon-id="{{ item._id }}"
-                                                 class="resource-label">
-                                                DISADVANTAGED
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="fakebutton"
-                                                 class="rollable resource-label"
-                                                 data-weapon-roll
-                                                 data-weapon-id="{{ item._id }}"
-                                                 class="resource-label">
-                                                NAT 20 REQ
-                                            </div>
-                                        </td>
                                     </tr>
                                     <tr>
                                         {{#NPC ../actor.type}}
@@ -227,9 +196,9 @@
                                                    value="{{ item.system.range.long }}" />ft+
                                         </td>
                                         {{else}}
-                                        <td>0 - {{ item.system.range.short }}ft</td>
-                                        <td>{{ item.system.range.short }} ft - {{ system.range.long }}ft</td>
-                                        <td>{{ system.range.long }}ft+</td>
+                                        <td title="NORMAL">0 - {{ item.system.range.short }}ft</td>
+                                        <td title="DISADVANTAGED">{{#Sum item.system.range.short 1}}{{/Sum}} ft - {{ system.range.long }}ft</td>
+                                        <td title="NAT 20 ONLY">{{#Sum system.range.long 1}}{{/Sum}}ft+</td>
                                         {{/NPC}}
                                     </tr>
                                 </table>
@@ -255,31 +224,42 @@
                                 {{/GM}}
                                 <table class="equipped-stats">
                                     <tr>
-                                        <td colspan="2">AMMO</td>
-                                        <td>
+                                        <td rowspan="3" style="background:black;"><img src="{{item.img}}" style="width:75px;height:auto;" /></td>
+                                        <td>{{ item.system.ammo.assigned }}</td>
+                                        <td>Owned</td>
+                                        <td rowspan="2" style="width:40px;">
                                             <div title="Swap Your Current Ammo"
                                                  class="fakebutton"
+                                                 style="padding:10px;"
                                                  data-ammoswap
                                                  data-weapon-id="{{ item._id }}">
                                                 SWAP AMMO
                                             </div>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ item.system.ammo.assigned }}</td>
-                                        <td>Owned</td>
-                                        <td rowspan="2" style="background:#222;">
-                                            <div class="fakebutton"
-                                                 title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
-                                                 style="padding:10px;"
-                                                 data-reload
+                                        <td rowspan="2">
+                                            {{#GreaterThan item.system.ammo.capacity.value 1}}
+                                            <div class="fakebutton rollable resource-label"
+                                                 style="padding:20px;"
+                                                 data-weapon-roll
                                                  data-weapon-id="{{ item._id }}">
-                                                RELOAD
+                                                FIRE!
                                             </div>
+                                            {{else}}
+                                            <div class="fakebutton"
+                                                 style="padding:20px;">
+                                                NO AMMO!
+                                            </div>
+                                            {{/GreaterThan}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>{{ item.system.ammo.capacity.value }} / {{ item.system.ammo.capacity.max }}</td>
+                                        <td>
+                                            {{ item.system.ammo.capacity.value }} / {{ item.system.ammo.capacity.max }}
+                                            <i title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+                                               data-reload
+                                               data-weapon-id="{{ item._id }}"
+                                               class="fa fa-refresh"></i>
+                                        </td>
                                         <td>
                                             {{#each item.ammos as |ammo|}}
                                             {{ ammo.system.quantity }}
@@ -298,7 +278,7 @@
                                                    data-set-decay
                                                    data-weapon-id="{{ item._id }}" />
                                         </td>
-                                        <td colspan="2" style="border-left: none">
+                                        <td colspan="3" style="border-left: none">
                                             <progress style="width: 100%; padding-right: 5px"
                                                       class="statusbar stamina"
                                                       value="{{ item.system.decay }}"
@@ -328,6 +308,15 @@
                                    title="Unequip an item">
                                     <i class="fas fa-tshirt"></i>
                                 </a>
+                                {{#DifferentFrom item.system.description ""}}
+                                <a style="float: right; margin-right: 10px"
+                                   data-sendToChat
+                                   data-item-id="{{ item._id }}"
+                                   class="item-control"
+                                   title="Send description to Chat">
+                                    <i class="fa-solid fa-comment"></i>
+                                </a>
+                                {{/DifferentFrom}}
                             </details>
                         </td>
                     </tr>
@@ -335,6 +324,7 @@
             </div>
             {{/if}}
             {{/each}}
+
             <!-- MeleeWeapons Slot -->
             {{#each meleeWeapons as |item id|}}
             {{#if item.system.itemEquipped}}

@@ -19,24 +19,8 @@
                     {{ system.quantity }}
                     <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
                 </td>
-                <td class="td-controls">
-                    <li class="item flexrow" data-item-id="{{ item._id }}">
-                        <div class="item-controls">
-                            <a class="item-control item-delete"
-                               title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                            {{#DifferentFrom item.system.description ""}}
-                                <a style="float: right; margin-left: 5px"
-                                data-sendToChat
-                                data-item-id="{{ item._id }}"
-                                class="item-control"
-                                title="Send description to Chat">
-                                    <i class="fa-solid fa-comment"></i>
-                                </a>
-                            {{/DifferentFrom}}
-                        </div>
-                    </li>
+                <td style="width:20px;">
+                    <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
                 </td>
             </tr>
                 {{/each}}
@@ -45,52 +29,32 @@
         <td>
             <table class="equipped-stats">
                 <tr><td colspan=999><h3>junk</h3></td></tr>
-                <tr><td>Name</td><td>Qty</td><td>Materials</td><td></td></tr>
+                <tr><td></td><td>Name</td><td>Qty</td><td>Materials</td></tr>
                 {{#each junk as |item id|}}
-                <tr>
-                    <td>
-                        <a class="item-control"
-                           data-edit
-                           data-item-id="{{ item._id }}"
-                           title="{{localize 'DOCUMENT.Update' type='item'}}">
-                            {{item.name}}
-                        </a>
-                    </td>
-                    <td style="width:80px;">
-                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                        {{ system.quantity }}
-                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
-                    </td>
+            <tr>
+                <td style="width:20px;">
+                    <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
+                </td>
+                <td>
+                    <a class="item-control"
+                       data-edit
+                       data-item-id="{{ item._id }}"
+                       title="{{localize 'DOCUMENT.Update' type='item'}}">
+                        {{item.name}}
+                    </a>
+                </td>
+                <td style="width:80px;">
+                    <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
+                    {{ system.quantity }}
+                    <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
+                </td>
 
-                    <td>
-                        {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}}
-                        {{#if (gt system.junk.quantity2 0)}} {{ system.junk.type2 }} ({{ system.junk.quantity2 }}){{/if}}
-                        {{#if (gt system.junk.quantity3 0)}} {{ system.junk.type3 }} ({{ system.junk.quantity3 }}){{/if}}
-                    </td>
-                    <td class="td-controls">
-                        <li class="item flexrow" data-item-id="{{ item._id }}">
-                            <div class="item-controls">
-                                <a class="item-control item-delete"
-                                   title="{{localize 'DOCUMENT.Delete' type='item'}}">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                                 <a class="item-control" data-junkToMat data-item-id="{{ item._id }}"
-                                   title="Convert Junk to Materials">
-                                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                                </a>
-                                {{#DifferentFrom item.system.description ""}}
-                                    <a style="float: right; margin-left: 5px"
-                                    data-sendToChat
-                                    data-item-id="{{ item._id }}"
-                                    class="item-control"
-                                    title="Send description to Chat">
-                                        <i class="fa-solid fa-comment"></i>
-                                    </a>
-                                {{/DifferentFrom}}
-                            </div>
-                        </li>
-                    </td>
-                </tr>
+                <td>
+                    {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}}
+                    {{#if (gt system.junk.quantity2 0)}} {{ system.junk.type2 }} ({{ system.junk.quantity2 }}){{/if}}
+                    {{#if (gt system.junk.quantity3 0)}} {{ system.junk.type3 }} ({{ system.junk.quantity3 }}){{/if}}
+                </td>
+            </tr>
                 {{/each}}
             </table>
             <div>

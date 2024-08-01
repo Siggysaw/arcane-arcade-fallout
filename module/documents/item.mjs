@@ -12,6 +12,21 @@ export default class FalloutZeroItem extends Item {
     // As with the actor class, items are documents that can have their data
     // preparation methods overridden (such as prepareBaseData()).
     super.prepareData()
+    /*if (this.type === "rangedWeapon" && this.parent.type == "npc" || this.type === "meleeWeapon" && this.parent.type == "npc") {
+      let correct = this.system.damage.formula
+      if (correct.length > 0) {
+        this.system.damages.splice(0, 1)
+        this.update({
+          ['system.damages']: this.system.damages,
+        })
+        this.system.damages.push({
+          type: null,
+          altType: null,
+          formula: correct,
+        })
+        this.update({'system.damage.formula' : '' })
+      }
+    }*/ 
   }
 
   //Checks char items before creating one, stops it and updates quantity if it exists and is not equipped.
@@ -103,17 +118,40 @@ flattenObject(obj) {
   return paths;
 }
 
+//Checks if reactions saved in the item, then refreshes selectors
+async checkSaveReactions(mySelectors, myData, saveMessage, myItem){
+  console.log(mySelectors, myData, saveMessage, myItem)
+  let isSaved = await myItem.update(myData)
+  if (isSaved){
+    console.log("SAVED")
+    saveMessage.innerHTML = "Attributes saved successfully."
+  } else {
+    console.log("COULD NOT SAVE")
+    saveMessage.innerHTML = "Could NOT save. Please check values again."
+  }
+  this.getMods(mySelectors, myItem)
+}
+
+//Get mods to update from selectors
+getMods (mySelectors, myItem){
+  for (var select of mySelectors){
+    let num = select.getAttribute("name").slice(-1)
+    this.listModPaths(select)
+    select.value = myItem.system.modifiers[`path${num}`]
+  }
+}
+
+
 //Get list of paths one has access to
-async listModPaths (tag, item){
+listModPaths (tag){
   let opt
-  let num = tag.getAttribute("name").slice(-1)
   let pathList = (this.flattenObject(game.actors.filter(a => a.type =="character")[0]))
   if (pathList) {
     tag.removeChild(tag.lastElementChild)
     let myPaths = pathList.map(p => p.path)
     myPaths.push("")
     for (var pathValue of myPaths.sort()) {
-      if (!pathValue.includes("_") && 
+      if (!pathValue.startsWith("_") && 
           !pathValue.includes("overrides") && 
           !pathValue.includes("ownership")){
         opt = document.createElement('option')
@@ -174,12 +212,12 @@ async calcUpgradeCost (myUpgrade, myItem){
 
 //Get the modifiers path and value for given select or input tags
 //Normal input data-item format gave way to unwanted refresh and instability
-updateCustomEffects(tags){
+updateCustomEffects(tags,path){
   let myData = {}
   let mod, myKey
   for (var tag of tags){
     mod = tag.getAttribute('name')
-    myKey = `system.modifiers.${mod}`
+    myKey = `system.${path}.${mod}`
     Object.assign(myData, {[myKey] : tag.value});
   }
   return myData

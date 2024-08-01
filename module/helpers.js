@@ -63,7 +63,8 @@ export const enrichInlineMove = async (match) => {
   const uuid = match[1]
   const item = await fromUuid(uuid)
   const itemName = match[2] ?? item.name
-
+  const itemDesc = match[2] ?? item.name
+  console.log("Checking for Compendium?")
   const container = document.createElement('div')
   container.className = 'inline-item'
   let html = ''
@@ -81,7 +82,7 @@ export const enrichInlineTechnique = async (match) => {
   const uuid = match[1]
   const item = await fromUuid(uuid)
   const itemName = match[2] ?? item.name
-
+  console.log("Checking Compenidum 2")
   const container = document.createElement('div')
   container.className = 'inline-item'
   let html = ''
@@ -101,7 +102,7 @@ export const enrichInlineTechnique = async (match) => {
 export const enrichNpc = async (match) => {
   const uuid = match[1]
   const npc = await fromUuid(uuid)
-
+  console.log("Checking Compenidum 3")
   const npcName = match[2] ?? npc.name
 
   const container = document.createElement('div')

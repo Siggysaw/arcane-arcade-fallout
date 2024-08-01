@@ -1,4 +1,5 @@
-import { FalloutZeroItemBase,FalloutZeroItem } from './_module.mjs'
+import { FalloutZeroItemBase } from './_module.mjs'
+import FalloutZeroItem from '../documents/item.mjs'
 
 export default class FalloutZeroArmor extends FalloutZeroItemBase {
   static defineSchema() {
@@ -202,18 +203,6 @@ async findUpgradeKey(armor, upgradeName){
   return key
 }
 
-async toggleEffects (myItem, equipStatus) {
-  let myEffect
-  let i = 0;
-  if(myItem.collections.effects.contents){
-    let myEffects = myItem.collections.effects.contents
-    while (i < myEffects.length){
-      myEffect = myItem.effects.get(myEffects[i]._id)
-      myEffect.update({ disabled: equipStatus })
-      i++
-    }
-  }
-}
 
 //Clicking + or - changes rank of upgrade
 async changeRank(myItem,upgradeId,nextRank,removeCost){
@@ -228,7 +217,7 @@ async changeRank(myItem,upgradeId,nextRank,removeCost){
       newUpgrade = await pack.getDocument(newUpgrade._id);
       if (wasEquipped){
         await this.unequipItemStats(myItem)
-        await this.toggleEffects(myItem,true)
+        await FalloutZeroItem.prototype.toggleEffects(myItem,true)
       }
       await this.removeUpgrade(myItem,myUpgrade,removeCost,key1)
       let myData = {}
@@ -249,7 +238,7 @@ async changeRank(myItem,upgradeId,nextRank,removeCost){
       await this.addUpgrade(myItem,newUpgrade);
       if (wasEquipped){
         await this.equipItemStats(myItem)
-        await this.toggleEffects(myItem,false)
+        await FalloutZeroItem.prototype.toggleEffects(myItem,false)
       }
     } else{
       alert('Could not find next upgrade on the list. Make sure the name of the upgrade ends with the rank number.')
@@ -286,13 +275,13 @@ async deleteWholeUpgrade (armor,myId){
     Object.assign(myData,{[myPath]:myValue})
     if (wasEquipped){
       await this.unequipItemStats(armor)
-      await this.toggleEffects(armor,true)
+      await FalloutZeroItem.prototype.toggleEffects(armor,true)
     }
     await armor.update(myData)
     await this.removeUpgrade(armor,myUpgrade,true,key,true)
     if (wasEquipped){
       await this.equipItemStats(armor)
-      await this.toggleEffects(armor,false)
+      await FalloutZeroItem.prototype.toggleEffects(armor,false)
     }
   } 
   else
@@ -396,7 +385,7 @@ async checkUpgrade(armor,pack, id){
         //unequip
         if (wasEquipped){
           await this.unequipItemStats(armor)
-          await this.toggleEffects(armor,true)
+          await FalloutZeroItem.prototype.toggleEffects(armor,true)
         }
         //Remove upgrades if needed
         if (oldUpgrade.name != myUpgrade.name){
@@ -408,7 +397,7 @@ async checkUpgrade(armor,pack, id){
         //equip
         if (wasEquipped){
           await this.equipItemStats(armor)
-          await this.toggleEffects(armor,false)
+          await FalloutZeroItem.prototype.toggleEffects(armor,false)
         }
         myKey = 'system.upgrades.' + key + '.id';
         Object.assign(myData, {[myKey] : myUpgrade._id});
@@ -442,40 +431,33 @@ async seeUpgrade (id){
 
   //Equip item upgrades (right now, it's just armor upgrades)
   async equipItemStats (myItem){
-    let AC = myItem.system.armorClass.value;
-    let everyMod = {'system.armorClass.min' : myItem.parent.system.armorClass.min, 'system.armorClass.value' : AC}
-    if (myItem.type == 'armor') {
-      let DT = myItem.parent.system.damageThreshold.value + myItem.system.damageThreshold.value;
-      Object.assign(everyMod,{'system.damageThreshold.value' : DT})
+    if (myItem.type == "armor"){
+      myItem.parent.update({'system.damageThreshold.armor' : myItem.system.damageThreshold.value, 'system.armorClass.armor' : myItem.system.armorClass.value});
+    } else { //Power Armor
+      myItem.parent.update({'system.armorClass.armor' : myItem.system.armorClass.value})
     }
-    myItem.parent.update(everyMod)
+    
   }
 
   //Removes modifiers related to Armor
   async unequipItemStats (myItem){
-    let AC = Math.max(myItem.parent.system.armorClass.min, 10) //by default will be 10, but we'll need that to be BASE in case there are other modifiers
-    let everyMod = {'system.armorClass.value' : AC}
-    if(myItem.type == 'armor') {
-      let DT = myItem.parent.system.damageThreshold.value - myItem.system.damageThreshold.value;
-      Object.assign(everyMod,{'system.damageThreshold.value' : DT})
-    }
-    myItem.parent.update(everyMod);
+    myItem.parent.update({'system.damageThreshold.armor' : 0, 'system.armorClass.armor' : 10});
   }
 
 
   async swapArmors (myItem,otherArmor) {
     await this.unequipItemStats(otherArmor)
-    await this.toggleEffects(otherArmor,true)
+    await FalloutZeroItem.prototype.toggleEffects(otherArmor,true)
     otherArmor.update({'system.itemEquipped' : false})
     await this.equipItemStats(myItem)
-    await this.toggleEffects(myItem,false)
+    await FalloutZeroItem.prototype.toggleEffects(myItem,false)
   }
 
   //Get original state of weapon
   async changeEquipStatus (myItem){
     if (myItem.system.itemEquipped == true){
       await this.unequipItemStats(myItem)
-      await this.toggleEffects(myItem,true)
+      await FalloutZeroItem.prototype.toggleEffects(myItem,true)
     } else {
       if (myItem.system.quantity > 1 ) {
         this.splitObject(myItem,"equip")
@@ -485,7 +467,7 @@ async seeUpgrade (id){
         this.swapArmors(myItem,otherArmor);
       }else{
         await this.equipItemStats(myItem)
-        await this.toggleEffects(myItem,false)
+        await FalloutZeroItem.prototype.toggleEffects(myItem,false)
       }
     }
   }
@@ -506,7 +488,7 @@ async seeUpgrade (id){
       if (type == "equip") {
         newName += "(e)" 
         newItem = await Item.create(newItem, {parent: myItem.parent});
-        await myItem.update({'system.quantity' : qty, 'name' : currentName});
+        await myItem.update({'system.quantity' : qty, 'name' : currentName, 'system.itemEquipped' : false});
         await newItem.update({'system.quantity' : 1, 'name' : currentName});
       } else {
         alert ("Could not split items. Check quantities, unequip and try again.")

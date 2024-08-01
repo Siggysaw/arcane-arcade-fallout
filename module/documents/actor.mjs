@@ -1,4 +1,6 @@
 import { FALLOUTZERO } from '../config.mjs'
+import FalloutZeroActorSheet from '../sheets/actor-sheet.mjs'
+import FalloutZeroItem from './item.mjs'
 /**
 /**
  * Extend the base Actor class to implement additional system-specific logic.
@@ -59,9 +61,12 @@ export default class FalloutZeroActor extends Actor {
     let actorValue = this.deep_value(this,path)
     let consumValue
     if (typeof actorValue === "number") {
-      if (initialValue.charAt(0) == "@"){//Find the value
-        let newPath =  initialValue.replace("@","");
-        consumValue = this.deep_value(this,newPath);
+      if (initialValue.includes("@")){//Find the value
+        try{
+          consumValue = this.evaluateAtFormula(initialValue)
+        } catch{
+          consumValue = initialValue
+        }
       } else {
         consumValue = Number(initialValue);
       }
@@ -74,11 +79,11 @@ export default class FalloutZeroActor extends Actor {
     }
     if(modType == "Add"){ //This should work with numbers and/or strings
       if (path == "system.irradiated"){
-        console.log("system.irradiated", actorValue, consumValue)
         this.handleIrradiated("system.irradiated", actorValue, consumValue)        
       } 
       else {
         actorValue = actorValue + consumValue
+        if (actorValue < 0 && !path.includes("dvantage")) {actorValue = 0} //most stuff has a minimum of 0.
       }
     } else { //If not Add
       if (typeof consumValue == Number){
@@ -92,38 +97,315 @@ export default class FalloutZeroActor extends Actor {
       } else {actorValue = consumValue}
     }
     this.update({[path] : actorValue})
+    let descSplit = path.split(".")
+    let chatDesc = `<p>Modified ${descSplit[descSplit.length - 2]} ${descSplit[descSplit.length - 1]}</p>`
+    return chatDesc
   }
 
-  lowerInventory(itemId) {
+  evaluateAtFormula(string){
+    let strList = string.split(" ")
+    string = ""
+      for (var str of strList){
+        if (str.includes("@")){
+          str = this.deep_value(this,str.split("@").join(""))
+        }
+        string += str + " "
+      }
+      return Math.ceil(eval(string))
+    }
+
+  askForCheck(ability,dc, condition){
+    let abilityLabel = this.deep_value(this,ability.replace("mod","label"))
+    if (dc.includes("@")){
+      try{
+        dc = this.evaluateAtFormula(dc)
+      } catch{
+        dc = dc
+      }
+    }
+    //const button = `<button data-action="applyDamage" data-value= data=tags id="boirePotion">Roll ${ability}Check (DC${dc}</span> <i class="fa-light fa-dice-d20"></button>`
+    const button = `
+    <div class="card-buttons">
+      <button type="button" data-condition="${condition}" data-action="check" id="askForRoll" data-ability="${ability}" data-dc="${dc}">
+        <i class="fas fa-shield-heart"></i>
+        <span class="visible-dc">DC${dc} ${abilityLabel} Check for ${condition}</span>
+      </button>
+    </div>`
+    return button
+  }
+
+  //Apply Drunk conditions (Drunk, Hammered or Wasted)
+  async applyDrunkness (condition, myActor){ //condition can be Drunk or Hammered depending on Endurance
+    let newCondition
+    let currentCondition
+    let oldCondition
+    let chatContent = ``
+    let pack = game.packs.find(p => p.metadata.name == "conditions")
+
+    //Apply poison first.
+    if (condition == "Poisoned"){ //activate poisoned
+      if (myActor.items.find(i => i.name == "Poisoned")) {
+        newCondition = await myActor.items.get(await myActor.items.find(i => i.name == "Poisoned")._id)
+        await newCondition.update({'system.quantity' : currentCondition.system.quantity + 1})
+      } else {//add poisoned
+        newCondition = await pack.getDocument("om8uTrsKZqMfhPWb") //Apply Poisoned
+        await Item.create(newCondition, {parent: myActor})
+      }
+      chatContent += `${this.formatCompendiumItem("condition", newCondition.name,'Click for details').split("<br>").join("")} for 4 hours.`
+      return chatContent;
+    }
+
+    //Evaluate Drunkness for all its levels
+    if (myActor.items.find(i => i.name == "Wasted")){ //If wasted already
+      currentCondition = await myActor.items.get(await myActor.items.find(i => i.name == "Wasted")._id)
+      await currentCondition.update({'system.quantity' : currentCondition.system.quantity + 1})
+    } 
+    else { //Not currently wasted
+      if (myActor.items.find(i => i.name == "Hammered")){ //If Hammered already
+        currentCondition = await myActor.items.get(await myActor.items.find(i => i.name == "Hammered")._id)
+        if (currentCondition.system.quantity < 3){ //Hammered less than 3
+          await currentCondition.update({'system.quantity' : currentCondition.system.quantity + 1}) //Add a Hammered level
+        } else {                                  //Hammered for a third time
+          newCondition = await pack.getDocument("8jmOpO92JUHjddr5") //Apply Wasted
+          await Item.create(newCondition, {parent: myActor})
+          oldCondition = await this.items.get(currentCondition._id) //Delete Hammered
+          oldCondition.delete()
+        }
+      } else { //Neither wasted nor hammered
+        currentCondition = await myActor.items.find(i => i.name == "Drunk")
+        if(currentCondition || condition == "Hammered"){
+          newCondition = await pack.getDocument("CbcBeOsQnIm5BtXL") //Apply Hammered
+          await Item.create(newCondition, {parent: myActor})
+          if(currentCondition){ //If Drunk, delete drunk
+            oldCondition = await this.items.get(currentCondition._id) //Delete Drunk (if present)
+            oldCondition.delete()
+          }
+        } else { //Neither wasted nor hammered, NOR Drunk (but maybe buzzed...)
+          currentCondition = await myActor.items.find(i => i.name == "Buzzed") 
+          if (currentCondition || condition == "Drunk"){
+            newCondition = await pack.getDocument("Qw9wbkfMEkjX3XxB") //Apply Drunk
+            await Item.create(newCondition, {parent: myActor})
+            if(currentCondition){ //If Buzzed, delete drunk
+              oldCondition = await this.items.get(currentCondition._id) //Delete Drunk (if present)
+              oldCondition.delete()
+            }
+          } else {//Not suffering from any current alcoholic condition
+            newCondition = await pack.getDocument("NPlxn4CVIQRnimWK") //Apply Buzzed
+            await Item.create(newCondition, {parent: myActor})
+          }
+        }
+      }
+    }
+    if (newCondition){
+      chatContent += `${this.formatCompendiumItem("condition", newCondition.name,'Click for details').split("<br>").join("")} for [[/r 1d4]] hours.`
+    } else {
+      chatContent += `${this.formatCompendiumItem("condition", currentCondition.name,'Click for details').split("<br>").join("")} for an additional [[/r 1d4]] hours.`
+    }
+    return chatContent
+  }
+
+  async getConsequence(result, condition){
+    let chatMessage = ''
+    let actorEf
+    let conditionObj
+    let actorEffects = this.items
+    if (result == true){
+      chatMessage = "Okie-dokie! You tolerate it well."
+    } else {
+      //Activate effect
+      if (actorEffects.find(e => e.name == condition)){
+        actorEf = await actorEffects.get(actorEffects.find(e => e.name == condition)._id)
+        await FalloutZeroItem.prototype.toggleEffects(actorEf,false)
+      } else { //Create new effect if not already on character
+        let pack = await game.packs.find(p => p.metadata.name == "conditions")
+        conditionObj = await pack.getDocument(pack.find(o => o.name == condition)._id)
+        actorEf = await Item.create(conditionObj, {parent: myActor})
+        await FalloutZeroItem.prototype.toggleEffects(actorEf,false)
+      }
+      if (condition == "Psychosis") {
+        chatMessage = `Uh-oh! Your ${this.formatCompendiumItem("conditions", "Psychosis",'Click for details')} pushes you to attack the nearest creature.`
+      } else {
+        try{chatMessage = `Crap! You now suffer from ${this.formatCompendiumItem("conditions", condition,'Click for details')}`}
+        catch {chatMessage = `Crap! You now suffer from ${condition}`}
+      }
+      
+    }
+    return chatMessage;
+  }
+  
+  async checkCheckResult(ev){
+    let path = ev.currentTarget.dataset.ability
+    let abilityLabel = this.deep_value(this,path.replace("mod","label"))
+    let mod = this.deep_value(this,path)
+    let lckMod = Math.floor(this.deep_value(this,'system.abilities.lck.mod')/2)
+    let dc = ev.currentTarget.dataset.dc
+    const roll = new Roll(`d20+${mod}+-@penaltyTotal+${lckMod}`, this.getRollData())
+    await roll.evaluate()
+    let rollContent = ''
+    if (typeof Number(dc) == "number"){
+      if (roll._total > dc){
+        rollContent += await this.getConsequence(true, ev.currentTarget.dataset.condition)
+      } else {
+        rollContent += await this.getConsequence(false, ev.currentTarget.dataset.condition)
+      }
+    } else {
+      rollContent += "Could not evaluate success or failure. Apply consequence manually."
+    }
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this}),
+      flavor: `${this.name} rolls a ${abilityLabel} Check, DC ${dc} for ${ev.currentTarget.dataset.condition}. <p>${rollContent}</p"` ,
+      rollMode: game.settings.get('core', 'rollMode')
+    })
+  }
+
+  //Consume item
+  async lowerInventory(itemId) {
+    let pack = game.packs.find(p => p.metadata.name == "conditions")
     const item = this.items.get(itemId)
     const updatedQty = item.system.quantity - 1
-    item.update({ 'system.quantity': updatedQty })
+    await item.update({ 'system.quantity': updatedQty })
     const description = item.system.description
     let details = '';
+    let chatContent = ``
     if (item.type != "explosive") {
-      details = description.replace("<p>", "<p>Gained: ")
+      details = description.replace("<p>", "<p>It's ")
+
+      //Add reactions (custom effects with instantaneous results)
       if (typeof item.system.modifiers != "undefined"){
-        if (item.system.modifiers.path1 != "" && item.system.modifiers.value1 != ""){this.addCustomEffect(
+        if (item.system.modifiers.path1 != "" && item.system.modifiers.value1 != ""){
+          chatContent += this.addCustomEffect(
           item.system.modifiers.path1, item.system.modifiers.modType1, item.system.modifiers.value1 
         )}
-        if (item.system.modifiers.path2 != "" && item.system.modifiers.value2 != ""){this.addCustomEffect(
+        if (item.system.modifiers.path2 != "" && item.system.modifiers.value2 != ""){
+          chatContent += this.addCustomEffect(
           item.system.modifiers.path2, item.system.modifiers.modType2, item.system.modifiers.value2 
         )}
-        if (item.system.modifiers.path3 != "" && item.system.modifiers.value3 != ""){this.addCustomEffect(
+        if (item.system.modifiers.path3 != "" && item.system.modifiers.value3 != ""){
+          chatContent += this.addCustomEffect(
           item.system.modifiers.path3, item.system.modifiers.modType3, item.system.modifiers.value3 
         )}
-        if (item.system.modifiers.path4 != "" && item.system.modifiers.value4 != ""){this.addCustomEffect(
+        if (item.system.modifiers.path4 != "" && item.system.modifiers.value4 != ""){
+          chatContent += this.addCustomEffect(
           item.system.modifiers.path4, item.system.modifiers.modType4, item.system.modifiers.value4 
         )}
       }
+
+      //Add effects according to endurance VALUE
+      if (this.system.abilities.end.value > 4){ //Endurance above or equal to 5
+        if (description.includes("qT3KhtuyrbnpNfWy")){ //Highproof as a consumable condition
+          chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
+          chatContent += await this.applyDrunkness("Drunk", this)
+        }
+        if (description.includes("o18dhjwLVVjGaCQR")){ //Alcoholic as a consumable condition
+          chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
+          chatContent += await this.applyDrunkness("Buzzed", this)
+        }
+        if (description.includes("HcvGeJhIRhCECZQ8")){ //Putrid as a consumable condition
+          chatContent += `That was discusting! (End>4)<br><br>But... you're fine.`
+        }
+
+      } else { // Endurance below or equal to 4
+        if (description.includes("qT3KhtuyrbnpNfWy")){ //Highproof as a consumable condition
+          chatContent += `You've had one too many! (End<5)<br><br>You're now `
+          chatContent += await this.applyDrunkness("Hammered", this)
+        }
+        if (description.includes("o18dhjwLVVjGaCQR")){ //Alcoholic as a consumable condition
+          chatContent += `You've had one too many! (End>5)<br><br>You're now `
+          chatContent += await this.applyDrunkness("Drunk", this)
+        }
+        if (description.includes("HcvGeJhIRhCECZQ8")){ //Putrid as a consumable condition
+          chatContent += `You throw up a little. (End<5)<br><br>And... you're `
+          chatContent += await this.applyDrunkness("Poisoned", this)
+        }
+      }
+
+      //Add drunkness separately because it's complicated...
+      if (description.includes("qT3KhtuyrbnpNfWy")){ //Highproof as a consumable condition
+        if (this.system.abilities.end.value > 4){ //Apply Drunkness
+          chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
+          chatContent += await this.applyDrunkness("Drunk", this)
+        } else { // Apply more Drunkness
+          chatContent += `You've had one too many! (End<5)<br><br>You're now `
+          chatContent += await this.applyDrunkness("Hammered", this)
+        }
+      } else {
+        if (description.includes("o18dhjwLVVjGaCQR")){ //Alcoholic as a consumable condition
+          if (this.system.abilities.end.value > 4){ //Apply Buzzed
+            chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
+            chatContent += await this.applyDrunkness("Buzzed", this)
+          } else { // Apply more Drunkness
+            chatContent += `You've had one too many! (End>5)<br><br>You're now `
+            chatContent += await this.applyDrunkness("Drunk", this)
+          }
+        }
+      }
+
+      //Check for putrid
+      
+      //Add active effects from each condition present on the consumable
+      let descSplit = description.split(" ")
+      let strSplit, newCondition, itemEffects, itemEf, actorEf
+      let i;
+      let conditionItem
+      let actorEffects = this.items
+      for (var str of descSplit){
+        if (str.includes("uuid")){
+          //data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}"
+          strSplit = str.replace(/"/g, '').split(".")
+          newCondition = await pack.getDocument(strSplit[strSplit.length - 1])
+          if (newCondition){
+            itemEffects = newCondition.collections.effects.contents
+            if (itemEffects){
+              i = 0
+              while (i < itemEffects.length){
+                itemEf = await newCondition.effects.get(itemEffects[i]._id)
+                //If effect exists on character and it comes toggled on, toggle it on
+                if (await actorEffects.find(e => e.name == itemEf.name)){
+                  if (itemEf.disabled == false){
+                    actorEf = await actorEffects.get(actorEffects.find(e => e.name == itemEf.name)._id)
+                    await FalloutZeroItem.prototype.toggleEffects(actorEf,false)
+                  }
+                } else { //Otherwise, create it (toggle is as per condition item)
+                  conditionItem = await Item.create(newCondition, {parent:this})
+                }
+                i++
+              }
+            }
+          }
+        }
+      }
+
+      //Ask for checks if item says so.
+      if (typeof item.system.checks != "undefined"){
+        if (item.system.checks.check1 != "" && item.system.checks.dc1 != ""){
+          chatContent += this.askForCheck(item.system.checks.check1, item.system.checks.dc1, item.system.checks.condition1)
+        }
+        if (item.system.checks.check2 != "" && item.system.checks.dc2 != ""){
+          chatContent += this.askForCheck(item.system.checks.check2, item.system.checks.dc2, item.system.checks.condition2)
+        }
+        if (item.system.checks.check3 != "" && item.system.checks.dc3 != ""){
+          chatContent += this.askForCheck(item.system.checks.check3, item.system.checks.dc3, item.system.checks.condition3)
+        }
+      }
+      //Add event listener for eventual Check button in Chat
+      Hooks.once('renderChatMessage', (chatItem, html) => {
+        html.find("#askForRoll").click((ev) => {
+          this.checkCheckResult(ev)
+        })
+      })
+      //Send "Ask for Check" Button to Chat
+      let chatData = {
+        author: game.user._id,
+        speaker: ChatMessage.getSpeaker(),
+        content: chatContent,
+        flavor: `Consumed ${item.name} : ${details}`,
+      }
+      ChatMessage.create(chatData, {})
+      Hooks.once();
     }
-    let chatData = {
-      user: game.user._id,
-      speaker: ChatMessage.getSpeaker(),
-      flavor: `${item.name} used ${details}`,
-    }
-    ChatMessage.create(chatData, {})
   }
+
+
 
   combatexpandetoggle() {
     const currentState = this.system.combatActionsexpanded
@@ -195,8 +477,8 @@ export default class FalloutZeroActor extends Actor {
     const newValue = Number(fieldvalue) + 1
     //Irradiated and Radiation Updates
     if (field === 'system.irradiated' && newValue == 10) {
-      const newRads = this.system.penalties.radiation.value + 1
-      this.update({ 'system.penalties.radiation.value': newRads,'system.irradiated': 0})
+      const newRads = this.system.penalties.radiation.base + 1
+      this.update({ 'system.penalties.radiation.base': newRads,'system.irradiated': 0})
       return
     } else {
       // Update Field Value
@@ -208,8 +490,8 @@ export default class FalloutZeroActor extends Actor {
     const newValue = Number(fieldvalue) - 1
     //Irradiated and Radiation Updates
     if (field === 'system.irradiated' && newValue == -1) {
-      const newRads = this.system.penalties.radiation.value - 1
-      this.update({ 'system.penalties.radiation.value': newRads,'system.irradiated': 9 })
+      const newRads = this.system.penalties.radiation.base - 1
+      this.update({ 'system.penalties.radiation.base': newRads,'system.irradiated': 9 })
       return
     } else {
       this.update({ [field]: newValue })
@@ -277,6 +559,24 @@ export default class FalloutZeroActor extends Actor {
     }
     this.update({ 'system.actionPoints.value': newAP })
     return true
+  }
+
+  //Add any stat with modifiers
+  statAddition(stat, statType="") {
+    const actor = this.system
+    let statField = 'system.' + stat + '.base'
+    if (statType != ""){statField = 'system.' + statType + '.' + stat + '.base'}
+    const newStatBase = this.deep_value(this, statField) + 1
+    this.update({ [statField]: newStatBase })
+  }
+
+  //Subtract any stat with modifiers
+  statSubtraction(stat, statType="") {
+    const actor = this.system
+    let statField = 'system.' + stat + '.base'
+    if (statType != ""){statField = 'system.' + statType + '.' + stat + '.base'}
+    const newStatBase = this.deep_value(this, statField) - 1
+    this.update({ [statField]: newStatBase })
   }
 
   skilladdition(skill) {
@@ -405,12 +705,29 @@ export default class FalloutZeroActor extends Actor {
   }
 
   recycleAp() {
-    let RecycledAP = Math.floor(this.system.actionPoints.value / 2) + this.system.actionPoints.max
-    if (RecycledAP < 16) {
+    let newAP
+    if(this.system.actionPoints.recover == "full"){
+      newAP = this.system.actionPoints.value
+    } else {
+      if(this.system.actionPoints.recover == "none"){
+        newAP = 0
+      } else {
+        newAP = Math.floor(this.system.actionPoints.value / 2)
+      }
+    }    
+    let maxForCalcs
+    if (this.system.actionPoints.dazed == 1) {
+      maxForCalcs = Math.floor(this.system.actionPoints.max / 2)
+    } else {
+      maxForCalcs = this.system.actionPoints.max
+    }
+    let RecycledAP = newAP + maxForCalcs + this.system.actionPoints.temp
+    let currentMax = Math.max(15, this.system.actionPoints.boostMax)
+    if (RecycledAP <= currentMax) {
       this.update({ 'system.actionPoints.value': RecycledAP })
     } else {
       this.update({
-        'system.actionPoints.value': 15,
+        'system.actionPoints.value': currentMax,
       })
     }
   }
@@ -484,8 +801,14 @@ export default class FalloutZeroActor extends Actor {
       ui.notifications.warn(`Weapon ${weaponId} not found on character / Delete and Readd`)
       return
     }
+
+    // Manually Reloaded?
+    const manualReload = weapon.system.description.includes("Manual Reload");
+
     // Do you have the AP?
-    const newAP = this.system.actionPoints.value - 6
+    let apCost = 6
+    if (manualReload) { apCost = 1 }
+    const newAP = this.system.actionPoints.value - apCost
     if (newAP < 0) {
       ui.notifications.warn(`Not enough action points to reload`)
       return
@@ -509,7 +832,7 @@ export default class FalloutZeroActor extends Actor {
 
     // Collect Required Weapon Information
     const currentMag = weapon.system.ammo.capacity.value
-    const capacity = weapon.system.ammo.capacity.max
+    let capacity = weapon.system.ammo.capacity.max
 
     // Already Reloaded?
     if (currentMag == capacity) {
@@ -518,7 +841,7 @@ export default class FalloutZeroActor extends Actor {
     }
 
     // Reload The Weapon
-    const ammoReloaded = capacity - currentMag
+    let ammoReloaded = capacity - currentMag
     let updatedAmmo = ammoOwned - ammoReloaded
     if (ammoReloaded > ammoOwned && !weapon.system.energyWeapon) {
       const ammoAvailable = currentMag + ammoOwned
@@ -526,13 +849,14 @@ export default class FalloutZeroActor extends Actor {
         { _id: weaponId, 'system.ammo.capacity.value': ammoAvailable },
       ])
     } else {
+      if (manualReload) { capacity = currentMag + 1 }
       this.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.ammo.capacity.value': capacity },
       ])
     }
 
     // Energy Weapon Reload Rules
-    if (weapon.system.energyWeapon) {
+    if (weapon.system.energyWeapon || manualReload) {
       updatedAmmo = ammoOwned - 1
       this.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     } else {
@@ -571,7 +895,7 @@ export default class FalloutZeroActor extends Actor {
         newQuantity = Number(existingMat.system.quantity) + Number(mats[i][0]) * Number(qty)
         existingMat.update({ 'system.quantity': newQuantity })
       } else {
-        let newItem = await Item.create(matData, {parent: item.parent})
+        let newItem = await Item.create(matData, {parent: this})
         newItem.update({ 'system.quantity': Number(mats[i][0]) * Number(qty) })
       }
       i++
@@ -768,7 +1092,7 @@ export default class FalloutZeroActor extends Actor {
     myConcatenatedLoot = myConcatenatedLoot.split('<br>').join('')
     myConcatenatedLoot = tablesList.slice(0, -2) + ':<br>' + myConcatenatedLoot
     let chatData = {
-      user: game.user._id,
+      author: game.user._id,
       speaker: ChatMessage.getSpeaker(),
       flavor: myConcatenatedLoot,
       //whisper: game.users.find(u => u.name == playerName)
@@ -1095,7 +1419,7 @@ export default class FalloutZeroActor extends Actor {
         myRollMode = CONST.DICE_ROLL_MODES.PUBLIC
       }
       await customResults.roll.toMessage(
-        { flavor: myConcatenatedLoot, user: game.users.find((u) => u.name == playerName) },
+        { flavor: myConcatenatedLoot, author: game.users.find((u) => u.name == playerName) },
         { rollMode: myRollMode },
       )
     } else {
@@ -1150,7 +1474,7 @@ export default class FalloutZeroActor extends Actor {
         }
       }
       let chatData = {
-        user: game.user._id,
+        author: game.user._id,
 
         speaker: ChatMessage.getSpeaker(),
 

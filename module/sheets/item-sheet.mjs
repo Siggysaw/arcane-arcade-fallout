@@ -72,14 +72,9 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       FalloutZeroItem.prototype.getUpgradeList(this)
     })
 
-    html.find('[id=customEffectsNav]').click(function() {
+    html.on('click','[id=customEffectsNav]', () => {
       var mySelectors = document.getElementsByClassName("pathSelector")
-      if (mySelectors[0].childElementCount < 2){
-        for (var select of mySelectors){
-          FalloutZeroItem.prototype.listModPaths(select)
-          
-        }
-      }
+      FalloutZeroItem.prototype.getMods(mySelectors, this.object)
     })
 
     //Save Attributes (This has to be done to prevent losing info when modifying other parts of the item sheet)
@@ -87,25 +82,31 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       let myData = {}
       //Save paths
       let tag = document.getElementsByClassName("pathSelector")
-      let newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
+      let newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "modifiers")
       Object.assign(myData,newData)
       //Save ModTypes
       tag = document.getElementsByClassName("modSelector")
-      newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "modifiers")
       Object.assign(myData,newData)
       //Save Values
       tag = document.getElementsByClassName("valueBox")
-      newData = FalloutZeroItem.prototype.updateCustomEffects(tag)
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "modifiers")
       Object.assign(myData,newData)
+      //Save Checks
+      tag = document.getElementsByClassName("checkSelector")
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "checks")
+      Object.assign(myData,newData)
+      //Save Checks
+      tag = document.getElementsByClassName("dcBox")
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "checks")
+      Object.assign(myData,newData)
+      tag = document.getElementsByClassName("condition")
+      newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "checks")
+      Object.assign(myData,newData)
+      let mySelectors = document.getElementsByClassName("pathSelector")
       let saveMessage = document.getElementById("savedMessage")
-      if (this.object.update(myData)){
-        console.log("SAVED")
-        saveMessage.innerHTML = "Attributes saved successfully."
-      } else {
-        console.log("COULD NOT SAVE")
-        saveMessage.innerHTML = "Could NOT save. Please check values again."
-      }
-    })
+      FalloutZeroItem.prototype.checkSaveReactions(mySelectors, myData, saveMessage, this.object)
+      })
 
     //Choose upgrade
     html.on('change','[name=upgradesSelector]', (ev) => {
@@ -185,8 +186,8 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       this.actor.ruleinfo(condition)
     })
     //show rule information
-    html.on('click', '[data-trade]', (ev) => {
-      const item = ev.currentTarget.dataset.trade
+    html.on('click', '[data-worn]', (ev) => {
+      const item = ev.currentTarget.dataset.worn
       this.actor.trade(item)
     })
     //Remove upgrade button
@@ -207,11 +208,55 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     //On equip, calculate AC and other things that improve character's stats
     html.on('change', '[equipItem]', () => {
-      if ((item.type == "armor" || item.type == "powerArmor") && item.parent){
+      if ((this.object.type == "armor" || this.object.type == "powerArmor") && this.object.parent) {
         FalloutZeroArmor.prototype.changeEquipStatus(this.object)
-      } else {
-        FalloutZeroArmor.prototype.toggleEffects(this.object,this.object.system.itemEquipped)
       }
+    })
+
+    //On worn, activate effects
+    html.on('change', '[worn]', () => {
+          FalloutZeroItem.prototype.toggleEffects(this.object, this.object.system.worn)
+    })
+
+    //Drag and drop items into description box creates a link to it, whether it's a compendium or someone else's inventory.
+    html.on('click','[item-description]', () => {
+      try{if (this.object.system.description.includes("@UUID")){
+        // Original link example : `@UUID[Compendium.arcane-arcade-fallout.junk.Item.n7OMTyzznsUINuMi]{Adjustable Wrench}`
+        let UUID = ""
+        let ID = ""
+        let descStr = this.object.system.description
+        let itemName = descStr.match(/\{(.*?)\}/);
+        let item_name = itemName[1].split(" ").join("_")
+        let matches = []
+        //This catches errors where there is a space within ONE item name
+        if (itemName){
+          descStr = descStr.split(itemName[1]).join(item_name)
+        }
+        let desc = descStr.split(" ")
+        for (var str of desc){
+          if (str.includes("@UUID")) {
+            matches = str.match(/\[(.*?)\]/);
+            if (matches) {
+                UUID = matches[1];
+                ID = UUID.split(".");
+                let newLink = `<a class="content-link" 
+                draggable="true" data-link="" 
+                data-uuid="${UUID}" 
+                data-id="${ID[ID.length -1]}" 
+                data-type="Item" 
+                data-pack="arcane-arcade-fallout.conditions" 
+                data-tooltip="Click for details."
+                >
+                ${itemName[1]}
+                </a>`;
+                descStr = this.object.system.description.split(`@UUID[${UUID}]{${itemName[1]}}`).join(newLink);
+                this.object.update({'system.description' : descStr});
+                return;
+            }
+          }
+        }
+      }}
+      catch{}
     })
 
     //Change crafting materials quantity (up!)
@@ -259,6 +304,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       if (!index) return
 
       this.item.system.damages.splice(index, 1)
+      console.log(index)
 
       this.item.update({
         ['system.damages']: this.item.system.damages,

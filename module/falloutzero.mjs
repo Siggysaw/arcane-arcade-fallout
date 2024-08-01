@@ -23,7 +23,7 @@ Hooks.once('init', function () {
    * @type {String}
    */
   CONFIG.Combat.initiative = {
-    formula: '1d20 + @combatSequence - @penaltyTotal',
+    formula: '1d20 + @combatSequence.value - @penaltyTotal',
     decimals: 2,
   }
 
@@ -52,7 +52,9 @@ Hooks.once('init', function () {
     rangedWeapon: models.FalloutZeroRangedWeapon,
     meleeWeapon: models.FalloutZeroMeleeWeapon,
     condition: models.FalloutZeroCondition,
-    foodAnddrink: models.FalloutZeroFoodDrink,
+    foodAnddrink: models.FalloutZeroCondition,
+    chem: models.FalloutZeroCondition,
+    medicine: models.FalloutZeroCondition,
   }
 
   // Active Effects are never copied to the Actor,
@@ -147,6 +149,32 @@ Handlebars.registerHelper('Sum', function (v1, v2) {
 Handlebars.registerHelper('Sum3', function (v1, v2, v3) {
   let sum = Number(v1) + Number(v2) + Number(v3)
   return sum
+})
+//division
+Handlebars.registerHelper('LckMod', function (v1, v2) {
+  let div = Math.floor( Number(v1) / Number(v2))
+  if (div < -1){div = -1}
+  return div
+})
+
+//Format a Compendium Link for a given title
+Handlebars.registerHelper('FormatCompendium', function (itemName, compendium){
+  let compendiumObject, myItem
+  try {
+    compendiumObject = game.packs.find((u) => u.metadata.name == compendium)
+    myItem = compendiumObject.tree.entries.find(
+      (u) => u.name.toLowerCase() == itemName.toLowerCase(),
+    )
+    if (myItem) {
+      return `<a class="content-link"  draggable="true" data-link data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
+        data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}">
+        ${itemName}</a>`
+    } else {
+      return `${itemName}`
+    }
+  } catch {
+    return `${itemName}`
+  }
 })
 
 /* -------------------------------------------- */

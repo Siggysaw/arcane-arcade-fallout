@@ -856,3 +856,20 @@ a.inline-roll,
 .sheet .character .bio td{
     padding-right:10px;
 }
+.sheet .backpack-item {
+  float: left;
+  padding: 10px;
+  margin: 2px;
+}
+.sheet .context-icon{
+    font-size:14pt; 
+}
+.sheet .context-menu{
+    cursor:pointer
+}
+.sheet .context-menu li {
+  font-size: 10pt;
+}
+.sheet .perk-context li{
+    font-size:8pt;
+}

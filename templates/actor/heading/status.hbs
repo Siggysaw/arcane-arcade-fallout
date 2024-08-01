@@ -79,13 +79,13 @@
                     <input style="height:30px"  
                     type="number"
                     class="numberwithbuttons"
-                    name="system.abilityPoints.value"
+                    name="system.actionPoints.value"
                     value="{{ system.actionPoints.value }}" />
                     /
                     <input style="height:30px"  
                     type="number"
                     class="numberwithbuttons"
-                    name="system.abilityPoins.max"
+                    name="system.actionPoints.max"
                     value="{{ system.actionPoints.max }}" />
                 </tr>
                 <tr>
@@ -93,7 +93,7 @@
                     <input style="height:20px"  
                     type="number"
                     class="numberwithbuttons"
-                    name="system.stamina.modifiers"
+                    name="system.actionPoints.temp"
                     value="{{ system.actionPoints.temp }}" />
                 </tr>
             </table>  
@@ -114,17 +114,41 @@
         </td>
     </tr>
     <tr>
-        <td>
-            <input id="armorClass-form"
-                   type="number"
-                   name="system.armorClass.value"
-                   value="{{ armorClass.value }}" />AC
+        <td class="skill-value">
+            <i style="padding: 3px"
+               data-statSubtraction
+               data-stat="armorClass"
+               data-type=""
+               class="fas fa-minus-square fakebutton nobackground"></i>
+            {{ armorClass.value }}
+            <i style="padding: 3px"
+               data-statAddition
+               data-stat="armorClass"
+               data-type=""
+               class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
-        <td>
-            <input id="damageThreshold-form"
-                   type="number"
-                   name="system.damageThreshold.value"
-                   value="{{ damageThreshold.value }}" />DT
+        <td class="skill-value">
+            <i style="padding: 3px"
+               data-statSubtraction
+               data-stat="damageThreshold"
+               data-type=""
+               class="fas fa-minus-square fakebutton nobackground"></i>
+            {{ damageThreshold.value }}
+            <i style="padding: 3px"
+               data-statAddition
+               data-stat="damageThreshold"
+               data-type=""
+               class="fas fa-plus-square fakebutton nobackground"></i>
+        </td>
+    </tr>
+    <tr>
+        <td title="Armor Class (how hard it is to hit you)
+        Total = {{#DifferentFrom armorClass.armor 10}}Armor{{else}}Unarmored{{/DifferentFrom}} ({{ armorClass.armor }}){{#DifferentFrom armorClass.modifiers 0}} + Effects ({{armorClass.modifiers}}){{/DifferentFrom}}{{#DifferentFrom armorClass.base 0}} + Manual Adjustments ({{armorClass.base}}){{/DifferentFrom}}">
+            {{#FormatCompendium "Armor Class" "properties"}}{{/FormatCompendium}}
+        </td>
+        <td title="Damage Threshold (points deducted from damage)
+        Total = {{#DifferentFrom armorClass.armor 0}}Armor{{else}}Unarmored{{/DifferentFrom}} ({{ damageThreshold.armor }}){{#DifferentFrom damageThreshold.modifiers 0}} + Effects ({{damageThreshold.modifiers}}){{/DifferentFrom}}{{#DifferentFrom damageThreshold.base 0}} + Manual Adjustments ({{damageThreshold.base}}){{/DifferentFrom}}">
+            {{#FormatCompendium "Damage Threshold" "properties"}}{{/FormatCompendium}}
         </td>
     </tr>
 </table>

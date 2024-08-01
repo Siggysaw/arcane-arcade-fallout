@@ -56,7 +56,15 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 10,
       }),
       temp: new fields.NumberField({
-
+      }),
+      boostMax: new fields.NumberField({
+        initial: 0,
+      }),
+      recover: new fields.StringField({
+        initial: "half",
+      }),
+      dazed: new fields.NumberField({
+        initial: 0,
       }),
     })
     schema.karmaCaps = new fields.ArrayField(new fields.BooleanField(), { initial: [true] })
@@ -87,6 +95,10 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
           abbr: new fields.StringField({
             initial: FALLOUTZERO.abilities[ability].abbreviation,
           }),
+          advantage: new fields.NumberField({
+            ...requiredInteger,
+            initial: 0,
+          }),
         })
         return obj
       }, {}),
@@ -114,12 +126,17 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
           id: new fields.StringField({
             initial: FALLOUTZERO.skills[skill].id,
           }),
+          advantage : new fields.NumberField({
+            ...requiredInteger,
+            initial: 0,
+          }),
         })
         return obj
       }, {}),
     )
 
-    schema.materials = new fields.SchemaField(
+      //Deprecated.
+    /*schema.materials = new fields.SchemaField(
       Object.keys(FALLOUTZERO.materials).reduce((obj, material) => {
         obj[material] = new fields.SchemaField({
           value: new fields.NumberField({
@@ -136,8 +153,8 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         })
         return obj
       }, {}),
-    )
-
+    )*/
+    schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.armorClass = new fields.SchemaField({
       base: new fields.NumberField({
         ...requiredInteger,
@@ -151,7 +168,13 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         ...requiredInteger,
         initial: 0,
       }),
-      min: new fields.NumberField({
+      armor: new fields.NumberField({
+        ...requiredInteger,
+        initial: 10,
+      }),
+    })
+    schema.bonuses =  new fields.SchemaField({
+      allDamage: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
@@ -170,7 +193,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         ...requiredInteger,
         initial: 0,
       }),
-      min: new fields.NumberField({
+      armor: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),

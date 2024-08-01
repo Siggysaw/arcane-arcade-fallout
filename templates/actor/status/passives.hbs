@@ -2,22 +2,41 @@
     <tr>
         <td>Healing Rate</td>
         <td class="resource-label rollable"
+            title="
+            1d20 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.combatSequence.base 0}} + Manual adjustments ({{system.combatSequence.base}}){{/DifferentFrom}} {{#DifferentFrom system.combatSequence.modifiers 0}} + Effects ( {{system.combatSequence.modifiers}} ){{/DifferentFrom}} - Penalties ( {{system.penaltyTotal}} ) + Half-luck ( {{#LckMod system.abilities.lck.mod 2}}{{/LckMod}} )"
             data-rollable
-            data-roll="d20+@combatSequence+@penaltyTotal+@luckmod"
-            data-label="Performed a Combat Sequence roll!<br> D20 + Combat Sequence - Penalties + Luck Mod / 2">
+            data-advantage="{{system.combatSequence.advantage}}"
+            data-roll="d20+@combatSequence.value+@penaltyTotal+@luckmod"
+            data-label="Performed a Combat Sequence roll!<br> D20 + Combat Sequence - Penalties <br> + Luck Mod / 2">
             Combat Sequence
         </td>
-        <td><p class="condition" data-condition="Fatigue_and_Exhaustion">Exhaustion</p></td>
+        <td class="status-info-label">
+            <p> Rad DC</p>
+        </td>
     </tr>
     <tr>
         <td>
             <input type="number" name="system.healingRate" value="{{ healingRate }}" />
         </td>
-        <td>
-            <input type="number" name="system.combatSequence" value="{{ combatSequence }}" />
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="combatSequence"
+            data-type=""
+            class="fas fa-minus-square fakebutton nobackground"></i>
+            {{system.combatSequence.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="combatSequence"
+            data-type=""
+            class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
-        <td>
-            <input type="number" name="system.penalties.exhaustion.value" value="{{ system.penalties.exhaustion.value }}" />
+        <td class="status-info-label rollable fakebutton"
+            data-rollable
+            data-roll="d20-{{ penaltyTotal }}"
+            data-label="Radiation DC Check: Roll over {{system.radiationDC.value}} to succeed"
+            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{system.radiationDC.value}} to succeed. On Fail gain level of Radiation}}">
+            {{#Sum system.radiationDC.modifiers system.radiationDC.base}}{{/Sum}}
         </td>
     </tr>
     <tr>

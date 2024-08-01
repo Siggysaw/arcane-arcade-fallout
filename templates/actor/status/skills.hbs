@@ -1,4 +1,3 @@
-Points: {{#Sum startingSkillpoints skillPool}}{{/Sum}}
 <table>
     <tr>
         {{#each skills as |skill key|}}
@@ -11,11 +10,11 @@ Points: {{#Sum startingSkillpoints skillPool}}{{/Sum}}
             <p class="specialroll">
                 <label for="{{ abilityKey }}"
                        class="resource-label rollable"
+                       title="d20 + Skill Points ( Base: {{skill.base}}{{#DifferentFrom skill.modifiers 0}} + Effects : {{skill.modifiers}} {{/DifferentFrom}}){{#with (lookup ../../abilities [abilityKey])}} + {{label}} Mod{{/with}} ({{#with (lookup ../../abilities [abilityKey])}} {{mod}} {{/with}}){{#DifferentFrom ../../penaltyTotal 0}} -  Penalties ( {{../../penaltyTotal}} ){{/DifferentFrom}} + Half-luck ( {{#LckMod ../../abilities.lck.mod 2}}{{/LckMod}} )"
                        data-rollable
+                       data-advantage="{{skill.advantage}}"
                        data-roll="d20+{{#Sum skill.base skill.modifiers}}{{/Sum}}+{{#with (lookup ../../abilities [abilityKey])}} {{mod}} {{/with}}-@penaltyTotal+@luckmod"
-                       data-label="Performed a {{
-            skill.label
-          }} roll using {{#with (lookup ../../abilities [abilityKey])}}{{ label }} {{/with}}">
+                       data-label="Performed a {{skill.label}} roll using {{#with (lookup ../../abilities [abilityKey])}}{{ label }} {{/with}}">
                     {{ abilityKey }}
                 </label>
             </p>
@@ -26,13 +25,15 @@ Points: {{#Sum startingSkillpoints skillPool}}{{/Sum}}
         </td>
         <td class="skill-value">
             <i style="padding: 3px"
-               data-skillsubtraction
-               data-skill="{{ skill.id }}"
+               data-statSubtraction
+               data-stat="{{ skill.id }}"
+               data-type="skills"
                class="fas fa-minus-square fakebutton nobackground"></i>
             {{skill.value}}
             <i style="padding: 3px"
-               data-skilladdition
-               data-skill="{{ skill.id }}"
+               data-statAddition
+               data-stat="{{ skill.id }}"
+               data-type="skills"
                class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
     </tr>
