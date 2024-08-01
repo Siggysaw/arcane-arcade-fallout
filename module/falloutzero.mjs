@@ -157,6 +157,26 @@ Handlebars.registerHelper('LckMod', function (v1, v2) {
   return div
 })
 
+//Format a Compendium Link for a given title
+Handlebars.registerHelper('FormatCompendium', function (itemName, compendium){
+  let compendiumObject, myItem
+  try {
+    compendiumObject = game.packs.find((u) => u.metadata.name == compendium)
+    myItem = compendiumObject.tree.entries.find(
+      (u) => u.name.toLowerCase() == itemName.toLowerCase(),
+    )
+    if (myItem) {
+      return `<a class="content-link"  draggable="true" data-link data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
+        data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}">
+        ${itemName}</a>`
+    } else {
+      return `${itemName}`
+    }
+  } catch {
+    return `${itemName}`
+  }
+})
+
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */

@@ -431,24 +431,17 @@ async seeUpgrade (id){
 
   //Equip item upgrades (right now, it's just armor upgrades)
   async equipItemStats (myItem){
-    let AC = myItem.system.armorClass.value;
-    let everyMod = {'system.armorClass.min' : myItem.parent.system.armorClass.min, 'system.armorClass.value' : AC}
-    if (myItem.type == 'armor') {
-      let DT = myItem.parent.system.damageThreshold.value + myItem.system.damageThreshold.value;
-      Object.assign(everyMod,{'system.damageThreshold.value' : DT})
+    if (myItem.type == "armor"){
+      myItem.parent.update({'system.damageThreshold.armor' : myItem.system.damageThreshold.value, 'system.armorClass.armor' : myItem.system.armorClass.value});
+    } else { //Power Armor
+      myItem.parent.update({'system.armorClass.armor' : myItem.system.armorClass.value})
     }
-    myItem.parent.update(everyMod)
+    
   }
 
   //Removes modifiers related to Armor
   async unequipItemStats (myItem){
-    let AC = Math.max(myItem.parent.system.armorClass.min, 10) //by default will be 10, but we'll need that to be BASE in case there are other modifiers
-    let everyMod = {'system.armorClass.value' : AC}
-    if(myItem.type == 'armor') {
-      let DT = myItem.parent.system.damageThreshold.value - myItem.system.damageThreshold.value;
-      Object.assign(everyMod,{'system.damageThreshold.value' : DT})
-    }
-    myItem.parent.update(everyMod);
+    myItem.parent.update({'system.damageThreshold.armor' : 0, 'system.armorClass.armor' : 10});
   }
 
 

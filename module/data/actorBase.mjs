@@ -168,9 +168,9 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         ...requiredInteger,
         initial: 0,
       }),
-      min: new fields.NumberField({
+      armor: new fields.NumberField({
         ...requiredInteger,
-        initial: 0,
+        initial: 10,
       }),
     })
     schema.bonuses =  new fields.SchemaField({
@@ -193,7 +193,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         ...requiredInteger,
         initial: 0,
       }),
-      min: new fields.NumberField({
+      armor: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
