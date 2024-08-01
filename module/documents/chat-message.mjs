@@ -73,7 +73,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   }
 
   get abilityBonus() {
-    return this.flags?.abilityBonus ?? null
+    return this.flags?.falloutzero?.abilityBonus ?? null
   }
 
   /* -------------------------------------------- */
@@ -664,7 +664,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   async _onRollDamage() {
     try {
       const abilityBonus = this.abilityBonus || 0
-      const damageTypes = this.damage.rolls.map((damage) => damage.type).join(', ')
+      const damageTypes = this.damage.rolls.map((damage) => damage.type).join(' and ')
       const damageRolls = this.damage.rolls.map((damage) => damage.formula).join('+ ')
 
       return this._rollDamage(`${damageRolls} + ${abilityBonus}`, damageTypes)
@@ -681,7 +681,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
    */
   async _onRollCriticalDamage() {
     try {
-      const damageTypes = this.damage.rolls.map((damage) => damage.type).join(', ')
+      const damageTypes = this.damage.rolls.map((damage) => damage.type).join(' and ')
 
       return this._rollDamage(this.damage.critical, damageTypes)
     } catch (error) {
@@ -690,6 +690,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   }
 
   async _rollDamage(formula, types) {
+    const target = this.targeted.target
     let flavor = `KAPOW! ${types} damage`
     if (this.targeted) {
       const target =
@@ -699,7 +700,10 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       flavor += '!'
     }
 
-    const roll = new Roll(formula, this.actor.getRollData())
+    const roll = new Roll(
+      target === 'eyes' ? `floor((${formula}) / 2)` : formula,
+      this.actor.getRollData(),
+    )
     await roll.evaluate()
     return roll.toMessage({
       flavor,

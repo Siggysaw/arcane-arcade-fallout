@@ -172,17 +172,6 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     super.prepareDerivedData()
   }
 
-  get combinedDamageFormula() {
-    return this.damages.reduce((total, damage, index) => {
-      if (index === 0) {
-        total += damage.formula
-      } else {
-        total += `+ ${damage.formula}`
-      }
-      return total
-    }, '')
-  }
-
   get capacityAtMax() {
     return this.ammo.capacity.value === this.ammo.capacity.max
   }
