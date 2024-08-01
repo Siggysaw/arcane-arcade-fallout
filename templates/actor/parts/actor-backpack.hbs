@@ -5,7 +5,8 @@
             {{#each rangedWeapons as |item id|}}
             {{#unless item.system.itemEquipped}}
             <span class="context-menu backpack-item"
-                  data-item-id="{{ item._id }}"
+                  data-item-id="{{ item._id }}" 
+                  draggable="true"
                   title="{{localize 'DOCUMENT.Update' type='item'}}">
                 {{item.name}}({{item.system.quantity}})
             </span>
@@ -14,7 +15,8 @@
             {{#each meleeWeapons as |item id|}}
             {{#unless item.system.itemEquipped}}
             <span class="context-menu backpack-item"
-                  data-item-id="{{ item._id }}"
+                  data-item-id="{{ item._id }}" 
+                  draggable="true"
                   title="{{localize 'DOCUMENT.Update' type='item'}}">
                 {{item.name}}({{item.system.quantity}})
             </span>
@@ -23,7 +25,7 @@
             {{#each armors as |item id|}}
             {{#unless item.system.itemEquipped}}
             <span class="context-menu backpack-item"
-                  data-item-id="{{ item._id }}"
+                  data-item-id="{{ item._id }}" draggable="true"
                   title="{{localize 'DOCUMENT.Update' type='item'}}">
                 {{item.name}}({{item.system.quantity}})
             </span>
@@ -32,7 +34,8 @@
             {{#each powerArmors as |item id|}}
             {{#unless item.system.itemEquipped}}
             <span class="context-menu backpack-item"
-                  data-item-id="{{ item._id }}"
+                  data-item-id="{{ item._id }}" draggable="true"
+                  
                   title="{{localize 'DOCUMENT.Update' type='item'}}">
                 {{item.name}}({{item.system.quantity}})
             </span>
@@ -53,11 +56,11 @@
                 {{#unless item.system.itemEquipped}}
                 <tr>
                     <td>
-                        <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
                             <div class="item-controls">
                                 <a class="item-control"
                                    data-edit
-                                   data-item-id="{{ item._id }}"
+                                   data-item-id="{{ item._id }}" draggable="true"
                                    title="{{localize 'DOCUMENT.Update' type='item'}}">
                                     {{item.name}}
                                 </a>
@@ -73,7 +76,7 @@
                     </td>
                     <td>{{{item.system.description}}}</td>
                     <td style="width:20px;">
-                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
+                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}" draggable="true"></i>
                 </td>
                 </tr>
                 {{/unless}}
@@ -87,11 +90,11 @@
                 {{#unless item.system.itemEquipped}}
             <tr>
                 <td>
-                    <li class="item flexrow" data-item-id="{{ item._id }}">
+                    <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
                         <div class="item-controls">
                             <a class="item-control"
                                data-edit
-                               data-item-id="{{ item._id }}"
+                               data-item-id="{{ item._id }}" draggable="true"
                                title="{{localize 'DOCUMENT.Update' type='item'}}">
                                 {{item.name}}
                             </a>
@@ -107,7 +110,7 @@
                 </td>
                 <td>{{{item.system.description}}}</td>
                 <td style="width:20px;">
-                    <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
+                    <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}" draggable="true"></i>
                 </td>
             </tr>
                 {{/unless}}
@@ -123,14 +126,14 @@
                     {{#unless item.system.itemEquipped}}
                 <tr>
                     <td>
-                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
+                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}" draggable="true"></i>
                     </td>
                     <td>
-                        <li class="item flexrow" data-item-id="{{ item._id }}">
+                        <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
                             <div class="item-controls">
                                 <a class="item-control"
                                    data-edit
-                                   data-item-id="{{ item._id }}"
+                                   data-item-id="{{ item._id }}" draggable="true"
                                    title="{{localize 'DOCUMENT.Update' type='item'}}">
                                     {{item.name}}
                                 </a>

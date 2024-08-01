@@ -9,6 +9,7 @@
             <a
               class="item-control"
               data-edit
+               draggable="true"
               data-item-id="{{ item._id }}"
               title="View Item Details"
             >
@@ -30,32 +31,8 @@
               class="fas fa-plus-square"
             ></i>
           </div>
-          <div class="perk-div">
-            <a
-              style="float: right; margin-right: 30px; margin-top: -20px"
-              class="item-control item-delete"
-              title="{{localize 'DOCUMENT.Delete' type='item'}}"
-            >
-              <i class="fas fa-trash"></i>
-            </a>
-            {{#DifferentFrom item.system.description ""}}
-              <a style="float: right; margin-right: 5px; margin-top: -20px"
-              data-sendToChat
-              data-item-id="{{ item._id }}"
-              class="item-control"
-              title="Send description to Chat">
-                  <i class="fa-solid fa-comment"></i>
-              </a>
-            {{/DifferentFrom}}
-            {{#GreaterThan item.system.quantity 1}}
-            <a style="float: right; margin-right: 5px; margin-top: -20px"
-              data-rollable
-              data-lowerInventory="{{item._id}}"
-              class="item-control"
-              title="Use Medicine">
-              <i class="fas fa-syringe fakebutton nobackground"></i>
-            </a>
-            {{/GreaterThan}}
+          <div class="perk-div" style="text-align:left;">
+              <i class="fas fa-ellipsis-v context-menu context-icon perk-context" data-item-id="{{ item._id }}"></i>
           </div>
         </td>
       </tr>
