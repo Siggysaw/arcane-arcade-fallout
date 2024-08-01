@@ -438,11 +438,23 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     //Skill Updated
     html.on('click', '[data-skilladdition]', (ev) => {
       const skill = ev.currentTarget.dataset.skill
-      this.actor.skilladdition(skill)
+      this.actor.statAddition(skill, "skills")
     })
     html.on('click', '[data-skillsubtraction]', (ev) => {
       const skill = ev.currentTarget.dataset.skill
-      this.actor.skillsubtraction(skill)
+      this.actor.statSubtraction(skill, "skills")
+    })
+    //Any other stat updated
+    html.on('click', '[data-statSubtraction]', (ev) => {
+      const stat = ev.currentTarget.dataset.stat
+      const statType = ev.currentTarget.dataset.type
+      console.log(stat,statType)
+      this.actor.statSubtraction(stat, statType)
+    })
+    html.on('click', '[data-statAddition]', (ev) => {
+      const stat = ev.currentTarget.dataset.stat
+      const statType = ev.currentTarget.dataset.type
+      this.actor.statAddition(stat, statType)
     })
     //Add Cap
     html.on('click', '[data-add-cap]', () => {
@@ -786,6 +798,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // Handle rolls that supply the formula directly.
     if (dataset.roll) {
       let label = dataset.label || ''
+      if (typeof dataset.advantage != "undefined"){
+        if (Number(dataset.advantage) > 0){dataset.roll=dataset.roll.split("d20").join("2d20kh")}
+        if (Number(dataset.advantage) < 0){dataset.roll=dataset.roll.split("d20").join("2d20kl")}
+      }
       let roll = new Roll(dataset.roll, this.actor.getRollData())
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),

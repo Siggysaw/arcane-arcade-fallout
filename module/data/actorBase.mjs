@@ -56,7 +56,15 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 10,
       }),
       temp: new fields.NumberField({
-
+      }),
+      boostMax: new fields.NumberField({
+        initial: 0,
+      }),
+      recover: new fields.StringField({
+        initial: "half",
+      }),
+      dazed: new fields.NumberField({
+        initial: 0,
       }),
     })
     schema.karmaCaps = new fields.ArrayField(new fields.BooleanField(), { initial: [true] })
@@ -146,7 +154,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         return obj
       }, {}),
     )*/
-
+    schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.armorClass = new fields.SchemaField({
       base: new fields.NumberField({
         ...requiredInteger,
@@ -161,6 +169,12 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 0,
       }),
       min: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+    })
+    schema.bonuses =  new fields.SchemaField({
+      allDamage: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),

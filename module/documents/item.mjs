@@ -12,7 +12,7 @@ export default class FalloutZeroItem extends Item {
     // As with the actor class, items are documents that can have their data
     // preparation methods overridden (such as prepareBaseData()).
     super.prepareData()
-    if (this.type === "rangedWeapon" && this.parent.type == "npc" || this.type === "meleeWeapon" && this.parent.type == "npc") {
+    /*if (this.type === "rangedWeapon" && this.parent.type == "npc" || this.type === "meleeWeapon" && this.parent.type == "npc") {
       let correct = this.system.damage.formula
       if (correct.length > 0) {
         this.system.damages.splice(0, 1)
@@ -26,7 +26,7 @@ export default class FalloutZeroItem extends Item {
         })
         this.update({'system.damage.formula' : '' })
       }
-    }
+    }*/ 
   }
 
   //Checks char items before creating one, stops it and updates quantity if it exists and is not equipped.
@@ -151,7 +151,7 @@ listModPaths (tag){
     let myPaths = pathList.map(p => p.path)
     myPaths.push("")
     for (var pathValue of myPaths.sort()) {
-      if (!pathValue.includes("_") && 
+      if (!pathValue.startsWith("_") && 
           !pathValue.includes("overrides") && 
           !pathValue.includes("ownership")){
         opt = document.createElement('option')

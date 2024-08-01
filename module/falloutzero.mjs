@@ -23,7 +23,7 @@ Hooks.once('init', function () {
    * @type {String}
    */
   CONFIG.Combat.initiative = {
-    formula: '1d20 + @combatSequence - @penaltyTotal',
+    formula: '1d20 + @combatSequence.value - @penaltyTotal',
     decimals: 2,
   }
 
@@ -149,6 +149,12 @@ Handlebars.registerHelper('Sum', function (v1, v2) {
 Handlebars.registerHelper('Sum3', function (v1, v2, v3) {
   let sum = Number(v1) + Number(v2) + Number(v3)
   return sum
+})
+//division
+Handlebars.registerHelper('LckMod', function (v1, v2) {
+  let div = Math.floor( Number(v1) / Number(v2))
+  if (div < -1){div = -1}
+  return div
 })
 
 /* -------------------------------------------- */

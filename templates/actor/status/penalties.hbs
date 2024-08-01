@@ -2,66 +2,18 @@
     <tr>
         <td class="status-info-label">
             <p class="condition" data-condition="Food_and_Drinks">Hunger</p>
-            <i style="padding: 3px"
-               data-subtracted
-               data-field="system.penalties.hunger.value"
-               data-fieldvalue="{{system.penalties.hunger.value}}"
-               class="fas fa-minus-square fakebutton nobackground">
-            </i>
-            <i style="padding: 3px"
-               data-added
-               data-field="system.penalties.hunger.value"
-               data-fieldvalue="{{system.penalties.hunger.value}}"
-               class="fas fa-plus-square fakebutton nobackground">
-            </i>
         </td>
         <td class="status-info-label">
             <p class="condition" data-condition="Food_and_Drinks">Dehydration</p>
-            <i style="padding: 3px"
-               data-subtracted
-               data-field="system.penalties.dehydration.value"
-               data-fieldvalue="{{system.penalties.dehydration.value}}"
-               class="fas fa-minus-square fakebutton nobackground">
-            </i>
-            <i style="padding: 3px"
-               data-added
-               data-field="system.penalties.dehydration.value"
-               data-fieldvalue="{{system.penalties.dehydration.value}}"
-               class="fas fa-plus-square fakebutton nobackground">
-            </i>
         </td>
         <td class="status-info-label">
             <p class="condition" data-condition="Fatigue_and_Exhaustion">Fatigue</p>
-            <i style="padding: 3px"
-               data-subtracted
-               data-field="system.penalties.fatigue.value"
-               data-fieldvalue="{{system.penalties.fatigue.value}}"
-               class="fas fa-minus-square fakebutton nobackground">
-            </i>
-            <i style="padding: 3px"
-               data-added
-               data-field="system.penalties.fatigue.value"
-               data-fieldvalue="{{system.penalties.fatigue.value}}"
-               class="fas fa-plus-square fakebutton nobackground">
-            </i>
         </td>
-        <td class="status-info-label">
-            <p> Rad DC</p>
-        </td>
+         <td>
+            <p class="condition" data-condition="Fatigue_and_Exhaustion">Exhaustion</p>
+         </td>
         <td class="status-info-label" title="10 Levels of Rads = Dead">
             <p class="condition" data-condition="Radiation">Rad LVL</p>
-            <i style="padding: 3px"
-               data-subtracted
-               data-field="system.penalties.radiation.value"
-               data-fieldvalue="{{system.penalties.radiation.value}}"
-               class="fas fa-minus-square fakebutton nobackground">
-            </i>
-            <i style="padding: 3px"
-               data-added
-               data-field="system.penalties.radiation.value"
-               data-fieldvalue="{{system.penalties.radiation.value}}"
-               class="fas fa-plus-square fakebutton nobackground">
-            </i>
         </td>
         <td class="status-info-label"
             title="Every 10 levels resets and gives 1 level radiation">
@@ -81,29 +33,73 @@
         </td>
     </tr>
     <tr>
-        <td class="status-info-value">
-            {{ penalties.hunger.value }}
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="hunger"
+            data-type="penalties"
+            class="fas fa-minus-square fakebutton nobackground"></i>
+            {{system.penalties.hunger.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="hunger"
+            data-type="penalties"
+            class="fas fa-plus-square fakebutton nobackground"></i>
+        </td>
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="dehydration"
+            data-type="penalties"
+            class="fas fa-minus-square fakebutton nobackground"></i>
+            {{system.penalties.dehydration.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="dehydration"
+            data-type="penalties"
+            class="fas fa-plus-square fakebutton nobackground"></i>
+        </td>
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="fatigue"
+            data-type="penalties"
+            class="fas fa-minus-square fakebutton nobackground"></i>
+            {{system.penalties.fatigue.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="fatigue"
+            data-type="penalties"
+            class="fas fa-plus-square fakebutton nobackground"></i>
+        </td>
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="exhaustion"
+            data-type="penalties"
+            class="fas fa-minus-square fakebutton nobackground"></i>
+            {{system.penalties.exhaustion.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="exhaustion"
+            data-type="penalties"
+            class="fas fa-plus-square fakebutton nobackground"></i>
+        </td>
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="radiation"
+            data-type="penalties"
+            class="fas fa-minus-square fakebutton nobackground"></i>
+            {{system.penalties.radiation.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="radiation"
+            data-type="penalties"
+            class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
         <td class="status-info-value">
-            {{ penalties.dehydration.value }}
-
-        </td>
-        <td class="status-info-value">
-            {{ penalties.fatigue.value }}
-        </td>
-        <td class="status-info-label rollable fakebutton"
-            data-rollable
-            data-roll="d20-{{ penaltyTotal }}"
-            data-label="Radiation DC Check: Roll over {{system.radiationDC.value}} to succeed"
-            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{system.radiationDC.value}} to succeed. On Fail gain level of Radiation}}">
-            {{#Sum system.radiationDC.modifiers system.radiationDC.base}}{{/Sum}}
-        </td>
-        <td class="status-info-value">
-            {{ penalties.radiation.value }}
-
-        </td>
-        <td class="status-info-value">
-            <progress title="{{irradiated}} out of 10" class="statusbar"
+            <progress title="{{irradiated}} out of 10" style ="max-width:70px" class="statusbar"
                       value="{{ irradiated }}"
                       max=10>
                 {{ irradiated }}

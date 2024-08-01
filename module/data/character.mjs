@@ -19,6 +19,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         obj[penalty] = new fields.SchemaField({
           label: new fields.StringField({ required: true }),
           value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
+          base : new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
+          modifiers : new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 })
         })
         return obj
       }, {}),
@@ -63,14 +65,19 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.NumberField({ initial: 0 })
     schema.groupSneak = new fields.NumberField({ initial: 0 })
-    schema.combatSequence = new fields.NumberField({ initial: 0 })
+    schema.combatSequence = new fields.SchemaField({
+      base : new fields.NumberField({ initial: 0 }),
+      value : new fields.NumberField({ initial: 0 }),
+      modifiers : new fields.NumberField({ initial: 0 }),
+      advantage : new fields.NumberField({ initial: 0 })
+    })
     schema.partyNerve = new fields.NumberField({ initial: 0 })
     schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.combatActionsexpanded = new fields.BooleanField({ initial: false })
     schema.passiveSense = new fields.NumberField({ ...requiredInteger, initial: 0 })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
-    schema.conditions = new fields.SchemaField({
+    /*schema.conditions = new fields.SchemaField({
       Blinded: new fields.BooleanField({ initial: false }),
       Bleeding: new fields.BooleanField({ initial: false }),
       BleedingLvls: new fields.NumberField({ initial: 0 }),
@@ -93,8 +100,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       Slowed: new fields.BooleanField({ initial: false }),
       Unconscious: new fields.BooleanField({ initial: false }),
       Wasted: new fields.BooleanField({ initial: false }),
-    })
-
+    })*/
     return schema
   }
 
@@ -131,6 +137,12 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
     }
 
+    this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
+    this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers,0)
+    this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers,0)
+    this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base + this.penalties.exhaustion.modifiers,0)
+    this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers,0)
+    this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers,0)
     this.radiationDC.base = 12 - this.abilities['end'].mod
     this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
     this.healingRate = Math.floor((this.level + this.abilities['end'].value) / 2)
