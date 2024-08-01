@@ -158,7 +158,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     schema.armorClass = new fields.SchemaField({
       base: new fields.NumberField({
         ...requiredInteger,
-        initial: 10,
+        initial: 0,
       }),
       modifiers: new fields.NumberField({
         ...requiredInteger,
