@@ -141,14 +141,14 @@
                class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
     </tr>
-    <tr>
+    <tr style="letter-spacing: -1px">
         <td title="Armor Class (how hard it is to hit you)
         Total = {{#DifferentFrom armorClass.armor 10}}Armor{{else}}Unarmored{{/DifferentFrom}} ({{ armorClass.armor }}){{#DifferentFrom armorClass.modifiers 0}} + Effects ({{armorClass.modifiers}}){{/DifferentFrom}}{{#DifferentFrom armorClass.base 0}} + Manual Adjustments ({{armorClass.base}}){{/DifferentFrom}}">
-            {{#FormatCompendium "Armor Class" "properties"}}{{/FormatCompendium}}
+            {{#FormatCompendium "AC" "properties"}}{{/FormatCompendium}}
         </td>
         <td title="Damage Threshold (points deducted from damage)
-        Total = {{#DifferentFrom armorClass.armor 0}}Armor{{else}}Unarmored{{/DifferentFrom}} ({{ damageThreshold.armor }}){{#DifferentFrom damageThreshold.modifiers 0}} + Effects ({{damageThreshold.modifiers}}){{/DifferentFrom}}{{#DifferentFrom damageThreshold.base 0}} + Manual Adjustments ({{damageThreshold.base}}){{/DifferentFrom}}">
-            {{#FormatCompendium "Damage Threshold" "properties"}}{{/FormatCompendium}}
+        Total = {{#DifferentFrom damageThreshold.armor 0}}Armor{{else}}Unarmored{{/DifferentFrom}} ({{ damageThreshold.armor }}){{#DifferentFrom damageThreshold.modifiers 0}} + Effects ({{damageThreshold.modifiers}}){{/DifferentFrom}}{{#DifferentFrom damageThreshold.base 0}} + Manual Adjustments ({{damageThreshold.base}}){{/DifferentFrom}}">
+            {{#FormatCompendium "DT" "properties"}}{{/FormatCompendium}}
         </td>
     </tr>
 </table>

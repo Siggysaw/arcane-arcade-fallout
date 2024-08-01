@@ -343,17 +343,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
           let enoughAP = true
-          if (item.type == 'powerArmor') {
+          /*if (item.type == 'powerArmor') { //Deprecated
             enoughAP = this.actor.applyApCost(6)
           }
-          if (enoughAP) {
+          if (enoughAP) {*/
             item.update({ 'system.itemEquipped': !item.system.itemEquipped })
             if ((item.type == "armor" || item.type == "powerArmor") && item.parent) {
               FalloutZeroArmor.prototype.changeEquipStatus(item)
             } else {
               FalloutZeroArmor.prototype.toggleEffects(myItem, item.system.itemEquipped)
             }
-          }
+          //}
         },
       }, 
     ]
@@ -530,17 +530,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const itemId = ev.currentTarget.dataset.itemId
       const item = this.actor.items.get(itemId)
       let enoughAP = true
-      if (item.type == 'powerArmor') {
+      /*if (item.type == 'powerArmor') { //Removed AP consumption for Power Armor. We don't require it for any other kind of equipment equip. 
         enoughAP = this.actor.applyApCost(6)
       }
-      if (enoughAP) {
+      if (enoughAP) {*/
         item.update({ 'system.itemEquipped': !item.system.itemEquipped})
         if ((item.type == "armor" || item.type == "powerArmor") && item.parent){
           FalloutZeroArmor.prototype.changeEquipStatus(item)
         } else {
           FalloutZeroArmor.prototype.toggleEffects(myItem,item.system.itemEquipped)
         }
-      }
+      //}
     })
 
     // Send an item's description to Chat.

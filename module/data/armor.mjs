@@ -363,21 +363,38 @@ async checkUpgrade(armor,pack, id){
   let wasEquipped = armor.system.itemEquipped
   let oldUpgrade = myUpgrade
   let valid = false;
+  //Check for pre-requisites
   if (myUpgrade.system.requirement == "None") {
     if (armor.system.slots.value >0){
       valid = true
     } else {comment ='You do not have any slots left for this upgrade.'}
-  }
-  else {
+  } else {
     if (preReq){
       for (var key of Object.keys(armor.system.upgrades)){
         if (armor.system.upgrades[key].id == preReq._id){
           //get upgrade from id
           oldUpgrade = await pack.getDocument(armor.system.upgrades[key].id); 
-          valid = true
+          valid = true;
+        } else {
+          comment = 'You do not meet the pre-requesite for this upgrade.'
         }
       }
-    } else {comment = 'You do not meet the pre-requesite for this upgrade.'}
+    }
+  }
+  //Check for duplicates
+  let upgradeLine = myUpgrade.name.slice(0,myUpgrade.name.length-1)
+  let newRank = myUpgrade.system.rank
+  console.log (upgradeLine, newRank)
+  for (var key of Object.keys(armor.system.upgrades)){
+    console.log (armor.system.upgrades[key].name.slice(0,armor.system.upgrades[key].name.length - 1), armor.system.upgrades[key].rank)
+    if (armor.system.upgrades[key].id == myUpgrade._id){
+      valid = false;
+      comment = 'You already have that upgrade. Choose another.'
+    }
+    if (armor.system.upgrades[key].name.slice(0,armor.system.upgrades[key].name.length - 1) == upgradeLine && newRank < armor.system.upgrades[key].rank){
+      valid = false;
+      comment = 'You already have that upgrade at lower rank. Choose another.'
+    }
   }
   if (valid){
     for (var key of Object.keys(armor.system.upgrades)){

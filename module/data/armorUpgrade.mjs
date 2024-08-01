@@ -18,6 +18,9 @@ export default class FalloutZeroArmorUpgrade extends FalloutZeroItemBase {
     schema.craftingTime = new fields.StringField({ initial: '1 hour'})
     schema.craftingDC = new fields.StringField({ initial: '+0'})
     schema.upgradeType = new fields.StringField({ initial: 'armor'})
+    schema.img = new fields.StringField({
+      initial: this.img,
+    })
     schema.matsReq1 = new fields.SchemaField({
       mat: new fields.StringField({}),
       qty: new fields.NumberField({
