@@ -263,7 +263,7 @@ export default class FalloutZeroActor extends Actor {
     let pack = game.packs.find(p => p.metadata.name == "conditions")
     const item = this.items.get(itemId)
     const updatedQty = item.system.quantity - 1
-    await item.update({ 'system.quantity': updatedQty })
+    let mods = { 'system.quantity': updatedQty }
     const description = item.system.description
     let details = '';
     let chatContent = ``
@@ -318,29 +318,20 @@ export default class FalloutZeroActor extends Actor {
           chatContent += await this.applyDrunkness("Poisoned", this)
         }
       }
-
-      //Add drunkness separately because it's complicated...
-      if (description.includes("qT3KhtuyrbnpNfWy")){ //Highproof as a consumable condition
-        if (this.system.abilities.end.value > 4){ //Apply Drunkness
-          chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
-          chatContent += await this.applyDrunkness("Drunk", this)
-        } else { // Apply more Drunkness
-          chatContent += `You've had one too many! (End<5)<br><br>You're now `
-          chatContent += await this.applyDrunkness("Hammered", this)
+      
+      //Check for Snack
+      let snacks  = {}
+      if (description.includes("2VO3ajTiEcRzHaS9")){
+        if (this.system.penalties.snack == 0){
+          Object.assign(snacks, {'system.penalties.snack': 1})
+          console.log("Need one more snack!")
+        } else {
+          let hunger = Math.max(this.system.penalties.hunger.base - 1,0)
+          Object.assign(snacks, {'system.penalties.snack': 0, 'system.penalties.hunger.base' : hunger})
         }
-      } else {
-        if (description.includes("o18dhjwLVVjGaCQR")){ //Alcoholic as a consumable condition
-          if (this.system.abilities.end.value > 4){ //Apply Buzzed
-            chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
-            chatContent += await this.applyDrunkness("Buzzed", this)
-          } else { // Apply more Drunkness
-            chatContent += `You've had one too many! (End>5)<br><br>You're now `
-            chatContent += await this.applyDrunkness("Drunk", this)
-          }
-        }
+        await this.update(snack)
       }
-
-      //Check for putrid
+        
       
       //Add active effects from each condition present on the consumable
       let descSplit = description.split(" ")
@@ -387,6 +378,8 @@ export default class FalloutZeroActor extends Actor {
           chatContent += this.askForCheck(item.system.checks.check3, item.system.checks.dc3, item.system.checks.condition3)
         }
       }
+      //Finally update the item quantity
+      await item.update(mods)
       //Add event listener for eventual Check button in Chat
       Hooks.once('renderChatMessage', (chatItem, html) => {
         html.find("#askForRoll").click((ev) => {

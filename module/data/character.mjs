@@ -23,8 +23,13 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
           modifiers : new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 })
         })
         return obj
-      }, {}),
+      }, {snack : new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),}),
     )
+
+
     schema.limbdamage = new fields.SchemaField(
       Object.keys(FALLOUTZERO.limbdamage).reduce((obj, damage) => {
         obj[damage] = new fields.SchemaField({
@@ -106,9 +111,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
 
   prepareBaseData() {
     super.prepareBaseData()
-    for (const key in this.penalties) {
-      this.penalties[key].label = FALLOUTZERO.penalties[key]
-    }
+    /*for (const key in this.penalties) {
+      this.penalties[key].label = FALLOUTZERO.penalties[key].label
+    }*/
     for (const key in this.limbdamage) {
       this.limbdamage[key].description = FALLOUTZERO.limbdamage[key].description
       this.limbdamage[key].label = FALLOUTZERO.limbdamage[key].label

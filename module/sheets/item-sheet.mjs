@@ -220,7 +220,8 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     //Drag and drop items into description box creates a link to it, whether it's a compendium or someone else's inventory.
     html.on('click','[item-description]', () => {
-      try{if (this.object.system.description.includes("@UUID")){
+      //try{
+        if (this.object.system.description.includes("@UUID")){
         // Original link example : `@UUID[Compendium.arcane-arcade-fallout.junk.Item.n7OMTyzznsUINuMi]{Adjustable Wrench}`
         let UUID = ""
         let ID = ""
@@ -250,13 +251,17 @@ export default class FalloutZeroItemSheet extends ItemSheet {
                 ${itemName[1]}
                 </a>`;
                 descStr = this.object.system.description.split(`@UUID[${UUID}]{${itemName[1]}}`).join(newLink);
+                if (UUID.includes("conditions")){
+                  FalloutZeroItem.prototype.getReactions(ID[ID.length -1], this.object)
+                }
                 this.object.update({'system.description' : descStr});
                 return;
             }
           }
         }
-      }}
-      catch{}
+      }
+    //}
+      //catch{}
     })
 
     //Change crafting materials quantity (up!)

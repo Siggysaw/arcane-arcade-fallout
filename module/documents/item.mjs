@@ -62,6 +62,41 @@ export default class FalloutZeroItem extends Item {
     super.prepareDerivedData()
   }
 
+//Get Reactions added according to Conditions
+async getReactions (ID, myItem) {
+  let pack = await game.packs.find(p => p.metadata.name == "conditions")
+  console.log(ID)
+  let mods = {}
+  let condition = await pack.getDocument(ID)
+  let pathTaken = 0
+  if (condition.system.modifiers.path1 != '') {
+    if (myItem.system.modifiers.modType1 == ''){
+      pathTaken = 1
+    } else {
+      if (myItem.system.modifiers.modType2 == ''){
+        pathTaken = 2
+      } else {
+        if (myItem.system.modifiers.modType3 == ''){
+          pathTaken = 3
+        } else {
+          if (myItem.system.modifiers.modType4 == ''){
+            pathTaken = 4
+          } else {
+            alert("Object has enough reactions already! 4 max allowed for now.")
+          }
+        }
+      }
+    }
+    Object.assign (mods, {
+      [`system.modifiers.modType${pathTaken}`] : condition.system.modifiers.modType1,
+      [`system.modifiers.path${pathTaken}`] :  condition.system.modifiers.path1,
+      [`system.modifiers.value${pathTaken}`] :  condition.system.modifiers.value1
+    })
+  }
+  console.log(pathTaken, mods)
+  await myItem.update(mods)
+}
+
 
 //Get list of upgrades for item type
 async getUpgradeList (tag){

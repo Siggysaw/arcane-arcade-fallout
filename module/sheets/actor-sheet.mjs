@@ -351,7 +351,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
             if ((item.type == "armor" || item.type == "powerArmor") && item.parent) {
               FalloutZeroArmor.prototype.changeEquipStatus(item)
             } else {
-              FalloutZeroArmor.prototype.toggleEffects(myItem, item.system.itemEquipped)
+              FalloutZeroArmor.prototype.toggleEffects(item, item.system.itemEquipped)
             }
           //}
         },
@@ -467,20 +467,20 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-leveledup]', () => {
       this.actor.levelUp()
     })
-    //Skill Updated
-    html.on('click', '[data-skilladdition]', (ev) => {
+    //Skill Updated (Deprecated, moved to stat subtraction and addition)
+    /*html.on('click', '[data-skilladdition]', (ev) => {
       const skill = ev.currentTarget.dataset.skill
       this.actor.statAddition(skill, "skills")
     })
     html.on('click', '[data-skillsubtraction]', (ev) => {
       const skill = ev.currentTarget.dataset.skill
       this.actor.statSubtraction(skill, "skills")
-    })
+    })*/
+
     //Any other stat updated
     html.on('click', '[data-statSubtraction]', (ev) => {
       const stat = ev.currentTarget.dataset.stat
       const statType = ev.currentTarget.dataset.type
-      console.log(stat,statType)
       this.actor.statSubtraction(stat, statType)
     })
     html.on('click', '[data-statAddition]', (ev) => {
