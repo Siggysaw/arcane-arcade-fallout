@@ -1,7 +1,7 @@
 import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
-
+import FalloutZeroItem from '../documents/item.mjs'
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -351,7 +351,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
             if ((item.type == "armor" || item.type == "powerArmor") && item.parent) {
               FalloutZeroArmor.prototype.changeEquipStatus(item)
             } else {
-              FalloutZeroArmor.prototype.toggleEffects(item, item.system.itemEquipped)
+              FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
             }
           //}
         },
