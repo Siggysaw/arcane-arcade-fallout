@@ -1,1 +1,5 @@
-2024/07/16-14:20:53.219 230c Delete type=3 #1
+2024/08/01-17:29:04.692 28ac Recovering log #47
+2024/08/01-17:29:04.693 28ac Level-0 table #50: started
+2024/08/01-17:29:04.696 28ac Level-0 table #50: 36208 bytes OK
+2024/08/01-17:29:04.699 28ac Delete type=0 #47
+2024/08/01-17:29:04.699 28ac Delete type=3 #45

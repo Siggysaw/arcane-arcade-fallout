@@ -76,6 +76,14 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     return this.flags?.falloutzero?.abilityBonus ?? null
   }
 
+  get tooltip() {
+    return this.flags?.falloutzero?.tooltip ?? null
+  }
+
+  get cardType() {
+    return this.flags?.falloutzero?.type ?? null
+  }
+
   /* -------------------------------------------- */
   /*  Rendering                                   */
   /* -------------------------------------------- */
@@ -270,6 +278,12 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // anchor.dataset.contextMenu = ''
     // anchor.innerHTML = '<i class="fas fa-ellipsis-vertical fa-fw"></i>'
     // metadata.appendChild(anchor)
+
+    // add formula tooltip
+    if (this.tooltip) {
+      const formula = html.querySelector('.dice-roll .dice-result .dice-formula')
+      formula.dataset.tooltip = this.tooltip
+    }
 
     // Add damage buttons
     if (this.damage) {
@@ -664,7 +678,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   async _onRollDamage() {
     try {
       const abilityBonus = this.abilityBonus || 0
-      const damageTypes = this.damage.rolls.map((damage) => damage.type).join(' and ')
+      const damageTypes = this.damage.rolls.map((damage) => damage.type)
       const damageRolls = this.damage.rolls.map((damage) => damage.formula).join('+ ')
 
       return this._rollDamage(`${damageRolls} + ${abilityBonus}`, damageTypes)
@@ -681,7 +695,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
    */
   async _onRollCriticalDamage() {
     try {
-      const damageTypes = this.damage.rolls.map((damage) => damage.type).join(' and ')
+      const damageTypes = this.damage.rolls.map((damage) => damage.type)
 
       return this._rollDamage(this.damage.critical, damageTypes)
     } catch (error) {
@@ -691,7 +705,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   async _rollDamage(formula, types) {
     const target = this.targeted.target
-    let flavor = `KAPOW! ${types} damage`
+    let flavor = `KAPOW! ${types.join(' and ')} damage`
     if (this.targeted) {
       const target =
         this.targeted.target === 'carried' ? `${this.targeted.target} item` : this.targeted.target
@@ -704,7 +718,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       target === 'eyes' ? `floor((${formula}) / 2)` : formula,
       this.actor.getRollData(),
     )
-    await roll.evaluate()
+
     return roll.toMessage({
       flavor,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
