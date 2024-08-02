@@ -329,7 +329,7 @@ export default class FalloutZeroActor extends Actor {
           let hunger = Math.max(this.system.penalties.hunger.base - 1,0)
           Object.assign(snacks, {'system.penalties.snack': 0, 'system.penalties.hunger.base' : hunger})
         }
-        await this.update(snack)
+        await this.update(snacks)
       }
         
       
