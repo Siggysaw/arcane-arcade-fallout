@@ -211,16 +211,24 @@ export default class FalloutZeroActor extends Actor {
     let actorEffects = this.items
     if (result == true){
       chatMessage = "Okie-dokie! You tolerate it well."
+      if (actorEffects.find(e => e.name == condition)){//Remove inactive condition
+        actorEf = await actorEffects.get(actorEffects.find(e => e.name == condition)._id)
+        conditionObj = await actorEf.effects._source[0]
+        console.log(conditionObj)
+        if (conditionObj.disabled == false){
+          await actorEf.delete()
+        }
+      }
     } else {
       //Activate effect
       if (actorEffects.find(e => e.name == condition)){
         actorEf = await actorEffects.get(actorEffects.find(e => e.name == condition)._id)
-        await FalloutZeroItem.prototype.toggleEffects(actorEf,false)
+        //await FalloutZeroItem.prototype.toggleEffects(actorEf,false) //Only applies AFTER the effect of chem/drink wears off it turns out
       } else { //Create new effect if not already on character
         let pack = await game.packs.find(p => p.metadata.name == "conditions")
         conditionObj = await pack.getDocument(pack.find(o => o.name == condition)._id)
-        actorEf = await Item.create(conditionObj, {parent: myActor})
-        await FalloutZeroItem.prototype.toggleEffects(actorEf,false)
+        actorEf = await Item.create(conditionObj, {parent: this})
+        //await FalloutZeroItem.prototype.toggleEffects(actorEf,false) //Only applies AFTER the effect of chem/drink wears off it turns out
       }
       if (condition == "Psychosis") {
         chatMessage = `Uh-oh! Your ${this.formatCompendiumItem("conditions", "Psychosis",'Click for details')} pushes you to attack the nearest creature.`

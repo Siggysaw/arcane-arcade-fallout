@@ -7,14 +7,21 @@
       </h1>
     </div>
   </header>
-  <table style="width: 100px">
+  <table>
     <tr>
-      {{#DifferentFrom type "condition"}}
-      <td>Qty:</td>
+      {{#DifferentFrom item.type "condition"}}
+      <td style="width:50px;">Qty : </td>
+      <td><input style="width:50px;" type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
+      <td>Cost : </td>
+      <td><input style="width:50px;" type="number" name="system.cost" value="{{ system.cost }}" /></td>
+      <td>Load : </td>
+      <td><input style="width:50px;" type="number" name="system.load" value="{{ system.load }}" /></td>
+      <td>Races : </td>
+      <td><input style="width:125px;" type="text" name="system.raceReq" value="{{ system.raceReq }}" /></td>
       {{else}}
-      <td>Level:</td>
-      {{/DifferentFrom}}
+      <td style="text-align:right">Level : </td>
       <td style="width:50px;"><input type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
+      {{/DifferentFrom}}
     </tr>
   </table>
 

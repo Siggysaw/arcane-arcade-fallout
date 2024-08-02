@@ -6,7 +6,7 @@
             1d20 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.combatSequence.base 0}} + Manual adjustments ({{system.combatSequence.base}}){{/DifferentFrom}} {{#DifferentFrom system.combatSequence.modifiers 0}} + Effects ( {{system.combatSequence.modifiers}} ){{/DifferentFrom}} - Penalties ( {{system.penaltyTotal}} ) + Half-luck ( {{#LckMod system.abilities.lck.mod 2}}{{/LckMod}} )"
             data-rollable
             data-advantage="{{system.combatSequence.advantage}}"
-            data-roll="d20+@combatSequence.value+@penaltyTotal+@luckmod"
+            data-roll="d20+@combatSequence.value+-@penaltyTotal+@luckmod"
             data-label="Performed a Combat Sequence roll!<br> D20 + Combat Sequence - Penalties <br> + Luck Mod / 2">
             Combat Sequence
         </td>
@@ -40,13 +40,24 @@
         </td>
     </tr>
     <tr>
-        <td>Passive Sense</td>
+        <td title="12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}"
+            >Passive Sense</td>
         <td>Party Nerve</td>
         <td>Group Sneak</td>
     </tr>
     <tr>
-        <td>
-            <input type="number" name="system.passiveSense" value="{{ passiveSense }}" />
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="passiveSense"
+            data-type=""
+            class="fas fa-minus-square fakebutton nobackground"></i>
+            {{system.passiveSense.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="passiveSense"
+            data-type=""
+            class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
         <td><input type="number" name="system.partyNerve" value="{{ partyNerve }}" /></td>
         <td><input type="number" name="system.groupSneak" value="{{ groupSneak }}" /></td>

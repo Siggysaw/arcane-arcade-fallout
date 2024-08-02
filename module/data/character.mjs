@@ -79,7 +79,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.partyNerve = new fields.NumberField({ initial: 0 })
     schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.combatActionsexpanded = new fields.BooleanField({ initial: false })
-    schema.passiveSense = new fields.NumberField({ ...requiredInteger, initial: 0 })
+    schema.passiveSense = new fields.SchemaField({
+      base : new fields.NumberField({ initial: 0 }),
+      value : new fields.NumberField({ initial: 0 }),
+      modifiers : new fields.NumberField({ initial: 0 })
+    })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
     /*schema.conditions = new fields.SchemaField({
@@ -143,7 +147,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     }
     this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
     this.damageThreshold.value = this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
-    this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
+    this.passiveSense.value = 12 + this.passiveSense.base + this.abilities.per.mod + this.passiveSense.modifiers
     this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers,0)
     this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers,0)
     this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base + this.penalties.exhaustion.modifiers,0)
@@ -158,9 +162,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.penalties.exhaustion.value +
       this.penalties.radiation.value +
       this.penalties.fatigue.value
-    this.passiveSense = 12 + this.abilities['per'].mod
     this.carryLoad.baseMax = this.abilities['str'].value * 10
     this.carryLoad.max = this.carryLoad.baseMax + this.carryLoad.modifiersMax
+    this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
 
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     if (this.luckmod < 0) {

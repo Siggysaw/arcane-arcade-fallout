@@ -830,7 +830,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // Handle rolls that supply the formula directly.
     if (dataset.roll) {
       let label = dataset.label || ''
-      if (typeof dataset.advantage != "undefined"){
+      if (typeof dataset.advantage != "undefined" && !dataset.roll.includes("2d20")){
         if (Number(dataset.advantage) > 0){dataset.roll=dataset.roll.split("d20").join("2d20kh")}
         if (Number(dataset.advantage) < 0){dataset.roll=dataset.roll.split("d20").join("2d20kl")}
       }

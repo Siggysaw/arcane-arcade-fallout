@@ -93,6 +93,30 @@ async getReactions (ID, myItem) {
       [`system.modifiers.value${pathTaken}`] :  condition.system.modifiers.value1
     })
   }
+  pathTaken = 0
+  if (condition.system.checks.check1 != ''){
+    if (myItem.system.checks.check1 == ''){
+      pathTaken = 1
+    } 
+    else {
+      if (myItem.system.checks.check2 == ''){
+        pathTaken = 2
+      } 
+      else {
+        if (myItem.system.checks.check3 == ''){
+          pathTaken = 3
+        } 
+        else {
+          alert("Object has enough Checks already! 3 max allowed for now.")
+        }
+      }
+    }
+    Object.assign (mods, {
+      [`system.checks.check${pathTaken}`] : condition.system.checks.check1,
+      [`system.checks.condition${pathTaken}`] :  condition.system.checks.condition1,
+      [`system.checks.dc${pathTaken}`] :  condition.system.checks.dc1
+    })
+  }
   console.log(pathTaken, mods)
   await myItem.update(mods)
 }

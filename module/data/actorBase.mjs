@@ -23,6 +23,8 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 10,
       }),
       temp: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
       }),
     })
     schema.stamina = new fields.SchemaField({
@@ -40,6 +42,8 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 10,
       }),
       temp: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
       }),
     })
     schema.actionPoints = new fields.SchemaField({
@@ -56,6 +60,8 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 10,
       }),
       temp: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
       }),
       boostMax: new fields.NumberField({
         initial: 0,
