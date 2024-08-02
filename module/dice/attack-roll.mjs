@@ -145,10 +145,10 @@ export default class AttackRoll extends FormApplication {
   getTargetedApCost(target) {
     const isMelee = this.weapon.type === 'meleeWeapon'
     let apCost = AttackRoll.TARGET_COST?.[target] ?? 0
-    if (isMelee && apCost > 2) {
-      return apCost - 2
+    if (isMelee) {
+      apCost -= 2
     }
-    return apCost
+    return apCost > 0 ? apCost : 1
   }
 
   getTargetedDamage(formula) {
@@ -233,6 +233,20 @@ export default class AttackRoll extends FormApplication {
       this.actor.getRollData(),
     )
 
+    await roll.evaluate()
+
+    const attackTooltip = `
+      <div>
+        <div>Die roll: ${roll.result.split(' ')[0]}</div>
+        <div>Skill bonus: ${skillBonus}</div>
+        <div>Ability bonus: ${abilityBonus}</div>
+        <div>Luck bonus: ${actorLuck}</div>
+        ${bonus && `<div>Other bonus: ${bonus || 0}</div>`}
+        <div>Penalties total: ${actorPenalties}</div>
+        <div>Weapon decay: ${decayPenalty}</div>
+      </div>
+    `
+
     /**
      * Generate damage rolls
      */
@@ -253,6 +267,8 @@ export default class AttackRoll extends FormApplication {
       flavor: this.getFlavor(this.formDataCache.targeted.target),
       rollMode: game.settings.get('core', 'rollMode'),
       'flags.falloutzero': {
+        type: 'attack',
+        tooltip: attackTooltip,
         abilityBonus,
         targeted: this.formDataCache.targeted,
         damage: {
