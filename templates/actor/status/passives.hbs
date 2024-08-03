@@ -13,6 +13,11 @@
         <td class="status-info-label">
             <p> Rad DC</p>
         </td>
+        <td title="12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}">
+            Passive Sense
+        </td>
+        <td>Party Nerve</td>
+        <td>Group Sneak</td>
     </tr>
     <tr>
         <td>
@@ -38,14 +43,6 @@
             title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{system.radiationDC.value}} to succeed. On Fail gain level of Radiation}}">
             {{#Sum system.radiationDC.modifiers system.radiationDC.base}}{{/Sum}}
         </td>
-    </tr>
-    <tr>
-        <td title="12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}"
-            >Passive Sense</td>
-        <td>Party Nerve</td>
-        <td>Group Sneak</td>
-    </tr>
-    <tr>
         <td class="skill-value">
             <i style="padding: 3px"
             data-statSubtraction
@@ -62,8 +59,4 @@
         <td><input type="number" name="system.partyNerve" value="{{ partyNerve }}" /></td>
         <td><input type="number" name="system.groupSneak" value="{{ groupSneak }}" /></td>
     </tr>
-    <tr>
-        <td colspan="4">
-    </td>
-  </tr>
 </table>
