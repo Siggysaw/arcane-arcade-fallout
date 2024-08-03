@@ -47,7 +47,7 @@ export default class AttackRoll extends FormApplication {
   /* -------------------------------------------- */
 
   /**
-   * Advantage mode of a 5e d20 roll
+   * Advantage mode of a d20 roll
    * @enum {number}
    */
   static ADV_MODE = {
@@ -126,19 +126,22 @@ export default class AttackRoll extends FormApplication {
   }
 
   activateListeners($html) {
-    const html = $html[0]
+    const form = $html[0]
+    form.addEventListener('change', () => {
+      Object.assign(this.formDataCache, this._getSubmitData())
+    })
 
-    const addTarget = html.querySelector('[data-add-target]')
+    const addTarget = form.querySelector('[data-add-target]')
     addTarget?.addEventListener('click', () => this.renderTargetedDialog())
 
-    const removeTarget = html.querySelector('[data-remove-target]')
+    const removeTarget = form.querySelector('[data-remove-target]')
     removeTarget?.addEventListener('click', () => {
       this.formDataCache.targeted = null
       this.formDataCache.totalApCost = this.formDataCache.apCost
       this.render()
     })
 
-    const closeButton = html.querySelector('[data-close]')
+    const closeButton = form.querySelector('[data-close]')
     closeButton?.addEventListener('click', this.close())
   }
 
@@ -167,7 +170,7 @@ export default class AttackRoll extends FormApplication {
   }
 
   getFlavor(target) {
-    let flavor = 'BOOM! Attack with ${this.weapon.name}'
+    let flavor = `BOOM! Attack with ${this.weapon.name}`
     if (!target) {
       return flavor
     }
