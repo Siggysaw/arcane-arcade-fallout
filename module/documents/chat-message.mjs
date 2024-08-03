@@ -704,9 +704,8 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   }
 
   async _rollDamage(formula, types) {
-    const target = this.targeted.target
     let flavor = `KAPOW! ${types.join(' and ')} damage`
-    if (this.targeted) {
+    if (this.targeted?.target) {
       const target =
         this.targeted.target === 'carried' ? `${this.targeted.target} item` : this.targeted.target
       flavor += ` to the ${target}!`
@@ -715,7 +714,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     }
 
     const roll = new Roll(
-      target === 'eyes' ? `floor((${formula}) / 2)` : formula,
+      this.targeted?.target === 'eyes' ? `floor((${formula}) / 2)` : formula,
       this.actor.getRollData(),
     )
 

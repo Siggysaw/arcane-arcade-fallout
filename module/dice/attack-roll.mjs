@@ -264,7 +264,7 @@ export default class AttackRoll extends FormApplication {
      */
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: this.getFlavor(this.formDataCache.targeted.target),
+      flavor: this.getFlavor(this.formDataCache.targeted?.target),
       rollMode: game.settings.get('core', 'rollMode'),
       'flags.falloutzero': {
         type: 'attack',
