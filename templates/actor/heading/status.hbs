@@ -113,6 +113,11 @@
             </div>
         </td>
     </tr>
+</table>
+<table class="equipped-stats">
+        <tr>
+            {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
+    </tr>
     <tr>
         <td class="skill-value">
             <i style="padding: 3px"
@@ -142,6 +147,7 @@
         </td>
     </tr>
     <tr style="letter-spacing: -1px">
+
         <td title="Armor Class (Roll Needed to Hit You)
         Total = {{#DifferentFrom armorClass.armor 10}}Armor{{else}}Unarmored{{/DifferentFrom}} ({{ armorClass.armor }}){{#DifferentFrom armorClass.modifiers 0}} + Effects ({{armorClass.modifiers}}){{/DifferentFrom}}{{#DifferentFrom armorClass.base 0}} + Manual Adjustments ({{armorClass.base}}){{/DifferentFrom}}">
             {{#FormatCompendium "AC" "properties"}}{{/FormatCompendium}}
