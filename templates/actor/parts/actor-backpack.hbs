@@ -75,8 +75,8 @@
 
                     </td>
                     <td>{{{item.system.description}}}</td>
-                    <td style="width:20px;">
-                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}" draggable="true"></i>
+                    <td style="width:20px;" class="context-menu" data-item-id="{{ item._id }}">
+                        <i class="fas fa-ellipsis-v context-icon" ></i>
                 </td>
                 </tr>
                 {{/unless}}
@@ -109,8 +109,8 @@
 
                 </td>
                 <td>{{{item.system.description}}}</td>
-                <td style="width:20px;">
-                    <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}" draggable="true"></i>
+                <td style="width:20px;" class="context-menu" data-item-id="{{ item._id }}">
+                    <i class="fas fa-ellipsis-v context-icon"></i>
                 </td>
             </tr>
                 {{/unless}}
@@ -125,15 +125,15 @@
                     {{#each miscItems as |item id|}}
                     {{#unless item.system.itemEquipped}}
                 <tr>
-                    <td>
-                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}" draggable="true"></i>
+                    <td style="width:20px;" class="context-menu" data-item-id="{{ item._id }}">
+                        <i class="fas fa-ellipsis-v context-icon"></i>
                     </td>
                     <td>
                         <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
                             <div class="item-controls">
                                 <a class="item-control"
                                    data-edit
-                                   data-item-id="{{ item._id }}" draggable="true"
+                                   data-item-id="{{ item._id }}"
                                    title="{{localize 'DOCUMENT.Update' type='item'}}">
                                     {{item.name}}
                                 </a>

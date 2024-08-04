@@ -220,9 +220,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // context list
     const itemContextMenu = [
       {
-        name: "Edit",
+        name: "View",
         icon: '<i class="fas fa-edit"></i>',
-        condition: (element) =>element.closest('.context-menu').data('item-id'),
+        condition: (element) => element.closest('.context-menu').data('item-id'),
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
@@ -230,14 +230,35 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: "Delete",
-        icon: '<i class="fas fa-trash"></i>',
-        condition: (element) => element.closest('.context-menu').data('item-id'),
+        name: "Equip/Unequip",
+        icon: '<i class="fas fa-tshirt"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.type === "rangedWeapon" ||
+            item.type === "meleeWeapon" ||
+            item.type === "armor" ||
+            item.type === "powerArmor") {
+            return true
+          }
+        },
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
-          this.actor.deleteEmbeddedDocuments('Item', [itemId])
+          const item = this.actor.items.get(itemId)
+          let enoughAP = true
+          /*if (item.type == 'powerArmor') { //Deprecated
+            enoughAP = this.actor.applyApCost(6)
+          }
+          if (enoughAP) {*/
+          item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+          if ((item.type == "armor" || item.type == "powerArmor") && item.parent) {
+            FalloutZeroArmor.prototype.changeEquipStatus(item)
+          } else {
+            FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
+          }
+          //}
         },
-      },
+      }, 
       {
         name: "Send to Chat",
         icon: '<i class="fa-solid fa-comment"></i>',
@@ -327,35 +348,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: "Equip",
-        icon: '<i class="fas fa-tshirt"></i>',
-        condition: (element) => {
-          const itemId = element.closest('.context-menu').data('item-id')
-          const item = this.actor.items.get(itemId)
-          if (item.type === "rangedWeapon" ||
-            item.type === "meleeWeapon" ||
-            item.type === "armor" ||
-            item.type === "powerArmor") {
-            return true
-          }
-        },
+        name: "Delete",
+        icon: '<i class="fas fa-trash"></i>',
+        condition: (element) => element.closest('.context-menu').data('item-id'),
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
-          const item = this.actor.items.get(itemId)
-          let enoughAP = true
-          /*if (item.type == 'powerArmor') { //Deprecated
-            enoughAP = this.actor.applyApCost(6)
-          }
-          if (enoughAP) {*/
-            item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-            if ((item.type == "armor" || item.type == "powerArmor") && item.parent) {
-              FalloutZeroArmor.prototype.changeEquipStatus(item)
-            } else {
-              FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
-            }
-          //}
+          this.actor.deleteEmbeddedDocuments('Item', [itemId])
         },
-      }, 
+      },
     ]
 
     new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click' })
@@ -467,26 +467,20 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-leveledup]', () => {
       this.actor.levelUp()
     })
-    //Skill Updated (Deprecated, moved to stat subtraction and addition)
-    /*html.on('click', '[data-skilladdition]', (ev) => {
-      const skill = ev.currentTarget.dataset.skill
-      this.actor.statAddition(skill, "skills")
-    })
-    html.on('click', '[data-skillsubtraction]', (ev) => {
-      const skill = ev.currentTarget.dataset.skill
-      this.actor.statSubtraction(skill, "skills")
-    })*/
 
     //Any other stat updated
     html.on('click', '[data-statSubtraction]', (ev) => {
       const stat = ev.currentTarget.dataset.stat
       const statType = ev.currentTarget.dataset.type
-      this.actor.statSubtraction(stat, statType)
+      const statType = ev.currentTarget.dataset.field
+      this.actor.statSubtraction(stat, statType, statField)
     })
     html.on('click', '[data-statAddition]', (ev) => {
       const stat = ev.currentTarget.dataset.stat
       const statType = ev.currentTarget.dataset.type
-      this.actor.statAddition(stat, statType)
+      const statType = ev.currentTarget.dataset.field
+      this.actor.statAddition(stat, statType, statField)
+
     })
     //Add Cap
     html.on('click', '[data-add-cap]', () => {
@@ -597,6 +591,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const weaponId = ev.currentTarget.dataset.weaponId
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.decay': ev.target.value },
+      ])
+    })
+
+    // Updates Armor DP
+    html.on('change', '[data-set-defense]', (ev) => {
+      const item = ev.currentTarget.dataset.itemId
+      this.actor.updateEmbeddedDocuments('Item', [
+        { _id: item, 'system.defensePoint.value': ev.target.value },
       ])
     })
 
