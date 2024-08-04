@@ -366,6 +366,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click' })
 
+    // Toggle Active Party Member
+    html.on('click', '[data-activeCheck]', (ev) => {
+      if (this.actor.system.activePartymember === true) {
+        this.actor.update({ 'system.activePartymember': false })
+      } else {
+        this.actor.update({ 'system.activePartymember': true })
+      }
+    })
+
     // Consume an Item
     html.on('click', '[data-lowerInventory]', (ev) => {
       const item = ev.currentTarget.dataset.lowerinventory
