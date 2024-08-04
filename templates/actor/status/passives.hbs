@@ -1,6 +1,6 @@
 <table>
     <tr>
-        <td>Healing Rate</td>
+        <td title="Calculated: {{system.healingRate.value}} (End + Lvl)/2 &#013;Modifiers: {{system.healingRate.modifiers}} &#013;Manual Edits: {{system.healingRate.base}}">Healing Rate</td>
         <td class="resource-label rollable"
             title="
             1d20 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.combatSequence.base 0}} + Manual adjustments ({{system.combatSequence.base}}){{/DifferentFrom}} {{#DifferentFrom system.combatSequence.modifiers 0}} + Effects ( {{system.combatSequence.modifiers}} ){{/DifferentFrom}} - Penalties ( {{system.penaltyTotal}} ) + Half-luck ( {{#LckMod system.abilities.lck.mod 2}}{{/LckMod}} )"
@@ -10,8 +10,12 @@
             data-label="Performed a Combat Sequence roll!<br> D20 + Combat Sequence - Penalties <br> + Luck Mod / 2">
             Combat Sequence
         </td>
-        <td class="status-info-label">
-            <p> Rad DC</p>
+        <td class="rollable"
+            data-rollable
+            data-roll="d20-{{ penaltyTotal }}"
+            data-label="Radiation DC Check: Roll over {{system.radiationDC.value}} to succeed"
+            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{system.radiationDC.value}} to succeed. On Fail gain level of Radiation}}">
+            Rad DC
         </td>
         <td title="12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}">
             Passive Sense
@@ -20,43 +24,49 @@
         <td>Group Sneak</td>
     </tr>
     <tr>
-        <td>
-            <input type="number" name="system.healingRate" value="{{ healingRate }}" />
+        <td class="skill-value">
+            <i style="padding: 3px"
+               data-statSubtraction
+               data-stat="healingRate"
+               data-type=""
+               class="fas fa-minus-square fakebutton nobackground"></i>
+            {{#Sum3 system.healingRate.base system.healingRate.modifiers system.healingRate.value}}{{/Sum3}}
+            <i style="padding: 3px"
+               data-statAddition
+               data-stat="healingRate"
+               data-type=""
+               class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
         <td class="skill-value">
             <i style="padding: 3px"
-            data-statSubtraction
-            data-stat="combatSequence"
-            data-type=""
-            class="fas fa-minus-square fakebutton nobackground"></i>
+               data-statSubtraction
+               data-stat="combatSequence"
+               data-type=""
+               class="fas fa-minus-square fakebutton nobackground"></i>
             {{system.combatSequence.value}}
             <i style="padding: 3px"
-            data-statAddition
-            data-stat="combatSequence"
-            data-type=""
-            class="fas fa-plus-square fakebutton nobackground"></i>
+               data-statAddition
+               data-stat="combatSequence"
+               data-type=""
+               class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
-        <td class="status-info-label rollable fakebutton"
-            data-rollable
-            data-roll="d20-{{ penaltyTotal }}"
-            data-label="Radiation DC Check: Roll over {{system.radiationDC.value}} to succeed"
-            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{system.radiationDC.value}} to succeed. On Fail gain level of Radiation}}">
+        <td style="vertical-align:middle;">
             {{#Sum system.radiationDC.modifiers system.radiationDC.base}}{{/Sum}}
         </td>
         <td class="skill-value">
             <i style="padding: 3px"
-            data-statSubtraction
-            data-stat="passiveSense"
-            data-type=""
-            class="fas fa-minus-square fakebutton nobackground"></i>
+               data-statSubtraction
+               data-stat="passiveSense"
+               data-type=""
+               class="fas fa-minus-square fakebutton nobackground"></i>
             {{system.passiveSense.value}}
             <i style="padding: 3px"
-            data-statAddition
-            data-stat="passiveSense"
-            data-type=""
-            class="fas fa-plus-square fakebutton nobackground"></i>
+               data-statAddition
+               data-stat="passiveSense"
+               data-type=""
+               class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
-        <td><input type="number" name="system.partyNerve" value="{{ partyNerve }}" /></td>
-        <td><input type="number" name="system.groupSneak" value="{{ groupSneak }}" /></td>
+        <td>{{#Sum system.partyNerve.base system.partyNerve.modifiers }}{{/Sum}}</td>
+        <td>{{#Sum system.groupSneak.base system.groupSneak.modifiers }}{{/Sum}}</td>
     </tr>
 </table>

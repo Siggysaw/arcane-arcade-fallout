@@ -52,8 +52,7 @@ details > summary {
 }
 .rollable:hover,
 .rollable:focus {
-  color: #1d5427;
-  text-shadow: 0 0 10px #1d5427;
+  text-shadow: 0 0 10px #01e998;
   cursor: pointer;
 }
 
@@ -873,4 +872,8 @@ a.inline-roll,
 }
 .sheet .perk-context li {
   font-size: 8pt;
+}
+.sheet .status-table td{
+  vertical-align:middle;
+  font-size:10pt;
 }

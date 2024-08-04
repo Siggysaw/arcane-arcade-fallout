@@ -11,11 +11,11 @@
   </div>
   <div>
     <div class="flex justify-center gap-5">
-      <button class="w-auto" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
-        <i class="fas fa-minus-square"></i>
+      <button class="w-auto no-background" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
+        <i class="fas fa-minus-square "></i>
       </button>
-      {{ skill.value }}
-      <button class="w-auto" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
+      <span class="skillvalue">{{skill.value}}</span>
+      <button class="w-auto no-background" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
         <i class="fas fa-plus-square"></i>
       </button>
     </div>

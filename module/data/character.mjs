@@ -68,15 +68,29 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       }),
     })
     schema.xp = new fields.NumberField({ initial: 0 })
-    schema.healingRate = new fields.NumberField({ initial: 0 })
-    schema.groupSneak = new fields.NumberField({ initial: 0 })
+    schema.healingRate = new fields.SchemaField({
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 })
+    })
     schema.combatSequence = new fields.SchemaField({
       base : new fields.NumberField({ initial: 0 }),
       value : new fields.NumberField({ initial: 0 }),
       modifiers : new fields.NumberField({ initial: 0 }),
       advantage : new fields.NumberField({ initial: 0 })
     })
-    schema.partyNerve = new fields.NumberField({ initial: 0 })
+    schema.partyNerve = new fields.SchemaField({
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 }),
+      advantage: new fields.NumberField({ initial: 0 })
+    })
+    schema.groupSneak = new fields.SchemaField({
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 }),
+      advantage: new fields.NumberField({ initial: 0 })
+    })
     schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.combatActionsexpanded = new fields.BooleanField({ initial: false })
     schema.passiveSense = new fields.SchemaField({
@@ -86,30 +100,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
-    /*schema.conditions = new fields.SchemaField({
-      Blinded: new fields.BooleanField({ initial: false }),
-      Bleeding: new fields.BooleanField({ initial: false }),
-      BleedingLvls: new fields.NumberField({ initial: 0 }),
-      Burning: new fields.BooleanField({ initial: false }),
-      Buzzed: new fields.BooleanField({ initial: false }),
-      Corroded: new fields.BooleanField({ initial: false }),
-      Dazed: new fields.BooleanField({ initial: false }),
-      Deafened: new fields.BooleanField({ initial: false }),
-      Drunk: new fields.BooleanField({ initial: false }),
-      Frightened: new fields.BooleanField({ initial: false }),
-      Grappled: new fields.BooleanField({ initial: false }),
-      Hammered: new fields.BooleanField({ initial: false }),
-      Heavily_Encumbered: new fields.BooleanField({ initial: false }),
-      Invisible: new fields.BooleanField({ initial: false }),
-      Poisoned: new fields.BooleanField({ initial: false }),
-      Prone: new fields.BooleanField({ initial: false }),
-      Restrained: new fields.BooleanField({ initial: false }),
-      Shadowed: new fields.BooleanField({ initial: false }),
-      Shock: new fields.BooleanField({ initial: false }),
-      Slowed: new fields.BooleanField({ initial: false }),
-      Unconscious: new fields.BooleanField({ initial: false }),
-      Wasted: new fields.BooleanField({ initial: false }),
-    })*/
+    schema.activePartymember = new fields.BooleanField({ initial: true })
     return schema
   }
 
@@ -122,6 +113,18 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.limbdamage[key].description = FALLOUTZERO.limbdamage[key].description
       this.limbdamage[key].label = FALLOUTZERO.limbdamage[key].label
     }
+    const characterList = game.actors.filter((entries) => entries.type === "character")
+    const activeCharacterList = characterList.filter((FalloutZeroActor) => FalloutZeroActor.system.activePartymember === true)
+    let charismaModtotal = 0
+    let groupSneaktotal = 0
+    for (let character of activeCharacterList) {
+      charismaModtotal += character.system.abilities.cha.mod
+      groupSneaktotal += character.system.skills.sneak.base + character.system.skills.sneak.modifiers
+    }
+
+    this.partyNerve.base = Math.floor(charismaModtotal / 2)
+    this.groupSneak.base = Math.floor(groupSneaktotal / characterList.length)
+
   }
 
   /**
@@ -155,7 +158,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers,0)
     this.radiationDC.base = 12 - this.abilities['end'].mod
     this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
-    this.healingRate = Math.floor((this.level + this.abilities['end'].value) / 2)
     this.penaltyTotal =
       this.penalties.hunger.value +
       this.penalties.dehydration.value +
@@ -165,7 +167,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.carryLoad.baseMax = this.abilities['str'].value * 10
     this.carryLoad.max = this.carryLoad.baseMax + this.carryLoad.modifiersMax
     this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
-
+    this.healingRate.value = Math.floor((this.level + this.abilities['end'].value) / 2)
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     if (this.luckmod < 0) {
       this.luckmod = -1
