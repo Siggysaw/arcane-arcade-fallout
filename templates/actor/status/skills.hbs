@@ -1,41 +1,24 @@
-<table>
-    <tr>
-        {{#each skills as |skill key|}}
-    </tr>
-
-    <tr>
-        <td>
-            {{#each skill.ability as |abilityKey|}}
-
-            <p class="specialroll">
-                <label for="{{ abilityKey }}"
-                       class="resource-label rollable"
-                       title="d20 + Skill Points ( Base: {{skill.base}}{{#DifferentFrom skill.modifiers 0}} + Effects : {{skill.modifiers}} {{/DifferentFrom}}){{#with (lookup ../../abilities [abilityKey])}} + {{label}} Mod{{/with}} ({{#with (lookup ../../abilities [abilityKey])}} {{mod}} {{/with}}){{#DifferentFrom ../../penaltyTotal 0}} -  Penalties ( {{../../penaltyTotal}} ){{/DifferentFrom}} + Half-luck ( {{#LckMod ../../abilities.lck.mod 2}}{{/LckMod}} )"
-                       data-rollable
-                       data-advantage="{{skill.advantage}}"
-                       data-roll="d20+{{#Sum skill.base skill.modifiers}}{{/Sum}}+{{#with (lookup ../../abilities [abilityKey])}} {{mod}} {{/with}}-@penaltyTotal+@luckmod"
-                       data-label="Performed a {{skill.label}} roll using {{#with (lookup ../../abilities [abilityKey])}}{{ label }} {{/with}}">
-                    {{ abilityKey }}
-                </label>
-            </p>
-            {{/each}}
-        </td>
-        <td class="skill-label" title="Base: {{ skill.base }} Modifier: {{ skill.modifiers }}">
-            {{ skill.label }}
-        </td>
-        <td class="skill-value">
-            <i style="padding: 3px"
-               data-statSubtraction
-               data-stat="{{ skill.id }}"
-               data-type="skills"
-               class="fas fa-minus-square fakebutton nobackground"></i>
-            {{skill.value}}
-            <i style="padding: 3px"
-               data-statAddition
-               data-stat="{{ skill.id }}"
-               data-type="skills"
-               class="fas fa-plus-square fakebutton nobackground"></i>
-        </td>
-    </tr>
-    {{/each}}
-</table>
+<div class="grid bordered">
+  {{#each skills as |skill key|}}
+  <div>
+    <button
+      type="button"
+      data-skill-roll="{{ skill.id }}"
+      title="Base: {{ skill.base }} Modifier: {{ skill.modifiers }}"
+    >
+      {{ skill.label }}
+    </button>
+  </div>
+  <div>
+    <div class="flex justify-center gap-5">
+      <button class="w-auto" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
+        <i class="fas fa-minus-square"></i>
+      </button>
+      {{ skill.value }}
+      <button class="w-auto" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
+        <i class="fas fa-plus-square"></i>
+      </button>
+    </div>
+  </div>
+  {{/each}}
+</div>

@@ -2,6 +2,8 @@ import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
 import FalloutZeroItem from '../documents/item.mjs'
+import SkillRoll from '../dice/skill-roll.mjs'
+
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -220,9 +222,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // context list
     const itemContextMenu = [
       {
-        name: "Edit",
+        name: 'Edit',
         icon: '<i class="fas fa-edit"></i>',
-        condition: (element) =>element.closest('.context-menu').data('item-id'),
+        condition: (element) => element.closest('.context-menu').data('item-id'),
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
@@ -230,7 +232,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: "Delete",
+        name: 'Delete',
         icon: '<i class="fas fa-trash"></i>',
         condition: (element) => element.closest('.context-menu').data('item-id'),
         callback: (element) => {
@@ -239,7 +241,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: "Send to Chat",
+        name: 'Send to Chat',
         icon: '<i class="fa-solid fa-comment"></i>',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
@@ -265,27 +267,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: "Eat/Drink",
+        name: 'Eat/Drink',
         icon: '<i class="fas fa-drumstick-bite"></i>',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type == "foodAnddrink" && item.system.quantity > 0) {
-            return true
-          }
-        },
-        callback: (element) => {
-          const itemId = element.closest('.context-menu').data('item-id')
-          const item = this.actor.items.get(itemId)
-          this.actor.lowerInventory(itemId)
-        },
-      }, {
-        name: "Use Chem",
-        icon: '<i class="fas fa-syringe"></i>',
-        condition: (element) => {
-          const itemId = element.closest('.context-menu').data('item-id')
-          const item = this.actor.items.get(itemId)
-          if (item.type == "chem" && item.system.quantity > 0) {
+          if (item.type == 'foodAnddrink' && item.system.quantity > 0) {
             return true
           }
         },
@@ -296,12 +283,28 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: "Break Down",
+        name: 'Use Chem',
+        icon: '<i class="fas fa-syringe"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.type == 'chem' && item.system.quantity > 0) {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          this.actor.lowerInventory(itemId)
+        },
+      },
+      {
+        name: 'Break Down',
         icon: '<i class="fa-solid fa-screwdriver-wrench"></i>',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type == "junkItem" && item.system.quantity > 0) {
+          if (item.type == 'junkItem' && item.system.quantity > 0) {
             return true
           }
         },
@@ -310,13 +313,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           const item = this.actor.items.get(itemId)
           this.actor.checkConvert(itemId)
         },
-      }, {
-        name: "Use Med",
+      },
+      {
+        name: 'Use Med',
         icon: '<i class="fas fa-medkit"></i>',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type == "medicine" && item.system.quantity > 0) {
+          if (item.type == 'medicine' && item.system.quantity > 0) {
             return true
           }
         },
@@ -327,15 +331,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: "Equip",
+        name: 'Equip',
         icon: '<i class="fas fa-tshirt"></i>',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type === "rangedWeapon" ||
-            item.type === "meleeWeapon" ||
-            item.type === "armor" ||
-            item.type === "powerArmor") {
+          if (
+            item.type === 'rangedWeapon' ||
+            item.type === 'meleeWeapon' ||
+            item.type === 'armor' ||
+            item.type === 'powerArmor'
+          ) {
             return true
           }
         },
@@ -347,15 +353,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
             enoughAP = this.actor.applyApCost(6)
           }
           if (enoughAP) {*/
-            item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-            if ((item.type == "armor" || item.type == "powerArmor") && item.parent) {
-              FalloutZeroArmor.prototype.changeEquipStatus(item)
-            } else {
-              FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
-            }
+          item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+          if ((item.type == 'armor' || item.type == 'powerArmor') && item.parent) {
+            FalloutZeroArmor.prototype.changeEquipStatus(item)
+          } else {
+            FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
+          }
           //}
         },
-      }, 
+      },
     ]
 
     new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click' })
@@ -518,6 +524,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       weapon.rollAttack({ advantageMode })
     })
 
+    // skill roll
+
+    html.on('click', '[data-skill-roll]', async (ev) => {
+      const skillKey = ev.currentTarget.dataset.skillRoll
+      const roll = await new SkillRoll(this.actor, skillKey, () => {})
+      roll.render(true)
+    })
+
     // Render the item sheet for viewing/editing prior to the editable check.
     html.on('click', '[data-edit]', (ev) => {
       const itemId = ev.currentTarget.dataset.itemId
@@ -534,12 +548,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         enoughAP = this.actor.applyApCost(6)
       }
       if (enoughAP) {*/
-        item.update({ 'system.itemEquipped': !item.system.itemEquipped})
-        if ((item.type == "armor" || item.type == "powerArmor") && item.parent){
-          FalloutZeroArmor.prototype.changeEquipStatus(item)
-        } else {
-          FalloutZeroArmor.prototype.toggleEffects(myItem,item.system.itemEquipped)
-        }
+      item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+      if ((item.type == 'armor' || item.type == 'powerArmor') && item.parent) {
+        FalloutZeroArmor.prototype.changeEquipStatus(item)
+      } else {
+        FalloutZeroArmor.prototype.toggleEffects(myItem, item.system.itemEquipped)
+      }
       //}
     })
 
@@ -732,7 +746,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
    * @protected
    */
   async _onDropItemCreate(itemData) {
-    
     switch (itemData.type) {
       case 'trait':
         this._onDropItemCreateTrait(itemData)
@@ -744,8 +757,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         this._onDropItemCreateBackgroundGrants(itemData)
         return
       default:
-        if (itemData.system.itemEquipped){
-          itemData.system.itemEquipped = false;
+        if (itemData.system.itemEquipped) {
+          itemData.system.itemEquipped = false
         }
         super._onDropItemCreate(itemData)
         return
@@ -830,9 +843,13 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // Handle rolls that supply the formula directly.
     if (dataset.roll) {
       let label = dataset.label || ''
-      if (typeof dataset.advantage != "undefined" && !dataset.roll.includes("2d20")){
-        if (Number(dataset.advantage) > 0){dataset.roll=dataset.roll.split("d20").join("2d20kh")}
-        if (Number(dataset.advantage) < 0){dataset.roll=dataset.roll.split("d20").join("2d20kl")}
+      if (typeof dataset.advantage != 'undefined' && !dataset.roll.includes('2d20')) {
+        if (Number(dataset.advantage) > 0) {
+          dataset.roll = dataset.roll.split('d20').join('2d20kh')
+        }
+        if (Number(dataset.advantage) < 0) {
+          dataset.roll = dataset.roll.split('d20').join('2d20kl')
+        }
       }
       let roll = new Roll(dataset.roll, this.actor.getRollData())
       roll.toMessage({

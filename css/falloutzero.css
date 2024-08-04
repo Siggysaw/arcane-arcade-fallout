@@ -7,6 +7,7 @@
 @import 'attack-roll.css';
 @import 'targeted-attack.css';
 @import 'chat.css';
+@import 'sheet-status.css';
 
 /* Global styles */
 @font-face {
@@ -499,14 +500,14 @@ td,
 }
 .sheet .fakebutton:hover,
 .sheet button:hover,
-.sheet .character-status i:hover{
+.sheet .character-status i:hover {
   border: #1d5427;
   background: #1d5427;
   color: white;
 }
 .sheet .fakebutton:active,
 .sheet button:active,
-.sheet .character-status i:active{
+.sheet .character-status i:active {
   border: #1d5427;
   background: white;
   color: #1d5427;
@@ -830,10 +831,10 @@ a.inline-roll,
   font-size: 14pt;
   padding: 3px;
   width: 100%;
-  background:#1d5427
+  background: #1d5427;
 }
-.sheet .character .character-status{
-    width:200px;
+.sheet .character .character-status {
+  width: 200px;
 }
 .sheet .character .character-status input {
   width: 50px;
@@ -853,23 +854,23 @@ a.inline-roll,
   border-radius: 15px;
   box-shadow: 0px 0px 6px #777 inset;
 }
-.sheet .character .bio td{
-    padding-right:10px;
+.sheet .character .bio td {
+  padding-right: 10px;
 }
 .sheet .backpack-item {
   float: left;
   padding: 10px;
   margin: 2px;
 }
-.sheet .context-icon{
-    font-size:14pt; 
+.sheet .context-icon {
+  font-size: 14pt;
 }
-.sheet .context-menu{
-    cursor:pointer
+.sheet .context-menu {
+  cursor: pointer;
 }
 .sheet .context-menu li {
   font-size: 10pt;
 }
-.sheet .perk-context li{
-    font-size:8pt;
+.sheet .perk-context li {
+  font-size: 8pt;
 }

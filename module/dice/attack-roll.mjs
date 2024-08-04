@@ -7,11 +7,11 @@ export default class AttackRoll extends FormApplication {
 
     this.formDataCache = {
       consumesAp: true,
-      skillBonus: this.weapon.getSkillBonus(),
+      skillBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus),
       abilityBonus: this.weapon.getAbilityBonus(),
       decayPenalty: this.weapon.getDecayValue(),
-      actorLuck: this.weapon.getActorLuck(),
-      actorPenalties: this.weapon.getActorPenalties(),
+      actorLuck: this.actor.system.luckmod,
+      actorPenalties: this.actor.system.penaltyTotal,
       bonus: '',
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,

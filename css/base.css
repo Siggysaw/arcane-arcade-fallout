@@ -3,8 +3,28 @@
   align-items: center;
 }
 
-.space-between {
+.flex.justify-center {
+  justify-content: center;
+}
+
+.flex.space-between {
   justify-content: space-between;
+}
+
+.gap-1 {
+  gap: 1px;
+}
+.gap-2 {
+  gap: 2px;
+}
+.gap-3 {
+  gap: 3px;
+}
+.gap-4 {
+  gap: 4px;
+}
+.gap-5 {
+  gap: 5px;
 }
 
 .w-auto {
@@ -13,6 +33,14 @@
 
 .w-full {
   width: 100%;
+}
+
+.p-1 {
+  padding: 5px;
+}
+
+.p-2 {
+  padding: 10px;
 }
 
 .mx-1 {
