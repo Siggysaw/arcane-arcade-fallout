@@ -273,13 +273,11 @@ export default class FalloutZeroActor extends Actor {
       //Activate effect
       if (actorEffects.find((e) => e.name == condition)) {
         actorEf = await actorEffects.get(actorEffects.find((e) => e.name == condition)._id)
-        //await FalloutZeroItem.prototype.toggleEffects(actorEf,false) //Only applies AFTER the effect of chem/drink wears off it turns out
       } else {
         //Create new effect if not already on character
         let pack = await game.packs.find((p) => p.metadata.name == 'conditions')
         conditionObj = await pack.getDocument(pack.find((o) => o.name == condition)._id)
         actorEf = await Item.create(conditionObj, { parent: this })
-        //await FalloutZeroItem.prototype.toggleEffects(actorEf,false) //Only applies AFTER the effect of chem/drink wears off it turns out
       }
       if (condition == 'Psychosis') {
         chatMessage = `Uh-oh! Your ${this.formatCompendiumItem('conditions', 'Psychosis', 'Click for details')} pushes you to attack the nearest creature.`
@@ -417,23 +415,19 @@ export default class FalloutZeroActor extends Actor {
       //Add active effects from each condition present on the consumable
       let descSplit = description.split(' ')
       let strSplit, newCondition, itemEf, actorEf
-      let i
-      let createdOnce = false
-      let conditionItem
       let actorEffects = this.items
-      
       for (var str of descSplit) {
         if (str.includes('uuid')) {
           //Example : data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}"
           strSplit = str.replace(/"/g, '').split('.')
           newCondition = await pack.getDocument(strSplit[strSplit.length - 1])
           if (newCondition) {
-            i = 0
+            let i = 0
             if (await actorEffects.find((e) => e.name == newCondition.name && e.type == "condition")){ //if condition exists on actor
               actorEf = await actorEffects.get(actorEffects.find((e) => e.name == newCondition.name && e.type == "condition")._id,)
               const itemEffects = actorEf.collections.effects.contents
               const qty = actorEf.system.quantity
-              while (i < itemEffects.length) {
+              while (i < itemEffects.length) { //IF levels of effects are present, it will upgrade according to quantity.
                 itemEf = await actorEf.effects.get(itemEffects[i]._id)
                 if (Number(itemEf.name.slice(-1)) == qty + 1){ 
                   await actorEf.update({'system.quantity' : qty + 1})
@@ -448,9 +442,9 @@ export default class FalloutZeroActor extends Actor {
                 }
                 i++
               }
-            } else { // condition is not on actor
+            } else { // condition is not on actor, create it
               if (newCondition.collections.effects.contents.filter(e => e.disabled == false).length > 0) { //Create it if it has active effects
-                conditionItem = await Item.create(newCondition, { parent: this })
+                await Item.create(newCondition, { parent: this })
               }
             }
           }

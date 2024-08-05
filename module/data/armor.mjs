@@ -449,9 +449,9 @@ async seeUpgrade (id){
   //Equip item upgrades (right now, it's just armor upgrades)
   async equipItemStats (myItem){
     if (myItem.type == "armor"){
-      myItem.parent.update({'system.damageThreshold.armor' : myItem.system.damageThreshold.value, 'system.armorClass.armor' : myItem.system.armorClass.value});
+      myItem.parent.update({'system.damageThreshold.armor' : myItem.system.damageThreshold.value, 'system.armorClass.armor' : myItem.system.armorClass.value, 'system.armorClass.base' : 0});
     } else { //Power Armor
-      myItem.parent.update({'system.armorClass.armor' : myItem.system.armorClass.value})
+      myItem.parent.update({'system.armorClass.armor' : myItem.system.armorClass.value, 'system.armorClass.base' : 0})
     }
     
   }

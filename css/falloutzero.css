@@ -389,6 +389,7 @@ table .bio-label {
   border: solid 2px #1d5427;
 }
 .sheet header.sheet-header .profile-image-td img {
+  object-fit :scale-down
 }
 .sheet header.sheet-header .custom-icon {
   height: 30px;

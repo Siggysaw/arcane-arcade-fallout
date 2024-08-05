@@ -58,6 +58,12 @@ export default class FalloutZeroItem extends Item {
         qty++
         myItem.update({ 'system.quantity': qty })
         return false
+      } else {
+        console.log(this , data)
+        if (this.system.itemEquipped == true){
+          console.log("UNEQUIPPING!")
+          data.system.itemEquipped = false
+        }
       }
     }
   }
@@ -65,6 +71,9 @@ export default class FalloutZeroItem extends Item {
   /** @inheritDoc */
   prepareDerivedData() {
     super.prepareDerivedData()
+    if (this.type == "powerArmor"){
+      this.system.cost = this.system.baseCost.value
+    }
   }
 
   //Get Reactions added according to Conditions
