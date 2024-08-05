@@ -71,6 +71,19 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     actorData.system.carryLoad.max =
       actorData.system.carryLoad.baseMax + actorData.system.carryLoad.modifiersMax
 
+    //Set Group Sneak and Party Nerve
+    const characterList = game.actors.filter((entries) => entries.type === "character")
+    const activeCharacterList = characterList.filter((FalloutZeroActor) => FalloutZeroActor.system.activePartymember === true)
+    let charismaModtotal = 0
+    let groupSneaktotal = 0
+    for (let character of activeCharacterList) {
+      charismaModtotal += character.system.abilities.cha.mod
+      groupSneaktotal += character.system.skills.sneak.base + character.system.skills.sneak.modifiers
+    }
+    const activePlayercount = characterList.length
+    actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
+    actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
+
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData()
 

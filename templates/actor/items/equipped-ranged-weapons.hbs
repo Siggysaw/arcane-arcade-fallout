@@ -84,7 +84,7 @@
             <tr><td rowspan="3" style="background:black;"><img src="{{item.img}}" style="width:75px;height:auto;" /></td>
                 <td>{{ item.system.ammo.assigned }}</td>
                 <td>Owned</td>
-                <td rowspan="2" style="width:40px;">
+                <td rowspan="2" style="width:40px;background:#222;">
                     <div title="Swap Your Current Ammo"
                          class="fakebutton"
                          style="padding:10px;"
@@ -93,7 +93,7 @@
                         SWAP AMMO
                     </div>
                 </td>
-                <td rowspan="2">
+                <td rowspan="2" style="background:#222;">
                     {{#GreaterThan item.system.ammo.capacity.value 1}}
                     <div class="fakebutton rollable resource-label"
                          style="padding:20px;"

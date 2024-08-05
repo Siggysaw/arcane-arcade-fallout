@@ -1,26 +1,26 @@
 <tr>
     <td>
         {{#each ammos as |item id|}}
-                <span 
-                   class="context-menu backpack-item"
+                <li 
+                   class="context-menu backpack-item item"
                    data-item-id="{{ item._id }}"
                       draggable="true"
                    title="{{localize 'DOCUMENT.Update' type='item'}}">
                     {{item.name}}({{item.system.quantity}})
-                </span>
+                </li>
         {{/each}}
     </td>
 </tr>
 <tr>
     <td>
         {{#each explosives as |item id|}}
-        <span
-              class="context-menu backpack-item"
+        <li
+              class="context-menu backpack-item item"
               data-item-id="{{ item._id }}"
               draggable="true"
               title="{{localize 'DOCUMENT.Update' type='item'}}">
             {{item.name}}({{item.system.quantity}})
-        </span>
+        </li>
 
         {{/each}}
     </td>

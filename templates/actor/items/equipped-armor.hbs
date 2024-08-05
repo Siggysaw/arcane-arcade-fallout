@@ -2,7 +2,7 @@
 {{#each armors as |item id|}}
 {{#if item.system.itemEquipped}}
 <td colspan="2" class="context-menu"
-      data-item-id="{{ item._id }}" draggable="true"
+      data-item-id="{{ item._id }}"
       title="{{localize 'DOCUMENT.Update' type='item'}}">
     {{item.name}}
 </td>
@@ -12,7 +12,7 @@
 {{#if item.system.itemEquipped}}
 <td
     class="context-menu"
-      data-item-id="{{ item._id }}" draggable="true"
+      data-item-id="{{ item._id }}"
       title="{{localize 'DOCUMENT.Update' type='item'}}">
     {{item.name}}
 </td>

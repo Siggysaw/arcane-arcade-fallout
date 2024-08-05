@@ -14,14 +14,14 @@
             data-rollable
             data-roll="d20-{{ penaltyTotal }}"
             data-label="Radiation DC Check: Roll over {{system.radiationDC.value}} to succeed"
-            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{system.radiationDC.value}} to succeed. On Fail gain level of Radiation}}">
+            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll higher than {{system.radiationDC.value}} to succeed. On Fail gain level of Radiation">
             Rad DC
         </td>
         <td title="12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}">
             Passive Sense
         </td>
-        <td>Party Nerve</td>
-        <td>Group Sneak</td>
+        <td title="Party Charisma Mods Added together divided by 2">Party Nerve</td>
+        <td title="Party Sneak Total divided by Player Number">Group Sneak</td>
     </tr>
     <tr>
         <td class="skill-value">

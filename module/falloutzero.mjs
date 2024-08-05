@@ -55,6 +55,8 @@ Hooks.once('init', function () {
     foodAnddrink: models.FalloutZeroCondition,
     chem: models.FalloutZeroCondition,
     medicine: models.FalloutZeroCondition,
+    miscItem: models.FalloutZeroCondition,
+    explosive: models.FalloutZeroCondition,
   }
 
   // Active Effects are never copied to the Actor,

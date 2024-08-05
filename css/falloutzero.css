@@ -327,6 +327,7 @@ form .title,
 form .form-group span.units,
 form div label {
   color: #01e998;
+  list-style-type: none;
 }
 .journal-entry-content {
   letter-spacing: 0rem;

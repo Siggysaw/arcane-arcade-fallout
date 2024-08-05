@@ -113,18 +113,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.limbdamage[key].description = FALLOUTZERO.limbdamage[key].description
       this.limbdamage[key].label = FALLOUTZERO.limbdamage[key].label
     }
-    const characterList = game.actors.filter((entries) => entries.type === "character")
-    const activeCharacterList = characterList.filter((FalloutZeroActor) => FalloutZeroActor.system.activePartymember === true)
-    let charismaModtotal = 0
-    let groupSneaktotal = 0
-    for (let character of activeCharacterList) {
-      charismaModtotal += character.system.abilities.cha.mod
-      groupSneaktotal += character.system.skills.sneak.base + character.system.skills.sneak.modifiers
-    }
-
-    this.partyNerve.base = Math.floor(charismaModtotal / 2)
-    this.groupSneak.base = Math.floor(groupSneaktotal / characterList.length)
-
   }
 
   /**

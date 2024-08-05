@@ -4,41 +4,41 @@
             <h3>Weapons and Armor</h3>
             {{#each rangedWeapons as |item id|}}
             {{#unless item.system.itemEquipped}}
-            <span class="context-menu backpack-item"
+            <li class="context-menu backpack-item item"
                   data-item-id="{{ item._id }}" 
                   draggable="true"
                   title="{{localize 'DOCUMENT.Update' type='item'}}">
                 {{item.name}}({{item.system.quantity}})
-            </span>
+            </li>
             {{/unless}}
             {{/each}}
             {{#each meleeWeapons as |item id|}}
             {{#unless item.system.itemEquipped}}
-            <span class="context-menu backpack-item"
+            <li class="context-menu backpack-item item"
                   data-item-id="{{ item._id }}" 
                   draggable="true"
                   title="{{localize 'DOCUMENT.Update' type='item'}}">
                 {{item.name}}({{item.system.quantity}})
-            </span>
+            </li>
             {{/unless}}
             {{/each}}
             {{#each armors as |item id|}}
             {{#unless item.system.itemEquipped}}
-            <span class="context-menu backpack-item"
+            <li class="context-menu backpack-item item"
                   data-item-id="{{ item._id }}" draggable="true"
                   title="{{localize 'DOCUMENT.Update' type='item'}}">
                 {{item.name}}({{item.system.quantity}})
-            </span>
+            </li>
             {{/unless}}
             {{/each}}
             {{#each powerArmors as |item id|}}
             {{#unless item.system.itemEquipped}}
-            <span class="context-menu backpack-item"
+            <li class="context-menu backpack-item item"
                   data-item-id="{{ item._id }}" draggable="true"
                   
                   title="{{localize 'DOCUMENT.Update' type='item'}}">
                 {{item.name}}({{item.system.quantity}})
-            </span>
+            </li>
             {{/unless}}
             {{/each}}
         </td>

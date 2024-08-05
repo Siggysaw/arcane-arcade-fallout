@@ -5,24 +5,28 @@
                 <tr><td colspan="999"><h3>Materials</h3></td></tr>
                 <tr><td>Name</td><td>Qty</td><td></td></tr>
                 {{#each materials as |item id|}}
-            <tr>
-                <td>
-                    <a class="item-control"
-                       data-edit
-                       data-item-id="{{ item._id }}"
-                       title="{{localize 'DOCUMENT.Update' type='item'}}">
-                        {{item.name}}
-                    </a>
-                </td>
-                <td style="width:80px">
-                    <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                    {{ system.quantity }}
-                    <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
-                </td>
-                <td style="width:20px;">
-                    <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
+                            <a class="item-control"
+                               data-edit
+                               data-item-id="{{ item._id }}"
+                               draggable="true"
+                               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                {{item.name}}
+                            </a>
+                        </li>
+
+                    </td>
+                    <td style="width:80px">
+                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
+                        {{ system.quantity }}
+                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
+                    </td>
+                    <td style="width:20px;">
+                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
+                    </td>
+                </tr>
                 {{/each}}
             </table>
         </td>
@@ -31,30 +35,32 @@
                 <tr><td colspan=999><h3>junk</h3></td></tr>
                 <tr><td></td><td>Name</td><td>Qty</td><td>Materials</td></tr>
                 {{#each junk as |item id|}}
-            <tr>
-                <td style="width:20px;">
-                    <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
-                </td>
-                <td>
-                    <a class="item-control"
-                       data-edit
-                       data-item-id="{{ item._id }}"
-                       title="{{localize 'DOCUMENT.Update' type='item'}}">
-                        {{item.name}}
-                    </a>
-                </td>
-                <td style="width:80px;">
-                    <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                    {{ system.quantity }}
-                    <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
-                </td>
+                <tr>
+                    <td style="width:20px;">
+                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
+                    </td>
+                    <td>
+                        <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
+                            <a class="item-control"
+                               data-edit
+                               data-item-id="{{ item._id }}"
+                               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                                {{item.name}}
+                            </a>
+                            </li>
+                    </td>
+                    <td style="width:80px;">
+                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
+                        {{ system.quantity }}
+                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
+                    </td>
 
-                <td>
-                    {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}}
-                    {{#if (gt system.junk.quantity2 0)}} {{ system.junk.type2 }} ({{ system.junk.quantity2 }}){{/if}}
-                    {{#if (gt system.junk.quantity3 0)}} {{ system.junk.type3 }} ({{ system.junk.quantity3 }}){{/if}}
-                </td>
-            </tr>
+                    <td>
+                        {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}}
+                        {{#if (gt system.junk.quantity2 0)}} {{ system.junk.type2 }} ({{ system.junk.quantity2 }}){{/if}}
+                        {{#if (gt system.junk.quantity3 0)}} {{ system.junk.type3 }} ({{ system.junk.quantity3 }}){{/if}}
+                    </td>
+                </tr>
                 {{/each}}
             </table>
             <div>

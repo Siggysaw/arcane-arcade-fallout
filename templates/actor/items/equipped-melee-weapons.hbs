@@ -17,15 +17,20 @@
               </tr>
               <tr>
                 <td>AP</td>
-                <td>Dmg</td>
                 <td>Load</td>
                 <td>Str Req</td>
+                <td rowspan="2" style="background:#222">
+                    <div class="fakebutton rollable resource-label"
+                         style="padding:10px;"
+                         data-weapon-roll
+                         data-weapon-id="{{ item._id }}">
+                        SWING!
+                    </div>
+                </td>
               </tr>
               <tr>
                 <td>
-                  <div class="fakebutton" data-weapon-roll data-weapon-id="{{ item._id }}">
                     {{ item.system.apCost }}
-                  </div>
                 </td>
                 <td>{{ item.system.load }}</td>
                 <td>{{ item.system.strengthRequirement }}</td>
