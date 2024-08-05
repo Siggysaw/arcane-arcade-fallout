@@ -81,25 +81,27 @@ export default class FalloutZeroActor extends Actor {
       return
     }
     if (modType == 'Add') {
-      //This should work with numbers and/or strings
+      //Add Radiation levels if irradiated
       if (path == 'system.irradiated') {
         await this.handleIrradiated('system.irradiated', actorValue, consumValue)
       } 
+      //This should work with numbers and/or strings
       else {
+        console.log(actorValue, consumValue, path)
         //If there is a max, don't go over it
-        try{
+        if (path.includes('value') && typeof await this.deep_value(this, path.replace('.value', '.max')) == 'number'){
           valueMax = await this.deep_value(this, path.replace('.value', '.max'))
           actorValue = Math.min(actorValue + consumValue,valueMax)
         }
-        catch {
-          actorValue = actorValue + consumValue
+        else {
+          actorValue = actorValue + consumValue 
         }
       //Don't go under minimum
-        try{
+        if (path.includes('value') && typeof await this.deep_value(this, path.replace('.value', '.min')) == 'number') {
           valueMin = await this.deep_value(this, path.replace('.value', '.min'))
           actorValue = Math.max(actorValue,valueMin)
         }
-        catch{
+        else {
           if (actorValue < 0 && !path.includes('dvantage')) {
             actorValue = 0
           } //most stuff has a minimum of 0.
@@ -122,9 +124,12 @@ export default class FalloutZeroActor extends Actor {
         actorValue = consumValue
       }
     }
+    console.log(actorValue)
     await this.update({ [path]: actorValue })
     let descSplit = path.split('.')
-    let chatDesc = `<p>Modified ${descSplit[descSplit.length - 2]} ${descSplit[descSplit.length - 1]}</p>`
+    let modifiedValue = descSplit[descSplit.length - 2]
+    if (modifiedValue == "system") {modifiedValue = descSplit[descSplit.length - 1]} 
+    let chatDesc = `${modifiedValue}`
     return chatDesc
   }
 
@@ -328,28 +333,28 @@ export default class FalloutZeroActor extends Actor {
       //Add reactions (custom effects with instantaneous results)
       if (typeof item.system.modifiers != 'undefined') {
         if (item.system.modifiers.path1 != '' && item.system.modifiers.value1 != '') {
-          chatContent += await this.addCustomEffect(
+          chatContent += "Adjusted " + await this.addCustomEffect(
             item.system.modifiers.path1,
             item.system.modifiers.modType1,
             item.system.modifiers.value1,
           )
         }
         if (item.system.modifiers.path2 != '' && item.system.modifiers.value2 != '') {
-          chatContent += await this.addCustomEffect(
+          chatContent += ", " + await this.addCustomEffect(
             item.system.modifiers.path2,
             item.system.modifiers.modType2,
             item.system.modifiers.value2,
           )
         }
         if (item.system.modifiers.path3 != '' && item.system.modifiers.value3 != '') {
-          chatContent += await this.addCustomEffect(
+          chatContent += ", " + await this.addCustomEffect(
             item.system.modifiers.path3,
             item.system.modifiers.modType3,
             item.system.modifiers.value3,
           )
         }
         if (item.system.modifiers.path4 != '' && item.system.modifiers.value4 != '') {
-          chatContent += await this.addCustomEffect(
+          chatContent += ", " + await this.addCustomEffect(
             item.system.modifiers.path4,
             item.system.modifiers.modType4,
             item.system.modifiers.value4,
@@ -411,7 +416,7 @@ export default class FalloutZeroActor extends Actor {
 
       //Add active effects from each condition present on the consumable
       let descSplit = description.split(' ')
-      let strSplit, newCondition, itemEffects, itemEf, actorEf
+      let strSplit, newCondition, itemEf, actorEf
       let i
       let createdOnce = false
       let conditionItem
@@ -423,33 +428,29 @@ export default class FalloutZeroActor extends Actor {
           strSplit = str.replace(/"/g, '').split('.')
           newCondition = await pack.getDocument(strSplit[strSplit.length - 1])
           if (newCondition) {
-            itemEffects = newCondition.collections.effects.contents
-            if (itemEffects) {
-              i = 0
+            i = 0
+            if (await actorEffects.find((e) => e.name == newCondition.name && e.type == "condition")){ //if condition exists on actor
+              actorEf = await actorEffects.get(actorEffects.find((e) => e.name == newCondition.name && e.type == "condition")._id,)
+              const itemEffects = actorEf.collections.effects.contents
+              const qty = actorEf.system.quantity
               while (i < itemEffects.length) {
-                itemEf = await newCondition.effects.get(itemEffects[i]._id)
-                //If effect exists on character and it comes toggled on, toggle it on
-                if (await actorEffects.find((e) => e.name == itemEf.name && e.type == "condition")) {
-                  actorEf = await actorEffects.get(actorEffects.find((e) => e.name == itemEf.name && e.type == "condition")._id,)
-                  if (itemEf.disabled == false) {
-                    console.log(itemEf.name.slice(-1))
-                    await FalloutZeroItem.prototype.toggleEffects(actorEf, false)          
+                itemEf = await actorEf.effects.get(itemEffects[i]._id)
+                if (Number(itemEf.name.slice(-1)) == qty + 1){ 
+                  await actorEf.update({'system.quantity' : qty + 1})
+                  let j = 0
+                  let otherEffect
+                  while (j < itemEffects.length){
+                    otherEffect = await actorEf.effects.get(itemEffects[j]._id)
+                    await otherEffect.update({ disabled: true })
+                    j++
                   }
-                  else {
-                    if (typeof itemEf.name.slice(-1) == "number"){
-                      if (itemEf.name.slice(-1) == actorEf.system.quantity + 1){
-                        await FalloutZeroItem.prototype.toggleEffects(actorEf, false)
-                      }
-                    }
-                  }
-                } else {
-                  //Otherwise, create it (toggle is as per condition item)
-                  if (!createdOnce) {
-                    conditionItem = await Item.create(newCondition, { parent: this })
-                    createdOnce = true
-                  }
+                  await itemEf.update({ disabled: false })
                 }
                 i++
+              }
+            } else { // condition is not on actor
+              if (newCondition.collections.effects.contents.filter(e => e.disabled == false).length > 0) { //Create it if it has active effects
+                conditionItem = await Item.create(newCondition, { parent: this })
               }
             }
           }
