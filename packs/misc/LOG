@@ -1,5 +1,3 @@
-2024/07/15-13:31:58.959 4cec Recovering log #216
-2024/07/15-13:31:58.959 4cec Level-0 table #218: started
-2024/07/15-13:31:58.966 4cec Level-0 table #218: 2991 bytes OK
-2024/07/15-13:31:58.969 4cec Delete type=0 #216
-2024/07/15-13:31:58.969 4cec Delete type=3 #215
+2024/08/05-12:40:00.715 776c Recovering log #288
+2024/08/05-12:40:00.723 776c Delete type=0 #288
+2024/08/05-12:40:00.723 776c Delete type=3 #287

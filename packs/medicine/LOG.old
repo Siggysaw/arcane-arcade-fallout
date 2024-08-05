@@ -1,10 +1,10 @@
-2024/08/05-09:31:01.608 2804 Log #371: 0 ops saved to Table #395 OK
-2024/08/05-09:31:01.610 2804 Archiving C:\Users\Keven\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/000371.log: OK
-2024/08/05-09:31:01.629 2804 Log #394: 66 ops saved to Table #396 OK
-2024/08/05-09:31:01.630 2804 Archiving C:\Users\Keven\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/000394.log: OK
-2024/08/05-09:31:01.632 2804 Table #337: 18 entries OK
-2024/08/05-09:31:01.640 2804 Table #381: 1 entries OK
-2024/08/05-09:31:01.640 2804 Table #396: 66 entries OK
-2024/08/05-09:31:01.645 2804 Archiving C:\Users\Keven\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/MANIFEST-000370: OK
-2024/08/05-09:31:01.646 2804 Archiving C:\Users\Keven\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/MANIFEST-000393: OK
-2024/08/05-09:31:01.653 2804 **** Repaired leveldb C:\Users\Keven\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine; recovered 3 files; 34765 bytes. Some data may have been lost. ****
+2024/08/05-11:44:23.016 4ff0 Delete type=3 #1
+2024/08/05-11:44:23.017 3220 Compacting 5@0 + 0@1 files
+2024/08/05-11:44:23.020 3220 Generated table #407@0: 18 keys, 10559 bytes
+2024/08/05-11:44:23.020 3220 Compacted 5@0 + 0@1 files => 10559 bytes
+2024/08/05-11:44:23.021 3220 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/08/05-11:44:23.021 3220 Delete type=2 #337
+2024/08/05-11:44:23.021 3220 Delete type=2 #381
+2024/08/05-11:44:23.021 3220 Delete type=2 #396
+2024/08/05-11:44:23.022 3220 Delete type=2 #402
+2024/08/05-11:44:23.022 3220 Delete type=2 #403

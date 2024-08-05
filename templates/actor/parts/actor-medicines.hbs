@@ -4,18 +4,19 @@
     <table class="perk-table" style="border: solid 1px">
       <tr>
         <td>
-          <div class="perk-div">
-            <h3>{{ item.name }}</h3>
-            <a
-              class="item-control"
-              data-edit
-               draggable="true"
-              data-item-id="{{ item._id }}"
-              title="View Item Details"
-            >
-              <img class="perk-image" src="{{ item.img }}" />
-            </a>
-          </div>
+            <div class="perk-div">
+                <h3>{{ item.name }}</h3>
+                <div class="perk-div context-menu" data-item-id="{{ item._id }}" style="text-align:left;">
+                    <i class="fas fa-ellipsis-v  context-icon perk-context" ></i>
+                </div>
+                <a class="item-control"
+                   data-edit
+                   draggable="true"
+                   data-item-id="{{ item._id }}"
+                   title="View Item Details">
+                    <img class="perk-image" src="{{ item.img }}" />
+                </a>
+            </div>
           <div class="perk-div">
             <i
               style="padding: 3px"
@@ -30,9 +31,6 @@
               data-item="{{ item._id }}"
               class="fas fa-plus-square"
             ></i>
-          </div>
-          <div class="perk-div" style="text-align:left;">
-              <i class="fas fa-ellipsis-v context-menu context-icon perk-context" data-item-id="{{ item._id }}"></i>
           </div>
         </td>
       </tr>
