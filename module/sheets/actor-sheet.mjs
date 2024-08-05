@@ -377,7 +377,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
     ]
 
-    new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click' })
+    new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click', _expandUp: true })
 
     // Toggle Active Party Member
     html.on('click', '[data-activeCheck]', (ev) => {
