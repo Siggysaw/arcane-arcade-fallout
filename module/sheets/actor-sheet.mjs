@@ -78,7 +78,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     let groupSneaktotal = 0
     for (let character of activeCharacterList) {
       charismaModtotal += character.system.abilities.cha.mod
-      groupSneaktotal += character.system.skills.sneak.base + character.system.skills.sneak.modifiers
+      groupSneaktotal += character.system.skills.sneak.base + character.system.skills.sneak.modifiers + character.system.abilities.agi.mod
     }
     const activePlayercount = characterList.length
     actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)

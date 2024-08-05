@@ -57,9 +57,9 @@ export default class FalloutZeroActor extends Actor {
     return obj
   }
 
-  addCustomEffect(path, modType, initialValue) {
-    let actorValue = this.deep_value(this, path)
-    let consumValue
+  async addCustomEffect(path, modType, initialValue) {
+    let actorValue = await this.deep_value(this, path)
+    let consumValue, valueMax, valueMin
     if (typeof actorValue === 'number') {
       if (initialValue.includes('@')) {
         //Find the value
@@ -83,12 +83,27 @@ export default class FalloutZeroActor extends Actor {
     if (modType == 'Add') {
       //This should work with numbers and/or strings
       if (path == 'system.irradiated') {
-        this.handleIrradiated('system.irradiated', actorValue, consumValue)
-      } else {
-        actorValue = actorValue + consumValue
-        if (actorValue < 0 && !path.includes('dvantage')) {
-          actorValue = 0
-        } //most stuff has a minimum of 0.
+        await this.handleIrradiated('system.irradiated', actorValue, consumValue)
+      } 
+      else {
+        //If there is a max, don't go over it
+        try{
+          valueMax = await this.deep_value(this, path.replace('.value', '.max'))
+          actorValue = Math.min(actorValue + consumValue,valueMax)
+        }
+        catch {
+          actorValue = actorValue + consumValue
+        }
+      //Don't go under minimum
+        try{
+          valueMin = await this.deep_value(this, path.replace('.value', '.min'))
+          actorValue = Math.max(actorValue,valueMin)
+        }
+        catch{
+          if (actorValue < 0 && !path.includes('dvantage')) {
+            actorValue = 0
+          } //most stuff has a minimum of 0.
+        }
       }
     } else {
       //If not Add
@@ -107,7 +122,7 @@ export default class FalloutZeroActor extends Actor {
         actorValue = consumValue
       }
     }
-    this.update({ [path]: actorValue })
+    await this.update({ [path]: actorValue })
     let descSplit = path.split('.')
     let chatDesc = `<p>Modified ${descSplit[descSplit.length - 2]} ${descSplit[descSplit.length - 1]}</p>`
     return chatDesc
@@ -306,36 +321,35 @@ export default class FalloutZeroActor extends Actor {
     const updatedQty = item.system.quantity - 1
     let mods = { 'system.quantity': updatedQty }
     const description = item.system.description
-    let details = ''
+    let details = description
     let chatContent = ``
     if (item.type != 'explosive') {
-      details = description.replace('<p>', "<p>It's ")
-
+      if (item.type == "food-and-drinks" || item.type == "chems") {details = description.replace('<p>', "<p>It's ")}
       //Add reactions (custom effects with instantaneous results)
       if (typeof item.system.modifiers != 'undefined') {
         if (item.system.modifiers.path1 != '' && item.system.modifiers.value1 != '') {
-          chatContent += this.addCustomEffect(
+          chatContent += await this.addCustomEffect(
             item.system.modifiers.path1,
             item.system.modifiers.modType1,
             item.system.modifiers.value1,
           )
         }
         if (item.system.modifiers.path2 != '' && item.system.modifiers.value2 != '') {
-          chatContent += this.addCustomEffect(
+          chatContent += await this.addCustomEffect(
             item.system.modifiers.path2,
             item.system.modifiers.modType2,
             item.system.modifiers.value2,
           )
         }
         if (item.system.modifiers.path3 != '' && item.system.modifiers.value3 != '') {
-          chatContent += this.addCustomEffect(
+          chatContent += await this.addCustomEffect(
             item.system.modifiers.path3,
             item.system.modifiers.modType3,
             item.system.modifiers.value3,
           )
         }
         if (item.system.modifiers.path4 != '' && item.system.modifiers.value4 != '') {
-          chatContent += this.addCustomEffect(
+          chatContent += await this.addCustomEffect(
             item.system.modifiers.path4,
             item.system.modifiers.modType4,
             item.system.modifiers.value4,
@@ -399,11 +413,13 @@ export default class FalloutZeroActor extends Actor {
       let descSplit = description.split(' ')
       let strSplit, newCondition, itemEffects, itemEf, actorEf
       let i
+      let createdOnce = false
       let conditionItem
       let actorEffects = this.items
+      
       for (var str of descSplit) {
         if (str.includes('uuid')) {
-          //data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}"
+          //Example : data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}"
           strSplit = str.replace(/"/g, '').split('.')
           newCondition = await pack.getDocument(strSplit[strSplit.length - 1])
           if (newCondition) {
@@ -413,16 +429,25 @@ export default class FalloutZeroActor extends Actor {
               while (i < itemEffects.length) {
                 itemEf = await newCondition.effects.get(itemEffects[i]._id)
                 //If effect exists on character and it comes toggled on, toggle it on
-                if (await actorEffects.find((e) => e.name == itemEf.name)) {
+                if (await actorEffects.find((e) => e.name == itemEf.name && e.type == "condition")) {
+                  actorEf = await actorEffects.get(actorEffects.find((e) => e.name == itemEf.name && e.type == "condition")._id,)
                   if (itemEf.disabled == false) {
-                    actorEf = await actorEffects.get(
-                      actorEffects.find((e) => e.name == itemEf.name)._id,
-                    )
-                    await FalloutZeroItem.prototype.toggleEffects(actorEf, false)
+                    console.log(itemEf.name.slice(-1))
+                    await FalloutZeroItem.prototype.toggleEffects(actorEf, false)          
+                  }
+                  else {
+                    if (typeof itemEf.name.slice(-1) == "number"){
+                      if (itemEf.name.slice(-1) == actorEf.system.quantity + 1){
+                        await FalloutZeroItem.prototype.toggleEffects(actorEf, false)
+                      }
+                    }
                   }
                 } else {
                   //Otherwise, create it (toggle is as per condition item)
-                  conditionItem = await Item.create(newCondition, { parent: this })
+                  if (!createdOnce) {
+                    conditionItem = await Item.create(newCondition, { parent: this })
+                    createdOnce = true
+                  }
                 }
                 i++
               }

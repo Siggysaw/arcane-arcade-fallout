@@ -155,7 +155,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.carryLoad.baseMax = this.abilities['str'].value * 10
     this.carryLoad.max = this.carryLoad.baseMax + this.carryLoad.modifiersMax
     this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
-    this.healingRate.value = Math.floor((this.level + this.abilities['end'].value) / 2)
+    this.healingRate.value = this.healingRate.base + Math.floor((this.level + this.abilities['end'].value) / 2) + this.healingRate.modifiers
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     if (this.luckmod < 0) {
       this.luckmod = -1
