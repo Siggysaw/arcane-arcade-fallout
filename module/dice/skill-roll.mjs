@@ -14,9 +14,12 @@ export default class SkillRoll extends FormApplication {
       actorLuck: this.actor.system.luckmod,
       actorPenalties: this.actor.system.penaltyTotal,
       bonus: '',
-      advantageMode: this.skill.advantage
-        ? SkillRoll.ADV_MODE.ADVANTAGE
-        : SkillRoll.ADV_MODE.NORMAL,
+      advantageMode:
+        this.skill.advantage === 0
+          ? SkillRoll.ADV_MODE.NORMAL
+          : this.skill.advantage > 0
+            ? SkillRoll.ADV_MODE.ADVANTAGE
+            : SkillRoll.ADV_MODE.DISADVANTAGE,
     }
 
     this.onSubmitCallback = callback
