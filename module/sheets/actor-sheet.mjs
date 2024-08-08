@@ -800,19 +800,21 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       ...itemData.system.races[race].grants,
     ]
     const createdIds = await Promise.all(
-      itemsToGrant.map(async (grant) => {
-        try {
-          const newItem = await fromUuid(grant.key)
-          const itemClone = newItem.clone()
-          const createdItems = await super._onDropItemCreate(itemClone)
-          await createdItems[0].update({ 'system.quantity': grant.quantity })
-          return createdItems[0].id
-        } catch (error) {
-          ui.notifications.warn(`error creating item from ${grant.name}`)
-          console.error(`error creating item from ${grant.name}`, error)
-          return
-        }
-      }),
+      itemsToGrant
+        .map(async (grant) => {
+          try {
+            const newItem = await fromUuid(grant.key)
+            const itemClone = newItem.clone()
+            const createdItems = await super._onDropItemCreate(itemClone)
+            await createdItems[0].update({ 'system.quantity': grant.quantity })
+            return createdItems[0].id
+          } catch (error) {
+            ui.notifications.warn(`error creating item from ${grant.name}`)
+            console.error(`error creating item from ${grant.name}`, error)
+            return false
+          }
+        })
+        .filter(Boolean),
     )
     itemData.system.grantedItems = [...createdIds]
     super._onDropItemCreate(itemData)
