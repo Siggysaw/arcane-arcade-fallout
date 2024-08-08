@@ -1590,4 +1590,7 @@ export default class FalloutZeroActor extends Actor {
   getAbilityMod(ability) {
     return this.system.abilities[ability].mod
   }
+  getAttackBonus(attackBonus) {
+    return this.system.attackBonus
+  }
 }
