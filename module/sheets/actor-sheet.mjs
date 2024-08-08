@@ -372,7 +372,32 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         condition: (element) => element.closest('.context-menu').data('item-id'),
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
-          this.actor.deleteEmbeddedDocuments('Item', [itemId])
+          const item = this.actor.items.get(itemId)
+          if (item.type == 'background') {
+            return new Dialog({
+              title: `Delete background ${item.name}`,
+              content: 'Delete starting equipment from background as well?',
+              buttons: {
+                close: {
+                  icon: '<i class="fas fa-times"></i>',
+                  label: 'No',
+                  callback: () => item.delete(),
+                },
+                continue: {
+                  icon: '<i class="fas fa-chevron-right"></i>',
+                  label: 'Yes',
+                  callback: () => {
+                    item.delete()
+                    this._deleteGrantedItems(item)
+                  },
+                },
+              },
+              default: 'close',
+            }).render(true)
+          } else {
+            this.actor.deleteEmbeddedDocuments('Item', [itemId])
+          }
+          
         },
       },
     ]
