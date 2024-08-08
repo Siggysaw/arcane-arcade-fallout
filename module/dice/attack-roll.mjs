@@ -8,6 +8,7 @@ export default class AttackRoll extends FormApplication {
     this.formDataCache = {
       consumesAp: true,
       skillBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus),
+      attackBonus: this.actor.getAttackBonus(),
       abilityBonus: this.weapon.getAbilityBonus(),
       decayPenalty: this.weapon.getDecayValue(),
       actorLuck: this.actor.system.luckmod,
@@ -225,14 +226,14 @@ export default class AttackRoll extends FormApplication {
     /**
      * Deconstruct dialog form
      */
-    const { skillBonus, abilityBonus, decayPenalty, actorLuck, actorPenalties, bonus } =
+    const { skillBonus, attackBonus, abilityBonus, decayPenalty, actorLuck, actorPenalties, bonus } =
       this.formDataCache
 
     /**
      * Roll to hit
      */
     const roll = new Roll(
-      `${this.getDice()} + ${skillBonus} + ${abilityBonus} + ${actorLuck} + ${bonus || 0} - ${actorPenalties} - ${decayPenalty}`,
+      `${this.getDice()} + ${skillBonus}+ ${attackBonus} + ${abilityBonus} + ${actorLuck} + ${bonus || 0} - ${actorPenalties} - ${decayPenalty}`,
       this.actor.getRollData(),
     )
 
@@ -242,6 +243,7 @@ export default class AttackRoll extends FormApplication {
       <div>
         <div>Die roll: ${roll.result.split(' ')[0]}</div>
         <div>Skill bonus: ${skillBonus}</div>
+        <div>Perks bonus: ${attackBonus}</div>
         <div>Ability bonus: ${abilityBonus}</div>
         <div>Luck bonus: ${actorLuck}</div>
         ${bonus && `<div>Other bonus: ${bonus || 0}</div>`}
