@@ -64,7 +64,7 @@ export default class FalloutZeroActor extends Actor {
       if (initialValue.includes('@')) {
         //Find the value
         try {
-          consumValue = this.evaluateAtFormula(initialValue)
+          consumValue = await this.evaluateAtFormula(initialValue)
         } catch {
           consumValue = initialValue
         }
@@ -87,7 +87,6 @@ export default class FalloutZeroActor extends Actor {
       } 
       //This should work with numbers and/or strings
       else {
-        console.log(actorValue, consumValue, path)
         //If there is a max, don't go over it
         if (path.includes('value') && typeof await this.deep_value(this, path.replace('.value', '.max')) == 'number'){
           valueMax = await this.deep_value(this, path.replace('.value', '.max'))
@@ -124,37 +123,35 @@ export default class FalloutZeroActor extends Actor {
         actorValue = consumValue
       }
     }
-    console.log(actorValue)
     await this.update({ [path]: actorValue })
     let descSplit = path.split('.')
     let modifiedValue = descSplit[descSplit.length - 2]
     if (modifiedValue == "system") {modifiedValue = descSplit[descSplit.length - 1]} 
-    let chatDesc = `${modifiedValue}`
+    let chatDesc = `${modifiedValue}<br>`
     return chatDesc
   }
 
-  evaluateAtFormula(string) {
+  async evaluateAtFormula(string) {
     let strList = string.split(' ')
     string = ''
     for (var str of strList) {
       if (str.includes('@')) {
-        str = this.deep_value(this, str.split('@').join(''))
+        str = await this.deep_value(this, str.split('@').join(''))
       }
       string += str + ' '
     }
     return Math.ceil(eval(string))
   }
 
-  askForCheck(ability, dc, condition) {
+  async askForCheck(ability, dc, condition) {
     let abilityLabel = this.deep_value(this, ability.replace('mod', 'label'))
     if (dc.includes('@')) {
       try {
-        dc = this.evaluateAtFormula(dc)
+        dc = await this.evaluateAtFormula(dc)
       } catch {
         dc = dc
       }
     }
-    //const button = `<button data-action="applyDamage" data-value= data=tags id="boirePotion">Roll ${ability}Check (DC${dc}</span> <i class="fa-light fa-dice-d20"></button>`
     const button = `
     <div class="card-buttons">
       <button type="button" data-condition="${condition}" data-action="check" id="askForRoll" data-ability="${ability}" data-dc="${dc}">
@@ -165,13 +162,14 @@ export default class FalloutZeroActor extends Actor {
     return button
   }
 
-  //Apply Drunk conditions (Drunk, Hammered or Wasted)
+  //Apply level of alcohol condition (Buzzed, Drunk, Hammered or Wasted)
   async applyDrunkness(condition, myActor) {
     //condition can be Drunk or Hammered depending on Endurance
     let newCondition
     let currentCondition
     let oldCondition
     let chatContent = ``
+    let addedCondition //This effect has an @level that needs to be changed
     let pack = game.packs.find((p) => p.metadata.name == 'conditions')
 
     //Apply poison first.
@@ -185,7 +183,7 @@ export default class FalloutZeroActor extends Actor {
       } else {
         //add poisoned
         newCondition = await pack.getDocument('om8uTrsKZqMfhPWb') //Apply Poisoned
-        await Item.create(newCondition, { parent: myActor })
+        addedCondition = await Item.create(newCondition, { parent: myActor })
       }
       chatContent += `${this.formatCompendiumItem('condition', newCondition.name, 'Click for details').split('<br>').join('')} for 4 hours.`
       return chatContent
@@ -211,7 +209,7 @@ export default class FalloutZeroActor extends Actor {
         } else {
           //Hammered for a third time
           newCondition = await pack.getDocument('8jmOpO92JUHjddr5') //Apply Wasted
-          await Item.create(newCondition, { parent: myActor })
+          addedCondition = await Item.create(newCondition, { parent: myActor })
           oldCondition = await this.items.get(currentCondition._id) //Delete Hammered
           oldCondition.delete()
         }
@@ -220,7 +218,7 @@ export default class FalloutZeroActor extends Actor {
         currentCondition = await myActor.items.find((i) => i.name == 'Drunk')
         if (currentCondition || condition == 'Hammered') {
           newCondition = await pack.getDocument('CbcBeOsQnIm5BtXL') //Apply Hammered
-          await Item.create(newCondition, { parent: myActor })
+          addedCondition = await Item.create(newCondition, { parent: myActor })
           if (currentCondition) {
             //If Drunk, delete drunk
             oldCondition = await this.items.get(currentCondition._id) //Delete Drunk (if present)
@@ -231,16 +229,16 @@ export default class FalloutZeroActor extends Actor {
           currentCondition = await myActor.items.find((i) => i.name == 'Buzzed')
           if (currentCondition || condition == 'Drunk') {
             newCondition = await pack.getDocument('Qw9wbkfMEkjX3XxB') //Apply Drunk
-            await Item.create(newCondition, { parent: myActor })
+            addedCondition = await Item.create(newCondition, { parent: myActor })
             if (currentCondition) {
-              //If Buzzed, delete drunk
-              oldCondition = await this.items.get(currentCondition._id) //Delete Drunk (if present)
+              //If Buzzed, delete Buzzed
+              oldCondition = await this.items.get(currentCondition._id) //Delete Buzzed (if present)
               oldCondition.delete()
             }
           } else {
             //Not suffering from any current alcoholic condition
             newCondition = await pack.getDocument('NPlxn4CVIQRnimWK') //Apply Buzzed
-            await Item.create(newCondition, { parent: myActor })
+            addedCondition = await Item.create(newCondition, { parent: myActor })
           }
         }
       }
@@ -249,6 +247,20 @@ export default class FalloutZeroActor extends Actor {
       chatContent += `${this.formatCompendiumItem('condition', newCondition.name, 'Click for details').split('<br>').join('')} for [[/r 1d4]] hours.`
     } else {
       chatContent += `${this.formatCompendiumItem('condition', currentCondition.name, 'Click for details').split('<br>').join('')} for an additional [[/r 1d4]] hours.`
+    }
+    //Modify Effects to get the @ values
+    if (addedCondition){
+      console.log("added a drunk condition")
+      let newArray
+      for (var ef of addedCondition.effects){
+        newArray = ef.changes
+        for (var change of newArray){
+          if (change.value.includes("@")){
+            change.value = await this.evaluateAtFormula(change.value)
+          }
+        }
+        console.log(await ef.update({'changes' : newArray}))
+      }
     }
     return chatContent
   }
@@ -264,7 +276,6 @@ export default class FalloutZeroActor extends Actor {
         //Remove inactive condition
         actorEf = await actorEffects.get(actorEffects.find((e) => e.name == condition)._id)
         conditionObj = await actorEf.effects._source[0]
-        console.log(conditionObj)
         if (conditionObj.disabled == false) {
           await actorEf.delete()
         }
@@ -276,8 +287,22 @@ export default class FalloutZeroActor extends Actor {
       } else {
         //Create new effect if not already on character
         let pack = await game.packs.find((p) => p.metadata.name == 'conditions')
+        console.log(pack,condition)
         conditionObj = await pack.getDocument(pack.find((o) => o.name == condition)._id)
         actorEf = await Item.create(conditionObj, { parent: this })
+        //Modify Effects to get the @ values
+        if (actorEf){
+          let newArray
+          for (var ef of actorEf.effects){
+            newArray = ef.changes
+            for (var change of newArray){
+              if (change.value.includes("@")){
+                change.value = await this.evaluateAtFormula(change.value)
+              }
+            }
+            await ef.update({'changes' : newArray})
+          }
+        }
       }
       if (condition == 'Psychosis') {
         chatMessage = `Uh-oh! Your ${this.formatCompendiumItem('conditions', 'Psychosis', 'Click for details')} pushes you to attack the nearest creature.`
@@ -444,7 +469,20 @@ export default class FalloutZeroActor extends Actor {
               }
             } else { // condition is not on actor, create it
               if (newCondition.collections.effects.contents.filter(e => e.disabled == false).length > 0) { //Create it if it has active effects
-                await Item.create(newCondition, { parent: this })
+                let addedCondition = await Item.create(newCondition, { parent: this })
+                //Modify Effects to get the @ values
+                if (addedCondition){
+                  let newArray
+                  for (var ef of addedCondition.effects){
+                    newArray = ef.changes
+                    for (var change of newArray){
+                      if (change.value.includes("@")){
+                        change.value = await this.evaluateAtFormula(change.value)
+                      }
+                    }
+                    await ef.update({'changes' : newArray})
+                  }
+                }
               }
             }
           }
@@ -454,21 +492,21 @@ export default class FalloutZeroActor extends Actor {
       //Ask for checks if item says so.
       if (typeof item.system.checks != 'undefined') {
         if (item.system.checks.check1 != '' && item.system.checks.dc1 != '') {
-          chatContent += this.askForCheck(
+          chatContent += await this.askForCheck(
             item.system.checks.check1,
             item.system.checks.dc1,
             item.system.checks.condition1,
           )
         }
         if (item.system.checks.check2 != '' && item.system.checks.dc2 != '') {
-          chatContent += this.askForCheck(
+          chatContent += await this.askForCheck(
             item.system.checks.check2,
             item.system.checks.dc2,
             item.system.checks.condition2,
           )
         }
         if (item.system.checks.check3 != '' && item.system.checks.dc3 != '') {
-          chatContent += this.askForCheck(
+          chatContent += await this.askForCheck(
             item.system.checks.check3,
             item.system.checks.dc3,
             item.system.checks.condition3,
