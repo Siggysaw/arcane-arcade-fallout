@@ -1,5 +1,6 @@
 import AttackRoll from '../dice/attack-roll.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
+import FalloutZeroActor from '../documents/actor.mjs'
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -59,9 +60,7 @@ export default class FalloutZeroItem extends Item {
         myItem.update({ 'system.quantity': qty })
         return false
       } else {
-        console.log(this , data)
         if (this.system.itemEquipped == true){
-          console.log("UNEQUIPPING!")
           data.system.itemEquipped = false
         }
       }
@@ -79,7 +78,6 @@ export default class FalloutZeroItem extends Item {
   //Get Reactions added according to Conditions
   async getReactions(ID, myItem) {
     let pack = await game.packs.find((p) => p.metadata.name == 'conditions')
-    console.log(ID)
     let mods = {}
     let condition = await pack.getDocument(ID)
     let pathTaken = 0
@@ -128,7 +126,6 @@ export default class FalloutZeroItem extends Item {
         [`system.checks.dc${pathTaken}`]: condition.system.checks.dc1,
       })
     }
-    console.log(pathTaken, mods)
     await myItem.update(mods)
   }
 
@@ -190,14 +187,11 @@ export default class FalloutZeroItem extends Item {
 
   //Checks if reactions saved in the item, then refreshes selectors
   async checkSaveReactions(mySelectors, myData, saveMessage, myItem) {
-    console.log(mySelectors, myData, saveMessage, myItem)
     let isSaved = await myItem.update(myData)
     if (isSaved) {
-      console.log('SAVED')
       saveMessage.innerHTML = 'Attributes saved successfully.'
     } else {
-      console.log('COULD NOT SAVE')
-      saveMessage.innerHTML = 'Could NOT save. Please check values again.'
+      saveMessage.innerHTML = 'Could NOT save. Please make sure only one item sheet is open at a time, check values and try again.'
     }
     this.getMods(mySelectors, myItem)
   }
@@ -317,9 +311,11 @@ export default class FalloutZeroItem extends Item {
           }
 
           //add upgrade SCRIPT to be added when automated <----
+
+
           //await this.addUpgrade(weapon,myUpgrade);
           await weapon.createEmbeddedDocuments('ActiveEffect', myUpgrade.effects._source)
-
+          
           //equip
           if (wasEquipped) {
             await this.toggleEffects(weapon, false)

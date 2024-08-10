@@ -131,12 +131,12 @@ export default class FalloutZeroActor extends Actor {
     return chatDesc
   }
 
-  async evaluateAtFormula(string) {
+  async evaluateAtFormula(string, myActor=this) {
     let strList = string.split(' ')
     string = ''
     for (var str of strList) {
       if (str.includes('@')) {
-        str = await this.deep_value(this, str.split('@').join(''))
+        str = await this.deep_value(myActor, str.split('@').join(''))
       }
       string += str + ' '
     }
