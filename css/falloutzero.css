@@ -295,10 +295,11 @@ details > summary {
 }
 .sheet.journal-entry .journal-entry-content,
 .prosemirror.menu-dialog form {
-  background-image: url('/systems/arcane-arcade-fallout/assets/terminal.png');
+  background-image: url('/systems/arcane-arcade-fallout/assets/terminal.jpg');
   background-size: cover;
   color: #01e998;
   font-family: Fixedsys;
+  padding-top:20px;
 }
 #chat .chat-message,
 #keybindings .binding .key,

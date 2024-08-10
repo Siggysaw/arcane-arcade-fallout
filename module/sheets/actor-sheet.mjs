@@ -397,7 +397,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           } else {
             this.actor.deleteEmbeddedDocuments('Item', [itemId])
           }
-          
         },
       },
     ]
