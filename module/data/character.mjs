@@ -20,7 +20,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
           label: new fields.StringField({ required: true }),
           value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           base : new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
-          modifiers: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 })
+          modifiers: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           roll: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 })
         })
         return obj
