@@ -1,5 +1,6 @@
 import { FalloutZeroItemBase } from './_module.mjs'
 import FalloutZeroItem from '../documents/item.mjs'
+import FalloutZeroActor from '../documents/actor.mjs'
 
 export default class FalloutZeroArmor extends FalloutZeroItemBase {
   static defineSchema() {
@@ -187,7 +188,22 @@ async addUpgrade(myItem,myUpgrade){
   //Update values of item
   await myItem.update(myData)
   //Active Effects
-  await myItem.createEmbeddedDocuments('ActiveEffect',myUpgrade.effects._source);
+  let newEffect = await myItem.createEmbeddedDocuments('ActiveEffect',myUpgrade.effects._source);
+  if (newEffect){
+    let newArray
+    if (newEffect.length > 0){
+      //Change @ for each corresponding value.
+      for (var ef of newEffect){
+        newArray = ef.changes
+        for (var change of newArray){
+          if (change.value.includes("@")){
+            change.value = await FalloutZeroActor.prototype.evaluateAtFormula(change.value, myItem.parent)
+            await ef.update({'changes' : newArray})
+          }
+        }
+      }
+    }
+  }
   document.getElementById('upgradesTab').click();
 }
 
@@ -346,7 +362,7 @@ async removeUpgrade(myItem,myUpgrade,removeCost,key,wholeUpgrade=false){
   await myItem.update(myData)
   //Active Effects
   for (var e of myItem.effects._source){
-    if (e.origin.replace("Item.","") == myUpgrade._id){
+    if (e.origin.replace("Item.","") == myUpgrade._id || e.origin.replace("Compendium.arcane-arcade-fallout.upgrades.Item.","") == myUpgrade._id || e.name == myUpgrade.name){
       myIDs.push(e._id)
     }
   }
@@ -384,9 +400,7 @@ async checkUpgrade(armor,pack, id){
   //Check for duplicates
   let upgradeLine = myUpgrade.name.slice(0,myUpgrade.name.length-1)
   let newRank = myUpgrade.system.rank
-  console.log (upgradeLine, newRank)
   for (var key of Object.keys(armor.system.upgrades)){
-    console.log (armor.system.upgrades[key].name.slice(0,armor.system.upgrades[key].name.length - 1), armor.system.upgrades[key].rank)
     if (armor.system.upgrades[key].id == myUpgrade._id){
       valid = false;
       comment = 'You already have that upgrade. Choose another.'
