@@ -1404,6 +1404,7 @@ export default class FalloutZeroActor extends Actor {
     let i = 0
     let compendium, itemName
     let allLoot = ``
+    ui.notifications.notify(totLckMod)
     while (i < myMonsterLoot.length) {
       compendium = myMonsterLoot[i][0]
       itemName = myMonsterLoot[i][1].replace('totLckMod', totLckMod)
@@ -1526,7 +1527,9 @@ export default class FalloutZeroActor extends Actor {
     if (game.users.find((u) => u.name == playerName)) {
       whisperUser = game.users.find((u) => u.name == playerName)._id
     }
-    const totLckMod = game.actors.find((u) => u.name == myActor).system.abilities.lck.mod
+    let totLckMod=''
+    let BeenThereDoneThat = game.actors.find((u) => u.name == myActor).items.find((i) => i.name == "Been There Done That.")
+    BeenThereDoneThat ? totLckMod = game.actors.find((u) => u.name == myActor).system.abilities.lck.mod + 3 : totLckMod = game.actors.find((u) => u.name == myActor).system.abilities.lck.mod
     let myRollMode = CONST.DICE_ROLL_MODES.PRIVATE
     let myConcatenatedLoot = ``
     const collection = await game.packs.find((u) => u.metadata.label == 'Monster Loot')

@@ -21,7 +21,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
           value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           base : new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           modifiers: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
-          roll: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 })
+          ignored: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 })
         })
         return obj
       }, {snack : new fields.NumberField({
@@ -138,15 +138,33 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
       this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
     }
+
+
+    //========= PERK AUTOMATION
+    function searchItems(actor, search) {
+      return actor.parent.items.find((i) => i.name == search)
+    }
+
+    const dumbLuck = searchItems(this, "Dumb Luck")
+    const alertness = searchItems(this, "Alertness")
+    const aliveandkickin = searchItems(this, "Alive and Kickin'")
+
+    alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
+    dumbLuck ? this.luckmod = Math.floor(this.abilities['lck'].mod) : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
+    aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
+
+    //========= END PERK AUTOMATION
+
+
     // Base Character Stat Creation
     this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
     this.damageThreshold.value = this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
     this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)
     this.passiveSense.value = 12 + this.passiveSense.base + this.abilities.per.mod + this.passiveSense.modifiers
-    this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base + this.penalties.exhaustion.modifiers, 0)
-    this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers,0)
-    this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers,0)
-    this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers,0)
+    this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base - this.penalties.exhaustion.ignored + this.penalties.exhaustion.modifiers, 0)
+    this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers, 0)
+    this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers, 0)
+    this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers, 0)
     this.radiationDC.base = 12 - this.abilities['end'].mod
     this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
     this.penaltyTotal =
@@ -159,26 +177,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.carryLoad.max = this.carryLoad.baseMax + this.carryLoad.modifiersMax
     this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
     this.healingRate.value = this.healingRate.base + Math.floor((this.level + this.abilities['end'].value) / 2) + this.healingRate.modifiers
-
-
-    // Perk Automation
-    function searchItems(actor, search) {
-      return actor.parent.items.find((i) => i.name == search)
-    }
-    function searchAllActiveItems(actor, search) {
-      const activeCharacterList = characterList.filter((FalloutZeroActor) => FalloutZeroActor.system.activePartymember === true)
-      return activeCharacterList.items.find((i) => i.name == search)
-    }
-
-    const dumbLuck = searchItems(this, "Dumb Luck")
-    const backtoback = searchItems(this, "Back to Back")
-    const alertness = searchItems(this, "Alertness")
-    const aliveandkickin = searchItems(this, "Alive and Kickin'")
-
-    alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
-    dumbLuck ? this.luckmod = Math.floor(this.abilities['lck'].mod) : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     this.luckmod < 0 ? this.luckmod = -1 : this.luckmod
-    aliveandkickin ? this.penalties.exhaustion.roll += - 3 : this.penalties.exhaustion.roll
-
   }
 }
+
+
+
