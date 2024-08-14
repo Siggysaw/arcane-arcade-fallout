@@ -324,14 +324,23 @@ details > summary {
 .sheet li,
 form .title,
 .falloutzero .items-list .item .item-name,
-.journal-entry-content,
 form .form-group span.units,
 form div label {
   color: #01e998;
   list-style-type: none;
 }
-.journal-entry-content {
+
+.journal-entry-content li,
+.editor-content li,
+.prosemirror li {
   letter-spacing: 0rem;
+  color: #01e998;
+  list-style-type: inherit;
+}
+  .journal-entry-content table td,
+  .sheet .prosemirror table td,
+  .editor-content table td{
+    border: solid 1px #01e998;
 }
 .sheet .character-name input {
   border: none;

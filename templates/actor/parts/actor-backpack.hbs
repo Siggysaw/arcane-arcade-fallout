@@ -69,9 +69,9 @@
                     </td>
 
                     <td>
-                        <i data-itemaddition data-item="{{item._id}}" class="fas fa-plus fakebutton backpack-qty-button"></i>
+                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
                         {{ system.quantity }}
-                        <i data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus fakebutton backpack-qty-button"></i>
+                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
 
                     </td>
                     <td>{{{item.system.description}}}</td>
@@ -82,7 +82,6 @@
                 {{/unless}}
                 {{/each}}
             </table>
-            <br />
             <table class="equipped-stats">
                 <tr><td colspan="999"><h3>Chems</h3></td></tr>
                 <tr><td>Name</td><td style="width:100px;">Qty</td><td style="width:150px;">Properties</td><td></td></tr>
@@ -103,9 +102,9 @@
                 </td>
 
                 <td>
-                    <i data-itemaddition data-item="{{item._id}}" class="fas fa-plus fakebutton backpack-qty-button"></i>
+                    <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
                     {{ system.quantity }}
-                    <i data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus fakebutton backpack-qty-button"></i>
+                    <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
 
                 </td>
                 <td>{{{item.system.description}}}</td>
@@ -142,9 +141,9 @@
                     </td>
 
                     <td>
-                        <i data-itemaddition data-item="{{item._id}}" class="fas fa-plus fakebutton backpack-qty-button"></i>
+                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
                         {{ system.quantity }}
-                        <i data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus fakebutton backpack-qty-button"></i>
+                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
 
                     </td>
                 </tr>
