@@ -1,4 +1,4 @@
 :root {
-  --green: #01e998;
+  --green: var(--user-color);
   --dark: #222;
 }

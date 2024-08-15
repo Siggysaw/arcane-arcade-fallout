@@ -56,7 +56,7 @@
   font-style: italic;
 }
 .chat-sidebar .message-header .title {
-  color: #01e998;
+  color: var(--user-color);
 }
 
 /* MESSAGE CONTENT */

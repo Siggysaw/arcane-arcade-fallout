@@ -25,7 +25,7 @@
 }
 
 :root {
-  --color-shadow-primary: #1d5427;
+  --color-shadow-primary: hsl(100, 100%, 20%);
 }
 
 summary::marker {
@@ -52,7 +52,7 @@ details > summary {
 }
 .rollable:hover,
 .rollable:focus {
-  text-shadow: 0 0 10px #01e998;
+  text-shadow: 0 0 10px var(--user-color);
   cursor: pointer;
 }
 
@@ -264,12 +264,13 @@ details > summary {
   background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  color: #01e998;
+  color: var(--user-color);
+  background-color:var(--user-color);
 }
 .dialog option,
 .dialog optgroup,
 .window-app .dialog ul {
-  background-color: #1d5427;
+  background-color: var(--dark);
 }
 .window-app .window-content input,
 .window-app .window-content .fakebutton,
@@ -284,7 +285,7 @@ details > summary {
 .prosemirror.menu-dialog form button,
 .prosemirror.menu-dialog form input,
 .sheet .item-piles-config-container p {
-  color: #01e998;
+  color: var(--user-color);
   letter-spacing: 0rem;
 }
 .window-app .window-content div .fakebutton,
@@ -295,17 +296,19 @@ details > summary {
 }
 .sheet.journal-entry .journal-entry-content,
 .prosemirror.menu-dialog form {
-  background-image: url('/systems/arcane-arcade-fallout/assets/terminal.jpg');
-  background-size: cover;
-  color: #01e998;
+  background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: var(--user-color);
+  background-color: var(--user-color);
   font-family: Fixedsys;
-  padding-top:20px;
+  padding-top: 20px;
 }
 #chat .chat-message,
 #keybindings .binding .key,
 #keybindings .binding .key.uneditable {
   background: #222;
-  color: #01e998;
+  color: var(--user-color);
   font-family: Monofonto;
 }
 .sheet.journal-entry .title {
@@ -326,7 +329,7 @@ form .title,
 .falloutzero .items-list .item .item-name,
 form .form-group span.units,
 form div label {
-  color: #01e998;
+  color: var(--user-color);
   list-style-type: none;
 }
 
@@ -334,13 +337,13 @@ form div label {
 .editor-content li,
 .prosemirror li {
   letter-spacing: 0rem;
-  color: #01e998;
+  color: var(--user-color);
   list-style-type: inherit;
 }
   .journal-entry-content table td,
   .sheet .prosemirror table td,
   .editor-content table td{
-    border: solid 1px #01e998;
+    border: solid 1px var(--user-color);
 }
 .sheet .character-name input {
   border: none;
@@ -349,7 +352,8 @@ form div label {
 }
 
 .sheet input {
-  border: solid 1px #1d5427;
+  color: var(--user-color);
+  border: solid 1px var(--user-color-hsl);
   font-size: 10pt;
 }
 .statusnum input {
@@ -396,7 +400,7 @@ table .bio-label {
   height: 175px;
   width: 200px;
   object-fit: cover;
-  border: solid 2px #1d5427;
+  border: solid 1px var(--user-color);
 }
 .sheet header.sheet-header .profile-image-td img {
   object-fit :scale-down
@@ -410,7 +414,7 @@ table .bio-label {
   width: 75px;
 }
 .sheet ::placeholder {
-  color: #1d5427;
+  color: hsl(100, 100%, 20%);
   opacity: 1;
 }
 table,
@@ -462,7 +466,7 @@ td,
   width: 100%;
 }
 .sheet form .perk-div h3 {
-  color: #01e998;
+  color: var(--user-color);
 }
 .sheet .perk-div .perk-image {
   height: 150px;
@@ -502,7 +506,7 @@ td,
 }
 .sheet .fakebutton,
 .sheet button {
-  border: #1d5427;
+  border: hsl(100, 100%, 20%);
   padding: 5px;
   cursor: pointer;
 }
@@ -512,16 +516,16 @@ td,
 .sheet .fakebutton:hover,
 .sheet button:hover,
 .sheet .character-status i:hover {
-  border: #1d5427;
-  background: #1d5427;
+  border: hsl(100, 100%, 20%);
+  background: hsl(100, 100%, 20%);
   color: white;
 }
 .sheet .fakebutton:active,
 .sheet button:active,
 .sheet .character-status i:active {
-  border: #1d5427;
+  border: hsl(100, 100%, 20%);
   background: white;
-  color: #1d5427;
+  color: hsl(100, 100%, 20%);
 }
 .sheet-tabs .active {
   text-decoration: underline;
@@ -537,7 +541,7 @@ td,
   background: none;
 }
 :root {
-  --color-bg-option: #1d5427;
+  --color-bg-option: hsl(100, 100%, 20%);
 }
 .window-content :root {
   --color-bg-option: none;
@@ -593,7 +597,7 @@ td,
   cursor: not-allowed;
   border: initial;
   background: #222;
-  color: #01e998;
+  color: var(--user-color);
 }
 
 .sheet .addRemoveCaps button:disabled i {
@@ -643,7 +647,7 @@ form td .status-notes li:hover {
   flex: 1;
   margin: 0 3px;
   background: #222;
-  color: #01e998;
+  color: var(--user-color);
 }
 .ammoitem,
 .explosiveitem {
@@ -738,7 +742,7 @@ form td .status-notes li:hover {
 }
 
 .roll-table-config table.table-results .table-result {
-  border: solid 1px #1d5427;
+  border: solid 1px hsl(100, 100%, 20%);
 }
 
 .roll-table-config .stacked {
@@ -817,7 +821,7 @@ form td .status-notes li:hover {
 }
 .item .content-link {
   text-decoration: underline;
-  border: solid 1px #01e998;
+  border: solid 1px var(--user-color);
 }
 
 a.content-link,
@@ -825,7 +829,7 @@ a.inline-roll,
 .chat-message .table-draw .table-results .table-result .result-text a {
   background: none;
   color: inherit;
-  border: solid 1px #01e998;
+  border: solid 1px var(--user-color);
 }
 
 .sheet .item-piles-item-row.svelte-tse-1o95obs.item-piles-child-even-color > *,
@@ -842,7 +846,7 @@ a.inline-roll,
   font-size: 14pt;
   padding: 3px;
   width: 100%;
-  background: #1d5427;
+  background: hsl(100, 100%, 20%);
 }
 .sheet .character .character-status {
   width: 200px;
@@ -861,7 +865,7 @@ a.inline-roll,
   float: left;
   height: 11px;
   margin: 0px -10px 0 0;
-  background: #1d5427;
+  background: hsl(100, 100%, 20%);
   border-radius: 15px;
   box-shadow: 0px 0px 6px #777 inset;
 }

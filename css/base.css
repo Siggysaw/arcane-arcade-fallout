@@ -57,5 +57,5 @@ button > i {
 
 button {
   background-color: var(--dark);
-  color: var(--green);
+  color: var(--user-color);
 }
