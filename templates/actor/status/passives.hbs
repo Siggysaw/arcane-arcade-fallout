@@ -1,13 +1,7 @@
 <table>
     <tr>
         <td title="Calculated: {{system.healingRate.value}} (End + Lvl)/2 &#013;Modifiers: {{system.healingRate.modifiers}} &#013;Manual Edits: {{system.healingRate.base}}">Healing Rate</td>
-        <td class="resource-label rollable"
-            title="
-            d20 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.combatSequence.base 0}} + Manual adjustments ({{system.combatSequence.base}}){{/DifferentFrom}} {{#DifferentFrom system.combatSequence.modifiers 0}} + Effects ( {{system.combatSequence.modifiers}} ){{/DifferentFrom}} - Penalties ( {{system.penaltyTotal}} ) + Half-luck ( {{#LckMod system.abilities.lck.mod 2}}{{/LckMod}} )"
-            data-rollable
-            data-advantage="{{system.combatSequence.advantage}}"
-            data-roll="d20+@combatSequence.value+-@penaltyTotal+@luckmod"
-            data-label="Performed a Combat Sequence roll!<br> D20 + Combat Sequence - Penalties <br> + Luck Mod / 2">
+        <td title="To Roll Intiative, Utilize Combat Tracker">
             Combat Sequence
         </td>
         <td class="rollable"

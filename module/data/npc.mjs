@@ -138,45 +138,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
       this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
     }
-
-
-    //========= PERK AUTOMATION
-    function searchItems(actor, search) {
-      return actor.parent.items.find((i) => i.name == search)
-    }
-
-    const dumbLuck = searchItems(this, "Dumb Luck")
-    const alertness = searchItems(this, "Alertness")
-    const aliveandkickin = searchItems(this, "Alive and Kickin'")
-
-    alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
-    dumbLuck ? this.luckmod = Math.floor(this.abilities['lck'].mod) : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
-    aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
-
-    //========= END PERK AUTOMATION
-
-
-    // Base Character Stat Creation
-    this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
-    this.damageThreshold.value = this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
-    this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)
-    this.passiveSense.value = 12 + this.passiveSense.base + this.abilities.per.mod + this.passiveSense.modifiers
-    this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base - this.penalties.exhaustion.ignored + this.penalties.exhaustion.modifiers, 0)
-    this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers, 0)
-    this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers, 0)
-    this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers, 0)
-    this.radiationDC.base = 12 - this.abilities['end'].mod
-    this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
-    this.penaltyTotal =
-      this.penalties.hunger.value +
-      this.penalties.dehydration.value +
-      this.penalties.exhaustion.value +
-      this.penalties.radiation.value +
-      this.penalties.fatigue.value
-    this.carryLoad.baseMax = this.abilities['str'].value * 10
-    this.carryLoad.max = this.carryLoad.baseMax + this.carryLoad.modifiersMax
-    this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
-    this.healingRate.value = this.healingRate.base + Math.floor((this.level + this.abilities['end'].value) / 2) + this.healingRate.modifiers
+    this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     this.luckmod < 0 ? this.luckmod = -1 : this.luckmod
   }
 }

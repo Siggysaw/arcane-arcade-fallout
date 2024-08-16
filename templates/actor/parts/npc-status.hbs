@@ -7,43 +7,14 @@
 <table class="status-block">
     <tr>
         <td class="skill-table">
-            <table>
-                <tr>
-                    {{#each system.skills as |skill key|}}
-                </tr>
-
-                <tr>
-                    <td>
-                        {{#each skill.ability as |ability|}}
-                        <p class="specialroll">
-                            <label for="{{ ability }}"
-                                   class="resource-label rollable"
-                                   data-rollable
-                                   data-roll="d20+{{#Sum skill.value skill.modifiers}}{{/Sum}}+@{{ability}}.mod"
-                                   data-label="{{ actor.name }} performed a {{ skill.label }} roll using {{ ability }}">
-                                {{ ability }}
-                            </label>
-                        </p>
-                        {{/each}}
-                    </td>
-                    <td class="skill-label">{{ skill.label }}</td>
-                    <td class="skill-value">
-                        <i style="padding: 3px"
-                           data-skillsubtraction
-                           data-skill="{{ skill.id }}"
-                           class="fas fa-minus-square fakebutton nobackground">
-
-                        </i>
-                        {{#Sum3 skill.value skill.modifiers skill.base}}{{/Sum3}}
-                        <i style="padding: 3px"
-                           data-skilladdition
-                           data-skill="{{ skill.id }}"
-                           class="fas fa-plus-square fakebutton nobackground">
-                        </i>
-                    </td>
-                </tr>
-                {{/each}}
-            </table>
+                {{>
+                    "systems/arcane-arcade-fallout/templates/actor/status/skills.hbs"
+                    startingSkillpoints=system.startingSkillpoints
+                    skillPool=system.skillPool
+                    skills=system.skills
+                    abilities=system.abilities
+                    penaltyTotal=system.penaltyTotal
+                }}
         </td>
         <td class="status-table">
             <table>
