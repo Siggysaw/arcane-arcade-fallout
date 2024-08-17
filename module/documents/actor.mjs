@@ -21,6 +21,33 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+  // Short Rest and Long Rest Button Functionality
+  restRecovery(rest) {
+    const raceItem = this.items.filter((i) => i.type == "race")
+    const race = raceItem[0].name
+    const currentSP = this.system.stamina.value
+    const currentHP = this.system.health.value
+    const maxSP = this.system.stamina.max
+    const maxHP = this.system.health.max
+    const endurance = this.system.abilities.end.value
+    const robotHeal = Math.max(this.system.abilities.int.value, this.system.abilities.per.value)
+
+    // Short Rest
+    if (rest === "short") {
+      let newSP=0
+      race === ("Human" || "Ghoul" || "Super Mutant") ? newSP = currentSP + (Math.floor(maxSP / 2)) : newSP = maxSP
+      newSP > maxSP ? newSP = maxSP : newSP = newSP
+      this.update({ 'system.stamina.value': newSP })
+    }
+    // Long Rest
+    if (rest === "long") {
+      let newHP=0
+      race === ("Human" || "Ghoul" || "Super Mutant") ? newHP = currentHP + (endurance / 2) + this.system.level : newHP = currentHP + (robotHeal / 2) + this.system.level
+      newHP > maxHP ? newHP = maxHP : newHP = newHP
+      this.update({ 'system.health.value': newHP })
+      this.update({ 'system.stamina.value': maxSP })
+    }
+  }
 
   inspectCarryload() {
     const myDialogOptions = { width: 500, height: 300, resizable: true }

@@ -403,6 +403,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click', _expandUp: true })
 
+    // Actor Rest Buttons
+    html.on('click', '[data-rest]', (ev) => {
+      const rest = ev.currentTarget.dataset.rest
+      this.actor.restRecovery(rest)
+    })
+
     // Toggle Active Party Member
     html.on('click', '[data-activeCheck]', (ev) => {
       if (this.actor.system.activePartymember === true) {
