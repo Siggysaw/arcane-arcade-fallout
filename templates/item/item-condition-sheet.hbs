@@ -8,18 +8,18 @@
     </div>
   </header>
   <table>
-    <tr>
+    <tr style="vertical-align:bottom">
       {{#DifferentFrom item.type "condition"}}
-      <td style="width:50px;">Qty : </td>
+      <td style="width:50px;vertical-align:middle;">Qty </td>
       <td><input style="width:50px;" type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
-      <td>Cost : </td>
+      <td style="vertical-align:middle">Cost </td>
       <td><input style="width:50px;" type="number" name="system.cost" value="{{ system.cost }}" /></td>
-      <td>Load : </td>
+      <td style="vertical-align:middle">Load </td>
       <td><input style="width:50px;" type="number" name="system.load" value="{{ system.load }}" /></td>
-      <td>Races : </td>
+      <td style="vertical-align:middle">Races </td>
       <td><input style="width:125px;" type="text" name="system.raceReq" value="{{ system.raceReq }}" /></td>
       {{else}}
-      <td style="text-align:right">Level : </td>
+      <td style="text-align:right;vertical-align:middle">Level </td>
       <td style="width:50px;"><input type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
       {{/DifferentFrom}}
     </tr>
@@ -28,6 +28,7 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="notes">Notes</a>
     <a class="item" id ="customEffectsNav" data-tab="customEffects">Reactions</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
@@ -37,6 +38,10 @@
     {{!-- Description Tab --}}
     <div class="tab" item-description data-group="primary" data-tab="description">
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+    </div>
+    {{!-- Notes Tab --}}
+    <div class="tab" item-notes data-group="primary" data-tab="notes">
+      {{editor system.notes target="system.notes" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
     </div>
     {{!-- Reactions Tab --}}
     <div class="tab customEffects" data-group="primary" data-tab="customEffects">

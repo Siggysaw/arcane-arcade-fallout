@@ -8,6 +8,7 @@ export default class FalloutZeroFoodDrink extends FalloutZeroItemBase {
     schema.quantity = new fields.NumberField({ ...requiredInteger, initial: 1, min: 0 })
     schema.load = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
     schema.cost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
+    schema.notes = new fields.StringField({initial: ""})
     schema.modifiers = new fields.SchemaField({
       path1: new fields.StringField({initial: ""}),
       modType1: new fields.StringField({initial: ""}),

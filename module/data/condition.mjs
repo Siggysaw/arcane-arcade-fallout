@@ -10,7 +10,7 @@ export default class FalloutZeroCondition extends FalloutZeroItemBase {
     schema.load = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
     schema.raceReq = new fields.StringField({initial: "Organics only"})
     schema.cost = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
-
+    schema.notes = new fields.StringField({initial: ""})
     schema.apCost = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
     schema.range = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
     schema.armDC = new fields.StringField({})
