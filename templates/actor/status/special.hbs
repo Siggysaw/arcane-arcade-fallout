@@ -20,21 +20,21 @@
   <tr>
     {{#each abilities as |ability key|}}
     <td>
-      <div class="flex justify-center gap-5">
-        <button class="w-auto no-background" data-statSubtraction data-stat="{{ ability.abbr }}" data-type="abilities">
-          <i class="fas fa-minus-square "></i>
-        </button>
-        <span class="skillvalue">{{ability.value}}</span>
-        <button class="w-auto no-background" data-statAddition data-stat="{{ ability.abbr }}" data-type="abilities">
-          <i class="fas fa-plus-square"></i>
-        </button>
-      </div>
+        <div class="flex justify-center gap-5">
+            {{#if ../system.editToggle}}<button class="w-auto no-background" data-statSubtraction data-stat="{{ ability.abbr }}" data-type="abilities">
+                <i class="fas fa-minus-square "></i>
+            </button>{{/if}}
+            <span class="skillvalue">{{ability.value}}</span>
+            {{#if ../system.editToggle}}<button class="w-auto no-background" data-statAddition data-stat="{{ ability.abbr }}" data-type="abilities">
+                <i class="fas fa-plus-square"></i>
+            </button>{{/if}}
+        </div>
     </td>
     {{/each}}
   </tr>
   <tr>
     {{#each abilities as |ability key|}}
-    <td>
+    <td style="width:14%;">
       <span class="ability-mod" data-label="{{ ability.label }}">
         {{numberFormat ability.mod decimals=0 sign=true }}
       </span>

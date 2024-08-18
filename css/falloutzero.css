@@ -25,7 +25,7 @@
 }
 
 :root {
-  --color-shadow-primary: hsl(100, 100%, 20%);
+  --color-shadow-primary: var(--dark);
 }
 
 summary::marker {
@@ -353,7 +353,7 @@ form div label {
 
 .sheet input {
   color: var(--user-color);
-  border: solid 1px var(--user-color-hsl);
+  border: solid 1px var(--dark);
   font-size: 10pt;
 }
 .statusnum input {
@@ -414,7 +414,7 @@ table .bio-label {
   width: 75px;
 }
 .sheet ::placeholder {
-  color: hsl(100, 100%, 20%);
+  color: var(--dark);
   opacity: 1;
 }
 table,
@@ -506,26 +506,28 @@ td,
 }
 .sheet .fakebutton,
 .sheet button {
-  border: hsl(100, 100%, 20%);
+  border: var(--dark);
   padding: 5px;
   cursor: pointer;
 }
-.window-app .window-content div .nobackground {
+.window-app .window-content div .no-background,
+.window-app .window-content div .no-background:hover {
   background: none;
 }
+
 .sheet .fakebutton:hover,
 .sheet button:hover,
 .sheet .character-status i:hover {
-  border: hsl(100, 100%, 20%);
-  background: hsl(100, 100%, 20%);
+  border: none;
+  background: transparent;
   color: white;
 }
 .sheet .fakebutton:active,
 .sheet button:active,
 .sheet .character-status i:active {
-  border: hsl(100, 100%, 20%);
+  border: var(--dark);
   background: white;
-  color: hsl(100, 100%, 20%);
+  color: var(--dark);
 }
 .sheet-tabs .active {
   text-decoration: underline;
@@ -541,7 +543,7 @@ td,
   background: none;
 }
 :root {
-  --color-bg-option: hsl(100, 100%, 20%);
+  --color-bg-option: var(--dark);
 }
 .window-content :root {
   --color-bg-option: none;
@@ -742,7 +744,7 @@ form td .status-notes li:hover {
 }
 
 .roll-table-config table.table-results .table-result {
-  border: solid 1px hsl(100, 100%, 20%);
+  border: solid 1px var(--dark);
 }
 
 .roll-table-config .stacked {
@@ -846,7 +848,7 @@ a.inline-roll,
   font-size: 14pt;
   padding: 3px;
   width: 100%;
-  background: hsl(100, 100%, 20%);
+  background: var(--dark);
 }
 .sheet .character .character-status {
   width: 200px;
@@ -865,9 +867,15 @@ a.inline-roll,
   float: left;
   height: 11px;
   margin: 0px -10px 0 0;
-  background: hsl(100, 100%, 20%);
+  background: var(--user-color);
   border-radius: 15px;
   box-shadow: 0px 0px 6px #777 inset;
+}
+.sheet progress::-webkit-progress-value {
+  display: inline-block;
+  float: left;
+  margin: 0px -10px 0 0;
+  background: var(--user-color);
 }
 .sheet .character .bio td {
   padding-right: 10px;

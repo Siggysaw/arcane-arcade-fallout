@@ -19,46 +19,46 @@
     </tr>
     <tr>
         <td class="skill-value">
-            <i style="padding: 3px"
+            {{#if system.editToggle}}<i style="padding: 3px"
                data-statSubtraction
                data-stat="healingRate"
                data-type=""
-               class="fas fa-minus-square fakebutton nobackground"></i>
+               class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
             {{system.healingRate.value}}
-            <i style="padding: 3px"
+            {{#if system.editToggle}}<i style="padding: 3px"
                data-statAddition
                data-stat="healingRate"
                data-type=""
-               class="fas fa-plus-square fakebutton nobackground"></i>
+               class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
         </td>
         <td class="skill-value">
-            <i style="padding: 3px"
+            {{#if system.editToggle}}<i style="padding: 3px"
                data-statSubtraction
                data-stat="combatSequence"
                data-type=""
-               class="fas fa-minus-square fakebutton nobackground"></i>
+               class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
             {{system.combatSequence.value}}
-            <i style="padding: 3px"
+            {{#if system.editToggle}}<i style="padding: 3px"
                data-statAddition
                data-stat="combatSequence"
                data-type=""
-               class="fas fa-plus-square fakebutton nobackground"></i>
+               class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
         </td>
         <td style="vertical-align:middle;">
             {{system.radiationDC.value}}
         </td>
         <td class="skill-value">
-            <i style="padding: 3px"
+            {{#if system.editToggle}}<i style="padding: 3px"
                data-statSubtraction
                data-stat="passiveSense"
                data-type=""
-               class="fas fa-minus-square fakebutton nobackground"></i>
+               class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
             {{system.passiveSense.value}}
-            <i style="padding: 3px"
+            {{#if system.editToggle}}<i style="padding: 3px"
                data-statAddition
                data-stat="passiveSense"
                data-type=""
-               class="fas fa-plus-square fakebutton nobackground"></i>
+               class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
         </td>
         <td>{{#Sum system.partyNerve.base system.partyNerve.modifiers }}{{/Sum}}</td>
         <td>{{#Sum system.groupSneak.base system.groupSneak.modifiers }}{{/Sum}}</td>
