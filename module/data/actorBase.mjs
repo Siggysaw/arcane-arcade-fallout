@@ -140,26 +140,6 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         return obj
       }, {}),
     )
-
-      //Deprecated.
-    /*schema.materials = new fields.SchemaField(
-      Object.keys(FALLOUTZERO.materials).reduce((obj, material) => {
-        obj[material] = new fields.SchemaField({
-          value: new fields.NumberField({
-            ...requiredInteger,
-            initial: 0,
-            min: 0,
-          }),
-          label: new fields.StringField({
-            initial: FALLOUTZERO.materials[material].label,
-          }),
-          id: new fields.StringField({
-            initial: FALLOUTZERO.materials[material].id,
-          }),
-        })
-        return obj
-      }, {}),
-    )*/
     schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.armorClass = new fields.SchemaField({
       base: new fields.NumberField({

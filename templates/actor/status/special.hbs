@@ -20,14 +20,15 @@
   <tr>
     {{#each abilities as |ability key|}}
     <td>
-      <input
-        data-set-{{key}}
-        type="number"
-        name="system.abilities.{{ key }}.value"
-        value="{{ ability.value }}"
-        data-dtype="Number"
-        min="0"
-      />
+      <div class="flex justify-center gap-5">
+        <button class="w-auto no-background" data-statSubtraction data-stat="{{ ability.abbr }}" data-type="abilities">
+          <i class="fas fa-minus-square "></i>
+        </button>
+        <span class="skillvalue">{{ability.value}}</span>
+        <button class="w-auto no-background" data-statAddition data-stat="{{ ability.abbr }}" data-type="abilities">
+          <i class="fas fa-plus-square"></i>
+        </button>
+      </div>
     </td>
     {{/each}}
   </tr>
