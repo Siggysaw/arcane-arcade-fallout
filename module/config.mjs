@@ -697,7 +697,7 @@ FALLOUTZERO.monsterLoot = [
       { dc: [['money', '[1d10 Bottlecap']] },
     ],
   },
-  { name: 'Mutated Bear', dice: 'All', loot: [{ all: [['material', 'Bear Meat']] }] },
+  { name: 'Mutated Bear', dice: 'All', loot: [{ all: [['material', 'Bear Meat'],['material', 'Bear Skull']] }] },
   {
     name: 'Deathclaw',
     dice: 'All',
@@ -707,6 +707,7 @@ FALLOUTZERO.monsterLoot = [
           ['material', 'Deathclaw Meat'],
           ['material', 'Deathclaw Hide'],
           ['material', 'Deathclaw Hand'],
+          ['material', 'Deathclaw Egg'],
         ],
       },
     ],
@@ -776,6 +777,7 @@ FALLOUTZERO.monsterLoot = [
         all: [
           ['material', 'Radscorpion Poison Gland'],
           ['material', 'Radscorpion Meat'],
+          ['material', 'Radscorpion Stinger'],
         ],
       },
       { dc: [['material', 'Radscorpion Egg']] },
@@ -789,6 +791,7 @@ FALLOUTZERO.monsterLoot = [
         all: [
           ['material', 'Radscorpion Poison Gland'],
           ['material', 'Radscorpion Meat'],
+          ['material', 'Radscorpion Stinger'],
         ],
       },
       { dc: [['material', 'Radscorpion Egg']] },
@@ -802,6 +805,7 @@ FALLOUTZERO.monsterLoot = [
         all: [
           ['material', 'Radscorpion Poison Gland'],
           ['material', 'Radscorpion Meat'],
+          ['material', 'Radscorpion Stinger'],
         ],
       },
       { dc: [['material', 'Radscorpion Egg']] },
@@ -809,9 +813,9 @@ FALLOUTZERO.monsterLoot = [
   },
   { name: 'Radroach', dice: 'All', loot: [{ all: [['material', 'Radroach Meat']] }] },
   { name: 'Rattler', dice: 'All', loot: [{ all: [['material', 'Rattler Poison Gland']] }] },
-  { name: 'Stingwing', dice: 'All', loot: [{ all: [['material', 'Stingwing Meat']] }] },
-  { name: 'Stingwing Skimmer', dice: 'All', loot: [{ all: [['material', 'Stingwing Meat']] }] },
-  { name: 'Stingwing Chaser', dice: 'All', loot: [{ all: [['material', 'Stingwing Meat']] }] },
+  { name: 'Stingwing', dice: 'All', loot: [{ all: [['material', 'Stingwing Meat'],['material', 'Stingwing Barb']] }] },
+  { name: 'Stingwing Skimmer', dice: 'All', loot: [{ all: [['material', 'Stingwing Meat'],['material', 'Stingwing Barb']] }] },
+  { name: 'Stingwing Chaser', dice: 'All', loot: [{ all: [['material', 'Stingwing Meat'],['material', 'Stingwing Barb']] }] },
   {
     name: 'Assaultron',
     dice: 'All',

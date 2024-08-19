@@ -29,6 +29,7 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
     <a class="item" data-tab="notes">Notes</a>
+    <a class="item" data-tab="crafting">Crafting</a>
     <a class="item" id ="customEffectsNav" data-tab="customEffects">Reactions</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
@@ -42,6 +43,10 @@
     {{!-- Notes Tab --}}
     <div class="tab" item-notes data-group="primary" data-tab="notes">
       {{editor system.notes target="system.notes" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+    </div>
+    {{!-- Crafting Tab --}}
+    <div class="tab crafting" data-group="primary" data-tab="crafting">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
     </div>
     {{!-- Reactions Tab --}}
     <div class="tab customEffects" data-group="primary" data-tab="customEffects">

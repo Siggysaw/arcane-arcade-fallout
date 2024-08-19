@@ -1,0 +1,183 @@
+<table>
+  <th>
+    Crafting time
+  </th>
+  <th>
+    Quantity
+  </th>
+  <th>
+    Required Material 
+  </th>
+  <tr>
+    <td>
+      <input type="text" name="system.crafting.craftingTime" value="{{ system.crafting.craftingTime }}" />
+    </td>
+    <td id="valueMat1">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq1.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq1.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq1.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq1.mat" value="{{system.crafting.matsReq1.mat}}" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Crafting DC
+    </td>
+    <td id="valueMat2">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq2.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq2.qty}}
+      <i style="padding:3px;cursor: pointer;"  data-mat-add data-mat="system.crafting.matsReq2.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq2.mat" value="{{system.crafting.matsReq2.mat}}" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="text" name="system.crafting.craftingDC" value="{{system.crafting.craftingDC}}" />
+    </td>
+    {{#GreaterThan system.crafting.matsReq2.qty 1 }}
+    <td id="valueMat3">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq3.qty"  class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq3.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq3.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq3.mat" value="{{system.crafting.matsReq3.mat}}" />
+    </td>
+    {{/GreaterThan}}
+  </tr>
+  <tr>
+    <td>
+      Amount created
+    </td>
+    {{#GreaterThan system.crafting.matsReq3.qty 1 }}
+    <td id="valueMat4">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq4.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq4.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq4.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq4.mat" value="{{system.crafting.matsReq4.mat}}" />
+    </td>
+     {{/GreaterThan}}
+  </tr>
+  <tr>
+    <td>
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.multiple.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.multiple.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.multiple.qty" class="fas fa-plus-square"></i>
+    </td>
+    {{#GreaterThan system.crafting.matsReq4.qty 1 }}
+    <td id="valueMat5">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq5.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq5.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq5.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq5.mat" value="{{system.crafting.matsReq5.mat}}" />
+    </td>
+    {{/GreaterThan}}
+  </tr>
+  {{#GreaterThan system.crafting.matsReq5.qty 1 }}
+  <tr>
+    <td>
+    </td>
+    <td id="valueMat6">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq6.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq6.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq6.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq6.mat" value="{{system.crafting.matsReq6.mat}}" />
+    </td>
+  </tr>
+  {{/GreaterThan}}
+  {{#GreaterThan system.crafting.matsReq6.qty 1 }}
+  <tr>
+    <td>
+    </td>
+    <td id="valueMat7">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq7.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq7.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq7.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq7.mat" value="{{system.crafting.matsReq7.mat}}" />
+    </td>
+  </tr>
+  {{/GreaterThan}}
+  {{#GreaterThan system.crafting.matsReq7.qty 1 }}
+  <tr>
+    <td>
+    </td>
+    <td id="valueMat8">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq8.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq8.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq8.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq8.mat" value="{{system.crafting.matsReq8.mat}}" />
+    </td>
+  </tr>
+  {{/GreaterThan}}
+  {{#GreaterThan system.crafting.matsReq8.qty 1 }}
+  <tr>
+    <td>
+    </td>
+    <td id="valueMat9">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq9.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq9.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq9.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq9.mat" value="{{system.crafting.matsReq9.mat}}" />
+    </td>
+  </tr>
+  {{/GreaterThan}}
+  {{#GreaterThan system.crafting.matsReq9.qty 1 }}
+  <tr>
+    <td>
+    </td>
+    <td id="valueMat10">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq10.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq10.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq10.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq10.mat" value="{{system.crafting.matsReq10.mat}}" />
+    </td>
+  </tr>
+  {{/GreaterThan}}
+  {{#GreaterThan system.crafting.matsReq10.qty 1 }}
+  <tr>
+    <td>
+    </td>
+    <td id="valueMat11">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq11.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq11.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq11.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq11.mat" value="{{system.crafting.matsReq11.mat}}" />
+    </td>
+  </tr>
+  {{/GreaterThan}}
+  {{#GreaterThan system.crafting.matsReq11.qty 1 }}
+  <tr>
+    <td>
+    </td>
+    <td id="valueMat12">
+      <i style="padding:3px;cursor: pointer;" data-mat-subtract data-mat="system.crafting.matsReq12.qty" class="fas fa-minus-square"></i>
+      {{system.crafting.matsReq12.qty}}
+      <i style="padding:3px;cursor: pointer;" data-mat-add data-mat="system.crafting.matsReq12.qty" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.crafting.matsReq12.mat" value="{{system.crafting.matsReq12.mat}}" />
+    </td>
+  </tr>
+  {{/GreaterThan}}
+  
+</table>

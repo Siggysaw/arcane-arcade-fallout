@@ -16,6 +16,7 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="crafting">Crafting</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -24,6 +25,10 @@
     {{!-- Description Tab --}}
     <div class="tab" data-group="primary" item-description data-tab="description">
       {{editor system.description target="system.description" rollData=rollData engine="prosemirror" button=true owner=owner editable=editable}}
+    </div>
+    {{!-- Crafting Tab --}}
+    <div class="tab crafting" data-group="primary" data-tab="crafting">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
     </div>
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">

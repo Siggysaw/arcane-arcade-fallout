@@ -52,6 +52,7 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="crafting">Crafting</a>
     <a class="item" data-tab="upgrades" id="upgradesTab">Upgrades</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
@@ -130,6 +131,10 @@
       rollData prop. --}}
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror"
       editable=editable}}
+    </div>
+    {{!-- Crafting Tab --}}
+    <div class="tab crafting" data-group="primary" data-tab="crafting">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
     </div>
     {{!-- Upgrades Tab --}}
     <div class="tab" data-group="primary" data-tab="upgrades">

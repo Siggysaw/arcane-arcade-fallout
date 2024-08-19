@@ -55,7 +55,7 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
       }),
     })	
     schema.load = new fields.NumberField({ initial:0, min:0}),
-    schema.baseLoad = new fields.NumberField({ initial:0, min:0}),
+    schema.baseLoad = new fields.NumberField({ initial:0, min:0}),   
     schema.upgrades = new fields.SchemaField({
       upgrade1 : new fields.SchemaField({
         name : new fields.StringField({initial: ``,}),

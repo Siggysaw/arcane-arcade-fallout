@@ -269,7 +269,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       let matQty = ev.currentTarget.dataset.mat
       let myMat = matQty.split('.')
       let myItem = this.item
-      let qty = (myItem.system[myMat[1]].qty += 1)
+      let qty = (myItem.system.crafting[myMat[2]].qty += 1)
       this.item.update({ [matQty]: qty })
     })
 
@@ -278,7 +278,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       let matQty = ev.currentTarget.dataset.mat
       let myMat = matQty.split('.')
       let myItem = this.item
-      let qty = (myItem.system[myMat[1]].qty -= 1)
+      let qty = (myItem.system.crafting[myMat[2]].qty -= 1)
       this.item.update({ [matQty]: qty })
     })
 

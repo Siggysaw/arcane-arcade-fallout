@@ -22,35 +22,56 @@ export default class FalloutZeroArmorUpgrade extends FalloutZeroItemBase {
       initial: this.img,
     })
     schema.matsReq1 = new fields.SchemaField({
-      mat: new fields.StringField({}),
+      mat: new fields.StringField({initial:""}),
       qty: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
     })
     schema.matsReq2 = new fields.SchemaField({
-      mat: new fields.StringField({}),
+      mat: new fields.StringField({initial:""}),
       qty: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
     })
     schema.matsReq3 = new fields.SchemaField({
-      mat: new fields.StringField({}),
+      mat: new fields.StringField({initial:""}),
       qty: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
     })
     schema.matsReq4 = new fields.SchemaField({
-      mat: new fields.StringField({}),
+      mat: new fields.StringField({initial:""}),
       qty: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
     })
     schema.matsReq5 = new fields.SchemaField({
-      mat: new fields.StringField({}),
+      mat: new fields.StringField({initial:""}),
+      qty: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+    })
+    schema.matsReq6 = new fields.SchemaField({
+      mat: new fields.StringField({initial:""}),
+      qty: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+    })
+    schema.matsReq7 = new fields.SchemaField({
+      mat: new fields.StringField({initial:""}),
+      qty: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+    })
+    schema.matsReq8 = new fields.SchemaField({
+      mat: new fields.StringField({initial:""}),
       qty: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
