@@ -408,6 +408,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const rest = ev.currentTarget.dataset.rest
       this.actor.restRecovery(rest)
     })
+    // Toggle Edit Mode
+    html.on('click', '[data-editToggle]', (ev) => {
+      if (this.actor.system.editToggle === true) {
+        this.actor.update({ 'system.editToggle': false })
+      } else {
+        this.actor.update({ 'system.editToggle': true })
+      }
+    })
 
     // Toggle Active Party Member
     html.on('click', '[data-activeCheck]', (ev) => {

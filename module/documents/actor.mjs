@@ -23,7 +23,7 @@ export default class FalloutZeroActor extends Actor {
   }
   // Short Rest and Long Rest Button Functionality
   restRecovery(rest) {
-    const raceItem = this.items.filter((i) => i.type == "race")
+    const raceItem = this.items.filter((i) => i.type == 'race')
     const race = raceItem[0].name
     const currentSP = this.system.stamina.value
     const currentHP = this.system.health.value
@@ -33,17 +33,21 @@ export default class FalloutZeroActor extends Actor {
     const robotHeal = Math.max(this.system.abilities.int.value, this.system.abilities.per.value)
 
     // Short Rest
-    if (rest === "short") {
-      let newSP=0
-      race === ("Human" || "Ghoul" || "Super Mutant") ? newSP = currentSP + (Math.floor(maxSP / 2)) : newSP = maxSP
-      newSP > maxSP ? newSP = maxSP : newSP = newSP
+    if (rest === 'short') {
+      let newSP = 0
+      race === ('Human' || 'Ghoul' || 'Super Mutant')
+        ? (newSP = currentSP + Math.floor(maxSP / 2))
+        : (newSP = maxSP)
+      newSP > maxSP ? (newSP = maxSP) : (newSP = newSP)
       this.update({ 'system.stamina.value': newSP })
     }
     // Long Rest
-    if (rest === "long") {
-      let newHP=0
-      race === ("Human" || "Ghoul" || "Super Mutant") ? newHP = currentHP + (endurance / 2) + this.system.level : newHP = currentHP + (robotHeal / 2) + this.system.level
-      newHP > maxHP ? newHP = maxHP : newHP = newHP
+    if (rest === 'long') {
+      let newHP = 0
+      race === ('Human' || 'Ghoul' || 'Super Mutant')
+        ? (newHP = currentHP + endurance / 2 + this.system.level)
+        : (newHP = currentHP + robotHeal / 2 + this.system.level)
+      newHP > maxHP ? (newHP = maxHP) : (newHP = newHP)
       this.update({ 'system.health.value': newHP })
       this.update({ 'system.stamina.value': maxSP })
     }
@@ -111,23 +115,27 @@ export default class FalloutZeroActor extends Actor {
       //Add Radiation levels if irradiated
       if (path == 'system.irradiated') {
         await this.handleIrradiated('system.irradiated', actorValue, consumValue)
-      } 
+      }
       //This should work with numbers and/or strings
       else {
         //If there is a max, don't go over it
-        if (path.includes('value') && typeof await this.deep_value(this, path.replace('.value', '.max')) == 'number'){
+        if (
+          path.includes('value') &&
+          typeof (await this.deep_value(this, path.replace('.value', '.max'))) == 'number'
+        ) {
           valueMax = await this.deep_value(this, path.replace('.value', '.max'))
-          actorValue = Math.min(actorValue + consumValue,valueMax)
+          actorValue = Math.min(actorValue + consumValue, valueMax)
+        } else {
+          actorValue = actorValue + consumValue
         }
-        else {
-          actorValue = actorValue + consumValue 
-        }
-      //Don't go under minimum
-        if (path.includes('value') && typeof await this.deep_value(this, path.replace('.value', '.min')) == 'number') {
+        //Don't go under minimum
+        if (
+          path.includes('value') &&
+          typeof (await this.deep_value(this, path.replace('.value', '.min'))) == 'number'
+        ) {
           valueMin = await this.deep_value(this, path.replace('.value', '.min'))
-          actorValue = Math.max(actorValue,valueMin)
-        }
-        else {
+          actorValue = Math.max(actorValue, valueMin)
+        } else {
           if (actorValue < 0 && !path.includes('dvantage')) {
             actorValue = 0
           } //most stuff has a minimum of 0.
@@ -153,12 +161,14 @@ export default class FalloutZeroActor extends Actor {
     await this.update({ [path]: actorValue })
     let descSplit = path.split('.')
     let modifiedValue = descSplit[descSplit.length - 2]
-    if (modifiedValue == "system") {modifiedValue = descSplit[descSplit.length - 1]} 
+    if (modifiedValue == 'system') {
+      modifiedValue = descSplit[descSplit.length - 1]
+    }
     let chatDesc = `${modifiedValue}<br>`
     return chatDesc
   }
 
-  async evaluateAtFormula(string, myActor=this) {
+  async evaluateAtFormula(string, myActor = this) {
     let strList = string.split(' ')
     string = ''
     for (var str of strList) {
@@ -276,17 +286,17 @@ export default class FalloutZeroActor extends Actor {
       chatContent += `${this.formatCompendiumItem('condition', currentCondition.name, 'Click for details').split('<br>').join('')} for an additional [[/r 1d4]] hours.`
     }
     //Modify Effects to get the @ values
-    if (addedCondition){
-      console.log("added a drunk condition")
+    if (addedCondition) {
+      console.log('added a drunk condition')
       let newArray
-      for (var ef of addedCondition.effects){
+      for (var ef of addedCondition.effects) {
         newArray = ef.changes
-        for (var change of newArray){
-          if (change.value.includes("@")){
+        for (var change of newArray) {
+          if (change.value.includes('@')) {
             change.value = await this.evaluateAtFormula(change.value)
           }
         }
-        console.log(await ef.update({'changes' : newArray}))
+        console.log(await ef.update({ changes: newArray }))
       }
     }
     return chatContent
@@ -314,20 +324,20 @@ export default class FalloutZeroActor extends Actor {
       } else {
         //Create new effect if not already on character
         let pack = await game.packs.find((p) => p.metadata.name == 'conditions')
-        console.log(pack,condition)
+        console.log(pack, condition)
         conditionObj = await pack.getDocument(pack.find((o) => o.name == condition)._id)
         actorEf = await Item.create(conditionObj, { parent: this })
         //Modify Effects to get the @ values
-        if (actorEf){
+        if (actorEf) {
           let newArray
-          for (var ef of actorEf.effects){
+          for (var ef of actorEf.effects) {
             newArray = ef.changes
-            for (var change of newArray){
-              if (change.value.includes("@")){
+            for (var change of newArray) {
+              if (change.value.includes('@')) {
                 change.value = await this.evaluateAtFormula(change.value)
               }
             }
-            await ef.update({'changes' : newArray})
+            await ef.update({ changes: newArray })
           }
         }
       }
@@ -379,36 +389,46 @@ export default class FalloutZeroActor extends Actor {
     let details = description
     let chatContent = ``
     if (item.type != 'explosive') {
-      if (item.type == "food-and-drinks" || item.type == "chems") {details = description.replace('<p>', "<p>It's ")}
+      if (item.type == 'food-and-drinks' || item.type == 'chems') {
+        details = description.replace('<p>', "<p>It's ")
+      }
       //Add reactions (custom effects with instantaneous results)
       if (typeof item.system.modifiers != 'undefined') {
         if (item.system.modifiers.path1 != '' && item.system.modifiers.value1 != '') {
-          chatContent += "Adjusted " + await this.addCustomEffect(
-            item.system.modifiers.path1,
-            item.system.modifiers.modType1,
-            item.system.modifiers.value1,
-          )
+          chatContent +=
+            'Adjusted ' +
+            (await this.addCustomEffect(
+              item.system.modifiers.path1,
+              item.system.modifiers.modType1,
+              item.system.modifiers.value1,
+            ))
         }
         if (item.system.modifiers.path2 != '' && item.system.modifiers.value2 != '') {
-          chatContent += ", " + await this.addCustomEffect(
-            item.system.modifiers.path2,
-            item.system.modifiers.modType2,
-            item.system.modifiers.value2,
-          )
+          chatContent +=
+            ', ' +
+            (await this.addCustomEffect(
+              item.system.modifiers.path2,
+              item.system.modifiers.modType2,
+              item.system.modifiers.value2,
+            ))
         }
         if (item.system.modifiers.path3 != '' && item.system.modifiers.value3 != '') {
-          chatContent += ", " + await this.addCustomEffect(
-            item.system.modifiers.path3,
-            item.system.modifiers.modType3,
-            item.system.modifiers.value3,
-          )
+          chatContent +=
+            ', ' +
+            (await this.addCustomEffect(
+              item.system.modifiers.path3,
+              item.system.modifiers.modType3,
+              item.system.modifiers.value3,
+            ))
         }
         if (item.system.modifiers.path4 != '' && item.system.modifiers.value4 != '') {
-          chatContent += ", " + await this.addCustomEffect(
-            item.system.modifiers.path4,
-            item.system.modifiers.modType4,
-            item.system.modifiers.value4,
-          )
+          chatContent +=
+            ', ' +
+            (await this.addCustomEffect(
+              item.system.modifiers.path4,
+              item.system.modifiers.modType4,
+              item.system.modifiers.value4,
+            ))
         }
       }
 
@@ -475,17 +495,23 @@ export default class FalloutZeroActor extends Actor {
           newCondition = await pack.getDocument(strSplit[strSplit.length - 1])
           if (newCondition) {
             let i = 0
-            if (await actorEffects.find((e) => e.name == newCondition.name && e.type == "condition")){ //if condition exists on actor
-              actorEf = await actorEffects.get(actorEffects.find((e) => e.name == newCondition.name && e.type == "condition")._id,)
+            if (
+              await actorEffects.find((e) => e.name == newCondition.name && e.type == 'condition')
+            ) {
+              //if condition exists on actor
+              actorEf = await actorEffects.get(
+                actorEffects.find((e) => e.name == newCondition.name && e.type == 'condition')._id,
+              )
               const itemEffects = actorEf.collections.effects.contents
               const qty = actorEf.system.quantity
-              while (i < itemEffects.length) { //IF levels of effects are present, it will upgrade according to quantity.
+              while (i < itemEffects.length) {
+                //IF levels of effects are present, it will upgrade according to quantity.
                 itemEf = await actorEf.effects.get(itemEffects[i]._id)
-                if (Number(itemEf.name.slice(-1)) == qty + 1){ 
-                  await actorEf.update({'system.quantity' : qty + 1})
+                if (Number(itemEf.name.slice(-1)) == qty + 1) {
+                  await actorEf.update({ 'system.quantity': qty + 1 })
                   let j = 0
                   let otherEffect
-                  while (j < itemEffects.length){
+                  while (j < itemEffects.length) {
                     otherEffect = await actorEf.effects.get(itemEffects[j]._id)
                     await otherEffect.update({ disabled: true })
                     j++
@@ -494,20 +520,25 @@ export default class FalloutZeroActor extends Actor {
                 }
                 i++
               }
-            } else { // condition is not on actor, create it
-              if (newCondition.collections.effects.contents.filter(e => e.disabled == false).length > 0) { //Create it if it has active effects
+            } else {
+              // condition is not on actor, create it
+              if (
+                newCondition.collections.effects.contents.filter((e) => e.disabled == false)
+                  .length > 0
+              ) {
+                //Create it if it has active effects
                 let addedCondition = await Item.create(newCondition, { parent: this })
                 //Modify Effects to get the @ values
-                if (addedCondition){
+                if (addedCondition) {
                   let newArray
-                  for (var ef of addedCondition.effects){
+                  for (var ef of addedCondition.effects) {
                     newArray = ef.changes
-                    for (var change of newArray){
-                      if (change.value.includes("@")){
+                    for (var change of newArray) {
+                      if (change.value.includes('@')) {
                         change.value = await this.evaluateAtFormula(change.value)
                       }
                     }
-                    await ef.update({'changes' : newArray})
+                    await ef.update({ changes: newArray })
                   }
                 }
               }
@@ -1554,9 +1585,13 @@ export default class FalloutZeroActor extends Actor {
     if (game.users.find((u) => u.name == playerName)) {
       whisperUser = game.users.find((u) => u.name == playerName)._id
     }
-    let totLckMod=''
-    let BeenThereDoneThat = game.actors.find((u) => u.name == myActor).items.find((i) => i.name == "Been There Done That.")
-    BeenThereDoneThat ? totLckMod = game.actors.find((u) => u.name == myActor).system.abilities.lck.mod + 3 : totLckMod = game.actors.find((u) => u.name == myActor).system.abilities.lck.mod
+    let totLckMod = ''
+    let BeenThereDoneThat = game.actors
+      .find((u) => u.name == myActor)
+      .items.find((i) => i.name == 'Been There Done That.')
+    BeenThereDoneThat
+      ? (totLckMod = game.actors.find((u) => u.name == myActor).system.abilities.lck.mod + 3)
+      : (totLckMod = game.actors.find((u) => u.name == myActor).system.abilities.lck.mod)
     let myRollMode = CONST.DICE_ROLL_MODES.PRIVATE
     let myConcatenatedLoot = ``
     const collection = await game.packs.find((u) => u.metadata.label == 'Monster Loot')
@@ -1658,7 +1693,31 @@ export default class FalloutZeroActor extends Actor {
   getAbilityMod(ability) {
     return this.system.abilities[ability].mod
   }
-  getAttackBonus(attackBonus) {
+  getAttackBonus() {
     return this.system.attackBonus
+  }
+
+  hasKarmaCapAvailable() {
+    if (this.type !== 'character' || this.system.karmaCaps.length === 0) return false
+
+    return this.karmaCapsAvailable()
+  }
+
+  karmaCapsAvailable() {
+    if (this.type !== 'character') return 0
+    return this.system.karmaCaps.filter((flipped) => flipped).length
+  }
+
+  flipLastKarmaCap() {
+    const capIdx = this.system.karmaCaps.findIndex((flipped) => flipped)
+    if (capIdx < 0) {
+      throw new Error('Actor has no karma caps available')
+    }
+    this.system.karmaCaps[capIdx] = false
+    this.update({ 'system.karmaCaps': this.system.karmaCaps })
+  }
+
+  getPerks() {
+    return this.items.filter((item) => item.type === 'perk')
   }
 }

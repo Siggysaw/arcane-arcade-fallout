@@ -5,9 +5,10 @@
   line-height: initial;
   font-size:9pt;
 }
-.sheet .status .no-background{
-    background:none;
-    font-size:12pt;
+.sheet .status .no-background
+.sheet .status .no-background:hover {
+  background: none;
+  font-size: 12pt;
 }
 .sheet .status .skillvalue{
     font-size:10pt;

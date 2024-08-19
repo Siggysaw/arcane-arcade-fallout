@@ -18,18 +18,6 @@
         <td class="status-info-label"
             title="Every 10 levels resets and gives 1 level radiation">
             <p class="condition" data-condition="Irradiation">Irradiation</p>
-            <i style="padding: 3px"
-               data-subtracted
-               data-field="system.irradiated"
-               data-fieldvalue="{{irradiated}}"
-               class="fas fa-minus-square fakebutton nobackground">
-            </i>
-            <i style="padding: 3px"
-               data-added
-               data-field="system.irradiated"
-               data-fieldvalue="{{irradiated}}"
-               class="fas fa-plus-square fakebutton nobackground">
-            </i>
         </td>
     </tr>
     <tr>
@@ -99,11 +87,34 @@
             class="fas fa-plus-square fakebutton nobackground"></i>
         </td>
         <td class="status-info-value">
-            <progress title="{{irradiated}} out of 10" style ="max-width:70px" class="statusbar"
-                      value="{{ irradiated }}"
-                      max=10>
-                {{ irradiated }}
-            </progress>
+            <div class="grid grid-3col">
+                <div style="float:left;">
+                    <i style="padding: 3px;float:right"
+                       data-subtracted
+                       data-field="system.irradiated"
+                       data-fieldvalue="{{irradiated}}"
+                       class="fas fa-minus-square fakebutton nobackground">
+                    </i>
+                </div>
+                <div>
+                    <progress title="{{irradiated}} out of 10"
+                              style="width:100%;"
+                              class="statusbar"
+                              value="{{ irradiated }}"
+                              max=10>
+                        {{ irradiated }}
+                    </progress>
+                </div>
+                <div style="float:right;">
+                    <i style="padding: 3px;float:left"
+                       data-added
+                       data-field="system.irradiated"
+                       data-fieldvalue="{{irradiated}}"
+                       class="fas fa-plus-square fakebutton nobackground">
+                    </i>
+                </div>
+            </div>
+
 
         </td>
     </tr>

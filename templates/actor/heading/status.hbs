@@ -120,30 +120,30 @@
     </tr>
     <tr>
         <td class="skill-value">
-            <i style="padding: 3px"
+            {{#if system.editToggle}}<i style="padding: 3px"
                data-statSubtraction
                data-stat="armorClass"
                data-type=""
-               class="fas fa-minus-square fakebutton nobackground"></i>
+               class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
             {{ armorClass.value }}
-            <i style="padding: 3px"
+             {{#if system.editToggle}}<i style="padding: 3px"
                data-statAddition
                data-stat="armorClass"
                data-type=""
-               class="fas fa-plus-square fakebutton nobackground"></i>
+               class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
         </td>
         <td class="skill-value">
-            <i style="padding: 3px"
+             {{#if system.editToggle}}<i style="padding: 3px"
                data-statSubtraction
                data-stat="damageThreshold"
                data-type=""
-               class="fas fa-minus-square fakebutton nobackground"></i>
+               class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
             {{ damageThreshold.value }}
-            <i style="padding: 3px"
+             {{#if system.editToggle}}<i style="padding: 3px"
                data-statAddition
                data-stat="damageThreshold"
                data-type=""
-               class="fas fa-plus-square fakebutton nobackground"></i>
+               class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
         </td>
     </tr>
     <tr style="letter-spacing: -1px">
