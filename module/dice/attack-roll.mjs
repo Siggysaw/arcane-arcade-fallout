@@ -18,6 +18,7 @@ export default class AttackRoll extends FormApplication {
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
       apCost: this.weapon.system.apCost,
       totalApCost: this.weapon.system.apCost,
+      adjustedApCost: 0,
       critical: this.weapon.system.critical,
       damages: this.weapon.system.damages.map((damage) => {
         return {
@@ -128,8 +129,22 @@ export default class AttackRoll extends FormApplication {
 
   activateListeners($html) {
     const form = $html[0]
-    form.addEventListener('change', () => {
+    form.addEventListener('change', (e) => {
+      console.log(e)
       Object.assign(this.formDataCache, this._getSubmitData())
+      this.render()
+    })
+
+    form.querySelectorAll('[data-override-ap]').forEach((overrideButton) => {
+      overrideButton.addEventListener('click', (e) => {
+        const { overrideAp } = e.currentTarget.dataset
+        if (overrideAp === 'inc') {
+          this.formDataCache.adjustedApCost++
+        } else if (overrideAp === 'dec' && this.formDataCache.adjustedApCost > 0) {
+          this.formDataCache.adjustedApCost--
+        }
+        this.render()
+      })
     })
 
     const addTarget = form.querySelector('[data-add-target]')
@@ -183,6 +198,14 @@ export default class AttackRoll extends FormApplication {
     }
   }
 
+  getFinalApCost() {
+    if (this.formDataCache.overrideAp) {
+      return this.formDataCache.adjustedApCost
+    }
+
+    return this.formDataCache.totalApCost
+  }
+
   /**
    * Combine all damage formulas and targeted adjustment
    */
@@ -212,9 +235,10 @@ export default class AttackRoll extends FormApplication {
      * Apply AP consumption
      */
     if (this.formDataCache.consumesAp) {
-      const canAfford = this.actor.applyApCost(this.formDataCache.totalApCost)
+      const canAfford = this.actor.applyApCost(this.getFinalApCost())
       if (!canAfford) return
     }
+
     /**
      * Apply ammo consumption
      */
@@ -226,8 +250,15 @@ export default class AttackRoll extends FormApplication {
     /**
      * Deconstruct dialog form
      */
-    const { skillBonus, attackBonus, abilityBonus, decayPenalty, actorLuck, actorPenalties, bonus } =
-      this.formDataCache
+    const {
+      skillBonus,
+      attackBonus,
+      abilityBonus,
+      decayPenalty,
+      actorLuck,
+      actorPenalties,
+      bonus,
+    } = this.formDataCache
 
     /**
      * Roll to hit

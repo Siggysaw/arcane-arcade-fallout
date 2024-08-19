@@ -89,6 +89,14 @@
         <label for="consumesAp">Consume AP</label>
         <input type="checkbox" name="consumesAp" {{checked consumesAp}} />
       </div>
+      <div>
+      <div class="flex space-between">
+        <label for="overrideAp">Override AP Cost</label>
+        <input type="checkbox" name="overrideAp" {{checked overrideAp}} />
+      </div>
+      <div>
+
+      </div>
       <div class="flex space-between">
         <div>Weapon:</div>
         <div>{{ apCost }}</div>
@@ -101,7 +109,15 @@
       {{/if}}
       <div class="flex space-between">
         <div>Total:</div>
-        <div>{{ totalApCost }}</div>
+        {{#if overrideAp}}
+          <div class="flex">
+            <button type="button" class="flex no-border px-0 mr-2" data-override-ap="inc"><i class="fas fa-plus-square "></i></button>
+            <div>{{ adjustedApCost }}</div>
+            <button type="button" class="flex no-border px-0 ml-2" data-override-ap="dec"><i class="fas fa-minus-square "></i></button>
+          </div>
+        {{else}}
+          <div>{{ totalApCost }}</div>
+        {{/if}}
       </div>
     </fieldset>
   </div>
