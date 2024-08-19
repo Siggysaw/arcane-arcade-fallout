@@ -269,15 +269,17 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     sender?.replaceChildren(avatar, name)
     html.querySelector('.whisper-to')?.remove()
 
-    // Context menu
-    // const metadata = html.querySelector('.message-metadata')
-    // metadata.querySelector('.message-delete')?.remove()
-    // const anchor = document.createElement('a')
-    // anchor.setAttribute('aria-label', game.i18n.localize('AAFO.AdditionalControls'))
-    // anchor.classList.add('chat-control')
-    // anchor.dataset.contextMenu = ''
-    // anchor.innerHTML = '<i class="fas fa-ellipsis-vertical fa-fw"></i>'
-    // metadata.appendChild(anchor)
+    // Add reroll button
+    if (this.rolls.length > 0) {
+      const metadata = html.querySelector('.message-metadata')
+      const rerollButton = document.createElement('div')
+      rerollButton.innerHTML =
+        '<a data-reroll data-tooltip="Reroll dice"><i class="fas fa-dice-d20 fa-fw"></i><a>'
+      metadata.appendChild(rerollButton)
+      metadata
+        .querySelector('[data-reroll]')
+        .addEventListener('click', this._reRollDialog.bind(this))
+    }
 
     // add formula tooltip
     if (this.tooltip) {
@@ -388,6 +390,46 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     avatar.addEventListener('click', this._onTargetMouseDown.bind(this))
     avatar.addEventListener('pointerover', this._onTargetHoverIn.bind(this))
     avatar.addEventListener('pointerout', this._onTargetHoverOut.bind(this))
+  }
+
+  _reRollDialog() {
+    return new Dialog({
+      title: `Reroll dice`,
+      content: 'Consume karma cap?',
+      buttons: {
+        close: {
+          icon: '<i class="fas fa-times"></i>',
+          label: 'No',
+          callback: () => this._reRoll(false),
+        },
+        continue: {
+          icon: '<i class="fas fa-chevron-right"></i>',
+          label: 'Yes',
+          callback: () => this._reRoll(true),
+        },
+      },
+      default: 'close',
+    }).render(true)
+  }
+
+  async _reRoll(consumeKarmaCap) {
+    if (consumeKarmaCap) {
+      try {
+        this.actor.flipLastKarmaCap()
+      } catch {
+        ui.notifications.warn(`You don't have any karma caps available!`)
+        return
+      }
+    }
+    const newRoll = await this.rolls[0].reroll()
+    newRoll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: this.flavor,
+      rollMode: game.settings.get('core', 'rollMode'),
+      'flags.falloutzero': {
+        ...this.flags.falloutzero,
+      },
+    })
   }
 
   /* -------------------------------------------- */
