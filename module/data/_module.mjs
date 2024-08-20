@@ -14,7 +14,7 @@ export { default as FalloutZeroMeleeWeapon } from './meleeWeapon.mjs'
 export { default as FalloutZeroMaterial } from './material.mjs'
 export { default as FalloutZeroArmor } from './armor.mjs'
 export { default as FalloutZeroPowerArmor } from './powerArmor.mjs'
-
+export { default as FalloutZeroJunkItem } from './junkItem.mjs'
 
 // Export Misc
 export { default as FalloutZeroBackground } from './background.mjs'

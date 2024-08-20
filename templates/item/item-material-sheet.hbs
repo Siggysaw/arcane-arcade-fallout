@@ -5,12 +5,26 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-       <table style="width:200px;">
-           <tr>
-               <td>Qty:</td>
-               <td><input style="width:50px;float:left" type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
-           </tr>
-       </table>
+       <table>
+        <td style="vertical-align:middle">
+          Load
+        </td>
+        <td>
+          <input style="width:50px;" type="number" name="system.load" value="{{ system.load }}" />
+        </td>
+        <td style="vertical-align:middle">
+          Qty
+        </td> 
+        <td> 
+          <input style="width:50px;" type="number" name="system.quantity" value="{{ system.quantity }}" min="0" />
+        </td>
+        <td style="vertical-align:middle">
+          Cost
+        </td> 
+        <td> 
+          <input style="width:50px;" type="number" name="system.cost" value="{{ system.cost }}" min="0" />
+        </td>
+      </table>
     </div>
   </header>
   {{!-- Sheet Tab Navigation --}}

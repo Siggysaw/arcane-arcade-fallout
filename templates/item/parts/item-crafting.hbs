@@ -1,3 +1,12 @@
+{{#DifferentFrom system.crafting.matsReq1.qty 0}}
+  {{#DifferentFrom system.crafting.matsReq1.mat ""}}
+  <h3>Crafting recipe</h3>
+  {{else}}
+  <h3>This item cannot be crafted as is</h3>
+  {{/DifferentFrom}}
+{{else}}
+  <h3>This item cannot be crafted as is</h3>
+{{/DifferentFrom}}
 <table>
   <th>
     Crafting time

@@ -1,9 +1,9 @@
 <table class="backpack">
     <tr>
         <td style="padding-right:10px;width:40%">
-            <table class="equipped-stats">
-                <tr><td colspan="999"><h3>Materials</h3></td></tr>
-                <tr><td>Name</td><td>Qty</td><td></td></tr>
+            <table class="equipped-stats" id="matsTable">
+                <tr><th colspan="999"><h3>Materials</h3></th></tr>
+                <tr><th>Name</th><th>Qty</th><th></th></tr>
                 {{#each materials as |item id|}}
                 <tr>
                     <td>
@@ -31,9 +31,9 @@
             </table>
         </td>
         <td>
-            <table class="equipped-stats">
-                <tr><td colspan=999><h3>junk</h3></td></tr>
-                <tr><td></td><td>Name</td><td>Qty</td><td>Materials</td></tr>
+            <table class="equipped-stats" id="junkTable">
+                <tr><th colspan=999><h3>junk</h3></th></tr>
+                <tr><th></th><th>Name</th><th>Qty</th><th>Materials</th></tr>
                 {{#each junk as |item id|}}
                 <tr>
                     <td style="width:20px;">
@@ -47,7 +47,7 @@
                                title="{{localize 'DOCUMENT.Update' type='item'}}">
                                 {{item.name}}
                             </a>
-                            </li>
+                        </li>
                     </td>
                     <td style="width:80px;">
                         <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>

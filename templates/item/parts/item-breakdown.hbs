@@ -1,0 +1,43 @@
+<h3>BREAKDOWN</h3>
+<table>
+  <th>
+    Quantity
+  </th>
+  <th>
+    Recovered materials
+  </th>
+  <tr>
+    <td id="RecoveredMat1">
+      <i style="padding:3px;cursor: pointer;" data-junk-subtract data-mat="system.junk.quantity1" class="fas fa-minus-square"></i>
+      {{system.junk.quantity1}}
+      <i style="padding:3px;cursor: pointer;" data-junk-add data-mat="system.junk.quantity1" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.junk.type1" value="{{system.junk.type1}}" />
+    </td>
+  </tr>
+   {{#GreaterThan system.junk.quantity1 1}}
+  <tr>
+    <td id="RecoveredMat2">
+      <i style="padding:3px;cursor: pointer;" data-junk-subtract data-mat="system.junk.quantity2" class="fas fa-minus-square"></i>
+      {{system.junk.quantity2}}
+      <i style="padding:3px;cursor: pointer;" data-junk-add data-mat="system.junk.quantity2" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.junk.type2" value="{{system.junk.type2}}" />
+    </td>
+  </tr>
+  {{/GreaterThan}}
+  {{#GreaterThan system.junk.quantity2 1}}
+  <tr>
+    <td id="RecoveredMat3">
+      <i style="padding:3px;cursor: pointer;" data-junk-subtract data-mat="system.junk.quantity3" class="fas fa-minus-square"></i>
+      {{system.junk.quantity3}}
+      <i style="padding:3px;cursor: pointer;" data-junk-add data-mat="system.junk.quantity3" class="fas fa-plus-square"></i>
+    </td>
+    <td>
+      <input type="text" name="system.junk.type3" value="{{system.junk.type3}}" />
+    </td>
+  </tr>
+  {{/GreaterThan}}
+</table>

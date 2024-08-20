@@ -1062,13 +1062,16 @@ export default class FalloutZeroActor extends Actor {
   //Convert junk to Materials as per item stats
   async convertJunkToMat(item, mats, qty) {
     let compendium = game.packs.find((u) => u.metadata.name == 'material')
-    let matData, existingMat, newQuantity
-    let material
+    let matData, existingMat, newQuantity, itemLink
+    let material, chatContent
     var i = 0
-
+    chatContent = ``
+    
     // Create item or add quantity if existing
     while (i < mats.length) {
       material = mats[i][1].trim()
+      itemLink = this.formatCompendiumItem('material',material,'Added to inventory.')
+      chatContent += `${Number(mats[i][0]) * Number(qty)}x ${itemLink}`
       matData = compendium.tree.entries.find((u) => u.name.toLowerCase() == material.toLowerCase())
       existingMat = this.items.find((u) => u.name.toLowerCase() == mats[i][1].toLowerCase())
       if (existingMat) {
@@ -1086,6 +1089,24 @@ export default class FalloutZeroActor extends Actor {
     } else {
       item.delete()
     }
+    itemLink = this.formatCompendiumItem('junk',item.name,'Removed from inventory.')
+    if (!itemLink.includes("data-link")){
+      itemLink = this.formatCompendiumItem('rangedweapons',item.name,'Removed from inventory.')
+    }
+    if (!itemLink.includes("data-link")){
+      itemLink = this.formatCompendiumItem('melee-weapons',item.name,'Removed from inventory.')
+    }
+    if (!itemLink.includes("data-link")){
+      itemLink = this.formatCompendiumItem('armor',item.name,'Removed from inventory.')
+    }
+    //Add any more item types we want to make breakable.
+    let chatData = {
+      author: game.user._id,
+      speaker: ChatMessage.getSpeaker(),
+      flavor: `${qty}x ${itemLink.replace("<br>","")} broken down into:`,
+      content: chatContent.slice(0,-4)
+    }
+    ChatMessage.create(chatData, {})
   }
 
   //Material conversion dialog
@@ -1123,30 +1144,30 @@ export default class FalloutZeroActor extends Actor {
         dialogContent = dialogContent.replace('materials?', 'materials, each?')
         dialogContent += `<br> How many ${itemName} do you want to convert? <br><br>
         <select style="padding-left:20px" name="matQtyOpt" id = "matQtyOpt">`
-        while (i < initialQty + 1) {
+        while (i < Number(initialQty) + 1) {
           dialogContent += `<option value='${i}'>${i}</option>`
           qtyOptions.push(i)
           i++
         }
         dialogContent += `</select><br>`
       }
-      dialogContent += `<h4> This process is irreversible.</h4>`
+      dialogContent += `<h4> This process is irreversible. This action may require tools or a bench. Consult your GM first.</h4>`
     }
     let d = new Dialog(
       {
-        title: 'Convert or not?',
+        title: 'Breakdown or not?',
         content: dialogContent,
         buttons: {
           Yes: {
             icon: '<i class="fas fa-check"></i>',
-            label: 'Yes please! (consult GM)',
+            label: 'Okie-Dokie!',
             callback: async () => {
               this.convertJunkToMat(item, mats, qty)
             },
           },
           No: {
             icon: '<i class="fa-solid fa-x"></i>',
-            label: 'Not yet...',
+            label: 'Nope!',
             callback: async () => {},
           },
         },
@@ -1719,5 +1740,41 @@ export default class FalloutZeroActor extends Actor {
 
   getPerks() {
     return this.items.filter((item) => item.type === 'perk')
+  }
+
+  sortTable(tableID) {
+    var table, rows, switching, col, i, x, y, shouldSwitch;
+    table = document.getElementById(tableID);
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /* Loop through all table rows (except the
+      first, which contains table headers): */
+      for (i = 2; i < (rows.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Get the two elements you want to compare,
+        one from current row and one from the next: */
+        tableID == "junkTable"? col = 1 : col = 0
+        x = rows[i].getElementsByTagName("TD")[col];
+        y = rows[i + 1].getElementsByTagName("TD")[col];
+        // Check if the two rows should switch place:
+        if (x.children[0].children[0].innerHTML.toLowerCase() > y.children[0].children[0].innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+      }
+    }
   }
 }

@@ -340,7 +340,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type == 'junkItem' && item.system.quantity > 0) {
+          if ((
+            item.type == 'junkItem' || 
+            item.type == 'rangedWeapon' || 
+            item.type == 'meleeWeapon' )
+            && item.system.quantity > 0) {
             return true
           }
         },
@@ -666,6 +670,24 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         { _id: weaponId, 'system.decay': ev.target.value },
       ])
     })
+    // Updates Weapon Decay
+    html.on('click', '[data-add-decay]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId
+      let newDecay = Number(ev.target.dataset.fieldvalue) + 1
+      console.log(newDecay)
+      this.actor.updateEmbeddedDocuments('Item', [
+        { _id: weaponId, 'system.decay': newDecay },
+      ])
+    })
+    // Updates Weapon Decay
+    html.on('click', '[data-reduce-decay]', (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId
+      let newDecay = Number(ev.target.dataset.fieldvalue) - 1
+      console.log(newDecay)
+      this.actor.updateEmbeddedDocuments('Item', [
+        { _id: weaponId, 'system.decay': newDecay },
+      ])
+    })
 
     // Updates Armor DP
     html.on('change', '[data-set-defense]', (ev) => {
@@ -683,11 +705,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       ])
     })
 
+
+    html.on('click','[id=craftingNav]', () => {
+      this.actor.sortTable("matsTable")
+      this.actor.sortTable("junkTable")
+    })
+    /*DEPRECATED (context menu now)
     // Convert Junk to Materials
     html.on('click', '[data-junkToMat]', (ev) => {
       const itemID = ev.currentTarget.dataset.itemId
       this.actor.checkConvert(itemID)
-    })
+    })*/
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable

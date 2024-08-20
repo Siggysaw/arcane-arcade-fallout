@@ -5,39 +5,28 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-		Qty: <input style="width:50px;" type="number" name="system.quantity" value="{{ system.quantity }}" min="0" />
+      <table>
+        <td style="vertical-align:middle">
+          Load
+        </td>
+        <td>
+          <input style="width:50px;" type="number" name="system.load" value="{{ system.load }}" />
+        </td>
+        <td style="vertical-align:middle">
+          Qty
+        </td> 
+        <td> 
+          <input style="width:50px;" type="number" name="system.quantity" value="{{ system.quantity }}" min="0" />
+        </td>
+        <td style="vertical-align:middle">
+          Cost
+        </td> 
+        <td> 
+          <input style="width:50px;" type="number" name="system.cost" value="{{ system.cost }}" min="0" />
+        </td>
+      </table>
     </div>
   </header>
-  <table>
-      <tr>
-          <td style="width: 200px">Load:</td>
-          <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
-      </tr>
-      <tr>
-          <td style="width: 200px">Material 1:</td>
-          <td><input type="text" name="system.junk.type1" value="{{ system.junk.type1 }}" /></td>
-          <td>Qty</td>
-          <td>
-              <input type="number" name="system.junk.quantity1" value="{{ system.junk.quantity1 }}" />
-          </td>
-      </tr>
-      <tr>
-          <td style="width: 200px">Material 2:</td>
-          <td><input type="text" name="system.junk.type2" value="{{ system.junk.type2 }}" /></td>
-          <td>Qty</td>
-          <td>
-              <input type="number" name="system.junk.quantity2" value="{{ system.junk.quantity2 }}" />
-          </td>
-      </tr>
-      <tr>
-          <td style="width: 200px">Material 2:</td>
-          <td><input type="text" name="system.junk.type3" value="{{ system.junk.type3 }}" /></td>
-          <td>Qty</td>
-          <td>
-              <input type="number" name="system.junk.quantity3" value="{{ system.junk.quantity3 }}" />
-          </td>
-      </tr>
-  </table>
 
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
@@ -54,7 +43,7 @@
     </div>
     {{!-- Crafting Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
-      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}
     </div>
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">
