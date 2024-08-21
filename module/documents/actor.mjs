@@ -1073,7 +1073,7 @@ export default class FalloutZeroActor extends Actor {
     while (i < mats.length) {
       material = mats[i][1].trim()
       itemLink = this.formatCompendiumItem('material',material,'Added to inventory.')
-      chatContent += `${Number(mats[i][0]) * Number(qty)}x ${itemLink}`
+      chatContent += `${Number(mats[i][0]) * Number(qty)}x ${itemLink.replace(`draggable="true"`,`draggable="false"`)}`
       matData = compendium.tree.entries.find((u) => u.name.toLowerCase() == material.toLowerCase())
       existingMat = this.items.find((u) => u.name.toLowerCase() == mats[i][1].toLowerCase())
       if (existingMat) {
@@ -1105,7 +1105,7 @@ export default class FalloutZeroActor extends Actor {
     let chatData = {
       author: game.user._id,
       speaker: ChatMessage.getSpeaker(),
-      flavor: `${qty}x ${itemLink.replace("<br>","")} broken down into:`,
+      flavor: `${qty}x ${itemLink.replace("<br>","").replace(`draggable="true"`,`draggable="false"`)} broken down into:`,
       content: chatContent.slice(0,-4)
     }
     ChatMessage.create(chatData, {})
@@ -1158,7 +1158,7 @@ export default class FalloutZeroActor extends Actor {
     let d = new Dialog(
       {
         title: 'Breakdown or not?',
-        content: dialogContent,
+        content: dialogContent.replace(`draggable="true"`,`draggable="false"`),
         buttons: {
           Yes: {
             icon: '<i class="fas fa-check"></i>',
