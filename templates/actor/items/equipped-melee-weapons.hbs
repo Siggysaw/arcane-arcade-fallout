@@ -105,9 +105,7 @@
                 {{else}}
             <table class="equipped-stats">
                 <tr>
-                    <td colspan="999">DETAILS</td>
-                </tr>
-                <tr>
+                    <td rowspan="3" style="background:black;"><img src="{{item.img}}" style="width:75px;height:auto;" /></td>
                     <td>AP: {{ item.system.apCost }}</td>
                     <td>Load: {{ item.system.load }}</td>
                     <td>Str: {{ item.system.strengthRequirement }}</td>
