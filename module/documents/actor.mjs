@@ -955,9 +955,10 @@ export default class FalloutZeroActor extends Actor {
       const currentType = weapon.system.ammo.assigned
       const currentItem = actor.items.find((item) => item.name === currentType)
       const currentMag = weapon.system.ammo.capacity.value
+      const energyWeapon = currentType.includes("Core") || currentType.includes("Fuel") || currentType.includes("Cell") || currentType.includes("Energy") || currentType.includes("2mm EC")
       if (currentItem) {
         const currentQty = currentItem.system.quantity + currentMag
-        if (!weapon.system.energyWeapon) {
+        if (!energyWeapon) {
           actor.updateEmbeddedDocuments('Item', [
             { _id: currentItem._id, 'system.quantity': currentQty },
           ])
@@ -995,6 +996,7 @@ export default class FalloutZeroActor extends Actor {
     // Collect Required Ammo Information
     const ammoType = weapon.system.ammo.assigned
     const ammoFound = this.items.find((item) => item.name === ammoType)
+    const energyWeapon = ammoType.includes("Core") || ammoType.includes("Fuel") || ammoType.includes("Cell") || ammoType.includes("Energy") || ammoType.includes("2mm EC")
 
     // Do you have Ammo?
     if (!ammoFound) {
@@ -1036,7 +1038,7 @@ export default class FalloutZeroActor extends Actor {
     }
 
     // Energy Weapon Reload Rules
-    if (weapon.system.energyWeapon || manualReload) {
+    if (energyWeapon || manualReload) {
       updatedAmmo = ammoOwned - 1
       this.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     } else {

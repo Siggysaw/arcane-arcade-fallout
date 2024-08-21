@@ -220,7 +220,18 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       return weapon
     })
     context.meleeWeapons = meleeWeapons.map((weapon) => {
-      weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
+      if (!weapon.system.ammo.assigned) {
+        this.actor.updateEmbeddedDocuments('Item', [
+          { _id: weapon._id, 'system.ammo.assigned': weapon.system.ammo.type },
+        ])
+      }
+      weapon.ammos = ammos.filter((ammo) => ammo.name === weapon.system.ammo.assigned)
+      if (this.actor.type != 'npc') {
+        weapon.system.range.short =
+          this.actor.system.abilities['str'].value * weapon.system.range.short
+        weapon.system.range.long =
+          this.actor.system.abilities['str'].value * weapon.system.range.long
+      }
       return weapon
     })
     context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps

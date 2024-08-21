@@ -242,7 +242,7 @@ export default class AttackRoll extends FormApplication {
     /**
      * Apply ammo consumption
      */
-    if (this.weapon.system.consumesAmmo) {
+    if (this.weapon.system.ammo.assigned) {
       const canAfford = this.weapon.applyAmmoCost()
       if (!canAfford) return
     }

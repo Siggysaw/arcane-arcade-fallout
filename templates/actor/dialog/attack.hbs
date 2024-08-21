@@ -110,11 +110,11 @@
       <div class="flex space-between">
         <div>Total:</div>
         {{#if overrideAp}}
-          <div class="flex">
-            <button type="button" class="flex no-border px-0 mr-2" data-override-ap="inc"><i class="fas fa-plus-square "></i></button>
-            <div>{{ adjustedApCost }}</div>
-            <button type="button" class="flex no-border px-0 ml-2" data-override-ap="dec"><i class="fas fa-minus-square "></i></button>
-          </div>
+      <div class="flex">
+          <button type="button" class="flex no-border px-0 mr-2" data-override-ap="dec"><i class="fas fa-minus-square "></i></button>
+          <div>{{ adjustedApCost }}</div>
+          <button type="button" class="flex no-border px-0 ml-2" data-override-ap="inc"><i class="fas fa-plus-square "></i></button>
+      </div>
         {{else}}
           <div>{{ totalApCost }}</div>
         {{/if}}

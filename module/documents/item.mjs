@@ -444,6 +444,7 @@ export default class FalloutZeroItem extends Item {
 
     // Update ammo quantity
     const newWeaponAmmoCapacity = Number(this.system.ammo.capacity.value - 1)
+    console.log("Capacity Shoulda Been Updated")
     this.actor.updateEmbeddedDocuments('Item', [
       {
         _id: this._id,
