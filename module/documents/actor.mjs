@@ -1023,7 +1023,7 @@ export default class FalloutZeroActor extends Actor {
     // Reload The Weapon
     let ammoReloaded = capacity - currentMag
     let updatedAmmo = ammoOwned - ammoReloaded
-    if (ammoReloaded > ammoOwned && !weapon.system.energyWeapon) {
+    if (ammoReloaded > ammoOwned && !energyWeapon) {
       const ammoAvailable = currentMag + ammoOwned
       this.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.ammo.capacity.value': ammoAvailable },
