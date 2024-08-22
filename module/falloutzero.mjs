@@ -14,6 +14,15 @@ Hooks.once('init', function () {
   game.falloutzero = {
     rollItemMacro,
   }
+  game.settings.register('core', 'CarryLoad', {
+    name: 'Exact Carry Load Calculator',
+    hint: 'Checked: 23 x 10mm ammo = 2.3 load | Unchecked: 23 x 10mm ammo = 2 load',
+    scope: 'world',     
+    config: true,       
+    type: Boolean,       
+    default: false,
+    requiresReload: true,
+  });
 
   // Add custom constants for configuration.
   CONFIG.FALLOUTZERO = FALLOUTZERO

@@ -58,13 +58,25 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this._prepareItems(context)
     }
 
+    const carryLoadSetting = game.settings.get('core', 'CarryLoad');
+
     // Calculate Carry Load
-    actorData.system.carryLoad.base =
-      actorData.items.reduce((acc, item) => {
-        const { load = 0, quantity = 1 } = item.system
-        acc += Math.floor(load * quantity)
-        return Math.round(acc * 10) / 10
-      }, 0) + Math.floor(actorData.system.caps / 50)
+
+    if (!carryLoadSetting) {
+      actorData.system.carryLoad.base =
+        actorData.items.reduce((acc, item) => {
+          const { load = 0, quantity = 1 } = item.system
+          acc += Math.floor(load * quantity)
+          return Math.round(acc * 10) / 10
+        }, 0) + Math.floor(actorData.system.caps / 50)
+    } else {
+      actorData.system.carryLoad.base =
+        actorData.items.reduce((acc, item) => {
+          const { load = 0, quantity = 1 } = item.system
+          acc += load * quantity
+          return Math.round(acc * 10) / 10
+        }, 0) + Math.floor(actorData.system.caps / 50)
+    }
 
     actorData.system.carryLoad.value =
       actorData.system.carryLoad.base + actorData.system.carryLoad.modifiers
