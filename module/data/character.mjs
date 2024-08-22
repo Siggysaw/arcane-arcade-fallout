@@ -69,6 +69,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       }),
     })
     schema.attackBonus = new fields.NumberField({ initial: 0 })
+    schema.damageBonus = new fields.NumberField({ initial: 0 })
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),

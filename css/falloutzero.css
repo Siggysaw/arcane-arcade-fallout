@@ -901,3 +901,15 @@ a.inline-roll,
   vertical-align:middle;
   font-size:10pt;
 }
+.sheet .toggle input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/toggle-off.png');
+  appearance: none;
+  display: block;
+  width: 50px;
+  height: 50px;
+  border: none;
+}
+
+  .sheet .toggle input[type='checkbox']:checked {
+    content: url('/systems/arcane-arcade-fallout/assets/toggle-on.png');
+  }

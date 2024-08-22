@@ -1,183 +1,175 @@
 <form autocomplete="off">
-  <div class="form-group">
-    <fieldset>
-      <legend>Bonuses / Penalties</legend>
-      <div class="flex space-between">
-        <div>Skill Bonus:</div>
-        <div>{{ skillBonus }}</div>
-      </div>
-        <div class="flex space-between">
-        <div>Perks Bonus:</div>
-        <div>{{ attackBonus }}</div>
-      </div>
-      <div class="flex space-between">
-        <div>Ability Bonus:</div>
-        <div>{{ abilityBonus }}</div>
-      </div>
-      <div class="flex space-between">
-        <div>Decay Penalty:</div>
-        <div>{{ decayPenalty }}</div>
-      </div>
-      <div class="flex space-between">
-        <div>Luck:</div>
-        <div>{{ actorLuck }}</div>
-      </div>
-      <div class="flex space-between">
-        <div>Penalties:</div>
-        <div>{{ actorPenalties }}</div>
-      </div>
-    </fieldset>
-  </div>
-  <div class="form-group">
-    <fieldset>
-      <legend>Select Normal / Advantage / Disadvantage</legend>
-      <div>
-        <input
-          type="radio"
-          id="normal"
-          name="advantageMode"
-          value="1"
-          {{{setChecked
-          advantageMode
-          1}}}
-        />
-        <label for="normal">Normal</label>
-      </div>
-      <div>
-        <input
-          type="radio"
-          id="advantage"
-          name="advantageMode"
-          value="2"
-          {{{setChecked
-          advantageMode
-          2}}}
-        />
-        <label for="advantage">Advantage</label>
-      </div>
-      <div>
-        <input
-          type="radio"
-          id="disadvantage"
-          name="advantageMode"
-          value="3"
-          {{{setChecked
-          advantageMode
-          3}}}
-        />
-        <label for="disadvantage">Disadvantage</label>
-      </div>
-      <div data-tooltip="Target beyond long range, Nat 20 required to hit">
-        <input
-          type="radio"
-          id="hailmary"
-          name="advantageMode"
-          value="4"
-          {{{setChecked
-          advantageMode
-          4}}}
-        />
-        <label for="hailmary">Hail Mary!</label>
-      </div>
-    </fieldset>
-  </div>
-
-  <div class="form-group">
-    <fieldset>
-      <legend>AP Cost</legend>
-      <div class="flex space-between">
-        <label for="consumesAp">Consume AP</label>
-        <input type="checkbox" name="consumesAp" {{checked consumesAp}} />
-      </div>
-      <div>
-      <div class="flex space-between">
-        <label for="overrideAp">Override AP Cost</label>
-        <input type="checkbox" name="overrideAp" {{checked overrideAp}} />
-      </div>
-      <div>
-
-      </div>
-      <div class="flex space-between">
-        <div>Weapon:</div>
-        <div>{{ apCost }}</div>
-      </div>
-      {{#if targeted}}
-      <div class="flex space-between">
-        <div>Targeted({{ targeted.target }}):</div>
-        <div>{{ targeted.cost }}</div>
-      </div>
-      {{/if}}
-      <div class="flex space-between">
-        <div>Total:</div>
-        {{#if overrideAp}}
-      <div class="flex">
-          <button type="button" class="flex no-border px-0 mr-2" data-override-ap="dec"><i class="fas fa-minus-square "></i></button>
-          <div>{{ adjustedApCost }}</div>
-          <button type="button" class="flex no-border px-0 ml-2" data-override-ap="inc"><i class="fas fa-plus-square "></i></button>
-      </div>
-        {{else}}
-          <div>{{ totalApCost }}</div>
-        {{/if}}
-      </div>
-    </fieldset>
-  </div>
-  <div class="form-group">
-    <fieldset>
-      <legend>Damage</legend>
-      {{#each damages as |damage key|}}
-      <div class="flex space-between">
-        <div>Type:</div>
-        {{#if damage.altType}}
-        <select name="damage.{{ key }}.selectedDamageType">
-          <option>{{ damage.type }}</option>
-          <option>{{ damage.altType }}</option>
-        </select>
-        {{else}}
-        {{ damage.selectedDamageType }}
-        {{/if}}
-      </div>
-      <div class="flex space-between">
-        <div>Formula:</div>
-        <div>{{ damage.formula }}</div>
-      </div>
-      {{/each}}
-      <div class="flex space-between">
-        <div>Critical Formula:</div>
-        <div>{{ critical.formula }}</div>
-      </div>
-      <div class="flex space-between">
-        <div>Critical Multiplier:</div>
-        <div>{{ critical.multiplier }}</div>
-      </div>
-      {{#if critical.condition}}
-      <div class="flex space-between">
-        <div>Applies Condition:</div>
-        <div>{{ critical.condition }}</div>
-      </div>
-      {{/if}}
-    </fieldset>
-  </div>
-  <div class="form-group">
-    <label for="bonus">Situational bonus</label>
-    <input type="text" name="bonus" value="{{ bonus }}" placeholder="1d4" />
-  </div>
-  <div class="form-group">
-    {{#unless targeted}}
-    <button type="button" data-add-target>Targeted Attack</button>
-    {{else}}
-    <div class="targeted flex">
-      <div>
-        <div>Target: {{ targeted.target }}</div>
-      </div>
-      <div>
-        <button type="button" data-remove-target><i class="fas fa-trash"></i></button>
-      </div>
+    <div class="form-group">
+        <fieldset>
+            <legend>Bonuses / Penalties</legend>
+            <div class="flex space-between">
+                <div>Skill Bonus:</div>
+                <div>{{ skillBonus }}</div>
+            </div>
+            <div class="flex space-between">
+                <div>Perks Bonus:</div>
+                <div>{{ attackBonus }}</div>
+            </div>
+            <div class="flex space-between">
+                <div>Ability Bonus:</div>
+                <div>{{ abilityBonus }}</div>
+            </div>
+            <div class="flex space-between">
+                <div>Decay Penalty:</div>
+                <div>{{ decayPenalty }}</div>
+            </div>
+            <div class="flex space-between">
+                <div>Luck:</div>
+                <div>{{ actorLuck }}</div>
+            </div>
+            <div class="flex space-between">
+                <div>Penalties:</div>
+                <div>{{ actorPenalties }}</div>
+            </div>
+        </fieldset>
     </div>
-    {{/unless}}
-  </div>
+    <div class="form-group">
+        <fieldset>
+            <legend>Select Normal / Advantage / Disadvantage</legend>
+            <div>
+                <input type="radio"
+                       id="normal"
+                       name="advantageMode"
+                       value="1"
+                       {{{setChecked advantageMode 1}}} />
+                <label for="normal">Normal</label>
+            </div>
+            <div>
+                <input type="radio"
+                       id="advantage"
+                       name="advantageMode"
+                       value="2"
+                       {{{setChecked advantageMode 2}}} />
+                <label for="advantage">Advantage</label>
+            </div>
+            <div>
+                <input type="radio"
+                       id="disadvantage"
+                       name="advantageMode"
+                       value="3"
+                       {{{setChecked advantageMode 3}}} />
+                <label for="disadvantage">Disadvantage</label>
+            </div>
+            <div data-tooltip="Target beyond long range, Nat 20 required to hit">
+                <input type="radio"
+                       id="hailmary"
+                       name="advantageMode"
+                       value="4"
+                       {{{setChecked advantageMode 4}}} />
+                <label for="hailmary">Hail Mary!</label>
+            </div>
+        </fieldset>
+    </div>
 
-  <div class="dialog-buttons flex">
-    <button type="submit">Roll</button>
-  </div>
+    <div class="form-group">
+        <fieldset>
+            <legend>AP Cost</legend>
+            <div class="flex space-between">
+                <label for="consumesAp">Consume AP</label>
+                <input type="checkbox" name="consumesAp" {{checked consumesAp}} />
+            </div>
+            <div>
+                <div class="flex space-between">
+                    <label for="overrideAp">Override AP Cost</label>
+                    <input type="checkbox" name="overrideAp" {{checked overrideAp}} />
+                </div>
+                <div>
+
+                </div>
+                <div class="flex space-between">
+                    <div>Weapon:</div>
+                    <div>{{ apCost }}</div>
+                </div>
+                {{#if targeted}}
+                <div class="flex space-between">
+                    <div>Targeted({{ targeted.target }}):</div>
+                    <div>{{ targeted.cost }}</div>
+                </div>
+                {{/if}}
+                <div class="flex space-between">
+                    <div>Total:</div>
+                    {{#if overrideAp}}
+                    <div class="flex">
+                        <button type="button" class="flex no-border px-0 mr-2" data-override-ap="dec"><i class="fas fa-minus-square "></i></button>
+                        <div>{{ adjustedApCost }}</div>
+                        <button type="button" class="flex no-border px-0 ml-2" data-override-ap="inc"><i class="fas fa-plus-square "></i></button>
+                    </div>
+                    {{else}}
+                    <div>{{ totalApCost }}</div>
+                    {{/if}}
+                </div>
+        </fieldset>
+    </div>
+    <div class="form-group">
+        <fieldset>
+            <legend>Damage</legend>
+            {{#each damages as |damage key|}}
+            <div class="flex space-between">
+                <div>Type:</div>
+                {{#if damage.altType}}
+                <select name="damage.{{ key }}.selectedDamageType">
+                    <option>{{ damage.type }}</option>
+                    <option>{{ damage.altType }}</option>
+                </select>
+                {{else}}
+                {{ damage.selectedDamageType }}
+                {{/if}}
+            </div>
+            <div class="flex space-between">
+                <div>Formula:</div>
+                <div>{{ damage.formula }}</div>
+            </div>
+            <div class="flex space-between">
+                <div>Perk/Trait Bonus:</div>
+                <div>{{../damageBonus }}</div>
+            </div>
+            {{/each}}
+            <div class="flex space-between">
+                <div>Critical Formula:</div>
+                <div>{{ critical.formula }}</div>
+            </div>
+            <div class="flex space-between">
+                <div>Critical Multiplier:</div>
+                <div>{{ critical.multiplier }}</div>
+            </div>
+            {{#if critical.condition}}
+            <div class="flex space-between">
+                <div>Applies Condition:</div>
+                <div>{{ critical.condition }}</div>
+            </div>
+            {{/if}}
+        </fieldset>
+    </div>
+    <div class="form-group">
+        <label for="bonus">Custom to Hit</label>
+        <input type="text" name="bonus" value="{{ bonus }}" placeholder="1d4/20/etc" />
+    </div>
+    <div class="form-group">
+        <label for="bonus">Custom For DMG</label>
+        <input type="text" name="bonusdamage" value="{{ bonusdamage }}" placeholder="1d4/20/etc" />
+    </div>
+    <div class="form-group">
+        {{#unless targeted}}
+        <button type="button" data-add-target>Targeted Attack</button>
+        {{else}}
+        <div class="targeted flex">
+            <div>
+                <div>Target: {{ targeted.target }}</div>
+            </div>
+            <div>
+                <button type="button" data-remove-target><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+        {{/unless}}
+    </div>
+
+    <div class="dialog-buttons flex">
+        <button type="submit">Roll</button>
+    </div>
 </form>
 {{ log 'attack' this}}

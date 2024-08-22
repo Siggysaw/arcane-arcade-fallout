@@ -101,6 +101,10 @@ Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase()
 })
 
+Handlebars.registerHelper("log", function (v1) {
+  console.log(v1);
+});
+
 Handlebars.registerHelper('setChecked', function (value, test) {
   if (value == undefined) return ''
   return value == test ? 'checked' : ''

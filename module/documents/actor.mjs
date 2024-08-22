@@ -1719,6 +1719,9 @@ export default class FalloutZeroActor extends Actor {
   getAttackBonus() {
     return this.system.attackBonus
   }
+  getDamageBonus() {
+    return this.system.damageBonus
+  }
 
   hasKarmaCapAvailable() {
     if (this.type !== 'character' || this.system.karmaCaps.length === 0) return false
