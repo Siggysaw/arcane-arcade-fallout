@@ -55,6 +55,7 @@ export default class FalloutZeroActor extends Actor {
 
   inspectCarryload() {
     const myDialogOptions = { width: 500, height: 300, resizable: true }
+    const carryLoadSetting = game.settings.get('core', 'CarryLoad');
     let load = Math.floor(this.system.caps / 50)
     let message = `<table style="text-align:center"><tr><th>Item</th><th>Qty x Load</th><th>Total</th></tr><tr><td>Caps</td><td>${this.system.caps}/50</td><td>${load}</td>`
     let overall = load
@@ -67,8 +68,14 @@ export default class FalloutZeroActor extends Actor {
           load = 0
         }
         let total = Number(load) * Number(qty)
-        overall = overall + Math.floor(total)
-        message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${Math.floor(total)}</td></tr>`
+        if (carryLoadSetting) {
+          overall = overall + total
+          total = Math.round(total * 10) / 10
+          message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${total}</td></tr>`
+        } else {
+          overall = overall + Math.floor(total)
+          message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${Math.floor(total)}</td></tr>`
+        }
       }
     }, 0)
     new Dialog(
