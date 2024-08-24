@@ -157,12 +157,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
     dumbLuck ? this.luckmod = Math.floor(this.abilities['lck'].mod) : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
-
-    if (packrat) {
-      console.log("Working Here!")
-      let heavy = this.parent.items.find((i) => i.system.load < 3)
-      console.log(this.parent.items)
-    }
+    packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
 
     //========= END PERK AUTOMATION
 

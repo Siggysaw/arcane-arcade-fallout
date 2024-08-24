@@ -62,17 +62,24 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     // Calculate Carry Load
 
+    const packrat = actorData.items.find((i) => i.name == "Pack Rat")
     if (!carryLoadSetting) {
       actorData.system.carryLoad.base =
         actorData.items.reduce((acc, item) => {
-          const { load = 0, quantity = 1 } = item.system
+          let { load = 0, quantity = 1 } = item.system
+          if (packrat && load < 3 && load > 1) {
+            load = 1
+          }
           acc += Math.floor(load * quantity)
           return Math.round(acc * 10) / 10
         }, 0) + Math.floor(actorData.system.caps / 50)
     } else {
       actorData.system.carryLoad.base =
         actorData.items.reduce((acc, item) => {
-          const { load = 0, quantity = 1 } = item.system
+          let { load = 0, quantity = 1 } = item.system
+          if (packrat && load < 3 && load > 1) {
+            load = 1
+          }
           acc += load * quantity
           return Math.round(acc * 10) / 10
         }, 0) + Math.floor(actorData.system.caps / 50)
@@ -435,10 +442,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const rest = ev.currentTarget.dataset.rest
       this.actor.restRecovery(rest)
     })
+
+    // Custom Roll Button
+    html.on('click', '[data-view-perks]', (ev) => {
+      this.actor.viewPerks()
+    })
+
     // Custom Roll Button
     html.on('click', '[data-custom-roll]', (ev) => {
       this.actor.customRoll()
     })
+
     // Toggle Edit Mode
     html.on('click', '[data-editToggle]', (ev) => {
       if (this.actor.system.editToggle === true) {

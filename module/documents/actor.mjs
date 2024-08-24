@@ -21,9 +21,29 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
-  packrat() {
-    ui.notifications.notify("This guys got packrat")
+  // Perks List
+  viewPerks() {
+    const myDialogOptions = {resizable: true }
+    let message = "Perks List Coming Soon!"
+    const perks = game.packs.filter((i) => i.name == "perks")
+    //actorData.items.find((i) => i.name == "Pack Rat")
+    console.log(perks)
+
+
+
+    new Dialog({
+      title: 'Custom Roll',
+      content: message,
+      buttons: {
+        button1: {
+          label: 'Close',
+        },
+      },
+    },
+      myDialogOptions,
+    ).render(true)
   }
+
   // Custom Roll
   async customRoll() {
     const myDialogOptions = { width: 275, resizable: true }
@@ -106,6 +126,7 @@ export default class FalloutZeroActor extends Actor {
   }
 
   inspectCarryload() {
+    const packrat = this.items.find((i) => i.name == "Pack Rat")
     const myDialogOptions = { width: 500, height: 300, resizable: true }
     const carryLoadSetting = game.settings.get('core', 'CarryLoad');
     let load = Math.floor(this.system.caps / 50)
@@ -118,6 +139,9 @@ export default class FalloutZeroActor extends Actor {
         load = item.system.load
         if (item.system.worn) {
           load = 0
+        }
+        if (packrat && load < 3 && load > 1) {
+          load = 1
         }
         let total = Number(load) * Number(qty)
         if (carryLoadSetting) {
