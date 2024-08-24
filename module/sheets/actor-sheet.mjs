@@ -92,7 +92,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       charismaModtotal += character.system.abilities.cha.mod
       groupSneaktotal += character.system.skills.sneak.base + character.system.skills.sneak.modifiers + character.system.abilities.agi.mod
     }
-    const activePlayercount = characterList.length
+    const activePlayercount = activeCharacterList.length
     actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
     actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
 
@@ -435,6 +435,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const rest = ev.currentTarget.dataset.rest
       this.actor.restRecovery(rest)
     })
+    // Custom Roll Button
+    html.on('click', '[data-custom-roll]', (ev) => {
+      this.actor.customRoll()
+    })
     // Toggle Edit Mode
     html.on('click', '[data-editToggle]', (ev) => {
       if (this.actor.system.editToggle === true) {
@@ -514,11 +518,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     //Set Expanded
     html.on('click', '[data-combatExpand]', (ev) => {
       this.actor.combatexpandetoggle()
-    })
-    //show rule information
-    html.on('click', '[data-condition]', (ev) => {
-      const condition = ev.currentTarget.dataset.condition
-      this.actor.ruleinfo(condition)
     })
     //ap use
     html.on('click', '[data-ap-used]', (ev) => {

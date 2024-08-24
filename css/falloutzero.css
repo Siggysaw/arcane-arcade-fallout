@@ -909,7 +909,23 @@ a.inline-roll,
   height: 50px;
   border: none;
 }
-
-  .sheet .toggle input[type='checkbox']:checked {
+.sheet .toggle input[type='checkbox']:checked {
     content: url('/systems/arcane-arcade-fallout/assets/toggle-on.png');
-  }
+}
+
+.sheet input[type='checkbox']{
+    width:15px;
+}
+.sheet .backpack .content-link:before {
+  content: '\00B7';
+}
+.sheet .backpack .content-link,
+.sheet .backpack .item-name,
+.sheet .backpack .item{
+    font-size:9pt;
+    float:left;
+    text-transform:capitalize;
+}
+.sheet .item{
+    text-transform:capitalize;
+}

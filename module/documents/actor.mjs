@@ -21,6 +21,55 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+  // Custom Roll
+  async customRoll() {
+    const myDialogOptions = { width: 275, resizable: true }
+    const myContent = await renderTemplate("systems/arcane-arcade-fallout/templates/actor/dialog/custom-roll.hbs");
+    const actor = this
+
+    new Dialog({
+      title: 'Custom Roll',
+      content: myContent,
+      buttons: {
+        button1: {
+          label: 'Roll It!',
+          callback: (html) => rollDice(html, actor),
+        },
+      },
+    },
+      myDialogOptions,
+    ).render(true)
+  
+    async function rollDice(html, actor) {
+      const withModifiers = html.find('select#modified').val()
+      const withAdvantage = html.find('select#advantage').val()
+      let rollNumber = html.find('input#diceNumber').val()
+      let rollType = html.find('select#diceType').val()
+      let rollBonus = html.find('input#bonus').val()
+      let rollInput = `${rollNumber}d${rollType}`
+      if (withAdvantage !== "false") {
+        rollInput += withAdvantage
+      }
+      if (withModifiers === "true") {
+        const luckmod = actor.system.luckmod
+        const penaltyTotal = actor.system.penaltyTotal
+        rollInput +=` + ${luckmod} - ${penaltyTotal}`
+      }
+      if (rollBonus.length > 0) {
+        rollInput += `+ ${rollBonus}`
+      }
+      const roll = new Roll(`${rollInput}`, actor.getRollData())
+      await roll.evaluate()
+      console.log(actor)
+
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this }),
+        flavor: `${actor.name} rolled a Custom Roll!`,
+        rollMode: game.settings.get('core', 'rollMode'),
+      })
+    }
+  }
+
   // Short Rest and Long Rest Button Functionality
   restRecovery(rest) {
     const raceItem = this.items.filter((i) => i.type == 'race')
@@ -686,22 +735,6 @@ export default class FalloutZeroActor extends Actor {
     } else {
       this.update({ [field]: newValue })
     }
-  }
-
-  ruleinfo(condition) {
-    const myDialogOptions = { width: 500, height: 300, resizable: true }
-    const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1)
-    let title = conditionFormatted.replaceAll('_', ' ')
-    const rule = FALLOUTZERO.rules[conditionFormatted]
-    const message = `<div class="conditioninfo">${rule}</div>`
-    new Dialog(
-      {
-        title: `Details: ${title}`,
-        content: message,
-        buttons: {},
-      },
-      myDialogOptions,
-    ).render(true)
   }
 
   healthupdate(operator) {
