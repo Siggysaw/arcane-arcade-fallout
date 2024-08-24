@@ -21,6 +21,78 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+  // Perks List
+  viewPerks() {
+    const myDialogOptions = {resizable: true }
+    let message = "Perks List Coming Soon!"
+    const perks = game.packs.filter((i) => i.name == "perks")
+    //actorData.items.find((i) => i.name == "Pack Rat")
+    console.log(perks)
+
+
+
+    new Dialog({
+      title: 'Custom Roll',
+      content: message,
+      buttons: {
+        button1: {
+          label: 'Close',
+        },
+      },
+    },
+      myDialogOptions,
+    ).render(true)
+  }
+
+  // Custom Roll
+  async customRoll() {
+    const myDialogOptions = { width: 275, resizable: true }
+    const myContent = await renderTemplate("systems/arcane-arcade-fallout/templates/actor/dialog/custom-roll.hbs");
+    const actor = this
+
+    new Dialog({
+      title: 'Custom Roll',
+      content: myContent,
+      buttons: {
+        button1: {
+          label: 'Roll It!',
+          callback: (html) => rollDice(html, actor),
+        },
+      },
+    },
+      myDialogOptions,
+    ).render(true)
+  
+    async function rollDice(html, actor) {
+      const withModifiers = html.find('select#modified').val()
+      const withAdvantage = html.find('select#advantage').val()
+      let rollNumber = html.find('input#diceNumber').val()
+      let rollType = html.find('select#diceType').val()
+      let rollBonus = html.find('input#bonus').val()
+      let rollInput = `${rollNumber}d${rollType}`
+      if (withAdvantage !== "false") {
+        rollInput += withAdvantage
+      }
+      if (withModifiers === "true") {
+        const luckmod = actor.system.luckmod
+        const penaltyTotal = actor.system.penaltyTotal
+        rollInput +=` + ${luckmod} - ${penaltyTotal}`
+      }
+      if (rollBonus.length > 0) {
+        rollInput += `+ ${rollBonus}`
+      }
+      const roll = new Roll(`${rollInput}`, actor.getRollData())
+      await roll.evaluate()
+      console.log(actor)
+
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this }),
+        flavor: `${actor.name} rolled a Custom Roll!`,
+        rollMode: game.settings.get('core', 'rollMode'),
+      })
+    }
+  }
+
   // Short Rest and Long Rest Button Functionality
   restRecovery(rest) {
     const raceItem = this.items.filter((i) => i.type == 'race')
@@ -54,7 +126,9 @@ export default class FalloutZeroActor extends Actor {
   }
 
   inspectCarryload() {
+    const packrat = this.items.find((i) => i.name == "Pack Rat")
     const myDialogOptions = { width: 500, height: 300, resizable: true }
+    const carryLoadSetting = game.settings.get('core', 'CarryLoad');
     let load = Math.floor(this.system.caps / 50)
     let message = `<table style="text-align:center"><tr><th>Item</th><th>Qty x Load</th><th>Total</th></tr><tr><td>Caps</td><td>${this.system.caps}/50</td><td>${load}</td>`
     let overall = load
@@ -66,9 +140,18 @@ export default class FalloutZeroActor extends Actor {
         if (item.system.worn) {
           load = 0
         }
+        if (packrat && load < 3 && load > 1) {
+          load = 1
+        }
         let total = Number(load) * Number(qty)
-        overall = overall + Math.floor(total)
-        message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${Math.floor(total)}</td></tr>`
+        if (carryLoadSetting) {
+          overall = overall + total
+          total = Math.round(total * 10) / 10
+          message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${total}</td></tr>`
+        } else {
+          overall = overall + Math.floor(total)
+          message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${Math.floor(total)}</td></tr>`
+        }
       }
     }, 0)
     new Dialog(
@@ -681,22 +764,6 @@ export default class FalloutZeroActor extends Actor {
     }
   }
 
-  ruleinfo(condition) {
-    const myDialogOptions = { width: 500, height: 300, resizable: true }
-    const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1)
-    let title = conditionFormatted.replaceAll('_', ' ')
-    const rule = FALLOUTZERO.rules[conditionFormatted]
-    const message = `<div class="conditioninfo">${rule}</div>`
-    new Dialog(
-      {
-        title: `Details: ${title}`,
-        content: message,
-        buttons: {},
-      },
-      myDialogOptions,
-    ).render(true)
-  }
-
   healthupdate(operator) {
     let newHealth = ''
     if (operator === 'plus') {
@@ -955,9 +1022,10 @@ export default class FalloutZeroActor extends Actor {
       const currentType = weapon.system.ammo.assigned
       const currentItem = actor.items.find((item) => item.name === currentType)
       const currentMag = weapon.system.ammo.capacity.value
+      const energyWeapon = currentType.includes("Core") || currentType.includes("Fuel") || currentType.includes("Cell") || currentType.includes("Energy") || currentType.includes("2mm EC")
       if (currentItem) {
         const currentQty = currentItem.system.quantity + currentMag
-        if (!weapon.system.energyWeapon) {
+        if (!energyWeapon) {
           actor.updateEmbeddedDocuments('Item', [
             { _id: currentItem._id, 'system.quantity': currentQty },
           ])
@@ -995,6 +1063,7 @@ export default class FalloutZeroActor extends Actor {
     // Collect Required Ammo Information
     const ammoType = weapon.system.ammo.assigned
     const ammoFound = this.items.find((item) => item.name === ammoType)
+    const energyWeapon = ammoType.includes("Core") || ammoType.includes("Fuel") || ammoType.includes("Cell") || ammoType.includes("Energy") || ammoType.includes("2mm EC")
 
     // Do you have Ammo?
     if (!ammoFound) {
@@ -1021,7 +1090,7 @@ export default class FalloutZeroActor extends Actor {
     // Reload The Weapon
     let ammoReloaded = capacity - currentMag
     let updatedAmmo = ammoOwned - ammoReloaded
-    if (ammoReloaded > ammoOwned && !weapon.system.energyWeapon) {
+    if (ammoReloaded > ammoOwned && !energyWeapon) {
       const ammoAvailable = currentMag + ammoOwned
       this.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.ammo.capacity.value': ammoAvailable },
@@ -1036,7 +1105,7 @@ export default class FalloutZeroActor extends Actor {
     }
 
     // Energy Weapon Reload Rules
-    if (weapon.system.energyWeapon || manualReload) {
+    if (energyWeapon || manualReload) {
       updatedAmmo = ammoOwned - 1
       this.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     } else {
@@ -2049,6 +2118,9 @@ async getActorCraftingData(myActor,myPaths,currentPath){
   }
   getAttackBonus() {
     return this.system.attackBonus
+  }
+  getDamageBonus() {
+    return this.system.damageBonus
   }
 
   hasKarmaCapAvailable() {

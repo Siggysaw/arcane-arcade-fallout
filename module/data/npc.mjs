@@ -19,15 +19,17 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         obj[penalty] = new fields.SchemaField({
           label: new fields.StringField({ required: true }),
           value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
-          base : new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
+          base: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           modifiers: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           ignored: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 })
         })
         return obj
-      }, {snack : new fields.NumberField({
-        ...requiredInteger,
-        initial: 0,
-      }),}),
+      }, {
+        snack: new fields.NumberField({
+          ...requiredInteger,
+          initial: 0,
+        }),
+      }),
     )
 
 
@@ -69,6 +71,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       }),
     })
     schema.attackBonus = new fields.NumberField({ initial: 0 })
+    schema.damageBonus = new fields.NumberField({ initial: 0 })
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
@@ -76,10 +79,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       modifiers: new fields.NumberField({ initial: 0 })
     })
     schema.combatSequence = new fields.SchemaField({
-      base : new fields.NumberField({ initial: 0 }),
-      value : new fields.NumberField({ initial: 0 }),
-      modifiers : new fields.NumberField({ initial: 0 }),
-      advantage : new fields.NumberField({ initial: 0 })
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 }),
+      advantage: new fields.NumberField({ initial: 0 })
     })
     schema.partyNerve = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
@@ -96,13 +99,14 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.combatActionsexpanded = new fields.BooleanField({ initial: false })
     schema.passiveSense = new fields.SchemaField({
-      base : new fields.NumberField({ initial: 0 }),
-      value : new fields.NumberField({ initial: 0 }),
-      modifiers : new fields.NumberField({ initial: 0 })
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 })
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
     schema.activePartymember = new fields.BooleanField({ initial: true })
+    schema.editToggle = new fields.BooleanField({ initial: true })
     return schema
   }
 
@@ -131,6 +135,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
       // Calculate the modifier using d20 rules.
+      if (this.abilities[key].base == 0) { this.abilities[key].base = this.abilities[key].value }
+      this.abilities[key].value = this.abilities[key].base + this.abilities[key].modifiers
       this.abilities[key].mod = Math.floor(this.abilities[key].value - 5)
     }
     // Loop through skill scores, and add their modifiers to our sheet output.

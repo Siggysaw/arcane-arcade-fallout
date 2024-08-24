@@ -58,13 +58,32 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this._prepareItems(context)
     }
 
+    const carryLoadSetting = game.settings.get('core', 'CarryLoad');
+
     // Calculate Carry Load
-    actorData.system.carryLoad.base =
-      actorData.items.reduce((acc, item) => {
-        const { load = 0, quantity = 1 } = item.system
-        acc += Math.floor(load * quantity)
-        return Math.round(acc * 10) / 10
-      }, 0) + Math.floor(actorData.system.caps / 50)
+
+    const packrat = actorData.items.find((i) => i.name == "Pack Rat")
+    if (!carryLoadSetting) {
+      actorData.system.carryLoad.base =
+        actorData.items.reduce((acc, item) => {
+          let { load = 0, quantity = 1 } = item.system
+          if (packrat && load < 3 && load > 1) {
+            load = 1
+          }
+          acc += Math.floor(load * quantity)
+          return Math.round(acc * 10) / 10
+        }, 0) + Math.floor(actorData.system.caps / 50)
+    } else {
+      actorData.system.carryLoad.base =
+        actorData.items.reduce((acc, item) => {
+          let { load = 0, quantity = 1 } = item.system
+          if (packrat && load < 3 && load > 1) {
+            load = 1
+          }
+          acc += load * quantity
+          return Math.round(acc * 10) / 10
+        }, 0) + Math.floor(actorData.system.caps / 50)
+    }
 
     actorData.system.carryLoad.value =
       actorData.system.carryLoad.base + actorData.system.carryLoad.modifiers
@@ -80,7 +99,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       charismaModtotal += character.system.abilities.cha.mod
       groupSneaktotal += character.system.skills.sneak.base + character.system.skills.sneak.modifiers + character.system.abilities.agi.mod
     }
-    const activePlayercount = characterList.length
+    const activePlayercount = activeCharacterList.length
     actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
     actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
 
@@ -220,7 +239,18 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       return weapon
     })
     context.meleeWeapons = meleeWeapons.map((weapon) => {
-      weapon.ammos = ammos.filter((ammo) => ammo.system.type === weapon.system.ammo.type)
+      if (!weapon.system.ammo.assigned) {
+        this.actor.updateEmbeddedDocuments('Item', [
+          { _id: weapon._id, 'system.ammo.assigned': weapon.system.ammo.type },
+        ])
+      }
+      weapon.ammos = ammos.filter((ammo) => ammo.name === weapon.system.ammo.assigned)
+      if (this.actor.type != 'npc') {
+        weapon.system.range.short =
+          this.actor.system.abilities['str'].value * weapon.system.range.short
+        weapon.system.range.long =
+          this.actor.system.abilities['str'].value * weapon.system.range.long
+      }
       return weapon
     })
     context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps
@@ -421,6 +451,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const rest = ev.currentTarget.dataset.rest
       this.actor.restRecovery(rest)
     })
+
+    // Custom Roll Button
+    html.on('click', '[data-view-perks]', (ev) => {
+      this.actor.viewPerks()
+    })
+
+    // Custom Roll Button
+    html.on('click', '[data-custom-roll]', (ev) => {
+      this.actor.customRoll()
+    })
+
     // Toggle Edit Mode
     html.on('click', '[data-editToggle]', (ev) => {
       if (this.actor.system.editToggle === true) {
@@ -500,11 +541,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     //Set Expanded
     html.on('click', '[data-combatExpand]', (ev) => {
       this.actor.combatexpandetoggle()
-    })
-    //show rule information
-    html.on('click', '[data-condition]', (ev) => {
-      const condition = ev.currentTarget.dataset.condition
-      this.actor.ruleinfo(condition)
     })
     //ap use
     html.on('click', '[data-ap-used]', (ev) => {

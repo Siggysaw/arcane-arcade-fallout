@@ -10,17 +10,24 @@
                         {{ item.name }}
                     </p>
                 </summary>
+                {{#if item.system.ammo.assigned}}
                 <table class="equipped-stats">
                     <tr>
-                        <td colspan="999">DETAILS</td>
-                    </tr>
-                    <tr>
-                        <td>AP</td>
-                        <td>Load</td>
-                        <td>Str Req</td>
-                        <td rowspan="2" style="background:#222">
-                            <div class="fakebutton rollable resource-label"
+                        <td rowspan="3" style="background:black;"><img src="{{item.img}}" style="width:75px;height:auto;" /></td>
+                        <td>{{ item.system.ammo.assigned }}</td>
+                        <td>Owned</td>
+                        <td rowspan="2" style="width:40px;background:#222;">
+                            <div title="Swap Your Current Ammo"
+                                 class="fakebutton"
                                  style="padding:10px;"
+                                 data-ammoswap
+                                 data-weapon-id="{{ item._id }}">
+                                SWAP AMMO
+                            </div>
+                        </td>
+                        <td rowspan="2" style="background:#222;">
+                            <div class="fakebutton rollable resource-label"
+                                 style="padding:20px;"
                                  data-weapon-roll
                                  data-weapon-id="{{ item._id }}">
                                 SWING!
@@ -28,61 +35,144 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            {{ item.system.apCost }}
+                        <td style="min-width:100px;">
+                            {{ item.system.ammo.capacity.value }} / {{ item.system.ammo.capacity.max }}
+                            <i title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+                               data-reload
+                               data-weapon-id="{{ item._id }}"
+                               class="fa fa-refresh"></i>
                         </td>
-                        <td>{{ item.system.load }}</td>
-                        <td>{{ item.system.strengthRequirement }}</td>
-                    </tr>
-                </table>
-                {{#if item.system.consumesAmmo}}
-                <table class="equipped-stats">
-                    <tr>
-                        <td>Type</td>
-                        <td>Rounds</td>
-                    </tr>
-                    <tr>
-                        <td>{{ item.system.ammo.type }}</td>
-                        <td>{{ item.system.ammo.capacity.value }}</td>
-                    </tr>
-                </table>
-                {{/if}}
-                <table class="equipped-stats">
-                    {{#GM}}
-                    <tr>
                         <td>
+                            {{#each item.ammos as |ammo|}}
+                            {{ ammo.system.quantity }}
+                            {{/each}}
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2">
                             <select style="width: 100%" data-set-ability data-weapon-id="{{ item._id }}">
                                 {{selectOptions ../abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
                             </select>
                         </td>
-                        <td>
+                        <td colspan="2">
                             <select style="width: 100%" data-set-skill data-weapon-id="{{ item._id }}">
                                 {{selectOptions ../skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
                             </select>
                         </td>
                     </tr>
-                    {{/GM}}
                     <tr style="vertical-align: middle">
-                        <td style="width: 100px; border-right: none">
+                        <td style="width: 100px; border-right: none" title="0 is Broken, 10 is Full Functionality">
                             CND:
+                            {{#if editToggle}}
                             <input title="0 is Broken, 10 is Full Functionality"
                                    style="width: 50px"
                                    type="number"
                                    name="{{ item.system.decay }}"
-                                   value="{{ item.system.decay }}"
+                                   value="{{/if}}{{ item.system.decay }}{{#if editToggle}}"
                                    data-set-decay
-                                   data-weapon-id="{{ item._id }}" />
+                                   data-weapon-id="{{ item._id }}" />{{/if}}
                         </td>
-                        <td colspan="999" style="border-left: none">
-                            <progress style="width: 100%; padding-right: 5px"
-                                      class="statusbar stamina"
+                        <td colspan="4" style="border-left: none">
+                            <div style="float:left;">
+                                <i style="padding: 2px;float:right"
+                                   data-reduce-decay
+                                   data-field="item.system.decay"
+                                   data-fieldvalue="{{item.system.decay}}"
+                                   data-weapon-id="{{ item._id }}"
+                                   class="fas fa-minus-square fakebutton nobackground">
+                                </i>
+                            </div>
+                            <progress title="{{item.system.decay}} out of 10"
+                                      style="width:75%;"
+                                      class="statusbar"
                                       value="{{ item.system.decay }}"
-                                      max="10">
+                                      max=10>
                                 {{ item.system.decay }}
                             </progress>
+                            <div style="float:right;">
+                                <i style="padding: 2px;float:left"
+                                   data-add-decay
+                                   data-field="item.system.decay"
+                                   data-fieldvalue="{{item.system.decay}}"
+                                   data-weapon-id="{{ item._id }}"
+                                   class="fas fa-plus-square fakebutton nobackground">
+                                </i>
+                            </div>
                         </td>
                     </tr>
                 </table>
+                {{else}}
+            <table class="equipped-stats">
+                <tr>
+                    <td rowspan="3" style="background:black;"><img src="{{item.img}}" style="width:75px;height:auto;" /></td>
+                    <td>AP: {{ item.system.apCost }}</td>
+                    <td>Load: {{ item.system.load }}</td>
+                    <td>Str: {{ item.system.strengthRequirement }}</td>
+                    <td style="background:#222">
+                        <div class="fakebutton rollable resource-label"
+                             style="padding:10px;"
+                             data-weapon-roll
+                             data-weapon-id="{{ item._id }}">
+                            SWING!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <select style="width: 100%" data-set-ability data-weapon-id="{{ item._id }}">
+                            {{selectOptions ../abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <select style="width: 100%" data-set-skill data-weapon-id="{{ item._id }}">
+                            {{selectOptions ../skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
+                        </select>
+                    </td>
+                </tr>
+                <tr style="vertical-align: middle">
+                    <td style="width: 100px; border-right: none" title="0 is Broken, 10 is Full Functionality">
+                        CND:
+                        {{#if editToggle}}
+                        <input title="0 is Broken, 10 is Full Functionality"
+                               style="width: 50px"
+                               type="number"
+                               name="{{ item.system.decay }}"
+                               value="{{/if}}{{ item.system.decay }}{{#if editToggle}}"
+                               data-set-decay
+                               data-weapon-id="{{ item._id }}" />{{/if}}
+                    </td>
+                    <td colspan="3" style="border-left: none">
+                        <div style="float:left;">
+                            <i style="padding: 2px;float:right"
+                               data-reduce-decay
+                               data-field="item.system.decay"
+                               data-fieldvalue="{{item.system.decay}}"
+                               data-weapon-id="{{ item._id }}"
+                               class="fas fa-minus-square fakebutton nobackground">
+                            </i>
+                        </div>
+                        <progress title="{{item.system.decay}} out of 10"
+                                  style="width:75%;"
+                                  class="statusbar"
+                                  value="{{ item.system.decay }}"
+                                  max=10>
+                            {{ item.system.decay }}
+                        </progress>
+                        <div style="float:right;">
+                            <i style="padding: 2px;float:left"
+                               data-add-decay
+                               data-field="item.system.decay"
+                               data-fieldvalue="{{item.system.decay}}"
+                               data-weapon-id="{{ item._id }}"
+                               class="fas fa-plus-square fakebutton nobackground">
+                            </i>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+                {{/if}}
+
             </details>
         </td>
     </tr>
