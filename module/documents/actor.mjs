@@ -21,6 +21,9 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+  packrat() {
+    ui.notifications.notify("This guys got packrat")
+  }
   // Custom Roll
   async customRoll() {
     const myDialogOptions = { width: 275, resizable: true }

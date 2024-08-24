@@ -6,7 +6,6 @@ export default class FalloutZeroRace extends FalloutZeroItemBase {
     const schema = super.defineSchema()
 
     schema.type = new fields.StringField({ initial: 'human' })
-    schema.type = new fields.NumberField({ initial: '0' })
 
     return schema
   }
