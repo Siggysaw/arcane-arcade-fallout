@@ -3,6 +3,7 @@ import { FalloutZeroItemBase,FalloutZeroItem } from './_module.mjs'
 export default class FalloutZeroPowerArmor extends FalloutZeroItemBase {
   static defineSchema() {
     const fields = foundry.data.fields
+    const requiredInteger = { required: true, nullable: false, integer: true }
     const schema = super.defineSchema()
     schema.baseCost = new fields.SchemaField({
       value: new fields.NumberField({
@@ -15,6 +16,15 @@ export default class FalloutZeroPowerArmor extends FalloutZeroItemBase {
     schema.cost = new fields.NumberField({initial: 0})
     schema.itemEquipped = new fields.BooleanField({initial: false})
     schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
+    schema.junk = new fields.SchemaField({
+      quantity1 : new fields.NumberField({initial:1, min: 0,}),
+      quantity2 : new fields.NumberField({initial:0, min: 0,}),
+      quantity3 : new fields.NumberField({initial:0, min: 0,}),
+      type1 : new fields.StringField({initial:"Power Armor Chassis"}),
+      type2 : new fields.StringField({initial:""}),
+      type3 : new fields.StringField({initial:""}),
+      qtyReq : new fields.NumberField({...requiredInteger, initial: 1, min: 1 }),
+    })
     schema.img = new fields.StringField({
       initial: 'systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/thickplating.png',
     })

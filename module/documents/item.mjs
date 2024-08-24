@@ -166,7 +166,7 @@ export default class FalloutZeroItem extends Item {
           })
         })
       } else {
-        val = 0
+        //val = 0
         let path = { path: key, value: val }
         let pathTest = key.split('.')
         if (

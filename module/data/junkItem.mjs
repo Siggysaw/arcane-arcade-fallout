@@ -9,9 +9,10 @@ export default class FalloutZeroJunkItem extends FalloutZeroItemBase {
     schema.cost = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
     schema.quantity = new fields.NumberField({ ...requiredInteger, initial: 1, min: 0 })
     schema.junk = new fields.SchemaField({
-      quantity1 : new fields.NumberField({initial:0}),
-      quantity2 : new fields.NumberField({initial:0}),
-      quantity3 : new fields.NumberField({initial:0}),
+      qtyReq : new fields.NumberField({...requiredInteger, initial: 1, min: 1 }),
+      quantity1 : new fields.NumberField({initial:0, min: 0,}),
+      quantity2 : new fields.NumberField({initial:0, min: 0,}),
+      quantity3 : new fields.NumberField({initial:0, min: 0,}),
       type1 : new fields.StringField({initial:""}),
       type2 : new fields.StringField({initial:""}),
       type3 : new fields.StringField({initial:""}),

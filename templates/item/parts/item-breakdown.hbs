@@ -1,4 +1,12 @@
-<h3>BREAKDOWN</h3>
+{{#DifferentFrom system.junk.quantity1 0}}
+  {{#DifferentFrom system.junk.type1 ""}}
+<h3 clickToBreakdown class="craftButton" style="cursor:pointer;" clickToBreakdown id="clickToBreakdown">BREAKDOWN {{#DifferentFrom system.junk.qtyReq 1}} FOR EVERY {{system.junk.qtyReq}} UNITS {{/DifferentFrom}} INTO MATERIALS</h3>
+  {{else}}
+  <h3>No breakdown possible</h3>
+  {{/DifferentFrom}}
+{{else}}
+  <h3>No breakdown possible</h3>
+{{/DifferentFrom}}
 <table>
   <th>
     Quantity

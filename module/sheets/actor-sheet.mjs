@@ -343,8 +343,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           if ((
             item.type == 'junkItem' || 
             item.type == 'rangedWeapon' || 
-            item.type == 'meleeWeapon' )
+            item.type == 'meleeWeapon' ||
+            item.type == 'armor' ||
+            item.type == 'powerArmor'
+          )
             && item.system.quantity > 0) {
+            return true
+          }
+          if ((
+            item.type == 'ammo'
+          )
+            && item.system.quantity > 4) {
             return true
           }
         },

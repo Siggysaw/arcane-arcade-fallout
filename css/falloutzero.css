@@ -358,7 +358,6 @@ form div label {
 }
 .statusnum input {
   width: 50px;
-  color:;
 }
 .sheet table tr,
 .sheet table td {
@@ -513,6 +512,13 @@ td,
 .window-app .window-content div .no-background,
 .window-app .window-content div .no-background:hover {
   background: none;
+}
+
+
+.sheet .craftButton:hover {
+  border: black;
+  background:#ffffff;
+  color:#191813
 }
 
 .sheet .fakebutton:hover,
@@ -900,4 +906,7 @@ a.inline-roll,
 .sheet .status-table td{
   vertical-align:middle;
   font-size:10pt;
+}
+.craftingTable {
+  background-color:"black";
 }

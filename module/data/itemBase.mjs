@@ -24,6 +24,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq2 : new fields.SchemaField({
@@ -31,6 +32,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq3 : new fields.SchemaField({
@@ -38,6 +40,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq4 : new fields.SchemaField({
@@ -45,6 +48,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq5 : new fields.SchemaField({
@@ -52,6 +56,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq6 : new fields.SchemaField({
@@ -59,6 +64,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq7 : new fields.SchemaField({
@@ -66,6 +72,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq8 : new fields.SchemaField({
@@ -73,6 +80,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq9 : new fields.SchemaField({
@@ -80,6 +88,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq10 : new fields.SchemaField({
@@ -87,6 +96,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq11 : new fields.SchemaField({
@@ -94,6 +104,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
       matsReq12 : new fields.SchemaField({
@@ -101,6 +112,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         qty: new fields.NumberField({
           ...requiredInteger,
           initial: 0,
+          min: 0,
         }),
       }),
   })

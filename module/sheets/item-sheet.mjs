@@ -1,6 +1,8 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
 import FalloutZeroItem from '../documents/item.mjs'
+import FalloutZeroActor from '../documents/actor.mjs'
+
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -264,12 +266,26 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       //catch{}
     })
 
+    //Button to break down into materials from the item sheet
+    html.on('click', '[clickToBreakdown]', (ev) =>{
+      if (this.item.parent){
+        FalloutZeroActor.prototype.checkConvert(this.item._id, this.item.parent)
+      } else {
+        alert (`You break it, you own it! Or... the other way around. \n \nAdd the item to your inventory and try again.`)
+      }
+
+    })
+    //Button to craft from the craftable item sheet
+    html.on('click', '[clickToCraft]', (ev) =>{
+      FalloutZeroActor.prototype.checkCraftActor(this.item)
+    })
+
     //Change Junk materials quantity (up!)
     html.on('click', '[data-junk-add]', (ev) => {
       let matQty = ev.currentTarget.dataset.mat
       let myMat = matQty.split('.')
       let myItem = this.item
-      let qty = (myItem.system.junk[myMat[2]] += 1)
+      let qty = (myItem.system.junk[myMat[2]] + 1)
       this.item.update({ [matQty]: qty })
     })
 
@@ -278,8 +294,10 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       let matQty = ev.currentTarget.dataset.mat
       let myMat = matQty.split('.')
       let myItem = this.item
-      let qty = (myItem.system.junk[myMat[2]] -= 1)
-      this.item.update({ [matQty]: qty })
+      let qty = (myItem.system.junk[myMat[2]] - 1)
+      if (qty != -1){
+        this.item.update({ [matQty]: qty })
+      }
     })
 
     //Change crafting materials quantity (up!)
@@ -287,7 +305,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       let matQty = ev.currentTarget.dataset.mat
       let myMat = matQty.split('.')
       let myItem = this.item
-      let qty = (myItem.system.crafting[myMat[2]].qty += 1)
+      let qty = (myItem.system.crafting[myMat[2]].qty + 1)
       this.item.update({ [matQty]: qty })
     })
 
@@ -296,8 +314,10 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       let matQty = ev.currentTarget.dataset.mat
       let myMat = matQty.split('.')
       let myItem = this.item
-      let qty = (myItem.system.crafting[myMat[2]].qty -= 1)
-      this.item.update({ [matQty]: qty })
+      let qty = (myItem.system.crafting[myMat[2]].qty - 1)
+      if (qty != -1){
+        this.item.update({ [matQty]: qty })
+      }
     })
 
     // Roll handlers, click handlers, etc. would go here.

@@ -1,0 +1,50 @@
+<table style="max-height:40px;">
+  <td>
+    <select style="padding-left:20px" name="packSelect" id = "packSelect"><option value='nothing'>Select a Compendium to start</option></select>
+  </td>
+  <td>
+    <select style="padding-left:20px" name="itemSelect" id = "itemSelect"><option value='nothing'>Select a Compendium to start</option></select>
+  </td>
+</table>
+
+<p style="
+    color: var(--user-color);
+    max-height:25px;
+    list-style-type: none;
+    letter-spacing: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #222;
+    border: solid 1px #ccc;
+    text-transform: uppercase;
+    margin: 0;
+    white-space: nowrap;
+    overflow-x: hidden;" 
+id="itemName"></p>
+<table style="max-height:40px;">
+  <td>
+    <button id="goodCraft" style="color:green;visibility:hidden" title="All materials below will be removed and item will be crafted instantly.">Craft Item</button>
+  </td>
+  <td>
+    <button id="rollCraft" disabled style="color:yellow;visibility:hidden" title="Calls for a Crafting Roll (Feature in development!). Evaluates success to determine materials to remove and amount of items to produce." >Roll for craft</button>
+  </td>
+  <td>
+    <button id="freeCraft" style="color:red;visibility:hidden" title="Character does not hold enough materials. This will add the item without removing materials." >Free craft</button>
+  </td>
+</table>
+<table class="craftingTable" style="text-align:center;visibility:hidden;">
+  <th class="tt">Crafting time</th>         <th class="tt">Quantity</th><th class="tt">Required Material</th>
+  <tr ><td  id="craftingTime" style=""></td><td  id="matsReq1.qty"></td><td id="matsReq1.mat" ></td></tr>
+  <tr ><td class="tt">Crafting DC</td>      <td  id="matsReq2.qty"></td><td id="matsReq2.mat" ></td></tr>
+  <tr ><td  id="craftingDC"></td>           <td  id="matsReq3.qty"></td><td id="matsReq3.mat" ></td></tr>
+  <tr ><td class="tt">Amount created</td>   <td  id="matsReq4.qty"></td><td id="matsReq4.mat" ></td></tr>
+  <tr ><td  id="multiple.qty"></td>         <td  id="matsReq5.qty"></td><td id="matsReq5.mat" ></td></tr>
+  <tr ><td ></td>                           <td  id="matsReq6.qty"></td><td id="matsReq6.mat" ></td></tr>
+  <tr ><td ></td>                           <td  id="matsReq7.qty"></td><td id="matsReq7.mat" ></td></tr>
+  <tr ><td ></td>                           <td  id="matsReq8.qty"></td><td id="matsReq8.mat" ></td></tr>
+  <tr ><td ></td>                           <td  id="matsReq9.qty"></td><td id="matsReq9.mat" ></td></tr>
+  <tr ><td ></td>                           <td  id="matsReq10.qty"></td><td id="matsReq10.mat" ></td></tr>
+  <tr ><td ></td>                           <td  id="matsReq11.qty"></td><td id="matsReq11.mat" ></td></tr>
+  <tr ><td ></td>                           <td  id="matsReq12.qty"></td><td id="matsReq12.mat" ></td></tr>
+</table> 
