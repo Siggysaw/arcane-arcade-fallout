@@ -1218,6 +1218,7 @@ async getItemCraftingData(html,myActor,myItem){
 }
 
 async getActorCraftingData(myActor,myPaths,currentPath){
+  console.log(myActor)
   let greenBackground = "visibility:visible;background-color:rgba(0, 255, 0, 0.1);"
   let redBackground = "visibility:visible;background-color:rgba(255, 0, 0, 0.1);"
   let generalBackground = "visibility:visible;background-color:rgba(0, 0, 0, 0.1);border:1px solid white;"

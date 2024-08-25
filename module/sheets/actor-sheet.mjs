@@ -751,9 +751,20 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
 
 
-    html.on('click','[id=craftingNav]', () => {
-      this.actor.sortTable("matsTable")
+    //Sort on clicking Crafting Navigation Button
+    html.on('click','[craftRecipes]', () => {
+      console.log("CRAFT")
+      this.actor.checkIfCanCraft(this.actor.name)
+    })
+
+    //Sort Junk items
+    html.on('click','[sortJunk]', () => {
       this.actor.sortTable("junkTable")
+    })
+
+    //Sort Materials
+    html.on('click','[sortMat]', () => {
+      this.actor.sortTable("matsTable")
     })
     /*DEPRECATED (context menu now)
     // Convert Junk to Materials

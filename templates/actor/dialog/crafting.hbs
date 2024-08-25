@@ -6,7 +6,17 @@
     <select style="padding-left:20px" name="itemSelect" id = "itemSelect"><option value='nothing'>Select a Compendium to start</option></select>
   </td>
 </table>
-
+<table style="max-height:40px;">
+  <td>
+    <button id="goodCraft" style="color:green;visibility:hidden" title="All materials below will be removed and item will be crafted instantly.">Craft Item</button>
+  </td>
+  <td>
+    <button id="rollCraft" disabled style="color:yellow;visibility:hidden" title="Calls for a Crafting Roll (Feature in development!). Evaluates success to determine materials to remove and amount of items to produce." >Roll for craft</button>
+  </td>
+  <td>
+    <button id="freeCraft" style="color:red;visibility:hidden" title="Character does not hold enough materials. This will add the item without removing materials." >Free craft</button>
+  </td>
+</table>
 <p style="
     color: var(--user-color);
     max-height:25px;
@@ -22,17 +32,6 @@
     white-space: nowrap;
     overflow-x: hidden;" 
 id="itemName"></p>
-<table style="max-height:40px;">
-  <td>
-    <button id="goodCraft" style="color:green;visibility:hidden" title="All materials below will be removed and item will be crafted instantly.">Craft Item</button>
-  </td>
-  <td>
-    <button id="rollCraft" disabled style="color:yellow;visibility:hidden" title="Calls for a Crafting Roll (Feature in development!). Evaluates success to determine materials to remove and amount of items to produce." >Roll for craft</button>
-  </td>
-  <td>
-    <button id="freeCraft" style="color:red;visibility:hidden" title="Character does not hold enough materials. This will add the item without removing materials." >Free craft</button>
-  </td>
-</table>
 <table class="craftingTable" style="text-align:center;visibility:hidden;">
   <th class="tt">Crafting time</th>         <th class="tt">Quantity</th><th class="tt">Required Material</th>
   <tr ><td  id="craftingTime" style=""></td><td  id="matsReq1.qty"></td><td id="matsReq1.mat" ></td></tr>

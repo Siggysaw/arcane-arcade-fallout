@@ -2,7 +2,14 @@
     <tr>
         <td style="padding-right:10px;width:40%">
             <table class="equipped-stats" id="matsTable">
-                <tr><td colspan="999"><h3>Materials</h3></td></tr>
+                <tr><td colspan="999">
+                    <h3>
+                        <i class="fa fa-sort-amount-asc" sortMat></i>&emsp; 
+                            Materials  &emsp; 
+                        <i class="fa fa-cubes" actorCraft ></i> &emsp; 
+                        <i class="fa fa-list" craftRecipes></i>  
+                        
+                    </h3></td></tr>
                 <tr><td>Name</td><td>Qty</td><td></td></tr>
                 {{#each materials as |item id|}}
                 <tr>
@@ -16,7 +23,6 @@
                                 {{item.name}}
                             </a>
                         </li>
-
                     </td>
                     <td style="width:80px">
                         <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
@@ -32,7 +38,13 @@
         </td>
         <td>
             <table class="equipped-stats" id="junkTable">
-                <tr><td colspan=999><h3>junk</h3></td></tr>
+                <tr><td colspan=999>
+                    <h3>
+                        <i class="fa fa-sort-amount-asc" sortJunk></i>&emsp; 
+                        junk &emsp; 
+                        <i class="fa fa-solid fa-screwdriver-wrench" breakdownAll></i> 
+                        
+                    </h3></td></tr>
                 <tr><td></td><td>Name</td><td>Qty</td><td>Materials</td></tr>
                 {{#each junk as |item id|}}
                 <tr>
