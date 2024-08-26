@@ -766,12 +766,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click','[sortMat]', () => {
       this.actor.sortTable("matsTable")
     })
-    /*DEPRECATED (context menu now)
-    // Convert Junk to Materials
-    html.on('click', '[data-junkToMat]', (ev) => {
-      const itemID = ev.currentTarget.dataset.itemId
-      this.actor.checkConvert(itemID)
-    })*/
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable

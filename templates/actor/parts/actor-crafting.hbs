@@ -8,7 +8,6 @@
                             Materials  &emsp; 
                         <i class="fa fa-cubes" actorCraft ></i> &emsp; 
                         <i class="fa fa-list" craftRecipes></i>  
-                        
                     </h3></td></tr>
                 <tr><td>Name</td><td>Qty</td><td></td></tr>
                 {{#each materials as |item id|}}
@@ -66,7 +65,6 @@
                         {{ system.quantity }}
                         <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
                     </td>
-
                     <td>
                         {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}}
                         {{#if (gt system.junk.quantity2 0)}} {{ system.junk.type2 }} ({{ system.junk.quantity2 }}){{/if}}
