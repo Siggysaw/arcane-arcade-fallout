@@ -530,7 +530,7 @@ export default class FalloutZeroActor extends Actor {
         }
         if (description.includes('HcvGeJhIRhCECZQ8')) {
           //Putrid as a consumable condition
-          chatContent += `That was discusting! (End>4)<br><br>But... you're fine.`
+          chatContent += `That was disgusting! (End>4)<br><br>But... you're fine.`
         }
       } else {
         // Endurance below or equal to 4
