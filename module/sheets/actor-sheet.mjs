@@ -753,7 +753,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     //Sort on clicking Crafting Navigation Button
     html.on('click','[craftRecipes]', () => {
-      console.log("CRAFT")
       this.actor.checkIfCanCraft(this.actor.name)
     })
 
