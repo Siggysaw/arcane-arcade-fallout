@@ -4,6 +4,9 @@ import * as documents from './documents/_module.mjs'
 import * as sheets from './sheets/_module.mjs'
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs'
 
+// Import Submodules
+import * as applications from '../module/applications/_module.mjs'
+
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
@@ -12,6 +15,7 @@ Hooks.once('init', function () {
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.falloutzero = {
+    applications,
     rollItemMacro,
   }
 
@@ -156,13 +160,15 @@ Handlebars.registerHelper('Sum3', function (v1, v2, v3) {
 })
 //division
 Handlebars.registerHelper('LckMod', function (v1, v2) {
-  let div = Math.floor( Number(v1) / Number(v2))
-  if (div < -1){div = -1}
+  let div = Math.floor(Number(v1) / Number(v2))
+  if (div < -1) {
+    div = -1
+  }
   return div
 })
 
 //Format a Compendium Link for a given title
-Handlebars.registerHelper('FormatCompendium', function (itemName, compendium){
+Handlebars.registerHelper('FormatCompendium', function (itemName, compendium) {
   let compendiumObject, myItem
   try {
     compendiumObject = game.packs.find((u) => u.metadata.name == compendium)
@@ -200,19 +206,25 @@ Hooks.on('renderPause', (app, [html]) => {
 })
 
 Hooks.on('updateUser', async (user) => {
-  const color = user.color;
-  const rgb = `${Math.round(color.r * 255)}, ${Math.round(color.g * 255)}, ${Math.round(color.b * 255)}`;
+  const color = user.color
+  const rgb = `${Math.round(color.r * 255)}, ${Math.round(color.g * 255)}, ${Math.round(color.b * 255)}`
   const hsl = {
     hue: (color.hsl[0] * 360).toFixed(2),
     saturation: `${(color.hsl[1] * 100).toFixed(2)}%`,
     lightness: `${(color.hsl[2] * 100).toFixed(2)}%`,
   }
 
-  document.documentElement.style.setProperty('--user-color-hsl', `${hsl.hue}, ${hsl.saturation}, ${hsl.lightness}`);
-  document.documentElement.style.setProperty('--user-color-hsl-alt', `${hsl.hue}, ${hsl.saturation}, ${(parseFloat(hsl.lightness) + 10).toFixed(2)}%`);
+  document.documentElement.style.setProperty(
+    '--user-color-hsl',
+    `${hsl.hue}, ${hsl.saturation}, ${hsl.lightness}`,
+  )
+  document.documentElement.style.setProperty(
+    '--user-color-hsl-alt',
+    `${hsl.hue}, ${hsl.saturation}, ${(parseFloat(hsl.lightness) + 10).toFixed(2)}%`,
+  )
 
-  document.documentElement.style.setProperty('--test', `#000`);
-});
+  document.documentElement.style.setProperty('--test', `#000`)
+})
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */

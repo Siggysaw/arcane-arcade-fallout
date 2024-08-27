@@ -120,7 +120,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
    * @param {HTMLElement} html  Rendered contents of the message.
    */
   _collapseTrays(html) {
-    let collapse
+    let collapse = true
     // switch (game.settings.get('falloutzero', 'autoCollapseChatTrays')) {
     //   case 'always':
     //     collapse = true
@@ -270,56 +270,16 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     html.querySelector('.whisper-to')?.remove()
 
     // Add reroll button
-    if (this.rolls.length > 0) {
-      const metadata = html.querySelector('.message-metadata')
-      const rerollButton = document.createElement('div')
-      rerollButton.innerHTML =
-        '<a data-reroll data-tooltip="Reroll dice"><i class="fas fa-dice-d20 fa-fw"></i><a>'
-      metadata.appendChild(rerollButton)
-      metadata
-        .querySelector('[data-reroll]')
-        .addEventListener('click', this._reRollDialog.bind(this))
-    }
+    this._addReRollButton(html)
 
     // add formula tooltip
-    if (this.tooltip) {
-      const formula = html.querySelector('.dice-roll .dice-result .dice-formula')
-      formula.dataset.tooltip = this.tooltip
-    }
+    this._addTooltip(html)
 
     // Add damage buttons
-    if (this.damage) {
-      const messageContent = html.querySelector('.message-content')
-      const buttonContainer = document.createElement('div')
-      buttonContainer.classList.add('card-buttons')
+    this._addDamageButtons(html)
 
-      // regular damage button
-      if (this.damage.rolls) {
-        const button = document.createElement('button')
-        button.innerHTML = '<span>Roll damage</span> <i class="fa-light fa-dice-d20">'
-        button.dataset.rollDamage = ''
-        buttonContainer.appendChild(button)
-      }
-
-      // critical multiplier damage button
-      if (this.damage.critical) {
-        const button = document.createElement('button')
-        button.innerHTML = '<span>Roll critical damage</span> <i class="fa-light fa-dice-d20">'
-        button.dataset.rollCritical = this.critical
-        buttonContainer.appendChild(button)
-      }
-
-      // add targeted condition roll
-      if (this.targeted) {
-        const button = document.createElement('button')
-        button.innerHTML =
-          '<span>Roll targeted attack condition</span> <i class="fa-light fa-dice-d4">'
-        button.dataset.rollCondition = ''
-        buttonContainer.appendChild(button)
-      }
-
-      messageContent.appendChild(buttonContainer)
-    }
+    // Add apply damage buttons
+    this._addApplyDamageButtons(html)
 
     // SVG icons
     // html.querySelectorAll('i.aafo-icon').forEach((el) => {
@@ -390,6 +350,72 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     avatar.addEventListener('click', this._onTargetMouseDown.bind(this))
     avatar.addEventListener('pointerover', this._onTargetHoverIn.bind(this))
     avatar.addEventListener('pointerout', this._onTargetHoverOut.bind(this))
+  }
+
+  _addDamageButtons(html) {
+    if (!this.damage) return
+    const messageContent = html.querySelector('.message-content')
+    const buttonContainer = document.createElement('div')
+    buttonContainer.classList.add('card-buttons')
+
+    // regular damage button
+    if (this.damage.rolls) {
+      const button = document.createElement('button')
+      button.innerHTML = '<span>Roll damage</span> <i class="fa-light fa-dice-d20">'
+      button.dataset.rollDamage = ''
+      buttonContainer.appendChild(button)
+    }
+
+    // critical multiplier damage button
+    if (this.damage.critical) {
+      const button = document.createElement('button')
+      button.innerHTML = '<span>Roll critical damage</span> <i class="fa-light fa-dice-d20">'
+      button.dataset.rollCritical = this.critical
+      buttonContainer.appendChild(button)
+    }
+
+    // add targeted condition roll
+    if (this.targeted) {
+      const button = document.createElement('button')
+      button.innerHTML =
+        '<span>Roll targeted attack condition</span> <i class="fa-light fa-dice-d4">'
+      button.dataset.rollCondition = ''
+      buttonContainer.appendChild(button)
+    }
+
+    messageContent.appendChild(buttonContainer)
+  }
+
+  _addReRollButton(html) {
+    if (!this.rolls?.length || this.rolls.length < 1) return
+    const metadata = html.querySelector('.message-metadata')
+    const rerollButton = document.createElement('div')
+    rerollButton.innerHTML =
+      '<a data-reroll data-tooltip="Reroll dice"><i class="fas fa-dice-d20 fa-fw"></i><a>'
+    metadata.appendChild(rerollButton)
+    metadata.querySelector('[data-reroll]').addEventListener('click', this._reRollDialog.bind(this))
+  }
+
+  _addTooltip(html) {
+    if (!this.tooltip) return
+    const formula = html.querySelector('.dice-roll .dice-result .dice-formula')
+    formula.dataset.tooltip = this.tooltip
+  }
+
+  _addApplyDamageButtons(html) {
+    if (this.cardType !== 'damage') return
+    if (game.user.isGM) {
+      const damageApplication = document.createElement('damage-application')
+      damageApplication.classList.add('falloutzero')
+      damageApplication.damages = [
+        {
+          value: 6,
+          type: 'slashing',
+          properties: new Set([]),
+        },
+      ]
+      html.querySelector('.message-content').appendChild(damageApplication)
+    }
   }
 
   _reRollDialog() {
@@ -764,6 +790,10 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       flavor,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       rollMode: game.settings.get('core', 'rollMode'),
+      'flags.falloutzero': {
+        type: 'damage',
+        damageTypes: types,
+      },
     })
   }
 
