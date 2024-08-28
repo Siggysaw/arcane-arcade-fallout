@@ -18,6 +18,15 @@ Hooks.once('init', function () {
     applications,
     rollItemMacro,
   }
+  game.settings.register('core', 'CarryLoad', {
+    name: 'Exact Carry Load Calculator',
+    hint: 'Checked: 23 x 10mm ammo = 2.3 load | Unchecked: 23 x 10mm ammo = 2 load',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+    requiresReload: true,
+  })
 
   // Add custom constants for configuration.
   CONFIG.FALLOUTZERO = FALLOUTZERO
@@ -103,6 +112,10 @@ Hooks.once('init', function () {
 // If you need to add Handlebars helpers, here is a useful example:
 Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase()
+})
+
+Handlebars.registerHelper('log', function (v1) {
+  console.log(v1)
 })
 
 Handlebars.registerHelper('setChecked', function (value, test) {
@@ -203,27 +216,6 @@ Hooks.once('ready', function () {
 Hooks.on('renderPause', (app, [html]) => {
   const img = html.querySelector('img')
   img.src = 'systems/arcane-arcade-fallout/assets/vaultboy/vaultboy.webp'
-})
-
-Hooks.on('updateUser', async (user) => {
-  const color = user.color
-  const rgb = `${Math.round(color.r * 255)}, ${Math.round(color.g * 255)}, ${Math.round(color.b * 255)}`
-  const hsl = {
-    hue: (color.hsl[0] * 360).toFixed(2),
-    saturation: `${(color.hsl[1] * 100).toFixed(2)}%`,
-    lightness: `${(color.hsl[2] * 100).toFixed(2)}%`,
-  }
-
-  document.documentElement.style.setProperty(
-    '--user-color-hsl',
-    `${hsl.hue}, ${hsl.saturation}, ${hsl.lightness}`,
-  )
-  document.documentElement.style.setProperty(
-    '--user-color-hsl-alt',
-    `${hsl.hue}, ${hsl.saturation}, ${(parseFloat(hsl.lightness) + 10).toFixed(2)}%`,
-  )
-
-  document.documentElement.style.setProperty('--test', `#000`)
 })
 
 /* -------------------------------------------- */

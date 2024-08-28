@@ -2,8 +2,14 @@
     <tr>
         <td style="padding-right:10px;width:40%">
             <table class="equipped-stats" id="matsTable">
-                <tr><th colspan="999"><h3>Materials</h3></th></tr>
-                <tr><th>Name</th><th>Qty</th><th></th></tr>
+                <tr><td colspan="999">
+                    <h3>
+                        <i class="fa fa-sort-amount-asc" sortMat></i>&emsp; 
+                            Materials  &emsp; 
+                        <i class="fa fa-cubes" actorCraft title="Craft from materials in inventory"></i> &emsp; 
+                        <i class="fa fa-list" craftRecipes title="Browse through and craft from recipes"></i>  
+                    </h3></td></tr>
+                <tr><td>Name</td><td>Qty</td><td></td></tr>
                 {{#each materials as |item id|}}
                 <tr>
                     <td>
@@ -16,7 +22,6 @@
                                 {{item.name}}
                             </a>
                         </li>
-
                     </td>
                     <td style="width:80px">
                         <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
@@ -32,8 +37,14 @@
         </td>
         <td>
             <table class="equipped-stats" id="junkTable">
-                <tr><th colspan=999><h3>junk</h3></th></tr>
-                <tr><th></th><th>Name</th><th>Qty</th><th>Materials</th></tr>
+                <tr><td colspan=999>
+                    <h3>
+                        <i class="fa fa-sort-amount-asc" sortJunk></i>&emsp; 
+                        junk &emsp; 
+                        <i class="fa fa-solid fa-screwdriver-wrench" breakdownAll></i> 
+                        
+                    </h3></td></tr>
+                <tr><td></td><td>Name</td><td>Qty</td><td>Materials</td></tr>
                 {{#each junk as |item id|}}
                 <tr>
                     <td style="width:20px;">
@@ -54,7 +65,6 @@
                         {{ system.quantity }}
                         <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
                     </td>
-
                     <td>
                         {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}}
                         {{#if (gt system.junk.quantity2 0)}} {{ system.junk.type2 }} ({{ system.junk.quantity2 }}){{/if}}

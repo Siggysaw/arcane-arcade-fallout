@@ -21,6 +21,77 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+  // Perks List
+  viewPerks() {
+    const myDialogOptions = {resizable: true }
+    let message = "Perks List Coming Soon!"
+    const perks = game.packs.filter((i) => i.name == "perks")
+    //actorData.items.find((i) => i.name == "Pack Rat")
+    console.log(perks)
+
+
+
+    new Dialog({
+      title: 'Custom Roll',
+      content: message,
+      buttons: {
+        button1: {
+          label: 'Close',
+        },
+      },
+    },
+      myDialogOptions,
+    ).render(true)
+  }
+
+  // Custom Roll
+  async customRoll() {
+    const myDialogOptions = { width: 275, resizable: true }
+    const myContent = await renderTemplate("systems/arcane-arcade-fallout/templates/actor/dialog/custom-roll.hbs");
+    const actor = this
+
+    new Dialog({
+      title: 'Custom Roll',
+      content: myContent,
+      buttons: {
+        button1: {
+          label: 'Roll It!',
+          callback: (html) => rollDice(html, actor),
+        },
+      },
+    },
+      myDialogOptions,
+    ).render(true)
+  
+    async function rollDice(html, actor) {
+      const withModifiers = html.find('select#modified').val()
+      const withAdvantage = html.find('select#advantage').val()
+      let rollNumber = html.find('input#diceNumber').val()
+      let rollType = html.find('select#diceType').val()
+      let rollBonus = html.find('input#bonus').val()
+      let rollInput = `${rollNumber}d${rollType}`
+      if (withAdvantage !== "false") {
+        rollInput += withAdvantage
+      }
+      if (withModifiers === "true") {
+        const luckmod = actor.system.luckmod
+        const penaltyTotal = actor.system.penaltyTotal
+        rollInput +=` + ${luckmod} - ${penaltyTotal}`
+      }
+      if (rollBonus.length > 0) {
+        rollInput += `+ ${rollBonus}`
+      }
+      const roll = new Roll(`${rollInput}`, actor.getRollData())
+      await roll.evaluate()
+
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this }),
+        flavor: `${actor.name} rolled a Custom Roll!`,
+        rollMode: game.settings.get('core', 'rollMode'),
+      })
+    }
+  }
+
   // Short Rest and Long Rest Button Functionality
   restRecovery(rest) {
     const raceItem = this.items.filter((i) => i.type == 'race')
@@ -54,7 +125,9 @@ export default class FalloutZeroActor extends Actor {
   }
 
   inspectCarryload() {
+    const packrat = this.items.find((i) => i.name == "Pack Rat")
     const myDialogOptions = { width: 500, height: 300, resizable: true }
+    const carryLoadSetting = game.settings.get('core', 'CarryLoad');
     let load = Math.floor(this.system.caps / 50)
     let message = `<table style="text-align:center"><tr><th>Item</th><th>Qty x Load</th><th>Total</th></tr><tr><td>Caps</td><td>${this.system.caps}/50</td><td>${load}</td>`
     let overall = load
@@ -66,9 +139,18 @@ export default class FalloutZeroActor extends Actor {
         if (item.system.worn) {
           load = 0
         }
+        if (packrat && load < 3 && load > 1) {
+          load = 1
+        }
         let total = Number(load) * Number(qty)
-        overall = overall + Math.floor(total)
-        message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${Math.floor(total)}</td></tr>`
+        if (carryLoadSetting) {
+          overall = overall + total
+          total = Math.round(total * 10) / 10
+          message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${total}</td></tr>`
+        } else {
+          overall = overall + Math.floor(total)
+          message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${Math.floor(total)}</td></tr>`
+        }
       }
     }, 0)
     new Dialog(
@@ -287,7 +369,6 @@ export default class FalloutZeroActor extends Actor {
     }
     //Modify Effects to get the @ values
     if (addedCondition) {
-      console.log('added a drunk condition')
       let newArray
       for (var ef of addedCondition.effects) {
         newArray = ef.changes
@@ -296,7 +377,6 @@ export default class FalloutZeroActor extends Actor {
             change.value = await this.evaluateAtFormula(change.value)
           }
         }
-        console.log(await ef.update({ changes: newArray }))
       }
     }
     return chatContent
@@ -324,7 +404,6 @@ export default class FalloutZeroActor extends Actor {
       } else {
         //Create new effect if not already on character
         let pack = await game.packs.find((p) => p.metadata.name == 'conditions')
-        console.log(pack, condition)
         conditionObj = await pack.getDocument(pack.find((o) => o.name == condition)._id)
         actorEf = await Item.create(conditionObj, { parent: this })
         //Modify Effects to get the @ values
@@ -447,7 +526,7 @@ export default class FalloutZeroActor extends Actor {
         }
         if (description.includes('HcvGeJhIRhCECZQ8')) {
           //Putrid as a consumable condition
-          chatContent += `That was discusting! (End>4)<br><br>But... you're fine.`
+          chatContent += `That was disgusting! (End>4)<br><br>But... you're fine.`
         }
       } else {
         // Endurance below or equal to 4
@@ -679,22 +758,6 @@ export default class FalloutZeroActor extends Actor {
     } else {
       this.update({ [field]: newValue })
     }
-  }
-
-  ruleinfo(condition) {
-    const myDialogOptions = { width: 500, height: 300, resizable: true }
-    const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1)
-    let title = conditionFormatted.replaceAll('_', ' ')
-    const rule = FALLOUTZERO.rules[conditionFormatted]
-    const message = `<div class="conditioninfo">${rule}</div>`
-    new Dialog(
-      {
-        title: `Details: ${title}`,
-        content: message,
-        buttons: {},
-      },
-      myDialogOptions,
-    ).render(true)
   }
 
   healthupdate(operator) {
@@ -1061,27 +1124,448 @@ export default class FalloutZeroActor extends Actor {
     }
   }
 
+  //check which Actor wishes to Craft, from a particular item
+  checkCraftActor(myItem){
+    let playerID = game.user._id
+    //Get owned actors
+    let actorsList = game.actors.filter(a => a.type == "character").filter(a => a.ownership[playerID] == 3)
+    let myActorName = actorsList[0].name
+    if (actorsList == 1){
+      this.checkIfCanCraft(myActorName, myItem)
+    } 
+    else {
+      let dialogContent = `Who wants to craft ${this.formatCompendiumItem(myItem.type,myItem.name,"click for details",true).replace("<br>","")}?
+      <br><br><select style="padding-left:20px" name="actorSelect" id = "actorSelect">`
+      for (var actor of actorsList){
+        dialogContent += `<option value='${actor.name}'>${actor.name}</option>`
+      }
+      dialogContent += `</select><br>`
+      let d = new Dialog(
+        {
+          title: 'Who wants to craft this item?',
+          content: dialogContent,
+          buttons: {
+            Yes: {
+              icon: '<i class="fas fa-check"></i>',
+              label: 'Okie-Dokie!',
+              callback: async () => {
+                this.checkIfCanCraft(myActorName, myItem)
+              },
+            },
+            No: {
+              icon: '<i class="fa-solid fa-x"></i>',
+              label: 'Nope!',
+              callback: async () => {},
+            },
+          },
+          default: 'No',
+          render: (html) => {
+            html.find('[name=actorSelect]').change(function () {
+              myActorName = this.value
+            })
+          },
+        },
+        {
+          width: 500,
+        },
+      )
+      d.render(true)
+    }
+  }
+
+async setCraftingDC (htmlElement,singleDC,rollButton,craftButton,myActor){
+  /*let abilityChoices = FALLOUTZERO.skills[singleDC.name].ability
+  let abilityName = "int"
+  if (abilityChoices.length > 1) {
+    abilityName = myActor.system.abilities[abilityChoices[0]].mod > myActor.system.abilities[abilityChoices[1]].mod ?  
+      myActor.system.abilities[abilityChoices[0]].abbreviation : 
+      myActor.system.abilities[abilityChoices[1]].abbreviation
+  }
+  let abilityBonus =  myActor.system.abilities[abilityName].mod
+    myActor.system.abilities[abilityAbbrev[0]]
+    rollButton.title = `Materials... check! \nCan roll to craft the item!\n\n${singleDC.name} (+${singleDC.bonus}) roll ${abilityName} (+${abilityBonus}) + at with a result greater or equal to ${12 + Number(singleDC.DC)}.\n
+Failure : Lose 1d4 of each material used (at least 1 will remain) and item is not crafted
+Failure by 8+ : Lose 1d6 of each material (no minimum remaining) and item is not crafted
+Success : You craft the item and use all the required materials
+Success by 8+ : You craft the item and use 1d4 less of one material (randomized) to a minimum of 1.`*/
+  let craftingDC = 12 + Number(singleDC.DC)
+  rollButton.title = `Materials... check! \nCan roll to craft the item!\n\n${singleDC.name} (+${singleDC.bonus}) roll with a result greater or equal to ${12 + Number(singleDC.DC)}.\n
+Failure : Lose 1d4 of each material used (at least 1 will remain) and item is not crafted
+Failure by 8+ : Lose 1d6 of each material (no minimum remaining) and item is not crafted
+Success : You craft the item and use all the required materials
+Success by 8+ : You craft the item and use 1d4 less of one material (randomized) to a minimum of 1.`
+  rollButton.innerText = singleDC.name + " Roll"
+  htmlElement.innerText = singleDC.name + " DC: " + craftingDC
+  htmlElement.title = `Required ${singleDC.name} : +${singleDC.DC} \n\nCurrent Bonus : +${singleDC.bonus} \n\n DC = 12 + ${singleDC.DC} = ${craftingDC}`
+  if (singleDC.DC > singleDC.bonus){
+    htmlElement.style = "background-color:rgba(250, 0, 0, 0.1);visibility:visible;"
+    craftButton.style = "color:gray"
+    craftButton.disabled = true
+    craftButton.title = `Materials           ...check! \nCrafting ability  ...nope! \n\n${singleDC.name} Bonus insufficient (required : +${singleDC.DC}, current : +${singleDC.bonus}).`
+  } else{
+    htmlElement.style = "background-color:rgba(0, 250, 0, 0.1);visibility:visible;"
+  }
+}
+
+
+async getItemCraftingData(html,myActor,myItem){
+  let myPaths = FalloutZeroItem.prototype.flattenObject(myItem.system.crafting)
+  let itemNameBox = document.getElementById("itemName")
+  itemNameBox.innerHTML = this.formatCompendiumItem(myItem.type, myItem.name,"Click for item details",true)
+  let multipleDC = [{name:"Crafting",DC:0,bonus:0}]
+  let safeCraft = document.getElementById("safeCraft")
+  safeCraft.style = "color:var(--user-color)"
+  safeCraft.disabled = false
+  safeCraft.title = "Materials           ...check! \nCrafting ability  ...check!\n\nSafe Crafting is an option\n\n(100% materials cost, item will be added to inventory)"
+  let rollCraft = document.getElementById("rollCraft")
+  let rollCraft2 = document.getElementById("rollCraft2")
+  rollCraft2.style = "visibility:hidden;color:var(--user-color)"
+  rollCraft.style = "visibility:visible;color:var(--user-color)"
+  rollCraft2.disabled = rollCraft.disabled = false
+
+  let perks = document.getElementById("buttonsTable")
+  perks.deleteRow(1);
+  perks.insertRow(1);
+  let row = perks.getElementsByTagName("tr")[1];
+  row.style="visibility:collapse";
+  let newCell
+  let matBonus = 0
+  if (myActor.items.find((i) => i.name == "Adroit Alchemist") && myItem.type == "chem"){
+    row.style = "visibility:visible;text-align:center;background-color:rgba(0, 0, 0, 0.0);"
+    matBonus += 1
+    newCell = row.insertCell(-1);
+    newCell.innerHTML= this.formatCompendiumItem("perks","Adroit Alchemist","Bonus : -1 to all mats",true)
+  }
+  if (myActor.items.find((i) => i.name == "Expert Engineer")){
+    row.style = "visibility:visible;text-align:center;background-color:rgba(0, 0, 0, 0.0);"
+    matBonus += 2
+    newCell = row.insertCell(-1);
+    newCell.innerHTML= this.formatCompendiumItem("perks","Expert Engineer","Bonus : -2 to all mats",true)
+  }
+  if (myActor.items.find((i) => i.name == "Efficient Munitions") && myItem.type == "ammo"){
+    row.style = "visibility:visible;text-align:center;background-color:rgba(0, 0, 0, 0.0);"
+    newCell = row.insertCell(-1);
+    newCell.innerHTML= this.formatCompendiumItem("perks","Efficient Munitions","Manually add +2 to hit & dmg OR double quantity",true)
+  }
+  if (myActor.items.find((i) => i.name == "Randomizer")){
+    row.style = "visibility:visible;text-align:center;background-color:rgba(0, 0, 0, 0.0);"
+    newCell = row.insertCell(-1);
+    newCell.innerHTML= this.formatCompendiumItem("perks","Randomizer",`A random mat will be reduced by ${myActor.system.abilities.lck.mod}. A random Junk item will also be crafted for free.`,true)
+    newCell.id = "randomizer"
+  }
+  newCell = row.insertCell(-1);
+  newCell.id="matsBonus"
+  newCell.innerText=-matBonus + " to mats"
+  newCell.style="max-width:10%;padding-left: 10px"
+
+  for (var currentPath of Object.keys(myPaths)){
+    let actorValues = {value:0,shown:false, style:"visibility:hidden;", multipleDC}
+    let myElement = document.getElementById(myPaths[currentPath].path)
+    if (myElement){
+      if (myPaths[currentPath].value != "" && myPaths[currentPath].value != 0){
+        if (typeof myPaths[currentPath].value  == "number" && !myPaths[currentPath].path.includes("DC")){myPaths[currentPath].value = Math.max(myPaths[currentPath].value - matBonus,1)}
+        actorValues = await FalloutZeroActor.prototype.getActorCraftingData(myActor, myPaths, currentPath, matBonus)
+        myElement.style = actorValues.style
+        if (actorValues.shown) {
+          //Crafting Materials sufficient or not?
+          myElement.innerText = myPaths[currentPath].value + " (" + actorValues.value + ")"
+          if (Number(myPaths[currentPath].value) > Number(actorValues.value)){
+            rollCraft2.style = "visibility:hidden"
+            safeCraft.style = rollCraft.style = "color:gray"
+            safeCraft.disabled = rollCraft.disabled = rollCraft2.disabled = true
+            safeCraft.title = rollCraft.title = rollCraft2.title = "Insufficient materials"
+          }
+          myElement.title = "Selected character's current values in brackets"
+        }
+        else {
+          if (myPaths[currentPath].path.includes("DC")){ //Check each DC
+            await this.setCraftingDC(myElement,actorValues.multipleDC[0], rollCraft, safeCraft,myActor)
+            let craftingDCBox = document.getElementById("craftingDC2")
+            if (actorValues.multipleDC.length > 1){
+              await this.setCraftingDC(craftingDCBox,actorValues.multipleDC[1], rollCraft2, safeCraft,myActor)
+            } else {
+              craftingDCBox.style = "visibility:hidden;background-color:rgba(0, 0, 0, 0.0);"
+              rollCraft2.style = "visibility:hidden;"
+            }
+          } 
+          else {
+            myElement.innerText = myPaths[currentPath].path.includes("multiple")? myPaths[currentPath].value > 1? `Makes ${myPaths[currentPath].value} copies` : "" :
+                                  myPaths[currentPath].path.includes("Time")? `Duration: ${myPaths[currentPath].value}`:
+                                  myPaths[currentPath].value 
+          } 
+        }
+      } 
+      else {
+        myElement.style = actorValues.style
+        myElement.innerText = myPaths[currentPath].path.includes("Time")? "Crafting succeeds automatically" : ""
+      }
+    }
+  }
+  let titleElements = document.getElementsByClassName("tt")
+  for (var el of titleElements){
+    el.style ="visibility:visible;border:1px solid white"
+  }
+}
+
+async getActorCraftingData(myActor,myPaths,currentPath, matBonus){
+  let greenBackground = "visibility:visible;background-color:rgba(0, 255, 0, 0.1);"
+  let redBackground = "visibility:visible;background-color:rgba(255, 0, 0, 0.1);"
+  let generalBackground = "visibility:visible;background-color:rgba(0, 0, 0, 0.1);border:1px solid white;"
+  let fullPath = myPaths[currentPath].path
+  let splitPath = fullPath.split(".")
+  let matIndex = await splitPath[0].replace(/[^0-9]/g,"")
+  let matReq, matName, actorItem
+  let multipleDC = []
+  let actorValues = {value:0, shown:false, style:redBackground, multipleDC}
+  switch (fullPath){
+    case "craftingDC":
+      let myCrafts = myPaths[currentPath].value
+      let myCraft = await myCrafts.split("+").join("").split(" ")
+      if (myCrafts.includes("or")){myCraft[1] = myCraft[1].toLowerCase().replace("or", myCraft[3])} //ex. : Crafting or Science +5 becomes Crafting +5 Science +5
+      actorValues.value = ""
+      if (myCraft.length >1){
+          multipleDC.push({name:myCraft[0],DC:myCraft[1],bonus:Number(myActor.system.skills[myCraft[0].toLowerCase()].value)})
+        if (myCraft.length >2){
+          multipleDC.push({name:myCraft[2],DC:myCraft[3],bonus:Number(myActor.system.skills[myCraft[2].toLowerCase()].value)})
+        }
+      } else {
+        multipleDC.push({name:"Crafting",DC:Number(myPaths[currentPath].value.replace("+","")),bonus:Number(myActor.system.skills.crafting.value)})
+      }
+      actorValues.shown = false
+      actorValues.style = generalBackground
+      break;
+    case `matsReq${matIndex}.mat`:
+      matReq = Math.max(await myPaths.find(p => p.path == `matsReq${matIndex}.qty`).value - matBonus,1)
+      matName = myPaths[currentPath].value
+      actorItem = await myActor.items.find(i => i.name == matName)
+      actorValues.value = actorItem? actorItem.system.quantity :
+           matName.includes("Caps")? myActor.system.caps : 0
+      actorValues.style = Number(actorValues.value) >= matReq ?  greenBackground : redBackground
+      break;
+    case `matsReq${matIndex}.qty`:
+      matReq = myPaths[currentPath].value
+      matName = await myPaths.find(p => p.path == `matsReq${matIndex}.mat`).value
+      actorItem = await myActor.items.find(i => i.name == matName)
+      actorValues.shown = true;
+      actorValues.value = actorItem? actorItem.system.quantity :
+           matName.includes("Caps")? myActor.system.caps : 0
+      actorValues.style = Number(actorValues.value) >= matReq ?  greenBackground : redBackground
+      break;
+    default :
+      actorValues.style = generalBackground;
+      break;
+  }
+  return actorValues
+}
+
+  //Craft an item
+  async checkIfCanCraft(myActorName, myItem=""){
+    let myActor = game.actors.filter(a => a.type == "character").find(a => a.name == myActorName)
+    let d = new Dialog(
+      {
+        title: 'Crafting?',
+        content: {},
+        buttons: {},
+        render: (html) => {
+          let packsList = ["ammunition","armor","chems","explosives","food-and-drinks","melee-weapons","rangedweapons","material","miscellaneous"]
+          let packSelect = document.getElementById('packSelect')
+          let itemSelect = document.getElementById('itemSelect');
+          let itemsLists = {}
+          let itemsList = []
+          for (var pack of packsList){
+            packSelect.options[packSelect.options.length] = new Option(pack, pack);
+            itemsList = []
+            try {
+              itemsList = game.packs.find(p => p.metadata.name == pack).tree.entries
+            } catch {
+              alert("There is a system compendium missing. Please reinstal system.")
+              break
+            }
+            Object.assign(itemsLists,{[pack]:itemsList})
+          }
+          if (myItem != ""){
+            //Set right Pack
+            let initialPack = FalloutZeroActor.prototype.getPackFromType(myItem.type)
+            packSelect.value = initialPack
+            //Set right Item with ID from compendium
+            let pack = this.getPackFromType(myItem.type)
+            let myPack = game.packs.find(p => p.metadata.name == pack)
+            let myPackItemId = myPack.tree.entries.find(i => i.name == myItem.name)
+            itemSelect.options[itemSelect.options.length] = new Option(myItem.name, myPackItemId._id)
+            itemSelect.value = myPackItemId._id
+            FalloutZeroActor.prototype.getItemCraftingData(html,myActor,myItem)
+          }
+          //Selecting a compendium from dropdown
+          html.find('[name=packSelect]').change(async function () {
+            itemsList = itemsLists[this.value]
+            itemSelect.innerHTML = '';
+            let myPack = game.packs.find(p => p.metadata.name == this.value)
+            let itemData
+            //Get the list of items from pack
+            for (var item of itemsList){
+              itemData = await myPack.getDocument(item._id)
+              if (itemData.system.crafting.matsReq1.mat != '' && itemData.system.crafting.matsReq1.qty != 0){
+                itemSelect.options[itemSelect.options.length] = new Option(item.name, item._id);
+              }
+            }
+            let itemToCraft = await myPack.getDocument(document.getElementById('itemSelect').value) //ID is the value
+            FalloutZeroActor.prototype.getItemCraftingData(html,myActor,itemToCraft)
+          })
+          //Selecting an item from dropdown
+          html.find('[name=itemSelect]').change(async function () {
+            let myPack = game.packs.find(p => p.metadata.name == document.getElementById('packSelect').value)
+            let itemToCraft = await myPack.getDocument(this.value) //ID is the value
+            FalloutZeroActor.prototype.getItemCraftingData(html,myActor,itemToCraft)
+          })
+          //Roll for craft results
+          html.find('[id=rollCraft]').click(async function () {
+            let rollCraft = this.innerText.replace(" Roll","")
+            let matsBonus = document.getElementById("matsBonus").innerText
+            let randomize = document.getElementById("randomizer")? true : false
+            let myPack = game.packs.find(p => p.metadata.name == document.getElementById('packSelect').value)
+            let itemToCraft = await myPack.getDocument(document.getElementById('itemSelect').value) //ID is the value
+            await FalloutZeroActor.prototype.craftItem(itemToCraft,myActor,rollCraft, matsBonus, randomize)
+            FalloutZeroActor.prototype.getItemCraftingData(html,myActor,itemToCraft)
+          })
+          html.find('[id=rollCraft2]').click(async function () {
+            let rollCraft = this.innerText.replace(" Roll","")
+            let matsBonus = document.getElementById("matsBonus").innerText
+            let randomize = document.getElementById("randomizer")? true : false
+            let myPack = game.packs.find(p => p.metadata.name == document.getElementById('packSelect').value)
+            let itemToCraft = await myPack.getDocument(document.getElementById('itemSelect').value) //ID is the value
+            await FalloutZeroActor.prototype.craftItem(itemToCraft,myActor,rollCraft, matsBonus, randomize)
+            FalloutZeroActor.prototype.getItemCraftingData(html,myActor,itemToCraft)
+          })
+          //Crafting from Materials
+          html.find('[id=safeCraft]').click(async function () {
+            let matsBonus = document.getElementById("matsBonus").innerText
+            let randomize = document.getElementById("randomizer")? true : false
+            let myPack = game.packs.find(p => p.metadata.name == document.getElementById('packSelect').value)
+            let itemToCraft = await myPack.getDocument(document.getElementById('itemSelect').value) //ID is the value
+            await FalloutZeroActor.prototype.craftItem(itemToCraft,myActor,"safeCraft", matsBonus, randomize)
+            FalloutZeroActor.prototype.getItemCraftingData(html,myActor,itemToCraft)
+          })
+        },
+      },
+      {
+        template: 'systems/arcane-arcade-fallout/templates/actor/dialog/crafting.hbs',
+        width: 500,
+        height: 500,
+        resizable: true,
+      },
+    )
+    d.render(true)
+  }
+
+  //Craft the item
+  async craftItem(itemToCraft, myActor, craftType, matsBonus, randomize){
+    let itemsList = Object.keys(itemToCraft.system.crafting)
+    let randomDiscount = ""
+    let chatContent = ``
+    let randomizedChat = ``
+    if (craftType != "safeCraft"){
+
+    }
+    if (randomize) {
+      //Find the random Junk to add
+      let junkPack = game.packs.find(p => p.metadata.name == "junk").tree.entries
+      let randomDrop = junkPack[Math.floor(Math.random() * junkPack.length)]
+      //Create Junk item (if crafting successful)
+      await Item.create(randomDrop,{parent:myActor})
+      randomizedChat += `Found a ${this.formatCompendiumItem("junk",randomDrop.name,"Drop from Randomizer Perk",true).replace("<br>","")}`
+      //Find the mat to discount for @luckMod qty
+      let aboveOne = []
+      for (var path of itemsList){
+        if (path.includes("matsReq")){
+          if (itemToCraft.system.crafting[path].qty > 1){
+            aboveOne.push(itemToCraft.system.crafting[path].mat)
+          }
+        }
+      }
+      randomDiscount = aboveOne[Math.floor(Math.random() * aboveOne.length)]
+    }
+    let matBonus = Number(matsBonus.replace(" to mats",""))
+    let newQty, itemLink
+    if (craftType == "safeCraft"){
+      for (var mats of itemsList){
+        if (mats.includes ("matsReq") && itemToCraft.system.crafting[mats].qty > 0){
+          let matQty = Math.max(itemToCraft.system.crafting[mats].qty + matBonus,1)
+          let mat = itemToCraft.system.crafting[mats].mat
+          let existingMat = myActor.items.find((u) => u.name.toLowerCase() == mat.toLowerCase())
+          if (existingMat){
+            newQty = mat == randomDiscount? Number(existingMat.system.quantity) - Math.max(Number(matQty) - Number(myActor.system.abilities.lck.mod),1) : Number(existingMat.system.quantity) - Number(matQty)
+            await existingMat.update({ 'system.quantity': newQty })
+            itemLink = this.formatCompendiumItem(existingMat.type,mat,'Removed from inventory.',true)
+            chatContent = mat == randomDiscount? 
+                chatContent + `${Number(Math.max(Number(matQty) - Number(myActor.system.abilities.lck.mod),1))}x ${itemLink.replace(`<br>`,"")} (${this.formatCompendiumItem("perk","Randomizer","Click for details",true).replace("<br>","")} from ${matQty})<br>` : 
+                chatContent + `${Number(matQty)}x ${itemLink}`
+          } else {
+            if (mat == "Caps") {
+              newQty = myActor.system.caps - Number(matQty)
+              await myActor.update({ 'system.caps': newQty })
+              chatContent += `${Number(matQty)}x Caps <br>`
+            }
+          }
+        }
+      }
+    } else {
+      //Add Roll for craft here!
+      chatContent = `Nothing! (player chose free crafting)<br>`
+    }
+    let qtyToCraft = itemToCraft.system.crafting.multiple.qty
+    //Adjust quantity or create item
+    let itemInInventory = myActor.items.find((u) => u.name.toLowerCase() == itemToCraft.name.toLowerCase())
+    if (itemInInventory) {
+      await itemInInventory.update({ 'system.quantity': itemInInventory.system.quantity + qtyToCraft})
+    } 
+    else {
+      let newItem = await Item.create(itemToCraft, { parent: myActor })
+      await newItem.update({'system.quantity': qtyToCraft})
+    }
+    
+    //Add quantity of items if > 1 and look for item before creating
+    itemLink = this.formatCompendiumItem(itemToCraft.type,itemToCraft.name,'Added to inventory.',true)
+    let myGM = game.users.find(u => u.role == 4)
+    //Add any more item types we want to make breakable.
+    let finalContent = randomize? chatContent + randomizedChat : chatContent.slice(0,-4)
+    let chatData = {
+      author: game.user._id,
+      speaker: ChatMessage.getSpeaker(),
+      flavor: `${qtyToCraft}x ${itemLink.replace("<br>","")} crafted from:`,
+      content: `<div style="line-height: 1.7">${finalContent}</div>`,
+      whisper: myGM._id,
+    }
+    ChatMessage.create(chatData, {})
+    
+  }
+
+
   //Convert junk to Materials as per item stats
-  async convertJunkToMat(item, mats, qty) {
+  async convertJunkToMat(item, mats, qty, myActor) {
     let compendium = game.packs.find((u) => u.metadata.name == 'material')
     let matData, existingMat, newQuantity, itemLink
-    let material, chatContent
+    let material, chatContent, qtyMat
+    if (item.type == "ammo") {
+      qtyMat = Number(qty) / 5
+    } else {
+      qtyMat = Number(qty)
+    }
     var i = 0
     chatContent = ``
     
     // Create item or add quantity if existing
     while (i < mats.length) {
       material = mats[i][1].trim()
-      itemLink = this.formatCompendiumItem('material',material,'Added to inventory.')
-      chatContent += `${Number(mats[i][0]) * Number(qty)}x ${itemLink.replace(`draggable="true"`,`draggable="false"`)}`
+      itemLink = this.formatCompendiumItem('material',material,'Added to inventory.',true)
+      chatContent += `${Number(mats[i][0]) * Number(qtyMat)}x ${itemLink}`
       matData = compendium.tree.entries.find((u) => u.name.toLowerCase() == material.toLowerCase())
-      existingMat = this.items.find((u) => u.name.toLowerCase() == mats[i][1].toLowerCase())
+      existingMat = myActor.items.find((u) => u.name.toLowerCase() == mats[i][1].toLowerCase())
       if (existingMat) {
-        newQuantity = Number(existingMat.system.quantity) + Number(mats[i][0]) * Number(qty)
+        newQuantity = Number(existingMat.system.quantity) + Number(mats[i][0]) * Number(qtyMat)
         existingMat.update({ 'system.quantity': newQuantity })
       } else {
-        let newItem = await Item.create(matData, { parent: this })
-        newItem.update({ 'system.quantity': Number(mats[i][0]) * Number(qty) })
+        let newItem = await Item.create(matData, { parent: myActor })
+        newItem.update({ 'system.quantity': Number(mats[i][0]) * Number(qtyMat) })
       }
       i++
     }
@@ -1091,66 +1575,74 @@ export default class FalloutZeroActor extends Actor {
     } else {
       item.delete()
     }
-    itemLink = this.formatCompendiumItem('junk',item.name,'Removed from inventory.')
-    if (!itemLink.includes("data-link")){
-      itemLink = this.formatCompendiumItem('rangedweapons',item.name,'Removed from inventory.')
-    }
-    if (!itemLink.includes("data-link")){
-      itemLink = this.formatCompendiumItem('melee-weapons',item.name,'Removed from inventory.')
-    }
-    if (!itemLink.includes("data-link")){
-      itemLink = this.formatCompendiumItem('armor',item.name,'Removed from inventory.')
-    }
+    itemLink = this.formatCompendiumItem(item.type,item.name,'Removed from inventory.',true)
+    let myGM = game.users.find(u => u.role == 4)
     //Add any more item types we want to make breakable.
     let chatData = {
       author: game.user._id,
       speaker: ChatMessage.getSpeaker(),
-      flavor: `${qty}x ${itemLink.replace("<br>","").replace(`draggable="true"`,`draggable="false"`)} broken down into:`,
-      content: chatContent.slice(0,-4)
+      flavor: `${qty}x ${itemLink.replace("<br>","")} broken down into:`,
+      content: `<div style="line-height: 1.7">${chatContent.slice(0,-4)}</div>`,
+      whisper: myGM._id,
     }
     ChatMessage.create(chatData, {})
   }
 
   //Material conversion dialog
-  checkConvert(itemID) {
-    let item = this.items.find((u) => u._id == itemID)
+  checkConvert(itemID, myActor=this) {
+    let item = myActor.items.find((u) => u._id == itemID)
     let initialQty = item.system.quantity
     let qtyOptions = []
     let dialogContent = ``
     let mats = []
+    let matName
     let qty = 1
-    let itemName = this.formatCompendiumItem(
-      'junk',
-      item.name,
-      'This will remove this item from inventory.',
-    ).slice(0, -4)
+    let valid = true
+    let itemName = this.formatCompendiumItem(item.type, item.name, 'This will remove this item from inventory.', true).slice(0, -4)
     var i = 1
     if (item) {
       dialogContent = `Are you sure you want to convert ${itemName} into the following materials? <br><br>`
-      while (i < Object.keys(item.system.junk).length / 2 + 1) {
+      while (i < Object.keys(item.system.junk).length / 2) {
         if (item.system.junk['quantity' + i] != 0) {
-          dialogContent +=
+          matName = this.formatCompendiumItem('material',item.system.junk['type' + i],'Material for Crafting', true)
+          if (matName.includes("data-link")){
+            dialogContent +=
             `x<b name='qty'>${item.system.junk['quantity' + i]}</b> ` +
-            this.formatCompendiumItem(
-              'material',
-              item.system.junk['type' + i],
-              'Material for Crafting',
-            ) +
+            matName +
             `<br>`
+          } else {
+            dialogContent +=
+            `x<b name='qty'>${item.system.junk['quantity' + i]}</b> ` + matName.replace("<br>","") + `<b> <-Check spelling for this mat and try again.</b><br><br>`
+            valid = false
+            alert("One of the components may not be spelled correctly and will not convert.")
+          }
           mats.push([item.system.junk['quantity' + i], item.system.junk['type' + i]])
         }
         i++
       }
       if (initialQty > 1) {
-        i = 1
-        dialogContent = dialogContent.replace('materials?', 'materials, each?')
         dialogContent += `<br> How many ${itemName} do you want to convert? <br><br>
         <select style="padding-left:20px" name="matQtyOpt" id = "matQtyOpt">`
-        while (i < Number(initialQty) + 1) {
-          dialogContent += `<option value='${i}'>${i}</option>`
-          qtyOptions.push(i)
-          i++
+        if (item.type == "ammo"){
+          qty = 5
+          dialogContent = dialogContent.replace('to convert', 'to convert packs of 5x ')
+          i = 5
+          while (i < Number(initialQty) + 1) {
+            dialogContent += `<option value='${i}'>${i}</option>`
+            qtyOptions.push(i)
+            i += 5
+          }
+        } 
+        else {
+          dialogContent = dialogContent.replace('materials?', 'materials, each?')
+          i = 1
+          while (i < Number(initialQty) + 1) {
+            dialogContent += `<option value='${i}'>${i}</option>`
+            qtyOptions.push(i)
+            i++
+          }
         }
+        
         dialogContent += `</select><br>`
       }
       dialogContent += `<h4> This process is irreversible. This action may require tools or a bench. Consult your GM first.</h4>`
@@ -1158,13 +1650,14 @@ export default class FalloutZeroActor extends Actor {
     let d = new Dialog(
       {
         title: 'Breakdown or not?',
-        content: dialogContent.replace(`draggable="true"`,`draggable="false"`),
+        content: dialogContent,
         buttons: {
           Yes: {
             icon: '<i class="fas fa-check"></i>',
             label: 'Okie-Dokie!',
+            disabled: !valid,
             callback: async () => {
-              this.convertJunkToMat(item, mats, qty)
+              this.convertJunkToMat(item, mats, qty, myActor)
             },
           },
           No: {
@@ -1429,7 +1922,10 @@ export default class FalloutZeroActor extends Actor {
     return `<a class="inline-roll roll" data-mode="roll" data-flavor="" data-tooltip="Click to roll" data-formula=${formula}><i class="fas fa-dice-d20" ></i>${formula}</a class="roll">`
   }
 
-  formatCompendiumItem(compendium, itemName, myTooltip = 'Item') {
+  //Compendium can be either the pack's name or the item type
+  formatCompendiumItem(compendium, itemName, myTooltip = 'Item', truncated = false) {
+    console.log(itemName)
+    let returnedText = ``
     let compendiumObject, myItem, myRoll
     if (itemName.includes('[[')) {
       try {
@@ -1441,19 +1937,33 @@ export default class FalloutZeroActor extends Actor {
     }
     try {
       compendiumObject = game.packs.find((u) => u.metadata.name == compendium)
-      myItem = compendiumObject.tree.entries.find(
-        (u) => u.name.toLowerCase() == itemName.toLowerCase(),
-      )
+      if (compendiumObject){
+        myItem = compendiumObject.tree.entries.find(
+          (u) => u.name.toLowerCase() == itemName.toLowerCase(),
+        )
+      }
       if (myItem) {
-        return `<a class="content-link"  draggable="true" data-link data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
-          data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="${myTooltip}"><i class="fas fa-suitcase">
-          </i>${itemName}</a><br>`
-      } else {
-        return `${itemName}<br>`
+        returnedText = `<a class="content-link"  draggable="true" data-link data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
+          data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="${myTooltip}"><i class="fas fa-suitcase"></i>${itemName}</a><br>`
+      } 
+      else {
+        compendium = this.getPackFromType(compendium)
+        compendiumObject = game.packs.find((u) => u.metadata.name == compendium)
+        myItem = compendiumObject.tree.entries.find(
+          (u) => u.name.toLowerCase() == itemName.toLowerCase(),
+        )
+        if (myItem) {
+          returnedText = `<a class="content-link"  draggable="true" data-link data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}" 
+          data-id="${myItem._id}" data-type="Item" data-pack="arcane-arcade-fallout.${compendium}" data-tooltip="${myTooltip}"><i class="fas fa-suitcase"></i>${itemName}</a><br>`
+        } 
+        else {
+          returnedText = `${itemName}<br>`
+        }
       }
     } catch {
-      return `${itemName}<br>`
+      returnedText = `${itemName}<br>`
     }
+    return truncated? returnedText.replace(`<i class="fas fa-suitcase"></i>`,``).replace(`draggable="true"`,`draggable="false"`): returnedText
   }
 
   //Rolls loot for official monsters list below (not rolltables)
@@ -1602,6 +2112,49 @@ export default class FalloutZeroActor extends Actor {
     return table
   }
 
+  getPackFromType(itemType){
+    let compendium
+    switch (itemType) {
+      case "ammo" : compendium = "ammunition" 
+      break
+      case "armor" : compendium = "armor" 
+      break
+      case "armorUpgrade" : compendium = "upgrades" 
+      break
+      case "weaponUpgrade" : compendium = "upgrades" 
+      break
+      case "background" : compendium = "background" 
+      break
+      case "chem" : compendium = "chems" 
+      break
+      case "condition" : compendium = "conditions" 
+      break
+      case "explosive" : compendium = "explosives" 
+      break
+      case "foodAnddrink" : compendium = "food-and-drinks" 
+      break
+      case "meleeWeapon" : compendium = "melee-weapons" 
+      break
+      case "rangedWeapon" : compendium = "rangedweapons" 
+      break
+      case "junkItem" : compendium = "junk" 
+      break
+      case "material" : compendium = "material" 
+      break
+      case "miscItem" : compendium = "miscellaneous" 
+      break
+      case "perk" : compendium = "perks" 
+      break
+      case "powerArmor" : compendium = "armor" 
+      break
+      case "property" : compendium = "property" 
+      break
+      case "trait" : compendium = "traits" 
+      break
+    }
+    return compendium
+  }
+
   async determineNpcLoot(myActor, whisper, playerName) {
     const npcName = this.name
     let dcLoot, whisperUser
@@ -1648,39 +2201,8 @@ export default class FalloutZeroActor extends Actor {
       } else {
         let inventoryLoot = this.collections.items.contents
         myConcatenatedLoot = npcName + ` drops: <br><br>`
-        let compendium = ``
         for (var loot of inventoryLoot) {
-          switch (loot.type) {
-            case 'explosive':
-              compendium = 'explosives'
-              break
-            case 'ammo':
-              compendium = 'ammunition'
-              break
-            case 'meleeWeapon':
-              compendium = 'melee-weapons'
-              break
-            case 'rangedWeapon':
-              compendium = 'rangedweapons'
-              break
-            case 'miscItem':
-              compendium = 'miscellaneous'
-              break
-            case 'chem':
-              compendium = 'chems'
-              break
-            case 'foodAnddrink':
-              compendium = 'food-and-drinks'
-              break
-            case 'junkItem':
-              compendium = 'junk'
-              break
-            default:
-              compendium = loot.type
-              break
-          }
-          myConcatenatedLoot =
-            myConcatenatedLoot.slice(0, -4) + ' ' + this.formatCompendiumItem(compendium, loot.name)
+          myConcatenatedLoot = myConcatenatedLoot.slice(0, -4) + ' ' + this.formatCompendiumItem(loot.type, loot.name)
         }
       }
       let chatData = {
@@ -1718,6 +2240,9 @@ export default class FalloutZeroActor extends Actor {
   }
   getAttackBonus() {
     return this.system.attackBonus
+  }
+  getDamageBonus() {
+    return this.system.damageBonus
   }
 
   hasKarmaCapAvailable() {

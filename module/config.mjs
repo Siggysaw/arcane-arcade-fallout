@@ -1398,7 +1398,6 @@ FALLOUTZERO.specialammo = {
   },
   Syringer: {
     available: [
-      'Syringer',
       'Stimpak Loader',
       'ChemLoader',
       'Radscorpion Venom',

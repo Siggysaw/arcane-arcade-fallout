@@ -1,6 +1,6 @@
 {{#DifferentFrom system.crafting.matsReq1.qty 0}}
   {{#DifferentFrom system.crafting.matsReq1.mat ""}}
-  <h3>Crafting recipe</h3>
+  <h3 clickToCraft class="craftButton" style="cursor:pointer;" clickToCraft id="clickToCraft">Craft this item using recipe</h3>
   {{else}}
   <h3>This item cannot be crafted as is</h3>
   {{/DifferentFrom}}

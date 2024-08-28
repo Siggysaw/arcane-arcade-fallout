@@ -190,57 +190,39 @@
         <div class="ability flexrow flex-group-center"></div>
       </div>
       {{!-- Owned status Tab --}}
-      <div class="tab status" data-group="primary" data-tab="status">
-        <section>
-          {{!-- For the main status list, span the right two columns --}}
-          <section>
-            <table>
-              <tr>
-                {{#each system.abilities as |ability key|}}
-                <td>
-                  <label
-                    for="system.abilities.{{ key }}.value"
-                    class="resource-label rollable flexlarge align-left"
-                    data-rollable
-                    data-roll="d20+{{ ability.mod }}-{{ ../system.penaltyTotal }}"
-                    data-label="{{ ability.label }}"
-                    >{{ ability.label }}</label
-                  >
-                </td>
-                {{/each}}
-              </tr>
-
-              <tr>
-                {{#each system.abilities as |ability key|}}
-                <td>
-                  <input
-                    type="number"
-                    name="system.abilities.{{ key }}.value"
-                    value="{{ ability.value }}"
-                    data-dtype="Number"
-                    min="0"
-                    max="10"
-                  />
-                </td>
-                {{/each}}
-              </tr>
-              <tr>
-                {{#each system.abilities as |ability key|}}
-                <td>
-                  <span class="ability-mod" data-label="{{ ability.label }}">
-                    {{numberFormat ability.mod decimals=0 sign=true}}</span
-                  >
-                </td>
-                {{/each}}
-              </tr>
-            </table>
-
-            {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and
-					defined in module/helpers/templates.mjs --}}
-            {{> "systems/arcane-arcade-fallout/templates/actor/parts/npc-status.hbs"}}
-          </section>
-        </section>
-      </div>
+       <div class="tab status" data-group="primary" data-tab="status">
+   <section>
+     {{>
+       "systems/arcane-arcade-fallout/templates/actor/status/special.hbs"
+       abilities=system.abilities
+     }}
+     <table class="status-block">
+       <tr>
+         <td class="skill-table">
+           {{>
+               "systems/arcane-arcade-fallout/templates/actor/status/skills.hbs"
+               startingSkillpoints=system.startingSkillpoints
+               skillPool=system.skillPool
+               skills=system.skills
+               abilities=system.abilities
+               penaltyTotal=system.penaltyTotal
+           }}
+         </td>
+         <td class="status-table">
+           {{>
+               "systems/arcane-arcade-fallout/templates/actor/status/penalties.hbs"
+               penalties=system.penalties
+               penaltyTotal=system.penaltyTotal
+               radDC=system.radDC
+               irradiated=system.irradiated
+           }}
+           <br />
+           {{> "systems/arcane-arcade-fallout/templates/actor/parts/npc-status.hbs"}}
+         </td>
+       </tr>
+     </table>
+   </section>
+ </div>
 
       {{!-- Owned Items Tab --}}
       <div class="tab items" data-group="primary" data-tab="items">

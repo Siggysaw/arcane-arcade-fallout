@@ -3,8 +3,11 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header">
       <div class="header-fields">
-            {{#GM}}<button style="width:150px;" data-activeCheck>{{#if system.activePartymember}}Active Party Member{{else}}Inactive Party Member{{/if}}</button>{{/GM}}
-            <button style="width:150px;" data-editToggle>{{#if system.editToggle}}Edit Mode: On{{else}}Edit Mode: Off{{/if}}</button>
+            {{#GM}}
+          <span title="Toggle if a Character is Active For Party Bonuses">Active:<i data-activeCheck class="fas fa-toggle-{{#if system.activePartymember}}on{{else}}off{{/if}}"></i></span>
+          {{/GM}}
+          <span title="Toggle Edit Mode">Edit:<i  data-editToggle class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"></i></span>
+
         <table>
           <tr>
             <td>

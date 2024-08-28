@@ -1,4 +1,4 @@
-<table class="equipped-stats">
+<table class="equipped-stats backpack">
     <tr>
         <td style="width:45%;vertical-align:top">
             <h3>Weapons and Armor</h3>
@@ -58,7 +58,7 @@
                     <td>
                         <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
                             <div class="item-controls">
-                                <a class="item-control"
+                                <a class="item-control item-name"
                                    data-edit
                                    data-item-id="{{ item._id }}" draggable="true"
                                    title="{{localize 'DOCUMENT.Update' type='item'}}">
@@ -74,7 +74,7 @@
                         <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
 
                     </td>
-                    <td>{{{item.system.description}}}</td>
+                    <td class="food">{{{item.system.description}}}</td>
                     <td style="width:20px;" class="context-menu" data-item-id="{{ item._id }}">
                         <i class="fas fa-ellipsis-v context-icon" ></i>
                 </td>
@@ -91,7 +91,7 @@
                 <td>
                     <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
                         <div class="item-controls">
-                            <a class="item-control"
+                            <a class="item-control item-name"
                                data-edit
                                data-item-id="{{ item._id }}" draggable="true"
                                title="{{localize 'DOCUMENT.Update' type='item'}}">
@@ -107,7 +107,7 @@
                     <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
 
                 </td>
-                <td>{{{item.system.description}}}</td>
+                <td class="chems">{{{item.system.description}}}</td>
                 <td style="width:20px;" class="context-menu" data-item-id="{{ item._id }}">
                     <i class="fas fa-ellipsis-v context-icon"></i>
                 </td>
@@ -130,7 +130,7 @@
                     <td>
                         <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
                             <div class="item-controls">
-                                <a class="item-control"
+                                <a class="item-control item-name"
                                    data-edit
                                    data-item-id="{{ item._id }}"
                                    title="{{localize 'DOCUMENT.Update' type='item'}}">

@@ -358,7 +358,6 @@ form div label {
 }
 .statusnum input {
   width: 50px;
-  color:;
 }
 .sheet table tr,
 .sheet table td {
@@ -513,6 +512,13 @@ td,
 .window-app .window-content div .no-background,
 .window-app .window-content div .no-background:hover {
   background: none;
+}
+
+
+.sheet .craftButton:hover {
+  border: black;
+  background:#ffffff;
+  color:#191813
 }
 
 .sheet .fakebutton:hover,
@@ -900,4 +906,35 @@ a.inline-roll,
 .sheet .status-table td{
   vertical-align:middle;
   font-size:10pt;
+}
+.craftingTable {
+  background-color:"black";
+}
+.sheet .toggle input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/toggle-off.png');
+  appearance: none;
+  display: block;
+  width: 50px;
+  height: 50px;
+  border: none;
+}
+.sheet .toggle input[type='checkbox']:checked {
+    content: url('/systems/arcane-arcade-fallout/assets/toggle-on.png');
+}
+
+.sheet input[type='checkbox']{
+    width:15px;
+}
+.sheet .backpack .content-link:before {
+  content: '\00B7';
+}
+.sheet .backpack .content-link,
+.sheet .backpack .item-name,
+.sheet .backpack .item{
+    font-size:9pt;
+    float:left;
+    text-transform:capitalize;
+}
+.sheet .item{
+    text-transform:capitalize;
 }

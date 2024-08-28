@@ -10,14 +10,16 @@
     <div style="max-width:100px;text-align:center">
       <img class="profile-img" style="max-height:100px;" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
       <div>
-        CND
+        <div style="margin-top: 44px;">
+          CND
+        </div>
+        <input title="0 is Broken, 10 is Full Functionality"
+          type="number"
+          name="{{item.system.decay}}"
+          value="{{item.system.decay}}"
+          data-set-decay
+          data-weapon-id="{{ item._id }}">
       </div>
-      <input title="0 is Broken, 10 is Full Functionality"
-        type="number"
-        name="{{item.system.decay}}"
-        value="{{item.system.decay}}"
-        data-set-decay
-        data-weapon-id="{{ item._id }}">
     </div>
     <div class="header-fields">
         <h1 class="charname">
@@ -94,6 +96,7 @@
     </div>
     {{!-- Crafting Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
+      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}
       {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
     </div>
     {{!-- Upgrades Tab --}}

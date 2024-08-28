@@ -1,0 +1,31 @@
+<fieldset>
+    <legend>Custom Roll Details</legend>
+    <div class="flex space-between">
+        <div>Dice: </div>
+        <div>
+            <input id="diceNumber" type="number" style="width:25px;text-align:center" value="1">
+            <select id="diceType">
+                <option value="2">d2</option>
+                <option value="4">d4</option>
+                <option value="2">d2</option>
+                <option value="4">d4</option>
+                <option value="6">d6</option>
+                <option value="8">d8</option>
+                <option value="10">d10</option>
+                <option value="20" selected>d20</option>
+                <option value="100">d100</option>
+            </select>
+        </div>
+    </div><br><hr />
+    <div class="flex space-between">
+        <div>Modifiers: </div><div><select id="modified"><option value="true">With Modifiers</option><option value="false">No Modifiers</option></select></div>
+    </div>
+    <hr />
+    <div class="flex space-between">
+        <div>Roll Type: </div><div><select id="advantage"><option value="false">Normal</option><option value="kh">Advantaged</option><option value="kl">Disdvantaged</option></select></div>
+    </div>
+    <hr />
+    <div class="flex space-between">
+        <div>Bonus: </div><div><input id="bonus" type="text" placeholder="1d4 + 10"></div>
+    </div>
+</fieldset>

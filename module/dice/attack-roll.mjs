@@ -9,10 +9,12 @@ export default class AttackRoll extends FormApplication {
       consumesAp: true,
       skillBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus),
       attackBonus: this.actor.getAttackBonus(),
+      damageBonus: this.actor.getDamageBonus(),
       abilityBonus: this.weapon.getAbilityBonus(),
       decayPenalty: this.weapon.getDecayValue(),
       actorLuck: this.actor.system.luckmod,
       actorPenalties: this.actor.system.penaltyTotal,
+      totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - this.weapon.getDecayValue() - this.actor.system.penaltyTotal + this.actor.system.luckmod,
       bonus: '',
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
@@ -253,18 +255,21 @@ export default class AttackRoll extends FormApplication {
     const {
       skillBonus,
       attackBonus,
+      damageBonus,
       abilityBonus,
       decayPenalty,
       actorLuck,
       actorPenalties,
       bonus,
+      bonusdamage
     } = this.formDataCache
 
+    const rollBonusTotal = skillBonus + attackBonus + abilityBonus + actorLuck + bonus - actorPenalties - decayPenalty
     /**
      * Roll to hit
      */
     const roll = new Roll(
-      `${this.getDice()} + ${skillBonus}+ ${attackBonus} + ${abilityBonus} + ${actorLuck} + ${bonus || 0} - ${actorPenalties} - ${decayPenalty}`,
+      `${this.getDice()} + ${rollBonusTotal}`,
       this.actor.getRollData(),
     )
 
@@ -272,7 +277,7 @@ export default class AttackRoll extends FormApplication {
 
     const attackTooltip = `
       <div>
-        <div>Die roll: ${roll.result.split(' ')[0]}</div>
+        <div>Die roll: ${roll.result.split(' ')[0]}</div><br />
         <div>Skill bonus: ${skillBonus}</div>
         <div>Perks bonus: ${attackBonus}</div>
         <div>Ability bonus: ${abilityBonus}</div>
@@ -280,8 +285,15 @@ export default class AttackRoll extends FormApplication {
         ${bonus && `<div>Other bonus: ${bonus || 0}</div>`}
         <div>Penalties total: ${actorPenalties}</div>
         <div>Weapon decay: ${decayPenalty}</div>
+        <hr />
+        <div>Bonus Total: ${rollBonusTotal}</div>
       </div>
     `
+    const damageTooltip = `
+      <div>
+        <div>Die roll: ${roll.result.split(' ')[0]}</div>
+        <div>Ability bonus: ${abilityBonus}</div>
+       <div>Traits/Perks bonus: ${damageBonus}</div>`
 
     /**
      * Generate damage rolls
@@ -290,8 +302,8 @@ export default class AttackRoll extends FormApplication {
       return {
         type: damage.selectedDamageType,
         formula: this.formDataCache.targeted
-          ? this.getTargetedDamage(damage.formula)
-          : damage.formula,
+          ? this.getTargetedDamage(damage.formula + ` + ${damageBonus} + ${bonusdamage || ''}`)
+          : damage.formula + `+ ${damageBonus} + ${bonusdamage || ''}`,
       }
     })
 
@@ -309,7 +321,7 @@ export default class AttackRoll extends FormApplication {
         targeted: this.formDataCache.targeted,
         damage: {
           rolls: damageRolls,
-          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || 0} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier}`,
+          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier}`,
         },
       },
     })
