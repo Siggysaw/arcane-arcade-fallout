@@ -6,7 +6,7 @@ import ChatTrayElement from './chat-tray-element.mjs'
  * @type {[number, string][]}
  */
 const MULTIPLIERS = [
-  [-1, '-1'],
+  // [-1, '-1'],
   [0, '0'],
   [0.25, '¼'],
   [0.5, '½'],
@@ -123,13 +123,6 @@ export default class DamageApplicationElement extends ChatTrayElement {
   /* -------------------------------------------- */
 
   connectedCallback() {
-    // Fetch the associated chat message
-    // if (this.selectedTokensHook === null) {
-    //   this.selectedTokensHook = Hooks.on(
-    //     'controlToken',
-    //     foundry.utils.debounce(() => this.buildTargetsList(), 50),
-    //   )
-    // }
     const messageId = this.closest('[data-message-id]')?.dataset.messageId
     this.chatMessage = game.messages.get(messageId)
     if (!this.chatMessage) return
@@ -159,8 +152,6 @@ export default class DamageApplicationElement extends ChatTrayElement {
       this.applyButton = div.querySelector('.apply-damage')
       this.applyButton.addEventListener('click', this._onApplyDamage.bind(this))
       this.targetList = div.querySelector('.targets')
-      // if (!this.chatMessage.getFlag('aafo', 'targets')?.length)
-      //   this.targetSourceControl.hidden = true
       div.addEventListener('click', this._handleClickHeader.bind(this))
     }
     this.buildTargetsList()

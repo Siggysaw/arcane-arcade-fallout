@@ -67,7 +67,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 0,
       }),
       recover: new fields.StringField({
-        initial: "half",
+        initial: 'half',
       }),
       dazed: new fields.NumberField({
         initial: 0,
@@ -132,7 +132,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
           id: new fields.StringField({
             initial: FALLOUTZERO.skills[skill].id,
           }),
-          advantage : new fields.NumberField({
+          advantage: new fields.NumberField({
             ...requiredInteger,
             initial: 0,
           }),
@@ -159,7 +159,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 10,
       }),
     })
-    schema.bonuses =  new fields.SchemaField({
+    schema.bonuses = new fields.SchemaField({
       allDamage: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
@@ -206,5 +206,22 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     })
 
     return schema
+  }
+
+  /**
+   * @override
+   * Augment the actor source data with additional dynamic data. Typically,
+   * you'll want to handle most of your calculated/derived data in this step.
+   * Data calculated in this step should generally not exist in template.json
+   * (such as ability modifiers rather than ability scores) and should be
+   * available both inside and outside of character sheets (such as if an actor
+   * is queried and has a roll executed directly from it).
+   */
+  prepareDerivedData() {
+    super.prepareDerivedData()
+    this.health.effectiveMax = this.health.max + (this.health.temp ?? 0)
+    this.health.damage = this.health.max - this.health.value
+    this.stamina.effectiveMax = this.stamina.max + (this.stamina.temp ?? 0)
+    this.stamina.damage = this.stamina.max - this.stamina.value
   }
 }

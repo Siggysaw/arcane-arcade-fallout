@@ -2494,35 +2494,40 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
    */
   async applyDamage(damages, options = {}) {
     const hp = this.system.health
-    if (!hp) return this // Group actors don't have HP at the moment
+    const sp = this.system.stamina
 
     if (Number.isNumeric(damages)) {
       damages = [{ value: damages }]
       options.ignore ??= true
     }
 
-    // damages = this.calculateDamage(damages, options);
-    // if ( !damages ) return this;
+    damages = this.calculateDamage(damages, options)
+    if (!damages) return this
 
     // Round damage towards zero
-    let { amount, temp } = damages.reduce(
-      (acc, d) => {
-        if (d.type === 'temphp') acc.temp += d.value
-        else acc.amount += d.value
-        return acc
-      },
-      { amount: 0, temp: 0 },
-    )
-    amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
+    let amount = damages.reduce((acc, d) => {
+      acc += d.value
+      return acc
+    }, 0)
+    const spDamage = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
+    const deltaTempSp = spDamage > 0 ? Math.min(sp.temp, spDamage) : 0
+    const deltaSP = Math.clamp(spDamage - deltaTempSp, -sp.damage, sp.value)
 
-    const deltaTemp = amount > 0 ? Math.min(hp.temp, amount) : 0
-    const deltaHP = Math.clamp(amount - deltaTemp, -hp.damage, hp.value)
+    const dt = this.system.damageThreshold
+    const hpDamage =
+      spDamage > sp.value + sp.temp + dt.value ? spDamage - (sp.value + sp.temp + dt.value) : 0
+    const deltaTempHp = hpDamage > 0 ? Math.min(hp.temp, amount) : 0
+    const deltaHP = Math.clamp(hpDamage - deltaTempHp, -hp.damage, hp.value)
+
     const updates = {
-      'system.health.temp': hp.temp - deltaTemp,
+      'system.stamina.temp': sp.temp - deltaTempSp,
+      'system.stamina.value': sp.value - deltaSP,
+      'system.health.temp': hp.temp - deltaTempHp,
       'system.health.value': hp.value - deltaHP,
     }
 
-    if (temp > updates['system.health.temp']) updates['system.health.temp'] = temp
+    // if (deltaTempHp > updates['system.health.temp']) updates['system.health.temp'] = deltaTempHp
+    // if (deltaTempSp > updates['system.stamina.temp']) updates['system.stamina.temp'] = deltaTempSp
 
     // /**
     //  * A hook event that fires before damage is applied to an actor.
@@ -2590,79 +2595,79 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
 
     const multiplier = options.multiplier ?? 1
 
-    const downgrade = (type) => options.downgrade === true || options.downgrade?.has?.(type)
-    const ignore = (category, type, skipDowngrade) => {
-      return (
-        options.ignore === true ||
-        options.ignore?.[category] === true ||
-        options.ignore?.[category]?.has?.(type) ||
-        (category === 'immunity' && downgrade(type) && !skipDowngrade) ||
-        (category === 'resistance' && downgrade(type) && !hasEffect('di', type))
-      )
-    }
+    // const downgrade = (type) => options.downgrade === true || options.downgrade?.has?.(type)
+    // const ignore = (category, type, skipDowngrade) => {
+    //   return (
+    //     options.ignore === true ||
+    //     options.ignore?.[category] === true ||
+    //     options.ignore?.[category]?.has?.(type) ||
+    //     (category === 'immunity' && downgrade(type) && !skipDowngrade) ||
+    //     (category === 'resistance' && downgrade(type) && !hasEffect('di', type))
+    //   )
+    // }
 
-    const traits = this.system.traits ?? {}
-    const hasEffect = (category, type, properties) => {
-      if (
-        category === 'dr' &&
-        downgrade(type) &&
-        hasEffect('di', type, properties) &&
-        !ignore('immunity', type, true)
-      )
-        return true
-      const config = traits[category]
-      if (!config?.value.has(type)) return false
-      if (!CONFIG.AAFO.damageTypes[type]?.isPhysical || !properties?.size) return true
-      return !config.bypasses?.intersection(properties)?.size
-    }
+    // const traits = this.system.traits ?? {}
+    // const hasEffect = (category, type, properties) => {
+    //   if (
+    //     category === 'dr' &&
+    //     downgrade(type) &&
+    //     hasEffect('di', type, properties) &&
+    //     !ignore('immunity', type, true)
+    //   )
+    //     return true
+    //   const config = traits[category]
+    //   if (!config?.value.has(type)) return false
+    //   if (!CONFIG.AAFO.damageTypes[type]?.isPhysical || !properties?.size) return true
+    //   return !config.bypasses?.intersection(properties)?.size
+    // }
 
-    const skipped = (type) => {
-      if (options.only === 'damage') return type in CONFIG.AAFO.healingTypes
-      if (options.only === 'healing') return type in CONFIG.AAFO.damageTypes
-      return false
-    }
+    // const skipped = (type) => {
+    //   if (options.only === 'damage') return type in CONFIG.AAFO.healingTypes
+    //   if (options.only === 'healing') return type in CONFIG.AAFO.damageTypes
+    //   return false
+    // }
 
-    const rollData = this.getRollData({ deterministic: true })
+    // const rollData = this.getRollData({ deterministic: true })
 
     damages.forEach((d) => {
       d.active ??= {}
 
       // Skip damage types with immunity
-      if (
-        skipped(d.type) ||
-        (!ignore('immunity', d.type) && hasEffect('di', d.type, d.properties))
-      ) {
-        d.value = 0
-        d.active.multiplier = 0
-        d.active.immunity = true
-        return
-      }
+      // if (
+      //   skipped(d.type) ||
+      //   (!ignore('immunity', d.type) && hasEffect('di', d.type, d.properties))
+      // ) {
+      //   d.value = 0
+      //   d.active.multiplier = 0
+      //   d.active.immunity = true
+      //   return
+      // }
 
       // Apply type-specific damage reduction
-      if (
-        !ignore('modification', d.type) &&
-        traits.dm?.amount[d.type] &&
-        !traits.dm.bypasses.intersection(d.properties).size
-      ) {
-        const modification = simplifyBonus(traits.dm.amount[d.type], rollData)
-        if (Math.sign(d.value) !== Math.sign(d.value + modification)) d.value = 0
-        else d.value += modification
-        d.active.modification = true
-      }
+      // if (
+      //   !ignore('modification', d.type) &&
+      //   traits.dm?.amount[d.type] &&
+      //   !traits.dm.bypasses.intersection(d.properties).size
+      // ) {
+      //   const modification = simplifyBonus(traits.dm.amount[d.type], rollData)
+      //   if (Math.sign(d.value) !== Math.sign(d.value + modification)) d.value = 0
+      //   else d.value += modification
+      //   d.active.modification = true
+      // }
 
       let damageMultiplier = multiplier
 
       // Apply type-specific damage resistance
-      if (!ignore('resistance', d.type) && hasEffect('dr', d.type, d.properties)) {
-        damageMultiplier /= 2
-        d.active.resistance = true
-      }
+      // if (!ignore('resistance', d.type) && hasEffect('dr', d.type, d.properties)) {
+      //   damageMultiplier /= 2
+      //   d.active.resistance = true
+      // }
 
       // Apply type-specific damage vulnerability
-      if (!ignore('vulnerability', d.type) && hasEffect('dv', d.type, d.properties)) {
-        damageMultiplier *= 2
-        d.active.vulnerability = true
-      }
+      // if (!ignore('vulnerability', d.type) && hasEffect('dv', d.type, d.properties)) {
+      //   damageMultiplier *= 2
+      //   d.active.vulnerability = true
+      // }
 
       // Negate healing types
       if (options.invertHealing !== false && d.type === 'healing') damageMultiplier *= -1

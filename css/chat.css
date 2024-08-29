@@ -185,9 +185,9 @@
   color: yellow;
 }
 .falloutzero .card-tray .targets .target .damage-multipliers {
-  flex: 1;
   display: grid;
-  grid-template-columns: auto repeat(5, 1fr);
+  width: 100%;
+  grid-template-columns: auto repeat(4, 1fr);
   gap: 2px;
   margin-inline: 3px;
 }

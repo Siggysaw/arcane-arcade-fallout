@@ -407,13 +407,11 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     if (game.user.isGM) {
       const damageApplication = document.createElement('damage-application')
       damageApplication.classList.add('falloutzero')
-      damageApplication.damages = [
-        {
-          value: 6,
-          type: 'slashing',
-          properties: new Set([]),
-        },
-      ]
+      damageApplication.damages = this.rolls.map((roll) => ({
+        value: roll.total,
+        type: roll.options.type,
+        properties: new Set(roll.options.properties ?? []),
+      }))
       html.querySelector('.message-content').appendChild(damageApplication)
     }
   }
