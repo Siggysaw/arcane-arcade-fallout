@@ -4,6 +4,9 @@ import * as documents from './documents/_module.mjs'
 import * as sheets from './sheets/_module.mjs'
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs'
 
+// Import Submodules
+import * as applications from '../module/applications/_module.mjs'
+
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
@@ -12,17 +15,18 @@ Hooks.once('init', function () {
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.falloutzero = {
+    applications,
     rollItemMacro,
   }
   game.settings.register('core', 'CarryLoad', {
     name: 'Exact Carry Load Calculator',
     hint: 'Checked: 23 x 10mm ammo = 2.3 load | Unchecked: 23 x 10mm ammo = 2 load',
-    scope: 'world',     
-    config: true,       
-    type: Boolean,       
+    scope: 'world',
+    config: true,
+    type: Boolean,
     default: false,
     requiresReload: true,
-  });
+  })
 
   // Add custom constants for configuration.
   CONFIG.FALLOUTZERO = FALLOUTZERO
@@ -110,9 +114,9 @@ Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase()
 })
 
-Handlebars.registerHelper("log", function (v1) {
-  console.log(v1);
-});
+Handlebars.registerHelper('log', function (v1) {
+  console.log(v1)
+})
 
 Handlebars.registerHelper('setChecked', function (value, test) {
   if (value == undefined) return ''
@@ -169,13 +173,15 @@ Handlebars.registerHelper('Sum3', function (v1, v2, v3) {
 })
 //division
 Handlebars.registerHelper('LckMod', function (v1, v2) {
-  let div = Math.floor( Number(v1) / Number(v2))
-  if (div < -1){div = -1}
+  let div = Math.floor(Number(v1) / Number(v2))
+  if (div < -1) {
+    div = -1
+  }
   return div
 })
 
 //Format a Compendium Link for a given title
-Handlebars.registerHelper('FormatCompendium', function (itemName, compendium){
+Handlebars.registerHelper('FormatCompendium', function (itemName, compendium) {
   let compendiumObject, myItem
   try {
     compendiumObject = game.packs.find((u) => u.metadata.name == compendium)
@@ -211,7 +217,6 @@ Hooks.on('renderPause', (app, [html]) => {
   const img = html.querySelector('img')
   img.src = 'systems/arcane-arcade-fallout/assets/vaultboy/vaultboy.webp'
 })
-
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
