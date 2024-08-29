@@ -26,7 +26,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // const type = this.flags?.falloutzero?.roll?.type
     // if (type && type !== 'damage') return false
     // return this.isRoll && this.isContentVisible && !!canvas.tokens?.controlled.length
-    return false
+    return true
   }
 
   /* -------------------------------------------- */

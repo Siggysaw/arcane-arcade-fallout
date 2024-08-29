@@ -50,7 +50,10 @@ export default class DamageApplicationElement extends ChatTrayElement {
    * Currently registered hook for monitoring for changes to selected tokens.
    * @type {number|null}
    */
-  selectedTokensHook = null
+  selectedTokensHook = Hooks.on(
+    'controlToken',
+    foundry.utils.debounce(() => this.buildTargetsList(), 50),
+  )
 
   /* -------------------------------------------- */
 
@@ -121,6 +124,12 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   connectedCallback() {
     // Fetch the associated chat message
+    // if (this.selectedTokensHook === null) {
+    //   this.selectedTokensHook = Hooks.on(
+    //     'controlToken',
+    //     foundry.utils.debounce(() => this.buildTargetsList(), 50),
+    //   )
+    // }
     const messageId = this.closest('[data-message-id]')?.dataset.messageId
     this.chatMessage = game.messages.get(messageId)
     if (!this.chatMessage) return
@@ -138,14 +147,6 @@ export default class DamageApplicationElement extends ChatTrayElement {
         </label>
         <div class="collapsible-content">
           <div class="wrapper">
-            <div class="target-source-control">
-              <button type="button" class="unbutton" data-mode="targeted" aria-pressed="false">
-                <i class="fa-solid fa-bullseye" inert></i> Targeted
-              </button>
-              <button type="button" class="unbutton" data-mode="selected" aria-pressed="false">
-                <i class="fa-solid fa-expand" inert></i> Selected
-              </button>
-            </div>
             <ul class="targets unlist"></ul>
             <button class="apply-damage" type="button" data-action="applyDamage">
               <i class="fa-solid fa-reply-all fa-flip-horizontal" inert></i>
@@ -158,16 +159,11 @@ export default class DamageApplicationElement extends ChatTrayElement {
       this.applyButton = div.querySelector('.apply-damage')
       this.applyButton.addEventListener('click', this._onApplyDamage.bind(this))
       this.targetList = div.querySelector('.targets')
-      this.targetSourceControl = this.querySelector('.target-source-control')
-      this.targetSourceControl
-        .querySelectorAll('button')
-        .forEach((b) => b.addEventListener('click', this._onChangeTargetMode.bind(this)))
       // if (!this.chatMessage.getFlag('aafo', 'targets')?.length)
       //   this.targetSourceControl.hidden = true
       div.addEventListener('click', this._handleClickHeader.bind(this))
     }
-
-    this.targetingMode = 'selected'
+    this.buildTargetsList()
   }
 
   /* -------------------------------------------- */
@@ -429,16 +425,5 @@ export default class DamageApplicationElement extends ChatTrayElement {
     const token = fromUuidSync(uuid)
     const entry = this.targetList.querySelector(`[data-target-uuid="${token.uuid}"]`)
     this.refreshListEntry(token, entry, options)
-  }
-
-  /* -------------------------------------------- */
-
-  /**
-   * Handle clicking on the target mode buttons.
-   * @param {PointerEvent} event  Triggering click event.
-   */
-  async _onChangeTargetMode(event) {
-    event.preventDefault()
-    this.targetingMode = event.currentTarget.dataset.mode
   }
 }
