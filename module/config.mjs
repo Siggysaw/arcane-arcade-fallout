@@ -697,7 +697,18 @@ FALLOUTZERO.monsterLoot = [
       { dc: [['money', '[1d10 Bottlecap']] },
     ],
   },
-  { name: 'Mutated Bear', dice: 'All', loot: [{ all: [['material', 'Bear Meat'],['material', 'Bear Skull']] }] },
+  {
+    name: 'Mutated Bear',
+    dice: 'All',
+    loot: [
+      {
+        all: [
+          ['material', 'Bear Meat'],
+          ['material', 'Bear Skull'],
+        ],
+      },
+    ],
+  },
   {
     name: 'Deathclaw',
     dice: 'All',
@@ -813,9 +824,42 @@ FALLOUTZERO.monsterLoot = [
   },
   { name: 'Radroach', dice: 'All', loot: [{ all: [['material', 'Radroach Meat']] }] },
   { name: 'Rattler', dice: 'All', loot: [{ all: [['material', 'Rattler Poison Gland']] }] },
-  { name: 'Stingwing', dice: 'All', loot: [{ all: [['material', 'Stingwing Meat'],['material', 'Stingwing Barb']] }] },
-  { name: 'Stingwing Skimmer', dice: 'All', loot: [{ all: [['material', 'Stingwing Meat'],['material', 'Stingwing Barb']] }] },
-  { name: 'Stingwing Chaser', dice: 'All', loot: [{ all: [['material', 'Stingwing Meat'],['material', 'Stingwing Barb']] }] },
+  {
+    name: 'Stingwing',
+    dice: 'All',
+    loot: [
+      {
+        all: [
+          ['material', 'Stingwing Meat'],
+          ['material', 'Stingwing Barb'],
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Stingwing Skimmer',
+    dice: 'All',
+    loot: [
+      {
+        all: [
+          ['material', 'Stingwing Meat'],
+          ['material', 'Stingwing Barb'],
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Stingwing Chaser',
+    dice: 'All',
+    loot: [
+      {
+        all: [
+          ['material', 'Stingwing Meat'],
+          ['material', 'Stingwing Barb'],
+        ],
+      },
+    ],
+  },
   {
     name: 'Assaultron',
     dice: 'All',
@@ -1430,4 +1474,16 @@ FALLOUTZERO.specialammo = {
   'Junk Jet': {
     available: ['Any item that is smaller than cubic foot'],
   },
+}
+
+/**
+ * Colors used to visualize temporary and temporary maximum HP in token health bars.
+ * @enum {number}
+ */
+FALLOUTZERO.tokenHPColors = {
+  damage: 0xff0000,
+  healing: 0x00ff00,
+  temp: 0x66ccff,
+  tempmax: 0x440066,
+  negmax: 0x550000,
 }

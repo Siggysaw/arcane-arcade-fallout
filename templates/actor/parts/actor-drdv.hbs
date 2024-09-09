@@ -1,0 +1,28 @@
+<div class="flex">
+  <div class="mr-2">
+    <h4>Resistances:</h4>
+    <ol class="trait-list">
+      {{#each this.dr as |dr|}}
+      <li>
+        <label class="checkbox">
+          <input type="checkbox" name="system.dr" value="{{ dr.id }}" {{checked dr.selected}} />
+          {{ dr.label }}
+        </label>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+  <div>
+    <h4>Vulnerabilities:</h4>
+    <ol class="trait-list">
+      {{#each this.dv as |dv|}}
+      <li>
+        <label class="checkbox">
+          <input type="checkbox" name="system.dv" value="{{ dv.id }}" {{checked dv.selected}} />
+          {{ dv.label }}
+        </label>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+</div>

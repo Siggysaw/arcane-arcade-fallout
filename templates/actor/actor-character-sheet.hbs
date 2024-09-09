@@ -3,10 +3,20 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header">
       <div class="header-fields">
-            {{#GM}}
-          <span title="Toggle if a Character is Active For Party Bonuses">Active:<i data-activeCheck class="fas fa-toggle-{{#if system.activePartymember}}on{{else}}off{{/if}}"></i></span>
-          {{/GM}}
-          <span title="Toggle Edit Mode">Edit:<i  data-editToggle class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"></i></span>
+        {{#GM}}
+        <span title="Toggle if a Character is Active For Party Bonuses"
+          >Active:<i
+            data-activeCheck
+            class="fas fa-toggle-{{#if system.activePartymember}}on{{else}}off{{/if}}"
+          ></i
+        ></span>
+        {{/GM}}
+        <span title="Toggle Edit Mode"
+          >Edit:<i
+            data-editToggle
+            class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"
+          ></i
+        ></span>
 
         <table>
           <tr>
@@ -57,6 +67,7 @@
       <a class="item" data-tab="medicine">AID</a>
       <a class="item" data-tab="backpack">BACKPACK</a>
       <a class="item" data-tab="crafting" id="craftingNav">CRAFTING</a>
+      <a class="item" data-tab="drdv">DR/DV</a>
       <a class="item" data-tab="notes">NOTES</a>
       <a class="item" data-tab="effects">EFFECTS</a>
     </nav>
@@ -135,7 +146,13 @@
       <div class="tab crafting" data-group="primary" data-tab="crafting">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs"}}
       </div>
-      {{!-- Crafting Tab --}}
+
+      {{!-- DRDV Tab --}}
+      <div class="tab" data-group="primary" data-tab="drdv">
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-drdv.hbs"}}
+      </div>
+
+      {{!-- Notes Tab --}}
       <div class="tab notes" data-group="primary" data-tab="notes">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-notes.hbs"}}
       </div>

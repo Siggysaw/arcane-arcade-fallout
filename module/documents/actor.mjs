@@ -1,5 +1,4 @@
 import { FALLOUTZERO } from '../config.mjs'
-import FalloutZeroActorSheet from '../sheets/actor-sheet.mjs'
 import FalloutZeroItem from './item.mjs'
 /**
 /**
@@ -41,6 +40,96 @@ export default class FalloutZeroActor extends Actor {
       },
       myDialogOptions,
     ).render(true)
+  }
+  /** @inheritdoc */
+  async _preUpdate(changed, options, user) {
+    if ((await super._preUpdate(changed, options, user)) === false) return false
+
+    // Reset death save counters and store hp
+    if ('health' in (this.system || {})) {
+      foundry.utils.setProperty(options, 'falloutzero.hp', { ...this.system.health })
+    }
+  }
+
+  /** @inheritdoc */
+  async _onUpdate(data, options, userId) {
+    super._onUpdate(data, options, userId)
+
+    const hp = options.falloutzero?.hp
+    if (hp) {
+      const curr = this.system.health
+      const changes = {
+        hp: curr.value - hp.value,
+        temp: curr.temp - hp.temp,
+      }
+      changes.total = changes.hp + changes.temp
+
+      if (Number.isInteger(changes.total) && changes.total !== 0) {
+        this._displayTokenEffect(changes)
+
+        /**
+         * A hook event that fires when an actor is damaged or healed by any means. The actual name
+         * of the hook will depend on the change in hit points.
+         * @function aafo.damageActor
+         * @memberof hookEvents
+         * @param {Actor} actor                                       The actor that had their hit points reduced.
+         * @param {{hp: number, temp: number, total: number}} changes   The changes to hit points.
+         * @param {object} update                                       The original update delta.
+         * @param {string} userId                                       Id of the user that performed the update.
+         */
+        Hooks.callAll(
+          `foundry.${changes.total > 0 ? 'heal' : 'damage'}Actor`,
+          this,
+          changes,
+          data,
+          userId,
+        )
+      }
+    }
+  }
+
+  /**
+   * Flash ring & display changes to health as scrolling combat text.
+   * @param {object} changes          Object of changes to hit points.
+   * @param {number} changes.hp       Changes to `hp.value`.
+   * @param {number} changes.temp     The change to `hp.temp`.
+   * @param {number} changes.total    The total change to hit points.
+   * @protected
+   */
+  _displayTokenEffect(changes) {
+    let key
+    let value
+    if (changes.hp < 0) {
+      key = 'damage'
+      value = changes.total
+    } else if (changes.hp > 0) {
+      key = 'healing'
+      value = changes.total
+    } else if (changes.temp) {
+      key = 'temp'
+      value = changes.temp
+    }
+    if (!key || !value) return
+
+    const tokens = this.isToken ? [this.token] : this.getActiveTokens(true, true)
+    if (!tokens.length) return
+
+    const pct = Math.clamp(Math.abs(value) / this.system.health.max, 0, 1)
+    const fill = CONFIG.FALLOUTZERO.tokenHPColors[key]
+
+    for (const token of tokens) {
+      if (!token.object?.visible || !token.object?.renderable) continue
+      if (token.hasDynamicRing) token.flashRing(key)
+      const t = token.object
+      canvas.interface.createScrollingText(t.center, value.signedString(), {
+        // Adapt the font size relative to the Actor's HP total to emphasize more significant blows
+        fontSize: 16 + 32 * pct, // Range between [16, 48]
+        fill: fill,
+        stroke: 0x000000,
+        strokeThickness: 4,
+        jitter: 0.25,
+      })
+    }
   }
 
   // Custom Roll
@@ -2567,7 +2656,7 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
     //  * @function aafo.applyDamage
     //  * @memberof hookEvents
     //  */
-    // Hooks.callAll("aafo.applyDamage", this, amount, options);
+    Hooks.callAll('falloutzero.applyDamage', this, amount, options)
 
     return this
   }

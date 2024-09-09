@@ -58,11 +58,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this._prepareItems(context)
     }
 
-    const carryLoadSetting = game.settings.get('core', 'CarryLoad');
+    const carryLoadSetting = game.settings.get('core', 'CarryLoad')
 
     // Calculate Carry Load
 
-    const packrat = actorData.items.find((i) => i.name == "Pack Rat")
+    const packrat = actorData.items.find((i) => i.name == 'Pack Rat')
     if (!carryLoadSetting) {
       actorData.system.carryLoad.base =
         actorData.items.reduce((acc, item) => {
@@ -91,13 +91,18 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       actorData.system.carryLoad.baseMax + actorData.system.carryLoad.modifiersMax
 
     //Set Group Sneak and Party Nerve
-    const characterList = game.actors.filter((entries) => entries.type === "character")
-    const activeCharacterList = characterList.filter((FalloutZeroActor) => FalloutZeroActor.system.activePartymember === true)
+    const characterList = game.actors.filter((entries) => entries.type === 'character')
+    const activeCharacterList = characterList.filter(
+      (FalloutZeroActor) => FalloutZeroActor.system.activePartymember === true,
+    )
     let charismaModtotal = 0
     let groupSneaktotal = 0
     for (let character of activeCharacterList) {
       charismaModtotal += character.system.abilities.cha.mod
-      groupSneaktotal += character.system.skills.sneak.base + character.system.skills.sneak.modifiers + character.system.abilities.agi.mod
+      groupSneaktotal +=
+        character.system.skills.sneak.base +
+        character.system.skills.sneak.modifiers +
+        character.system.abilities.agi.mod
     }
     const activePlayercount = activeCharacterList.length
     actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
@@ -255,6 +260,23 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
     context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps
     context.canRemoveCaps = this.actor.system.karmaCaps.length > 1
+
+    const drdv = Object.values(FALLOUTZERO.damageTypes).reduce(
+      (acc, type) => {
+        acc.dr.push({
+          ...type,
+          selected: this.actor.system.dr.includes(type.id),
+        })
+        acc.dv.push({
+          ...type,
+          selected: this.actor.system.dv.includes(type.id),
+        })
+        return acc
+      },
+      { dr: [], dv: [] },
+    )
+    context.dr = drdv.dr
+    context.dv = drdv.dv
   }
 
   /* -------------------------------------------- */
@@ -370,20 +392,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if ((
-            item.type == 'junkItem' || 
-            item.type == 'rangedWeapon' || 
-            item.type == 'meleeWeapon' ||
-            item.type == 'armor' ||
-            item.type == 'powerArmor'
-          )
-            && item.system.quantity > 0) {
+          if (
+            (item.type == 'junkItem' ||
+              item.type == 'rangedWeapon' ||
+              item.type == 'meleeWeapon' ||
+              item.type == 'armor' ||
+              item.type == 'powerArmor') &&
+            item.system.quantity > 0
+          ) {
             return true
           }
-          if ((
-            item.type == 'ammo'
-          )
-            && item.system.quantity > 4) {
+          if (item.type == 'ammo' && item.system.quantity > 4) {
             return true
           }
         },
@@ -720,18 +739,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const weaponId = ev.currentTarget.dataset.weaponId
       let newDecay = Number(ev.target.dataset.fieldvalue) + 1
       console.log(newDecay)
-      this.actor.updateEmbeddedDocuments('Item', [
-        { _id: weaponId, 'system.decay': newDecay },
-      ])
+      this.actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.decay': newDecay }])
     })
     // Updates Weapon Decay
     html.on('click', '[data-reduce-decay]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       let newDecay = Number(ev.target.dataset.fieldvalue) - 1
       console.log(newDecay)
-      this.actor.updateEmbeddedDocuments('Item', [
-        { _id: weaponId, 'system.decay': newDecay },
-      ])
+      this.actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.decay': newDecay }])
     })
 
     // Updates Armor DP
@@ -750,20 +765,19 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       ])
     })
 
-
     //Sort on clicking Crafting Navigation Button
-    html.on('click','[craftRecipes]', () => {
+    html.on('click', '[craftRecipes]', () => {
       this.actor.checkIfCanCraft(this.actor.name)
     })
 
     //Sort Junk items
-    html.on('click','[sortJunk]', () => {
-      this.actor.sortTable("junkTable")
+    html.on('click', '[sortJunk]', () => {
+      this.actor.sortTable('junkTable')
     })
 
     //Sort Materials
-    html.on('click','[sortMat]', () => {
-      this.actor.sortTable("matsTable")
+    html.on('click', '[sortMat]', () => {
+      this.actor.sortTable('matsTable')
     })
 
     // -------------------------------------------------------------
