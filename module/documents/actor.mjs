@@ -1245,7 +1245,10 @@ async getItemCraftingData(html,myActor,myItem){
   rollCraft2.style = "visibility:visible;color:var(--user-color)"
   rollCraft.style = "visibility:visible;color:var(--user-color)"
   rollCraft2.disabled = rollCraft.disabled = false
-
+  let headers = document.getElementsByClassName("tt")
+  for (var header of headers){
+    header.style = "visibility:visible;"
+  }
   let perks = document.getElementById("buttonsTable")
   perks.deleteRow(1);
   perks.insertRow(1);
