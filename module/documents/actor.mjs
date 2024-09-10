@@ -1645,31 +1645,32 @@ async getItemCraftingData(html,myActor,myItem){
       if (mats.includes ("matsReq") && itemToCraft.system.crafting[mats].qty > 0){
         let matQty = Math.max(Number(itemToCraft.system.crafting[mats].qty + matsBonus),1)
         let mat = itemToCraft.system.crafting[mats].mat
-        let existingMat, currentQty, reduceQty
+        let reduceQty
         //Find reduced quantity (for Chat) and new quantity (to update items)
+        let existingMat = myActor.items.find((u) => u.name.toLowerCase() == mat.toLowerCase())
+        let currentQty = mat == "Caps"? myActor.system.caps : existingMat.system.quantity
         if (success){
           //If this item is the target of the Perk Randomizer 
           if (mat == randomDiscount){
             reduceQty = Math.max(Number(matQty) - Number(myActor.system.abilities.lck.mod) - Number(rollBonus),1)
             //Find the new material to replace randomDiscount
             let actorMat = myActor.items.filter(i => i.type == "material").filter(i => i.system.quantity > (Number(reduceQty)))
+            console.log(actorMat)
             existingMat = actorMat.length > 0? actorMat[Math.floor(Math.random() * actorMat.length)] : myActor.items.find((u) => u.name.toLowerCase() == mat.toLowerCase())
-            console.log(existingMat)
             newQty = Number(existingMat.system.quantity) - Number(reduceQty)
           } //All other success cases
           else {
-            existingMat = myActor.items.find((u) => u.name.toLowerCase() == mat.toLowerCase())
-            currentQty = mat == "Caps"? myActor.system.caps : existingMat.system.quantity
             newQty = Number(currentQty) - Math.max(Number(matQty) - Number(rollBonus),1)
             reduceQty = Number(currentQty) - Number(newQty)
           }
         } // Failure, wasted mats
          else {
-          newQty = min1? Math.max(1, Number(currentQty) - Number(rollBonus)) : Math.max(0,Number(currentQty) - Number(rollBonus))
-          reduceQty = Number(currentQty) - Number(newQty)
+          //Max wasted is not more than amount of mats required or even mats required - 1
+          reduceQty = min1? Math.min(Number(rollBonus), Number(matQty) - 1) : Math.min(Number(rollBonus), Number(matQty))
+          newQty = min1? Math.max(1, Number(currentQty) - reduceQty) : Math.max(0,Number(currentQty) - reduceQty)
         }
         //Update items and send to chat
-        itemLink = mat == "Caps"? itemLink = "Caps" : this.formatCompendiumItem(existingMat.type,existingMat.name,'Removed from inventory.',true)
+        itemLink = mat == "Caps"? itemLink = `&ensp;Caps<br>` : this.formatCompendiumItem(existingMat.type,existingMat.name,'Removed from inventory.',true)
         mat == "Caps" ?
           await myActor.update({ 'system.caps': newQty }) : 
           await existingMat.update({'system.quantity': newQty})
