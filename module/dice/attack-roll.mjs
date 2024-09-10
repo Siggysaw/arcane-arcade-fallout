@@ -303,7 +303,7 @@ export default class AttackRoll extends FormApplication {
         type: damage.selectedDamageType,
         formula: this.formDataCache.targeted
           ? this.getTargetedDamage(damage.formula + ` + ${damageBonus} + ${bonusdamage || ''}`)
-          : damage.formula + `+ ${damageBonus} + ${bonusdamage || ''}`,
+          : damage.formula + `+ ${damageBonus || ''} + ${bonusdamage || ''}`,
       }
     })
 
@@ -321,7 +321,7 @@ export default class AttackRoll extends FormApplication {
         targeted: this.formDataCache.targeted,
         damage: {
           rolls: damageRolls,
-          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier}`,
+          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus || ''}) * ${this.weapon.system.critical.multiplier || ''}`,
         },
       },
     })

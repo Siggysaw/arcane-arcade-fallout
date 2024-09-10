@@ -21,6 +21,22 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+  ruleinfo(condition) {
+    const myDialogOptions = { width: 500, height: 300, resizable: true }
+    const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1)
+    let title = conditionFormatted.replaceAll('_', ' ')
+    const rule = FALLOUTZERO.rules[conditionFormatted]
+    const message = `<div class="conditioninfo">${rule}</div>`
+    new Dialog(
+      {
+        title: `Details: ${title}`,
+        content: message,
+        buttons: {},
+      },
+      myDialogOptions,
+    ).render(true)
+  }
+
   // Perks List
   viewPerks() {
     const myDialogOptions = { resizable: true }

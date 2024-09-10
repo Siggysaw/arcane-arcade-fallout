@@ -23,17 +23,18 @@
   flex: none;
   background: grey;
 }
-.chat-sidebar .message-header .name-stacked {
-  flex: 1;
-  display: flex;
-  min-height: 32px;
-  flex-direction: column;
-  justify-content: center;
-  line-height: normal;
-}
+  .chat-sidebar .message-header .name-stacked {
+    flex: 1;
+    display: flex;
+    min-height: 32px;
+    flex-direction: column;
+    justify-content: center;
+    line-height: normal;
+    font-family: fixedsys;
+  }
 .chat-sidebar .message-header .title {
   font-weight: bold;
-  color: var(--green);
+  color: var(--user-color);
 }
 .chat-sidebar .message-header .subtitle {
   color: var(--user-color);
@@ -210,10 +211,10 @@
   background-color: transparent;
 }
 .falloutzero .card-tray .targets .target .damage-multipliers button[aria-pressed='true'] {
-  border-color: var(--user-color);
+  border-color: var(--sheetcolor);
 }
 .falloutzero .card-tray .targets .target .damage-multipliers button[aria-pressed='true']::after {
-  background-color: var(--user-color);
+  background-color: var(--sheetcolor);
 }
 
 .falloutzero .card-tray .wrapper > button {

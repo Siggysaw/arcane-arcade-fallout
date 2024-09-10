@@ -27,6 +27,19 @@ Hooks.once('init', function () {
     default: false,
     requiresReload: true,
   })
+  game.settings.register('core', 'Sheet-Color', {
+    name: 'Your Sheet Theme Color',
+    hint: 'An override for sheet color. Green = #1bff80 / Amber = #ffb641 or you can use custom hex or just say "red" or "green" Blank puts it back to User Color being used.',
+    scope: 'world',
+    config: true,
+    type: String,
+    default: '',
+    requiresReload: true,
+  })
+
+  const sheetColor = game.settings.get('core', 'Sheet-Color');
+  const r = document.querySelector(':root');
+  r.style.setProperty('--sheetcolor', sheetColor);
 
   // Add custom constants for configuration.
   CONFIG.FALLOUTZERO = FALLOUTZERO
