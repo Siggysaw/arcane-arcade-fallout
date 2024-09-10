@@ -12,7 +12,7 @@ export default class FalloutZeroItemAmmo extends FalloutZeroItemBase {
     schema.quantity = new fields.NumberField({ ...requiredInteger, initial: 1, min: 0 })
     schema.load = new fields.NumberField({ required: true, nullable: false, initial: 0.1, min: 0 })
     schema.cost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
-    schema.type = new fields.StringField({ initial: '9mm' })
+    schema.type = new fields.StringField({ initial: '' })
     schema.junk = new fields.SchemaField({
       quantity1 : new fields.NumberField({initial:2}),
       quantity2 : new fields.NumberField({initial:0}),

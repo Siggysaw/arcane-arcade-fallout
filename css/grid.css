@@ -6,12 +6,12 @@
 }
 
 .grid.bordered {
-  border-top: 1px solid var(--user-color);
-  border-left: 1px solid var(--user-color);
+  border-top: 1px solid var(--sheetcolor);
+  border-left: 1px solid var(--sheetcolor);
 }
 .grid.bordered > * {
-  border-bottom: 1px solid var(--user-color);
-  border-right: 1px solid var(--user-color);
+  border-bottom: 1px solid var(--sheetcolor);
+  border-right: 1px solid var(--sheetcolor);
 }
 
 .grid-3col {
