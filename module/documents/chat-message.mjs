@@ -406,11 +406,12 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     if (this.cardType !== 'damage') return
     if (!game.user.isGM && this.author !== game.user) return
 
+    const damageTypes = this.flags?.falloutzero.damageTypes
     const damageApplication = document.createElement('damage-application')
     damageApplication.classList.add('falloutzero')
-    damageApplication.damages = this.rolls.map((roll) => ({
+    damageApplication.damages = this.rolls.map((roll, index) => ({
       value: roll.total,
-      type: roll.options.type,
+      type: damageTypes[index],
       properties: new Set(roll.options.properties ?? []),
     }))
     html.querySelector('.message-content').appendChild(damageApplication)

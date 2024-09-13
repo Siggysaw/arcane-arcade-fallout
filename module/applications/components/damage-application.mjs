@@ -166,7 +166,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
     let targetedTokens = canvas.tokens?.controlled?.map((t) => t.actor?.uuid) ?? []
     targetedTokens = Array.from(new Set(targetedTokens))
     const targets = targetedTokens.map((t) => this.buildTargetListEntry(t)).filter((t) => t)
-    if (targets.length) this.targetList.replaceChildren(...targets)
+    if (targets.length) this.targetList?.replaceChildren(...targets)
     else {
       const li = document.createElement('li')
       li.classList.add('none')
