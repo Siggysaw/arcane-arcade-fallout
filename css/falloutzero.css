@@ -52,7 +52,7 @@ details > summary {
 }
 .rollable:hover,
 .rollable:focus {
-  text-shadow: 0 0 10px var(--user-color);
+  text-shadow: 0 0 10px var(--sheetcolor);
   cursor: pointer;
 }
 
@@ -264,8 +264,8 @@ details > summary {
   background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  color: var(--user-color);
-  background-color:var(--user-color);
+  color: var(--sheetcolor);
+  background-color:var(--sheetcolor);
 }
 .dialog option,
 .dialog optgroup,
@@ -285,7 +285,7 @@ details > summary {
 .prosemirror.menu-dialog form button,
 .prosemirror.menu-dialog form input,
 .sheet .item-piles-config-container p {
-  color: var(--user-color);
+  color: var(--sheetcolor);
   letter-spacing: 0rem;
 }
 .window-app .window-content div .fakebutton,
@@ -299,8 +299,8 @@ details > summary {
   background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  color: var(--user-color);
-  background-color: var(--user-color);
+  color: var(--sheetcolor);
+  background-color: var(--sheetcolor);
   font-family: Fixedsys;
   padding-top: 20px;
 }
@@ -308,7 +308,7 @@ details > summary {
 #keybindings .binding .key,
 #keybindings .binding .key.uneditable {
   background: #222;
-  color: var(--user-color);
+  color: var(--sheetcolor);
   font-family: Monofonto;
 }
 .sheet.journal-entry .title {
@@ -329,7 +329,7 @@ form .title,
 .falloutzero .items-list .item .item-name,
 form .form-group span.units,
 form div label {
-  color: var(--user-color);
+  color: var(--sheetcolor);
   list-style-type: none;
 }
 
@@ -337,13 +337,13 @@ form div label {
 .editor-content li,
 .prosemirror li {
   letter-spacing: 0rem;
-  color: var(--user-color);
+  color: var(--sheetcolor);
   list-style-type: inherit;
 }
   .journal-entry-content table td,
   .sheet .prosemirror table td,
   .editor-content table td{
-    border: solid 1px var(--user-color);
+    border: solid 1px var(--sheetcolordarker);
 }
 .sheet .character-name input {
   border: none;
@@ -352,7 +352,7 @@ form div label {
 }
 
 .sheet input {
-  color: var(--user-color);
+  color: var(--sheetcolor);
   border: solid 1px var(--dark);
   font-size: 10pt;
 }
@@ -399,7 +399,7 @@ table .bio-label {
   height: 175px;
   width: 200px;
   object-fit: cover;
-  border: solid 1px var(--user-color);
+  border: solid 1px var(--sheetcolordarker);
 }
 .sheet header.sheet-header .profile-image-td img {
   object-fit :scale-down
@@ -465,7 +465,7 @@ td,
   width: 100%;
 }
 .sheet form .perk-div h3 {
-  color: var(--user-color);
+  color: var(--sheetcolor);
 }
 .sheet .perk-div .perk-image {
   height: 150px;
@@ -605,7 +605,7 @@ td,
   cursor: not-allowed;
   border: initial;
   background: #222;
-  color: var(--user-color);
+  color: var(--sheetcolor);
 }
 
 .sheet .addRemoveCaps button:disabled i {
@@ -655,7 +655,7 @@ form td .status-notes li:hover {
   flex: 1;
   margin: 0 3px;
   background: #222;
-  color: var(--user-color);
+  color: var(--sheetcolor);
 }
 .ammoitem,
 .explosiveitem {
@@ -829,7 +829,7 @@ form td .status-notes li:hover {
 }
 .item .content-link {
   text-decoration: underline;
-  border: solid 1px var(--user-color);
+  border: solid 1px var(--sheetcolordarker);
 }
 
 a.content-link,
@@ -837,7 +837,7 @@ a.inline-roll,
 .chat-message .table-draw .table-results .table-result .result-text a {
   background: none;
   color: inherit;
-  border: solid 1px var(--user-color);
+  border: solid 1px var(--sheetcolordarker);
 }
 
 .sheet .item-piles-item-row.svelte-tse-1o95obs.item-piles-child-even-color > *,
@@ -873,7 +873,7 @@ a.inline-roll,
   float: left;
   height: 11px;
   margin: 0px -10px 0 0;
-  background: var(--user-color);
+  background: var(--sheetcolor);
   border-radius: 15px;
   box-shadow: 0px 0px 6px #777 inset;
 }
@@ -881,7 +881,7 @@ a.inline-roll,
   display: inline-block;
   float: left;
   margin: 0px -10px 0 0;
-  background: var(--user-color);
+  background: var(--sheetcolor);
 }
 .sheet .character .bio td {
   padding-right: 10px;

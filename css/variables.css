@@ -1,4 +1,5 @@
 :root {
   --green: var(--user-color);
   --dark: #222;
+  --sheetcolor: var(--user-color);
 }

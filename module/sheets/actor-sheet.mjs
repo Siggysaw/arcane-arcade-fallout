@@ -465,6 +465,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click', _expandUp: true })
 
+    //show rule information
+    html.on('click', '[data-condition]', (ev) => {
+      const condition = ev.currentTarget.dataset.condition
+      this.actor.ruleinfo(condition)
+    })
+
     // Actor Rest Buttons
     html.on('click', '[data-rest]', (ev) => {
       const rest = ev.currentTarget.dataset.rest
