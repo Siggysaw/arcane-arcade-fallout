@@ -404,16 +404,16 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   _addApplyDamageButtons(html) {
     if (this.cardType !== 'damage') return
-    if (game.user.isGM) {
-      const damageApplication = document.createElement('damage-application')
-      damageApplication.classList.add('falloutzero')
-      damageApplication.damages = this.rolls.map((roll) => ({
-        value: roll.total,
-        type: roll.options.type,
-        properties: new Set(roll.options.properties ?? []),
-      }))
-      html.querySelector('.message-content').appendChild(damageApplication)
-    }
+    if (!game.user.isGM && this.author !== game.user) return
+
+    const damageApplication = document.createElement('damage-application')
+    damageApplication.classList.add('falloutzero')
+    damageApplication.damages = this.rolls.map((roll) => ({
+      value: roll.total,
+      type: roll.options.type,
+      properties: new Set(roll.options.properties ?? []),
+    }))
+    html.querySelector('.message-content').appendChild(damageApplication)
   }
 
   _reRollDialog() {
