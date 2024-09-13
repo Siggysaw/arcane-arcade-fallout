@@ -1,3 +1,4 @@
+{{#if system.editToggle}}
 <div class="addRemoveCaps">
     <button type="button" {{#unless canAddCaps}}disabled{{/unless}} data-add-cap>
         <i class="fas fa-plus-square"></i>
@@ -6,6 +7,7 @@
         <i class="fas fa-minus-square"></i>
     </button>
 </div>
+{{/if}}
 {{#each karmaCaps as |flipped key|}}
 <input
     type="checkbox"
