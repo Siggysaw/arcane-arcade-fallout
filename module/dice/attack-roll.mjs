@@ -14,7 +14,13 @@ export default class AttackRoll extends FormApplication {
       decayPenalty: this.weapon.getDecayValue(),
       actorLuck: this.actor.system.luckmod,
       actorPenalties: this.actor.system.penaltyTotal,
-      totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - this.weapon.getDecayValue() - this.actor.system.penaltyTotal + this.actor.system.luckmod,
+      totalBonus:
+        this.actor.getSkillBonus(this.weapon.system.skillBonus) +
+        this.actor.getAttackBonus() +
+        this.weapon.getAbilityBonus() -
+        this.weapon.getDecayValue() -
+        this.actor.system.penaltyTotal +
+        this.actor.system.luckmod,
       bonus: '',
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
@@ -261,17 +267,15 @@ export default class AttackRoll extends FormApplication {
       actorLuck,
       actorPenalties,
       bonus,
-      bonusdamage
+      bonusdamage,
     } = this.formDataCache
 
-    const rollBonusTotal = skillBonus + attackBonus + abilityBonus + actorLuck + bonus - actorPenalties - decayPenalty
+    const rollBonusTotal =
+      skillBonus + attackBonus + abilityBonus + actorLuck + bonus - actorPenalties - decayPenalty
     /**
      * Roll to hit
      */
-    const roll = new Roll(
-      `${this.getDice()} + ${rollBonusTotal}`,
-      this.actor.getRollData(),
-    )
+    const roll = new Roll(`${this.getDice()} + ${rollBonusTotal}`, this.actor.getRollData())
 
     await roll.evaluate()
 
@@ -302,8 +306,8 @@ export default class AttackRoll extends FormApplication {
       return {
         type: damage.selectedDamageType,
         formula: this.formDataCache.targeted
-          ? this.getTargetedDamage(damage.formula + ` + ${damageBonus} + ${bonusdamage || ''}`)
-          : damage.formula + `+ ${damageBonus || ''} + ${bonusdamage || ''}`,
+          ? this.getTargetedDamage(damage.formula + ` + ${damageBonus} + ${bonusdamage || 0}`)
+          : damage.formula + ` + ${damageBonus || 0} + ${bonusdamage || 0}`,
       }
     })
 
@@ -321,7 +325,7 @@ export default class AttackRoll extends FormApplication {
         targeted: this.formDataCache.targeted,
         damage: {
           rolls: damageRolls,
-          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus || ''}) * ${this.weapon.system.critical.multiplier || ''}`,
+          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus || 0}) * ${this.weapon.system.critical.multiplier || 1}`,
         },
       },
     })

@@ -2628,10 +2628,10 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
     return this.system.abilities[ability].mod
   }
   getAttackBonus() {
-    return this.system.attackBonus
+    return this.system.attackBonus || 0
   }
   getDamageBonus() {
-    return this.system.damageBonus
+    return this.system.damageBonus || 0
   }
 
   hasKarmaCapAvailable() {
