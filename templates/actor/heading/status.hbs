@@ -9,26 +9,26 @@
         <td>
             <table>
                 <tr>
-                    <input style="height:30px;" 
-                    type="number"
-                    class="numberwithbuttons"
-                    name="system.health.value"
-                    value="{{ health.value }}" />
+                    <input style="height:30px;"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.health.value"
+                           value="{{ health.value }}" />
                     /
-                    <input style="height:30px" 
-                    type="number"
-                    class="numberwithbuttons"
-                    name="system.health.max"
-                    value="{{ health.max }}" />
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.health.max"
+                           value="{{ health.max }}" />
                 </tr>
-                <tr>
-                           Temp HP :
-                    <input style="height:20px" 
-                    type="number"
-                    class="numberwithbuttons"
-                    name="system.health.temp"
-                    value="{{ health.temp }}" />
-                </tr>                
+                <tr>Bonus:
+                    <input style="height:20px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.health.temp"
+                           value="{{ health.temp }}"
+                           placeholder="Temp HP" />
+                </tr>
             </table>
         </td>
     </tr>
@@ -42,28 +42,28 @@
         <td>
             <table>
                 <tr>
-                    <input style="height:30px" 
-                    type="number"
-                    class="numberwithbuttons"
-                    name="system.stamina.value"
-                    value="{{ stamina.value }}" />
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.stamina.value"
+                           value="{{ stamina.value }}" />
                     /
-                    <input style="height:30px"  
-                    type="number"
-                    class="numberwithbuttons"
-                    name="system.stamina.max"
-                    value="{{ stamina.max }}" />
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.stamina.max"
+                           value="{{ stamina.max }}" />
                 </tr>
-                <tr>
-                    Temp SP :
-                    <input style="height:20px"  
-                    type="number"
-                    class="numberwithbuttons"
-                    name="system.stamina.temp"
-                    value="{{ stamina.temp }}" />            
+                <tr>Bonus:
+                    <input style="height:20px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.stamina.temp"
+                           value="{{ stamina.temp }}"
+                           placeholder="Temp SP" />
                 </tr>
             </table>
-            
+
         </td>
     </tr>
     <tr>
@@ -76,30 +76,30 @@
         <td>
             <table>
                 <tr>
-                    <input style="height:30px"  
-                    type="number"
-                    class="numberwithbuttons"
-                    name="system.actionPoints.value"
-                    value="{{ system.actionPoints.value }}" />
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.actionPoints.value"
+                           value="{{ system.actionPoints.value }}" />
                     /
-                    <input style="height:30px"  
-                    type="number"
-                    class="numberwithbuttons"
-                    name="system.actionPoints.max"
-                    value="{{ system.actionPoints.max }}" />
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.actionPoints.max"
+                           value="{{ system.actionPoints.max }}" />
                 </tr>
-                <tr>
-                    Bonus AP:
-                    <input style="height:20px"  
-                    type="number"
-                    class="numberwithbuttons"
-                    name="system.actionPoints.temp"
-                    value="{{ system.actionPoints.temp }}" />
+                <tr>Bonus:
+                    <input style="height:20px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.actionPoints.temp"
+                           value="{{ system.actionPoints.temp }}"
+                           placeholder="Bonus AP"/>
                 </tr>
-            </table>  
+            </table>
         </td>
     </tr>
-    </table>
+</table>
 <table style="width:200px;">
     <tr>
         <td>
@@ -115,35 +115,35 @@
     </tr>
 </table>
 <table class="equipped-stats">
-        <tr>
-            {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
+    <tr>
+        {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
     </tr>
     <tr>
         <td class="skill-value">
             {{#if system.editToggle}}<i style="padding: 3px"
-               data-statSubtraction
-               data-stat="armorClass"
-               data-type=""
-               class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
+                                        data-statSubtraction
+                                        data-stat="armorClass"
+                                        data-type=""
+                                        class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
             {{ armorClass.value }}
-             {{#if system.editToggle}}<i style="padding: 3px"
-               data-statAddition
-               data-stat="armorClass"
-               data-type=""
-               class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
+            {{#if system.editToggle}}<i style="padding: 3px"
+                                        data-statAddition
+                                        data-stat="armorClass"
+                                        data-type=""
+                                        class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
         </td>
         <td class="skill-value">
-             {{#if system.editToggle}}<i style="padding: 3px"
-               data-statSubtraction
-               data-stat="damageThreshold"
-               data-type=""
-               class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
+            {{#if system.editToggle}}<i style="padding: 3px"
+                                        data-statSubtraction
+                                        data-stat="damageThreshold"
+                                        data-type=""
+                                        class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
             {{ damageThreshold.value }}
-             {{#if system.editToggle}}<i style="padding: 3px"
-               data-statAddition
-               data-stat="damageThreshold"
-               data-type=""
-               class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
+            {{#if system.editToggle}}<i style="padding: 3px"
+                                        data-statAddition
+                                        data-stat="damageThreshold"
+                                        data-type=""
+                                        class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
         </td>
     </tr>
     <tr style="letter-spacing: -1px">

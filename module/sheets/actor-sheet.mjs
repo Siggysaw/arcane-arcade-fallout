@@ -67,7 +67,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       actorData.system.carryLoad.base =
         actorData.items.reduce((acc, item) => {
           let { load = 0, quantity = 1 } = item.system
-          if (packrat && load < 3 && load > 1) {
+          if (packrat && 1 < load < 3) {
             load = 1
           }
           acc += Math.floor(load * quantity)
@@ -941,7 +941,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
             const newItem = await fromUuid(grant.key)
             const itemClone = newItem.clone()
             const createdItems = await super._onDropItemCreate(itemClone)
-            await createdItems[0].update({ 'system.quantity': grant.quantity })
+            await createdItems[0].update({ 'system.quantity': 5000 })
             return createdItems[0].id
           } catch (error) {
             ui.notifications.warn(`error creating item from ${grant.name}`)

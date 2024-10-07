@@ -394,15 +394,13 @@ table .bio-label {
   width: 35px;
 }
 
-.sheet header.sheet-header img {
+.sheet header.sheet-header img,
+.sheet profile-pic{
   flex: 0 0 64px;
   height: 175px;
   width: 200px;
   object-fit: cover;
-  border: solid 1px var(--sheetcolordarker);
-}
-.sheet header.sheet-header .profile-image-td img {
-  object-fit :scale-down
+  border: solid 1px var(--user-color);
 }
 .sheet header.sheet-header .custom-icon {
   height: 30px;
@@ -937,4 +935,13 @@ a.inline-roll,
 }
 .sheet .item{
     text-transform:capitalize;
+}
+.sheet .trait-list{
+    float:left;
+    width:100px;
+    text-align:left;
+    padding:2px;
+}
+.sheet .profile-pic{
+
 }

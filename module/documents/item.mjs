@@ -55,8 +55,7 @@ export default class FalloutZeroItem extends Item {
       }
       let qty = 0
       if (myItem) {
-        qty = myItem.system.quantity
-        qty++
+        qty = myItem.system.quantity + data.system.quantity
         myItem.update({ 'system.quantity': qty })
         return false
       } else {
@@ -444,7 +443,6 @@ export default class FalloutZeroItem extends Item {
 
     // Update ammo quantity
     const newWeaponAmmoCapacity = Number(this.system.ammo.capacity.value - 1)
-    console.log("Capacity Shoulda Been Updated")
     this.actor.updateEmbeddedDocuments('Item', [
       {
         _id: this._id,

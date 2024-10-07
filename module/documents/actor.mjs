@@ -1101,13 +1101,14 @@ export default class FalloutZeroActor extends Actor {
     const ammoList = FALLOUTZERO.specialammo[ammoBase]
     for (let ammo of ammoList.available) {
       let ammoFullname = `${ammoBase} ${ammo}`
+      console.log(`${ammoBase} ${ammo}`)
       if (ammoBase === ammo) {
         ammoFullname = ammoBase
       }
       let ammoFound = this.items.find((item) => item.name === ammoFullname)
 
       if (ammoFound) {
-        message += `<option value="${ammoFullname}">${ammoFullname}: ${ammoFound.system.quantity}</option><br>`
+        message += `<option value="${ammoFullname}">${ammoFullname.charAt(0).toUpperCase() + ammoFullname.slice(1) }: ${ammoFound.system.quantity}</option><br>`
       }
     }
     message += '</select>'
@@ -1542,6 +1543,7 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
             'rangedweapons',
             'material',
             'miscellaneous',
+            'upgrades'
           ]
           let packSelect = document.getElementById('packSelect')
           let itemSelect = document.getElementById('itemSelect')

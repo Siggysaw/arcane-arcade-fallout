@@ -1357,6 +1357,10 @@ FALLOUTZERO.damageTypes = {
     id: 'plasma',
     label: 'Plasma',
   },
+  poison: {
+    id: 'poison',
+    label: 'Poison',
+  },
   fire: {
     id: 'fire',
     label: 'Fire',
@@ -1409,11 +1413,12 @@ FALLOUTZERO.specialammo = {
     available: [
       '12 gauge',
       'Cap shot',
-      'Dragon’s Breath',
+      'Dragons Breath',
       'Flechette',
       'Magnum',
       'Slug',
       'Pulse Slug',
+      'Bean Bag'
     ],
   },
   '12.7mm': {

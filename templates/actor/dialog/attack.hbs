@@ -16,7 +16,7 @@
             </div>
             <div class="flex space-between">
                 <div>Luck:</div>
-                <div>+ {{ actorLuck }}</div>
+                <div>{{#GreaterThan actorLuck 1}}+{{/GreaterThan}} {{ actorLuck }}</div>
             </div>
             <div class="flex space-between">
                 <div>Decay Penalty:</div>
@@ -130,7 +130,7 @@
             </div>
             <div class="flex space-between">
                 <div>Perk/Trait Bonus:</div>
-                <div>{{../damageBonus }}</div>
+                <div>{{#GreaterThan ../damageBonus 1}}+{{else}}-{{/GreaterThan}} {{../damageBonus }}</div>
             </div>
             {{/each}}
             <div class="flex space-between">

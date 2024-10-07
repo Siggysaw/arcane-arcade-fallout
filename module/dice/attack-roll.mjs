@@ -166,6 +166,11 @@ export default class AttackRoll extends FormApplication {
   getTargetedApCost(target) {
     const isMelee = this.weapon.type === 'meleeWeapon'
     let apCost = AttackRoll.TARGET_COST?.[target] ?? 0
+    console.log(this.actor.items)
+    const triggerDiscipline = this.actor.items.find((i) => i.name == 'Trigger Discipline')
+    if (triggerDiscipline) {
+      apCost -= 1
+    }
     if (isMelee) {
       apCost -= 2
     }
@@ -204,7 +209,6 @@ export default class AttackRoll extends FormApplication {
     if (this.formDataCache.overrideAp) {
       return this.formDataCache.adjustedApCost
     }
-
     return this.formDataCache.totalApCost
   }
 

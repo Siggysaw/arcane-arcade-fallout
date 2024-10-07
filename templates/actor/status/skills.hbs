@@ -1,26 +1,27 @@
 <div class="grid bordered">
-  {{#each skills as |skill key|}}
-  <div>
-    <button
-      type="button"
-      data-skill-roll="{{ skill.id }}"
-      title="Base: {{ skill.base }} Modifier: {{ skill.modifiers }}"
-    >
-      {{ skill.label }}
-    </button>
-  </div>
-  <div>
-      <div class="flex justify-center gap-5" style="vertical-align:middle">
-          {{#if ../system.editToggle}}<button class="w-auto no-background" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
-              <i class="fas fa-minus-square "></i>
-          </button>
-          {{/if}}
-          <span class="skillvalue" {{#unless ../system.editToggle}}style="margin-top:10px;"{{/unless}}>{{skill.value}}</span>
-          {{#if ../system.editToggle}}<button class="w-auto no-background" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
-              <i class="fas fa-plus-square"></i>
-          </button>
-          {{/if}}
-      </div>
-  </div>
-  {{/each}}
+    {{#each skills as |skill key|}}
+    <div>
+        <button type="button"
+                data-skill-roll="{{ skill.id }}"
+                title="Base: {{ skill.base }} Modifier: {{ skill.modifiers }}">
+            {{ skill.label }}
+        </button>
+    </div>
+    <div>
+        <div class="flex justify-center gap-5" style="vertical-align:middle">
+            {{#if ../system.editToggle}}<button class="w-auto no-background" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
+                <i class="fas fa-minus-square "></i>
+            </button>
+            {{/if}}
+            <span class="skillvalue" {{#unless ../system.editToggle}} style="margin-top:10px;" {{/unless}}>{{skill.value}}</span>
+            {{#if ../system.editToggle}}<button class="w-auto no-background" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
+                <i class="fas fa-plus-square"></i>
+            </button>
+            {{/if}}
+        </div>
+    </div>
+    {{/each}}
 </div>
+{{#NPC actor.type}}
+{{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-drdv.hbs"}}
+{{/NPC}}
