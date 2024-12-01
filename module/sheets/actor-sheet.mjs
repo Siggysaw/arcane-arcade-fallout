@@ -59,31 +59,27 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     }
 
     const carryLoadSetting = game.settings.get('core', 'CarryLoad')
+    const CapsLoad = game.settings.get('core', 'CapsLoad')
+    const AmmoLoad = game.settings.get('core', 'AmmoLoad')
+    const JunkLoad = game.settings.get('core', 'JunkLoad')
+
 
     // Calculate Carry Load
 
     const packrat = actorData.items.find((i) => i.name == 'Pack Rat')
-    if (!carryLoadSetting) {
-      actorData.system.carryLoad.base =
-        actorData.items.reduce((acc, item) => {
-          let { load = 0, quantity = 1 } = item.system
-          if (packrat && 1 < load < 3) {
-            load = 1
-          }
-          acc += Math.floor(load * quantity)
-          return Math.round(acc * 10) / 10
-        }, 0) + Math.floor(actorData.system.caps / 50)
-    } else {
-      actorData.system.carryLoad.base =
-        actorData.items.reduce((acc, item) => {
-          let { load = 0, quantity = 1 } = item.system
-          if (packrat && load < 3 && load > 1) {
-            load = 1
-          }
-          acc += load * quantity
-          return Math.round(acc * 10) / 10
-        }, 0) + Math.floor(actorData.system.caps / 50)
-    }
+    const capsLoad = CapsLoad ? Math.floor(actorData.system.caps / 50) : 0
+    actorData.system.carryLoad.base =
+      actorData.items.reduce((acc, item) => {
+        let { load = 0, quantity = 1 } = item.system
+        if (packrat && load < 3 && load > 1) {
+          load = 1
+        }
+        if (!AmmoLoad && item.type == "ammo" || !JunkLoad && item.type == "junkItem" || !JunkLoad && item.type == "material") {
+          load = 0
+        }
+        acc += Math.floor(load * quantity)
+        return Math.round(acc * 10) / 10
+      }, 0) + capsLoad
 
     actorData.system.carryLoad.value =
       actorData.system.carryLoad.base + actorData.system.carryLoad.modifiers

@@ -235,29 +235,31 @@ export default class FalloutZeroActor extends Actor {
     const packrat = this.items.find((i) => i.name == 'Pack Rat')
     const myDialogOptions = { width: 500, height: 300, resizable: true }
     const carryLoadSetting = game.settings.get('core', 'CarryLoad')
+    const CapsLoad = game.settings.get('core', 'CapsLoad')
+    const AmmoLoad = game.settings.get('core', 'AmmoLoad')
+    const JunkLoad = game.settings.get('core', 'JunkLoad')
     let load = Math.floor(this.system.caps / 50)
+    if (!CapsLoad) {
+      load = 0
+    }
     let message = `<table style="text-align:center"><tr><th>Item</th><th>Qty x Load</th><th>Total</th></tr><tr><td>Caps</td><td>${this.system.caps}/50</td><td>${load}</td>`
     let overall = load
     this.items.reduce((acc, item) => {
-      if (item.system.load > 0) {
-        let name = item.name
-        let qty = item.system.quantity
-        load = item.system.load
-        if (item.system.worn) {
-          load = 0
+      let name = item.name
+      let qty = item.system.quantity
+      load = item.system.load
+      if (packrat && load < 3 && load > 1) {
+        load = 1
+      }
+      if (!AmmoLoad && item.type == "ammo" || !JunkLoad && item.type == "junkItem" || !JunkLoad && item.type == "material" ) {
+        load = 0
+      }
+      if (item.type != "race" && item.type != "background" && item.type != "perk" && item.type != "trait" && item.type != "condition") {
+        let itemLoad = Math.floor(qty * load)
+        if (itemLoad > 0) {
+          message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${itemLoad}</td></tr>`
         }
-        if (packrat && load < 3 && load > 1) {
-          load = 1
-        }
-        let total = Number(load) * Number(qty)
-        if (carryLoadSetting) {
-          overall = overall + total
-          total = Math.round(total * 10) / 10
-          message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${total}</td></tr>`
-        } else {
-          overall = overall + Math.floor(total)
-          message += `<tr><td>${name}</td><td>${qty} x ${load}</td><td>${Math.floor(total)}</td></tr>`
-        }
+        overall += itemLoad
       }
     }, 0)
     new Dialog(

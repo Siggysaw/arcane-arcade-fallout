@@ -27,6 +27,33 @@ Hooks.once('init', function () {
     default: false,
     requiresReload: true,
   })
+  game.settings.register('core', 'CapsLoad', {
+    name: 'Do Caps Have Load?',
+    hint: 'Checked: 50 caps is 1 Load',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  })
+  game.settings.register('core', 'AmmoLoad', {
+    name: 'Does Ammo Have Load?',
+    hint: 'Checked: 10 Ammo is 1 load',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  })
+  game.settings.register('core', 'JunkLoad', {
+    name: 'Does Junk Have Load?',
+    hint: 'If Checked: 5 Junk is 1 Load, 10 Material is 1 Load',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  })
   game.settings.register('core', 'Sheet-Color', {
     name: 'Your Sheet Theme Color',
     hint: 'An override for sheet color. Green = #1bff80 / Amber = #ffb641 or you can use custom hex or just say "red" or "green" Blank puts it back to User Color being used.',

@@ -2,18 +2,52 @@
 {{#each armors as |item id|}}
 {{#if item.system.itemEquipped}}
 <td colspan="2" class="context-menu"
-      data-item-id="{{ item._id }}"
-      title="{{localize 'DOCUMENT.Update' type='item'}}">
+    data-item-id="{{ item._id }}"
+    title="{{localize 'DOCUMENT.Update' type='item'}}">
     {{item.name}}
 </td>
+<tr>
+<tr style="vertical-align: middle">
+    <td colspan="999" title="0 is Broken, 10 is Full Functionality">
+        CND:
+        {{#if editToggle}} <input title="0 is Broken, 10 is Full Functionality"
+                                  style="width: 50px"
+                                  type="number"
+                                  name="{{ item.system.decay }}"
+                                  value="{{/if}}{{ item.system.decay }}{{#if editToggle}}"
+                                  data-set-decay
+                                  data-weapon-id="{{ item._id }}" />{{/if}}
+            <i style="padding: 2px;"
+               data-reduce-decay
+               data-field="item.system.decay"
+               data-fieldvalue="{{item.system.decay}}"
+               data-weapon-id="{{ item._id }}"
+               class="fas fa-minus-square fakebutton nobackground">
+            </i>
+        <progress title="{{item.system.decay}} out of 10"
+                  style="width:40%;"
+                  class="statusbar"
+                  value="{{ item.system.decay }}"
+                  max=10>
+            {{ item.system.decay }}
+        </progress>
+            <i style="padding: 2px;"
+               data-add-decay
+               data-field="item.system.decay"
+               data-fieldvalue="{{item.system.decay}}"
+               data-weapon-id="{{ item._id }}"
+               class="fas fa-plus-square fakebutton nobackground">
+            </i>
+    </td>
+</tr>
+    </tr>
 {{/if}}
 {{/each}}
 {{#each powerArmors as |item id|}}
 {{#if item.system.itemEquipped}}
-<td
-    class="context-menu"
-      data-item-id="{{ item._id }}"
-      title="{{localize 'DOCUMENT.Update' type='item'}}">
+<td class="context-menu"
+    data-item-id="{{ item._id }}"
+    title="{{localize 'DOCUMENT.Update' type='item'}}">
     {{item.name}}
 </td>
 <td>DP:{{item.system.defensePoint.value}}</td>
