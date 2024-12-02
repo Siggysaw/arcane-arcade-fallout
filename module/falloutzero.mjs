@@ -211,6 +211,10 @@ Handlebars.registerHelper('Sum3', function (v1, v2, v3) {
   let sum = Number(v1) + Number(v2) + Number(v3)
   return sum
 })
+Handlebars.registerHelper('Skills', function (v1, v2, v3, v4) {
+  let sum = Number(v1) + Number(v2) + Number(v3) - Number(v4)
+  return sum
+})
 //division
 Handlebars.registerHelper('LckMod', function (v1, v2) {
   let div = Math.floor(Number(v1) / Number(v2))

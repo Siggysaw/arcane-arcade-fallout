@@ -57,9 +57,9 @@
   {{!-- Sheet Body --}}
   <section class="sheet-body">
     {{!-- Description Tab --}}
-    <div class="tab" item-description data-group="primary" data-tab="description" style="padding: 20px">
-      {{editor system.properties target="system.properties" button=true engine="prosemirror"}}
-    </div>
+      <div class="tab" item-description data-group="primary" data-tab="description" style="padding: 20px">
+          {{editor system.description target="system.description" button=true engine="prosemirror"}}
+      </div>
     {{!-- Crafting Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
       {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}

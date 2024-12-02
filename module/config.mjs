@@ -92,7 +92,7 @@ FALLOUTZERO.skills = {
   barter: {
     id: 'barter',
     label: 'Barter',
-    ability: ['cha'],
+    ability: ['cha','str','per','end','int','agi','lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -100,7 +100,7 @@ FALLOUTZERO.skills = {
   breach: {
     id: 'breach',
     label: 'Breach',
-    ability: ['per', 'int'],
+    ability: ['per', 'int','str','end','cha','agi','lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -108,7 +108,7 @@ FALLOUTZERO.skills = {
   crafting: {
     id: 'crafting',
     label: 'Crafting',
-    ability: ['int'],
+    ability: ['int', 'str', 'per', 'end', 'cha', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -116,7 +116,7 @@ FALLOUTZERO.skills = {
   energy_weapons: {
     id: 'energy_weapons',
     label: 'Energy Weapons',
-    ability: ['per'],
+    ability: ['per', 'str', 'end', 'cha', 'int', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -124,7 +124,7 @@ FALLOUTZERO.skills = {
   explosives: {
     id: 'explosives',
     label: 'Explosives',
-    ability: ['per'],
+    ability: ['per', 'str', 'end', 'cha', 'int', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -132,7 +132,7 @@ FALLOUTZERO.skills = {
   guns: {
     id: 'guns',
     label: 'Guns',
-    ability: ['agi'],
+    ability: ['agi', 'str', 'per', 'end', 'cha', 'int', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -140,7 +140,7 @@ FALLOUTZERO.skills = {
   intimidation: {
     id: 'intimidation',
     label: 'Intimidation',
-    ability: ['str', 'cha'],
+    ability: ['str', 'cha',  'per', 'end',  'int', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -148,7 +148,7 @@ FALLOUTZERO.skills = {
   medicine: {
     id: 'medicine',
     label: 'Medicine',
-    ability: ['per', 'int'],
+    ability: ['per', 'int', 'str',  'end', 'cha', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -156,7 +156,7 @@ FALLOUTZERO.skills = {
   melee_weapons: {
     id: 'melee_weapons',
     label: 'Melee Weapons',
-    ability: ['str'],
+    ability: ['str','per', 'end', 'cha', 'int', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -164,7 +164,7 @@ FALLOUTZERO.skills = {
   science: {
     id: 'science',
     label: 'Science',
-    ability: ['int'],
+    ability: ['int', 'str', 'per', 'end', 'cha', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -172,7 +172,7 @@ FALLOUTZERO.skills = {
   sneak: {
     id: 'sneak',
     label: 'Sneak',
-    ability: ['agi'],
+    ability: ['agi','str', 'per', 'end', 'cha', 'int', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -180,7 +180,7 @@ FALLOUTZERO.skills = {
   speech: {
     id: 'speech',
     label: 'Speech',
-    ability: ['cha'],
+    ability: ['cha', 'str', 'per', 'end', 'int', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -188,7 +188,7 @@ FALLOUTZERO.skills = {
   survival: {
     id: 'survival',
     label: 'Survival',
-    ability: ['end'],
+    ability: ['end', 'str', 'per', 'cha', 'int', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
@@ -196,7 +196,7 @@ FALLOUTZERO.skills = {
   unarmed: {
     id: 'unarmed',
     label: 'Unarmed',
-    ability: ['str'],
+    ability: ['str', 'per', 'end', 'cha', 'int', 'agi', 'lck'],
     reference: '',
     modifiers: 0,
     base: 0,
