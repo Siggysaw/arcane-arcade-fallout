@@ -2658,9 +2658,19 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
     this.update({ 'system.karmaCaps': this.system.karmaCaps })
   }
 
-  getPerks() {
-    return this.items.filter((item) => item.type === 'perk')
-  }
+    getPerks() {
+        return this.items.filter((item) => item.type === 'perk')
+    }
+    PowerArmorHealth(armorID) {
+        const armor = this.items.get(armorID)
+        const armorHealth = armor.system.armorHP
+        const armorMax = Math.floor(armor.system.defensePoint.value * armor.system.decay)
+        if (armorHealth.value == 0 && armor.system.decay > 0) {
+            this.updateEmbeddedDocuments('Item', [{ _id: armorID, 'system.armorHP.max': armorMax },])
+            this.updateEmbeddedDocuments('Item', [{ _id: armorID, 'system.armorHP.value': armorMax },])
+        }
+        console.log(armor)
+    }
 
   sortTable(tableID) {
     var table, rows, switching, col, i, x, y, shouldSwitch
@@ -2707,35 +2717,52 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
    * @param {DamageApplicationOptions} [options={}]  Damage application options.
    * @returns {Promise<Actor>}                     A Promise which resolves once the damage has been applied.
    */
-  async applyDamage(damages, options = {}) {
-    const hp = this.system.health
-    const sp = this.system.stamina
-    const dt = this.system.damageThreshold
+    async applyDamage(damages, options = {}) {
+        const hp = this.system.health
+        const sp = this.system.stamina
+        const dt = this.system.damageThreshold
 
-    if (Number.isNumeric(damages)) {
-      damages = [{ value: damages }]
-      options.ignore ??= true
-    }
+        if (Number.isNumeric(damages)) {
+            damages = [{ value: damages }]
+            options.ignore ??= true
+        }
 
-    damages = this.calculateDamage(damages, options)
-    if (!damages) return this
+        damages = this.calculateDamage(damages, options)
+        if (!damages) return this
 
-    // Round damage towards zero
-    let amount = damages.reduce((acc, d) => {
-      acc += d.value
-      return acc
-    }, 0)
+        // Round damage towards zero
+        let amount = damages.reduce((acc, d) => {
+            acc += d.value
+            return acc
+        }, 0)
 
-    // Get SP damage
-    const totalDamage = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
-    const deltaTempSp = totalDamage > 0 ? Math.min(sp.temp, totalDamage) : 0
-    const deltaSP = Math.clamp(totalDamage - deltaTempSp, -sp.damage, sp.value)
-    const spDamageDealt = deltaTempSp + deltaSP
+        // Get SP damage
+        let totalDamage = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
+        const PowerArmor = this.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
+        if (PowerArmor.length > 0) {
+            const ArmorID = PowerArmor[0]._id
+            const armorStat = PowerArmor[0].system
+            let armorMax
+            let armorHP = armorStat.armorHP.value
+            armorMax = Math.floor(armorStat.defensePoint.value * armorStat.decay)
+            if (totalDamage >= armorHP) {
+                totalDamage = totalDamage - armorHP
+                this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.decay': 0 },])
+                this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': 0 },])
+            } else {
+                const armorDamage = Math.floor(armorHP - totalDamage)
+                this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': armorDamage },])
+                totalDamage = 0
+            }
+        }
+        const deltaTempSp = totalDamage > 0 ? Math.min(sp.temp, totalDamage) : 0
+        const deltaSP = Math.clamp(totalDamage - deltaTempSp, -sp.damage, sp.value)
+        const spDamageDealt = deltaTempSp + deltaSP
+        let leftOverDamage = totalDamage - spDamageDealt
 
-    const leftOverDamage = totalDamage - spDamageDealt
-
-    // Get HP damage modified by dr/dv
-    let hpDamage
+        // Get HP damage modified by dr/dv
+        let hpDamage
+    
     if (dt.value >= leftOverDamage) {
       hpDamage = 0
     } else {
@@ -2803,7 +2830,7 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
     )
       return this
 
-    await this.update(updates)
+      await this.update(updates)
 
     /**
     //  * A hook event that fires after damage has been applied to an actor.

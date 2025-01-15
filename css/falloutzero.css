@@ -301,7 +301,6 @@ details > summary {
   background-size: 100% 100%;
   color: var(--sheetcolor);
   background-color: var(--sheetcolor);
-  font-family: Fixedsys;
   padding-top: 20px;
 }
 #chat .chat-message,
@@ -317,6 +316,9 @@ details > summary {
 .sheet.journal-entry .journal-entry-content img {
   border: #ff6059 solid 2px;
 }
+.sheet.journal-entry .journal-entry-content p{
+    text-shadow:2px 2px 2px black;
+}
 .character,
 .character input,
 .sheet h1,
@@ -329,8 +331,8 @@ form .title,
 .falloutzero .items-list .item .item-name,
 form .form-group span.units,
 form div label {
-  color: var(--sheetcolor);
-  list-style-type: none;
+    color: var(--sheetcolor);
+    list-style-type: none;
 }
 
 .journal-entry-content li,
@@ -942,6 +944,9 @@ a.inline-roll,
     text-align:left;
     padding:2px;
 }
-.sheet .profile-pic{
-
+.sheet .npc-equipped-table td{
+    border:solid 1px;
+    vertical-align:middle;
+    margin:0px;
+    padding:0px;
 }

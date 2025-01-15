@@ -102,7 +102,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     }
     const activePlayercount = activeCharacterList.length
     actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
-    actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
+      actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
+
+
+      //PowerArmor Setup
+      const PowerArmor = actorData.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
+      if (PowerArmor.length > 0) {
+          const ArmorID = PowerArmor[0]._id
+          this.actor.PowerArmorHealth(ArmorID)
+      }
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData()

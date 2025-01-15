@@ -6,52 +6,52 @@
         <form autocomplete="off">
           <table>
             <tr>
-              <td style="width: 250px" class="left">
-                <table class="bio">
-                  <tr>
-                      <td colspan="2">
-                          <table>
-                              <tr>
-                                  <td class="profile-image-td" style="margin: 10px; padding-top: 0px">
-                                      <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" /><br />
-                                      <input type="text" name="name" value="{{ actor.name }}" />
-                                      {{#GreaterThan system.level 2}}LVL:{{system.level}}{{/GreaterThan}}
-                                  </td>
-                              </tr>
-                              <tr></tr>
-                              <tr>
-                                  <td>
-                                      <div class="fakebutton" data-npc-loot title="Send loot to chat">
-                                          <i class="fa-regular">LOOT</i>
-                                      </div>
-                                      <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll;overflow-x:hidden;">
-                                          {{#each conditions as |item condition|}}
-                                          {{#GreaterThan system.quantity 1}}
-                                          <div class="active-conditions">
-                                              <li class="item flexrow" data-item-id="{{ item._id }}">
-                                                  <div class="item-controls individual-condition" style="padding:0px;">
-                                                      {{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}<br />
-                                                      <a class="item-control"
-                                                         data-edit
-                                                         data-item-id="{{ item._id }}"
-                                                         title="{{item.name}}">
-                                                          <img class="condition-icon" src="{{ item.img }}" title="{{ item.name }}" />
-                                                      </a><br />
-                                                      <a class="item-control item-delete">
-                                                          <i class="fa fa-close"></i>
-                                                      </a>
-                                                  </div>
-                                              </li>
-                                          </div>
-                                          {{/GreaterThan}}
-                                          {{/each}}
-                                  </td>
-                              </tr>
-                          </table>
-                      </td>
-                  </tr>
-                </table>
-              </td>
+                <td style="width: 250px" class="left">
+                    <div class="fakebutton" data-npc-loot title="Send loot to chat">
+                        <i class="fa-regular">LOOT</i>
+                    </div>
+                    <table class="bio">
+                        <tr>
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td class="profile-image-td" style="margin: 10px; padding-top: 0px">
+                                            <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" /><br />
+                                            <input type="text" name="name" value="{{ actor.name }}" />
+                                            {{#GreaterThan system.level 2}}LVL:{{system.level}}{{/GreaterThan}}
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                    <tr>
+                                        <td>
+                                            <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll;overflow-x:hidden;">
+                                                {{#each conditions as |item condition|}}
+                                                {{#GreaterThan system.quantity 1}}
+                                                <div class="active-conditions">
+                                                    <li class="item flexrow" data-item-id="{{ item._id }}">
+                                                        <div class="item-controls individual-condition" style="padding:0px;">
+                                                            {{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}<br />
+                                                            <a class="item-control"
+                                                               data-edit
+                                                               data-item-id="{{ item._id }}"
+                                                               title="{{item.name}}">
+                                                                <img class="condition-icon" src="{{ item.img }}" title="{{ item.name }}" />
+                                                            </a><br />
+                                                            <a class="item-control item-delete">
+                                                                <i class="fa fa-close"></i>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </div>
+                                                {{/GreaterThan}}
+                                                {{/each}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
               <td>
                 <table>
                   <tr>
@@ -141,6 +141,7 @@
                                                   </div>
                                               </td>
                                           </tr>
+
                                           <tr>
                                               <td>
                                                   <input id="armorClass-form"
@@ -170,7 +171,63 @@
         </form>
       </div>
     </header>
+        <table>{{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}</table>
+        <table class="npc-equipped-table">
+            {{#each rangedWeapons as |item id|}}
+            <tr>
 
+                <td class="context-menu" data-item-id="{{ item._id }}">{{item.name}}</td>
+                <td>AP: {{item.system.apCost}}</td>
+                <td>{{ item.system.range.short }}ft - {{item.system.range.long}}ft</td>
+                <td>
+                    <select style="width: 100px" data-set-ability data-weapon-id="{{ item._id }}">
+                        {{selectOptions ../system.abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
+                    </select>
+                    <select style="width: 100px" data-set-skill data-weapon-id="{{ item._id }}">
+                        {{selectOptions ../system.skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
+                    </select>
+                </td>
+                <td title="{{item.system.ammo.assigned}}">{{item.system.ammo.capacity.value}}/{{ item.system.ammo.capacity.max }}</td>
+                <td>
+                    <i title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+                       data-reload
+                       data-weapon-id="{{ item._id }}"
+                       class="fa fa-refresh"></i>
+                    <i title="Roll An Attack"
+                       data-weapon-roll
+                       data-weapon-id="{{ item._id }}"
+                       class="fa fa-solid fa-crosshairs"></i>
+                </td>
+            </tr>
+            {{/each}}
+            {{#each meleeWeapons as |item id|}}
+            <tr>
+                <td class="context-menu" data-item-id="{{ item._id }}">{{item.name}}</td>
+                <td>AP: {{item.system.apCost}}</td>
+                <td>5ft</td>
+                <td>
+                    <select style="width: 100px" data-set-ability data-weapon-id="{{ item._id }}">
+                        {{selectOptions ../system.abilities selected=item.system.abilityMod valueAttr="abbr" labelAttr="label" blank="None"}}
+                    </select>
+                    <select style="width: 100px" data-set-skill data-weapon-id="{{ item._id }}">
+                        {{selectOptions ../system.skills selected=item.system.skillBonus valueAttr="id" labelAttr="label" blank="None"}}
+                    </select>
+                </td>
+                {{#if item.system.ammo.assigned}}<td title="{{item.system.ammo.assigned}}">{{item.system.ammo.capacity.value}}/{{ item.system.ammo.capacity.max }}</td>{{else}}<td>NA</td>{{/if}}
+                <td>
+                    <i title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+                       data-reload
+                       data-weapon-id="{{ item._id }}"
+                       class="fa fa-refresh"></i>
+                    <i title="Roll An Attack"
+                       data-weapon-roll
+                       data-weapon-id="{{ item._id }}"
+                       class="fa fa-solid fa-crosshairs"></i>
+                </td>
+            </tr>
+            {{/each}}
+
+        </table>
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
       {{!-- Default tab is specified in actor-sheet.mjs --}}
@@ -218,6 +275,7 @@
            }}
            <br />
            {{> "systems/arcane-arcade-fallout/templates/actor/parts/npc-status.hbs"}}
+
          </td>
        </tr>
      </table>

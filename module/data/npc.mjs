@@ -14,22 +14,20 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       max: 30,
     })
 
-    schema.penalties = new fields.SchemaField(
+   schema.penalties = new fields.SchemaField(
       Object.keys(FALLOUTZERO.penalties).reduce((obj, penalty) => {
         obj[penalty] = new fields.SchemaField({
           label: new fields.StringField({ required: true }),
           value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
-          base: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
+          base : new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           modifiers: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           ignored: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 })
         })
         return obj
-      }, {
-        snack: new fields.NumberField({
-          ...requiredInteger,
-          initial: 0,
-        }),
-      }),
+      }, {snack : new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),}),
     )
 
 
@@ -145,7 +143,21 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
     }
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
-    this.luckmod < 0 ? this.luckmod = -1 : this.luckmod
+      this.luckmod < 0 ? this.luckmod = -1 : this.luckmod
+      this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)
+      this.passiveSense.value = 12 + this.passiveSense.base + this.abilities.per.mod + this.passiveSense.modifiers
+      this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base - this.penalties.exhaustion.ignored + this.penalties.exhaustion.modifiers, 0)
+      this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers, 0)
+      this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers, 0)
+      this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers, 0)
+      this.radiationDC.base = 12 - this.abilities['end'].mod
+      this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
+      this.penaltyTotal =
+          this.penalties.hunger.value +
+          this.penalties.dehydration.value +
+          this.penalties.exhaustion.value +
+          this.penalties.radiation.value +
+          this.penalties.fatigue.value
   }
 }
 

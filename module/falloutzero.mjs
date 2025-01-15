@@ -223,6 +223,11 @@ Handlebars.registerHelper('LckMod', function (v1, v2) {
   }
   return div
 })
+//multiplication
+Handlebars.registerHelper('Multiply', function (v1, v2) {
+    let mathResult = Math.floor(Number(v1) * Number(v2))
+    return mathResult
+})
 
 //Format a Compendium Link for a given title
 Handlebars.registerHelper('FormatCompendium', function (itemName, compendium) {

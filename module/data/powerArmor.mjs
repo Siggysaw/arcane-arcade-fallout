@@ -49,14 +49,22 @@ export default class FalloutZeroPowerArmor extends FalloutZeroItemBase {
       }),
     })
 
-    schema.defensePoint = new fields.SchemaField({
-      value: new fields.NumberField({
-        initial: 0,
-      }),
-      base: new fields.NumberField({
-        initial: 0,
-      }),
-    })
+      schema.defensePoint = new fields.SchemaField({
+          value: new fields.NumberField({
+              initial: 0,
+          }),
+          base: new fields.NumberField({
+              initial: 0,
+          }),
+      })
+      schema.armorHP = new fields.SchemaField({
+          value: new fields.NumberField({
+              initial: 0,
+          }),
+          max: new fields.NumberField({
+              initial: 0,
+          }),
+      })
     schema.slots = new fields.SchemaField({
       value: new fields.NumberField({
         initial: 0,
@@ -152,6 +160,7 @@ export default class FalloutZeroPowerArmor extends FalloutZeroItemBase {
     return schema
   }
 
-  prepareDerivedData() {    
+    prepareDerivedData() { 
+
   }
 }

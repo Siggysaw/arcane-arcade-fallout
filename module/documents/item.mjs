@@ -55,7 +55,7 @@ export default class FalloutZeroItem extends Item {
       }
       let qty = 0
       if (myItem) {
-        qty = myItem.system.quantity + data.system.quantity
+        qty = Number(myItem.system.quantity) + Number(data.system.quantity)
         myItem.update({ 'system.quantity': qty })
         return false
       } else {
