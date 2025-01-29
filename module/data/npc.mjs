@@ -11,7 +11,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       ...requiredInteger,
       initial: 1,
       min: 1,
-      max: 30,
+      max: 999,
     })
 
    schema.penalties = new fields.SchemaField(
