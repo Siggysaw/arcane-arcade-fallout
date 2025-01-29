@@ -18,7 +18,7 @@
                                         <td class="profile-image-td" style="margin: 10px; padding-top: 0px">
                                             <img src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" /><br />
                                             <input type="text" name="name" value="{{ actor.name }}" />
-                                            {{#GreaterThan system.level 2}}LVL:{{system.level}}{{/GreaterThan}}
+                                            LVL:<input style="width:25px;" type="number" name="system.level" value="{{system.level}}" />
                                         </td>
                                     </tr>
                                     <tr></tr>
