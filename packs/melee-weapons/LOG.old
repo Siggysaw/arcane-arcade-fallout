@@ -1,0 +1,7 @@
+2025/02/11-16:16:38.180 23170 Recovering log #520
+2025/02/11-16:16:38.193 23170 Delete type=0 #520
+2025/02/11-16:16:38.193 23170 Delete type=3 #518
+2025/02/11-16:18:01.690 25f6c Level-0 table #525: started
+2025/02/11-16:18:01.690 25f6c Level-0 table #525: 0 bytes OK
+2025/02/11-16:18:01.696 25f6c Delete type=0 #523
+2025/02/11-16:18:01.710 25f6c Manual compaction at level-0 from '!items!00bmnvvy9RauCXIM' @ 72057594037927935 : 1 .. '!items!zKA49xkwsMeZGHFo' @ 0 : 0; will stop at (end)
