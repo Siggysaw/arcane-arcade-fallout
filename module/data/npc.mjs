@@ -142,6 +142,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
       this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
     }
+    this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
+    if (this.damageThreshold.value == 0) {
+      this.damageThreshold.value = this.damageThreshold.base
+    }
     this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
       this.luckmod < 0 ? this.luckmod = -1 : this.luckmod
       this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)

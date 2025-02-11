@@ -248,6 +248,9 @@ export default class FalloutZeroActor extends Actor {
       let name = item.name
       let qty = item.system.quantity
       load = item.system.load
+      if (item.type === "armor" && item.system.itemEquipped === true) {
+        load = Math.floor(load / 2)
+      }
       if (packrat && load < 3 && load > 1) {
         load = 1
       }

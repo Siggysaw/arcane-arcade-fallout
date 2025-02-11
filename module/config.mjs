@@ -43,6 +43,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    penalties: true,
   },
   per: {
     label: 'Perception',
@@ -50,6 +51,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    penalties: true,
   },
   end: {
     label: 'Endurance',
@@ -57,6 +59,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    penalties: true,
   },
   cha: {
     label: 'Charisma',
@@ -64,6 +67,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    penalties: true,
   },
   int: {
     label: 'Intelligence',
@@ -71,6 +75,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    penalties: true,
   },
   agi: {
     label: 'Agility',
@@ -78,6 +83,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    penalties: true,
   },
   lck: {
     label: 'Luck',
@@ -85,6 +91,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    penalties: false,
   },
 }
 

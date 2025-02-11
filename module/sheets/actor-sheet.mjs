@@ -71,6 +71,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     actorData.system.carryLoad.base =
       actorData.items.reduce((acc, item) => {
         let { load = 0, quantity = 1 } = item.system
+        if (item.type === "armor" && item.system.itemEquipped===true) {
+          load = Math.floor(load / 2)
+        }
         if (packrat && load < 3 && load > 1) {
           load = 1
         }

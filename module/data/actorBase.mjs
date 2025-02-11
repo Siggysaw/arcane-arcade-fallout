@@ -98,6 +98,9 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
           label: new fields.StringField({
             initial: FALLOUTZERO.abilities[ability].label,
           }),
+          penalties: new fields.BooleanField({
+            initial: FALLOUTZERO.abilities[ability].penalties,
+          }),
           abbr: new fields.StringField({
             initial: FALLOUTZERO.abilities[ability].abbreviation,
           }),

@@ -8,7 +8,7 @@
         title="1d20 + {{ability.label}} Mod ( {{ability.mod}} ){{#DifferentFrom ../system.penaltyTotal 0}} -  Penalties ( {{../system.penaltyTotal}} ){{/DifferentFrom}} {{#GreaterThan ability.advantage 1}} with advantage {{/GreaterThan}}{{#LesserThan ability.advantage 0}} with disadvantage {{/LesserThan}}"
 
         data-rollable
-        data-roll="d20+{{ ability.mod }}-@penaltyTotal"
+        data-roll="d20+{{ ability.mod }}{{#if ability.penalties}}-@penaltyTotal{{/if}}"
         data-advantage="{{ ability.advantage }}"
         data-label="{{ ability.label }}"
         >{{ ability.label }}</label
