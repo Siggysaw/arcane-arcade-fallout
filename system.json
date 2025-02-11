@@ -1,0 +1,414 @@
+{
+  "id": "arcane-arcade-fallout",
+  "title": "The Arcane Arcade Fallout TTRPG",
+  "description": "Foundry version of Arcane Arcade's Fallout TTRPG system by Jacob Budz. Inspired by the game series of the same name by Interplay and Bethesda.",
+  "version": "0.0.54",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12.332"
+  },
+  "url": "https://github.com/Siggysaw/fallout-arcane-arcade.git",
+  "manifest": "https://github.com/Siggysaw/fallout-arcane-arcade/releases/latest/download/system.json",
+  "download": "https://github.com/Siggysaw/fallout-arcane-arcade/releases/latest/download/system.zip",
+  "bugs": "https://github.com/Siggysaw/fallout-arcane-arcade/issues",
+  "authors": [
+    {
+      "name": "Fallout TTRPG Foundry Dev Team",
+      "flags": {}
+    }
+  ],
+  "changelog": "CHANGELOG.md",
+  "media": [
+    {
+      "type": "setup",
+      "url": "systems/arcane-arcade-fallout/assets/arcane-fallout.png",
+      "thumbnail": "systems/arcane-arcade-fallout/assets/arcane-fallout.png",
+      "loop": false,
+      "flags": {}
+    }
+  ],
+  "esmodules": [
+    "module/falloutzero.mjs"
+  ],
+  "styles": [
+    "css/falloutzero.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Character",
+      "sorting": "m",
+      "packs": [
+        "race",
+        "background",
+        "perks",
+        "traits",
+        "conditions"
+      ],
+      "color": null,
+      "folders": []
+    },
+    {
+      "name": "Equipment",
+      "sorting": "m",
+      "packs": [
+        "ammunition",
+        "rangedweapons",
+        "melee-weapons",
+        "explosives",
+        "armor",
+        "miscellaneous",
+        "properties"
+      ],
+      "color": null,
+      "folders": []
+    },
+    {
+      "name": "Consumables",
+      "sorting": "m",
+      "packs": [
+        "food-and-drinks",
+        "medicine",
+        "chems"
+      ],
+      "color": null,
+      "folders": []
+    },
+    {
+      "name": "NPCs",
+      "sorting": "m",
+      "packs": [
+        "enemies",
+        "community_enemies",
+        "monsterloot",
+        "roomloot",
+        "diseases",
+        "npc-attacks",
+        "npc-actions-sample",
+        "targeted-attacks"
+      ],
+      "color": null,
+      "folders": []
+    },
+    {
+      "name": "Crafting",
+      "sorting": "m",
+      "packs": [
+        "junk",
+        "material",
+        "upgrades"
+      ],
+      "color": null,
+      "folders": []
+    }
+  ],
+  "packs": [
+    {
+      "label": "Perks",
+      "type": "Item",
+      "name": "perks",
+      "path": "packs/perks",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Armor",
+      "type": "Item",
+      "name": "armor",
+      "path": "packs/armor",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Ammunition",
+      "type": "Item",
+      "name": "ammunition",
+      "path": "packs/ammunition",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Explosives",
+      "type": "Item",
+      "name": "explosives",
+      "path": "packs/explosives",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Background",
+      "type": "Item",
+      "name": "background",
+      "path": "packs/background",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Race",
+      "type": "Item",
+      "name": "race",
+      "path": "packs/race",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Chems",
+      "type": "Item",
+      "name": "chems",
+      "path": "packs/chems",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Medicine",
+      "type": "Item",
+      "name": "medicine",
+      "path": "packs/medicine",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Food and Drinks",
+      "type": "Item",
+      "name": "food-and-drinks",
+      "path": "packs/food-and-drinks",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Melee Weapons",
+      "type": "Item",
+      "name": "melee-weapons",
+      "path": "packs/melee-weapons",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Ranged Weapons",
+      "type": "Item",
+      "name": "rangedweapons",
+      "path": "packs/rangedweapons",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Traits",
+      "type": "Item",
+      "name": "traits",
+      "path": "packs/traits",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Enemies",
+      "type": "Actor",
+      "name": "enemies",
+      "path": "packs/enemies",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Community Enemies",
+      "type": "Actor",
+      "name": "community_enemies",
+      "path": "packs/community_enemies",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Junk",
+      "type": "Item",
+      "name": "junk",
+      "path": "packs/junk",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Material",
+      "type": "Item",
+      "name": "material",
+      "path": "packs/material",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Miscellaneous",
+      "type": "Item",
+      "name": "miscellaneous",
+      "path": "packs/misc",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Conditions",
+      "type": "Item",
+      "name": "conditions",
+      "path": "packs/conditions",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Properties",
+      "type": "Item",
+      "name": "properties",
+      "path": "packs/properties",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Room Loot",
+      "type": "RollTable",
+      "name": "roomloot",
+      "path": "packs/room-loot",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Diseases",
+      "type": "RollTable",
+      "name": "diseases",
+      "path": "packs/diseases",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Monster Loot",
+      "type": "RollTable",
+      "name": "monsterloot",
+      "path": "packs/monster-loot",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Targeted Attacks",
+      "type": "RollTable",
+      "name": "targeted-attacks",
+      "path": "packs/targeted-attacks",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "NPC Attacks",
+      "type": "Item",
+      "name": "npc-attacks",
+      "path": "packs/npc-attacks",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Upgrades",
+      "type": "Item",
+      "name": "upgrades",
+      "path": "packs/upgrades",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    }
+  ],
+  "background": "systems/arcane-arcade-fallout/assets/arcane-fallout.png",
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "stamina",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  }
+}
