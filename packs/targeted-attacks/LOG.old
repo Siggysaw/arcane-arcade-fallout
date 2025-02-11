@@ -1,7 +1,0 @@
-2025/02/10-17:51:53.399 18328 Recovering log #268
-2025/02/10-17:51:53.409 18328 Delete type=0 #268
-2025/02/10-17:51:53.409 18328 Delete type=3 #266
-2025/02/10-18:34:35.318 18640 Level-0 table #273: started
-2025/02/10-18:34:35.318 18640 Level-0 table #273: 0 bytes OK
-2025/02/10-18:34:35.321 18640 Delete type=0 #271
-2025/02/10-18:34:35.333 18640 Manual compaction at level-0 from '!tables!0vMPVFTdB09FEW9L' @ 72057594037927935 : 1 .. '!tables.results!yoxWp3f42vrm6PJs.sMUWpCBS0b40YQkR' @ 0 : 0; will stop at (end)
