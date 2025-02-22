@@ -28,6 +28,14 @@
                                           value="{{ system.quantity }}" />
                
             </td>
+            <td>
+                <select name="system.abilityMod">
+                    {{selectOptions abilities selected=system.abilityMod blank="None"}}
+                </select>
+                <select name="system.skillBonus">
+                    {{selectOptions skills selected=system.skillBonus blank="None"}}
+                </select>
+            </td>
           <td>
             <button
               style="max-width: fit-content; text-align: left"
@@ -45,17 +53,6 @@
           </td>
         </tr>
       </table>
-      <table class="equipped-stats" style="display: none;">
-        <td>Ability</td>
-        <td>
-          <input
-            style="width: 200px"
-            type="text"
-            name="system.abilityMod"
-            value="{{ system.abilityMod }}"
-          />
-        </td>
-      </table>
     </div>
   </header>
 
@@ -70,80 +67,73 @@
   {{!-- Sheet Body --}}
   <section class="sheet-body">
     {{!-- Description Tab --}}
-    <div class="tab" item-description  data-group="primary" data-tab="description">
-      <table>
-        <tr>
-          <td>Cost</td>
-          <td>AP</td>
-          <td>STR</td>
-        </tr>
-        <tr>
-          <td>
-            <input type="number" name="system.cost" value="{{ system.cost }}" />
-          </td>
-          <td>
-            <input type="number" name="system.apCost" value="{{ system.apCost }}" />
-          </td>
-          <td>
-            <input
-              type="number"
-              name="system.strengthRequirement"
-              value="{{ system.strengthRequirement }}"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>Ammo</td>
-          <td>Ammo Assigned</td>
-          <td>Capacity</td>
-          <td>Load</td>
-        </tr>
-        <tr>
-          <td>
-            <input type="text" name="system.ammo.type" value="{{ system.ammo.type }}" />
-          </td>
-          <td>
-            <input type="text" name="system.ammo.assigned" value="{{ system.ammo.assigned }}" />
-          </td>
-          <td style="display: flex; align-items: center">
-            <input
-              type="number"
-              name="system.ammo.capacity.value"
-              value="{{ system.ammo.capacity.value }}"
-            />
-            /
-            <input
-              type="number"
-              name="system.ammo.capacity.max"
-              value="{{ system.ammo.capacity.max }}"
-            />
-          </td>
-          <td>
-            <input type="number" name="system.load" value="{{ system.load }}" />
-          </td>
-        </tr>
-      </table>
-      <table class="equipped-stats" style="width: 300px">
-        <tr>
-          <td>Short Range:</td>
-          <td>
-            <input type="text" name="system.range.short" value="{{ system.range.short }}" />
-          </td>
-        </tr>
-        <tr>
-          <td>Long Range:</td>
-          <td>
-            <input type="text" name="system.range.long" value="{{ system.range.long }}" />
-          </td>
-        </tr>
-      </table>
-
-      {{> "systems/arcane-arcade-fallout/templates/item/parts/weapon-damage.hbs"}}
-      <br />
-      <h3>Notes:</h3>
-      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
-    </div>
+      <div class="tab" item-description data-group="primary" data-tab="description">
+          <table>
+              <tr>
+                  <td>Cost</td>
+                  <td>AP</td>
+                  <td>STR</td>
+              </tr>
+              <tr>
+                  <td>
+                      <input type="number" name="system.cost" value="{{ system.cost }}" />
+                  </td>
+                  <td>
+                      <input type="number" name="system.apCost" value="{{ system.apCost }}" />
+                  </td>
+                  <td>
+                      <input type="number"
+                             name="system.strengthRequirement"
+                             value="{{ system.strengthRequirement }}" />
+                  </td>
+              </tr>
+              <tr>
+                  <td>Ammo</td>
+                  <td>Ammo Assigned</td>
+                  <td>Capacity</td>
+                  <td>Load</td>
+              </tr>
+              <tr>
+                  <td>
+                      <input type="text" name="system.ammo.type" value="{{ system.ammo.type }}" />
+                  </td>
+                  <td>
+                      <input type="text" name="system.ammo.assigned" value="{{ system.ammo.assigned }}" />
+                  </td>
+                  <td style="display: flex; align-items: center">
+                      <input type="number"
+                             name="system.ammo.capacity.value"
+                             value="{{ system.ammo.capacity.value }}" />
+                      /
+                      <input type="number"
+                             name="system.ammo.capacity.max"
+                             value="{{ system.ammo.capacity.max }}" />
+                  </td>
+                  <td>
+                      <input type="number" name="system.load" value="{{ system.load }}" />
+                  </td>
+              </tr>
+          </table>
+          <table class="equipped-stats" style="width: 300px">
+              <tr>
+                  <td>Short Range:</td>
+                  <td>
+                      <input type="text" name="system.range.short" value="{{ system.range.short }}" />
+                  </td>
+              </tr>
+              <tr>
+                  <td>Long Range:</td>
+                  <td>
+                      <input type="text" name="system.range.long" value="{{ system.range.long }}" />
+                  </td>
+              </tr>
+          </table>
+          {{> "systems/arcane-arcade-fallout/templates/item/parts/weapon-damage.hbs"}}
+          <br />
+          <h3>Notes:</h3>
+          {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
+          {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+      </div>
     {{!-- Crafting Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
       {{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}

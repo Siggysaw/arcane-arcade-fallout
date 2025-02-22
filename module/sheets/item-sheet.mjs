@@ -56,6 +56,8 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     context.damageTypes = CONFIG.FALLOUTZERO.damageTypes
     context.conditions = CONFIG.FALLOUTZERO.conditions
+    context.abilities = CONFIG.FALLOUTZERO.abilities
+    context.skills = CONFIG.FALLOUTZERO.skills
 
     return context
   }
