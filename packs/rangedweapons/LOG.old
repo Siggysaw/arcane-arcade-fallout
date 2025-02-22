@@ -1,1 +1,6 @@
-2025/02/22-12:40:11.936 11c20 Delete type=3 #1
+2025/02/22-15:07:54.603 1e3a0 Log #686: 0 ops saved to Table #687 OK
+2025/02/22-15:07:54.603 1e3a0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/000686.log: OK
+2025/02/22-15:07:54.604 1e3a0 Table #676: 56 entries OK
+2025/02/22-15:07:54.604 1e3a0 Table #680: 87 entries OK
+2025/02/22-15:07:54.608 1e3a0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/MANIFEST-000685: OK
+2025/02/22-15:07:54.612 1e3a0 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons; recovered 2 files; 183188 bytes. Some data may have been lost. ****

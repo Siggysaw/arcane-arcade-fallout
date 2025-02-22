@@ -1,1 +1,5 @@
-2025/02/22-12:40:12.150 193cc Delete type=3 #1
+2025/02/22-15:07:54.811 1e3a0 Log #530: 0 ops saved to Table #531 OK
+2025/02/22-15:07:54.811 1e3a0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot/000530.log: OK
+2025/02/22-15:07:54.811 1e3a0 Table #521: 402 entries OK
+2025/02/22-15:07:54.815 1e3a0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot/MANIFEST-000529: OK
+2025/02/22-15:07:54.819 1e3a0 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot; recovered 1 files; 54504 bytes. Some data may have been lost. ****
