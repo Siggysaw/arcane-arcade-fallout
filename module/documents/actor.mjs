@@ -1194,8 +1194,9 @@ export default class FalloutZeroActor extends Actor {
       ammoType.includes('2mm EC')
 
     // Do you have Ammo?
-    if (!ammoFound) {
-      ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
+      if (!ammoFound && weapon.type != "meleeWeapon") {
+        ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
+      console.log(weapon)
       return
     }
     const ammoOwned = ammoFound.system.quantity
