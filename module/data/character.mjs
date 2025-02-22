@@ -67,6 +67,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         ...requiredInteger,
         initial: 0,
       }),
+      manualMax: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
     })
     schema.attackBonus = new fields.NumberField({ initial: 0 })
     schema.damageBonus = new fields.NumberField({ initial: 0 })
@@ -180,10 +184,12 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.penalties.radiation.value +
       this.penalties.fatigue.value
     this.carryLoad.baseMax = this.abilities['str'].value * 10
-    this.carryLoad.max = this.carryLoad.baseMax + this.carryLoad.modifiersMax
     this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
     this.healingRate.value = this.healingRate.base + Math.floor((this.level + this.abilities['end'].value) / 2) + this.healingRate.modifiers
     this.luckmod < 0 ? this.luckmod = -1 : this.luckmod
+    this.level > 2 ? this.health.tooltip = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['end'].mod) : this.health.tooltip = this.abilities['end'].mod + 10
+    this.level > 2 ? this.stamina.tooltip = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) : this.stamina.tooltip = this.abilities['agi'].mod + 10
+    this.actionPoints.tooltip = this.abilities['agi'].mod + 10
   }
 }
 

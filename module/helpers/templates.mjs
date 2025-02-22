@@ -8,6 +8,7 @@ export const preloadHandlebarsTemplates = async function () {
     // Actor partials.
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-features.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/parts/actor-combat.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-effects.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs',

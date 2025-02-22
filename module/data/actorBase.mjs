@@ -7,6 +7,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     const schema = {}
     schema.biography = new fields.HTMLField()
     schema.skillPool = new fields.NumberField({ initial: 0 })
+    schema.perkPoints = new fields.NumberField({ initial: 0 })
     schema.startingSkillpoints = new fields.NumberField({ initial: 6 })
     schema.totalSkillpoints = new fields.NumberField({ initial: 0 })
     schema.health = new fields.SchemaField({
@@ -26,6 +27,10 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         ...requiredInteger,
         initial: 0,
       }),
+      tooltip: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
     })
     schema.stamina = new fields.SchemaField({
       value: new fields.NumberField({
@@ -42,6 +47,10 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 10,
       }),
       temp: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
+      tooltip: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
@@ -70,6 +79,10 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 'half',
       }),
       dazed: new fields.NumberField({
+        initial: 0,
+      }),
+      tooltip: new fields.NumberField({
+        ...requiredInteger,
         initial: 0,
       }),
     })

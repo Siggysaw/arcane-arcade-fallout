@@ -9,19 +9,8 @@
                             {{ item.name }}
                         </p>
                     </summary>
-
                     <table class="equipped-stats">
-                        <tr>
-                            <td colspan="999">DETAILS</td>
-                        </tr>
-                        <tr>
-                            <td>AP: {{ item.system.apCost }}</td>
-                            <td>Load: {{ item.system.load }}</td>
-                            <td>Str: {{ item.system.strengthRequirement }}</td>
-                        </tr>
-                    </table>
-                    <table class="equipped-stats">
-                        <tr>
+                        <tr><td rowspan="2">AP: {{ item.system.apCost }}</td>
                             <td colspan="999">RANGE</td>
                         </tr>
                         <tr>

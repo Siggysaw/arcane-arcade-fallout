@@ -115,6 +115,44 @@
                     properties=system.properties
                     penaltyTotal=system.penaltyTotal
                 }}
+                  <br />
+                  <hr />
+                  <hr />
+                  <br />
+                  <table>
+                      <tr>
+                          {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
+                    </tr>
+                    <tr>
+                        <td class="skill-value">
+                            {{#if system.editToggle}}<i style="padding: 3px"
+                                                        data-statSubtraction
+                                                        data-stat="armorClass"
+                                                        data-type=""
+                                                        class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
+                            AC:{{ system.armorClass.value }}
+                            {{#if system.editToggle}}<i style="padding: 3px"
+                                                        data-statAddition
+                                                        data-stat="armorClass"
+                                                        data-type=""
+                                                        class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
+                        </td>
+                        <td class="skill-value">
+                            {{#if system.editToggle}}<i style="padding: 3px"
+                                                        data-statSubtraction
+                                                        data-stat="damageThreshold"
+                                                        data-type=""
+                                                        class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
+                            DT:{{ system.damageThreshold.value }}
+                            {{#if system.editToggle}}<i style="padding: 3px"
+                                                        data-statAddition
+                                                        data-stat="damageThreshold"
+                                                        data-type=""
+                                                        class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
+                        </td>
+                     </tr>
+                  </table>
+                  {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-combat.hbs"}}
               </td>
             </tr>
           </table>

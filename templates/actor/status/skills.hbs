@@ -9,12 +9,12 @@
     </div>
     <div>
         <div class="flex justify-center gap-5" style="vertical-align:middle">
-            {{#if ../system.editToggle}}<button class="w-auto no-background" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
+            {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
                 <i class="fas fa-minus-square "></i>
             </button>
             {{/if}}
             <span class="skillvalue" {{#unless ../system.editToggle}} style="margin-top:10px;" {{/unless}}>{{skill.value}}</span>
-            {{#if ../system.editToggle}}<button class="w-auto no-background" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
+            {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
                 <i class="fas fa-plus-square"></i>
             </button>
             {{/if}}
@@ -22,3 +22,16 @@
     </div>
     {{/each}}
 </div>
+<br />
+<hr />
+<br />
+<table>
+    <tr>
+        <td class="armorbox meleebox" style="vertical-align:top">
+            <details {{#if system.combatActionsexpanded }} open="true" {{/if}}>
+                <summary data-combatExpand style="padding:7.5px;background:#222;text-transform:uppercase;color:white;">Combat Actions</summary>
+                {{> "systems/arcane-arcade-fallout/templates/actor/items/combat-actions.hbs" }}
+            </details>
+        </td>
+    </tr>
+</table>

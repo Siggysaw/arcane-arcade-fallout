@@ -79,7 +79,7 @@
                  style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
                  src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png" />
         </td>
-        <td style="vertical-align: middle;text-align:left;" class="statusnum" title="Current = {{carryLoad.base}} + {{carryLoad.modifiers}} / Max = {{carryLoad.baseMax}} + {{carryLoad.modifiersMax}}">
-            {{ carryLoad.value }} / {{carryLoad.max}}
+        <td style="vertical-align: middle;text-align:left;" class="statusnum" title="Current = {{carryLoad.base}} + {{carryLoad.modifiers}} / Max = {{carryLoad.baseMax}} + {{carryLoad.modifiersMax}} + {{carryLoad.manualMax}}">
+            {{ carryLoad.value }} / {{carryLoad.max}} {{#GM}}{{#if system.editToggle}}<input style="border:solid 1px;text-align:center" title="Manually Increase or Decrease Carry Load Max" type="number" name="system.carryLoad.manualMax" value="{{carryLoad.manualMax}}" />{{/if}}{{/GM}}
         </td>
 </table>

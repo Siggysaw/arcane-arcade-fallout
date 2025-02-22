@@ -1165,9 +1165,15 @@ export default class FalloutZeroActor extends Actor {
 
     // Manually Reloaded?
     const manualReload = weapon.system.description.includes('Manual Reload')
+    const rapid = weapon.parent.items.find((i) => i.name == 'Rapid Reload')
+    
 
     // Do you have the AP?
     let apCost = 6
+    if (!this.inCombat) {
+      apCost=0
+    }
+    rapid ? apCost = apCost - 3 : apCost = apCost
     if (manualReload) {
       apCost = 1
     }
@@ -1219,7 +1225,7 @@ export default class FalloutZeroActor extends Actor {
       ])
     } else {
       if (manualReload) {
-        capacity = currentMag + 1
+       rapid ? ammoReloaded > 3 ? capacity = currentMag + 3 : capacity = currentMag + ammoReloaded : capacity = currentMag + 1
       }
       this.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.ammo.capacity.value': capacity },
@@ -1227,7 +1233,7 @@ export default class FalloutZeroActor extends Actor {
     }
 
     // Energy Weapon Reload Rules
-    if (energyWeapon || manualReload) {
+    if (energyWeapon || manualReload && !rapid) {
       updatedAmmo = ammoOwned - 1
       this.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     } else {

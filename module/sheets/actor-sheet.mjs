@@ -87,7 +87,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     actorData.system.carryLoad.value =
       actorData.system.carryLoad.base + actorData.system.carryLoad.modifiers
     actorData.system.carryLoad.max =
-      actorData.system.carryLoad.baseMax + actorData.system.carryLoad.modifiersMax
+      actorData.system.carryLoad.baseMax + actorData.system.carryLoad.modifiersMax + actorData.system.carryLoad.manualMax
 
     //Set Group Sneak and Party Nerve
     const characterList = game.actors.filter((entries) => entries.type === 'character')
@@ -622,6 +622,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const statField = ev.currentTarget.dataset.field
       this.actor.statSubtraction(stat, statType, statField)
     })
+   
     html.on('click', '[data-statAddition]', (ev) => {
       const stat = ev.currentTarget.dataset.stat
       const statType = ev.currentTarget.dataset.type
