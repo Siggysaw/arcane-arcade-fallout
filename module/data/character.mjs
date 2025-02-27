@@ -190,6 +190,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.level > 2 ? this.health.tooltip = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['end'].mod) : this.health.tooltip = this.abilities['end'].mod + 10
     this.level > 2 ? this.stamina.tooltip = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) : this.stamina.tooltip = this.abilities['agi'].mod + 10
     this.actionPoints.tooltip = this.abilities['agi'].mod + 10
+    this.explosivesMastery = this.abilities['per'].mod + this.skills['explosives'].value
   }
 }
 

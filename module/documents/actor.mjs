@@ -912,6 +912,7 @@ export default class FalloutZeroActor extends Actor {
    * @returns true if successful or false if not enough AP
    */
   applyApCost(cost) {
+    this.inCombat ? cost = cost : cost = 0
     const currentAP = this.system.actionPoints.value
     const newAP = Number(currentAP) - Number(cost)
     if (newAP < 0) {

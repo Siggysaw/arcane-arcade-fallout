@@ -4,18 +4,17 @@ export default class AttackRoll extends FormApplication {
 
     this.weapon = weapon
     this.actor = actor
-
     this.formDataCache = {
       consumesAp: true,
       skillBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus),
       attackBonus: this.actor.getAttackBonus(),
       damageBonus: this.actor.getDamageBonus(),
       abilityBonus: this.weapon.getAbilityBonus(),
-      decayPenalty: this.weapon.getDecayValue(),
+      decayPenalty: weapon.type == "explosive" ?  0 : this.weapon.getDecayValue(),
       actorLuck: this.actor.system.luckmod,
       actorPenalties: this.actor.system.penaltyTotal,
       totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - this.weapon.getDecayValue() - this.actor.system.penaltyTotal + this.actor.system.luckmod,
-      bonus: '',
+      bonus: 0,
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
       apCost: this.weapon.system.apCost,
@@ -193,7 +192,12 @@ export default class AttackRoll extends FormApplication {
   }
 
   getFlavor(target) {
-    let flavor = `BOOM! Attack with ${this.weapon.name}`
+    let flavor = ''
+    this.weapon.type == "explosive" ? flavor = `GET DOWN! ${this.weapon.name} thrown! this will detonate _____ <hr>
+    1: In hand <br>
+    2: Halfway to target <br>
+    3 - 14: Start of your next turn. <br>
+    15+: End of your turn.` : flavor = `BOOM! Attack with ${this.weapon.name}`
     if (!target) {
       return flavor
     }
@@ -252,7 +256,11 @@ export default class AttackRoll extends FormApplication {
       const canAfford = this.weapon.applyAmmoCost()
       if (!canAfford) return
     }
-
+    if (this.weapon.type == "explosive") {
+      let Qty = this.weapon.system.quantity
+      Qty = Qty - 1
+      this.weapon.update({ 'system.quantity': Qty })
+    }
     /**
      * Deconstruct dialog form
      */
@@ -268,7 +276,9 @@ export default class AttackRoll extends FormApplication {
       bonusdamage
     } = this.formDataCache
 
-    const rollBonusTotal = skillBonus + attackBonus + abilityBonus + actorLuck + bonus - actorPenalties - decayPenalty
+    const rollBonusTotal = Number(skillBonus + attackBonus + abilityBonus + actorLuck + Number(bonus) - actorPenalties - decayPenalty)
+    console.log(`${rollBonusTotal} = ${skillBonus} + ${attackBonus} + ${abilityBonus} + ${actorLuck} + ${bonus} - ${actorPenalties} - ${decayPenalty}`)
+
     /**
      * Roll to hit
      */

@@ -1,6 +1,6 @@
-import FalloutZeroItemBase from './itemBase.mjs'
+import { FalloutZeroWeapon } from './_module.mjs'
 
-export default class FalloutZeroItemAmmo extends FalloutZeroItemBase {
+export default class FalloutZeroExplosives extends FalloutZeroWeapon {
   static defineSchema() {
     const fields = foundry.data.fields
     const requiredInteger = { required: true, nullable: false, integer: true }
@@ -13,6 +13,8 @@ export default class FalloutZeroItemAmmo extends FalloutZeroItemBase {
     schema.load = new fields.NumberField({ required: true, nullable: false, initial: 0.1, min: 0 })
     schema.cost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
     schema.type = new fields.StringField({ initial: '9mm' })
+    schema.abilityMod = new fields.StringField({ initial: 'per' })
+    schema.skillBonus = new fields.StringField({ initial: 'explosives' })
 
     return schema
   }

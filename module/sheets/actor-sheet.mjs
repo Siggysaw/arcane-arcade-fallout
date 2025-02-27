@@ -62,14 +62,19 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const CapsLoad = game.settings.get('core', 'CapsLoad')
     const AmmoLoad = game.settings.get('core', 'AmmoLoad')
     const JunkLoad = game.settings.get('core', 'JunkLoad')
+    const KeepZeroes = game.settings.get('core', 'KeepZeroes')
+
 
 
     // Calculate Carry Load
-
     const packrat = actorData.items.find((i) => i.name == 'Pack Rat')
     const capsLoad = CapsLoad ? Math.floor(actorData.system.caps / 50) : 0
+
     actorData.system.carryLoad.base =
       actorData.items.reduce((acc, item) => {
+        if (item.system.qty === 0 && !KeepZeroes) {
+          console.log("0s need to be deleted")
+        }
         let { load = 0, quantity = 1 } = item.system
         if (item.type === "armor" && item.system.itemEquipped===true) {
           load = Math.floor(load / 2)
@@ -231,7 +236,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     context.properties = properties
     context.backgrounds = backgrounds
     context.explosives = explosives.map((weapon) => {
-      weapon.system.thrown = this.actor.system.abilities['str'].value * weapon.system.range
+      weapon.system.thrown = this.actor.system.abilities['str'].value * weapon.system.range.short
       return weapon
     })
     context.miscItems = miscItems
@@ -321,44 +326,16 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          let enoughAP = true
-          /*if (item.type == 'powerArmor') { //Deprecated
-            enoughAP = this.actor.applyApCost(6)
+          let cost = 3
+          item.type == "powerArmor" ? cost = 6 : cost = cost
+          if (this.actor.applyApCost(cost)) {
+            item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+            if ((item.type == 'armor' || item.type == 'powerArmor') && item.parent) {
+              FalloutZeroArmor.prototype.changeEquipStatus(item)
+            } else {
+              FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
+            }
           }
-          if (enoughAP) {*/
-          item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-          if ((item.type == 'armor' || item.type == 'powerArmor') && item.parent) {
-            FalloutZeroArmor.prototype.changeEquipStatus(item)
-          } else {
-            FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
-          }
-          //}
-        },
-      },
-      {
-        name: 'Send to Chat',
-        icon: '<i class="fa-solid fa-comment"></i>',
-        condition: (element) => {
-          const itemId = element.closest('.context-menu').data('item-id')
-          const item = this.actor.items.get(itemId)
-          if (item.system.description && item.system.description.length > 0) {
-            return true
-          }
-        },
-        callback: (element) => {
-          const itemId = element.closest('.context-menu').data('item-id')
-          const item = this.actor.items.get(itemId)
-          let theContent = item.system.description
-          if (item.type == 'explosive') {
-            theContent = item.system.properties
-          }
-          let chatData = {
-            author: game.user._id,
-            speaker: ChatMessage.getSpeaker(),
-            flavor: `${item.name} description :`,
-            content: theContent,
-          }
-          ChatMessage.create(chatData, {})
         },
       },
       {
@@ -390,7 +367,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          this.actor.lowerInventory(itemId)
+          this.actor.applyApCost(4) ? this.actor.lowerInventory(itemId) : console.log("Failed To Apply Cost")
         },
       },
       {
@@ -432,7 +409,33 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          this.actor.lowerInventory(itemId)
+          this.actor.applyApCost(4) ? this.actor.lowerInventory(itemId) : console.log("Failed To Apply Cost")
+        },
+      },
+      {
+        name: 'Send to Chat',
+        icon: '<i class="fa-solid fa-comment"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.system.description && item.system.description.length > 0) {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          let theContent = item.system.description
+          if (item.type == 'explosive') {
+            theContent = item.system.properties
+          }
+          let chatData = {
+            author: game.user._id,
+            speaker: ChatMessage.getSpeaker(),
+            flavor: `${item.name} description :`,
+            content: theContent,
+          }
+          ChatMessage.create(chatData, {})
         },
       },
       {
@@ -496,19 +499,22 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     // Toggle Edit Mode
     html.on('click', '[data-editToggle]', (ev) => {
-      if (this.actor.system.editToggle === true) {
-        this.actor.update({ 'system.editToggle': false })
-      } else {
-        this.actor.update({ 'system.editToggle': true })
-      }
+        this.actor.update({ 'system.editToggle': !this.actor.system.editToggle })
     })
 
     // Toggle Active Party Member
     html.on('click', '[data-activeCheck]', (ev) => {
-      if (this.actor.system.activePartymember === true) {
-        this.actor.update({ 'system.activePartymember': false })
-      } else {
-        this.actor.update({ 'system.activePartymember': true })
+        this.actor.update({ 'system.activePartymember': !this.actor.system.activePartymember })
+    })
+
+    // Toggle Equipped Items
+    html.on('click', '[data-equipToggle]', (ev) => {
+      const itemId = ev.currentTarget.dataset.itemId
+      const item = this.actor.items.get(itemId)
+      let cost = 3
+      item.type == "powerArmor" ? cost = 6 : cost = cost
+      if (this.actor.applyApCost(cost)) {
+          item.update({ 'system.itemEquipped': !item.system.itemEquipped })
       }
     })
 

@@ -103,19 +103,16 @@
         </td>
     </tr>
 </table>
+{{#if actor.inCombat}}
 <table style="width:200px;">
     <tr>
         <td>
-            <div class="fakebutton" data-recycle-ap title="Refresh AP During Combat">
+            <div class="fakebutton" data-recycle-ap title="Recycle AP At Beginning of Turn">
                 <i class="fa-solid fa-recycle"></i>
-            </div>
-        </td>
-        <td>
-            <div class="fakebutton" data-refill-ap title="Refresh AP Outside of Combat">
-                <i class="fa-regular fa-arrow-up-right-dots"></i>
             </div>
         </td>
     </tr>
 </table>
+{{/if}}
 
 

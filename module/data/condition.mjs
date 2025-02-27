@@ -24,7 +24,8 @@ export default class FalloutZeroCondition extends FalloutZeroItemBase {
     schema.full = new fields.NumberField({})
     schema.worn = new fields.BooleanField({})
     schema.filled = new fields.BooleanField({})
-
+    schema.abilityMod = new fields.StringField({ initial: 'per' })
+    schema.skillBonus = new fields.StringField({ initial: 'explosives' })
 
     schema.modifiers = new fields.SchemaField({
       path1: new fields.StringField({initial: ""}),
@@ -54,7 +55,62 @@ export default class FalloutZeroCondition extends FalloutZeroItemBase {
     schema.img = new fields.StringField({
       initial: 'systems/arcane-arcade-fallout/assets/vaultboy/perk-icons/chemresistant.png',
     })
-
+    schema.damage = new fields.SchemaField({
+      type: new fields.StringField({ initial: 'piercing' }),
+      formula: new fields.StringField({ initial: '2d4' }),
+    })
+    schema.damages = new fields.ArrayField(
+      new fields.SchemaField({
+        type: new fields.StringField({ initial: 'piercing' }),
+        altType: new fields.StringField({ initial: null, nullable: true }),
+        formula: new fields.StringField({ initial: '1d4' }),
+      }),
+      { initial: [{ type: 'piercing', formula: '1d4' }] },
+    )
+    // schema.roll = new fields.SchemaField({
+    //     diceNum: new fields.NumberField({ ...requiredInteger, initial: 1, min: 1 }),
+    //     diceSize: new fields.StringField({ initial: "d20" }),
+    //     diceBonus: new fields.StringField({ initial: "+@str.mod+ceil(@lvl / 2)" })
+    // })
+    schema.range = new fields.SchemaField({
+      short: new fields.NumberField({ initial: 0, min: 0 }),
+      long: new fields.NumberField({ initial: 10, blank: true }),
+      thrown: new fields.NumberField({ initial: 0 }),
+    })
+    schema.critical = new fields.SchemaField({
+      dice: new fields.NumberField({ initial: 20, blank: true }),
+      multiplier: new fields.NumberField({ initial: 1, nullable: false }),
+      formula: new fields.StringField({ initial: null, nullable: true }),
+      condition: new fields.StringField({ initial: null, nullable: true }),
+    })
+    schema.ammo = new fields.SchemaField({
+      type: new fields.StringField({ initial: '' }),
+      assigned: new fields.StringField({}),
+      capacity: new fields.SchemaField({
+        value: new fields.NumberField({
+          ...requiredInteger,
+          initial: 0,
+        }),
+        min: new fields.NumberField({
+          ...requiredInteger,
+          initial: 0,
+        }),
+        max: new fields.NumberField({
+          ...requiredInteger,
+          initial: 6,
+        }),
+      }),
+      consumes: new fields.SchemaField({
+        type: new fields.ArrayField(new fields.StringField()),
+        target: new fields.StringField(),
+        amount: new fields.NumberField({ initial: 1 }),
+      }),
+    })
+    schema.range = new fields.SchemaField({
+      short: new fields.NumberField({ initial: 1, min: 0, nullable: false }),
+      long: new fields.NumberField({ initial: 1, min: 0, nullable: false }),
+      // flat: new fields.NumberField({ initial: null, min: 1})
+    })
     return schema
   }
 }

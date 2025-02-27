@@ -1,5 +1,3 @@
-2025/02/22-15:07:54.671 1e3a0 Log #324: 0 ops saved to Table #325 OK
-2025/02/22-15:07:54.672 1e3a0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\community_enemies/000324.log: OK
-2025/02/22-15:07:54.674 1e3a0 Table #315: 246 entries OK
-2025/02/22-15:07:54.677 1e3a0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\community_enemies/MANIFEST-000323: OK
-2025/02/22-15:07:54.683 1e3a0 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\community_enemies; recovered 1 files; 891498 bytes. Some data may have been lost. ****
+2025/02/26-13:18:53.079 6464 Recovering log #346
+2025/02/26-13:18:53.088 6464 Delete type=0 #346
+2025/02/26-13:18:53.088 6464 Delete type=3 #345

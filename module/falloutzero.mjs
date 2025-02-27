@@ -63,6 +63,15 @@ Hooks.once('init', function () {
     default: '',
     requiresReload: true,
   })
+  game.settings.register('core', 'KeepZeroes', {
+    name: 'Keep Zeroed Items',
+    hint: 'Keep items in your inventory even if your qty is 0',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  })
 
   const sheetColor = game.settings.get('core', 'Sheet-Color');
   const r = document.querySelector(':root');

@@ -1,8 +1,13 @@
 <table>
-      {{#each rangedWeapons as |item id|}}
+    {{#each rangedWeapons as |item id|}}
     <tr>
-
-        <td class="context-menu" data-item-id="{{ item._id }}">{{item.name}}</td>
+        <td>
+            <i data-equipToggle data-item-id="{{ item._id}}"
+               class="pointer {{#if system.itemEquipped}}far fa-check-circle{{else}}far fa-circle{{/if}}"></i>
+        </td>
+        <td style="max-width:120px;" class="context-menu" data-item-id="{{ item._id }}">
+            <p title="{{item.name}}" class="equipment-title">{{item.name}}</p>
+        </td>
         <td style="min-width:50px">
             <div style="float:left;">
                 <i style="padding: 2px;float:right"
@@ -36,62 +41,88 @@
                data-weapon-roll
                data-weapon-id="{{ item._id }}"
                class="fa fa-solid fa-crosshairs"></i>
-        </tdstyle="min-width:50px">
+        </td>
     </tr>
-      {{/each}}
-      {{#each meleeWeapons as |item id|}}
+    {{/each}}
+    {{#each meleeWeapons as |item id|}}
+    <tr>
+        <td style="width:15px;">
+            <i data-equipToggle data-item-id="{{ item._id}}"
+               class="pointer {{#if system.itemEquipped}}far fa-check-circle{{else}}far fa-circle{{/if}}"></i>
+        </td>
+        <td class="context-menu" data-item-id="{{ item._id }}">{{item.name}}</td>
+        <td style="min-width:50px">
+            <div style="float:left;">
+                <i style="padding: 2px;float:right"
+                   data-reduce-decay
+                   data-field="item.system.decay"
+                   data-fieldvalue="{{item.system.decay}}"
+                   data-weapon-id="{{ item._id }}"
+                   class="fas fa-minus-square fakebutton nobackground">
+                </i>
+            </div>
+            <span title="CND">{{ item.system.decay }}</span>
+            <div style="float:right;">
+                <i style="padding: 2px;float:left"
+                   data-add-decay
+                   data-field="item.system.decay"
+                   data-fieldvalue="{{item.system.decay}}"
+                   data-weapon-id="{{ item._id }}"
+                   class="fas fa-plus-square fakebutton nobackground">
+                </i>
+            </div>
+        </td>
+        <td style="min-width:50px">AP: {{item.system.apCost}}</td>
+        <td>5ft</td>
+        {{#if item.system.ammo.assigned}}
+        <td title="{{item.system.ammo.assigned}}">{{item.system.ammo.capacity.value}}/{{ item.system.ammo.capacity.max }}</td>
+        {{else}}
+        <td>NA</td>
+        {{/if}}
+        <td style="min-width:50px">
+            <i title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+               data-reload
+               data-weapon-id="{{ item._id }}"
+               class="fa fa-refresh"></i>
+            <i title="Roll An Attack"
+               data-weapon-roll
+               data-weapon-id="{{ item._id }}"
+               class="fa fa-solid fa-crosshairs"></i>
+        </td>
+    </tr>
+    {{/each}}
+</table>
+{{#if explosives}}<hr />{{/if}}
+<table>
+    {{#each explosives as |item id|}}
 <tr>
-    <td class="context-menu" data-item-id="{{ item._id }}">{{item.name}}</td>
-    <td style="min-width:50px">
-        <div style="float:left;">
-            <i style="padding: 2px;float:right"
-               data-reduce-decay
-               data-field="item.system.decay"
-               data-fieldvalue="{{item.system.decay}}"
-               data-weapon-id="{{ item._id }}"
-               class="fas fa-minus-square fakebutton nobackground">
-            </i>
-        </div>
-        <span title="CND">{{ item.system.decay }}</span>
-        <div style="float:right;">
-            <i style="padding: 2px;float:left"
-               data-add-decay
-               data-field="item.system.decay"
-               data-fieldvalue="{{item.system.decay}}"
-               data-weapon-id="{{ item._id }}"
-               class="fas fa-plus-square fakebutton nobackground">
-            </i>
-        </div>
+    <td style="max-width:120px;" class="context-menu" data-item-id="{{ item._id }}">
+        <p title="{{item.name}}" class="equipment-title">{{item.name}} {{#GreaterThan item.system.quantity 2}}({{item.system.quantity}}){{/GreaterThan}}</p>
     </td>
-    <td style="min-width:50px">AP: {{item.system.apCost}}</td>
-    <td>5ft</td>
-    {{#if item.system.ammo.assigned}}
-    <td title="{{item.system.ammo.assigned}}">{{item.system.ammo.capacity.value}}/{{ item.system.ammo.capacity.max }}</td>
-    {{else}}
-    <td>NA</td>
-    {{/if}}
-    <td style="min-width:50px">
-        <i title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
-           data-reload
-           data-weapon-id="{{ item._id }}"
-           class="fa fa-refresh"></i>
+    <td>AP: {{ item.system.apCost }}</td>
+    <td>
+        {{#GreaterThan item.system.thrown 1}}{{ item.system.thrown }}ft
+        {{else}}
+        ARM:{{#Sum item.system.armDC 10}}{{/Sum}}
+        {{/GreaterThan}}
+    </td>
+    <td>{{ item.system.aoeRadius}}</td>
+    <td>
         <i title="Roll An Attack"
            data-weapon-roll
            data-weapon-id="{{ item._id }}"
            class="fa fa-solid fa-crosshairs"></i>
     </td>
 </tr>
-      {{/each}}
+    {{/each}}
+</table>
+<table>
     <tr>
-    {{#if explosives}}
-    <td class="armorbox" colspan="999">
-      {{>
-            "systems/arcane-arcade-fallout/templates/actor/items/explosives.hbs"
-            explosives=explosives
-            abilities=system.abilities
-            skills=system.skills
-            penaltyTotal=penaltyTotal
-      }}
-    {{/if}}
-  </tr>
+        <td class="armorbox meleebox">
+            <details {{#if system.combatActionsexpanded }} open="true" {{/if}}>
+                <summary data-combatExpand style="padding:7.5px;background:#222;text-transform:uppercase;color:white;">Combat Actions</summary>
+                {{> "systems/arcane-arcade-fallout/templates/actor/items/combat-actions.hbs" }}
+            </details>
+        </td>
+    </tr>
 </table>

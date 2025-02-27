@@ -473,9 +473,9 @@ td,
 .sheet div .box-traits,
 .sheet div .box-perks,
 .sheet div .box-medicines {
-  width: 33%;
+  width: 25%;
   float: left;
-  min-height: 265px;
+  min-height: 150px;
 }
 .sheet div .box-traits h3,
 .sheet div .box-perks h3,
@@ -894,7 +894,7 @@ a.inline-roll,
 .sheet .context-icon {
   font-size: 14pt;
 }
-.sheet .context-menu {
+.sheet .context-menu,.sheet .pointer {
   cursor: pointer;
 }
 .sheet .context-menu li {
@@ -949,4 +949,13 @@ a.inline-roll,
     vertical-align:middle;
     margin:0px;
     padding:0px;
+}
+.sheet .combat-icon {
+  background: #222;
+  position: relative;
+  margin-top: -30px;
+  font-size: 16pt;
+  width: 178px;
+  margin-left: 1px;
+  text-transform: uppercase;
 }
