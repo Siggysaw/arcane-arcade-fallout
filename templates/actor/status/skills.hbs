@@ -1,7 +1,8 @@
-<div class="grid bordered">
+<div class="grid bordered skill-divs">
     {{#each skills as |skill key|}}
     <div>
-        <button type="button"
+        <button class="skillbutton"
+                type="button"
                 data-skill-roll="{{ skill.id }}"
                 title="Base: {{ skill.base }} Modifier: {{ skill.modifiers }}">
             {{ skill.label }}
@@ -10,12 +11,12 @@
     <div>
         <div class="flex justify-center gap-5" style="vertical-align:middle">
             {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
-                <i class="fas fa-minus-square "></i>
+                <i class="fas fa-minus-square nobackground"></i>
             </button>
             {{/if}}
             <span class="skillvalue" {{#unless ../system.editToggle}} style="margin-top:10px;" {{/unless}}>{{skill.value}}</span>
             {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
-                <i class="fas fa-plus-square"></i>
+                <i class="fas fa-plus-square nobackground"></i>
             </button>
             {{/if}}
         </div>

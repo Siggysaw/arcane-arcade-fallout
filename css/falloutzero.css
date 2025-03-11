@@ -304,11 +304,15 @@ details > summary {
   padding-top: 20px;
 }
 #chat .chat-message,
+#chat-popout .chat-message,
 #keybindings .binding .key,
 #keybindings .binding .key.uneditable {
   background: #222;
   color: var(--sheetcolor);
   font-family: Monofonto;
+}
+#chat-popout .flavor-text{
+    color:var(--sheetcolor;)
 }
 .sheet.journal-entry .title {
   display: none;
@@ -585,10 +589,12 @@ td,
   width: 50px;
   height: 50px;
   border: none;
+  background:none;
 }
 
 .sheet .karmaCaps input[type='checkbox']:checked {
   content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
+  background:none;
 }
 
 .sheet .addRemoveCaps button {
@@ -757,58 +763,6 @@ form td .status-notes li:hover {
   display: none;
 }
 
-.sheet td .limb {
-  min-height: 100px;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.sheet td .head {
-  height: 135px;
-  width: 115px;
-  margin-left: 171px;
-  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/head.png');
-}
-
-.sheet td .l-arm {
-  margin-left: 39px;
-  margin-top: -27px;
-  height: 20px;
-  width: 150px;
-  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/arm1.png');
-}
-
-.sheet td .torso {
-  margin-left: 166px;
-  margin-top: -99px;
-  height: 125px;
-  width: 122px;
-  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/torso.png');
-}
-
-.sheet td .r-arm {
-  margin-left: 265px;
-  margin-top: -125px;
-  height: 100px;
-  width: 137px;
-  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/arm2.png');
-}
-
-.sheet td .l-leg {
-  margin-left: 62px;
-  margin-top: 14px;
-  height: 132px;
-  width: 167px;
-  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg1.png');
-}
-
-.sheet td .r-leg {
-  margin-left: 213px;
-  margin-top: -143px;
-  height: 142px;
-  width: 106px;
-  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/status-limbs/leg2.png');
-}
 .sheet .active-conditions {
   float: left;
   margin: 2px;
@@ -958,4 +912,91 @@ a.inline-roll,
   width: 178px;
   margin-left: 1px;
   text-transform: uppercase;
+}
+
+
+/* VAULT TEC OVERRIDES*/
+
+.sheet .vaulttec {
+  background-color: #447AB9;
+  color: #FFF;
+}
+.window-app .window-content .vaulttec input,
+.window-app .window-content .vaulttec .fakebutton,
+.window-app .window-content .vaulttec button,
+.window-app .window-content .vaulttec label,
+.window-app .window-content .vaulttec select,
+.window-app .window-content .vaulttec textarea,
+.window-app form .vaulttec p,
+.sheet form .vaulttec .perk-div h3,
+.window-app .window-content .vaulttec li,
+.window-app .window-content .vaulttec a {
+  color: #ffffcb;
+  text-shadow: 0 0 2px #000;
+}
+.sheet .vaulttec .sheet-header,
+.sheet .vaulttec .status-table table,
+.window-app .window-content .vaulttec .weapons-table,
+.window-app .window-content .vaulttec .equipped-stats,
+.sheet .vaulttec .effects {
+  background-color: #325886;
+  color: #ffffcb;
+  text-shadow: 0 0 2px #000;
+  padding: 5px;
+}
+.sheet .vaulttec .skill-divs {
+  background-color: #222;
+  color: #ffffcb;
+}
+.sheet .vaulttec .skillbutton:hover {
+  background-color: #ffffcb;
+  color: #222;
+}
+.window-app .window-content .vaulttec .equipped-stats a{
+    padding:5px;
+    font-size:10pt;
+}
+.sheet .vaulttec input {
+  color: #FEF265;
+  background-color: #333;
+  border: solid 1px;
+}
+.sheet .vaulttec .character-name input{
+    background-color:none;
+    border:none;
+    font-style:italic;
+}
+  .sheet .vaulttec nav {
+    background-color: #325886;
+  }
+  .sheet .vaulttec nav a{
+      color:white;
+  }
+.window-app .window-content .vaulttec label {
+  color: #ffffcb;
+  font-size: 13pt;
+  text-shadow: 0 0 2px #000;
+  background: #325886;
+  padding: 5px;
+  border-radius: .5em;
+}
+  .window-app .window-content .vaulttec label:hover,
+  .sheet .vaulttec .fakebutton:hover {
+    color: #333;
+    background: #ffffcb;
+    text-shadow: none;
+  }
+  .sheet .vaulttec .fakebutton {
+    color: #333;
+    background: none;
+    text-shadow: none;
+  }
+.sheet .vaulttec .skill-divs button:hover {
+  text-shadow: none;
+  border: none;
+}
+.sheet .vaulttec .ability-mod{
+    font-size:12pt;
+    margin-top:-10px;
+    padding-top:0px;
 }

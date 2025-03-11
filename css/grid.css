@@ -14,6 +14,14 @@
   border-right: 1px solid var(--sheetcolor);
 }
 
+.sheet .vaulttec .grid.bordered {
+  border-top: 1px solid #FEF265;
+  border-left: 1px solid #FEF265;
+}
+  .sheet .vaulttec .grid.bordered > * {
+    border-bottom: 1px solid #FEF265;
+    border-right: 1px solid #FEF265;
+  }
 .grid-3col {
   grid-column: span 3 / span 3;
   grid-template-columns: repeat(3, minmax(0, 1fr));

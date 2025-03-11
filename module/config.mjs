@@ -526,6 +526,7 @@ FALLOUTZERO.rules = {
   Take_Cover: `If you only have three quarters or half cover, you can spend 3 AP to squat, kneel, or duck into cover to gain full cover. If you attack while taking cover, you no longer have full cover. `,
   Unarmed_Strike: `You punch, kick, jab, slap, or perform any kind of attack to another creature within 5 feet of you.<br><br> Unarmed attacks cost 3 AP. They deal 1d4 + STR or AGI Mod bludgeoning damage.`,
   Use_a_Chem: `When you take this action, you take the chem out of your inventory and use it. You don’t need to interact with the object or equip the chem in order to use it.`,
+  Block: `While wielding a melee weapon, you can spend 3 AP to block. Blocking increases your DT by 2 + your Endurance modifier against other melee attacks. Your block lasts until you attack again.`,
 }
 
 //MONSTER LOOT as described in the book (v2.0)

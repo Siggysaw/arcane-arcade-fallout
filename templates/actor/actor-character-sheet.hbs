@@ -1,5 +1,6 @@
 <form autocomplete="off">
-  <div class="{{ cssClass }} {{ actor.type }} flexcol">
+  <div class="{{#if system.vaulttec}} vaulttec {{/if}}{{ cssClass }} {{ actor.type }} flexcol">
+      {{log cssClass}}
     {{!-- Sheet Header --}}
     <header class="sheet-header">
       <div class="header-fields">
@@ -17,7 +18,12 @@
             class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"
           ></i
         ></span>
-
+                  <span title="Toggle Edit Mode"
+          >Vault-Tec:<i
+            data-sheetToggle
+            class="fas fa-toggle-{{#if system.vaulttec}}on{{else}}off{{/if}}"
+          ></i
+        ></span>
         <table>
           <tr>
             <td>
@@ -129,26 +135,26 @@
                                                         data-statSubtraction
                                                         data-stat="armorClass"
                                                         data-type=""
-                                                        class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
+                                                        class="fas fa-minus-square nobackground"></i>{{/if}}
                             AC:{{ system.armorClass.value }}
                             {{#if system.editToggle}}<i style="padding: 3px"
                                                         data-statAddition
                                                         data-stat="armorClass"
                                                         data-type=""
-                                                        class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
+                                                        class="fas fa-plus-square nobackground"></i>{{/if}}
                         </td>
                         <td class="skill-value">
                             {{#if system.editToggle}}<i style="padding: 3px"
                                                         data-statSubtraction
                                                         data-stat="damageThreshold"
                                                         data-type=""
-                                                        class="fas fa-minus-square fakebutton nobackground"></i>{{/if}}
+                                                        class="fas fa-minus-square nobackground"></i>{{/if}}
                             DT:{{ system.damageThreshold.value }}
                             {{#if system.editToggle}}<i style="padding: 3px"
                                                         data-statAddition
                                                         data-stat="damageThreshold"
                                                         data-type=""
-                                                        class="fas fa-plus-square fakebutton nobackground"></i>{{/if}}
+                                                        class="fas fa-plus-square nobackground"></i>{{/if}}
                         </td>
                      </tr>
                   </table>

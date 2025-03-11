@@ -50,8 +50,12 @@
   margin-block-start: 4px;
   margin-block-end: -4px;
   font-style: italic;
+  color: var(--user-color);
 }
-.chat-sidebar .message-header .title {
+#chat-popout .chat-form{
+    color:black;
+}
+.chat-sidebar .message-header .title{
   color: var(--user-color);
 }
 .chat-sidebar .message-content .card-buttons {

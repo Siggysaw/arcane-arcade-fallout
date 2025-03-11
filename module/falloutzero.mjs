@@ -132,7 +132,7 @@ Hooks.once('init', function () {
   Actors.unregisterSheet('core', ActorSheet)
   Actors.registerSheet('falloutzero', sheets.FalloutZeroActorSheet, {
     makeDefault: true,
-    label: 'FALLOUTZERO.SheetLabels.Actor',
+    label: 'Pip-Boy',
   })
   Items.unregisterSheet('core', ItemSheet)
   Items.registerSheet('falloutzero', sheets.FalloutZeroItemSheet, {
@@ -187,6 +187,13 @@ Handlebars.registerHelper('NPC', function (actorType, options) {
   }
   return options.inverse(this)
 })
+// If Value equals something
+Handlebars.registerHelper('Check', function (v1, v2, options) {
+  if (v1 == v2) {
+    return options.fn(this)
+  }
+  return options.inverse(this)
+})
 
 // Greater Than or Equal
 Handlebars.registerHelper('GreaterThan', function (v1, v2, options) {
@@ -219,6 +226,10 @@ Handlebars.registerHelper('Sum', function (v1, v2) {
 Handlebars.registerHelper('Sum3', function (v1, v2, v3) {
   let sum = Number(v1) + Number(v2) + Number(v3)
   return sum
+})
+Handlebars.registerHelper('Subtract', function (v1, v2) {
+  let subtract = Number(v1) - Number(v2)
+  return subtract
 })
 Handlebars.registerHelper('Skills', function (v1, v2, v3, v4) {
   let sum = Number(v1) + Number(v2) + Number(v3) - Number(v4)

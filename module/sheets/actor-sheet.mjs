@@ -13,7 +13,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ['falloutzero', 'sheet', 'actor'],
-      width: 750,
+      width: 800,
       height: 750,
       tabs: [
         {
@@ -499,7 +499,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     // Toggle Edit Mode
     html.on('click', '[data-editToggle]', (ev) => {
-        this.actor.update({ 'system.editToggle': !this.actor.system.editToggle })
+      this.actor.update({ 'system.editToggle': !this.actor.system.editToggle })
+    })
+    // Toggle Sheet Mode
+    html.on('click', '[data-sheetToggle]', (ev) => {
+      this.actor.update({ 'system.vaulttec': !this.actor.system.vaulttec })
     })
 
     // Toggle Active Party Member

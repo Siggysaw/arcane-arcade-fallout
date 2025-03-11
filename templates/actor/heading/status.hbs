@@ -22,13 +22,16 @@
                            title="Base Max = {{ health.tooltip }}"
                            value="{{ health.max }}" />
                 </tr>
-                <tr>Bonus:
+                <tr>
+                    <td>Bonus:</td>
+                <td>
                     <input style="height:20px"
                            type="number"
                            class="numberwithbuttons"
                            name="system.health.temp"
                            value="{{ health.temp }}"
                            placeholder="Temp HP" />
+                    </td>
                 </tr>
             </table>
         </td>
@@ -56,13 +59,16 @@
                            title="Base Max = {{ stamina.tooltip }}"
                            value="{{ stamina.max }}" />
                 </tr>
-                <tr>Bonus:
-                    <input style="height:20px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.stamina.temp"
-                           value="{{ stamina.temp }}"
-                           placeholder="Temp SP" />
+                <tr>
+                    <td>Bonus:</td>
+                    <td>
+                        <input style="height:20px"
+                               type="number"
+                               class="numberwithbuttons"
+                               name="system.stamina.temp"
+                               value="{{ stamina.temp }}"
+                               placeholder="Temp Stamina" />
+                    </td>
                 </tr>
             </table>
 
@@ -91,13 +97,16 @@
                            title="Base Max = {{ system.actionPoints.tooltip }}"
                            value="{{ system.actionPoints.max }}" />
                 </tr>
-                <tr>Bonus:
-                    <input style="height:20px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.actionPoints.temp"
-                           value="{{ system.actionPoints.temp }}"
-                           placeholder="Bonus AP"/>
+                <tr>
+                    <td>Bonus:</td>
+                    <td>
+                        <input style="height:20px"
+                               type="number"
+                               class="numberwithbuttons"
+                               name="system.actionPoints.temp"
+                               value="{{ system.actionPoints.temp }}"
+                               placeholder="Temp HP" />
+                    </td>
                 </tr>
             </table>
         </td>
