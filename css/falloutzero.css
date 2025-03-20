@@ -52,8 +52,11 @@ details > summary {
 }
 .rollable:hover,
 .rollable:focus {
-  text-shadow: 0 0 10px var(--sheetcolor);
   cursor: pointer;
+  background-color: var(--user-color);
+  color: var(--dark);
+  text-decoration: none;
+  text-shadow: none;
 }
 
 .flex-group-center,
@@ -794,13 +797,18 @@ a.inline-roll,
   border: solid 1px var(--sheetcolordarker);
 }
 
-.sheet .item-piles-item-row.svelte-tse-1o95obs.item-piles-child-even-color > *,
-.sheet .item-piles-item-row.svelte-tse-1o95obs.item-piles-child-odd-color > *,
 .window-content .item-piles-even-color:nth-child(even),
-.window-content .item-piles-even-color:nth-child(odd) {
-  background: none;
-  border: solid 1px;
+.window-content .item-piles-even-color:nth-child(odd),
+.window-content .item-piles-child-even-color > *,
+.window-content .item-piles-child-odd-color > * {
+  background-color: var(--dark) !important;
+  border:solid 1px;
 }
+
+.item-piles-clickable-link {
+  padding:5px;
+}
+
 .sheet .combat-actions .fakebutton {
   padding: 12px;
 }
@@ -913,10 +921,32 @@ a.inline-roll,
   margin-left: 1px;
   text-transform: uppercase;
 }
+.sheet nav a:hover,
+.sheet .tabs > [data-tab].active{
+  background-color: var(--user-color);
+  color: var(--dark);
+  text-decoration: none;
+  text-shadow: none;
+}
+.sheet .character label {
+  font-size: 13pt;
+  padding:5px;
+}
+.sheet .character label.specials:hover{
+    color:#000;
+}
+.window-app .window-content label:active {
+    color: var(--var-user-color);
+    background-color:white;
+  }
+.sheet .ability-mod {
+  font-size: 12pt;
+  margin-top: -10px;
+  padding-top: 0px;
+}
 
 
 /* VAULT TEC OVERRIDES*/
-
 .sheet .vaulttec {
   background-color: #447AB9;
   color: #FFF;
@@ -995,8 +1025,10 @@ a.inline-roll,
   text-shadow: none;
   border: none;
 }
-.sheet .vaulttec .ability-mod{
-    font-size:12pt;
-    margin-top:-10px;
-    padding-top:0px;
+.sheet .vaulttec nav a:hover,
+.window-app .window-content .vaulttec label:hover,
+.sheet .vaulttec .tabs > [data-tab].active {
+  color: #333;
+  background-color: #ffffcb;
+  text-shadow:none;
 }

@@ -1,0 +1,21 @@
+<form autocomplete="off">
+    <fieldset>
+        <legend>Ability Roll</legend>
+        <div class="flex space-between">
+            <div>Modifiers: </div><div><select id="modified">
+            <option value="true">With Modifiers</option>
+            <option value="false">No Modifiers</option></select></div>
+        </div>
+        <hr />
+        <div class="flex space-between">
+            <div>Roll Type: </div><div><select id="advantage">
+            <option value="false">Normal</option><option value="kh">Advantaged</option>
+            <option value="kl">Disdvantaged</option></select></div>
+        </div>
+        <hr />
+        <div class="flex space-between">
+            <div>Bonus: </div><div><input id="bonus" type="text" placeholder="1d4 + 10"></div>
+        </div>
+    </fieldset>
+</form>
+{{log this}}

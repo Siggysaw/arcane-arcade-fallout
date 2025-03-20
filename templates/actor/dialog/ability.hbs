@@ -1,0 +1,77 @@
+<form autocomplete="off">
+  <div class="form-group">
+      <fieldset>
+          <legend>Bonuses / Penalties</legend>
+          <div class="flex space-between">
+              <div>Penalties:</div>
+              <div>{{ actorPenalties }}</div>
+          </div><hr />
+          <div class="flex space-between">
+              <div>Total:</div>
+              <div>{{#Skills 0 selectedAbilityBonus 0 actorPenalties}}{{/Skills}}</div>
+          </div>
+      </fieldset>
+  </div>
+  <div class="form-group">
+    <fieldset>
+      <legend>Select Normal / Advantage / Disadvantage</legend>
+      <div>
+        <input
+          type="radio"
+          id="normal"
+          name="advantageMode"
+          value="1"
+          {{{setChecked
+          advantageMode
+          1}}}
+        />
+        <label for="normal">Normal</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="advantage"
+          name="advantageMode"
+          value="2"
+          {{{setChecked
+          advantageMode
+          2}}}
+        />
+        <label for="advantage">Advantage</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="disadvantage"
+          name="advantageMode"
+          value="3"
+          {{{setChecked
+          advantageMode
+          3}}}
+        />
+        <label for="disadvantage">Disadvantage</label>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="form-group">
+    <fieldset>
+      <legend>Ability use</legend>
+      <div class="flex space-between">
+        <div>Ability:</div>
+        <select name="selectedAbility">
+          {{selectOptions abilities selected=selectedAbility valueAttr="abbr" labelAttr="label"}}
+        </select>
+      </div>
+    </fieldset>
+  </div>
+  <div class="form-group">
+    <label for="bonus">Situational bonus</label>
+    <input type="text" name="bonus" value="{{ bonus }}" placeholder="1d4" />
+  </div>
+
+  <div class="dialog-buttons flex">
+    <button type="submit">Roll</button>
+  </div>
+</form>
+{{ log 'ability' this}}

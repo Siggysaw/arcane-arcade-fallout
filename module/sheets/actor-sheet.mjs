@@ -487,7 +487,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this.actor.restRecovery(rest)
     })
 
-    // Custom Roll Button
+    // View Perks Button
     html.on('click', '[data-view-perks]', (ev) => {
       this.actor.viewPerks()
     })
@@ -495,6 +495,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // Custom Roll Button
     html.on('click', '[data-custom-roll]', (ev) => {
       this.actor.customRoll()
+    })
+    // Ability Roll Button
+    html.on('click', '[data-abilityroll]', (ev) => {
+      const ability = ev.currentTarget.dataset.abilityroll
+      this.actor.abilityRoll(ability)
     })
 
     // Toggle Edit Mode

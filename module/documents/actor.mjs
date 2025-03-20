@@ -148,7 +148,7 @@ export default class FalloutZeroActor extends Actor {
     }
   }
 
-  // Custom Roll
+    // Custom Roll
   async customRoll() {
     const myDialogOptions = { width: 275, resizable: true }
     const myContent = await renderTemplate(
@@ -194,6 +194,65 @@ export default class FalloutZeroActor extends Actor {
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this }),
         flavor: `${actor.name} rolled a Custom Roll!`,
+        rollMode: game.settings.get('core', 'rollMode'),
+      })
+    }
+  }
+
+
+
+  // Ability Roll
+  async abilityRoll(rolledAbility) {
+    const myDialogOptions = { width: 275, resizable: true }
+    const myContent = await renderTemplate(
+      'systems/arcane-arcade-fallout/templates/actor/dialog/ability-roll.hbs',
+    )
+    const actor = this
+    const abilities = this.system.abilities[rolledAbility]
+    new Dialog(
+      {
+        title: `${abilities.label} Roll`,
+        content: myContent,
+        buttons: {
+          button1: {
+            label: 'Roll It!',
+            callback: (html) => rollDice(html, actor, rolledAbility),
+          },
+        },
+      },
+      myDialogOptions,
+    ).render(true)
+
+    async function rollDice(html, actor, rolledAbility) {
+      let theAbility = actor.system.abilities[rolledAbility]
+      const withModifiers = html.find('select#modified').val()
+      const withAdvantage = html.find('select#advantage').val()
+      let rollBonus = html.find('input#bonus').val()
+      let rollInput = ``
+
+      if (withAdvantage == 'false') {
+        rollInput += '1d20'
+      } else {
+        rollInput += `2d20${withAdvantage}`
+      }
+      if (abilities.mod > 0) {
+        rollInput += `+ ${theAbility.mod}`
+      }
+      if (withModifiers === 'true') {
+        const penaltyTotal = actor.system.penaltyTotal
+        if (penaltyTotal > 0) {
+          rollInput += ` - ${penaltyTotal}`
+        }
+      }
+      if (rollBonus.length > 0) {
+        rollInput += `+ ${rollBonus}`
+      }
+      const roll = new Roll(`${rollInput}`, actor.getRollData())
+      await roll.evaluate()
+
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this }),
+        flavor: `${actor.name} Performed a ${theAbility.label} Check!`,
         rollMode: game.settings.get('core', 'rollMode'),
       })
     }
