@@ -3,6 +3,7 @@ import * as models from './data/_module.mjs'
 import * as documents from './documents/_module.mjs'
 import * as sheets from './sheets/_module.mjs'
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs'
+import SkillRoll from './dice/skill-roll.mjs'
 
 // Import Submodules
 import * as applications from '../module/applications/_module.mjs'
@@ -285,6 +286,18 @@ Hooks.once('ready', function () {
 Hooks.on('renderPause', (app, [html]) => {
   const img = html.querySelector('img')
   img.src = 'systems/arcane-arcade-fallout/assets/vaultboy/vaultboy.webp'
+})
+
+Hooks.on('aafohud.skillRoll', async (actorId, skill) => {
+  const actor = game.actors.get(actorId)
+  const roll = await new SkillRoll(actor, skill, () => {})
+  roll.render(true)
+})
+
+Hooks.on('aafohud.attackRoll', async (actorId, weaponId) => {
+  const actor = game.actors.get(actorId)
+  const weapon = actor.items.get(weaponId)
+  weapon.rollAttack({ advantageMode: 1 })
 })
 
 /* -------------------------------------------- */
