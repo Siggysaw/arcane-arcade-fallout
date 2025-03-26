@@ -1248,7 +1248,6 @@ export default class FalloutZeroActor extends Actor {
     const ammoFound = this.items.find((item) => item.name === ammoType)
     const energyWeapon =
       ammoType.includes('Core') ||
-      ammoType.includes('Fuel') ||
       ammoType.includes('Cell') ||
       ammoType.includes('Energy') ||
       ammoType.includes('2mm EC')
