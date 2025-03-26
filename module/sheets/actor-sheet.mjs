@@ -82,7 +82,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         if (packrat && load < 3 && load > 1) {
           load = 1
         }
-        if (!AmmoLoad && item.type == "ammo" || !JunkLoad && item.type == "junkItem" || !JunkLoad && item.type == "material") {
+        if (!AmmoLoad && item.type == "ammo" ||
+          !JunkLoad && item.type == "junkItem" ||
+          !JunkLoad && item.type == "material" ||
+          item.system.worn){
           load = 0
         }
         acc += Math.floor(load * quantity)
