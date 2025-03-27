@@ -235,9 +235,7 @@ export default class FalloutZeroActor extends Actor {
       } else {
         rollInput += `2d20${withAdvantage}`
       }
-      if (abilities.mod > 0) {
         rollInput += `+ ${theAbility.mod}`
-      }
       if (withModifiers === 'true') {
         const penaltyTotal = actor.system.penaltyTotal
         if (penaltyTotal > 0) {
@@ -1248,6 +1246,7 @@ export default class FalloutZeroActor extends Actor {
     const ammoFound = this.items.find((item) => item.name === ammoType)
     const energyWeapon =
       ammoType.includes('Core') ||
+      ammoType.includes('Fuel') ||
       ammoType.includes('Cell') ||
       ammoType.includes('Energy') ||
       ammoType.includes('2mm EC')
