@@ -4,6 +4,7 @@ import * as documents from './documents/_module.mjs'
 import * as sheets from './sheets/_module.mjs'
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs'
 import SkillRoll from './dice/skill-roll.mjs'
+import { allowMovement } from './helpers/movement.mjs'
 
 // Import Submodules
 import * as applications from '../module/applications/_module.mjs'
@@ -68,6 +69,15 @@ Hooks.once('init', function () {
     name: 'Keep Zeroed Items',
     hint: 'Keep items in your inventory even if your qty is 0',
     scope: 'client',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  })
+  game.settings.register('core', 'DeductMovementAPInCombat', {
+    name: 'Auto deduct movement AP',
+    hint: 'Automatically reduces AP based on character movement when in combat. [Requires Elevation Ruler]',
+    scope: 'world',
     config: true,
     type: Boolean,
     default: true,
@@ -278,6 +288,54 @@ Hooks.once('ready', function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot))
 })
+
+/* --------------------------------------------  */
+/*  Token movement                                 */
+/* --------------------------------------------  */
+// block movement if not turn
+Hooks.on('preUpdateToken', (document, update) => {
+  if (!game.settings.get('core', 'KeepZeroes')) return
+  if ((update.x != undefined || update.y != undefined) && game.combats.active) {
+    let allow = allowMovement(document);
+
+    const ruler = canvas.controls.ruler;
+    let lastMoveDistance = 0;
+    if ( ruler.active && ruler.token === _token ) {
+      // Ruler move
+      lastMoveDistance = ruler.totalCost - ruler.history.reduce((acc, curr) => acc + curr.cost, 0);
+      // numDiagonal = ruler.totalDiagonals;
+    }
+    // else {
+    //   // Some other move; likely arrow keys.
+    //   const numPrevDiagonal = game.combat?.started ? (token._combatMoveData?.numDiagonal ?? 0) : 0;
+    //   const mp = new MovePenalty(token);
+    //   const res = mp.measureSegment(token.position, token.document._source, { numPrevDiagonal });
+    //   lastMoveDistance = res.cost;
+    //   numDiagonal = res.numDiagonal;
+    // }
+
+    const distanceCost = lastMoveDistance / 5
+    allow = document.actor.applyApCost(distanceCost)
+
+    if (!allow) {
+        delete update.x;
+        delete update.y;
+    }
+  }
+});
+
+// deduct AP on move in combat
+// Hooks.on('updateToken', (document, update) => {
+//   if (!game.combats.active) return
+
+//   if ((update.x != undefined || update.y != undefined)) {
+//     if (_token?.lastMoveDistance !== undefined) {
+//       console.log('distance', _token.lastMoveDistance)
+//       console.log('cost', _token.lastMoveDistance / 5)
+//       document.actor.applyApCost(_token.lastMoveDistance / 5)
+//     }
+//   }
+// });
 
 /* --------------------------------------------  */
 /*  Other Hooks                                  */
