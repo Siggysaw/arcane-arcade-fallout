@@ -4,6 +4,8 @@ import * as documents from './documents/_module.mjs'
 import * as sheets from './sheets/_module.mjs'
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs'
 import SkillRoll from './dice/skill-roll.mjs'
+import FalloutZeroArmor from './data/armor.mjs'
+import FalloutZeroItem from './documents/item.mjs'
 
 // Import Submodules
 import * as applications from '../module/applications/_module.mjs'
@@ -298,6 +300,43 @@ Hooks.on('aafohud.attackRoll', async (actorId, weaponId) => {
   const actor = game.actors.get(actorId)
   const weapon = actor.items.get(weaponId)
   weapon.rollAttack({ advantageMode: 1 })
+})
+
+Hooks.on('aafohud.toggleEquipArmor', async (actorId, itemId) => {
+  const actor = game.actors.get(actorId)
+  const item = actor.items.get(itemId)
+  const cost = item.type == "powerArmor" ? 6 : 3
+  const canAffordAP = actor.applyApCost(cost)
+  if (canAffordAP) {
+    item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+    FalloutZeroArmor.prototype.changeEquipStatus(item)
+  }
+})
+
+Hooks.on('aafohud.toggleEquipWeapon', async (actorId, itemId) => {
+  const actor = game.actors.get(actorId)
+  const item = actor.items.get(itemId)
+  const cost = 3
+  const canAffordAP = actor.applyApCost(cost)
+  if (canAffordAP) {
+    item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+  }
+})
+
+Hooks.on('aafohud.reloadWeapon', async (actorId, itemId) => {
+  const actor = game.actors.get(actorId)
+  actor.reload(itemId)
+})
+
+Hooks.on('aafohud.useConsumable', async (actorId, itemId) => {
+  const actor = game.actors.get(actorId)
+  const item = actor.items.get(itemId)
+  const cost = 4
+  const canAffordAP = actor.applyApCost(cost)
+  if (canAffordAP) {
+    FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
+    actor.lowerInventory(itemId)
+  }
 })
 
 /* -------------------------------------------- */
