@@ -294,7 +294,7 @@ Hooks.once('ready', function () {
 /* --------------------------------------------  */
 // block movement if not turn
 Hooks.on('preUpdateToken', (document, update) => {
-  if (!game.settings.get('core', 'KeepZeroes')) return
+  if (!game.settings.get('core', 'DeductMovementAPInCombat')) return
   if ((update.x != undefined || update.y != undefined) && game.combats.active) {
     let allow = allowMovement(document);
 
