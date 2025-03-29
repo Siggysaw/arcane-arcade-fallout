@@ -1,7 +1,3 @@
-2025/03/26-16:45:00.488 208e0 Recovering log #677
-2025/03/26-16:45:00.496 208e0 Delete type=0 #677
-2025/03/26-16:45:00.497 208e0 Delete type=3 #675
-2025/03/26-21:07:53.739 d8b4 Level-0 table #682: started
-2025/03/26-21:07:53.739 d8b4 Level-0 table #682: 0 bytes OK
-2025/03/26-21:07:53.743 d8b4 Delete type=0 #680
-2025/03/26-21:07:53.746 d8b4 Manual compaction at level-0 from '!tables!2ODfF6qNWM2kFpmJ' @ 72057594037927935 : 1 .. '!tables.results!yNX6xo1QnoSe38l1.tjU06Pkhtst3PtcG' @ 0 : 0; will stop at (end)
+2025/03/29-12:18:18.685 f644 Recovering log #691
+2025/03/29-12:18:18.694 f644 Delete type=0 #691
+2025/03/29-12:18:18.694 f644 Delete type=3 #689
