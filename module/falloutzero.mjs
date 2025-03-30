@@ -290,20 +290,20 @@ Hooks.on('renderPause', (app, [html]) => {
   img.src = 'systems/arcane-arcade-fallout/assets/vaultboy/vaultboy.webp'
 })
 
-Hooks.on('aafohud.skillRoll', async (actorId, skill) => {
-  const actor = game.actors.get(actorId)
+Hooks.on('aafohud.skillRoll', async (actorUuid, skill) => {
+  const actor = fromUuidSync(actorUuid)
   const roll = await new SkillRoll(actor, skill, () => {})
   roll.render(true)
 })
 
-Hooks.on('aafohud.attackRoll', async (actorId, weaponId) => {
-  const actor = game.actors.get(actorId)
+Hooks.on('aafohud.attackRoll', async (actorUuid, weaponId) => {
+  const actor = fromUuidSync(actorUuid)
   const weapon = actor.items.get(weaponId)
   weapon.rollAttack({ advantageMode: 1 })
 })
 
-Hooks.on('aafohud.toggleEquipArmor', async (actorId, itemId) => {
-  const actor = game.actors.get(actorId)
+Hooks.on('aafohud.toggleEquipArmor', async (actorUuid, itemId) => {
+  const actor = fromUuidSync(actorUuid)
   const item = actor.items.get(itemId)
   const cost = item.type == "powerArmor" ? 6 : 3
   const canAffordAP = actor.applyApCost(cost)
@@ -313,8 +313,8 @@ Hooks.on('aafohud.toggleEquipArmor', async (actorId, itemId) => {
   }
 })
 
-Hooks.on('aafohud.toggleEquipWeapon', async (actorId, itemId) => {
-  const actor = game.actors.get(actorId)
+Hooks.on('aafohud.toggleEquipWeapon', async (actorUuid, itemId) => {
+  const actor = fromUuidSync(actorUuid)
   const item = actor.items.get(itemId)
   const cost = 3
   const canAffordAP = actor.applyApCost(cost)
@@ -323,13 +323,13 @@ Hooks.on('aafohud.toggleEquipWeapon', async (actorId, itemId) => {
   }
 })
 
-Hooks.on('aafohud.reloadWeapon', async (actorId, itemId) => {
-  const actor = game.actors.get(actorId)
+Hooks.on('aafohud.reloadWeapon', async (actorUuid, itemId) => {
+  const actor = fromUuidSync(actorUuid)
   actor.reload(itemId)
 })
 
-Hooks.on('aafohud.useConsumable', async (actorId, itemId) => {
-  const actor = game.actors.get(actorId)
+Hooks.on('aafohud.useConsumable', async (actorUuid, itemId) => {
+  const actor = fromUuidSync(actorUuid)
   const item = actor.items.get(itemId)
   const cost = 4
   const canAffordAP = actor.applyApCost(cost)
