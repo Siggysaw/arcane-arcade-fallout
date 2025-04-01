@@ -275,7 +275,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
     context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps
     context.canRemoveCaps = this.actor.system.karmaCaps.length > 1
-
+    if (this.actor.type == "character") {
+      this.actor.update({ 'prototypeToken.actorLink': true })
+    }
     const drdv = Object.values(FALLOUTZERO.damageTypes).reduce(
       (acc, type) => {
         acc.dr.push({
