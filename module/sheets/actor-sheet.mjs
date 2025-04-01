@@ -82,7 +82,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         if (packrat && load < 3 && load > 1) {
           load = 1
         }
-        if (!AmmoLoad && item.type == "ammo" || !JunkLoad && item.type == "junkItem" || !JunkLoad && item.type == "material") {
+        if (!AmmoLoad && item.type == "ammo" ||
+          !JunkLoad && item.type == "junkItem" ||
+          !JunkLoad && item.type == "material" ||
+          item.system.worn){
           load = 0
         }
         acc += Math.floor(load * quantity)
@@ -272,7 +275,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
     context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps
     context.canRemoveCaps = this.actor.system.karmaCaps.length > 1
-
+    if (this.actor.type == "character") {
+      this.actor.update({ 'prototypeToken.actorLink': true })
+    }
     const drdv = Object.values(FALLOUTZERO.damageTypes).reduce(
       (acc, type) => {
         acc.dr.push({

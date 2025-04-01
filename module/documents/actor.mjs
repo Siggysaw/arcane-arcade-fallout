@@ -235,9 +235,7 @@ export default class FalloutZeroActor extends Actor {
       } else {
         rollInput += `2d20${withAdvantage}`
       }
-      if (abilities.mod > 0) {
         rollInput += `+ ${theAbility.mod}`
-      }
       if (withModifiers === 'true') {
         const penaltyTotal = actor.system.penaltyTotal
         if (penaltyTotal > 0) {
@@ -971,15 +969,19 @@ export default class FalloutZeroActor extends Actor {
    * @returns true if successful or false if not enough AP
    */
   applyApCost(cost) {
-    this.inCombat ? cost = cost : cost = 0
-    const currentAP = this.system.actionPoints.value
-    const newAP = Number(currentAP) - Number(cost)
+    if (!this.inCombat) return true
+    const newAP = this.getAPAfterCost(cost)
     if (newAP < 0) {
       ui.notifications.warn(`You don't have enough AP to perform this action!`)
       return false
     }
     this.update({ 'system.actionPoints.value': newAP })
     return true
+  }
+
+  getAPAfterCost(cost) {
+    const currentAP = this.system.actionPoints.value
+    return Number(currentAP) - Number(cost)
   }
 
   //Add any stat with modifiers
@@ -1373,15 +1375,15 @@ export default class FalloutZeroActor extends Actor {
   }
 
   async setCraftingDC(htmlElement, singleDC, rollButton, craftButton) {
-    let craftingDC = 12 + Number(singleDC.DC)
-    rollButton.title = `Materials... check! \nCan roll to craft the item!\n\n${singleDC.name} (+${singleDC.bonus}) roll with a result greater or equal to ${12 + Number(singleDC.DC)}.\n
+    let craftingDC = 10 + Number(singleDC.DC)
+    rollButton.title = `Materials... check! \nCan roll to craft the item!\n\n${singleDC.name} (+${singleDC.bonus}) roll with a result greater or equal to ${10 + Number(singleDC.DC)}.\n
 Failure : Lose 1d4 of each material used (at least 1 will remain) and item is not crafted
 Failure by 8+ : Lose 1d6 of each material (no minimum remaining) and item is not crafted
 Success : You craft the item and use all the required materials
 Success by 8+ : You craft the item and use 1d4 less of one material (randomized) to a minimum of 1.`
     rollButton.innerText = singleDC.name + ' Roll'
     htmlElement.innerText = singleDC.name + ' DC: ' + craftingDC
-    htmlElement.title = `Required ${singleDC.name} : +${singleDC.DC} \n\nCurrent Bonus : +${singleDC.bonus} \n\n DC = 12 + ${singleDC.DC} = ${craftingDC}`
+    htmlElement.title = `Required ${singleDC.name} : +${singleDC.DC} \n\nCurrent Bonus : +${singleDC.bonus} \n\n DC = 10 + ${singleDC.DC} = ${craftingDC}`
     if (singleDC.DC > singleDC.bonus) {
       htmlElement.style = 'background-color:rgba(250, 0, 0, 0.1);visibility:visible;'
       craftButton.style = 'color:gray'
@@ -1755,20 +1757,20 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
       multipleDC.push({
         name: myCraft[0],
         DC: myCraft[1],
-        bonus: Number(myActor.system.skills[myCraft[0].toLowerCase()].value),
+        bonus: Number(myActor.system.skills[myCraft[0].toLowerCase()].value + myActor.system.abilities.int.mod),
       })
       if (myCraft.length > 2) {
         multipleDC.push({
           name: myCraft[2],
           DC: myCraft[3],
-          bonus: Number(myActor.system.skills[myCraft[2].toLowerCase()].value),
+          bonus: Number(myActor.system.skills[myCraft[2].toLowerCase()].value + myActor.system.abilities.int.mod),
         })
       }
     } else {
       multipleDC.push({
         name: 'Crafting',
         DC: Number(myCrafts.replace('+', '')),
-        bonus: Number(myActor.system.skills.crafting.value),
+        bonus: Number(myActor.system.skills.crafting.value + myActor.system.abilities.int.mod),
       })
     }
     return multipleDC
@@ -1828,7 +1830,7 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
         </div>
       `
       let craftDCs = await this.convertDCtoObject(itemToCraft.system.crafting.craftingDC, myActor)
-      let craftDC = 12 + Number(craftDCs.find((d) => d.name == craftType).DC)
+      let craftDC = 10 + Number(craftDCs.find((d) => d.name == craftType).DC)
       console.log(craftDCs, craftDC)
       if (craftDC > roll._total) {
         rollBonus = Math.ceil(Math.random() * 4)

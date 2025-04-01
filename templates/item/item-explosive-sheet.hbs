@@ -18,6 +18,7 @@
             <td><button class="useAP" data-apused="{{ system.apCost }}">AP</button></td>
             <td>Range</td>
             <td>Arm DC</td>
+            <td>AOE</td>
         </tr>
         <tr>
             <td><input type="number" name="system.cost" value="{{ system.cost }}" /></td>
@@ -26,8 +27,13 @@
             <td><input type="number" name="system.apCost" value="{{ system.apCost }}" /></td>
             <td><input type="number" name="system.range.short" value="{{ system.range.short }}" /></td>
             <td><input type="number" name="system.armDC" value="{{ system.armDC }}" /></td>
+
         </tr>
     </table>
+    <table class="equipped-stats"><tr>
+    <td>AOE:</td>
+    <td><input type="text" name="system.aoeRadius" value="{{ system.aoeRadius }}" /></td>
+</tr></table>
     <br />
 
     <table class="equipped-stats">
