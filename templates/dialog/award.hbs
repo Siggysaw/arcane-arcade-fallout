@@ -1,0 +1,30 @@
+<div class="award">
+    <h1>Award</h1>
+    <div class="grid grid-3col characters">
+        <div>
+            Name
+        </div>
+        <div>
+            XP earned
+        </div>
+        <div>
+            Caps earned
+        </div>
+        {{#each actors as |actor|}}
+            <div>
+               {{ actor.name }}
+            </div>
+            <div>
+                <input placeholder="xp to add" type="number" data-actor-xp="{{actor.id}}">
+            </div>
+            <div>
+                <input placeholder="caps to add" type="number" data-actor-caps="{{actor.id}}">
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="dialog-buttons flexrow">
+        <button class="dialog-button award" data-award>Award XP and cap</button>
+    </div>
+</div>
+
