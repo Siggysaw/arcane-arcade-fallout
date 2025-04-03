@@ -272,6 +272,9 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // Add reroll button
     this._addReRollButton(html)
 
+    // Remove max formula text
+    this._cleanFormula(html)
+
     // add formula tooltip
     this._addTooltip(html)
 
@@ -384,6 +387,13 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     }
 
     messageContent.appendChild(buttonContainer)
+  }
+
+  _cleanFormula(html) {
+    const formula = html.querySelector('.dice-roll .dice-result .dice-formula')
+    if (formula?.textContent?.startsWith('max(')) {
+      formula.textContent = formula.textContent.substring(6, formula.textContent.length - 1)
+    }
   }
 
   _addReRollButton(html) {
@@ -780,8 +790,10 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       flavor += '!'
     }
 
+    const minDamage = this.actor.type === 'character' ? 1 : 0
+
     const roll = new Roll(
-      this.targeted?.target === 'eyes' ? `floor((${formula}) / 2)` : formula,
+      this.targeted?.target === 'eyes' ? `max(${minDamage}, floor((${formula}) / 2))` : `max(${minDamage}, ${formula})`,
       this.actor.getRollData(),
     )
 
