@@ -1319,6 +1319,29 @@ export default class FalloutZeroActor extends Actor {
     }
   }
 
+  async rollSave({ formula, saveDC, type }) {
+    let roll = new Roll(`${formula} - ${this.system.penaltyTotal}`, this.getRollData())
+    await roll.evaluate()
+    
+    let flavor = ''
+    const success = roll.total >= saveDC
+    if (success) {
+      flavor = `Success, ${this.name} rolled equal to or greater than ${saveDC}`
+    } else {
+      flavor = `Fail, ${this.name} rolled lower than ${saveDC}`
+    }
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this }),
+      flavor,
+      rollMode: game.settings.get('core', 'rollMode'),
+    })
+
+    if (type === 'radiation' && !success) {
+      const newRadLvl = this.system.penalties.radiation.base + 1
+      this.update({ 'system.penalties.radiation.base': newRadLvl })
+    }
+  }
+
   //check which Actor wishes to Craft, from a particular item
   checkCraftActor(myItem) {
     //Auto select if crafting from Actor Sheet

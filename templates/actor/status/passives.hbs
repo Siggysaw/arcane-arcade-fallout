@@ -5,10 +5,9 @@
             Combat Sequence
         </td>
         <td class="rollable"
-            data-rollable
-            data-roll="d20-{{ penaltyTotal }}"
-            data-label="Radiation DC Check: Roll {{system.radiationDC.value}} or higher to succeed"
-            title="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll {{system.radiationDC.value}} or higher to succeed. On Fail gain level of Radiation">
+            data-roll-save="{{system.radiationDC.value}}"
+            data-save-type="radiation"
+            data-tooltip="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll {{system.radiationDC.value}} or higher to succeed. On Fail gain level of Radiation">
             Rad DC
             <i class="fas fa-dice-d20"></i>
         </td>
