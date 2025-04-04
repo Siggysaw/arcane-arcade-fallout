@@ -879,6 +879,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     // Rollable abilities.
     html.on('click', '[data-rollable]', this._onRoll.bind(this))
+    html.on('click', '[data-roll-save]', this._onRollSave.bind(this))
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -1047,5 +1048,18 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       })
       return roll
     }
+  }
+
+  async _onRollSave(event) {
+    const element = event.currentTarget
+    const dataset = element.dataset
+    const saveDC = dataset.rollSave
+    const saveType = dataset.saveType
+    
+    this.actor.rollSave({
+      formula: '1d20',
+      saveDC,
+      type: saveType,
+    })
   }
 }

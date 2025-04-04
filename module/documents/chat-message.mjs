@@ -362,7 +362,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     buttonContainer.classList.add('card-buttons')
 
     // regular damage button
-    if (this.damage.rolls) {
+    if (!this.damage.isCritical && this.damage.rolls) {
       const button = document.createElement('button')
       button.innerHTML = '<span>Roll damage</span> <i class="fa-light fa-dice-d20">'
       button.dataset.rollDamage = ''
@@ -370,7 +370,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     }
 
     // critical multiplier damage button
-    if (this.damage.critical) {
+    if (this.damage.isCritical && this.damage.critical) {
       const button = document.createElement('button')
       button.innerHTML = '<span>Roll critical damage</span> <i class="fa-light fa-dice-d20">'
       button.dataset.rollCritical = this.critical
@@ -789,9 +789,10 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     } else {
       flavor += '!'
     }
-
     const minDamage = this.actor.type === 'character' ? 1 : 0
-
+    if (this.damage.isCritical && this.damage.criticalCondition){
+      flavor += ` And applies condition ${this.damage.criticalCondition}`
+    }
     const roll = new Roll(
       this.targeted?.target === 'eyes' ? `max(${minDamage}, floor((${formula}) / 2))` : `max(${minDamage}, ${formula})`,
       this.actor.getRollData(),
