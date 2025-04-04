@@ -34,7 +34,7 @@
         <td style="min-width:100px">{{ item.system.range.short }}ft - {{item.system.range.long}}ft</td>
         <td title="{{item.system.ammo.assigned}}">{{item.system.ammo.capacity.value}}/{{ item.system.ammo.capacity.max }}</td>
         <td style="min-width:50px">
-            <i title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+            <i title="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
                data-reload
                data-weapon-id="{{ item._id }}"
                class="fa fa-refresh"></i>
@@ -82,7 +82,7 @@
     <td>NA</td>
     {{/if}}
     <td style="min-width:50px">
-        <i title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+        <i title="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
            data-reload
            data-weapon-id="{{ item._id }}"
            class="fa fa-refresh"></i>

@@ -1227,11 +1227,14 @@ export default class FalloutZeroActor extends Actor {
 
     // Manually Reloaded?
     const manualReload = weapon.system.description.includes('Manual Reload')
+    const quickReload = weapon.system.description.includes('Quick Reload')
     const rapid = weapon.parent.items.find((i) => i.name == 'Rapid Reload')
     
 
     // Do you have the AP?
     let apCost = 6
+    quickReload ? apCost = 4 : apCost = 6
+    
     if (!this.inCombat) {
       apCost=0
     }

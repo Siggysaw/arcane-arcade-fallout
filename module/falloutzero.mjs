@@ -176,6 +176,16 @@ Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase()
 })
 
+Handlebars.registerHelper('Reload', function (v1) {
+  if (v1.includes("Manual Reload")) {
+    return 1
+  }
+  if (v1.includes("Quick Reload")) {
+    return 4
+  }
+  return 6
+})
+
 Handlebars.registerHelper('log', function (v1) {
   console.log(v1)
 })
