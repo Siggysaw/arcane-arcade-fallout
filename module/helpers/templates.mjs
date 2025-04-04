@@ -38,12 +38,20 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/arcane-arcade-fallout/templates/actor/heading/status.hbs',
     'systems/arcane-arcade-fallout/templates/actor/heading/image.hbs',
     'systems/arcane-arcade-fallout/templates/actor/heading/karmaCaps.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/npc-heading/bio.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/npc-heading/status.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/npc-heading/image.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/npc-heading/karmaCaps.hbs',
 
     // Actor Status
     'systems/arcane-arcade-fallout/templates/actor/status/special.hbs',
     'systems/arcane-arcade-fallout/templates/actor/status/skills.hbs',
     'systems/arcane-arcade-fallout/templates/actor/status/penalties.hbs',
     'systems/arcane-arcade-fallout/templates/actor/status/passives.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/npc-status/special.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/npc-status/skills.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/npc-status/penalties.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/npc-status/passives.hbs',
 
     // Item partials
     'systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs',

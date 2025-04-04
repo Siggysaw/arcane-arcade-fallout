@@ -1,0 +1,127 @@
+<table class="character-status">
+    <tr>
+        <td style="width:25px;">
+            HP
+        <td class="vertical-buttons">
+            <i data-health="plus" class="fas fa-plus-square"></i>
+            <i data-health="minus" class="fas fa-minus-square"></i>
+        </td>
+        <td>
+            <table>
+                <tr>
+                    <input style="height:30px;"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.health.value"
+                           value="{{ health.value }}" />
+                    /
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.health.max"
+                           title="Base Max = {{ health.tooltip }}"
+                           value="{{ health.max }}" />
+                </tr>
+                <tr>
+                    <td>Bonus:</td>
+                <td>
+                    <input style="height:20px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.health.temp"
+                           value="{{ health.temp }}"
+                           placeholder="Temp HP" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:25px;">
+            SP
+        <td class="vertical-buttons">
+            <i data-stamina="plus" class="fas fa-plus-square"></i>
+            <i data-stamina="minus" class="fas fa-minus-square"></i>
+        </td>
+        <td>
+            <table>
+                <tr>
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.stamina.value"
+                           value="{{ stamina.value }}" />
+                    /
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.stamina.max"
+                           title="Base Max = {{ stamina.tooltip }}"
+                           value="{{ stamina.max }}" />
+                </tr>
+                <tr>
+                    <td>Bonus:</td>
+                    <td>
+                        <input style="height:20px"
+                               type="number"
+                               class="numberwithbuttons"
+                               name="system.stamina.temp"
+                               value="{{ stamina.temp }}"
+                               placeholder="Temp Stamina" />
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td style="width:25px;">
+            AP
+        <td class="vertical-buttons">
+            <i data-action="plus" class="fas fa-plus-square"></i>
+            <i data-action="minus" class="fas fa-minus-square"></i>
+        </td>
+        <td>
+            <table>
+                <tr>
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.actionPoints.value"
+                           value="{{ system.actionPoints.value }}" />
+                    /
+                    <input style="height:30px"
+                           type="number"
+                           class="numberwithbuttons"
+                           name="system.actionPoints.max"
+                           title="Base Max = {{ system.actionPoints.tooltip }}"
+                           value="{{ system.actionPoints.max }}" />
+                </tr>
+                <tr>
+                    <td>Bonus:</td>
+                    <td>
+                        <input style="height:20px"
+                               type="number"
+                               class="numberwithbuttons"
+                               name="system.actionPoints.temp"
+                               value="{{ system.actionPoints.temp }}"
+                               placeholder="Temp HP" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{{#if actor.inCombat}}
+<table style="width:200px;">
+    <tr>
+        <td>
+            <div class="fakebutton" data-recycle-ap title="Recycle AP At Beginning of Turn">
+                <i class="fa-solid fa-recycle"></i>
+            </div>
+        </td>
+    </tr>
+</table>
+{{/if}}
+
+

@@ -1,0 +1,67 @@
+<table>
+    <tr>
+        <td title="Calculated: {{system.healingRate.value}} (End + Lvl)/2 &#013;Modifiers: {{system.healingRate.modifiers}} &#013;Manual Edits: {{system.healingRate.base}}">Healing Rate</td>
+        <td title="To Roll Intiative, Utilize Combat Tracker">
+            Combat Sequence
+        </td>
+        <td class="rollable"
+            data-roll-save="{{system.radiationDC.value}}"
+            data-save-type="radiation"
+            data-tooltip="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll {{system.radiationDC.value}} or higher to succeed. On Fail gain level of Radiation">
+            Rad DC
+            <i class="fas fa-dice-d20"></i>
+        </td>
+        <td title="12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}">
+            Passive Sense
+        </td>
+        <td title="Party Charisma Mods Added together divided by 2">Party Nerve</td>
+        <td title="Party Sneak Total divided by Player Number">Group Sneak</td>
+    </tr>
+    <tr>
+        <td class="skill-value">
+            {{#if system.editToggle}}<i style="padding: 3px"
+               data-statSubtraction
+               data-stat="healingRate"
+               data-type=""
+               class="fas fa-minus-square  nobackground"></i>{{/if}}
+            {{system.healingRate.value}}
+            {{#if system.editToggle}}<i style="padding: 3px"
+               data-statAddition
+               data-stat="healingRate"
+               data-type=""
+               class="fas fa-plus-square  nobackground"></i>{{/if}}
+        </td>
+        <td class="skill-value">
+            {{#if system.editToggle}}<i style="padding: 3px"
+               data-statSubtraction
+               data-stat="combatSequence"
+               data-type=""
+               class="fas fa-minus-square  nobackground"></i>{{/if}}
+            {{system.combatSequence.value}}
+            {{#if system.editToggle}}<i style="padding: 3px"
+               data-statAddition
+               data-stat="combatSequence"
+               data-type=""
+               class="fas fa-plus-square  nobackground"></i>{{/if}}
+        </td>
+        <td style="vertical-align:middle;">
+            {{system.radiationDC.value}}
+        </td>
+        <td class="skill-value">
+            {{#if system.editToggle}}<i style="padding: 3px"
+               data-statSubtraction
+               data-stat="passiveSense"
+               data-type=""
+               class="fas fa-minus-square  nobackground"></i>{{/if}}
+            {{system.passiveSense.value}}
+            {{#if system.editToggle}}<i style="padding: 3px"
+               data-statAddition
+               data-stat="passiveSense"
+               data-type=""
+               class="fas fa-plus-square  nobackground"></i>{{/if}}
+        </td>
+        <td>NA</td>
+        <td>NA</td>
+    </tr>
+</table>
+

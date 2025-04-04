@@ -327,8 +327,7 @@ details > summary {
 .sheet.journal-entry .journal-entry-content p{
     text-shadow:2px 2px 2px black;
 }
-.character,
-.character input,
+.sheet input,
 .sheet h1,
 .sheet h2,
 .sheet h3,
@@ -819,19 +818,19 @@ a.inline-roll,
   width: 100%;
   background: var(--dark);
 }
-.sheet .character .character-status {
+.sheet .character-status {
   width: 200px;
 }
-.sheet .character .character-status input {
+.sheet .character-status input {
   width: 50px;
   height: 50px;
 }
-.sheet .character .character-status i {
+.sheet .character-status i {
   font-size: 20pt;
   display: block;
   width: 100%;
 }
-.sheet .character #xpbar progress::-webkit-progress-value {
+.sheet #xpbar progress::-webkit-progress-value {
   display: inline-block;
   float: left;
   height: 11px;
@@ -846,7 +845,7 @@ a.inline-roll,
   margin: 0px -10px 0 0;
   background: var(--sheetcolor);
 }
-.sheet .character .bio td {
+.sheet .bio td {
   padding-right: 10px;
 }
 .sheet .backpack-item {
@@ -907,12 +906,6 @@ a.inline-roll,
     text-align:left;
     padding:2px;
 }
-.sheet .npc-equipped-table td{
-    border:solid 1px;
-    vertical-align:middle;
-    margin:0px;
-    padding:0px;
-}
 .sheet .combat-icon {
   background: #222;
   position: relative;
@@ -929,11 +922,11 @@ a.inline-roll,
   text-decoration: none;
   text-shadow: none;
 }
-.sheet .character label {
+.sheet label {
   font-size: 13pt;
   padding:5px;
 }
-.sheet .character label.specials:hover{
+.sheet label.specials:hover{
     color:#000;
 }
 .window-app .window-content label:active {

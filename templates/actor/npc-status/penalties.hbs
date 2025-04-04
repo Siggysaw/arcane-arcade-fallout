@@ -1,0 +1,125 @@
+<table style="margin-top:0px;padding-top:0px;">
+    <tr>
+        <td class="status-info-label">
+            <p class="condition" data-condition="Food_and_Drinks">Hunger</p>
+        </td>
+        <td class="status-info-label">
+            <p class="condition" data-condition="Food_and_Drinks">Dehydration</p>
+        </td>
+        <td class="status-info-label">
+            <p class="condition" data-condition="Fatigue_and_Exhaustion">Fatigue</p>
+        </td>
+         <td>
+            <p class="condition" data-condition="Fatigue_and_Exhaustion">Exhaustion</p>
+         </td>
+        <td class="status-info-label" title="10 Levels of Rads = Dead">
+            <p class="condition"><a class="content-link" data-link="" data-uuid="Compendium.arcane-arcade-fallout.conditions.Item.0KeR41HcadOH78KN" data-id="0KeR41HcadOH78KN" data-type="Item" data-pack="arcane-arcade-fallout.conditions" data-tooltip="Click for details.">Rad LVL</a></p>
+        </td>
+        <td class="status-info-label"
+            title="Every 10 levels resets and gives 1 level radiation">
+            <p class="condition" data-condition="Irradiation">Irradiation</p>
+        </td>
+    </tr>
+    <tr>
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="hunger"
+            data-type="penalties"
+            class="fas fa-minus-square  nobackground"></i>
+            {{system.penalties.hunger.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="hunger"
+            data-type="penalties"
+            class="fas fa-plus-square  nobackground"></i>
+        </td>
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="dehydration"
+            data-type="penalties"
+            class="fas fa-minus-square  nobackground"></i>
+            {{system.penalties.dehydration.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="dehydration"
+            data-type="penalties"
+            class="fas fa-plus-square  nobackground"></i>
+        </td>
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="fatigue"
+            data-type="penalties"
+            class="fas fa-minus-square  nobackground"></i>
+            {{system.penalties.fatigue.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="fatigue"
+            data-type="penalties"
+            class="fas fa-plus-square  nobackground"></i>
+        </td>
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="exhaustion"
+            data-type="penalties"
+            class="fas fa-minus-square  nobackground"></i>
+            {{system.penalties.exhaustion.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="exhaustion"
+            data-type="penalties"
+            class="fas fa-plus-square  nobackground"></i>
+        </td>
+        <td class="skill-value">
+            <i style="padding: 3px"
+            data-statSubtraction
+            data-stat="radiation"
+            data-type="penalties"
+            class="fas fa-minus-square  nobackground"></i>
+            {{system.penalties.radiation.value}}
+            <i style="padding: 3px"
+            data-statAddition
+            data-stat="radiation"
+            data-type="penalties"
+            class="fas fa-plus-square  nobackground"></i>
+        </td>
+        <td class="status-info-value">
+            <div class="grid grid-3col">
+                <div style="float:left;">
+                    <i style="padding: 3px;float:right"
+                       data-subtracted
+                       data-field="system.irradiated"
+                       data-fieldvalue="{{irradiated}}"
+                       class="fas fa-minus-square  nobackground">
+                    </i>
+                </div>
+                <div>
+                    <progress title="{{irradiated}} out of 10"
+                              style="width:100%;"
+                              class="statusbar"
+                              value="{{ irradiated }}"
+                              max=10>
+                        {{ irradiated }}
+                    </progress>
+                </div>
+                <div style="float:right;">
+                    <i style="padding: 3px;float:left"
+                       data-added
+                       data-field="system.irradiated"
+                       data-fieldvalue="{{irradiated}}"
+                       class="fas fa-plus-square  nobackground">
+                    </i>
+                </div>
+            </div>
+
+
+        </td>
+    </tr>
+    <tr>
+        <td colspan="999">Total Penalties: {{ penaltyTotal }}</td>
+    </tr>
+</table>
+
