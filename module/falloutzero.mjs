@@ -85,6 +85,15 @@ Hooks.once('init', function () {
     default: true,
     requiresReload: true,
   })
+  game.settings.register('core', 'AutoRecycleAP', {
+    name: 'Auto recycle AP',
+    hint: 'Automatically recycles AP when combat round advances',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  })
 
   const sheetColor = game.settings.get('core', 'Sheet-Color');
   const r = document.querySelector(':root');
@@ -299,6 +308,19 @@ Handlebars.registerHelper('FormatCompendium', function (itemName, compendium) {
 Hooks.once('ready', function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot))
+
+  // Auto recycle AP on turn end
+  if (game.user.isGM && game.settings.get('core', 'AutoRecycleAP')) {
+    Hooks.on("updateCombat", async (combat, updates, update) => {
+      // if round did not change or direction is backwards, return
+      if (!updates.round || update.direction !== 1) return
+
+      // else recycle ap for all combatants
+      game.combat.combatants.forEach((combatant) => {
+        combatant.actor.recycleAp()
+      })
+    });
+  }
 })
 
 /* --------------------------------------------  */
@@ -370,6 +392,7 @@ Hooks.on('aafohud.attackRoll', async (actorUuid, weaponId) => {
   weapon.rollAttack({ advantageMode: 1 })
 })
 
+// AAFO-HUD HOOKS
 Hooks.on('aafohud.toggleEquipArmor', async (actorUuid, itemId) => {
   const actor = fromUuidSync(actorUuid)
   const item = actor.items.get(itemId)
