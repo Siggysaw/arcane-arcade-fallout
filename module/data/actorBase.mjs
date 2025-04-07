@@ -116,7 +116,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
             initial: FALLOUTZERO.abilities[ability].penalties,
           }),
           abbr: new fields.StringField({
-            initial: FALLOUTZERO.abilities[ability].abbreviation,
+            initial: FALLOUTZERO.abilities[ability].id,
           }),
           advantage: new fields.NumberField({
             ...requiredInteger,

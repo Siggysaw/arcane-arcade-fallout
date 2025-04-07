@@ -128,6 +128,7 @@ Hooks.once('init', function () {
     ammo: models.FalloutZeroItemAmmo,
     feature: models.FalloutZeroFeature,
     background: models.FalloutZeroBackground,
+    perk: models.FalloutZeroPerk,
     race: models.FalloutZeroRace,
     armor: models.FalloutZeroArmor,
     powerArmor: models.FalloutZeroPowerArmor,
@@ -165,6 +166,11 @@ Hooks.once('init', function () {
     makeDefault: true,
     types: ['background'],
     label: 'FALLOUTZERO.SheetLabels.Background',
+  })
+  Items.registerSheet('falloutzero', sheets.FalloutZeroPerkSheet, {
+    makeDefault: true,
+    types: ['perk'],
+    label: 'FALLOUTZERO.SheetLabels.Perk',
   })
   Items.registerSheet('falloutzero', sheets.FalloutZeroRaceSheet, {
     makeDefault: true,

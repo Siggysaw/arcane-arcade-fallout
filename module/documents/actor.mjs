@@ -36,27 +36,6 @@ export default class FalloutZeroActor extends Actor {
     ).render(true)
   }
 
-  // Perks List
-  viewPerks() {
-    const myDialogOptions = { resizable: true }
-    let message = 'Perks List Coming Soon!'
-    const perks = game.packs.filter((i) => i.name == 'perks')
-    //actorData.items.find((i) => i.name == "Pack Rat")
-    console.log(perks)
-
-    new Dialog(
-      {
-        title: 'Custom Roll',
-        content: message,
-        buttons: {
-          button1: {
-            label: 'Close',
-          },
-        },
-      },
-      myDialogOptions,
-    ).render(true)
-  }
   /** @inheritdoc */
   async _preUpdate(changed, options, user) {
     if ((await super._preUpdate(changed, options, user)) === false) return false

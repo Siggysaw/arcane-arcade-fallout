@@ -1,0 +1,14 @@
+<div class="perks">
+    <h1>Perks</h1>
+    <div class="grid grid-3col characters">
+        {{perks}}
+        <div>
+            {{#each perks as |perk|}}
+                <div>
+                {{ perk.name }}
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+
