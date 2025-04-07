@@ -48,7 +48,6 @@ export default class FalloutZeroBackgroundSheet extends ItemSheet {
     context.effects = prepareActiveEffectCategories(this.item.effects)
 
     context.specialOptions = Object.values(FALLOUTZERO.abilities)
-    context.raceOptions = Object.values(FALLOUTZERO.races).filter((r) => r.id !== 'custom')
 
     return context
   }
@@ -58,5 +57,74 @@ export default class FalloutZeroBackgroundSheet extends ItemSheet {
 
   activateListeners(html) {
     super.activateListeners(html)
+
+    const dragDrop = new DragDrop({
+      dropSelector: '[data-race-drop]',
+      callbacks: { drop: this._onDropRace.bind(this) },
+    })
+    dragDrop.bind(html[0])
+
+    html[0].querySelectorAll('[data-remove-race]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveRace.bind(this))
+    })
+  }
+
+  async _onRemoveRace(e) {
+    e.stopPropagation()
+    const { removeRace } = e.currentTarget.dataset
+    if (!removeRace) return
+
+    const newRaceReqs = this.item.system.raceReq.filter((req) => {
+      return req.id !== removeRace
+    })
+
+    const dataLocation = `system.raceReq`
+    this.item.update({
+      [dataLocation]: newRaceReqs,
+    })
+  }
+
+  async _onDropRace(e) {
+    e.stopPropagation()
+    e.preventDefault()
+
+    let dropData
+    try {
+      dropData = JSON.parse(event.dataTransfer.getData('text/plain'))
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+    if (dropData === undefined || dropData.type !== 'Item') return false
+
+    const permitted = [
+      'race',
+    ]
+
+    const item = await fromUuid(dropData.uuid)
+
+    if (!permitted.includes(item.type)) {
+      ui.notifications.warn('Only races are accepted here')
+      return false
+    }
+
+    const alreadyExists = this.item.system.raceReq.find((req) => {
+      return req.id === item.system.type
+    })
+
+    if (alreadyExists) {
+      ui.notifications.warn('Race is already required')
+      return false
+    }
+
+    const newRaceReqs = [...this.item.system.raceReq, {
+      id: item.system.type,
+      label: FALLOUTZERO.races[item.system.type]?.label || item.system.type,
+    }].filter((req) => Boolean(req.id) && Boolean(req.label))
+
+    const dataLocation = `system.raceReq`
+    this.item.update({
+      [dataLocation]: newRaceReqs,
+    })
   }
 }

@@ -1,6 +1,6 @@
 import FalloutZeroItemBase from './itemBase.mjs'
 
-export default class FalloutZeroRace extends FalloutZeroItemBase {
+export default class FalloutZeroPerk extends FalloutZeroItemBase {
   static defineSchema() {
     const fields = foundry.data.fields
     const schema = super.defineSchema()
@@ -9,9 +9,14 @@ export default class FalloutZeroRace extends FalloutZeroItemBase {
     schema.lvlReq = new fields.NumberField({ initial: 1, min: 1 })
     schema.specialReq = new fields.SchemaField({
       special: new fields.StringField({ initial: 'None' }),
-      value: new fields.NumberField({ min: 1, max: 10 }),
+      value: new fields.NumberField({ min: 1, max: 10, initial: 1 }),
     }),
-    schema.raceReq = new fields.StringField()
+    schema.raceReq = new fields.ArrayField(
+      new fields.SchemaField({
+        id: new fields.StringField(),
+        label: new fields.StringField()
+      }), { initial: [] }
+    )
     schema.grants = new fields.ArrayField(
       new fields.SchemaField({
         _id: new fields.DocumentIdField({ initial: () => foundry.utils.randomID() }),
@@ -19,7 +24,7 @@ export default class FalloutZeroRace extends FalloutZeroItemBase {
         type: new fields.StringField(),
         name: new fields.StringField(),
         quantity: new fields.NumberField({ initial: 1, min: 1 }),
-      }, { initial: [] }),
+      }), { initial: [] }
     )
 
     return schema
