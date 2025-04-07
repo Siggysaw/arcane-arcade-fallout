@@ -494,8 +494,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
 
     // View Perks Button
-    html.on('click', '[data-view-perks]', (ev) => {
-      new PerkListApplication().render(true)
+    html.on('click', '[data-view-perks]', async (ev) => {
+      const perkApp = new PerkListApplication()
+      await perkApp.init()
+      perkApp.render(true)
     })
 
     // Custom Roll Button

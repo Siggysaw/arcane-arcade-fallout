@@ -1,12 +1,15 @@
 <div class="perks">
     <h1>Perks</h1>
     <div class="grid grid-3col characters">
-        {{perks}}
-        <div>
+        <div class="grid grid-5col gap-3">
             {{#each perks as |perk|}}
-                <div>
-                {{ perk.name }}
-                </div>
+                <a
+                    data-edit
+                    data-uuid="{{ perk.uuid }}"
+                >
+                    <img title="{{ perk.description }}" src="{{ perk.img }}" />
+                    {{ perk.name }}
+                </a>
             {{/each}}
         </div>
     </div>
