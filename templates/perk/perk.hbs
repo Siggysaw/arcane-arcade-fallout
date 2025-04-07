@@ -6,6 +6,15 @@
       </h1>
       <div class="grid grid-2col gap-3">
 
+        <div class="nowrap">Repeatable</div>
+        <div class="flex gap-3">
+          <input type="checkbox" name="system.repeat.canRepeat" {{checked system.repeat.canRepeat}} />
+          {{#if system.repeat.canRepeat}}
+          times: <input name="system.repeat.times" value="{{ system.repeat.times }}" type="number" />
+          requirement: <input name="system.repeat.requirement" value="{{ system.repeat.requirement }}" placeholder="requirement" type="text" />
+          {{/if}}
+        </div>
+
         {{!-- Requirement (text field, no automation) --}}
         <div class="nowrap">requirement: </div>
         <input

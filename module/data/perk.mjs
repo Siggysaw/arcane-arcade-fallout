@@ -26,6 +26,11 @@ export default class FalloutZeroPerk extends FalloutZeroItemBase {
         quantity: new fields.NumberField({ initial: 1, min: 1 }),
       }), { initial: [] }
     )
+    schema.repeat = new fields.SchemaField({
+      canRepeat: new fields.BooleanField({ initial: false }),
+      times: new fields.NumberField({ initial: 2 }),
+      requirement: new fields.StringField({ initial: ''})
+    })
 
     return schema
   }
