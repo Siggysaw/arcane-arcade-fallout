@@ -128,6 +128,7 @@ Hooks.once('init', function () {
     ammo: models.FalloutZeroItemAmmo,
     feature: models.FalloutZeroFeature,
     background: models.FalloutZeroBackground,
+    perk: models.FalloutZeroPerk,
     race: models.FalloutZeroRace,
     armor: models.FalloutZeroArmor,
     powerArmor: models.FalloutZeroPowerArmor,
@@ -165,6 +166,11 @@ Hooks.once('init', function () {
     makeDefault: true,
     types: ['background'],
     label: 'FALLOUTZERO.SheetLabels.Background',
+  })
+  Items.registerSheet('falloutzero', sheets.FalloutZeroPerkSheet, {
+    makeDefault: true,
+    types: ['perk'],
+    label: 'FALLOUTZERO.SheetLabels.Perk',
   })
   Items.registerSheet('falloutzero', sheets.FalloutZeroRaceSheet, {
     makeDefault: true,
@@ -227,6 +233,13 @@ Handlebars.registerHelper('Check', function (v1, v2, options) {
   return options.inverse(this)
 })
 
+Handlebars.registerHelper('IsIn', function (item, list) {
+  if (list.includes(item)) {
+    return true
+  }
+  return false
+})
+
 // Greater Than or Equal
 Handlebars.registerHelper('GreaterThan', function (v1, v2, options) {
   if (v1 >= v2) {
@@ -279,6 +292,10 @@ Handlebars.registerHelper('LckMod', function (v1, v2) {
 Handlebars.registerHelper('Multiply', function (v1, v2) {
     let mathResult = Math.floor(Number(v1) * Number(v2))
     return mathResult
+})
+
+Handlebars.registerHelper('NotEqual', function (v1, v2) {
+  return v1 !== v2
 })
 
 //Format a Compendium Link for a given title

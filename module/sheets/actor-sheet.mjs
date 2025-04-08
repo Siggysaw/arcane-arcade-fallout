@@ -3,6 +3,7 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/
 import FalloutZeroArmor from '../data/armor.mjs'
 import FalloutZeroItem from '../documents/item.mjs'
 import SkillRoll from '../dice/skill-roll.mjs'
+import PerkListApplication from '../applications/components/perk-list.mjs'
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -493,8 +494,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
 
     // View Perks Button
-    html.on('click', '[data-view-perks]', (ev) => {
-      this.actor.viewPerks()
+    html.on('click', '[data-view-perks]', async (ev) => {
+      const perkApp = new PerkListApplication()
+      await perkApp.init()
+      perkApp.render(true)
     })
 
     // Custom Roll Button

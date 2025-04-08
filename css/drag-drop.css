@@ -1,0 +1,6 @@
+.drop-area { 
+    border: 1px dashed var(--user-color);
+    padding: 10px;
+    width: 100%;
+    min-height: 20px;
+}

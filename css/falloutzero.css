@@ -9,6 +9,9 @@
 @import 'chat.css';
 @import 'sheet-status.css';
 @import 'award.css';
+@import 'perk.css';
+@import 'drag-drop.css';
+@import 'perk-list.css';
 
 /* Global styles */
 @font-face {

@@ -20,6 +20,7 @@ export { default as FalloutZeroJunkItem } from './junkItem.mjs'
 // Export Misc
 export { default as FalloutZeroBackground } from './background.mjs'
 export { default as FalloutZeroRace } from './race.mjs'
+export { default as FalloutZeroPerk } from './perk.mjs'
 export { default as FalloutZeroArmorUpgrade } from './armorUpgrade.mjs'
 export { default as FalloutZeroWeaponUpgrade } from './weaponUpgrade.mjs'
 export { default as FalloutZeroCondition } from './condition.mjs'
