@@ -1,12 +1,5 @@
-2025/04/08-11:50:36.126 23c24 Delete type=3 #1
-2025/04/08-15:52:59.448 23098 Level-0 table #1033: started
-2025/04/08-15:52:59.450 23098 Level-0 table #1033: 5041 bytes OK
-2025/04/08-15:52:59.455 23098 Delete type=0 #1031
-2025/04/08-15:52:59.475 23098 Manual compaction at level-0 from '!folders!BX8ob4hygqZQjOsE' @ 72057594037927935 : 1 .. '!items.effects!tY5wYBBZwYNC9MSN.w3Tw4LeCxyybYwn6' @ 0 : 0; will stop at '!items!yDstvpPyumebLSUT' @ 1568 : 1
-2025/04/08-15:52:59.475 23098 Compacting 2@0 + 0@1 files
-2025/04/08-15:52:59.479 23098 Generated table #1034@0: 198 keys, 91474 bytes
-2025/04/08-15:52:59.479 23098 Compacted 2@0 + 0@1 files => 91474 bytes
-2025/04/08-15:52:59.483 23098 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/04/08-15:52:59.483 23098 Delete type=2 #1028
-2025/04/08-15:52:59.483 23098 Delete type=2 #1033
-2025/04/08-15:52:59.491 23098 Manual compaction at level-0 from '!items!yDstvpPyumebLSUT' @ 1568 : 1 .. '!items.effects!tY5wYBBZwYNC9MSN.w3Tw4LeCxyybYwn6' @ 0 : 0; will stop at (end)
+2025/04/08-23:35:20.559439 312fcc000 Log #1038: 0 ops saved to Table #1039 OK
+2025/04/08-23:35:20.559561 312fcc000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/perks/001038.log: OK
+2025/04/08-23:35:20.560825 312fcc000 Table #1034: 198 entries OK
+2025/04/08-23:35:20.560959 312fcc000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/perks/MANIFEST-001037: OK
+2025/04/08-23:35:20.561148 312fcc000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/perks; recovered 1 files; 91142 bytes. Some data may have been lost. ****

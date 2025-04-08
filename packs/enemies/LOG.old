@@ -1,3 +1,7 @@
-2025/04/07-20:26:24.077 1fa48 Recovering log #986
-2025/04/07-20:26:24.086 1fa48 Delete type=0 #986
-2025/04/07-20:26:24.086 1fa48 Delete type=3 #985
+2025/04/08-23:35:20.594400 313fd2000 Log #990: 1 ops saved to Table #991 OK
+2025/04/08-23:35:20.594513 313fd2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/enemies/000990.log: OK
+2025/04/08-23:35:20.594541 313fd2000 Log #969: 0 ops saved to Table #992 OK
+2025/04/08-23:35:20.594589 313fd2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/enemies/000969.log: OK
+2025/04/08-23:35:20.594605 313fd2000 Table #991: 1 entries OK
+2025/04/08-23:35:20.594712 313fd2000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/enemies/MANIFEST-000989: OK
+2025/04/08-23:35:20.594909 313fd2000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/enemies; recovered 1 files; 2982 bytes. Some data may have been lost. ****

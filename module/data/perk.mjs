@@ -8,9 +8,9 @@ export default class FalloutZeroPerk extends FalloutZeroItemBase {
     schema.name = new fields.StringField({ initial: 'perk' })
     schema.lvlReq = new fields.NumberField({ initial: 1, min: 1 })
     schema.specialReq = new fields.SchemaField({
-      special: new fields.StringField({ initial: 'None' }),
-      value: new fields.NumberField({ min: 1, max: 10, initial: 1 }),
-    }),
+      special: new fields.StringField(),
+      value: new fields.NumberField({ min: 1, max: 10 }),
+    }, { initial: { special: 'None', value: null }}),
     schema.raceReq = new fields.ArrayField(
       new fields.SchemaField({
         id: new fields.StringField(),
