@@ -19,34 +19,25 @@
                 data-edit
                 data-uuid="{{ perk.uuid }}"
             >
-                <img title="{{ perk.description }}" src="{{ perk.img }}" />
-                <div>
-                    {{ perk.name }}
+                <img class="perk-image" title="{{ perk.description }}" src="{{ perk.img }}" />
+                <div class="perk-div">
+                    <h3>{{ perk.name }}</h3>
                 </div>
-
-                <div class="underline">Requirements</div>
+                Requirements:
                 <div class="grid grid-2col">
                     {{#GreaterThan perk.system.lvlReq 2 }}
+
                         <div>
-                            Level:
-                        </div>
-                        <div>
-                            {{ perk.system.lvlReq }}
+                            Lvl:{{ perk.system.lvlReq }}
                         </div>
                     {{/GreaterThan}}
 
                     {{#if (NotEqual perk.system.specialReq.special 'None' ) }}
                         <div>
-                            Special:
-                        </div>
-                        <div>
                             {{ perk.system.specialReq.special }} {{ perk.system.specialReq.value }}
                         </div>
                     {{/if}}
                     {{#if perk.system.raceReq }}
-                        <div>
-                            Race:
-                        </div>
                         <div>
                             {{#each perk.system.raceReq as |raceReq|}} {{ raceReq.label }} {{/each}}
                         </div>

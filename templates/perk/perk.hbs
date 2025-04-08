@@ -1,4 +1,4 @@
-<form class="perk" autocomplete="off">
+<form class="perk perk-list" autocomplete="off">
   <header class="sheet-header">
     <div class="header-fields">
       <h1>
@@ -7,16 +7,14 @@
       <div class="grid grid-2col gap-3">
 
         <div class="nowrap">Repeatable</div>
-        <div class="flex gap-3">
           <input type="checkbox" name="system.repeat.canRepeat" {{checked system.repeat.canRepeat}} />
           {{#if system.repeat.canRepeat}}
-          times: <input name="system.repeat.times" value="{{ system.repeat.times }}" type="number" />
-          requirement: <input name="system.repeat.requirement" value="{{ system.repeat.requirement }}" placeholder="requirement" type="text" />
+          Times: <input name="system.repeat.times" value="{{ system.repeat.times }}" type="number" />
+          Repeat Rewards: <input name="system.repeat.requirement" value="{{ system.repeat.requirement }}" placeholder="requirement" type="text" />
           {{/if}}
-        </div>
 
         {{!-- Requirement (text field, no automation) --}}
-        <div class="nowrap">requirement: </div>
+        <div class="nowrap">Req: </div>
         <input
           type="text"
           name="system.requirement.value"
@@ -24,7 +22,7 @@
         />
         
         {{!-- Character level requirement --}}
-        <div class="nowrap">Character level requirement: </div>
+        <div class="nowrap">Level Req: </div>
         <input
           type="number"
           min="1"
@@ -33,7 +31,7 @@
         />
 
         {{!-- Special requirement --}}
-        <div class="nowrap">Special requirement: </div>
+        <div class="nowrap">SPECIAL Req: </div>
         <div class="flex gap-3">
           <select name="system.specialReq.special">
             {{selectOptions specialOptions selected=system.specialReq.special valueAttr="id" labelAttr="label" blank="None"}}
@@ -45,7 +43,7 @@
 
 
         {{!-- Race requirements --}}
-        <div class="nowrap">Race requirements: </div>
+        <div class="nowrap">Race Req: </div>
         <div data-race-drop class="drop-area" data-tooltip="drop race here to add">
           {{#each system.raceReq as |race|}}
               <div class="flex">

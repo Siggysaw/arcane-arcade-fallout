@@ -1,18 +1,27 @@
 .perk-list {
-    margin: 20px;
+  text-transform: capitalize;
+  margin: 20px;
 }
-
+.perk-list .perk-list-name {
+  font-size: 12pt;
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 10px;
+}
 .perk-list .perk-grid {
     display: grid;
-    grid-template-columns: repeat(5, 148px);
+    grid-template-columns: repeat(4 , 25%);
     border-top: 1px solid;
     border-left: 1px solid;
-    width: 741px;
   }
-  
 .perk-list .perk-grid > a {
     font-size: 12px;
     border-bottom: 1px solid;
     border-right: 1px solid;
     padding: 10px;
+    text-align:center;
+}
+.perk-list-img{
+    width:200px;
+    height:200px;
 }

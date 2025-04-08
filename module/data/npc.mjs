@@ -108,6 +108,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       modifiers: new fields.NumberField({ initial: 0 })
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
+    schema.race = new fields.StringField()
     schema.properties = new fields.HTMLField()
     schema.activePartymember = new fields.BooleanField({ initial: false })
     schema.editToggle = new fields.BooleanField({ initial: true })
