@@ -1,6 +1,21 @@
+import { FALLOUTZERO } from '../../config.mjs'
 export default class PerkListApplication extends Application {
     constructor() {
         super();
+        this.filters = [
+            'strength',
+            'perception',
+            'endurance',
+            'charisma',
+            'intelligence',
+            'agility',
+            'luck',
+            'general',
+            'racial',
+        ]
+        this.perks = []
+
+        this.selectedFilters = []
     }
 
     async init() {
@@ -18,16 +33,33 @@ export default class PerkListApplication extends Application {
             id: "perk-list",
             title: 'Perks',
             template: 'systems/arcane-arcade-fallout/templates/dialog/perk-list.hbs',
-            width: 600,
+            width: 800,
             height: 'auto',
             popOut: true,
+            resizable: true,
         });
     }
 
     getData() {
-        return {
-            perks: this.perks,
-        };
+        const context = super.getData()
+
+        const filteredPerks = this.selectedFilters.length > 0 ? this.perks.filter((perk) => {
+            const specialKey = FALLOUTZERO.abilities[perk.system.specialReq.special]?.label?.toLowerCase() || null
+            const requiredRaces = perk.system.raceReq
+            if (specialKey && this.selectedFilters.includes(specialKey)){
+                return true
+            } else if (requiredRaces.length > 0 && this.selectedFilters.includes('racial')) {
+                return true
+            } else if (!specialKey && requiredRaces.length === 0 && this.selectedFilters.includes('general')) {
+                return true
+            }
+        }) : this.perks
+
+
+        context.perks = filteredPerks
+        context.filters = this.filters
+        context.selectedFilters = this.selectedFilters
+        return context
     }
 
     activateListeners(html) {
@@ -38,5 +70,16 @@ export default class PerkListApplication extends Application {
         const perk = await fromUuidSync(perkUuid)
         perk.sheet.render(true)
       })
+
+      html.on('input', '[data-filter]', (e) => {
+        const filterKey = e.currentTarget.dataset.filter
+        if (this.selectedFilters.includes(filterKey)) {
+            this.selectedFilters = this.selectedFilters.filter((f) => f !== filterKey)
+        } else {
+            this.selectedFilters.push(filterKey)
+        }
+        this.render(true);
+      })
     }
+
 }

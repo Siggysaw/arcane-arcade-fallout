@@ -1,0 +1,18 @@
+.perk-list {
+    margin: 20px;
+}
+
+.perk-list .perk-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 148px);
+    border-top: 1px solid;
+    border-left: 1px solid;
+    width: 741px;
+  }
+  
+.perk-list .perk-grid > a {
+    font-size: 12px;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    padding: 10px;
+}

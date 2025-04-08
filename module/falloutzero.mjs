@@ -233,6 +233,13 @@ Handlebars.registerHelper('Check', function (v1, v2, options) {
   return options.inverse(this)
 })
 
+Handlebars.registerHelper('IsIn', function (item, list) {
+  if (list.includes(item)) {
+    return true
+  }
+  return false
+})
+
 // Greater Than or Equal
 Handlebars.registerHelper('GreaterThan', function (v1, v2, options) {
   if (v1 >= v2) {
@@ -285,6 +292,10 @@ Handlebars.registerHelper('LckMod', function (v1, v2) {
 Handlebars.registerHelper('Multiply', function (v1, v2) {
     let mathResult = Math.floor(Number(v1) * Number(v2))
     return mathResult
+})
+
+Handlebars.registerHelper('NotEqual', function (v1, v2) {
+  return v1 !== v2
 })
 
 //Format a Compendium Link for a given title

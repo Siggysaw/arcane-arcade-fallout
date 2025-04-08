@@ -1,17 +1,59 @@
-<div class="perks">
+<div class="perk-list">
     <h1>Perks</h1>
-    <div class="grid grid-3col characters">
-        <div class="grid grid-5col gap-3">
-            {{#each perks as |perk|}}
-                <a
-                    data-edit
-                    data-uuid="{{ perk.uuid }}"
-                >
-                    <img title="{{ perk.description }}" src="{{ perk.img }}" />
+    <hr/>
+        <fieldset>
+            <legend>Filters</legend>
+            <div class="grid grid-3col">
+                {{#each filters as |filter|}}
+                    <label class="flex">
+                        <input data-filter="{{filter}}" type="checkbox" name="filters.{{filter}}" {{#if (IsIn filter ../selectedFilters)}}checked{{/if}} />
+                        {{filter}}
+                    </label>
+                {{/each}}
+            </div>
+        </fieldset>
+    <hr/>
+    <div class="perk-grid">
+        {{#each perks as |perk|}}
+            <a
+                data-edit
+                data-uuid="{{ perk.uuid }}"
+            >
+                <img title="{{ perk.description }}" src="{{ perk.img }}" />
+                <div>
                     {{ perk.name }}
-                </a>
-            {{/each}}
-        </div>
+                </div>
+
+                <div class="underline">Requirements</div>
+                <div class="grid grid-2col">
+                    {{#GreaterThan perk.system.lvlReq 2 }}
+                        <div>
+                            Level:
+                        </div>
+                        <div>
+                            {{ perk.system.lvlReq }}
+                        </div>
+                    {{/GreaterThan}}
+
+                    {{#if (NotEqual perk.system.specialReq.special 'None' ) }}
+                        <div>
+                            Special:
+                        </div>
+                        <div>
+                            {{ perk.system.specialReq.special }} {{ perk.system.specialReq.value }}
+                        </div>
+                    {{/if}}
+                    {{#if perk.system.raceReq }}
+                        <div>
+                            Race:
+                        </div>
+                        <div>
+                            {{#each perk.system.raceReq as |raceReq|}} {{ raceReq.label }} {{/each}}
+                        </div>
+                    {{/if}}
+                </div>
+            </a>
+        {{/each}}
     </div>
 </div>
 

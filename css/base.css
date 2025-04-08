@@ -105,3 +105,7 @@ button > i:hover {
 .nowrap {
   white-space: nowrap;
 }
+
+.underline {
+  text-decoration: underline;
+}
