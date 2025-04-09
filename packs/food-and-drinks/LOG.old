@@ -1,3 +1,5 @@
-2025/04/08-15:54:09.246 1e864 Recovering log #950
-2025/04/08-15:54:09.254 1e864 Delete type=0 #950
-2025/04/08-15:54:09.254 1e864 Delete type=3 #948
+2025/04/09-12:32:30.876 9888 Log #957: 0 ops saved to Table #958 OK
+2025/04/09-12:32:30.877 9888 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\food-and-drinks/000957.log: OK
+2025/04/09-12:32:30.877 9888 Table #952: 86 entries OK
+2025/04/09-12:32:30.881 9888 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\food-and-drinks/MANIFEST-000955: OK
+2025/04/09-12:32:30.886 9888 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\food-and-drinks; recovered 1 files; 73582 bytes. Some data may have been lost. ****

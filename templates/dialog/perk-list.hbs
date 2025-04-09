@@ -1,50 +1,46 @@
 <div class="perk-list">
     <h1>Perks</h1>
-    <hr/>
-        <fieldset>
-            <legend>Filters</legend>
-            <div class="grid grid-3col">
-                {{#each filters as |filter|}}
-                    <label class="flex">
-                        <input data-filter="{{filter}}" type="checkbox" name="filters.{{filter}}" {{#if (IsIn filter ../selectedFilters)}}checked{{/if}} />
-                        {{filter}}
-                    </label>
-                {{/each}}
-            </div>
-        </fieldset>
-    <hr/>
+    <hr />
+    <fieldset>
+        <legend>Filters</legend>
+        <div class="grid grid-3col">
+            {{#each filters as |filter|}}
+            <label class="flex">
+                <input data-filter="{{filter}}" type="checkbox" name="filters.{{filter}}" {{#if (IsIn filter ../selectedFilters)}} checked{{/if}} />
+                {{filter}}
+            </label>
+            {{/each}}
+        </div>
+    </fieldset>
+    <hr />
     <div class="perk-grid">
         {{#each perks as |perk|}}
-            <a
-                data-edit
-                data-uuid="{{ perk.uuid }}"
-            >
-                <img class="perk-image" title="{{ perk.description }}" src="{{ perk.img }}" />
-                <div class="perk-div">
-                    <h3>{{ perk.name }}</h3>
+        <a data-edit
+           data-uuid="{{ perk.uuid }}">
+            <img class="perk-image" title="{{ perk.description }}" src="{{ perk.img }}" />
+            <div class="perk-div">
+                <h3>{{ perk.name }}</h3>
+            </div>
+            <div style="display:block;text-align:center;" class="grid grid-2col">
+                {{#GreaterThan perk.system.lvlReq 2 }}
+                <div>
+                    Lvl:{{ perk.system.lvlReq }}
                 </div>
-                Requirements:
-                <div class="grid grid-2col">
-                    {{#GreaterThan perk.system.lvlReq 2 }}
+                {{/GreaterThan}}
 
-                        <div>
-                            Lvl:{{ perk.system.lvlReq }}
-                        </div>
-                    {{/GreaterThan}}
-
-                    {{#if (NotEqual perk.system.specialReq.special 'None' ) }}
-                        <div>
-                            {{ perk.system.specialReq.special }} {{ perk.system.specialReq.value }}
-                        </div>
-                    {{/if}}
-                    {{#if perk.system.raceReq }}
-                        <div>
-                            {{#each perk.system.raceReq as |raceReq|}} {{ raceReq.label }} {{/each}}
-                        </div>
-                    {{/if}}
+                {{#if (NotEqual perk.system.specialReq.special '' ) }}
+                {{#if (NotEqual perk.system.specialReq.special 'None' ) }}
+                <div>
+                    {{ perk.system.specialReq.special }} {{ perk.system.specialReq.value }}
                 </div>
-            </a>
+                {{/if}}{{/if}}
+                {{#if perk.system.raceReq }}
+                <div>
+                    {{#each perk.system.raceReq as |raceReq|}} {{ raceReq.label }} {{/each}}
+                </div>
+                {{/if}}
+            </div>
+        </a>
         {{/each}}
     </div>
 </div>
-
