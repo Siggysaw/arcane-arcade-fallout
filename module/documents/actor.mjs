@@ -1,5 +1,6 @@
 import { FALLOUTZERO } from '../config.mjs'
 import FalloutZeroItem from './item.mjs'
+import LevelUpApplication from '../applications/components/level-up.mjs'
 /**
 /**
  * Extend the base Actor class to implement additional system-specific logic.
@@ -1026,75 +1027,76 @@ export default class FalloutZeroActor extends Actor {
   }
 
   levelUp() {
+    new LevelUpApplication(this).render(true)
     // Rewards Variables
-    const actor = this.system
-    const myDialogOptions = { width: 500, height: 400 }
-    const newXP = this.system.xp - 1000
-    const newLevel = this.system.level + 1
-    let rewards = `<h3>Congratulations!</h3><p> You've Leveled Up! Please look below for your rewards!</p>`
+    // const actor = this.system
+    // const myDialogOptions = { width: 500, height: 400 }
+    // const newXP = this.system.xp - 1000
+    // const newLevel = this.system.level + 1
+    // let rewards = `<h3>Congratulations!</h3><p> You've Leveled Up! Please look below for your rewards!</p>`
 
-    // Update Level
-    this.update({ 'system.xp': newXP })
-    this.update({ 'system.level': newLevel })
+    // // Update Level
+    // this.update({ 'system.xp': newXP })
+    // this.update({ 'system.level': newLevel })
 
-    // Skill Rewards Start
+    // // Skill Rewards Start
 
-    const earnedSkillpoints = this.system.skillPool
-    let skillPointsMod = ''
-    let updatedSkillpool = ''
+    // const earnedSkillpoints = this.system.skillPool
+    // let skillPointsMod = ''
+    // let updatedSkillpool = ''
 
-    // Levels that increase skill points
-    if (actor.level % 4 === 0) {
-      // Skill points allotted is based on Intelligence modifier
-      if (actor.abilities.int.mod > 0) {
-        skillPointsMod = 5
-      }
-      if (actor.abilities.int.mod == 0) {
-        skillPointsMod = 4
-      }
-      if (actor.abilities.int.mod < 0) {
-        skillPointsMod = 3
-      }
-      // Update points available to spend
-      updatedSkillpool = Number(earnedSkillpoints) + Number(skillPointsMod)
-      this.update({ 'system.skillPool': updatedSkillpool })
+    // // Levels that increase skill points
+    // if (actor.level % 4 === 0) {
+    //   // Skill points allotted is based on Intelligence modifier
+    //   if (actor.abilities.int.mod > 0) {
+    //     skillPointsMod = 5
+    //   }
+    //   if (actor.abilities.int.mod == 0) {
+    //     skillPointsMod = 4
+    //   }
+    //   if (actor.abilities.int.mod < 0) {
+    //     skillPointsMod = 3
+    //   }
+    //   // Update points available to spend
+    //   updatedSkillpool = Number(earnedSkillpoints) + Number(skillPointsMod)
+    //   this.update({ 'system.skillPool': updatedSkillpool })
 
-      // Build the Rewards Screen
-      rewards += `You've Earned ${skillPointsMod} Skill Points to Allocate!<br>`
-    }
-    // Health and Stamina Rewards Start
-    if (actor.level % 2 === 0) {
-      let currentHP = actor.health.max
-      let currentHPvalue = actor.health.value
-      let currentSP = actor.stamina.max
-      let currentSPvalue = actor.stamina.value
-      const endMod = actor.abilities.end.mod
-      const agiMod = actor.abilities.agi.mod
-      let updatedHealthvalue = currentHPvalue + endMod + 5
-      let updatedStaminavalue = currentSPvalue + agiMod + 5
-      let updatedHealth = currentHP + endMod + 5
-      let updatedStamina = currentSP + agiMod + 5
+    //   // Build the Rewards Screen
+    //   rewards += `You've Earned ${skillPointsMod} Skill Points to Allocate!<br>`
+    // }
+    // // Health and Stamina Rewards Start
+    // if (actor.level % 2 === 0) {
+    //   let currentHP = actor.health.max
+    //   let currentHPvalue = actor.health.value
+    //   let currentSP = actor.stamina.max
+    //   let currentSPvalue = actor.stamina.value
+    //   const endMod = actor.abilities.end.mod
+    //   const agiMod = actor.abilities.agi.mod
+    //   let updatedHealthvalue = currentHPvalue + endMod + 5
+    //   let updatedStaminavalue = currentSPvalue + agiMod + 5
+    //   let updatedHealth = currentHP + endMod + 5
+    //   let updatedStamina = currentSP + agiMod + 5
 
-      this.update({ 'system.health.max': updatedHealth })
-      this.update({ 'system.health.value': updatedHealthvalue })
-      this.update({ 'system.stamina.max': updatedStamina })
-      this.update({ 'system.stamina.value': updatedStaminavalue })
-      rewards += `
-      <br>Health has been updated to ${updatedHealth}
-      <br>Stamina has been updated to ${updatedStamina}`
-    }
-    if (newLevel == 5 || newLevel == 9 || newLevel == 13 || newLevel == 17 || newLevel == 19) {
-    } else {
-      rewards += `<br>You can take a Perk OR you can add +1 to a SPECIAL stat!`
-    }
-    new Dialog(
-      {
-        title: 'You Leveled Up!',
-        content: rewards,
-        buttons: {},
-      },
-      myDialogOptions,
-    ).render(true)
+    //   this.update({ 'system.health.max': updatedHealth })
+    //   this.update({ 'system.health.value': updatedHealthvalue })
+    //   this.update({ 'system.stamina.max': updatedStamina })
+    //   this.update({ 'system.stamina.value': updatedStaminavalue })
+    //   rewards += `
+    //   <br>Health has been updated to ${updatedHealth}
+    //   <br>Stamina has been updated to ${updatedStamina}`
+    // }
+    // if (newLevel == 5 || newLevel == 9 || newLevel == 13 || newLevel == 17 || newLevel == 19) {
+    // } else {
+    //   rewards += `<br>You can take a Perk OR you can add +1 to a SPECIAL stat!`
+    // }
+    // new Dialog(
+    //   {
+    //     title: 'You Leveled Up!',
+    //     content: rewards,
+    //     buttons: {},
+    //   },
+    //   myDialogOptions,
+    // ).render(true)
   }
   expandtoggle(item) {
     let currentItem = this.items.get(item)

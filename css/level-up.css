@@ -1,0 +1,12 @@
+.level-up .skill-choice {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+}
+.level-up button {
+    width: auto;
+    padding: 5px;
+    margin: 0;
+    line-height: normal;
+    border: 0;
+}
