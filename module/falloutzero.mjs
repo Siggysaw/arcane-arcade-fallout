@@ -298,6 +298,10 @@ Handlebars.registerHelper('NotEqual', function (v1, v2) {
   return v1 !== v2
 })
 
+Handlebars.registerHelper('Equals', function (v1, v2) {
+  return v1 === v2
+})
+
 //Format a Compendium Link for a given title
 Handlebars.registerHelper('FormatCompendium', function (itemName, compendium) {
   let compendiumObject, myItem

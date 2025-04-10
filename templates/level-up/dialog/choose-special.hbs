@@ -1,0 +1,10 @@
+<div class="my-2">
+    {{#each content.specials as |special key|}}
+        <button class="my-1" data-special="{{key}}">
+            {{ special.label }}
+        </button>
+    {{/each}}
+    <div>
+        <button data-cancel>Cancel</button>
+    </div>
+</div>
