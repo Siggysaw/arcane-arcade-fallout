@@ -11,6 +11,10 @@
   justify-content: space-between;
 }
 
+.flex.space-evenly {
+  justify-content: space-evenly;
+}
+
 .gap-1 {
   gap: 1px;
 }
@@ -106,6 +110,14 @@ button > i:hover {
   white-space: nowrap;
 }
 
+.ellipsis {
+  text-overflow: ellipsis;
+}
+
 .underline {
   text-decoration: underline;
+}
+
+.scrollable-y {
+  overflow-y: scroll;
 }

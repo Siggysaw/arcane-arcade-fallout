@@ -1,4 +1,5 @@
 import { FALLOUTZERO } from "../../config.mjs";
+import ChoosePerk from './choose-perk.mjs'
 
 export default class LevelUpApplication extends Application {
     constructor(actor, options = {}) {
@@ -102,39 +103,9 @@ export default class LevelUpApplication extends Application {
         })
 
         html[0].querySelector('[data-choose-perk]')?.addEventListener('click', async () => {
-            const perksPack = game.packs.find((p) => p.collection === 'arcane-arcade-fallout.perks')
-            const perks = await perksPack.getDocuments()
-            const dlg = new Dialog(
-                {
-                    title: `Choose Perk`,
-                    content: {
-                        perks
-                    },
-                    buttons: {},
-                    render: (html) => {
-                        const perkButtons = html[0].querySelectorAll('[data-perk-id]')
-                        perkButtons.forEach((button) => {
-                            button.addEventListener('click', (e) => {
-                                const { perkId } = e.currentTarget.dataset
-                                this.newPerk = perks.find((perk) => perk.id === perkId)
-                                this.render(true)
-                                dlg.close()
-                            })
-                        })
-
-                        html[0].querySelector('[data-cancel]')?.addEventListener('click', () => {
-                            this.newPerk = null
-                            this.render(true)
-                            dlg.close()
-                        })
-                    },
-                },
-                {
-                    width: 200,
-                    template: 'systems/arcane-arcade-fallout/templates/level-up/dialog/choose-perk.hbs',
-                    resizable: true,
-                }
-            ).render(true)
+            const perk = await ChoosePerk.create(this.actor);
+            this.newPerk = perk || null
+            this.render()
         })
     };
 
@@ -207,6 +178,19 @@ export default class LevelUpApplication extends Application {
         };
     }
 
+    filterPerks(perks) {
+        return perks.filter((perk) => {
+            const raceIds = perk.system.raceReq.map((race) => race.id)
+            const hasSpecialReq = (perk.system.specialReq.special && perk.system.specialReq.special !== 'None')
+            if (
+                (!perk.system.lvlReq || this.nextLevel >= perk.system.lvlReq) &&
+                (!hasSpecialReq || this.actor.system.abilities[perk.system.specialReq.special].base >= perk.system.specialReq.value) &&
+                (raceIds.length === 0 || raceIds.includes(this.actor.getRaceType()))
+            ) {
+                return perk
+            }
+        })
+    }
 
     performLevelup() {
         const newXP = this.actor.system.xp - 1000

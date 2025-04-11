@@ -1,0 +1,18 @@
+.application button {
+    border-color: var(--user-color);
+    color: var(--user-color);
+}
+
+.application button:hover {
+    background: var(--user-color);
+}
+
+.application label {
+    color: var(--user-color);
+}
+.application input[type="checkbox"]:checked::before {
+    color: white;
+}
+.application input[type="checkbox"]:checked::after {
+    color: var(--user-color)
+}

@@ -2,53 +2,55 @@
     <h3>
         Congrats {{ actor.name }} you're going from level {{ actor.system.level }} to {{ nextLevel }}
     </h3>
-    <div>Rewards:</div>
-    {{#if attributeBoost}}
-        <div>Your health will be updated to {{ newHPMax }}</div>
-        <div>Your stamina will be updated to {{ newSPMax }}</div>
-    {{/if}}
+    <div class="rewards">
+        <div>Rewards:</div>
+        {{#if attributeBoost}}
+            <div>Your health will be updated to {{ newHPMax }}</div>
+            <div>Your stamina will be updated to {{ newSPMax }}</div>
+        {{/if}}
 
-    {{#if hasSkillPoints}}
-        <fieldset>
-            <legend>You have skill points to spend</legend>
-            <div>
-                Points left to spend: {{ skillPointPool }}
-            </div>
-            <div class="skill-choice">
-                {{#each skills as |skill key|}}
-                    <div>{{ skill.label }}</div>
-                    <div class="flex gap-3">
-                        <button data-decrease-skill="{{key}}">
-                            <i class="fas fa-minus-square"></i>
-                        </button>
-                        <div>{{ lookup ../skillChanges key }}</div>
-                        <button data-increase-skill="{{key}}" {{#if (Equals ../skillPointPool 0)}}disabled{{/if}}>
-                            <i class="fas fa-plus-square"></i>
-                        </button>
-                    </div>
-                {{/each}}
-            </div>
-        </fieldset>
-    {{/if}}
+        {{#if hasSkillPoints}}
+            <fieldset class="skills mx-1 my-2">
+                <legend>You have skill points to spend</legend>
+                <div>
+                    Points left to spend: {{ skillPointPool }}
+                </div>
+                <div class="skill-choice">
+                    {{#each skills as |skill key|}}
+                        <div>{{ skill.label }}</div>
+                        <div class="flex space-evenly">
+                            <button data-decrease-skill="{{key}}">
+                                <i class="fas fa-2x fa-minus-square"></i>
+                            </button>
+                            <div>{{ lookup ../skillChanges key }}</div>
+                            <button data-increase-skill="{{key}}" {{#if (Equals ../skillPointPool 0)}}disabled{{/if}}>
+                                <i class="fas fa-2x fa-plus-square"></i>
+                            </button>
+                        </div>
+                    {{/each}}
+                </div>
+            </fieldset>
+        {{/if}}
 
-    {{#if perkOrSpecial}}
-        <fieldset>
-            <legend>You can take a Perk OR you can add +1 to a SPECIAL stat!</legend>
-            <div>
-                {{#if specialBoost}}
-                    <button data-choose-special>{{ specialBoost.label }}</button>
-                {{else if newPerk }}
-                    <button data-choose-perk>{{ newPerk.name }}</button>
-                {{else}}
-                    <button data-choose-perk>Choose perk</button>
-                    <button data-choose-special>Choose SPECIAL</button>
-                {{/if}}
-            </div>
-        </fieldset>
-    {{/if}}
+        {{#if perkOrSpecial}}
+            <fieldset class="perks mx-1 my-2">
+                <legend>You can take a Perk OR you can add +1 to a SPECIAL stat!</legend>
+                <div>
+                    {{#if specialBoost}}
+                        <button data-choose-special>{{ specialBoost.label }}</button>
+                    {{else if newPerk }}
+                        <button data-choose-perk>{{ newPerk.name }}</button>
+                    {{else}}
+                        <button data-choose-perk>Choose perk</button>
+                        <button data-choose-special>Choose SPECIAL</button>
+                    {{/if}}
+                </div>
+            </fieldset>
+        {{/if}}
+    </div>
 
-    <div>
-        <button type="submit">Accept</button>
+    <div class="flex my-2">
+        <button class="w-full" type="submit">Accept</button>
     </div>
 </div>
 
