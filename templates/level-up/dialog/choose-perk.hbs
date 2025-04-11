@@ -1,11 +1,18 @@
-<div class="my-2">
-    {{log 'here' this}}
-    {{#each content.perks as |perk|}}
-        <button class="my-1" data-perk-id="{{perk.id}}">
-            {{ perk.name }}
-        </button>
-    {{/each}}
-    <div>
-        <button data-cancel>Cancel</button>
+<div class="choose-perk scrollable">
+    <div class="filters">
+        <label data-tooltip="Only display perks of which you meet the requirements">
+            <input data-action="filter" type="checkbox" name="onlyAvailablePerks" {{#if onlyAvailablePerks}} checked{{/if}} />
+            Only available perks
+        </label>
+    </div>
+    <div class="my-2">
+        <button data-action="cancel">Cancel</button>
+    </div>
+    <div class="grid grid-3col gap-3">
+        {{#each perks as |perk|}}
+            <button data-action="perk" data-perk-id="{{ perk.id }}">
+                {{ perk.name }}
+            </button>
+        {{/each}}
     </div>
 </div>

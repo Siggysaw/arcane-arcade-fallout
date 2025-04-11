@@ -3,7 +3,16 @@
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
 }
-.level-up button {
+
+.level-up .rewards .skills button {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    border: 0;
+}
+
+.level-up .rewards .perks button {
     width: auto;
     padding: 5px;
     margin: 0;
