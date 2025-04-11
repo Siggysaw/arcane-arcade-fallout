@@ -150,7 +150,7 @@ export default class LevelUpApplication extends Application {
     }
 
     getSkillPointPool() {
-        if (this.nextLevel % 4 !== 0) return 0
+        if (![5, 9, 13, 17, 21, 25, 29].includes(this.nextLevel)) return 0
         // Skill points allotted is based on Intelligence modifier
         if (this.actor.system.abilities.int.mod > 0) {
             return 5
