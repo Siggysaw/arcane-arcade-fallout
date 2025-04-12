@@ -8,11 +8,49 @@
     <div class="my-2">
         <button data-action="cancel">Cancel</button>
     </div>
-    <div class="grid grid-3col gap-3">
+    <div class="perk-grid">
         {{#each perks as |perk|}}
-            <button data-action="perk" data-perk-id="{{ perk.id }}">
-                {{ perk.name }}
-            </button>
+            <div class="perk">
+                <img
+                    class="mx-auto"
+                    src="{{perk.img}}"
+                    width="100"
+                    alt="{{perk.name}}"
+                    data-tooltip="{{perk.name}}: {{perk.system.description}}"
+                >
+                {{#if perk.hasRequirements}}
+                <div class="text-center">
+                    <div class="underline">
+                        requirements
+                    </div>
+                    {{#GreaterThan perk.system.lvlReq 2 }}
+                        <div>
+                            Lvl:{{ perk.system.lvlReq }}
+                        </div>
+                    {{/GreaterThan}}
+                    {{#if (NotEqual perk.system.specialReq.special '' ) }}
+                    {{#if (NotEqual perk.system.specialReq.special 'None' ) }}
+                    <div>
+                        {{SpecialKeyToLabel perk.system.specialReq.special }}: {{ perk.system.specialReq.value }}
+                    </div>
+                    {{/if}}
+                    {{/if}}
+
+                    {{#if perk.system.raceReq }}
+                    <div>
+                        {{#each perk.system.raceReq as |raceReq|}} {{ raceReq.label }} {{/each}}
+                    </div>
+                    {{/if}}
+                </div>
+                {{/if}}
+                <button
+                    data-tooltip="{{perk.name}}"
+                    data-action="perk"
+                    data-perk-id="{{ perk.id }}"
+                >
+                    {{ perk.name }}
+                </button>
+            </div>
         {{/each}}
     </div>
 </div>

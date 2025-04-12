@@ -322,6 +322,10 @@ Handlebars.registerHelper('FormatCompendium', function (itemName, compendium) {
   }
 })
 
+Handlebars.registerHelper('SpecialKeyToLabel', function (key) {
+  return FALLOUTZERO.abilities[key].label || ''
+})
+
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
