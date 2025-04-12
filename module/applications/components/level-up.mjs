@@ -1,7 +1,9 @@
-import { FALLOUTZERO } from "../../config.mjs";
-import ChoosePerk from './choose-perk.mjs'
 
-export default class LevelUpApplication extends Application {
+import ChoosePerk from './choose-perk.mjs'
+import ChooseSpecial from './choose-special.mjs'
+
+const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
+export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
     constructor(actor, options = {}) {
         super(options);
 
@@ -18,16 +20,31 @@ export default class LevelUpApplication extends Application {
         this.newPerk = null
     }
 
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            id: "level-up",
+    static DEFAULT_OPTIONS = {
+        form: {
+            submitOnChange: false,
+            closeOnSubmit: true,
+        },
+        actions: {
+            accept: LevelUp.performLevelup,
+            incSkill: LevelUp.onIncSkill,
+            decSkill: LevelUp.onDecSkill,
+            choosePerk: LevelUp.onChoosePerk,
+            chooseSpecial: LevelUp.onChooseSpecial,
+            cancel: LevelUp.onCancel,
+        },
+        position: { width: 400 },
+        window: {
             title: 'You leveled up!',
+            resizable: true
+        }
+    }
+
+    static PARTS = {
+        main: {
             template: 'systems/arcane-arcade-fallout/templates/level-up/level-up.hbs',
-            width: 400,
-            height: 'auto',
-            popOut: true,
-            resizable: true,
-        });
+            scrollable: [""]
+        },
     }
 
     activateListeners(html) {
@@ -42,70 +59,6 @@ export default class LevelUpApplication extends Application {
             }
             this.performLevelup()
             this.close()
-        })
-
-        html[0].querySelectorAll('[data-decrease-skill]').forEach((el) => {
-            el.addEventListener('click', (e) => {
-                const { decreaseSkill } = e.currentTarget.dataset
-                const newValue = this.skillChanges[decreaseSkill] - 1
-                if (newValue < 0) return
-                if (newValue < this.actor.system.skills[decreaseSkill].base) {
-                    ui.notifications.warn('Not possible to reduce skill lower than it is currently')
-                    return
-                }
-                this.skillChanges[decreaseSkill]--
-                this.skillPointPool++
-                this.render(true)
-            })
-        })
-
-        html[0].querySelectorAll('[data-increase-skill]').forEach((el) => {
-            el.addEventListener('click', (e) => {
-                const { increaseSkill } = e.currentTarget.dataset
-                this.skillChanges[increaseSkill]++
-                this.skillPointPool--
-                this.render(true)
-            })
-        })
-
-        html[0].querySelector('[data-choose-special]')?.addEventListener('click', () => {
-            const dlg = new Dialog(
-                {
-                    title: `Choose SPECIAL`,
-                    content: {
-                        specials: FALLOUTZERO.abilities
-                    },
-                    buttons: {},
-                    render: (html) => {
-                        const specials = html[0].querySelectorAll('[data-special]')
-                        specials.forEach((button) => {
-                            button.addEventListener('click', (e) => {
-                                const { special } = e.currentTarget.dataset
-                                this.specialBoost = FALLOUTZERO.abilities[special]
-                                this.render(true)
-                                dlg.close()
-                            })
-                        })
-
-                        html[0].querySelector('[data-cancel]')?.addEventListener('click', () => {
-                            this.specialBoost = null
-                            this.render(true)
-                            dlg.close()
-                        })
-                    },
-                },
-                {
-                    width: 200,
-                    template: 'systems/arcane-arcade-fallout/templates/level-up/dialog/choose-special.hbs',
-                    resizable: true,
-                }
-            ).render(true)
-        })
-
-        html[0].querySelector('[data-choose-perk]')?.addEventListener('click', async () => {
-            const perk = await ChoosePerk.create(this.actor);
-            this.newPerk = perk || null
-            this.render()
         })
     };
 
@@ -161,7 +114,7 @@ export default class LevelUpApplication extends Application {
         }
     }
 
-    getData() {
+    async _prepareContext() {
         return {
             actor: this.actor,
             skills: this.actor.system.skills,
@@ -175,24 +128,18 @@ export default class LevelUpApplication extends Application {
             hasSkillPoints: this.hasSkillPoints,
             specialBoost: this.specialBoost,
             newPerk: this.newPerk,
-        };
+        }
     }
 
-    filterPerks(perks) {
-        return perks.filter((perk) => {
-            const raceIds = perk.system.raceReq.map((race) => race.id)
-            const hasSpecialReq = (perk.system.specialReq.special && perk.system.specialReq.special !== 'None')
-            if (
-                (!perk.system.lvlReq || this.nextLevel >= perk.system.lvlReq) &&
-                (!hasSpecialReq || this.actor.system.abilities[perk.system.specialReq.special].base >= perk.system.specialReq.value) &&
-                (raceIds.length === 0 || raceIds.includes(this.actor.getRaceType()))
-            ) {
-                return perk
-            }
-        })
-    }
+    static performLevelup() {
+        if (this.skillPointPool > 0) {
+            ui.notifications.warn('You still have skill points to spend!')
+            return
+        } else if (this.perkOrSpecial && (!this.newPerk && !this.specialBoost)) {
+            ui.notifications.warn('You still need to take a perk or boost a SPECIAL!')
+            return
+        }
 
-    performLevelup() {
         const newXP = this.actor.system.xp - 1000
 
         const skillUpdates = Object.entries(this.skillChanges).reduce((acc, [key, value]) => {
@@ -213,7 +160,45 @@ export default class LevelUpApplication extends Application {
 
         if (this.newPerk) {
             const perk = fromUuidSync(this.newPerk.uuid)
-            return this.actor.createEmbeddedDocuments("Item", [perk]);
+            this.actor.createEmbeddedDocuments("Item", [perk]);
         }
+
+        this.close()
+    }
+
+    static onIncSkill (e, target) {
+        const { skill } = target.dataset
+        this.skillChanges[skill]++
+        this.skillPointPool--
+        this.render(true)
+    }
+
+    static onDecSkill (e, target) {
+        const { skill } = target.dataset
+        const newValue = this.skillChanges[skill] - 1
+        if (newValue < 0) return
+        if (newValue < this.actor.system.skills[skill].base) {
+            ui.notifications.warn('Not possible to reduce skill lower than it is currently')
+            return
+        }
+        this.skillChanges[skill]--
+        this.skillPointPool++
+        this.render(true)
+    }
+
+    static async onChoosePerk () {
+        const perk = await ChoosePerk.create(this.actor);
+        this.newPerk = perk || null
+        this.render()
+    }
+    
+    static async onChooseSpecial () {
+        const special = await ChooseSpecial.create();
+        this.specialBoost = special || null
+        this.render()
+    }
+
+    static onCancel () {
+        this.close()
     }
 }

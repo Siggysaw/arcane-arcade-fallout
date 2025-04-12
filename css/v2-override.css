@@ -7,6 +7,10 @@
     background: var(--user-color);
 }
 
+.application button > i {
+    margin: 0;
+}
+
 .application label {
     color: var(--user-color);
 }

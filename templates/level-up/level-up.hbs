@@ -15,15 +15,15 @@
                 <div>
                     Points left to spend: {{ skillPointPool }}
                 </div>
-                <div class="skill-choice">
+                <div class="grid grid-col2">
                     {{#each skills as |skill key|}}
                         <div>{{ skill.label }}</div>
                         <div class="flex space-evenly">
-                            <button data-decrease-skill="{{key}}">
+                            <button data-action="decSkill" data-skill="{{key}}">
                                 <i class="fas fa-2x fa-minus-square"></i>
                             </button>
                             <div>{{ lookup ../skillChanges key }}</div>
-                            <button data-increase-skill="{{key}}" {{#if (Equals ../skillPointPool 0)}}disabled{{/if}}>
+                            <button data-action="incSkill" data-skill="{{key}}" {{#if (Equals ../skillPointPool 0)}}disabled{{/if}}>
                                 <i class="fas fa-2x fa-plus-square"></i>
                             </button>
                         </div>
@@ -37,12 +37,12 @@
                 <legend>You can take a Perk OR you can add +1 to a SPECIAL stat!</legend>
                 <div>
                     {{#if specialBoost}}
-                        <button data-choose-special>{{ specialBoost.label }}</button>
+                        <button data-action="chooseSpecial">{{ specialBoost.label }}</button>
                     {{else if newPerk }}
-                        <button data-choose-perk>{{ newPerk.name }}</button>
+                        <button data-action="choosePerk">{{ newPerk.name }}</button>
                     {{else}}
-                        <button data-choose-perk>Choose perk</button>
-                        <button data-choose-special>Choose SPECIAL</button>
+                        <button data-action="choosePerk">Choose perk</button>
+                        <button data-action="chooseSpecial">Choose SPECIAL</button>
                     {{/if}}
                 </div>
             </fieldset>
@@ -50,8 +50,6 @@
     </div>
 
     <div class="flex my-2">
-        <button class="w-full" type="submit">Accept</button>
+        <button class="w-full" type="submit" data-action="accept">Accept</button>
     </div>
 </div>
-
-{{log this}}
