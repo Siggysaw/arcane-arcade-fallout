@@ -21,6 +21,7 @@ export default class ChooseSpecial extends HandlebarsApplicationMixin(Applicatio
         cancel: ChooseSpecial.onCancel,
       },
       window: {
+        title: 'Choose a special!',
         resizable: true
       }
     };

@@ -26,6 +26,7 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
       },
       position: { width: 800 },
       window: {
+        title: 'Choose a perk!',
         resizable: true
       }
     };
