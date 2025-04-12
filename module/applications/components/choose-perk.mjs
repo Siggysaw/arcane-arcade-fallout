@@ -47,7 +47,29 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
   
     static async create(actor) {
       const perksPack = game.packs.find((p) => p.collection === 'arcane-arcade-fallout.perks')
-      const perks = await perksPack.getDocuments()
+      const allPerks = await perksPack.getDocuments()
+      const perks = allPerks.sort((a, b) => {
+        const nameA = a.name.toUpperCase()
+        const nameB = b.name.toUpperCase()
+        if (nameA < nameB) {
+            return -1;
+        }
+
+        if (nameA > nameB) {
+            return 1;
+        }
+        
+          return 0;
+      }).map((perk) => {
+        if (
+            perk.system.lvlReq > 1 ||
+            perk.system.raceReq.length > 0 ||
+            (perk.system.specialReq.special !== '' && perk.system.specialReq.special !== 'None')
+        ) {
+            perk.hasRequirements = true
+        }
+        return perk
+      })
 
       this.app = new this(actor, perks);
 

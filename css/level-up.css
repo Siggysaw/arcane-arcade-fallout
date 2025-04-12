@@ -5,3 +5,24 @@
     line-height: normal;
     border: 0;
 }
+
+.choose-perk .perk-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 3px;
+}
+
+.choose-perk .perk-grid .perk {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.choose-perk .perk-grid .perk button {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+}
