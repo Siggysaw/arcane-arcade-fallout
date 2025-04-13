@@ -1,11 +1,11 @@
-2025/04/13-13:20:04.324 1cbd8 Delete type=3 #1
-2025/04/13-14:04:00.780 1cd38 Level-0 table #789: started
-2025/04/13-14:04:00.780 1cd38 Level-0 table #789: 0 bytes OK
-2025/04/13-14:04:00.784 1cd38 Delete type=0 #787
-2025/04/13-14:04:00.796 1cd38 Manual compaction at level-0 from '!items!00vhMCFAY0992xCP' @ 72057594037927935 : 1 .. '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 0 : 0; will stop at '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 177 : 1
-2025/04/13-14:04:00.796 1cd38 Compacting 1@0 + 0@1 files
-2025/04/13-14:04:00.800 1cd38 Generated table #790@0: 50 keys, 28852 bytes
-2025/04/13-14:04:00.800 1cd38 Compacted 1@0 + 0@1 files => 28852 bytes
-2025/04/13-14:04:00.803 1cd38 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/04/13-14:04:00.804 1cd38 Delete type=2 #784
-2025/04/13-14:04:00.834 1cd38 Manual compaction at level-0 from '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 177 : 1 .. '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 0 : 0; will stop at (end)
+2025/04/13-14:05:44.720 1dd50 Delete type=3 #1
+2025/04/13-14:41:40.428 1b61c Level-0 table #795: started
+2025/04/13-14:41:40.429 1b61c Level-0 table #795: 0 bytes OK
+2025/04/13-14:41:40.432 1b61c Delete type=0 #793
+2025/04/13-14:41:40.445 1b61c Manual compaction at level-0 from '!items!00vhMCFAY0992xCP' @ 72057594037927935 : 1 .. '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 0 : 0; will stop at '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 177 : 1
+2025/04/13-14:41:40.445 1b61c Compacting 1@0 + 0@1 files
+2025/04/13-14:41:40.449 1b61c Generated table #796@0: 50 keys, 28852 bytes
+2025/04/13-14:41:40.449 1b61c Compacted 1@0 + 0@1 files => 28852 bytes
+2025/04/13-14:41:40.452 1b61c compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/04/13-14:41:40.453 1b61c Delete type=2 #790
+2025/04/13-14:41:40.484 1b61c Manual compaction at level-0 from '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 177 : 1 .. '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 0 : 0; will stop at (end)

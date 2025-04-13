@@ -1,11 +1,11 @@
-2025/04/13-13:20:04.346 1bf90 Delete type=3 #1
-2025/04/13-14:04:00.784 1cd38 Level-0 table #647: started
-2025/04/13-14:04:00.784 1cd38 Level-0 table #647: 0 bytes OK
-2025/04/13-14:04:00.788 1cd38 Delete type=0 #645
-2025/04/13-14:04:00.804 1cd38 Manual compaction at level-0 from '!items!09g8TOOTRSOJlHYo' @ 72057594037927935 : 1 .. '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 0 : 0; will stop at '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 1592 : 1
-2025/04/13-14:04:00.804 1cd38 Compacting 1@0 + 0@1 files
-2025/04/13-14:04:00.814 1cd38 Generated table #648@0: 211 keys, 112731 bytes
-2025/04/13-14:04:00.814 1cd38 Compacted 1@0 + 0@1 files => 112731 bytes
-2025/04/13-14:04:00.818 1cd38 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/04/13-14:04:00.818 1cd38 Delete type=2 #642
-2025/04/13-14:04:00.834 1cd38 Manual compaction at level-0 from '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 1592 : 1 .. '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 0 : 0; will stop at (end)
+2025/04/13-14:05:44.741 1dd58 Delete type=3 #1
+2025/04/13-14:41:40.432 1b61c Level-0 table #653: started
+2025/04/13-14:41:40.432 1b61c Level-0 table #653: 0 bytes OK
+2025/04/13-14:41:40.437 1b61c Delete type=0 #651
+2025/04/13-14:41:40.453 1b61c Manual compaction at level-0 from '!items!09g8TOOTRSOJlHYo' @ 72057594037927935 : 1 .. '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 0 : 0; will stop at '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 1592 : 1
+2025/04/13-14:41:40.453 1b61c Compacting 1@0 + 0@1 files
+2025/04/13-14:41:40.463 1b61c Generated table #654@0: 211 keys, 112731 bytes
+2025/04/13-14:41:40.463 1b61c Compacted 1@0 + 0@1 files => 112731 bytes
+2025/04/13-14:41:40.467 1b61c compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/04/13-14:41:40.467 1b61c Delete type=2 #648
+2025/04/13-14:41:40.484 1b61c Manual compaction at level-0 from '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 1592 : 1 .. '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 0 : 0; will stop at (end)

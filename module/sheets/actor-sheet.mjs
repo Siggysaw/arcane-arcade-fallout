@@ -801,6 +801,13 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         { _id: weaponId, 'system.itemOpen': ev.target.value },
       ])
     })
+    // Updates Power Armor HP
+    html.on('change', '[data-powerarmorhp]', (ev) => {
+      const armorId = ev.currentTarget.dataset.powerarmorhp
+      this.actor.updateEmbeddedDocuments('Item', [
+        { _id: armorId, 'system.armorHP.value': ev.target.value },
+      ])
+    })
 
     //Sort on clicking Crafting Navigation Button
     html.on('click', '[craftRecipes]', () => {

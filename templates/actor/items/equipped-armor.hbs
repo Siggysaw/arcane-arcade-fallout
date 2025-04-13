@@ -50,7 +50,8 @@
     title="{{localize 'DOCUMENT.Update' type='item'}}">
     {{item.name}}
 </td>
-<td title="Armor HP = Armor DP x CND">HP:{{item.system.armorHP.value}}</td>
+<td title="Armor HP = Armor DP x CND">
+    HP:<input style="width:100px;" type="number" data-powerarmorhp="{{ item._id }}" value="{{item.system.armorHP.value}}" /></td>
 </tr>
 {{/if}}
 {{/each}}
