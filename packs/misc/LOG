@@ -1,16 +1,11 @@
-2025/04/13-12:04:35.975 1cbd8 Recovering log #772
-2025/04/13-12:04:35.976 1cbd8 Recovering log #774
-2025/04/13-12:04:35.984 1cbd8 Delete type=0 #772
-2025/04/13-12:04:35.984 1cbd8 Delete type=0 #774
-2025/04/13-12:04:35.984 1cbd8 Delete type=3 #771
-2025/04/13-12:04:35.984 1cbd8 Delete type=3 #772
-2025/04/13-12:04:50.130 1cd38 Level-0 table #777: started
-2025/04/13-12:04:50.130 1cd38 Level-0 table #777: 0 bytes OK
-2025/04/13-12:04:50.135 1cd38 Delete type=0 #775
-2025/04/13-12:04:50.147 1cd38 Manual compaction at level-0 from '!items!00vhMCFAY0992xCP' @ 72057594037927935 : 1 .. '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 0 : 0; will stop at '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 177 : 1
-2025/04/13-12:04:50.147 1cd38 Compacting 1@0 + 0@1 files
-2025/04/13-12:04:50.151 1cd38 Generated table #778@0: 50 keys, 28852 bytes
-2025/04/13-12:04:50.151 1cd38 Compacted 1@0 + 0@1 files => 28852 bytes
-2025/04/13-12:04:50.154 1cd38 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/04/13-12:04:50.154 1cd38 Delete type=2 #760
-2025/04/13-12:04:50.184 1cd38 Manual compaction at level-0 from '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 177 : 1 .. '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 0 : 0; will stop at (end)
+2025/04/13-12:05:43.823 181dc Delete type=3 #1
+2025/04/13-12:55:00.748 1cd38 Level-0 table #783: started
+2025/04/13-12:55:00.748 1cd38 Level-0 table #783: 0 bytes OK
+2025/04/13-12:55:00.752 1cd38 Delete type=0 #781
+2025/04/13-12:55:00.764 1cd38 Manual compaction at level-0 from '!items!00vhMCFAY0992xCP' @ 72057594037927935 : 1 .. '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 0 : 0; will stop at '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 177 : 1
+2025/04/13-12:55:00.764 1cd38 Compacting 1@0 + 0@1 files
+2025/04/13-12:55:00.768 1cd38 Generated table #784@0: 50 keys, 28852 bytes
+2025/04/13-12:55:00.768 1cd38 Compacted 1@0 + 0@1 files => 28852 bytes
+2025/04/13-12:55:00.771 1cd38 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/04/13-12:55:00.772 1cd38 Delete type=2 #778
+2025/04/13-12:55:00.801 1cd38 Manual compaction at level-0 from '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 177 : 1 .. '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 0 : 0; will stop at (end)

@@ -1,16 +1,11 @@
-2025/04/13-12:04:36.052 1bf90 Recovering log #274
-2025/04/13-12:04:36.052 1bf90 Recovering log #276
-2025/04/13-12:04:36.061 1bf90 Delete type=0 #274
-2025/04/13-12:04:36.061 1bf90 Delete type=0 #276
-2025/04/13-12:04:36.061 1bf90 Delete type=3 #273
-2025/04/13-12:04:36.062 1bf90 Delete type=3 #274
-2025/04/13-12:04:50.186 1cd38 Level-0 table #279: started
-2025/04/13-12:04:50.186 1cd38 Level-0 table #279: 0 bytes OK
-2025/04/13-12:04:50.191 1cd38 Delete type=0 #277
-2025/04/13-12:04:50.202 1cd38 Manual compaction at level-0 from '!tables!MNa7qyTubqcZiqn1' @ 72057594037927935 : 1 .. '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 0 : 0; will stop at '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 809 : 1
-2025/04/13-12:04:50.202 1cd38 Compacting 1@0 + 0@1 files
-2025/04/13-12:04:50.212 1cd38 Generated table #280@0: 21 keys, 2904 bytes
-2025/04/13-12:04:50.212 1cd38 Compacted 1@0 + 0@1 files => 2904 bytes
-2025/04/13-12:04:50.216 1cd38 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/04/13-12:04:50.216 1cd38 Delete type=2 #262
-2025/04/13-12:04:50.238 1cd38 Manual compaction at level-0 from '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 809 : 1 .. '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 0 : 0; will stop at (end)
+2025/04/13-12:05:43.914 1bf90 Delete type=3 #1
+2025/04/13-12:55:00.752 1cd38 Level-0 table #285: started
+2025/04/13-12:55:00.752 1cd38 Level-0 table #285: 0 bytes OK
+2025/04/13-12:55:00.756 1cd38 Delete type=0 #283
+2025/04/13-12:55:00.772 1cd38 Manual compaction at level-0 from '!tables!MNa7qyTubqcZiqn1' @ 72057594037927935 : 1 .. '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 0 : 0; will stop at '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 809 : 1
+2025/04/13-12:55:00.772 1cd38 Compacting 1@0 + 0@1 files
+2025/04/13-12:55:00.775 1cd38 Generated table #286@0: 21 keys, 2904 bytes
+2025/04/13-12:55:00.775 1cd38 Compacted 1@0 + 0@1 files => 2904 bytes
+2025/04/13-12:55:00.778 1cd38 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/04/13-12:55:00.778 1cd38 Delete type=2 #280
+2025/04/13-12:55:00.801 1cd38 Manual compaction at level-0 from '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 809 : 1 .. '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 0 : 0; will stop at (end)

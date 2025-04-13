@@ -1,1 +1,5 @@
-2025/04/10-12:32:16.235 9054 Delete type=3 #1
+2025/04/13-12:05:43.520 19fe0 Log #609: 0 ops saved to Table #612 OK
+2025/04/13-12:05:43.520 19fe0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\background/000609.log: OK
+2025/04/13-12:05:43.521 19fe0 Table #611: 40 entries OK
+2025/04/13-12:05:43.525 19fe0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\background/MANIFEST-000606: OK
+2025/04/13-12:05:43.529 19fe0 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\background; recovered 1 files; 88746 bytes. Some data may have been lost. ****

@@ -1,16 +1,11 @@
-2025/04/13-12:04:35.815 1cbd8 Recovering log #977
-2025/04/13-12:04:35.815 1cbd8 Recovering log #979
-2025/04/13-12:04:35.824 1cbd8 Delete type=0 #977
-2025/04/13-12:04:35.824 1cbd8 Delete type=0 #979
-2025/04/13-12:04:35.824 1cbd8 Delete type=3 #976
-2025/04/13-12:04:35.824 1cbd8 Delete type=3 #977
-2025/04/13-12:04:50.016 1cd38 Level-0 table #982: started
-2025/04/13-12:04:50.016 1cd38 Level-0 table #982: 0 bytes OK
-2025/04/13-12:04:50.020 1cd38 Delete type=0 #980
-2025/04/13-12:04:50.032 1cd38 Manual compaction at level-0 from '!items!0JtyEY5h2xqvqjCj' @ 72057594037927935 : 1 .. '!items!zNfHOdeZQTTc56bm' @ 0 : 0; will stop at '!items!zNfHOdeZQTTc56bm' @ 1045 : 1
-2025/04/13-12:04:50.032 1cd38 Compacting 1@0 + 0@1 files
-2025/04/13-12:04:50.037 1cd38 Generated table #983@0: 86 keys, 73582 bytes
-2025/04/13-12:04:50.037 1cd38 Compacted 1@0 + 0@1 files => 73582 bytes
-2025/04/13-12:04:50.041 1cd38 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/04/13-12:04:50.041 1cd38 Delete type=2 #965
-2025/04/13-12:04:50.065 1cd38 Manual compaction at level-0 from '!items!zNfHOdeZQTTc56bm' @ 1045 : 1 .. '!items!zNfHOdeZQTTc56bm' @ 0 : 0; will stop at (end)
+2025/04/13-12:05:43.632 1bf90 Delete type=3 #1
+2025/04/13-12:55:00.625 1cd38 Level-0 table #988: started
+2025/04/13-12:55:00.625 1cd38 Level-0 table #988: 0 bytes OK
+2025/04/13-12:55:00.629 1cd38 Delete type=0 #986
+2025/04/13-12:55:00.649 1cd38 Manual compaction at level-0 from '!items!0JtyEY5h2xqvqjCj' @ 72057594037927935 : 1 .. '!items!zNfHOdeZQTTc56bm' @ 0 : 0; will stop at '!items!zNfHOdeZQTTc56bm' @ 1045 : 1
+2025/04/13-12:55:00.649 1cd38 Compacting 1@0 + 0@1 files
+2025/04/13-12:55:00.654 1cd38 Generated table #989@0: 86 keys, 73582 bytes
+2025/04/13-12:55:00.654 1cd38 Compacted 1@0 + 0@1 files => 73582 bytes
+2025/04/13-12:55:00.658 1cd38 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/04/13-12:55:00.658 1cd38 Delete type=2 #983
+2025/04/13-12:55:00.683 1cd38 Manual compaction at level-0 from '!items!zNfHOdeZQTTc56bm' @ 1045 : 1 .. '!items!zNfHOdeZQTTc56bm' @ 0 : 0; will stop at (end)
