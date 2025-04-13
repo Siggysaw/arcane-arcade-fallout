@@ -525,7 +525,10 @@ td,
 .window-app .window-content div .no-background:hover {
   background: none;
 }
-
+.header-icon{
+    font-size:16pt;
+    text-align:left;
+}
 
 .sheet .craftButton:hover {
   border: black;
@@ -946,7 +949,7 @@ a.inline-roll,
 
 /* VAULT TEC OVERRIDES*/
 .sheet .vaulttec {
-  background-color: #447AB9;
+  background-color: #0066b1;
   color: #FFF;
 }
 .window-app .window-content .vaulttec input,
@@ -959,7 +962,7 @@ a.inline-roll,
 .sheet form .vaulttec .perk-div h3,
 .window-app .window-content .vaulttec li,
 .window-app .window-content .vaulttec a {
-  color: #ffffcb;
+  color: #dbd45a;
   text-shadow: 0 0 2px #000;
 }
 .sheet .vaulttec .sheet-header,
@@ -967,17 +970,17 @@ a.inline-roll,
 .window-app .window-content .vaulttec .weapons-table,
 .window-app .window-content .vaulttec .equipped-stats,
 .sheet .vaulttec .effects {
-  background-color: #325886;
-  color: #ffffcb;
+  background-color: #001423;
+  color: #dbd45a;
   text-shadow: 0 0 2px #000;
   padding: 5px;
 }
 .sheet .vaulttec .skill-divs {
   background-color: #222;
-  color: #ffffcb;
+  color: #dbd45a;
 }
 .sheet .vaulttec .skillbutton:hover {
-  background-color: #ffffcb;
+  background-color: #dbd45a;
   color: #222;
 }
 .window-app .window-content .vaulttec .equipped-stats a{
@@ -995,23 +998,23 @@ a.inline-roll,
     font-style:italic;
 }
   .sheet .vaulttec nav {
-    background-color: #325886;
+    background-color: 	#001423;
   }
   .sheet .vaulttec nav a{
       color:white;
   }
 .window-app .window-content .vaulttec label {
-  color: #ffffcb;
+  color: #dbd45a;
   font-size: 13pt;
   text-shadow: 0 0 2px #000;
-  background: #325886;
+  background: 	#001423;
   padding: 5px;
   border-radius: .5em;
 }
   .window-app .window-content .vaulttec label:hover,
   .sheet .vaulttec .fakebutton:hover {
     color: #333;
-    background: #ffffcb;
+    background: #dbd45a;
     text-shadow: none;
   }
   .sheet .vaulttec .fakebutton {
@@ -1027,6 +1030,6 @@ a.inline-roll,
 .window-app .window-content .vaulttec label:hover,
 .sheet .vaulttec .tabs > [data-tab].active {
   color: #333;
-  background-color: #ffffcb;
+  background-color: #dbd45a;
   text-shadow:none;
 }

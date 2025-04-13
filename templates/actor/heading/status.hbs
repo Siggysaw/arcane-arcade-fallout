@@ -1,4 +1,4 @@
-<table class="character-status">
+<table class="character-status" style="margin:auto;">
     <tr>
         <td style="width:25px;">
             HP
@@ -112,16 +112,10 @@
         </td>
     </tr>
 </table>
-{{#if actor.inCombat}}
-<table style="width:200px;">
-    <tr>
-        <td>
-            <div class="fakebutton" data-recycle-ap title="Recycle AP At Beginning of Turn">
-                <i class="fa-solid fa-recycle"></i>
-            </div>
-        </td>
-    </tr>
-</table>
-{{/if}}
+    <i title="Short Rest" data-rest="short" class="header-icon fas fa-campground fakebutton"></i>
+    <i title="Long Rest" data-rest="long" class="header-icon fas fa-bed fakebutton"></i>
+    <i title="Custom Dice Roll" data-custom-roll class="header-icon fas fa-dice fakebutton"></i>
+    <i title="Perks List" data-view-perks class=" header-icon fas fa-radiation-alt fakebutton"></i>
+
 
 
