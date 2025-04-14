@@ -244,15 +244,16 @@ export default class FalloutZeroActor extends Actor {
     const currentHP = this.system.health.value
     const maxSP = this.system.stamina.max
     const maxHP = this.system.health.max
+    const maxAP = this.system.actionPoints.max
     const endurance = this.system.abilities.end.value
     const robotHeal = Math.max(this.system.abilities.int.value, this.system.abilities.per.value)
 
     // Short Rest
     if (rest === 'short') {
       let newSP = 0
-      race === ('Human' || 'Ghoul' || 'Super Mutant')
-        ? (newSP = currentSP + Math.floor(maxSP / 2))
-        : (newSP = maxSP)
+      race === ('Human' || 'Ghoul' || 'Super Mutant') & currentSP < Math.floor(maxSP / 2)
+        ? (newSP = Math.floor(maxSP / 2))
+        : (newSP = currentSP)
       newSP > maxSP ? (newSP = maxSP) : (newSP = newSP)
       this.update({ 'system.stamina.value': newSP })
     }
@@ -265,6 +266,7 @@ export default class FalloutZeroActor extends Actor {
       newHP > maxHP ? (newHP = maxHP) : (newHP = newHP)
       this.update({ 'system.health.value': newHP })
       this.update({ 'system.stamina.value': maxSP })
+      this.update({ 'system.actionPoints.value': maxAP })
     }
   }
 

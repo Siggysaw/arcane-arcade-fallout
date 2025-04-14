@@ -1,5 +1,7 @@
-2025/04/13-14:05:44.767 1dd50 Log #788: 0 ops saved to Table #791 OK
-2025/04/13-14:05:44.768 1dd50 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot/000788.log: OK
-2025/04/13-14:05:44.768 1dd50 Table #790: 402 entries OK
-2025/04/13-14:05:44.772 1dd50 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot/MANIFEST-000786: OK
-2025/04/13-14:05:44.776 1dd50 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot; recovered 1 files; 54504 bytes. Some data may have been lost. ****
+2025/04/14-11:12:45.968 23408 Recovering log #794
+2025/04/14-11:12:45.978 23408 Delete type=0 #794
+2025/04/14-11:12:45.979 23408 Delete type=3 #792
+2025/04/14-11:12:51.791 23690 Level-0 table #800: started
+2025/04/14-11:12:51.791 23690 Level-0 table #800: 0 bytes OK
+2025/04/14-11:12:51.795 23690 Delete type=0 #798
+2025/04/14-11:12:51.799 23690 Manual compaction at level-0 from '!tables!2ODfF6qNWM2kFpmJ' @ 72057594037927935 : 1 .. '!tables.results!yNX6xo1QnoSe38l1.tjU06Pkhtst3PtcG' @ 0 : 0; will stop at (end)

@@ -1,5 +1,7 @@
-2025/04/13-14:05:44.560 1dd50 Log #946: 0 ops saved to Table #949 OK
-2025/04/13-14:05:44.561 1dd50 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/000946.log: OK
-2025/04/13-14:05:44.561 1dd50 Table #948: 62 entries OK
-2025/04/13-14:05:44.564 1dd50 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/MANIFEST-000944: OK
-2025/04/13-14:05:44.570 1dd50 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons; recovered 1 files; 86089 bytes. Some data may have been lost. ****
+2025/04/14-11:12:45.774 233d4 Recovering log #952
+2025/04/14-11:12:45.783 233d4 Delete type=0 #952
+2025/04/14-11:12:45.783 233d4 Delete type=3 #950
+2025/04/14-11:12:51.759 23690 Level-0 table #958: started
+2025/04/14-11:12:51.759 23690 Level-0 table #958: 0 bytes OK
+2025/04/14-11:12:51.762 23690 Delete type=0 #956
+2025/04/14-11:12:51.763 23690 Manual compaction at level-0 from '!items!1Pzn07kWapNFEP1o' @ 72057594037927935 : 1 .. '!items!wWme3VlMe2jrYxgf' @ 0 : 0; will stop at (end)
