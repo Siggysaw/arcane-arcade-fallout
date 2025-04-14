@@ -362,7 +362,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     buttonContainer.classList.add('card-buttons')
 
     // regular damage button
-    if (!this.damage.isCritical && this.damage.rolls) {
+    if (this.damage.rolls) {
       const button = document.createElement('button')
       button.innerHTML = '<span>Roll damage</span> <i class="fa-light fa-dice-d20">'
       button.dataset.rollDamage = ''
@@ -370,7 +370,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     }
 
     // critical multiplier damage button
-    if (this.damage.isCritical && this.damage.critical) {
+    if (this.damage.critical) {
       const button = document.createElement('button')
       button.innerHTML = '<span>Roll critical damage</span> <i class="fa-light fa-dice-d20">'
       button.dataset.rollCritical = this.critical
@@ -774,13 +774,13 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     try {
       const damageTypes = this.damage.rolls.map((damage) => damage.type)
 
-      return this._rollDamage(this.damage.critical, damageTypes)
+      return this._rollDamage(this.damage.critical, damageTypes, true)
     } catch (error) {
       console.error('Error rolling critical damage', error)
     }
   }
 
-  async _rollDamage(formula, types) {
+  async _rollDamage(formula, types, isCritical = false) {
     let flavor = `KAPOW! ${types.join(' and ')} damage`
     if (this.targeted?.target) {
       const target =
@@ -790,7 +790,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       flavor += '!'
     }
     const minDamage = this.actor.type === 'character' ? 1 : 0
-    if (this.damage.isCritical && this.damage.criticalCondition){
+    if (isCritical && this.damage.criticalCondition){
       flavor += ` And applies condition ${this.damage.criticalCondition}`
     }
     const roll = new Roll(
