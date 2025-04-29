@@ -67,24 +67,6 @@ export default class FalloutZeroActor extends Actor {
 
     if (Number.isInteger(changes.total) && changes.total !== 0) {
       this._displayTokenEffect(changes)
-
-      /**
-       * A hook event that fires when an actor is damaged or healed by any means. The actual name
-       * of the hook will depend on the change in hit points.
-       * @function aafo.damageActor
-       * @memberof hookEvents
-       * @param {Actor} actor                                       The actor that had their hit points reduced.
-       * @param {{hp: number, temp: number, total: number}} changes   The changes to hit points.
-       * @param {object} update                                       The original update delta.
-       * @param {string} userId                                       Id of the user that performed the update.
-       */
-      Hooks.callAll(
-        `foundry.${changes.total > 0 ? 'heal' : 'damage'}Actor`,
-        this,
-        changes,
-        data,
-        userId,
-      )
     }
   }
 
@@ -2905,7 +2887,6 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
       }).map((u) => u.id)
 
       let chatData = {
-        author: gm.id,
         speaker: ChatMessage.getSpeaker(),
         flavor,
         whisper: [gm.id, ...actorUserIds]
