@@ -2889,7 +2889,18 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
       let chatData = {
         speaker: ChatMessage.getSpeaker(),
         flavor,
-        whisper: [gm.id, ...actorUserIds]
+        whisper: [gm.id, ...actorUserIds],
+        'flags.falloutzero': {
+          undoDamage: {
+            actorUuid: this.uuid,
+            changes: {
+              deltaTempSp,
+              deltaSP,
+              deltaTempHp,
+              deltaHP,
+            }
+          }
+        },
       }
       ChatMessage.create(chatData)
 

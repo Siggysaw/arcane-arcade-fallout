@@ -84,6 +84,10 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     return this.flags?.falloutzero?.type ?? null
   }
 
+  get undoDamage() {
+    return this.flags?.falloutzero?.undoDamage ?? null
+  }
+
   /* -------------------------------------------- */
   /*  Rendering                                   */
   /* -------------------------------------------- */
@@ -281,6 +285,9 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // Add damage buttons
     this._addDamageButtons(html)
 
+    // Add undo button
+    this._addUndoButton(html)
+
     // Add apply damage buttons
     this._addApplyDamageButtons(html)
 
@@ -389,6 +396,16 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     messageContent.appendChild(buttonContainer)
   }
 
+  _addUndoButton(html) {
+    if (!this.undoDamage || !game.user.isGM) return
+    const metadata = html.querySelector('.message-metadata')
+    const undoButton = document.createElement('div')
+    undoButton.innerHTML =
+      '<a data-tooltip="Undo"><i class="fa-solid fa-rotate-left"></i><a>'
+    undoButton.addEventListener('click', this._undoApplyDamage.bind(this, html))
+    metadata.appendChild(undoButton)
+  }
+
   _cleanFormula(html) {
     const formula = html.querySelector('.dice-roll .dice-result .dice-formula')
     if (formula?.textContent?.startsWith('max(')) {
@@ -425,6 +442,19 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       properties: new Set(roll.options.properties ?? []),
     }))
     html.querySelector('.message-content').appendChild(damageApplication)
+  }
+
+  _undoApplyDamage(cardHtml) {
+    const actor = fromUuidSync(this.undoDamage.actorUuid)
+    const { deltaTempSp, deltaSP, deltaTempHp, deltaHP } = this.undoDamage.changes
+    actor.update({
+      'system.stamina.temp': actor.system.stamina.temp + deltaTempSp,
+      'system.stamina.value': actor.system.stamina.value + deltaSP,
+      'system.health.temp': actor.system.health.temp + deltaTempHp,
+      'system.health.value': actor.system.health.value + deltaHP,
+    })
+    cardHtml.remove()
+    this.delete()
   }
 
   _reRollDialog() {
