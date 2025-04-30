@@ -2866,46 +2866,52 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
         'system.health.value': hp.value - deltaHP,
       }
 
-      let flavor = `Damage applied to ${this.name}`
-      if (deltaTempSp) {
-        flavor += `, ${deltaTempSp} damage to temp SP`
+      if (game.settings.get('core', 'DamageChatCard')) {
+        this.createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP })
       }
-      if (deltaSP) {
-        flavor += `, ${deltaSP} damage to SP`
-      }
-      if (deltaTempHp) {
-        flavor += `, ${deltaTempHp} damage to temp HP`
-      }
-      if (deltaHP) {
-        flavor += `, ${deltaHP} damage to HP`
-      }
-
-      const gm = game.users.find((u) => u.isGM)
-      const actorUserIds = game.users.filter((u) => {
-        if (!u.character) return false
-        return u.character.id === this.id
-      }).map((u) => u.id)
-
-      let chatData = {
-        speaker: ChatMessage.getSpeaker(),
-        flavor,
-        whisper: [gm.id, ...actorUserIds],
-        'flags.falloutzero': {
-          undoDamage: {
-            actorUuid: this.uuid,
-            changes: {
-              deltaTempSp,
-              deltaSP,
-              deltaTempHp,
-              deltaHP,
-            }
-          }
-        },
-      }
-      ChatMessage.create(chatData)
 
       await this.update(updates)
       return this
+  }
+
+  createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP }) {
+    let flavor = `Damage applied to ${this.name}`
+    if (deltaTempSp) {
+      flavor += `, ${deltaTempSp} damage to temp SP`
+    }
+    if (deltaSP) {
+      flavor += `, ${deltaSP} damage to SP`
+    }
+    if (deltaTempHp) {
+      flavor += `, ${deltaTempHp} damage to temp HP`
+    }
+    if (deltaHP) {
+      flavor += `, ${deltaHP} damage to HP`
+    }
+
+    const gm = game.users.find((u) => u.isGM)
+    const actorUserIds = game.users.filter((u) => {
+      if (!u.character) return false
+      return u.character.id === this.id
+    }).map((u) => u.id)
+
+    let chatData = {
+      speaker: ChatMessage.getSpeaker(),
+      flavor,
+      whisper: [gm.id, ...actorUserIds],
+      'flags.falloutzero': {
+        undoDamage: {
+          actorUuid: this.uuid,
+          changes: {
+            deltaTempSp,
+            deltaSP,
+            deltaTempHp,
+            deltaHP,
+          }
+        }
+      },
+    }
+    ChatMessage.create(chatData)
   }
 
   /**

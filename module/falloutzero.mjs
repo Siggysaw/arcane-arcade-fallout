@@ -94,6 +94,15 @@ Hooks.once('init', function () {
     default: true,
     requiresReload: true,
   })
+  game.settings.register('core', 'DamageChatCard', {
+    name: 'Damage chat card',
+    hint: 'Show chat card for GM and actor user when actor takes damage',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  })
 
   const sheetColor = game.settings.get('core', 'Sheet-Color');
   const r = document.querySelector(':root');
