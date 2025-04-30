@@ -1,4 +1,9 @@
+.award .group {
+    align-items: center;
+    gap: 1rem;
+}
+
 .award .characters {
     align-items: center;
-    gap: 2rem 1rem
+    gap: 2rem 1rem;
 }

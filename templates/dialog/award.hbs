@@ -1,5 +1,26 @@
 <div class="award">
     <h1>Award</h1>
+    <div>
+        <div>Group reward</div>
+        <div class="grid grid-2col group">
+            <div>
+                XP
+            </div>
+            <div>
+                Caps
+            </div>
+            <div>
+                <input placeholder="XP" type="number" data-group-xp value="{{ groupXp }}">
+            </div>
+            <div>
+                <input placeholder="Caps" type="number" data-group-caps value="{{ groupCaps }}">
+            </div>
+        </div>
+        <div class="my-2">
+            <button type="button" data-action="divideGroup">Divide XP/Caps</button>
+        </div>
+    </div>
+    <hr/>
     <div class="grid grid-3col characters">
         <div>
             Name
@@ -14,17 +35,20 @@
             <div>
                {{ actor.name }}
             </div>
-            <div>
-                <input placeholder="xp to add" type="number" data-actor-xp="{{actor.id}}">
-            </div>
-            <div>
-                <input placeholder="caps to add" type="number" data-actor-caps="{{actor.id}}">
-            </div>
+            {{#with (lookup ../newActorData [id])~}}
+                <div>
+                    <input placeholder="xp to add" type="number" data-actor-xp={{actor.id}} value="{{ xp }}">
+                </div>
+                <div>
+                    <input placeholder="caps to add" type="number" data-actor-caps={{actor.id}} value="{{ caps }}">
+                </div>
+            {{/with}}
         {{/each}}
     </div>
 
     <div class="dialog-buttons flexrow">
-        <button class="dialog-button award" data-award>Award XP and cap</button>
+        <button class="dialog-button" data-action="cancel">Cancel</button>
+        <button class="dialog-button">Award XP and caps</button>
     </div>
 </div>
 
