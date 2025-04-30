@@ -1,5 +1,5 @@
 <form autocomplete="off">
-  <div class="character{{#if system.vaulttec}} vaulttec {{/if}}{{ cssClass }} {{ actor.type }} flexcol">
+  <div class="character{{#if system.vaulttec}} vaulttec {{/if}}{{log game.settings}}{{ cssClass }} {{ actor.type }} flexcol">
       {{log cssClass}}
     {{!-- Sheet Header --}}
     <header class="sheet-header">
@@ -16,12 +16,6 @@
           >Edit:<i
             data-editToggle
             class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"
-          ></i
-        ></span>
-                  <span title="Toggle Edit Mode"
-          >Vault-Tec:<i
-            data-sheetToggle
-            class="fas fa-toggle-{{#if system.vaulttec}}on{{else}}off{{/if}}"
           ></i
         ></span>
         <table>

@@ -5,6 +5,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
     const requiredInteger = { required: true, nullable: false, integer: true }
     schema.description = new fields.HTMLField()
     schema.itemEquipped = new fields.BooleanField({ initial: false })
+    schema.vaulttec = new fields.BooleanField({ initial: false })
     schema.wildWasteland = new fields.BooleanField()
     schema.abilityMod = new fields.StringField({ initial: '' })
     schema.skillBonus = new fields.StringField({ initial: '' })
@@ -120,5 +121,9 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
       }),
   })
     return schema
+  }
+  prepareDerivedData() {
+    super.prepareDerivedData()
+    this.vaulttec = game.settings.get('core', 'VaultTec')
   }
 }

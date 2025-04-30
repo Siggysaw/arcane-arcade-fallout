@@ -1,12 +1,78 @@
 {
   "FALLOUTZERO": {
     "Ability": {
-      "Str": { "long": "Strength", "abbr": "str" },
-      "Con": { "long": "Constitution", "abbr": "con" },
-      "Dex": { "long": "Dexterity", "abbr": "dex" },
-      "Int": { "long": "Intelligence", "abbr": "int" },
-      "Wis": { "long": "Wisdom", "abbr": "wis" },
-      "Cha": { "long": "Charisma", "abbr": "cha" }
+      "str": {
+        "long": "Strength",
+        "abbr": "str"
+      },
+      "per": {
+        "long": "Perception",
+        "abbr": "per"
+      },
+      "end": {
+        "long": "Endurance",
+        "abbr": "end"
+      },
+      "cha": {
+        "long": "Charisma",
+        "abbr": "cha"
+      },
+      "int": {
+        "long": "Intelligence",
+        "abbr": "int"
+      },
+      "agi": {
+        "long": "Agility",
+        "abbr": "agi"
+      },
+      "lck": {
+        "long": "Luck",
+        "abbr": "lck"
+      }
+    },
+    "Skills": {
+      "barter": {
+        "label": "Barter"
+      },
+      "breach": {
+        "label": "Breach"
+      },
+      "crafting": {
+        "label": "Crafting"
+      },
+      "energy_weapons": {
+        "label": "Energy Weapons"
+      },
+      "explosives": {
+        "label": "Explosives"
+      },
+      "guns": {
+        "label": "Guns"
+      },
+      "intimidation": {
+        "label": "Intimidation"
+      },
+      "medicine": {
+        "label": "Medicine"
+      },
+      "melee_weapons": {
+        "label": "Melee Weapons"
+      },
+      "science": {
+        "label": "Science"
+      },
+      "sneak": {
+        "label": "Sneak"
+      },
+      "speech": {
+        "label": "Speech"
+      },
+      "survival": {
+        "label": "Survival"
+      },
+      "unarmed": {
+        "label": "Unarmed"
+      }
     },
     "SheetLabels": {
       "Actor": "falloutzero Actor Sheet",
@@ -27,7 +93,6 @@
       "Inactive": "Inactive Effects"
     }
   },
-
   "TYPES": {
     "Actor": {
       "character": "Character",

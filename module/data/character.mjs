@@ -72,6 +72,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         initial: 0,
       }),
     })
+    schema.unflipped = new fields.NumberField({ initial: 0 })
+    schema.totalKarma = new fields.NumberField({ initial: 0 })
+    schema.attackBonus = new fields.NumberField({ initial: 0 })
     schema.attackBonus = new fields.NumberField({ initial: 0 })
     schema.damageBonus = new fields.NumberField({ initial: 0 })
     schema.xp = new fields.NumberField({ initial: 0 })
@@ -81,10 +84,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       modifiers: new fields.NumberField({ initial: 0 })
     })
     schema.combatSequence = new fields.SchemaField({
-      base : new fields.NumberField({ initial: 0 }),
-      value : new fields.NumberField({ initial: 0 }),
-      modifiers : new fields.NumberField({ initial: 0 }),
-      advantage : new fields.NumberField({ initial: 0 })
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 }),
+      advantage: new fields.NumberField({ initial: 0 })
     })
     schema.partyNerve = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
@@ -193,6 +196,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.level > 2 ? this.stamina.tooltip = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) : this.stamina.tooltip = this.abilities['agi'].mod + 10
     this.actionPoints.tooltip = this.abilities['agi'].mod + 10
     this.explosivesMastery = this.abilities['per'].mod + this.skills['explosives'].value
+    this.unflipped = this.karmaCaps.filter(Boolean).length;
+    this.totalKarma = this.karmaCaps.length;
   }
 }
 

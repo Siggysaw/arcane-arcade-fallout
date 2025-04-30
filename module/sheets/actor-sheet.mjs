@@ -63,7 +63,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const CapsLoad = game.settings.get('core', 'CapsLoad')
     const AmmoLoad = game.settings.get('core', 'AmmoLoad')
     const JunkLoad = game.settings.get('core', 'JunkLoad')
-    const KeepZeroes = game.settings.get('core', 'KeepZeroes')
+    const VaultTec = game.settings.get('core', 'VaultTec')
 
 
 

@@ -489,6 +489,13 @@ td,
   float: left;
   min-height: 150px;
 }
+.sheet div .box-upgrades {
+  width: 33%;
+  float: left;
+  min-height: 150px;
+}
+
+.sheet div .box-perks,
 .sheet div .box-traits h3,
 .sheet div .box-perks h3,
 .sheet div .box-medicines h3 {
@@ -946,7 +953,26 @@ a.inline-roll,
   margin-top: -10px;
   padding-top: 0px;
 }
-
+.item .grid input{
+    border:none;
+}
+.item .weapon-details .weapon-label{
+  padding: 5px;
+  vertical-align: middle;
+  margin-top:0px;
+}
+.item .weapon-details input{
+    text-align:right;
+}
+.item .weapon-description, .item .weapon-details {
+  border: solid 1px;
+  padding: 5px;
+}
+.sheet.item .item-label{
+    font-size:20pt;
+    color:white;
+    border:none;
+}
 /* VAULT TEC OVERRIDES*/
 .sheet .vaulttec {
   background-color: #0066b1;
@@ -1032,4 +1058,14 @@ a.inline-roll,
   color: #333;
   background-color: #dbd45a;
   text-shadow:none;
+}
+.sheet .vaulttec .weapon-description{
+    background:#333;
+    color:#eee;
+    padding-left:15px;
+    padding-right:10px;
+}
+.window-app.vaulttec .prosemirror p,
+.window-app .weapon-description p{
+  color: #ccc;
 }

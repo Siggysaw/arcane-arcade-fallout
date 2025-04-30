@@ -243,5 +243,6 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     this.health.damage = this.health.max - this.health.value
     this.stamina.effectiveMax = this.stamina.max + (this.stamina.temp ?? 0)
     this.stamina.damage = this.stamina.max - this.stamina.value
+    this.vaulttec = game.settings.get('core', 'VaultTec')
   }
 }

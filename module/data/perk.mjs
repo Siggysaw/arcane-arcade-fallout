@@ -35,5 +35,8 @@ export default class FalloutZeroPerk extends FalloutZeroItemBase {
     return schema
   }
 
-  prepareDerivedData() {}
+  prepareDerivedData() {
+    super.prepareDerivedData()
+    this.vaulttec = game.settings.get('core', 'VaultTec')
+  }
 }

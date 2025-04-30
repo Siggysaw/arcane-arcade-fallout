@@ -406,75 +406,42 @@ FALLOUTZERO.penalties = {
 FALLOUTZERO.maxKarmaCaps = 7
 
 FALLOUTZERO.rules = {
-  Anabolic:
-    'If you use a chem with this property, you have advantage on all Strength and Endurance ability and skill checks. Additionally, you gain temporary hit points equal to your level.',
-  Addictive:
-    'If you consume a drink with the Alcoholic property that also has this property, you must succeed an Endurance ability check equal to 5.<br><br> If you fail, you become addicted to alcoholic drinks.<br><br>While you are addicted to alcoholic drinks you always have two levels of exhaustion unless you are drunk.<br><br> You lose your alcohol addiction if you spend a number of weeks equal to 6 minus your Endurance ability ability modifier (minimum 1).<br><br>',
-  Alcoholic:
-    'When you consume a drink with this property, and your Endurance ability score is equal to 5 or higher, you become buzzed for 1d4 hours.<br><br> Endurance ability score is equal to 4 or lower, you become drunk instead.<br><br> If you are already buzzed and you consume another alcoholic or high-proof drink, you become drunk for 1d4 hours.<br><br> If you are drunk, and drink two more alcoholic or high-proof drinks, you become hammered for 1d4 hours.<br><br> If you are hammered, and drink two more alcoholic or high-proof drinks, you become wasted for 1d4 hours.<br><br> ',
-  Caffeinated:
-    'If you consume a food or drink with this property, you no longer suffer the negative effects of the first three levels of exhaustion for the next 6 hours.<br><br> If you have no levels of exhaustion, whenever you roll a d20; add 1 to the result.<br><br> If you drink another Caffeinated drink while under the effects of one already, you gain 1 AP at the start of your turn for the next 6 hours.<br><br> However, at the end of those 6 hours, you gain a level of exhaustion for each additional caffeinated drink you consumed while under the effects of one already.<br><br> ',
-  Highproof:
-    'When you consume a drink with this property, and your Endurance ability score is equal to 5 or higher, you become drunk for 1d4 hours.<br><br> Endurance ability score is equal to 4 or lower, you become hammered instead.<br><br> If you are already drunk and you consume another alcoholic or high-proof drink, you become hammered for 1d4 hours.<br><br> If you are hammered, and drink two more alcoholic or high-proof drinks, you become wasted for 1d4 hours.<br><br>',
-  Hydrating:
-    'When you consume a drink with this property, you remove an additional two levels of dehydration (for a total of three since all drinks remove one level of dehydration).<br><br>',
-  Irradiated:
-    'Some foods arent entirely the safest to eat, but beggars cant be choosers in the wasteland.<br><br> When you consume a food that is irradiated, you gain one irradiated level.<br><br> If you gain ten irradiated levels, you gain one level of rads.<br><br> ',
-  Filling: 'If you consume food with this property, you remove another level of hunger.<br><br> ',
-  Bland:
-    'If you consume a food with this property, you heal a number of stamina points equal to half your level.<br><br>',
-  Tasty:
-    'If you consume a food with this property, you heal a number of stamina points equal to your level.<br><br>',
-  Flavorsome:
-    'If you consume a food with this property, you heal a number of stamina points equal to double your level.<br><br>',
-  Delicacy:
-    'If you consume a food with this property, you heal a number of stamina points equal to triple your level.<br><br>',
-  Fortifying:
-    'If you consume food with this property, your radiation DC decreases by 2 for 6 hours.<br><br> ',
-  Energizing:
-    'If you consume a food or drink with this property, you gain 1 AP at the start of your turn for the next 4 hours.<br><br>',
-  Empowering:
-    'If you consume a food or drink with this property, you gain 2 AP at the start of your turn for the next 4 hours.<br><br>',
-  Regenerating:
-    'If you consume a food or drink with this property, you heal a number of hit points equal to your healing rate.<br><br> ',
-  Refreshing:
-    'If you consume a food with this property, you remove one level of dehydration.<br><br>',
-  Snack:
-    'If you consume a food with this property, you do not remove any levels of hunger unless you consume two foods with this property.<br><br>',
-  Spicy:
-    'If you consume a food or drink with this property, whenever you take fire or laser damage in the next 6 hours, your DT is increased by 3 for that damage.<br><br>',
-  Hearty:
-    'If you consume a food or drink with this property, your carry load increases by 50 for the next 6 hours.<br><br>',
-  Pungent:
-    'If you consume a food or drink with this property, your DT increases by 1 for the next 6 hours.<br><br> ',
-  Putrid:
-    'If you consume a food or drink with this property, you become poisoned for the next 4 hours if your Endurance score is 5 or lower.<br><br> ',
+  Anabolic:'If you use a chem with this property, you have advantage on all Strength and Endurance ability and skill checks. Additionally, you gain temporary hit points equal to your level.',
+  Addictive:'If you consume a drink with the Alcoholic property that also has this property, you must succeed an Endurance ability check equal to 5.<br><br> If you fail, you become addicted to alcoholic drinks.<br><br>While you are addicted to alcoholic drinks you always have two levels of exhaustion unless you are drunk.<br><br> You lose your alcohol addiction if you spend a number of weeks equal to 6 minus your Endurance ability ability modifier (minimum 1).<br><br>',
+  Alcoholic:'When you consume a drink with this property, and your Endurance ability score is equal to 5 or higher, you become buzzed for 1d4 hours.<br><br> Endurance ability score is equal to 4 or lower, you become drunk instead.<br><br> If you are already buzzed and you consume another alcoholic or high-proof drink, you become drunk for 1d4 hours.<br><br> If you are drunk, and drink two more alcoholic or high-proof drinks, you become hammered for 1d4 hours.<br><br> If you are hammered, and drink two more alcoholic or high-proof drinks, you become wasted for 1d4 hours.<br><br> ',
+  Caffeinated:'If you consume a food or drink with this property, you no longer suffer the negative effects of the first three levels of exhaustion for the next 6 hours.<br><br> If you have no levels of exhaustion, whenever you roll a d20; add 1 to the result.<br><br> If you drink another Caffeinated drink while under the effects of one already, you gain 1 AP at the start of your turn for the next 6 hours.<br><br> However, at the end of those 6 hours, you gain a level of exhaustion for each additional caffeinated drink you consumed while under the effects of one already.<br><br> ',
+  Highproof:'When you consume a drink with this property, and your Endurance ability score is equal to 5 or higher, you become drunk for 1d4 hours.<br><br> Endurance ability score is equal to 4 or lower, you become hammered instead.<br><br> If you are already drunk and you consume another alcoholic or high-proof drink, you become hammered for 1d4 hours.<br><br> If you are hammered, and drink two more alcoholic or high-proof drinks, you become wasted for 1d4 hours.<br><br>',
+  Hydrating:'When you consume a drink with this property, you remove an additional two levels of dehydration (for a total of three since all drinks remove one level of dehydration).<br><br>',
+  Irradiated:'Some foods arent entirely the safest to eat, but beggars cant be choosers in the wasteland.<br><br> When you consume a food that is irradiated, you gain one irradiated level.<br><br> If you gain ten irradiated levels, you gain one level of rads.<br><br> ',
+  Filling:'If you consume food with this property, you remove another level of hunger.<br><br> ',
+  Bland:'If you consume a food with this property, you heal a number of stamina points equal to half your level.<br><br>',
+  Tasty:'If you consume a food with this property, you heal a number of stamina points equal to your level.<br><br>',
+  Flavorsome:'If you consume a food with this property, you heal a number of stamina points equal to double your level.<br><br>',
+  Delicacy:'If you consume a food with this property, you heal a number of stamina points equal to triple your level.<br><br>',
+  Fortifying: 'If you consume food with this property, your radiation DC decreases by 2 for 6 hours.<br><br> ',
+  Energizing:'If you consume a food or drink with this property, you gain 1 AP at the start of your turn for the next 4 hours.<br><br>',
+  Empowering:'If you consume a food or drink with this property, you gain 2 AP at the start of your turn for the next 4 hours.<br><br>',
+  Regenerating:'If you consume a food or drink with this property, you heal a number of hit points equal to your healing rate.<br><br> ',
+  Refreshing: 'If you consume a food with this property, you remove one level of dehydration.<br><br>',
+  Snack: 'If you consume a food with this property, you do not remove any levels of hunger unless you consume two foods with this property.<br><br>',
+  Spicy: 'If you consume a food or drink with this property, whenever you take fire or laser damage in the next 6 hours, your DT is increased by 3 for that damage.<br><br>',
+  Hearty: 'If you consume a food or drink with this property, your carry load increases by 50 for the next 6 hours.<br><br>',
+  Pungent:'If you consume a food or drink with this property, your DT increases by 1 for the next 6 hours.<br><br> ',
+  Putrid: 'If you consume a food or drink with this property, you become poisoned for the next 4 hours if your Endurance score is 5 or lower.<br><br> ',
   Cleansing: 'If you consume a food or drink with this property, you cure one addiction.<br><br>',
-  Strengthening:
-    'If you consume a food or drink with this property, whenever you attack another creature and roll damage; the damage is increased by 2.<br><br>',
-  Lucky:
-    'If you consume a food or drink with this property, you have advantage on all Luck ability checks for the next 6 hours.<br><br> ',
-  Charged:
-    'If you consume a food or drink with this property, you recycle all of your unspent AP at the beginning of each of your turns for the next hour.<br><br>',
-  Anxiolytic:
-    'If you use a chem with this property, you have advantage on Charisma ability and skill checks, combat sequence rolls, and any checks to resist becoming frightened.<br><br>',
-  Extrapolating:
-    'If you use a chem with this property, you have advantage on all Intelligence and Perception ability and skill checks.<br><br> However, you have disadvantage on all Charisma ability and skill checks.<br><br> ',
-  Hallucinogenic:
-    'If you use a chem with this property, you have advantage on all luck checks and may flip your karma cap.<br><br> ',
-  Hyperstimulant:
-    'If you use a chem with this property, you gain 4 additional AP at the start of your turn (to a maximum of 20).<br><br> You no longer suffer the negative effects of the first eight levels of exhaustion.<br><br> If you have no levels of exhaustion, whenever you roll a d20; add 2 to the result.<br><br> Additionally, you are immune to gaining levels of fatigue.<br><br>',
-  Invigorating:
-    'If you use a chem with this property, you regain stamina points equal to half your level.<br><br> ',
+  Strengthening: 'If you consume a food or drink with this property, whenever you attack another creature and roll damage; the damage is increased by 2.<br><br>',
+  Lucky: 'If you consume a food or drink with this property, you have advantage on all Luck ability checks for the next 6 hours.<br><br> ',
+  Charged: 'If you consume a food or drink with this property, you recycle all of your unspent AP at the beginning of each of your turns for the next hour.<br><br>',
+  Anxiolytic: 'If you use a chem with this property, you have advantage on Charisma ability and skill checks, combat sequence rolls, and any checks to resist becoming frightened.<br><br>',
+  Extrapolating:'If you use a chem with this property, you have advantage on all Intelligence and Perception ability and skill checks.<br><br> However, you have disadvantage on all Charisma ability and skill checks.<br><br> ',
+  Hallucinogenic:'If you use a chem with this property, you have advantage on all luck checks and may flip your karma cap.<br><br> ',
+  Hyperstimulant:'If you use a chem with this property, you gain 4 additional AP at the start of your turn (to a maximum of 20).<br><br> You no longer suffer the negative effects of the first eight levels of exhaustion.<br><br> If you have no levels of exhaustion, whenever you roll a d20; add 2 to the result.<br><br> Additionally, you are immune to gaining levels of fatigue.<br><br>',
+  Invigorating:'If you use a chem with this property, you regain stamina points equal to half your level.<br><br> ',
   Painkilling: 'If you use a chem with this property, your DT increases by 3.<br><br>',
-  Psychosis:
-    'If you use a chem with this property, when you deal damage from an attack roll; the damage is increased by 5.<br><br> However, you always attack the nearest hostile creature.<br><br> If there are no creatures that are hostile nearby, you must make an Endurance ability check equal to 15.<br><br> If you fail, you attack the nearest creature.<br><br>',
-  Sedative:
-    'If you use a chem with this property, your passive sense increases by 5 and if you critically hit with an attack roll; the damage is increased by 10.<br><br> ',
-  Stimulant:
-    'If you use a chem with this property, you gain 1 additional AP at the start of your turn (to a maximum of 16).<br><br> You no longer suffer the negative effects of the first three levels of exhaustion.<br><br> If you have no levels of exhaustion, whenever you roll a d20; add 1 to the result.<br><br>',
-  Superstimulant:
-    'If you use a chem with this property, you gain 2 additional AP at the start of your turn (to a maximum of 20).<br><br> You no longer suffer the negative effects of the first five levels of exhaustion.<br><br> If you have no levels of exhaustion, whenever you roll a d20; add 2 to the result.<br><br> Additionally, you are immune to gaining levels of fatigue.<br><br>',
+  Psychosis:'If you use a chem with this property, when you deal damage from an attack roll; the damage is increased by 5.<br><br> However, you always attack the nearest hostile creature.<br><br> If there are no creatures that are hostile nearby, you must make an Endurance ability check equal to 15.<br><br> If you fail, you attack the nearest creature.<br><br>',
+  Sedative:'If you use a chem with this property, your passive sense increases by 5 and if you critically hit with an attack roll; the damage is increased by 10.<br><br> ',
+  Stimulant:'If you use a chem with this property, you gain 1 additional AP at the start of your turn (to a maximum of 16).<br><br> You no longer suffer the negative effects of the first three levels of exhaustion.<br><br> If you have no levels of exhaustion, whenever you roll a d20; add 1 to the result.<br><br>',
+  Superstimulant: 'If you use a chem with this property, you gain 2 additional AP at the start of your turn (to a maximum of 20).<br><br> You no longer suffer the negative effects of the first five levels of exhaustion.<br><br> If you have no levels of exhaustion, whenever you roll a d20; add 2 to the result.<br><br> Additionally, you are immune to gaining levels of fatigue.<br><br>',
   Blinded: `A blinded creature can't see and automatically fails any ability check that requires sight.<br><br> Attack rolls against a blinded creature have advantage.<br><br> A blinded creature can attack creatures with a blind attack if they are aware of them.<br><br>`,
   Bleeding: `At the start of each of their turns, for each level of bleeding they have, a creature with this condition takes damage to their hit points equal to half their healing rate (rounded down).<br><br> A dying creature with any levels of this condition fails a death save at the start of their turns.<br><br> If a creature who has any levels of bleeding is healed, they do not gain any hit points, instead they remove two levels of bleeding.<br><br>`,
   Burning: `A burning creature takes 1d10 fire damage at the start of their turns.<br><br> They can spend 6 AP to put themselves out.<br><br>`,
@@ -488,7 +455,7 @@ FALLOUTZERO.rules = {
   Exhaustion: `Whenever you roll a d20, the total is subtracted by 1 for each level of exhaustion you have.<br><br> When you gain your tenth level of exhaustion, you die.<br><br> If you are a human, ghoul, or super mutant; you can remove one level of exhaustion after resting for at least 6 hours.<br><br> If you are a robot or gen-2 synth; you can remove one level of exhaustion after resting for at least 2 hours.<br><br> `,
   Fatigue: `Whenever you roll a d20, the total is subtracted by 1 for each level of fatigue you have.<br><br> You can only ever have a total of nine levels of fatigue.<br><br> At the end of each of your turns you lose one level of fatigue.<br><br> `,
   Frightened: `<p>When a creature becomes frightened, they must succeed an Endurance ability check with the DC equal to 8 + the Intimidation skill bonus of the frightening creature.<br><br> </p><p> If they succeed this check by 5 or more, they are not frightened.<br><br></p><ul><li><p>If they succeed this check, they can choose to become frightened Flight, Fight, Freeze, or Fawn for half (rounded down) the allotted time.<br><br> </p></li><li><p>If they fail this check, they can choose to become frightened Flight, Fight, Freeze, or Fawn for the allotted time.<br><br> </p></li><li><p>If they fail this check by 5 or more, they can choose to become frightened Flight or Freeze for the allotted time.<br><br> </p></li></ul><p>Frightened - Flight.<br><br> A creature with this condition must use their action points on their turn to move as far away from the source of their fear as possible.<br><br> </p><p>Frightened - Fight.<br><br> A creature with this condition must use their action points on their turn to attack with intent to kill towards the source of their fear.<br><br> They cannot spend action points to move away from the source of their fear.<br><br></p><p>Frightened - Freeze.<br><br> A creature with this condition loses half their maximum AP (rounded down) and cannot spend any AP to move.<br><br> </p><p>Frightened - Fawn.<br><br> A creature with this condition uses all their AP on their turn to attack any creatures that are considered enemies to the source of their fear, or takes any other actions that would heal or help the source of their fear.<br><br></p>`,
-  Grappled: `A grappled creature cannot spend AP to move.<br><br>`,
+  Grappled: `A grappled creature cannot spend AP o move.<br><br>`,
   Hammered: `While drunk, you gain the effects of buzzed and drunk.<br><br> Additionally, your maximum stamina points increase by a number equal to your level and whenever you roll a d20 it is subtracted by 5.<br><br> `,
   Heavily_Encumbered: `A heavily encumbered creature moves slowly (3 AP per 5 feet).<br><br> The creature�s travel pace is halved.<br><br> Every hour a heavily encumbered creature travels reduces their maximum stamina points by 2 (resets upon sleeping) Every day a heavily encumbered creature travels reduces their carry load capacity by 10 (resets upon traveling a day without being encumbered)`,
   Hunger: `Whenever you roll a d20, the total is subtracted by 1 for each level of hunger you have.<br><br> At the end of each day, or after 24 hours, if you did not consume at least one food, you gain one level of hunger.<br><br> When you gain your tenth level of hunger, you die.<br><br> `,
@@ -502,13 +469,10 @@ FALLOUTZERO.rules = {
   Slowed: `A slowed creature starts their turn with a maximum of 6 AP.<br><br>`,
   Unconscious: `When a creature becomes unconscious, it drops anything it was holding and all of its stamina points drop to 0.<br><br> It can't move or speak, and is unaware of its surroundings.<br><br> `,
   Wasted: `While wasted, you gain the effects of buzzed, drunk, and hammered.<br><br> Additionally, you remember nothing from the time while you�re wasted and you fall unconscious after an hour.<br><br> `,
-  Food_and_Drinks:
-    '<p>Food and Water Characters who don’t eat or drink suffer the effects of starvation or dehydration (see page 111). </p><p>The amount of food and water your character needs is detailed in their racial traits (see pages 7 - 11) </p><p>If your character is a ghoul or human, or super mutant: </p><p>- You take a level of hunger every 24 hours without food. </p><p>- You take three levels of dehydration every 24 hours without water.</p><p>Every Level of Hunger and Dehydration increases the Penalty Total against D20 rolls',
-  Fatigue_and_Exhaustion:
-    '<p>Fatigue</p><p>Whenever you roll a d20, the total is subtracted by 1 for each level of fatigue you have. You can only ever have a total of nine levels of fatigue. At the end of each of your turns you lose one level of fatigue.</p><p></p><p>Exhaustion</p><p>Whenever you roll a d20, the total is subtracted by 1 for each level of  exhaustion you have. When you gain your tenth level of exhaustion, you die. If you are a human, ghoul, or super mutant; you can remove one level of exhaustion after resting for at least 6 hours. If you are a robot or gen-2 synth; you can remove one level of exhaustion after resting for at least 2 hours.</p>',
+  Food_and_Drinks:'<p>Food and Water Characters who don’t eat or drink suffer the effects of starvation or dehydration (see page 111). </p><p>The amount of food and water your character needs is detailed in their racial traits (see pages 7 - 11) </p><p>If your character is a ghoul or human, or super mutant: </p><p>- You take a level of hunger every 24 hours without food. </p><p>- You take three levels of dehydration every 24 hours without water.</p><p>Every Level of Hunger and Dehydration increases the Penalty Total against D20 rolls',
+  Fatigue_and_Exhaustion:'<p>Fatigue</p><p>Whenever you roll a d20, the total is subtracted by 1 for each level of fatigue you have. You can only ever have a total of nine levels of fatigue. At the end of each of your turns you lose one level of fatigue.</p><p></p><p>Exhaustion</p><p>Whenever you roll a d20, the total is subtracted by 1 for each level of  exhaustion you have. When you gain your tenth level of exhaustion, you die. If you are a human, ghoul, or super mutant; you can remove one level of exhaustion after resting for at least 6 hours. If you are a robot or gen-2 synth; you can remove one level of exhaustion after resting for at least 2 hours.</p>',
   Irradiation: '10 Levels of Irradiation = 1 added level of Radiation.',
-  Area_of_Effect:
-    'Each creature and object in the radius of the first range that isn’t behind full cover takes full damage, while each creature and object in the radius of the second range that isn’t behind full cover takes half as much damage.<br><br>If an explosive only has one number listed, each creature or object in the radius takes full damage.',
+  Area_of_Effect:'Each creature and object in the radius of the first range that isn’t behind full cover takes full damage, while each creature and object in the radius of the second range that isn’t behind full cover takes half as much damage.<br><br>If an explosive only has one number listed, each creature or object in the radius takes full damage.',
   Dodge: `You prepare to move quickly out of the way of an attack or explosion. Until the start of your next turn, any attack roll made against you has disadvantage if you can see the attacker. Additionally, you can move up to 15 feet in reaction to any other creature's action one time before the start of your next turn. You lose this benefit if you are dying or you cannot spend AP to move.`,
   Equip_a_Weapon: `. You take a weapon from your inventory and prepare to attack with it with any hands you have free. If you have a weapon in your hands already and have not stowed it, you drop it on the ground. `,
   Escape_a_Grapple: `. If you are grappled, you make a contested Strength or Agility check against your grapplers Strength check to escape.`,

@@ -51,6 +51,7 @@
   margin-block-end: -4px;
   font-style: italic;
   color: var(--user-color);
+  text-transform: capitalize;
 }
 #chat-popout .chat-form{
     color:black;

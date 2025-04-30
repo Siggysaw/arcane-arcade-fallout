@@ -4,55 +4,13 @@
   }
 </style>
 
-<form class="{{ cssClass }}" autocomplete="off">
+<form class="{{ cssClass }} {{#if system.vaulttec}} vaulttec {{/if}}" autocomplete="off">
   <header class="sheet-header">
     <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" /><br />
     <div class="header-fields">
       <h1 class="charname">
-        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+        <input class="item-label" name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-      <table>
-        <tr>
-            <td style="text-align: left">
-                Equipped:
-                <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} /><br />
-                CND: <input style="width:50px;" type="number" name="system.decay" value="{{system.decay}}"max="10" min="0" />
-                <br />Slots :
-                <input style="text-align: center; width: 35px"
-                       type="number"
-                       name="system.slots"
-                       value="{{ system.slots }}" />
-                <br />Number Owned:<input style="text-align: center; width: 35px"
-                                          type="number"
-                                          name="system.quantity"
-                                          value="{{ system.quantity }}" />
-               
-            </td>
-            <td>
-                <select name="system.abilityMod">
-                    {{selectOptions abilities selected=system.abilityMod blank="None"}}
-                </select>
-                <select name="system.skillBonus">
-                    {{selectOptions skills selected=system.skillBonus blank="None"}}
-                </select>
-            </td>
-          <td>
-            <button
-              style="max-width: fit-content; text-align: left"
-              class="fakeButton"
-              addUpgradeBtn
-              id="addUpgradeBtn"
-            >
-              ADD
-            </button>
-            <select name="upgradesSelector" data-itemType="ranged" id="upgradesSelector">
-              <option value="Upgrades">Upgrades</option>
-            </select>
-            <div id="upgradeDetails" name="upgradeDetails"></div>
-            <div id="upgradeCost" name="upgradeCost"></div>
-          </td>
-        </tr>
-      </table>
     </div>
   </header>
 
@@ -68,71 +26,49 @@
   <section class="sheet-body">
     {{!-- Description Tab --}}
       <div class="tab" item-description data-group="primary" data-tab="description">
-          <table>
-              <tr>
-                  <td>Cost</td>
-                  <td>AP</td>
-                  <td>STR</td>
-              </tr>
-              <tr>
-                  <td>
-                      <input type="number" name="system.cost" value="{{ system.cost }}" />
-                  </td>
-                  <td>
-                      <input type="number" name="system.apCost" value="{{ system.apCost }}" />
-                  </td>
-                  <td>
-                      <input type="number"
-                             name="system.strengthRequirement"
-                             value="{{ system.strengthRequirement }}" />
-                  </td>
-              </tr>
-              <tr>
-                  <td>Ammo</td>
-                  <td>Ammo Assigned</td>
-                  <td>Capacity</td>
-                  <td>Load</td>
-              </tr>
-              <tr>
-                  <td>
-                      <input type="text" name="system.ammo.type" value="{{ system.ammo.type }}" />
-                  </td>
-                  <td>
-                      <input type="text" name="system.ammo.assigned" value="{{ system.ammo.assigned }}" />
-                  </td>
-                  <td style="display: flex; align-items: center">
-                      <input type="number"
-                             name="system.ammo.capacity.value"
-                             value="{{ system.ammo.capacity.value }}" />
-                      /
-                      <input type="number"
-                             name="system.ammo.capacity.max"
-                             value="{{ system.ammo.capacity.max }}" />
-                  </td>
-                  <td>
-                      <input type="number" name="system.load" value="{{ system.load }}" />
-                  </td>
-              </tr>
-          </table>
-          <table class="equipped-stats" style="width: 300px">
-              <tr>
-                  <td>Short Range:</td>
-                  <td>
-                      <input type="text" name="system.range.short" value="{{ system.range.short }}" />
-                  </td>
-              </tr>
-              <tr>
-                  <td>Long Range:</td>
-                  <td>
-                      <input type="text" name="system.range.long" value="{{ system.range.long }}" />
-                  </td>
-              </tr>
-          </table>
+          <div class="grid grid-10col">
+              <div class="grid-span-3">
+                  <div class="grid grid-2col weapon-details">
+                      <div class="weapon-label"><input title="{{system.ammo.type}}" style="text-align:left;font-size:12pt;" type="text" name="system.ammo.type" value="{{ system.ammo.type }}" /></div>
+                      <div style="text-align:center;font-size:12pt;margin-right:5px;">
+                          <input style="width:25px;text-align:center;" type="number"name="system.ammo.capacity.value" value="{{ system.ammo.capacity.value }}" />/<input style="width:25px;" type="number"name="system.ammo.capacity.max" value="{{ system.ammo.capacity.max }}" />
+                      </div>
+                      <div class="weapon-label">Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
+                      <div class="weapon-label">Load:</div><div><input type="number" name="system.load" value="{{ system.load }}" /></div>
+                      <div class="weapon-label">Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
+                      <div class="weapon-label">AP:</div><div><input type="number" name="system.apCost" value="{{ system.apCost }}" /></div>
+                      <div class="weapon-label">Str Req:</div><div><input type="number" name="system.strengthRequirement" value="{{ system.strengthRequirement }}" /></div>
+                      <div class="weapon-label">CND:</div><div><input type="number" name="system.decay" value="{{system.decay}}" max="10" min="0" /></div>
+                      <div class="grid-span-2" style="border-top:solid 2px;border-bottom:solid 2px;margin:5px;text-align:center;font-weight:bold;">RANGE</div>
+                      <div class="weapon-label">Short:</div>
+                      <div>
+                          <input type="number" name="system.range.short" value="{{ system.range.short }}" />
+                      </div>
+                      <div class="weapon-label">Long:</div><div>
+                          <input type="number" name="system.range.long" value="{{ system.range.long }}" />
+                      </div>
+                      <div style="text-align:right;border-right:solid 1px;padding:5px;">
+                          {{#if item.parent}}{{#Multiply item.parent.system.abilities.per.value system.range.short}}{{/Multiply}}ft{{else}}NA{{/if}}
+                      </div>
+                      <div style="padding:5px;">{{#if item.parent}}{{#Multiply item.parent.system.abilities.per.value system.range.long}}{{/Multiply}}ft{{else}}NA{{/if}}</div>
+                      <div class="grid-span-2">
+                          <select name="system.abilityMod" style="width:100%;">
+                              {{selectOptions abilities selected=system.abilityMod blank="None"}}
+                          </select>
+                      </div>
+                      <div class="grid-span-2">
+                          <select name="system.skillBonus" style="width:100%;">
+                              {{selectOptions skills selected=system.skillBonus blank="None"}}
+                          </select>
+                      </div>
+                      <div></div>
+                  </div>
+              </div>
+              <div class="grid-span-7 weapon-description">
+                  {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+              </div>
+          </div>
           {{> "systems/arcane-arcade-fallout/templates/item/parts/weapon-damage.hbs"}}
-          <br />
-          <h3>Notes:</h3>
-          {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
-          {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
       </div>
     {{!-- Crafting Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
@@ -140,47 +76,57 @@
       {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
     </div>
     {{!-- Upgrades Tab --}}
-    <div class="tab" data-armor-id data-group="primary" data-tab="upgrades">
+  <div class="tab" data-armor-id data-group="primary" data-tab="upgrades">
+      <button style="max-width: fit-content; text-align: left"
+              class="fakeButton"
+              addUpgradeBtn
+              id="addUpgradeBtn">
+          ADD
+      </button>
+      <select name="upgradesSelector" data-itemType="ranged" id="upgradesSelector">
+          <option value="Upgrades">Upgrades</option>
+      </select>
+      <div id="upgradeDetails" name="upgradeDetails"></div>
+      <div id="upgradeCost" name="upgradeCost"></div>
+
       {{#LesserThan system.baseCost.base 1}}
       <div>
-        Select an upgrade and press the ADD button above to upgrade your weapon. Upgrades will
-        appear here as you add them.
+          Select an upgrade and press the ADD button above to upgrade your weapon. Upgrades will
+          appear here as you add them.
       </div>
       {{else}}
       <ol>
-        {{#each system.upgrades as |key|}}
-        {{#if key.id}}
-        <div class="box-perks">
+          {{#each system.upgrades as |key|}}
+          {{#if key.id}}
+          <div class="box-perks box-upgrades">
           <li class="item flexrow" data-item-id="{{ key.id }}">
-            <table class="perk-table" style="border: solid 1px">
-              <tr>
-                <td>
-                  <div class="perk-div">
-                    <h3>{{ key.name }}</h3>
-                    <a class="item-control" seeUpgrade id="{{ key.id }}" title="View Item Details">
-                      <img title="{{ key.description }}" class="perk-image" src="{{ key.img }}" />
-                    </a>
-                  </div>
-                  <div class="perk-div">
-                    {{ key.rank }}
-                  </div>
-                  <li class="item flexrow" data-item-id="{{ item._id }}">
-                    <div class="item-controls" style="background: black">
-                      <a
-                        class="item-control upgrade-delete"
-                        deleteUpgrade
-                        title="Delete Upgrade"
-                        id="delete{{ key.id }}"
-                      >
-                        <i class="fas fa-trash"></i>
-                      </a>
-                    </div>
-                  </li>
-                </td>
-              </tr>
-            </table>
+              <table class="perk-table" style="border: solid 1px">
+                  <tr>
+                      <td>
+                          <div class="perk-div weapon-div">
+                              <h3>{{ key.name }}</h3>
+                              <a class="item-control" seeUpgrade id="{{ key.id }}" title="View Item Details">
+                                  <img title="{{ key.description }}" class="perk-image" src="{{ key.img }}" />
+                              </a>
+                          </div>
+                          <div class="perk-div">
+                              {{ key.rank }}
+                          </div>
+          <li class="item flexrow" data-item-id="{{ item._id }}">
+              <div class="item-controls" style="background: black">
+                  <a class="item-control upgrade-delete"
+                     deleteUpgrade
+                     title="Delete Upgrade"
+                     id="delete{{ key.id }}">
+                      <i class="fas fa-trash"></i>
+                  </a>
+              </div>
           </li>
-        </div>
+          </td>
+          </tr>
+          </table>
+          </li>
+  </div>
         {{/if}}
         {{/each}}
       </ol>

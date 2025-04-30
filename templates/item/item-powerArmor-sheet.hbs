@@ -5,7 +5,7 @@
   }
 </style>
 
-<form class="{{ cssClass }}" autocomplete="off">
+<form class="{{ cssClass }}{{#if system.vaulttec}} vaulttec {{/if}}" autocomplete="off">
   <header class="sheet-header">
     <div style="max-width:100px;text-align:center">
       <img class="profile-img" style="max-height:100px;" src="{{ item.system.img }}" data-edit="img" title="{{ item.name }}" />

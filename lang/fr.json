@@ -1,0 +1,121 @@
+{
+  "FALLOUTZERO": {
+    "Ability": {
+      "str": {
+        "long": "Le Strength",
+        "abbr": "str"
+      },
+      "per": {
+        "long": "Le Perception",
+        "abbr": "per"
+      },
+      "end": {
+        "long": "Endurance",
+        "abbr": "end"
+      },
+      "cha": {
+        "long": "Charisma",
+        "abbr": "cha"
+      },
+      "int": {
+        "long": "Intelligence",
+        "abbr": "int"
+      },
+      "agi": {
+        "long": "Agility",
+        "abbr": "agi"
+      },
+      "lck": {
+        "long": "Luck",
+        "abbr": "lck"
+      }
+    },
+    "Skills": {
+      "barter": {
+        "label": "Le Barter"
+      },
+      "breach": {
+        "label": "Breach"
+      },
+      "crafting": {
+        "label": "Crafting"
+      },
+      "energy_weapons": {
+        "label": "Energy Weapons"
+      },
+      "explosives": {
+        "label": "Explosives"
+      },
+      "guns": {
+        "label": "Guns"
+      },
+      "intimidation": {
+        "label": "Intimidation"
+      },
+      "medicine": {
+        "label": "Medicine"
+      },
+      "melee_weapons": {
+        "label": "Melee Weapons"
+      },
+      "science": {
+        "label": "Science"
+      },
+      "sneak": {
+        "label": "Sneak"
+      },
+      "speech": {
+        "label": "Speech"
+      },
+      "survival": {
+        "label": "Survival"
+      },
+      "unarmed": {
+        "label": "Unarmed"
+      }
+    },
+    "SheetLabels": {
+      "Actor": "Actor Sheet",
+      "Item": "Item Sheet",
+      "Background": "Background Sheet"
+    },
+    "Item": {
+      "Spell": {
+        "SpellLVL": "Level {level} Spells",
+        "AddLVL": "Add LVL {level}"
+      }
+    },
+    "Effect": {
+      "Source": "Source",
+      "Toggle": "Toggle Effect",
+      "Temporary": "Temporary Effects",
+      "Passive": "Passive Effects",
+      "Inactive": "Inactive Effects"
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "npc": "NPC",
+      "creature": "Creature"
+    },
+    "Item": {
+      "item": "Item",
+      "race": "Race",
+      "background": "Background",
+      "ammo": "Ammo",
+      "explosive": "Explosive",
+      "rangedWeapon": "Ranged Weapon",
+      "meleeWeapon": "Melee Weapon",
+      "armor": "Armor",
+      "perk": "Perk",
+      "trait": "Trait",
+      "foodAnddrink": "Food And Drink",
+      "medicine": "Medicine",
+      "chem": "Chem",
+      "junkItem": "Junk",
+      "material": "Material",
+      "miscItem": "Miscellaneous"
+    }
+  }
+}

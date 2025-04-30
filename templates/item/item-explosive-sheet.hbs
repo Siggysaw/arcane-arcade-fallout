@@ -1,54 +1,13 @@
-<form class="{{ cssClass }}" autocomplete="off">
+<form class="{{ cssClass }}{{#if system.vaulttec}} vaulttec {{/if}}" autocomplete="off">
     <header class="sheet-header">
-        <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
+        <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" /><br />
         <div class="header-fields">
             <h1 class="charname">
-                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+                <input class="item-label" name="name" type="text" value="{{ item.name }}" placeholder="Name" />
             </h1>
-            Equipped: <input type="checkbox" name="system.itemEquipped" {{checked system.itemEquipped}} />
         </div>
     </header>
 
-
-    <table class="equipped-stats">
-        <tr>
-            <td>Cost</td>
-            <td>Load</td>
-            <td>Qty</td>
-            <td><button class="useAP" data-apused="{{ system.apCost }}">AP</button></td>
-            <td>Range</td>
-            <td>Arm DC</td>
-            <td>AOE</td>
-        </tr>
-        <tr>
-            <td><input type="number" name="system.cost" value="{{ system.cost }}" /></td>
-            <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
-            <td><input type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
-            <td><input type="number" name="system.apCost" value="{{ system.apCost }}" /></td>
-            <td><input type="number" name="system.range.short" value="{{ system.range.short }}" /></td>
-            <td><input type="number" name="system.armDC" value="{{ system.armDC }}" /></td>
-
-        </tr>
-    </table>
-    <table class="equipped-stats"><tr>
-    <td>AOE:</td>
-    <td><input type="text" name="system.aoeRadius" value="{{ system.aoeRadius }}" /></td>
-</tr></table>
-    <br />
-
-    <table class="equipped-stats">
-        <tr>
-            <td>
-                <select name="system.abilityMod">
-                    {{selectOptions abilities selected=system.abilityMod blank="None"}}
-                </select></td><td>
-                <select name="system.skillBonus">
-                    {{selectOptions skills selected=system.skillBonus blank="None"}}
-                </select>
-            </td>
-        </tr>
-    </table>
-    {{> "systems/arcane-arcade-fallout/templates/item/parts/weapon-damage.hbs"}}
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item" data-tab="description">Description</a>
@@ -58,9 +17,45 @@
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Description Tab --}}
-        <div class="tab" item-description data-group="primary" data-tab="description" style="padding: 20px">
-            {{editor system.description target="system.description" button=true engine="prosemirror"}}
+        <div class="tab" item-description data-group="primary" data-tab="description">
+            <div class="grid grid-10col">
+                <div class="grid-span-3">
+                    <div class="grid grid-2col weapon-details">
+                        <div class="weapon-label">Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
+                        <div class="weapon-label">Load:</div><div><input type="number" name="system.load" value="{{ system.load }}" /></div>
+                        <div class="weapon-label">Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
+                        <div class="weapon-label">AP:</div><div><input type="number" name="system.apCost" value="{{ system.apCost }}" /></div>
+                        <div class="weapon-label">ArmDC:</div><div><input type="number" name="system.armDC" value="{{ system.armDC }}" /></div>
+                        <div class="grid-span-2" style="border-top:solid 2px;border-bottom:solid 2px;margin:5px;text-align:center;font-weight:bold;">RANGE</div>
+                        <div class="weapon-label">Throw:</div>
+                        <div>
+                            <input type="number" name="system.range.short" value="{{ system.range.short }}" />
+                        </div>
+                        <div class="weapon-label">Distance:</div>
+                        <div style="text-align:right;font-size:10pt;">{{#if item.parent}}{{#Multiply item.parent.system.abilities.str.value system.range.short}}{{/Multiply}}ft{{else}}NA{{/if}}</div>
+                        <div class="weapon-label">AOE:</div><div>
+                            <input type="text" name="system.aoeRadius" value="{{ system.aoeRadius }}" />
+                        </div>
+                        <div class="grid-span-2">
+                            <select name="system.abilityMod" style="width:100%;">
+                                {{selectOptions abilities selected=system.abilityMod blank="None"}}
+                            </select>
+                        </div>
+                        <div class="grid-span-2">
+                            <select name="system.skillBonus" style="width:100%;">
+                                {{selectOptions skills selected=system.skillBonus blank="None"}}
+                            </select>
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="grid-span-7 weapon-description">
+                    {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+                </div>
+            </div>
+            {{> "systems/arcane-arcade-fallout/templates/item/parts/weapon-damage.hbs"}}
         </div>
+
         {{!-- Crafting Tab --}}
         <div class="tab crafting" data-group="primary" data-tab="crafting">
             {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}

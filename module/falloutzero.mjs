@@ -67,13 +67,13 @@ Hooks.once('init', function () {
     default: '',
     requiresReload: true,
   })
-  game.settings.register('core', 'KeepZeroes', {
-    name: 'Keep Zeroed Items',
-    hint: 'Keep items in your inventory even if your qty is 0',
+  game.settings.register('core', 'VaultTec', {
+    name: 'Use Vault-Tec Colors',
+    hint: 'An Alternate Color Scheme Sponsored By Vault Tec!',
     scope: 'client',
     config: true,
     type: Boolean,
-    default: true,
+    default: false,
     requiresReload: true,
   })
   game.settings.register('core', 'DeductMovementAPInCombat', {
@@ -129,6 +129,7 @@ Hooks.once('init', function () {
     feature: models.FalloutZeroFeature,
     background: models.FalloutZeroBackground,
     perk: models.FalloutZeroPerk,
+    trait: models.FalloutZeroPerk,
     race: models.FalloutZeroRace,
     armor: models.FalloutZeroArmor,
     powerArmor: models.FalloutZeroPowerArmor,
@@ -221,6 +222,13 @@ Handlebars.registerHelper('GM', function (options) {
 // If Character is a NPC
 Handlebars.registerHelper('NPC', function (actorType, options) {
   if (actorType == 'npc') {
+    return options.fn(this)
+  }
+  return options.inverse(this)
+})
+// If Vault Tec Sheets
+Handlebars.registerHelper('VaultTec', function (actorType, options) {
+  if (game.settings.get('core', 'VaultTec')) {
     return options.fn(this)
   }
   return options.inverse(this)

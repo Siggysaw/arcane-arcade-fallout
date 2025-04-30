@@ -3,7 +3,7 @@
     line-height: 2;
   }
 </style>
-
+<div class="{{#if system.vaulttec}} vaulttec {{/if}}">
 <form class="{{ cssClass }}" autocomplete="off">
 
   <header class="sheet-header">
@@ -41,5 +41,6 @@
     </div>
   </section>
 </form>
+    </div>
 
 {{log system}}

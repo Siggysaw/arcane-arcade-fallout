@@ -2,15 +2,13 @@
   <tr>
     {{#each abilities as |ability key|}}
     <td>
-      <label
-        for="system.abilities.{{ key }}.value"
-        class="resource-label rollable flexlarge align-left specials"
-        title="1d20 + {{ability.label}} Mod ( {{ability.mod}} ){{#DifferentFrom ../system.penaltyTotal 0}} -  Penalties ( {{../system.penaltyTotal}} ){{/DifferentFrom}} {{#GreaterThan ability.advantage 1}} with advantage {{/GreaterThan}}{{#LesserThan ability.advantage 0}} with disadvantage {{/LesserThan}}"
-        data-abilityroll="{{key}}"
-        data-roll="d20+{{ ability.mod }}{{#if ability.penalties}}-@penaltyTotal{{/if}}"
-        data-advantage="{{ ability.advantage }}"
-        data-label="{{ ability.label }}"
-        >{{ ability.label }}</label>
+        <label for="system.abilities.{{ key }}.value"
+               class="resource-label rollable flexlarge align-left specials"
+               title="1d20 + {{ability.label}} Mod ( {{ability.mod}} ){{#DifferentFrom ../system.penaltyTotal 0}} -  Penalties ( {{../system.penaltyTotal}} ){{/DifferentFrom}} {{#GreaterThan ability.advantage 1}} with advantage {{/GreaterThan}}{{#LesserThan ability.advantage 0}} with disadvantage {{/LesserThan}}"
+               data-abilityroll="{{key}}"
+               data-roll="d20+{{ ability.mod }}{{#if ability.penalties}}-@penaltyTotal{{/if}}"
+               data-advantage="{{ ability.advantage }}"
+               data-label="{{ ability.label }}">{{localize (concat 'FALLOUTZERO.Ability.' key '.long')}}</label>
     </td>
     {{/each}}
   </tr>
