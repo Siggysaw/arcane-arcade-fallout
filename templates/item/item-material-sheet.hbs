@@ -5,26 +5,6 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-       <table>
-        <td style="vertical-align:middle">
-          Load
-        </td>
-        <td>
-          <input style="width:50px;" type="number" name="system.load" value="{{ system.load }}" />
-        </td>
-        <td style="vertical-align:middle">
-          Qty
-        </td> 
-        <td> 
-          <input style="width:50px;" type="number" name="system.quantity" value="{{ system.quantity }}" min="0" />
-        </td>
-        <td style="vertical-align:middle">
-          Cost
-        </td> 
-        <td> 
-          <input style="width:50px;" type="number" name="system.cost" value="{{ system.cost }}" min="0" />
-        </td>
-      </table>
     </div>
   </header>
   {{!-- Sheet Tab Navigation --}}
@@ -35,18 +15,29 @@
   </nav>
 
   {{!-- Sheet Body --}}
-  <section class="sheet-body">
+<section class="sheet-body">
     {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" item-description data-tab="description">
-      {{editor system.description target="system.description" rollData=rollData engine="prosemirror" button=true owner=owner editable=editable}}
+    <div class="tab" item-description data-group="primary" data-tab="description">
+        <div style="min-height:200px;" class="grid grid-10col">
+            <div class="grid-span-3">
+                <div class="grid grid-2col weapon-details">
+                    <div class="weapon-label">Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
+                    <div class="weapon-label">Load:</div><div><input type="number" name="system.load" value="{{ system.load }}" /></div>
+                    <div class="weapon-label">Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
+                </div>
+            </div>
+            <div class="grid-span-7 weapon-description">
+                {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+            </div>
+        </div>
     </div>
     {{!-- Crafting Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
-      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
+        {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
     </div>
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">
-      {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
+        {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
     </div>
-  </section>
+</section>
 </form>

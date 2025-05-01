@@ -42,7 +42,7 @@ details > summary {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #002a08;
+  background: none;
   cursor: pointer;
   border: solid 1px #ccc;
 }
@@ -281,6 +281,9 @@ details > summary {
 .window-app .dialog ul {
   background-color: var(--dark);
 }
+.sheet{
+    text-transform:capitalize;
+}
 .window-app .window-content input,
 .window-app .window-content .fakebutton,
 .window-app .window-content button,
@@ -425,8 +428,8 @@ table .bio-label {
   width: 75px;
 }
 .sheet ::placeholder {
-  color: var(--dark);
-  opacity: 1;
+  color: #ccc;
+  opacity: .5;
 }
 table,
 tr,
@@ -495,12 +498,6 @@ td,
   min-height: 150px;
 }
 
-.sheet div .box-perks,
-.sheet div .box-traits h3,
-.sheet div .box-perks h3,
-.sheet div .box-medicines h3 {
-  height: 45px;
-}
 .sheet .perk-div h3 {
   font-size: 10pt;
   letter-spacing: 0;
@@ -884,9 +881,6 @@ a.inline-roll,
   vertical-align:middle;
   font-size:10pt;
 }
-.craftingTable {
-  background-color:"black";
-}
 .sheet .toggle input[type='checkbox'] {
   content: url('/systems/arcane-arcade-fallout/assets/toggle-off.png');
   appearance: none;
@@ -953,6 +947,10 @@ a.inline-roll,
   margin-top: -10px;
   padding-top: 0px;
 }
+
+/* ============New Grid Classes============ */
+
+/*Item Sheets*/
 .item .grid input{
     border:none;
 }
@@ -972,6 +970,97 @@ a.inline-roll,
     font-size:20pt;
     color:white;
     border:none;
+}
+/*Combat Tab*/
+.sheet .combat-tab div {
+  border: solid 1px;
+  text-align:center;
+}
+.sheet .combat-tab .equip-toggle{
+    width:30px;
+}
+.sheet .combat-tab .weapon-equippable {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  text-align: center;
+  margin: 0;
+  position: relative;
+  top: 24%;
+  text-transform:uppercase;
+  font-family:arial;
+  font-weight:bold;
+}
+.sheet .weapon-name,
+.sheet .combat-ammo .ammo-name{
+  display: -webkit-box;
+  max-width: 100%;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height:25px;
+}
+.sheet .weapon-identity div{
+    border:none;
+    background:black;
+}
+.sheet .weapon-image img{
+    width:60px;
+    height:auto;
+}
+.sheet .combat-ammo div,
+.sheet .weapon-stats div,
+.sheet .weapon-identity div,
+.sheet .weapon-usage div{
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.sheet .combat-ammo .weapon-buttons {
+  border: none;
+  margin: 0;
+  position: relative;
+  top: 13%;
+  -ms-transform: translateY(-25%);
+  transform: translateY(-25%);
+}
+.sheet .combat-ammo .weapon-attack {
+  background: #333;
+  cursor: pointer;
+  text-transform:uppercase;
+}
+.sheet .combat-ammo .weapon-attack:hover {
+  background: #ccc;
+  color:black;
+  cursor: pointer;
+}
+
+.sheet .weapon-condition div {
+  border: none;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border-bottom:none;
+}
+.sheet .weapon-usage div{
+    color:#ccc;
+}
+.sheet .combat-tab .weapon-damage,
+.sheet .combat-tab .weapon-condition {
+  border-bottom: none;
+}
+.sheet .combat-tab .melee-attack {
+  background-image: url("/systems/arcane-arcade-fallout/assets/vaultboy/MeleeWeapons.webp");
+  background-size: cover;
+}
+.sheet .combat-tab .upgrade-name{
+    background:black;
+    color:white;
+    font-size:8pt;
 }
 /* VAULT TEC OVERRIDES*/
 .sheet .vaulttec {
@@ -995,7 +1084,8 @@ a.inline-roll,
 .sheet .vaulttec .status-table table,
 .window-app .window-content .vaulttec .weapons-table,
 .window-app .window-content .vaulttec .equipped-stats,
-.sheet .vaulttec .effects {
+.sheet .vaulttec .effects,
+.sheet .vaulttec .combat-tab{
   background-color: #001423;
   color: #dbd45a;
   text-shadow: 0 0 2px #000;
@@ -1018,10 +1108,14 @@ a.inline-roll,
   background-color: #333;
   border: solid 1px;
 }
+.sheet .vaulttec .item-label input{
+    background:none;
+}
 .sheet .vaulttec .character-name input{
     background-color:none;
     border:none;
     font-style:italic;
+    padding-left:20px;
 }
   .sheet .vaulttec nav {
     background-color: 	#001423;
@@ -1033,16 +1127,19 @@ a.inline-roll,
   color: #dbd45a;
   font-size: 13pt;
   text-shadow: 0 0 2px #000;
-  background: 	#001423;
+  background: #001423;
   padding: 5px;
   border-radius: .5em;
 }
-  .window-app .window-content .vaulttec label:hover,
-  .sheet .vaulttec .fakebutton:hover {
-    color: #333;
-    background: #dbd45a;
-    text-shadow: none;
-  }
+.sheet.item .vaulttec .item-label{
+    background:none;
+}
+.window-app .window-content .vaulttec label:hover,
+.sheet .vaulttec .fakebutton:hover {
+  color: #333;
+  background: #dbd45a;
+  text-shadow: none;
+}
   .sheet .vaulttec .fakebutton {
     color: #333;
     background: none;
@@ -1059,13 +1156,13 @@ a.inline-roll,
   background-color: #dbd45a;
   text-shadow:none;
 }
-.sheet .vaulttec .weapon-description{
-    background:#333;
-    color:#eee;
-    padding-left:15px;
-    padding-right:10px;
+.sheet .vaulttec .weapon-description,
+.window-app .vaulttec .editor-content {
+  background: #333;
+  color: #eee;
+  padding-left: 15px;
+  padding-right: 10px;
 }
-.window-app.vaulttec .prosemirror p,
-.window-app .weapon-description p{
+.window-app .vaulttec p{
   color: #ccc;
 }

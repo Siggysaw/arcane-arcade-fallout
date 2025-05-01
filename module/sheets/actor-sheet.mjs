@@ -368,6 +368,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           const item = this.actor.items.get(itemId)
           if (item.type == 'chem' && item.system.quantity > 0) {
             return true
+          } else {
+            console.log("HERE")
+            console.log(item.type)
           }
         },
         callback: (element) => {
