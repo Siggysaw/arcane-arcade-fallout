@@ -1,5 +1,7 @@
-2025/05/03-14:18:06.279 1601c Log #916: 0 ops saved to Table #917 OK
-2025/05/03-14:18:06.280 1601c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\misc/000916.log: OK
-2025/05/03-14:18:06.280 1601c Table #808: 50 entries OK
-2025/05/03-14:18:06.284 1601c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\misc/MANIFEST-000915: OK
-2025/05/03-14:18:06.289 1601c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\misc; recovered 1 files; 28852 bytes. Some data may have been lost. ****
+2025/05/03-14:29:39.558 146b4 Recovering log #920
+2025/05/03-14:29:39.567 146b4 Delete type=0 #920
+2025/05/03-14:29:39.567 146b4 Delete type=3 #918
+2025/05/03-14:29:57.117 15a3c Level-0 table #926: started
+2025/05/03-14:29:57.117 15a3c Level-0 table #926: 0 bytes OK
+2025/05/03-14:29:57.121 15a3c Delete type=0 #924
+2025/05/03-14:29:57.133 15a3c Manual compaction at level-0 from '!items!00vhMCFAY0992xCP' @ 72057594037927935 : 1 .. '!items.effects!ohkoYOkS0nmEbmOF.sHAWEndYqMDnAdme' @ 0 : 0; will stop at (end)

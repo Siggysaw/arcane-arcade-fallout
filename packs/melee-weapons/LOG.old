@@ -1,5 +1,7 @@
-2025/05/03-14:18:06.105 16028 Log #938: 0 ops saved to Table #939 OK
-2025/05/03-14:18:06.105 16028 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\melee-weapons/000938.log: OK
-2025/05/03-14:18:06.106 16028 Table #830: 62 entries OK
-2025/05/03-14:18:06.110 16028 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\melee-weapons/MANIFEST-000937: OK
-2025/05/03-14:18:06.115 16028 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\melee-weapons; recovered 1 files; 73808 bytes. Some data may have been lost. ****
+2025/05/03-14:29:39.472 1601c Recovering log #942
+2025/05/03-14:29:39.480 1601c Delete type=0 #942
+2025/05/03-14:29:39.480 1601c Delete type=3 #940
+2025/05/03-14:29:57.080 15a3c Level-0 table #948: started
+2025/05/03-14:29:57.080 15a3c Level-0 table #948: 0 bytes OK
+2025/05/03-14:29:57.084 15a3c Delete type=0 #946
+2025/05/03-14:29:57.096 15a3c Manual compaction at level-0 from '!items!00bmnvvy9RauCXIM' @ 72057594037927935 : 1 .. '!items!zKA49xkwsMeZGHFo' @ 0 : 0; will stop at (end)

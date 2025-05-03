@@ -1,5 +1,7 @@
-2025/05/03-14:18:06.058 1601c Log #1034: 0 ops saved to Table #1035 OK
-2025/05/03-14:18:06.058 1601c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/001034.log: OK
-2025/05/03-14:18:06.058 1601c Table #926: 18 entries OK
-2025/05/03-14:18:06.062 1601c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/MANIFEST-001033: OK
-2025/05/03-14:18:06.067 1601c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine; recovered 1 files; 11777 bytes. Some data may have been lost. ****
+2025/05/03-14:29:39.449 1600c Recovering log #1038
+2025/05/03-14:29:39.457 1600c Delete type=0 #1038
+2025/05/03-14:29:39.457 1600c Delete type=3 #1036
+2025/05/03-14:29:57.069 15a3c Level-0 table #1044: started
+2025/05/03-14:29:57.069 15a3c Level-0 table #1044: 0 bytes OK
+2025/05/03-14:29:57.072 15a3c Delete type=0 #1042
+2025/05/03-14:29:57.078 15a3c Manual compaction at level-0 from '!items!0djoGBUStJ1fZ3hs' @ 72057594037927935 : 1 .. '!items!wtHB2oaobNI8BMSq' @ 0 : 0; will stop at (end)

@@ -1095,7 +1095,7 @@ a.inline-roll,
   border: dotted 1px;
 }
 
-#context-menu li.context-item {
+.sheet #context-menu li.context-item {
   border: solid 1px;
 }
 
@@ -1241,8 +1241,7 @@ a.inline-roll,
 }
 
 .sheet .combat-tab .weapon-damage,
-.sheet .combat-tab .weapon-condition,
-.sheet .combat-tab .armor-condition {
+.sheet .combat-tab .weapon-condition{
   border-bottom: none;
 }
 
@@ -1277,6 +1276,10 @@ a.inline-roll,
 
 .sheet .armor-identity {
   background: black;
+}
+.sheet .armor-stat{
+    padding-top:5px;
+    padding-bottom:5px;
 }
 
 .sheet .armor-condition {

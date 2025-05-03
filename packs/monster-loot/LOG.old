@@ -1,5 +1,7 @@
-2025/05/03-14:18:06.406 1600c Log #849: 0 ops saved to Table #850 OK
-2025/05/03-14:18:06.406 1600c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\monster-loot/000849.log: OK
-2025/05/03-14:18:06.406 1600c Table #741: 75 entries OK
-2025/05/03-14:18:06.411 1600c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\monster-loot/MANIFEST-000848: OK
-2025/05/03-14:18:06.416 1600c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\monster-loot; recovered 1 files; 8674 bytes. Some data may have been lost. ****
+2025/05/03-14:29:39.616 1600c Recovering log #853
+2025/05/03-14:29:39.624 1600c Delete type=0 #853
+2025/05/03-14:29:39.624 1600c Delete type=3 #851
+2025/05/03-14:29:57.139 15a3c Level-0 table #859: started
+2025/05/03-14:29:57.139 15a3c Level-0 table #859: 0 bytes OK
+2025/05/03-14:29:57.143 15a3c Delete type=0 #857
+2025/05/03-14:29:57.155 15a3c Manual compaction at level-0 from '!tables!1kZpcERbuR7YQPO0' @ 72057594037927935 : 1 .. '!tables.results!uRqCBY6RCvISsaxr.lrrRv7NJYoxc55wc' @ 0 : 0; will stop at (end)
