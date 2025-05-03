@@ -21,6 +21,22 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+
+  async openDialog(filename,title) {
+    const myDialogOptions = { width: 700, height: 700, resizable: true }
+    const myContent = await renderTemplate(`systems/arcane-arcade-fallout/${filename}`,this
+    )
+
+    new Dialog(
+      {
+        title: `${title}`,
+        content: myContent,
+        buttons: {},
+      },
+      myDialogOptions,
+    ).render(true)
+  }
+
   ruleinfo(condition) {
     const myDialogOptions = { width: 500, height: 300, resizable: true }
     const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1)
@@ -130,7 +146,7 @@ export default class FalloutZeroActor extends Actor {
 
     // Custom Roll
   async customRoll() {
-    const myDialogOptions = { width: 275, resizable: true }
+    const myDialogOptions = { width: 400, height:500, resizable: true }
     const myContent = await renderTemplate(
       'systems/arcane-arcade-fallout/templates/actor/dialog/custom-roll.hbs',
     )
@@ -1268,9 +1284,7 @@ export default class FalloutZeroActor extends Actor {
     }
     let playerID = game.user._id
     //Get owned actors
-    let actorsList = game.actors
-      .filter((a) => a.type == 'character')
-      .filter((a) => a.ownership[playerID] == 3)
+    let actorsList = game.actors.filter((a) => a.type == 'character').filter((a) => a.ownership[playerID] == 3)
     let myActorName = actorsList[0].name
     if (actorsList == 1) {
       this.checkIfCanCraft(myActorName, myItem)

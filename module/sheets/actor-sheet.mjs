@@ -315,6 +315,21 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
+        name: 'Swap Ammo',
+        icon: '<i class="fas fa-swap"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.type == 'rangedWeapon' || item.type == 'meleeWeapon' && item.system.ammo.assigned) {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          this.actor.ammoswap(itemId)
+        },
+      },
+      {
         name: 'Equip/Unequip',
         icon: '<i class="fas fa-tshirt"></i>',
         condition: (element) => {
@@ -368,41 +383,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           const item = this.actor.items.get(itemId)
           if (item.type == 'chem' && item.system.quantity > 0) {
             return true
-          } else {
-            console.log("HERE")
-            console.log(item.type)
           }
         },
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
           this.actor.applyApCost(4) ? this.actor.lowerInventory(itemId) : console.log("Failed To Apply Cost")
-        },
-      },
-      {
-        name: 'Break Down',
-        icon: '<i class="fa-solid fa-screwdriver-wrench"></i>',
-        condition: (element) => {
-          const itemId = element.closest('.context-menu').data('item-id')
-          const item = this.actor.items.get(itemId)
-          if (
-            (item.type == 'junkItem' ||
-              item.type == 'rangedWeapon' ||
-              item.type == 'meleeWeapon' ||
-              item.type == 'armor' ||
-              item.type == 'powerArmor') &&
-            item.system.quantity > 0
-          ) {
-            return true
-          }
-          if (item.type == 'ammo' && item.system.quantity > 4) {
-            return true
-          }
-        },
-        callback: (element) => {
-          const itemId = element.closest('.context-menu').data('item-id')
-          const item = this.actor.items.get(itemId)
-          this.actor.checkConvert(itemId)
         },
       },
       {
@@ -448,6 +434,32 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
+        name: 'Break Down',
+        icon: '<i class="fa-solid fa-screwdriver-wrench"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (
+            (item.type == 'junkItem' ||
+              item.type == 'rangedWeapon' ||
+              item.type == 'meleeWeapon' ||
+              item.type == 'armor' ||
+              item.type == 'powerArmor') &&
+            item.system.quantity > 0
+          ) {
+            return true
+          }
+          if (item.type == 'ammo' && item.system.quantity > 4) {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          this.actor.checkConvert(itemId)
+        },
+      },
+      {
         name: 'Delete',
         icon: '<i class="fas fa-trash"></i>',
         condition: (element) => element.closest('.context-menu').data('item-id'),
@@ -482,12 +494,133 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
     ]
 
+    const combatContextMenu = [
+      {
+        name: 'Move 5 Ft (1 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        title:'Move 1 Square',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(1)
+        },
+      },
+      {
+        name: 'Sprint 50 Ft In a Line (5 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Grapple (3 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Escape Grapple (5 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Help (6 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Unarmed Strike (3 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Hide (6 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Interact With Object (3 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Search (3 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Shove (4 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Dodge (6 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Stand Up (5 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      },
+      {
+        name: 'Ready (+2 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(2)
+        },
+      },
+      {
+        name: 'Take Cover (5 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(5)
+        },
+      }
+    ]
+
     new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click', _expandUp: true })
+    new ContextMenu(html, '.combat-menu', combatContextMenu, { eventName: 'click', _expandUp: true })
 
     //show rule information
     html.on('click', '[data-condition]', (ev) => {
       const condition = ev.currentTarget.dataset.condition
       this.actor.ruleinfo(condition)
+    })
+    //show Combat Action Information
+    html.on('click', '[data-combatActions]', (ev) => {
+      this.actor.openDialog("/templates/dialog/combat-actions.hbs","Combat Actions")
     })
 
     // Actor Rest Buttons
@@ -518,8 +651,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this.actor.update({ 'system.editToggle': !this.actor.system.editToggle })
     })
     // Toggle Sheet Mode
-    html.on('click', '[data-sheetToggle]', (ev) => {
-      this.actor.update({ 'system.vaulttec': !this.actor.system.vaulttec })
+    html.on('click', '[data-showEquipped]', (ev) => {
+      this.actor.update({ 'system.showEquipped': !this.actor.system.showEquipped })
     })
 
     // Toggle Active Party Member
