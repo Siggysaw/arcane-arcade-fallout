@@ -1306,6 +1306,10 @@ a.inline-roll,
     text-align:center;
     border:none;
 }
+.sheet .status .show-unequipped{
+    display:none;
+}
+
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {
   background-color: #0066b1;
