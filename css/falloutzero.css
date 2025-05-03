@@ -60,7 +60,8 @@ details > summary {
 }
 
 .rollable:hover,
-.rollable:focus {
+.rollable:focus,
+.sheet .backpack-row:hover{
   cursor: pointer;
   background-color: var(--user-color);
   color: var(--dark);
@@ -1094,7 +1095,7 @@ a.inline-roll,
   border: dotted 1px;
 }
 
-#context-menu li.context-item {
+.sheet #context-menu li.context-item {
   border: solid 1px;
 }
 
@@ -1240,8 +1241,7 @@ a.inline-roll,
 }
 
 .sheet .combat-tab .weapon-damage,
-.sheet .combat-tab .weapon-condition,
-.sheet .combat-tab .armor-condition {
+.sheet .combat-tab .weapon-condition{
   border-bottom: none;
 }
 
@@ -1277,6 +1277,10 @@ a.inline-roll,
 .sheet .armor-identity {
   background: black;
 }
+.sheet .armor-stat{
+    padding-top:5px;
+    padding-bottom:5px;
+}
 
 .sheet .armor-condition {
   margin-top: 0px;
@@ -1296,6 +1300,16 @@ a.inline-roll,
     border-bottom:solid 1px;
     margin-bottom:4px;
 }
+.sheet .backpack .caps-icon img{
+    width:15px;
+    height:auto;
+    text-align:center;
+    border:none;
+}
+.sheet .status .show-unequipped{
+    display:none;
+}
+
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {
   background-color: #0066b1;
