@@ -4,6 +4,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
     const schema = {}
     const requiredInteger = { required: true, nullable: false, integer: true }
     schema.description = new fields.HTMLField()
+    schema.hideItem = new fields.BooleanField({ initial: false })
     schema.itemEquipped = new fields.BooleanField({ initial: false })
     schema.vaulttec = new fields.BooleanField({ initial: false })
     schema.wildWasteland = new fields.BooleanField()

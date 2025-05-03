@@ -81,5 +81,7 @@ export default class FalloutZeroArmorUpgrade extends FalloutZeroItemBase {
     return schema
   }
 
-  prepareDerivedData() {}
+  prepareDerivedData() {
+    console.log(this)
+  }
 }

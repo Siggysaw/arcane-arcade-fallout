@@ -9,6 +9,7 @@ export default class FalloutZeroMeleeWeapon extends FalloutZeroWeapon {
     schema.skillBonus = new fields.StringField({ initial: 'melee_weapons' })
     schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
     schema.consumesAmmo = new fields.BooleanField({ initial: false })
+    schema.hideItem = new fields.BooleanField({ initial: false })
     schema.junk = new fields.SchemaField({
       qtyReq : new fields.NumberField({...requiredInteger, initial: 1, min: 1 }),
       quantity1 : new fields.NumberField({initial:3, min: 0,}),

@@ -55,7 +55,7 @@ export function registerSystemSettings() {
     })
     game.settings.register('core', 'DeductMovementAPInCombat', {
         name: 'Auto deduct movement AP',
-        hint: 'Automatically reduces AP based on character movement when in combat.',
+        hint: 'Automatically reduces AP based on character movement when in combat. [Requires Elevation Ruler]',
         scope: 'world',
         config: true,
         type: Boolean,
@@ -65,6 +65,15 @@ export function registerSystemSettings() {
     game.settings.register('core', 'AutoRecycleAP', {
         name: 'Auto recycle AP',
         hint: 'Automatically recycles AP when combat round advances',
+        scope: 'world',
+        config: true,
+        type: Boolean,
+        default: true,
+        requiresReload: true,
+    })
+    game.settings.register('core', 'DamageChatCard', {
+        name: 'Damage chat card',
+        hint: 'Show chat card for GM and actor user when actor takes damage',
         scope: 'world',
         config: true,
         type: Boolean,

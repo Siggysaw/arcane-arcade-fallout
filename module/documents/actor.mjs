@@ -21,6 +21,22 @@ export default class FalloutZeroActor extends Actor {
     }
     return data
   }
+
+  async openDialog(filename,title) {
+    const myDialogOptions = { width: 700, height: 700, resizable: true }
+    const myContent = await renderTemplate(`systems/arcane-arcade-fallout/${filename}`,this
+    )
+
+    new Dialog(
+      {
+        title: `${title}`,
+        content: myContent,
+        buttons: {},
+      },
+      myDialogOptions,
+    ).render(true)
+  }
+
   ruleinfo(condition) {
     const myDialogOptions = { width: 500, height: 300, resizable: true }
     const conditionFormatted = condition.charAt(0).toUpperCase() + condition.slice(1)
@@ -51,36 +67,22 @@ export default class FalloutZeroActor extends Actor {
   async _onUpdate(data, options, userId) {
     super._onUpdate(data, options, userId)
 
-    const hp = options.falloutzero?.hp
+    const {hp} = options.falloutzero
+
     if (hp) {
-      const curr = this.system.health
-      const changes = {
-        hp: curr.value - hp.value,
-        temp: curr.temp - hp.temp,
-      }
-      changes.total = changes.hp + changes.temp
+      this._onHPUpdate(this.system.health, options.falloutzero.hp)
+    }
+  }
 
-      if (Number.isInteger(changes.total) && changes.total !== 0) {
-        this._displayTokenEffect(changes)
+  async _onHPUpdate(oldHealth, newHealth) {
+    const changes = {
+      hp: oldHealth.value - newHealth.value,
+      temp: oldHealth.temp - newHealth.temp,
+    }
+    changes.total = changes.hp + changes.temp
 
-        /**
-         * A hook event that fires when an actor is damaged or healed by any means. The actual name
-         * of the hook will depend on the change in hit points.
-         * @function aafo.damageActor
-         * @memberof hookEvents
-         * @param {Actor} actor                                       The actor that had their hit points reduced.
-         * @param {{hp: number, temp: number, total: number}} changes   The changes to hit points.
-         * @param {object} update                                       The original update delta.
-         * @param {string} userId                                       Id of the user that performed the update.
-         */
-        Hooks.callAll(
-          `foundry.${changes.total > 0 ? 'heal' : 'damage'}Actor`,
-          this,
-          changes,
-          data,
-          userId,
-        )
-      }
+    if (Number.isInteger(changes.total) && changes.total !== 0) {
+      this._displayTokenEffect(changes)
     }
   }
 
@@ -130,7 +132,7 @@ export default class FalloutZeroActor extends Actor {
 
     // Custom Roll
   async customRoll() {
-    const myDialogOptions = { width: 275, resizable: true }
+    const myDialogOptions = { width: 400, height:500, resizable: true }
     const myContent = await renderTemplate(
       'systems/arcane-arcade-fallout/templates/actor/dialog/custom-roll.hbs',
     )
@@ -1268,9 +1270,7 @@ export default class FalloutZeroActor extends Actor {
     }
     let playerID = game.user._id
     //Get owned actors
-    let actorsList = game.actors
-      .filter((a) => a.type == 'character')
-      .filter((a) => a.ownership[playerID] == 3)
+    let actorsList = game.actors.filter((a) => a.type == 'character').filter((a) => a.ownership[playerID] == 3)
     let myActorName = actorsList[0].name
     if (actorsList == 1) {
       this.checkIfCanCraft(myActorName, myItem)
@@ -2729,132 +2729,134 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
    * @param {DamageApplicationOptions} [options={}]  Damage application options.
    * @returns {Promise<Actor>}                     A Promise which resolves once the damage has been applied.
    */
-    async applyDamage(damages, options = {}) {
-        const hp = this.system.health
-        const sp = this.system.stamina
-        const dt = this.system.damageThreshold
+  async applyDamage(damages, options = {}) {
+      const hp = this.system.health
+      const sp = this.system.stamina
+      const dt = this.system.damageThreshold
 
-        if (Number.isNumeric(damages)) {
-            damages = [{ value: damages }]
-            options.ignore ??= true
-        }
+      if (Number.isNumeric(damages)) {
+          damages = [{ value: damages }]
+          options.ignore ??= true
+      }
 
-        damages = this.calculateDamage(damages, options)
-        if (!damages) return this
+      damages = this.calculateDamage(damages, options)
+      if (!damages) return this
 
-        // Round damage towards zero
-        let amount = damages.reduce((acc, d) => {
-            acc += d.value
-            return acc
-        }, 0)
-
-        // Get SP damage
-        let totalDamage = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
-        const PowerArmor = this.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
-        if (PowerArmor.length > 0) {
-            const ArmorID = PowerArmor[0]._id
-            const armorStat = PowerArmor[0].system
-            let armorMax
-            let armorHP = armorStat.armorHP.value
-            armorMax = Math.floor(armorStat.defensePoint.value * armorStat.decay)
-            if (totalDamage >= armorHP) {
-                totalDamage = totalDamage - armorHP
-                this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.decay': 0 },])
-                this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': 0 },])
-            } else {
-                const armorDamage = Math.floor(armorHP - totalDamage)
-                this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': armorDamage },])
-                totalDamage = 0
-            }
-        }
-        const deltaTempSp = totalDamage > 0 ? Math.min(sp.temp, totalDamage) : 0
-        const deltaSP = Math.clamp(totalDamage - deltaTempSp, -sp.damage, sp.value)
-        const spDamageDealt = deltaTempSp + deltaSP
-        let leftOverDamage = totalDamage - spDamageDealt
-
-        // Get HP damage modified by dr/dv
-        let hpDamage
-    
-    if (dt.value >= leftOverDamage) {
-      hpDamage = 0
-    } else {
-      hpDamage = damages.reduce((acc, d) => {
-        if (this.system.dr.includes(d.type)) {
-          acc += Math.floor(d.value / 2)
-        } else if (this.system.dv.includes(d.type)) {
-          acc += Math.floor(d.value * 2)
-        } else {
+      // Round damage towards zero
+      let amount = damages.reduce((acc, d) => {
           acc += d.value
-        }
-        return acc
+          return acc
       }, 0)
 
-      // reduce HP damage by damage already dealt to SP
-      hpDamage -= spDamageDealt
+      // Get SP damage
+      let totalDamage = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
+      const PowerArmor = this.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
+      if (PowerArmor.length > 0) {
+          const ArmorID = PowerArmor[0]._id
+          const armorStat = PowerArmor[0].system
+          let armorMax
+          let armorHP = armorStat.armorHP.value
+          armorMax = Math.floor(armorStat.defensePoint.value * armorStat.decay)
+          if (totalDamage >= armorHP) {
+              totalDamage = totalDamage - armorHP
+              this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.decay': 0 },])
+              this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': 0 },])
+          } else {
+              const armorDamage = Math.floor(armorHP - totalDamage)
+              this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': armorDamage },])
+              totalDamage = 0
+          }
+      }
+      const deltaTempSp = totalDamage > 0 ? Math.min(sp.temp, totalDamage) : 0
+      const deltaSP = Math.clamp(totalDamage - deltaTempSp, -sp.damage, sp.value)
+      const spDamageDealt = deltaTempSp + deltaSP
+      let leftOverDamage = totalDamage - spDamageDealt
 
-      if (dt.value >= hpDamage) {
-        // dt > hp damage
+      // Get HP damage modified by dr/dv
+      let hpDamage
+  
+      if (dt.value >= leftOverDamage) {
         hpDamage = 0
       } else {
-        // reduce total HP damage by dt
-        hpDamage -= dt.value
+        hpDamage = damages.reduce((acc, d) => {
+          if (this.system.dr.includes(d.type)) {
+            acc += Math.floor(d.value / 2)
+          } else if (this.system.dv.includes(d.type)) {
+            acc += Math.floor(d.value * 2)
+          } else {
+            acc += d.value
+          }
+          return acc
+        }, 0)
+
+        // reduce HP damage by damage already dealt to SP
+        hpDamage -= spDamageDealt
+
+        if (dt.value >= hpDamage) {
+          // dt > hp damage
+          hpDamage = 0
+        } else {
+          // reduce total HP damage by dt
+          hpDamage -= dt.value
+        }
       }
-    }
 
-    const deltaTempHp = hpDamage > 0 ? Math.min(hp.temp, amount) : 0
-    const deltaHP = Math.clamp(hpDamage - deltaTempHp, -hp.damage, hp.value)
+      const deltaTempHp = hpDamage > 0 ? Math.min(hp.temp, amount) : 0
+      const deltaHP = Math.clamp(hpDamage - deltaTempHp, -hp.damage, hp.value)
 
-    const updates = {
-      'system.stamina.temp': sp.temp - deltaTempSp,
-      'system.stamina.value': sp.value - deltaSP,
-      'system.health.temp': hp.temp - deltaTempHp,
-      'system.health.value': hp.value - deltaHP,
-    }
+      const updates = {
+        'system.stamina.temp': sp.temp - deltaTempSp,
+        'system.stamina.value': sp.value - deltaSP,
+        'system.health.temp': hp.temp - deltaTempHp,
+        'system.health.value': hp.value - deltaHP,
+      }
 
-    // if (deltaTempHp > updates['system.health.temp']) updates['system.health.temp'] = deltaTempHp
-    // if (deltaTempSp > updates['system.stamina.temp']) updates['system.stamina.temp'] = deltaTempSp
-
-    // /**
-    //  * A hook event that fires before damage is applied to an actor.
-    //  * @param {Actor5e} actor                     Actor the damage will be applied to.
-    //  * @param {number} amount                     Amount of damage that will be applied.
-    //  * @param {object} updates                    Distinct updates to be performed on the actor.
-    //  * @param {DamageApplicationOptions} options  Additional damage application options.
-    //  * @returns {boolean}                         Explicitly return `false` to prevent damage application.
-    //  * @function aafo.preApplyDamage
-    //  * @memberof hookEvents
-    //  */
-    // if ( Hooks.call("aafo.preApplyDamage", this, amount, updates, options) === false ) return this;
-
-    // Delegate damage application to a hook
-    // TODO: Replace this in the future with a better modifyTokenAttribute function in the core
-    if (
-      Hooks.call(
-        'modifyTokenAttribute',
-        {
-          attribute: 'health',
-          value: amount,
-          isDelta: false,
-          isBar: true,
-        },
-        updates,
-      ) === false
-    )
-      return this
+      if (game.settings.get('core', 'DamageChatCard')) {
+        this.createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP })
+      }
 
       await this.update(updates)
+      return this
+  }
 
-    /**
-    //  * A hook event that fires after damage has been applied to an actor.
-    //  * @param {Actor5e} actor                     Actor that has been damaged.
-    //  * @param {number} amount                     Amount of damage that has been applied.
-    //  * @param {DamageApplicationOptions} options  Additional damage application options.
-    //  * @function aafo.applyDamage
-    //  * @memberof hookEvents
-    //  */
-    Hooks.callAll('falloutzero.applyDamage', this, amount, options)
+  createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP }) {
+    let flavor = `Damage applied to ${this.name}`
+    if (deltaTempSp) {
+      flavor += `, ${deltaTempSp} damage to temp SP`
+    }
+    if (deltaSP) {
+      flavor += `, ${deltaSP} damage to SP`
+    }
+    if (deltaTempHp) {
+      flavor += `, ${deltaTempHp} damage to temp HP`
+    }
+    if (deltaHP) {
+      flavor += `, ${deltaHP} damage to HP`
+    }
 
-    return this
+    const gm = game.users.find((u) => u.isGM)
+    const actorUserIds = game.users.filter((u) => {
+      if (!u.character) return false
+      return u.character.id === this.id
+    }).map((u) => u.id)
+
+    let chatData = {
+      speaker: ChatMessage.getSpeaker(),
+      flavor,
+      whisper: [gm.id, ...actorUserIds],
+      'flags.falloutzero': {
+        undoDamage: {
+          actorUuid: this.uuid,
+          changes: {
+            deltaTempSp,
+            deltaSP,
+            deltaTempHp,
+            deltaHP,
+          }
+        }
+      },
+    }
+    ChatMessage.create(chatData)
   }
 
   /**

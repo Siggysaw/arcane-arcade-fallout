@@ -74,6 +74,57 @@
         "label": "Unarmed"
       }
     },
+    "Passives": {
+      "hunger": {
+        "label": "Hunger"
+      },
+      "dehydration": {
+        "label": "Dehydration"
+      },
+      "fatigue": {
+        "label": "Fatigue"
+      },
+      "exhaustion": {
+        "label": "exhaustion"
+      },
+      "rad_lvl": {
+        "label": "Rad LVL"
+      },
+      "irradiation": {
+        "label": "Irradiation"
+      },
+      "healing_rate": {
+        "label": "Healing Rate"
+      },
+      "combat_sequence": {
+        "label": "Combat Sequence"
+      },
+      "rad_dc": {
+        "label": "Rad DC"
+      },
+      "passive_sense": {
+        "label": "Passive Sense"
+      },
+      "party_nerve": {
+        "label": "Party Nerve"
+      },
+      "group_sneak": {
+        "label": "Group Sneak"
+      },
+      "short_rest": {
+        "label": "Short Rest"
+      },
+      "long_rest": {
+        "label": "Unarmed"
+      },
+      "perk_list": {
+        "label": "Perk List"
+      },
+      "custom_dice": {
+        "label": "Custom Dice Roll"
+      }
+
+    },
     "SheetLabels": {
       "Actor": "falloutzero Actor Sheet",
       "Item": "falloutzero Item Sheet",
@@ -96,8 +147,7 @@
   "TYPES": {
     "Actor": {
       "character": "Character",
-      "npc": "NPC",
-      "creature": "Creature"
+      "npc": "NPC"
     },
     "Item": {
       "item": "Item",

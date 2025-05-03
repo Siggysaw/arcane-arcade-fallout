@@ -1,157 +1,190 @@
-<table class="equipped-stats backpack">
-    <tr>
-        <td style="width:45%;vertical-align:top">
-            <h3>Weapons and Armor</h3>
-            {{#each rangedWeapons as |item id|}}
-            {{#unless item.system.itemEquipped}}
-            <li class="context-menu backpack-item item"
-                  data-item-id="{{ item._id }}" 
-                  draggable="true"
-                  title="{{localize 'DOCUMENT.Update' type='item'}}">
-                {{item.name}}({{item.system.quantity}})
-            </li>
-            {{/unless}}
-            {{/each}}
-            {{#each meleeWeapons as |item id|}}
-            {{#unless item.system.itemEquipped}}
-            <li class="context-menu backpack-item item"
-                  data-item-id="{{ item._id }}" 
-                  draggable="true"
-                  title="{{localize 'DOCUMENT.Update' type='item'}}">
-                {{item.name}}({{item.system.quantity}})
-            </li>
-            {{/unless}}
-            {{/each}}
-            {{#each armors as |item id|}}
-            {{#unless item.system.itemEquipped}}
-            <li class="context-menu backpack-item item"
-                  data-item-id="{{ item._id }}" draggable="true"
-                  title="{{localize 'DOCUMENT.Update' type='item'}}">
-                {{item.name}}({{item.system.quantity}})
-            </li>
-            {{/unless}}
-            {{/each}}
-            {{#each powerArmors as |item id|}}
-            {{#unless item.system.itemEquipped}}
-            <li class="context-menu backpack-item item"
-                  data-item-id="{{ item._id }}" draggable="true"
-                  
-                  title="{{localize 'DOCUMENT.Update' type='item'}}">
-                {{item.name}}({{item.system.quantity}})
-            </li>
-            {{/unless}}
-            {{/each}}
-        </td>
-    </tr>
-    {{> "systems/arcane-arcade-fallout/templates/actor/items/ammo.hbs" ammos=ammos}}
-</table>
-
-<table class="backpack">
-    <tr>
-        <td style="width:60%;padding:5px;">
-            <table class="equipped-stats">
-                <tr><td colspan="999"><h3>Food and Drinks</h3></td></tr>
-                <tr><td>Name</td><td style="width:100px;" style="width:100px;">Qty</td><td style="width:150px;">Properties</td><td></td></tr>
-                {{#each foodAnddrinks as |item id|}}
-                {{#unless item.system.itemEquipped}}
-                <tr>
-                    <td>
-                        <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
-                            <div class="item-controls">
-                                <a class="item-control item-name"
-                                   data-edit
-                                   data-item-id="{{ item._id }}" draggable="true"
-                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                    {{item.name}}
-                                </a>
-                            </div>
-                        </li>
-                    </td>
-
-                    <td>
-                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                        {{ system.quantity }}
-                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
-
-                    </td>
-                    <td class="food">{{{item.system.description}}}</td>
-                    <td style="width:20px;" class="context-menu" data-item-id="{{ item._id }}">
-                        <i class="fas fa-ellipsis-v context-icon" ></i>
-                </td>
-                </tr>
-                {{/unless}}
-                {{/each}}
-            </table>
-            <table class="equipped-stats">
-                <tr><td colspan="999"><h3>Chems</h3></td></tr>
-                <tr><td>Name</td><td style="width:100px;">Qty</td><td style="width:150px;">Properties</td><td></td></tr>
-                {{#each chems as |item id|}}
-                {{#unless item.system.itemEquipped}}
-            <tr>
-                <td>
-                    <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
-                        <div class="item-controls">
-                            <a class="item-control item-name"
-                               data-edit
-                               data-item-id="{{ item._id }}" draggable="true"
-                               title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                {{item.name}}
-                            </a>
-                        </div>
-                    </li>
-                </td>
-
-                <td>
-                    <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                    {{ system.quantity }}
-                    <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
-
-                </td>
-                <td class="chems">{{{item.system.description}}}</td>
-                <td style="width:20px;" class="context-menu" data-item-id="{{ item._id }}">
-                    <i class="fas fa-ellipsis-v context-icon"></i>
-                </td>
-            </tr>
-                {{/unless}}
-                {{/each}}
-            </table>
-        </td>
-        <td style="width:40%;padding:5px;">
+<div class="grid grid-2col backpack-tab">
+    <div class="left segment">
+        <h3>Weapons</h3>
+        <div class="grid grid-20col labels">
+            <div>E</div>
+            <div class="grid-span-10">Name</div>
+            <div class="grid-span-3">Caps</div>
+            <div class="grid-span-3">Qty</div>
+            <div class="grid-span-3">Load</div>
+        </div>
+        {{#each rangedWeapons as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
             <div>
-                <table class="equipped-stats">
-                    <tr><td colspan=999><h3>MISC ITEMS</h3></td></tr>
-                    <tr><td style="width:20px;"></td><td>Name</td><td style="width:80px" style="width:100px;">Qty</td></tr>
-                    {{#each miscItems as |item id|}}
-                    {{#unless item.system.itemEquipped}}
-                <tr>
-                    <td style="width:20px;" class="context-menu" data-item-id="{{ item._id }}">
-                        <i class="fas fa-ellipsis-v context-icon"></i>
-                    </td>
-                    <td>
-                        <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
-                            <div class="item-controls">
-                                <a class="item-control item-name"
-                                   data-edit
-                                   data-item-id="{{ item._id }}"
-                                   title="{{localize 'DOCUMENT.Update' type='item'}}">
-                                    {{item.name}}
-                                </a>
-                            </div>
-                        </li>
-                    </td>
+                <i data-equipToggle data-item-id="{{ item._id}}"
+                   class="pointer {{#if system.itemEquipped}}
+            far fa-check-circle{{else}}far fa-circle{{/if}}">
+                </i>
+            </div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+            <div class="grid-span-3" title="Total Load: {{#Multiply item.system.load item.system.quantity}}{{/Multiply}}">{{item.system.load}}</div>
+        </div>
+        {{/each}}
+        {{#each meleeWeapons as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+            <div>
+                <i data-equipToggle data-item-id="{{ item._id}}"
+                   class="pointer {{#if system.itemEquipped}}
+                   far fa-check-circle{{else}}far fa-circle{{/if}}">
+                </i>
+            </div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+            <div class="grid-span-3">{{item.system.load}}</div>
+        </div>
+        {{/each}}
+        <h3>Ammunition</h3>
+        <div class="grid grid-20col labels">
+            <div class="grid-span-11">Name</div>
+            <div class="grid-span-3">Caps</div>
+            <div class="grid-span-3">Qty</div>
+            <div class="grid-span-3"></div>
+        </div>
+        {{#each ammos as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+            <div class="grid-span-11 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+            <div class="grid-span-3"></div>
+        </div>
+        {{/each}}
+        {{#if explosives}}<h3>Explosives</h3>{{/if}}
+        <div class="grid grid-20col labels">
+            <div class="grid-span-11">Name</div>
+            <div class="grid-span-3">Caps</div>
+            <div class="grid-span-3">Qty</div>
+            <div class="grid-span-3">Load</div>
+        </div>
+        {{#each explosives as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+            <div class="grid-span-11 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+            <div class="grid-span-3">{{item.system.load}}</div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="right segment">
+        <h3>Gear</h3>
+        <div class="grid grid-20col labels">
+            <div>E</div>
+            <div class="grid-span-10">Name</div>
+            <div class="grid-span-3">Caps</div>
+            <div class="grid-span-3">Qty</div>
+            <div class="grid-span-3">Load</div>
+        </div>
+        {{#each armors as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+            <div>
+                <i data-equipToggle data-item-id="{{ item._id}}"
+                   class="pointer {{#if system.itemEquipped}}
+                   far fa-check-circle{{else}}far fa-circle{{/if}}">
+                </i>
+            </div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+            <div class="grid-span-3">{{item.system.load}}</div>
+        </div>
+        {{/each}}
+        {{#each powerArmors as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+            <div>
+                <i data-equipToggle data-item-id="{{ item._id}}"
+                   class="pointer {{#if system.itemEquipped}}
+                   far fa-check-circle{{else}}far fa-circle{{/if}}">
+                </i>
+            </div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+            <div class="grid-span-3">{{item.system.load}}</div>
+        </div>
+        {{/each}}
+        {{#each miscItems as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+            <div>
+                <i data-equipToggle data-item-id="{{ item._id}}"
+                   class="pointer {{#if system.itemEquipped}}
+                   far fa-check-circle{{else}}far fa-circle{{/if}}">
+                </i>
+            </div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+            <div class="grid-span-3">{{item.system.load}}</div>
+        </div>
+        {{/each}}
+    </div>
+    </div>
+<div class="grid grid-2col backpack-tab">
+    <div class="left segment">
+        <h3>Consumables</h3>
+        <div class="grid grid-20col labels">
+            <div class="grid-span-7">Name</div>
+            <div class="grid-span-2">Caps</div>
+            <div class="grid-span-2">Qty</div>
+            <div class="grid-span-2">Load</div>
+            <div class="grid-span-6">Prop.</div>
+        </div>
+        {{#each foodAnddrinks as |item id|}}
+        <div class="grid grid-20col backpack-row">
+            <div class="grid-span-7 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-2">{{item.system.cost}}</div>
+            <div class="grid-span-2">{{item.system.quantity}}</div>
+            <div class="grid-span-2">{{item.system.load}}</div>
+            <div class="grid-span-6 description">{{{item.system.description}}}</div>
+        </div>
+        {{/each}}
+        {{#each chems as |item id|}}
+        <div class="grid grid-20col backpack-row">
+            <div class="grid-span-7 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-2">{{item.system.cost}}</div>
+            <div class="grid-span-2">{{item.system.quantity}}</div>
+            <div class="grid-span-2">{{item.system.load}}</div>
+            <div class="grid-span-6 description">{{{item.system.description}}}</div>
+        </div>
+        {{/each}}
+        {{#each medicines as |item id|}}
+        <div class="grid grid-20col backpack-row">
+            <div class="grid-span-7 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-2">{{item.system.cost}}</div>
+            <div class="grid-span-2">{{item.system.quantity}}</div>
+            <div class="grid-span-2">{{item.system.load}}</div>
+            <div></div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="right segment">
+        <h3>Junk Items</h3>
+        <div class="grid grid-20col labels">
+            <div class="grid-span-12">Name</div>
+            <div class="grid-span-3">Caps</div>
+            <div class="grid-span-3">Qty</div>
+        </div>
+        {{#each junk as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+            <div class="grid-span-12 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+        </div>
+        {{/each}}
+        <h3>Materials</h3>
+        <div class="grid grid-20col labels">
+            <div class="grid-span-12">Name</div>
+            <div class="grid-span-3">Caps</div>
+            <div class="grid-span-3">Qty</div>
+        </div>
+        {{#each materials as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+            <div class="grid-span-12 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+        </div>
+        {{/each}}
+    </div>
+</div>
 
-                    <td>
-                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
-                        {{ system.quantity }}
-                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
-
-                    </td>
-                </tr>
-                    {{/unless}}
-                    {{/each}}
-                </table>
-
-      </div>
-    </td>
-  </tr>
-</table>

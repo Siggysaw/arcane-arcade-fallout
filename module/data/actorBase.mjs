@@ -7,6 +7,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     const schema = {}
     schema.biography = new fields.HTMLField()
     schema.skillPool = new fields.NumberField({ initial: 0 })
+    schema.showEquipped = new fields.BooleanField({ initial: false })
     schema.perkPoints = new fields.NumberField({ initial: 0 })
     schema.startingSkillpoints = new fields.NumberField({ initial: 6 })
     schema.totalSkillpoints = new fields.NumberField({ initial: 0 })

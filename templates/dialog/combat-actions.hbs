@@ -1,0 +1,307 @@
+<style>
+h3 {
+text-transform: capitalize;
+}
+
+.combat-actions-table {
+margin-bottom: 20px;
+}
+</style>
+<table class="equipped-stats combat-actions">
+<tr>
+<td class="condition" data-condition="Move_5_Feet">Move 5 Feet</td>
+<td data-apusage="1" class="fakebutton">1 AP</td>
+
+<td class="condition" data-condition="Sprint">Sprint</td>
+<td data-apusage="5" class="fakebutton">5 AP</td>
+
+<td class="condition" data-condition="Escape_a_Grapple">Escape</td>
+<td data-apusage="5" class="fakebutton">5 AP</td>
+</tr>
+<tr>
+<td class="condition" data-condition="Grapple">Grapple</td>
+<td data-apusage="3" class="fakebutton">3 AP</td>
+
+<td class="condition" data-condition="Help">Help</td>
+<td data-apusage="6" class="fakebutton">6 AP</td>
+
+<td class="condition" data-condition="Unarmed_Strike">Unarmed Strike</td>
+<td data-apusage="3" class="fakebutton"
+data-rollable
+data-label="WALLOP! An Unarmed Strike!"
+data-roll="d20+{{ actor.system.abilities.str.mod }}+{{ actor.system.skills.unarmed.value }}-@penaltyTotal">
+3 AP
+</td>
+</tr>
+<tr>
+<td class="condition" data-condition="Hide">Hide</td>
+<td data-apusage="6" class="fakebutton">6 AP</td>
+
+<td class="condition" data-condition="Interact_With_Object">Interact</td>
+<td data-apusage="3" class="fakebutton">3 AP</td>
+
+<td class="condition" data-condition="Search">Search</td>
+<td data-apusage="3" class="fakebutton"
+data-rollable
+data-label="Searching..."
+data-roll="d20+{{ actor.system.abilities.per.mod }}-@penaltyTotal">
+3 AP
+</td>
+</tr>
+<tr>
+<td class="condition" data-condition="Shove">Shove</td>
+<td data-apusage="4" class="fakebutton">4 AP</td>
+
+<td class="condition" data-condition="Dodge">Dodge</td>
+<td data-apusage="6" class="fakebutton">6 AP</td>
+
+<td class="condition" data-condition="Stand_Up_From_Prone">Stand Up</td>
+<td data-apusage="5" class="fakebutton">5 AP</td>
+</tr>
+<tr>
+
+<td class="condition" data-condition="Ready">Ready</td>
+<td data-apusage="2" class="fakebutton">2 AP</td>
+
+<td class="condition" data-condition="Take_Cover">Take Cover</td>
+<td data-apusage="3" class="fakebutton">3 AP</td>
+
+<td class="condition" data-condition="Block">Block</td>
+<td data-apusage="3" class="fakebutton">3 AP</td>
+</tr>
+</table>
+
+<br />
+<h3>Dodge</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>6 AP </strong>You prepare to move quickly out of the way of
+an attack or explosion. Until the start of your next turn, any
+attack roll made against you has disadvantage if you can
+see the attacker. Additionally, you can move up to 15 feet in
+reaction to any other creature’s action one time before the
+start of your next turn. You lose this benefit if you are dying
+or you cannot spend AP to move.
+</td>
+</tr>
+
+</table>
+<h3>Equip a Weapon</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>3 AP </strong>You take a weapon within reach and
+prepare to attack with it with any hands you have free. If
+you have a weapon in your hands already and have not
+stowed it, you drop it on the ground.
+</td>
+</tr>
+
+</table>
+<h3>Escape</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>5 AP </strong>You attempt to free yourself from a grapple,
+restrain, or chokehold. You must succeed a Unarmed skill
+check with the DC equal to 10 + the creature’s Unarmed
+skill. If you succeed or roll a 20, you escape.
+Grapple. You use your appendages to hold someone in
+place. When you attempt to grapple another creature you
+make an Unarmed skill check with the DC equal to 10 + the
+creature’s Unarmed skill. If you succeed or roll a 20, the
+creature is grappled.
+</td>
+</tr>
+
+</table>
+<h3>Help</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>6 AP </strong>You can lend your aid to another creature in the
+completion of a task. When you use your AP to Help, the
+creature you aid gains a bonus to their next ability check
+equal to half your bonus (rounded down) in the related skill.
+Alternatively, you can aid a friendly creature in attacking a
+creature within 5 feet of you. You feint, distract the target,
+or in some other way team up to make your ally’s attack
+more effective. If your ally attacks the target before your
+next turn, the first attack roll is made with advantage.
+</td>
+</tr>
+
+</table>
+<h3>Hide</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>6 AP </strong>When you take the Hide action, you make a Sneak
+check with the DC equal to any nearby enemies passive
+sense scores. In order to hide you must be heavily obscured
+or within full cover. You are hidden from any enemies that
+have a lower passive sense compared to your sneak roll. If
+you succeed, you gain certain benefits, as described in the
+“Unseen Attackers and Targets” section. While hiding, you
+are acting unpredictably to confuse your enemy. Enemies
+still know your general location and can move to try and
+make line of sight again to notice you. If you are no longer
+within full cover of an enemy you are hidden from, you are
+no longer hidden.
+</td>
+</tr>
+
+</table>
+<h3>Interact With An Object</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>3 AP </strong>Interacting with an object falls under many categories of
+things you can do.
+<ul>
+<li>
+<p>open or close a door</p>
+</li>
+<li>
+<p>pick up a dropped shiv</p>
+</li>
+<li>
+<p>take a bottle cap from a table</p>
+</li>
+<li>
+<p>pushing a button</p>
+</li>
+<li>
+<p>extinguish a small flame</p>
+</li>
+<li>
+<p>don a mask</p>
+</li>
+<li>
+<p>pull the hood of your jacket up and over your head</p>
+</li>
+<li>
+<p>put your ear to a door</p>
+</li>
+<li>
+<p>kick a small stone</p>
+</li>
+<li>
+<p>turn a key in a lock</p>
+</li>
+<li>
+<p>hand an item to another character <br></p>
+</li>
+</ul>
+</td>
+</tr>
+
+</table>
+<h3>Move 5 feet</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>1 AP </strong>You move 5 feet in any direction so long
+as your movement isn’t impeded or the area isn’t difficult
+terrain. An enemy space is considered difficult terrain.
+</td>
+</tr>
+
+</table>
+<h3>Ready</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>+2 AP </strong>You prepare an action with a trigger. You must
+specify what the trigger is and spend the necessary AP
+with an additional 2 AP. When the trigger occurs, you may
+perform the action. If the trigger never occurs, you do not
+perform the action and instead you may recycle half the
+total amount of AP used at the start of your next turn.
+</td>
+</tr>
+
+</table>
+<h3>Reload</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>6 AP </strong>You use the necessary ammunition to reload
+your weapon. You must have a free hand in order to reload.
+Search. You make an active perception check to look for
+someone or something hidden.
+</td>
+</tr>
+
+</table>
+<h3>Shove</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>4 AP </strong>You knock a target prone or push it away from
+you. The target must be no more than one size larger than
+you and must be within your reach. Instead of making an
+attack roll, you make an Unarmed check contested by the
+target’s Unarmed check or Agility check (the target chooses
+the ability to use). If you win the contest, you either knock
+the target prone or push it 5 feet away from you.
+</td>
+</tr>
+
+</table>
+<h3>Sprint</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>5 AP </strong>You can spend 5 action points on your turn
+to sprint. When you sprint, you move 50 feet in a line. If
+you stop or are obstructed before you move 50 feet, your
+movement ends and you do not regain any action points.
+Stand up from Prone. You stand back up from being
+prone.
+</td>
+</tr>
+
+</table>
+<h3>Stow a Weapon</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>3 AP </strong>You take a weapon you are holding and
+put it into your inventory
+</td>
+</tr>
+
+</table>
+<h3>Take Cover</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>3 AP </strong>If you only have three quarters or half cover,
+you can spend 3 AP to squat, kneel, or duck into cover
+to gain full cover. If you attack while taking cover, you no
+longer have full cover.
+</td>
+</tr>
+
+</table>
+<h3>Unarmed Strike</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>4 AP </strong>You punch, kick, jab, slap, or perform
+any kind of attack to another creature within 5 feet of you.
+</td>
+</tr>
+</table>
+<h3>Use a Chem</h3>
+<table class="combat-actions-table">
+<tr>
+<td>
+<strong>4 AP </strong>When you take this action, you take the
+chem out of your inventory and use it. You don’t need to
+interact with the object or equip the chem in order to use it.
+</td>
+</tr>
+</table>
