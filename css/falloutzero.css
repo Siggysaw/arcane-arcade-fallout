@@ -60,7 +60,8 @@ details > summary {
 }
 
 .rollable:hover,
-.rollable:focus {
+.rollable:focus,
+.sheet .backpack-row:hover{
   cursor: pointer;
   background-color: var(--user-color);
   color: var(--dark);
@@ -1295,6 +1296,12 @@ a.inline-roll,
 .sheet .backpack .labels{
     border-bottom:solid 1px;
     margin-bottom:4px;
+}
+.sheet .backpack .caps-icon img{
+    width:15px;
+    height:auto;
+    text-align:center;
+    border:none;
 }
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {

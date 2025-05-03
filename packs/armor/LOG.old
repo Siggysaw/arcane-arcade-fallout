@@ -1,7 +1,5 @@
-2025/05/02-15:44:52.996 fa60 Recovering log #1399
-2025/05/02-15:44:53.005 fa60 Delete type=0 #1399
-2025/05/02-15:44:53.005 fa60 Delete type=3 #1398
-2025/05/02-15:45:07.523 11e9c Level-0 table #1403: started
-2025/05/02-15:45:07.523 11e9c Level-0 table #1403: 0 bytes OK
-2025/05/02-15:45:07.526 11e9c Delete type=0 #1401
-2025/05/02-15:45:07.534 11e9c Manual compaction at level-0 from '!items!3VSZN9bW1SJHgU9n' @ 72057594037927935 : 1 .. '!items.effects!ofJ31ZteGa6dGhLk.U9ZFVtHqtdoYEocY' @ 0 : 0; will stop at (end)
+2025/05/03-14:18:05.900 146b4 Log #1405: 0 ops saved to Table #1406 OK
+2025/05/03-14:18:05.900 146b4 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\armor/001405.log: OK
+2025/05/03-14:18:05.901 146b4 Table #1297: 20 entries OK
+2025/05/03-14:18:05.905 146b4 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\armor/MANIFEST-001404: OK
+2025/05/03-14:18:05.911 146b4 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\armor; recovered 1 files; 22750 bytes. Some data may have been lost. ****

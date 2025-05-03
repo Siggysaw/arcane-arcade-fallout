@@ -667,7 +667,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       let cost = 3
       item.type == "powerArmor" ? cost = 6 : cost = cost
       if (this.actor.applyApCost(cost)) {
-          item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+        item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+        item.update({ 'system.worn': !item.system.worn })
       }
     })
 
