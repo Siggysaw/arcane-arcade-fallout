@@ -2,6 +2,7 @@
 import SkillRoll from './dice/skill-roll.mjs'
 import FalloutZeroArmor from './data/armor.mjs'
 import FalloutZeroItem from './documents/item.mjs'
+import { getLastMovementCost, getApCost, getLastWaypointGroup } from './helpers/movement.mjs'
 
 export function registerHooks() {
 
@@ -39,9 +40,20 @@ export function registerHooks() {
             return false
         }
 
-        const distanceCost = (movement.passed.cost + movement.pending.cost) / game.scenes.active.grid.distance
-        const apAfterCost = token.actor.getAPAfterCost(distanceCost)
+        let passedApCost = movement.passed.cost / game.scenes.active.grid.distance
+        let pendingWaypoints = movement.pending.waypoints
+        let pendingApCost = 0
+        while (pendingWaypoints.length) {
+            const waypointGroup = getLastWaypointGroup(pendingWaypoints)
+            const groupDistance = waypointGroup.reduce((acc, w) => {
+                acc += w.cost
+                return acc
+            }, 0)
+            pendingApCost += getApCost(groupDistance)
+            pendingWaypoints = pendingWaypoints.slice(waypointGroup.length)
+        }
 
+        const apAfterCost = token.actor.getAPAfterCost(passedApCost + pendingApCost)
         if (apAfterCost < 0) {
             ui.notifications.warn("Not enough AP for this movement");
             return false
@@ -50,27 +62,26 @@ export function registerHooks() {
         // If undoing movement, restore AP
         if (movement.method === 'undo') {
             try {
-                let totalCost = 0
-                const waypoints = movement.history.recorded.waypoints
-                const waypointsCount = waypoints.length - 1
-                for (let i = waypointsCount; i >= 0; i--) {
-                    // if is first waypoint, or was intermediate step
-                    if (i === waypointsCount || waypoints[i].intermediate) {
-                        totalCost += waypoints[i].cost
-                    } else { // else break
-                        break;
-                    };
-                }
+                let historyWaypoints = movement.history.recorded.waypoints
+                let historyApCost = 0
+                const waypointGroup = getLastWaypointGroup(historyWaypoints)
+                const groupDistance = waypointGroup.reduce((acc, w) => {
+                    acc += w.cost
+                    return acc
+                }, 0)
+                historyApCost += getApCost(groupDistance)
+                historyWaypoints = historyWaypoints.slice(waypointGroup.length)
+
                 const currentAp = token.actor.system.actionPoints.value
                 token.actor.update({
-                    'system.actionPoints.value': currentAp + (totalCost / game.scenes.active.grid.distance)
+                    'system.actionPoints.value': currentAp + historyApCost
                 })
             } catch (error) {
                 ui.notifications.warn("Error restoring actors AP", error);
             }
         } else {
             // Deduct AP
-            token.actor.applyApCost(movement.passed.cost / game.scenes.active.grid.distance)
+            token.actor.applyApCost(getApCost(movement.passed.cost))
         }
 
         return true
