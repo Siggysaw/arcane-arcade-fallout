@@ -1,3 +1,18 @@
+<div style="margin-bottom:5px;" class="grid grid-20col">
+    <div class="grid-span-10">
+        <span class="show-unequipped">
+            Show Unequipped:
+        </span>
+        <i data-showEquipped class="fas fa-toggle-{{#if system.showEquipped}}on{{else}}off{{/if}} show-unequipped"></i>
+    </div>
+    <div style="border:solid 1px;"
+         class="fakebutton combat-actions combat-menu grid-span-9">
+        Combat Actions
+    </div>
+    <div class="help-icon" data-combatActions>
+        <i class='far fa-question-circle'></i>
+    </div>
+</div>
 <div class="grid grid-10col combat-tab armor-identity">
     <div class="grid-span-5 armor-stat">
         <i data-statSubtraction
@@ -105,22 +120,5 @@
 </div>
 {{/if}}
 {{/each}}
-
-<br />
-
-<div style="margin-bottom:5px;" class="grid grid-20col">
-    <div class="grid-span-10">
-        <span class="show-unequipped">
-            Show Unequipped:
-        </span>
-        <i data-showEquipped class="fas fa-toggle-{{#if system.showEquipped}}on{{else}}off{{/if}} show-unequipped"></i>
-    </div>
-    <div style="border:solid 1px;"
-         class="fakebutton combat-actions combat-menu grid-span-9">
-        Combat Actions
-    </div>
-    <div class="help-icon" data-combatActions>
-        <i class='far fa-question-circle'></i>
-    </div>
-</div>
+<hr />
 

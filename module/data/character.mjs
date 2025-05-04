@@ -180,8 +180,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers, 0)
     this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers, 0)
     this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers, 0)
-    this.radiationDC.base = 12 - this.abilities['end'].mod
-    this.radiationDC.value = this.radiationDC.base + this.radiationDC.modifiers
+    this.radiationDC.value = (12 - this.abilities['end'].mod) + this.radiationDC.base + this.radiationDC.modifiers 
     this.penaltyTotal =
       this.penalties.hunger.value +
       this.penalties.dehydration.value +

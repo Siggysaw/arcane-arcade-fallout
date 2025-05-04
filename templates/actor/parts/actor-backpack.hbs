@@ -9,18 +9,21 @@
             <div class="grid-span-3"><i class="fas fa-weight-hanging"></i></div>
         </div>
         {{#each rangedWeapons as |item id|}}
-        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
-            <div>
-                <i data-equipToggle data-item-id="{{ item._id}}"
-                   class="pointer {{#if system.itemEquipped}}
+    <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+        <div>
+            <i data-equipToggle data-item-id="{{ item._id}}"
+               class="pointer {{#if system.itemEquipped}}
             far fa-check-circle{{else}}far fa-circle{{/if}}">
-                </i>
-            </div>
-            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
-            <div class="grid-span-3">{{item.system.cost}}</div>
-            <div class="grid-span-3">{{item.system.quantity}}</div>
-            <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            </i>
         </div>
+        <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">
+            <li class="item" data-item-id="{{ item._id }}" draggable="true">
+                {{item.name}}
+        </div>
+        <div class="grid-span-3">{{item.system.quantity}}</div>
+        <div class="grid-span-3">{{item.system.cost}}</div>
+        <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+    </div>
         {{/each}}
         {{#each meleeWeapons as |item id|}}
         <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
@@ -30,7 +33,8 @@
                    far fa-check-circle{{else}}far fa-circle{{/if}}">
                 </i>
             </div>
-            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">
+            <li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
             <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -45,7 +49,7 @@
         </div>
         {{#each ammos as |item id|}}
         <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
-            <div class="grid-span-11 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-11 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
             <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -61,7 +65,7 @@
         {{/if}}
         {{#each explosives as |item id|}}
         <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
-            <div class="grid-span-11 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-11 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
             <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -85,7 +89,7 @@
                    far fa-check-circle{{else}}far fa-circle{{/if}}">
                 </i>
             </div>
-            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
             <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -99,7 +103,7 @@
                    far fa-check-circle{{else}}far fa-circle{{/if}}">
                 </i>
             </div>
-            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
             <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -113,7 +117,7 @@
                    far fa-check-circle{{else}}far fa-circle{{/if}}">
                 </i>
             </div>
-            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
             <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -133,7 +137,7 @@
         </div>
         {{#each foodAnddrinks as |item id|}}
         <div class="grid grid-20col backpack-row">
-            <div class="grid-span-7 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-7 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-2">{{item.system.cost}}</div>
             <div class="grid-span-2">{{item.system.quantity}}</div>
             <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -142,7 +146,7 @@
         {{/each}}
         {{#each chems as |item id|}}
         <div class="grid grid-20col backpack-row">
-            <div class="grid-span-7 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-7 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-2">{{item.system.cost}}</div>
             <div class="grid-span-2">{{item.system.quantity}}</div>
             <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -151,7 +155,7 @@
         {{/each}}
         {{#each medicines as |item id|}}
         <div class="grid grid-20col backpack-row">
-            <div class="grid-span-7 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-7 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-2">{{item.system.cost}}</div>
             <div class="grid-span-2">{{item.system.quantity}}</div>
             <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -169,7 +173,7 @@
         </div>
         {{#each junk as |item id|}}
         <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
-            <div class="grid-span-12 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-12 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
             <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
@@ -184,7 +188,7 @@
         </div>
         {{#each materials as |item id|}}
         <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
-            <div class="grid-span-12 context-menu" data-item-id="{{item._id}}">{{item.name}}</div>
+            <div class="grid-span-12 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
             <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
