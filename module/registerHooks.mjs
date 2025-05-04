@@ -2,7 +2,7 @@
 import SkillRoll from './dice/skill-roll.mjs'
 import FalloutZeroArmor from './data/armor.mjs'
 import FalloutZeroItem from './documents/item.mjs'
-import { getLastMovementCost, getApCost, getLastWaypointGroup } from './helpers/movement.mjs'
+import { getApCost, getLastWaypointGroup, sumWaypoints } from './helpers/movement.mjs'
 
 export function registerHooks() {
 
@@ -40,48 +40,40 @@ export function registerHooks() {
             return false
         }
 
-        let passedApCost = getApCost(movement.passed.cost)
+        // Get total cost
+        const passedApCost = getApCost(movement.passed.cost)
         let pendingWaypoints = movement.pending.waypoints
         let pendingApCost = 0
         while (pendingWaypoints.length) {
             const waypointGroup = getLastWaypointGroup(pendingWaypoints)
-            const groupDistance = waypointGroup.reduce((acc, w) => {
-                acc += w.cost
-                return acc
-            }, 0)
-            pendingApCost += getApCost(groupDistance)
+            pendingApCost += sumWaypoints(waypointGroup)
             pendingWaypoints = pendingWaypoints.slice(waypointGroup.length)
         }
 
+        // Check if actor can afford movement
         const apAfterCost = token.actor.getAPAfterCost(passedApCost + pendingApCost)
         if (apAfterCost < 0) {
             ui.notifications.warn("Not enough AP for this movement");
             return false
         }
 
-        // If undoing movement, restore AP
-        if (movement.method === 'undo') {
+        // Deduct AP
+        if (movement.method !== 'undo') {
+            token.actor.applyApCost(getApCost(movement.passed.cost))
+        } else {
+            // If undo movement, restore AP
             try {
-                let historyWaypoints = movement.history.recorded.waypoints
-                let historyApCost = 0
-                const waypointGroup = getLastWaypointGroup(historyWaypoints)
-                const groupDistance = waypointGroup.reduce((acc, w) => {
-                    acc += w.cost
-                    return acc
-                }, 0)
-                historyApCost += getApCost(groupDistance)
-                historyWaypoints = historyWaypoints.slice(waypointGroup.length)
+                const waypointGroup = getLastWaypointGroup(movement.history.recorded.waypoints)
+                const historyApCost = sumWaypoints(waypointGroup)
 
                 const currentAp = token.actor.system.actionPoints.value
                 token.actor.update({
                     'system.actionPoints.value': currentAp + historyApCost
                 })
             } catch (error) {
+                console.error('Error restoring actors AP', error)
                 ui.notifications.warn("Error restoring actors AP", error);
             }
-        } else {
-            // Deduct AP
-            token.actor.applyApCost(getApCost(movement.passed.cost))
         }
 
         return true
