@@ -1,29 +1,38 @@
-export function allowMovement(token, notify = true) {
-    let blockCombat = function (token) {
-        let curCombat = game.combats.active;
-
-        if (curCombat && curCombat.started) {
-            let entry = curCombat.combatant;
-
-            return !(entry.tokenId == token.id || (curCombat.previous.tokenId == token.id));
-        }
-
-        return true;
+export function getLastWaypointGroup(waypoints) {
+    const waypointGroup = []
+    const waypointsCount = waypoints.length - 1
+    for (let i = waypointsCount; i >= 0; i--) {
+        // if is first waypoint, or was intermediate step
+        if (i === waypointsCount || waypoints[i].intermediate) {
+            waypointGroup.push(waypoints[i])
+        } else { // else break
+            break;
+        };
     }
 
-    if (!game.user.isGM && token != undefined) {
-        if (blockCombat(token)) {
-            //prevent the token from moving
-            if (notify && (!(token._movementNotified ?? false))) {
-                ui.notifications.warn("Movement is based on combat turn, it's currently not your turn");
-                token._movementNotified = true;
-                setTimeout(function (token) {
-                    delete token._movementNotified;
-                }, 2000, token);
-            }
-            return false;
-        }
-    }
+    return waypointGroup
+}
 
-    return true;
+export function sumWaypoints(waypoints) {
+    const groupDistance = waypoints.reduce((acc, w) => {
+        acc += w.cost
+        return acc
+    }, 0)
+    return getApCost(groupDistance)
+}
+
+export function getApCost(distance) {
+    const gridDistance = game.scenes.active.grid.distance
+    const normalApCost = distance / gridDistance
+
+    if (normalApCost < 6) return normalApCost
+
+    const sprintSpeed = gridDistance * 10
+
+    const sprintsCount = Math.max(Math.round(distance / sprintSpeed), 1)
+    const remainingDistance = Math.max(distance - (sprintSpeed * sprintsCount), 0)
+
+    const cost = (sprintsCount * gridDistance) + (remainingDistance / gridDistance)
+
+    return cost
 }
