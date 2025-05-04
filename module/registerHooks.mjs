@@ -40,7 +40,7 @@ export function registerHooks() {
             return false
         }
 
-        let passedApCost = movement.passed.cost / game.scenes.active.grid.distance
+        let passedApCost = getApCost(movement.passed.cost)
         let pendingWaypoints = movement.pending.waypoints
         let pendingApCost = 0
         while (pendingWaypoints.length) {
