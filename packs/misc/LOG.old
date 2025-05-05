@@ -1,3 +1,6 @@
-2025/05/03-18:00:17.713 13e38 Recovering log #930
-2025/05/03-18:00:17.721 13e38 Delete type=0 #930
-2025/05/03-18:00:17.721 13e38 Delete type=3 #929
+2025/05/04-19:56:20.420 9598 Log #934: 8 ops saved to Table #935 OK
+2025/05/04-19:56:20.420 9598 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\misc/000934.log: OK
+2025/05/04-19:56:20.421 9598 Table #922: 50 entries OK
+2025/05/04-19:56:20.421 9598 Table #935: 8 entries OK
+2025/05/04-19:56:20.425 9598 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\misc/MANIFEST-000933: OK
+2025/05/04-19:56:20.430 9598 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\misc; recovered 2 files; 30765 bytes. Some data may have been lost. ****
