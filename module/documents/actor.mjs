@@ -8,6 +8,11 @@ import LevelUpApplication from '../applications/components/level-up.mjs'
  */
 
 export default class FalloutZeroActor extends Actor {
+
+  saveResults(save) {
+    console.log(this.system.saveSuccesses[save])
+    this.update({ 'system.saveSuccesses.{save}': !this.system.saveSuccesses[save] })
+  }
   getRollData() {
     // Starts off by populating the roll data with a shallow copy of `this.system`
     const data = { ...this.system }

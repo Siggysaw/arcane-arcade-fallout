@@ -594,7 +594,8 @@ td,
   }
 
   .sheet .fas,
-  .sheet .fa {
+  .sheet .fa,
+  .sheet .far{
     cursor: pointer;
   }
 
@@ -1313,6 +1314,12 @@ a.inline-roll,
 .sheet .status .show-unequipped {
   display: none;
 }
+/* Death Saving Rolls*/
+.sheet .death-saves div{
+    padding:5px;
+}
+
+
 
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {

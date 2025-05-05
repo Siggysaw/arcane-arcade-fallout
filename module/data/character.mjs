@@ -83,6 +83,16 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       value: new fields.NumberField({ initial: 0 }),
       modifiers: new fields.NumberField({ initial: 0 })
     })
+    schema.saveSuccesses = new fields.SchemaField({
+      first: new fields.BooleanField({ initial: false }),
+      second: new fields.BooleanField({ initial: false }),
+      third: new fields.BooleanField({ initial: false })
+    })
+    schema.saveFailures = new fields.SchemaField({
+      first: new fields.BooleanField({ initial: false }),
+      second: new fields.BooleanField({ initial: false }),
+      third: new fields.BooleanField({ initial: false })
+    })
     schema.combatSequence = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
       value: new fields.NumberField({ initial: 0 }),

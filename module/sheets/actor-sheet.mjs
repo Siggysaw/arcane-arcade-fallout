@@ -613,10 +613,37 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click', _expandUp: true })
     new ContextMenu(html, '.combat-menu', combatContextMenu, { eventName: 'click', _expandUp: true })
 
+    //Death Saves
+    html.on('click', '[data-save1]', (ev) => {
+      const save = ev.currentTarget.dataset.save1
+      this.actor.update({ 'system.saveSuccesses.first': !this.actor.system.saveSuccesses.first })
+    })
+    html.on('click', '[data-save2]', (ev) => {
+      const save = ev.currentTarget.dataset.save2
+      this.actor.update({ 'system.saveSuccesses.second': !this.actor.system.saveSuccesses.second })
+    })
+    html.on('click', '[data-save3]', (ev) => {
+      const save = ev.currentTarget.dataset.save3
+      this.actor.update({ 'system.saveSuccesses.third': !this.actor.system.saveSuccesses.third })
+    })
+    html.on('click', '[data-fail1]', (ev) => {
+      const fail = ev.currentTarget.dataset.fail1
+      this.actor.update({ 'system.saveFailures.first': !this.actor.system.saveFailures.first })
+    })
+    html.on('click', '[data-fail2]', (ev) => {
+      const fail = ev.currentTarget.dataset.fail2
+      this.actor.update({ 'system.saveFailures.second': !this.actor.system.saveFailures.second })
+    })
+    html.on('click', '[data-fail3]', (ev) => {
+      const fail = ev.currentTarget.dataset.fail3
+      this.actor.update({ 'system.saveFailures.third': !this.actor.system.saveFailures.third })
+    })
+
+
     //show rule information
     html.on('click', '[data-condition]', (ev) => {
       const condition = ev.currentTarget.dataset.condition
-      this.actor.ruleinfo(condition)
+      
     })
     //show Combat Action Information
     html.on('click', '[data-combatActions]', (ev) => {
