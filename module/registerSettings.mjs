@@ -83,7 +83,13 @@ export function registerSystemSettings() {
 }
 
 export function registerHbsHelpers() {
-    // If you need to add Handlebars helpers, here is a useful example:
+    Handlebars.registerHelper('isVaultTec', function (options) {
+        if (game.settings.get('core', 'VaultTec')) {
+            return options.fn(this)
+        }
+        return options.inverse(this)
+    })
+
     Handlebars.registerHelper('toLowerCase', function (str) {
         return str.toLowerCase()
     })

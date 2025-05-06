@@ -1,0 +1,13 @@
+<aside>
+    <div>
+        <div>
+            search
+        </div>
+        <input type="text" placeholder="search">
+    </div>
+    {{#each craftables as |craftable key|}}
+        <button data-action="select" data-craftable="{{ key }}">
+            {{ craftable.label }}
+        </button>
+    {{/each}}
+</aside>

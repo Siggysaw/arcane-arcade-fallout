@@ -1,43 +1,39 @@
-export default class GMApplication extends Application {
+
+const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
+export default class GMScreen extends HandlebarsApplicationMixin(ApplicationV2) {
     constructor(entities, options = {}) {
         super(options);
         this.actors = entities
-        this.newActorData = this.actors.reduce((acc, actor) => {
-            acc[actor.id] = {
-                xp: 0,
-                caps: 0,
-            }
-            return acc
-        }, {})
     }
 
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            id: "award",
-            title: 'Award',
+    static DEFAULT_OPTIONS = {
+        tag: "div",
+        actions: {
+            divideGroup: GMScreen.onDivideGroup,
+            cancel: GMScreen.onCancel,
+        },
+        window: {
+            title: 'GMScreen',
+            resizable: true
+        }
+    }
+
+    static PARTS = {
+        main: {
             template: 'systems/arcane-arcade-fallout/templates/dialog/gm-screen.hbs',
-            width: 400,
-            height: 'auto',
-            popOut: true,
-            dragDrop: [{ dropSelector: ".dialog-content" }],
-        });
+        },
     }
 
-    activateListeners(html) {
-        super.activateListeners(html);
-        html[0].querySelector('[data-award]').addEventListener('click', this.award.bind(this))
+    async _prepareContext() {
+        return {
+            actors: this.actors,
+            newActorData: this.newActorData,
+            groupXp: this.groupXp,
+            groupCaps: this.groupCaps,
+        }
+    }
 
-        this.actors.forEach((actor) => {
-            html[0].querySelector(`[data-actor-xp=${actor.id}]`).addEventListener('input', (event) => {
-                this.newActorData[actor.id].xp = parseInt(event.target.value)
-            })
-            html[0].querySelector(`[data-actor-caps=${actor.id}]`).addEventListener('input', (event) => {
-                this.newActorData[actor.id].caps = parseInt(event.target.value)
-            })
-        })
-    };
-
-    async award() {
+    static async awardXPAndCaps() {
         const awards = this.actors.map((actor) => {
             const newXP = actor.system.xp + this.newActorData[actor.id].xp
             const newCaps = actor.system.caps + this.newActorData[actor.id].caps
@@ -49,15 +45,42 @@ export default class GMApplication extends Application {
 
         try {
             await Promise.all(awards)
-            this.close()
-        } catch(error) {
+        } catch (error) {
             console.log('Error awarding caps and xp')
         }
     }
 
-    getData(options) {
-        return {
-            actors: this.actors,
-        };
+    _onRender() {
+        this.element.querySelector('[data-group-xp]')?.addEventListener('input', (event) => {
+            this.groupXp = parseInt(event.target.value)
+        })
+        this.element.querySelector('[data-group-caps]')?.addEventListener('input', (event) => {
+            this.groupCaps = parseInt(event.target.value)
+        })
+
+        this.actors.forEach((actor) => {
+            this.element.querySelector(`[data-actor-xp=${actor.id}]`)?.addEventListener('input', (event) => {
+                this.newActorData[actor.id].xp = parseInt(event.target.value)
+            })
+            this.element.querySelector(`[data-actor-caps=${actor.id}]`)?.addEventListener('input', (event) => {
+                this.newActorData[actor.id].caps = parseInt(event.target.value)
+            })
+        })
+    }
+
+    static onDivideGroup(e) {
+        Object.keys(this.newActorData).forEach((actorId) => {
+            this.newActorData[actorId].xp = this.groupXp / this.actors.length
+            this.newActorData[actorId].caps = this.groupCaps / this.actors.length
+        })
+
+        this.groupXp = 0
+        this.groupCaps = 0
+        this.render(true)
+    }
+
+    static onCancel(e) {
+        e.preventDefault()
+        this.close()
     }
 }

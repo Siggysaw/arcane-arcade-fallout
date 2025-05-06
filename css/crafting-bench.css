@@ -1,0 +1,17 @@
+
+
+.crafting-bench {
+    .window-content {
+        padding: 0;
+        flex-direction: row;
+        height: 100%;
+    }
+
+    aside {
+        flex: 0 0 200px;
+    }
+
+    .main {
+        min-width: 300px;
+    }
+}

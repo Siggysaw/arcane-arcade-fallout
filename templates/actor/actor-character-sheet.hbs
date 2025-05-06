@@ -1,5 +1,5 @@
 <form autocomplete="off">
-  <div class="character{{#if system.vaulttec}} vaulttec {{/if}}{{log game.settings}}{{ cssClass }} {{ actor.type }} flexcol">
+  <div class="character{{#isVaultTec}} vaulttec {{/isVaultTec}}{{log game.settings}}{{ cssClass }} {{ actor.type }} flexcol">
       {{log cssClass}}
     {{!-- Sheet Header --}}
     <header class="sheet-header">
