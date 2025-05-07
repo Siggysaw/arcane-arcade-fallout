@@ -3,6 +3,7 @@
         <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
             <img class="profile-pic" src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
             {{#if actor.inCombat}}<div class="combat-icon">In Combat!</div>{{/if}}
+            {{#if actor.system.saveFailures.third}}<div class="combat-icon">DECEASED</div>{{/if}}
         </td>
     </tr>
     <tr>
@@ -60,9 +61,7 @@
                        class="{{#if system.saveFailures.third}}fas fa-skull{{else}}far fa-circle{{/if}}"></i>
                 </div>
             </div>
-
-
-
+            <div class="death-saves fakebutton" data-apusage="2" {{#GreaterThan system.actionPoints.value 1}}data-rolldeathsave{{/GreaterThan}}>Roll Death Save</div>
 
             {{/LesserThan}}
         </td>

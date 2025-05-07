@@ -1,3 +1,7 @@
-2025/05/05-11:25:04.922 bbec Recovering log #916
-2025/05/05-11:25:04.931 bbec Delete type=0 #916
-2025/05/05-11:25:04.931 bbec Delete type=3 #915
+2025/05/07-10:55:36.757 141bc Recovering log #932
+2025/05/07-10:55:36.767 141bc Delete type=0 #932
+2025/05/07-10:55:36.767 141bc Delete type=3 #931
+2025/05/07-11:12:56.060 14df8 Level-0 table #936: started
+2025/05/07-11:12:56.060 14df8 Level-0 table #936: 0 bytes OK
+2025/05/07-11:12:56.063 14df8 Delete type=0 #934
+2025/05/07-11:12:56.064 14df8 Manual compaction at level-0 from '!items!Cw88Vbyfdgw49s4a' @ 72057594037927935 : 1 .. '!items!v9T3qKhJs9sqJZ6n' @ 0 : 0; will stop at (end)

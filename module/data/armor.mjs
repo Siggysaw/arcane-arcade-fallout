@@ -144,7 +144,7 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
   }
 
   prepareDerivedData() {   
-    this.vaulttec = game.settings.get('core', 'VaultTec')
+    
   }
 
 async addUpgrade(myItem,myUpgrade){

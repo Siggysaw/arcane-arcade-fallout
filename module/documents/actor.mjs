@@ -8,11 +8,6 @@ import LevelUpApplication from '../applications/components/level-up.mjs'
  */
 
 export default class FalloutZeroActor extends Actor {
-
-  saveResults(save) {
-    console.log(this.system.saveSuccesses[save])
-    this.update({ 'system.saveSuccesses.{save}': !this.system.saveSuccesses[save] })
-  }
   getRollData() {
     // Starts off by populating the roll data with a shallow copy of `this.system`
     const data = { ...this.system }
@@ -135,9 +130,115 @@ export default class FalloutZeroActor extends Actor {
     }
   }
 
-    // Custom Roll
+  // Death Save Roll
+  async deathSave() {
+    const myDialogOptions = { width: 300, height: 300, resizable: true }
+    const myContent = await renderTemplate(
+      'systems/arcane-arcade-fallout/templates/actor/dialog/death-save-roll.hbs',
+    )
+    const actor = this
+
+    new Dialog(
+      {
+        title: 'Death Save Roll',
+        content: myContent,
+        buttons: {
+          button1: {
+            label: 'Roll It!',
+            callback: (html) => rollDice(html, actor),
+          },
+        },
+      },
+      myDialogOptions,
+    ).render(true)
+
+    async function rollDice(html, actor) {
+      const withModifiers = html.find('select#modified').val()
+      const withAdvantage = html.find('select#advantage').val()
+      let rollAbility = html.find('select#rollAbility').val()
+      let abilityMod = '@' + rollAbility + '.mod'
+      let rollBonus = html.find('input#bonus').val()
+      let rollInput
+      let critSuccess
+      let critFailure
+      let flavor
+      const success1 = 'system.saveSuccesses.first'
+      const success2 = 'system.saveSuccesses.second'
+      const success3 = 'system.saveSuccesses.third'
+      const failure1 = 'system.saveFailures.first'
+      const failure2 = 'system.saveFailures.second'
+      const failure3 = 'system.saveFailures.third'
+      const Success1 = actor.system.saveSuccesses.first
+      const Success2 = actor.system.saveSuccesses.second
+      const Success3 = actor.system.saveSuccesses.third
+      const Failure1 = actor.system.saveFailures.first
+      const Failure2 = actor.system.saveFailures.second
+      const Failure3 = actor.system.saveFailures.third
+      
+      withAdvantage !== 'false' ? rollInput = `20d20${withAdvantage}` : rollInput = "1d20"
+      if (withModifiers === 'true') {
+        const penaltyTotal = actor.system.penaltyTotal
+        rollInput += ` - ${penaltyTotal}`
+      }
+      if (rollBonus.length > 0) {
+        rollInput += `+ ${rollBonus}`
+      }
+      const roll = new Roll(`${rollInput}+${abilityMod}`, actor.getRollData())
+      await roll.evaluate()
+
+      const saveDC = 10
+      const success = roll.total >= saveDC
+
+      roll.terms[0].values[0] == 20 ? critSuccess = true : critSuccess = false
+      roll.terms[0].values[0] == 1 ? critFailure = true : critFailure = false
+      critSuccess || critFailure ? flavor ="Critical ": flavor = ''
+
+      if (success) {
+        flavor += `Success! ${actor.name} rolled equal to or greater than ${saveDC}`
+        if (critSuccess) {
+          !Success1 ? actor.update({ [success1]: true, [success2]: true }) :
+            actor.update({
+              [success1]: false,
+              [success2]: false,
+              [success3]: false,
+              [failure1]: false,
+              [failure2]: false,
+              [failure3]: false,
+              'system.health.value': 1
+            })
+        }
+        !Success1 ? actor.update({ [success1]: true }) : actor.update({ [success2]: true })
+        Success1 && Success2 ? actor.update({
+          [success1]: false,
+          [success2]: false,
+          [success3]: false,
+          [failure1]: false,
+          [failure2]: false,
+          [failure3]: false,
+          'system.health.value': 1
+        }) : ''
+      } 
+      if (!success) {
+        flavor += `Failure! ${actor.name} rolled lower than ${saveDC}`
+        Failure1 ? actor.update({ [failure2]: true }) : actor.update({ [failure1]: true })
+        Failure2 ? actor.update({ [failure3]: true }) : ''
+        if (critFailure) {
+          !Failure1 ? actor.update({ [failure1]: true, [failure2]: true }) : actor.update({[failure2]:true,[failure3]:true})
+        }
+      } 
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this }),
+        flavor,
+        rollMode: game.settings.get('core', 'rollMode'),
+      })
+    }
+  }
+
+
+
+  // Custom Roll
   async customRoll() {
-    const myDialogOptions = { width: 400, height:500, resizable: true }
+    const myDialogOptions = { width: 300, height: 300, resizable: false }
     const myContent = await renderTemplate(
       'systems/arcane-arcade-fallout/templates/actor/dialog/custom-roll.hbs',
     )
@@ -185,6 +286,7 @@ export default class FalloutZeroActor extends Actor {
       })
     }
   }
+
 
 
 
@@ -925,6 +1027,14 @@ export default class FalloutZeroActor extends Actor {
     let newHealth = ''
     if (operator === 'plus') {
       newHealth = this.system.health.value + 1
+      this.update({
+        'system.saveSuccesses.first': false,
+        'system.saveSuccesses.second': false,
+        'system.saveFailures.first': false,
+        'system.saveFailures.second': false,
+        'system.saveFailures.third': false
+      })
+
     } else {
       newHealth = this.system.health.value - 1
     }

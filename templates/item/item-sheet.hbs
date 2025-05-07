@@ -1,6 +1,6 @@
 {{!-- This template is a fallback for when items don't have more specific templates. --}}
 {{!-- Generally, you'll want to make more specific templates when possible. --}}
-<form class="{{ cssClass }}{{#if system.vaulttec}} vaulttec {{/if}}" autocomplete="off">
+<form class="{{ cssClass }}{{#isVaultTec}} vaulttec {{/isVaultTec}}" autocomplete="off">
   <header class="sheet-header">
     <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
     <div class="header-fields">

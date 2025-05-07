@@ -318,7 +318,7 @@ details > summary {
   background-color: var(--dark);
 }
 
-.sheet {
+.sheet .actor {
   text-transform: capitalize;
 }
 
@@ -1295,7 +1295,8 @@ a.inline-roll,
   padding: 3px;
 }
 
-.sheet .backpack-row:hover a {
+.sheet .backpack-row:hover a,
+.sheet .backpack-row:hover .item{
   color: black;
 }
 
@@ -1314,6 +1315,12 @@ a.inline-roll,
 .sheet .status .show-unequipped {
   display: none;
 }
+
+.sheet .backpack .segment{
+    margin:5px;
+    padding:5px;
+}
+
 /* Death Saving Rolls*/
 .sheet .death-saves div{
     padding:5px;

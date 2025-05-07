@@ -125,6 +125,6 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
   }
   prepareDerivedData() {
     super.prepareDerivedData()
-    this.vaulttec = game.settings.get('core', 'VaultTec')
+    
   }
 }

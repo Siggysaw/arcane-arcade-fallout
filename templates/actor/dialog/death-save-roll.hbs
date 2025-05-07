@@ -1,0 +1,29 @@
+<fieldset>
+    <legend>Death Save Roll Details</legend>
+    <div class="flex space-between">
+        <div>Dice: </div>
+        <div>
+            <select id="rollAbility">
+              <option value="end">Endurance</option>
+              <option value="lck">Luck</option>
+            </select>
+        </div>
+    </div><br><hr />
+    <div class="flex space-between">
+        <div>Modifiers: </div><div>
+        <select id="modified"><option value="true">With Modifiers</option>
+        <option value="false">No Modifiers</option></select></div>
+    </div>
+    <hr />
+    <div class="flex space-between">
+        <div>Roll Type: </div>
+        <div><select id="advantage">
+            <option value="false">Normal</option>
+            <option value="kh">Advantaged</option>
+            <option value="kl">Disdvantaged</option></select></div>
+    </div>
+    <hr />
+    <div class="flex space-between">
+        <div>Bonus: </div><div><input id="bonus" type="text" placeholder="1d4 + 10"></div>
+    </div>
+</fieldset>

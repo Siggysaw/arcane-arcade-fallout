@@ -19,15 +19,17 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
         obj[penalty] = new fields.SchemaField({
           label: new fields.StringField({ required: true }),
           value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
-          base : new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
+          base: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           modifiers: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
           ignored: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 })
         })
         return obj
-      }, {snack : new fields.NumberField({
-        ...requiredInteger,
-        initial: 0,
-      }),}),
+      }, {
+        snack: new fields.NumberField({
+          ...requiredInteger,
+          initial: 0,
+        }),
+      }),
     )
 
 
@@ -93,6 +95,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       second: new fields.BooleanField({ initial: false }),
       third: new fields.BooleanField({ initial: false })
     })
+    schema.downedAP = new fields.SchemaField({
+      base: new fields.NumberField({ initial: 4 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 })
+    })
     schema.combatSequence = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
       value: new fields.NumberField({ initial: 0 }),
@@ -114,9 +121,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.irradiated = new fields.NumberField({ initial: 0, min: 0 })
     schema.combatActionsexpanded = new fields.BooleanField({ initial: false })
     schema.passiveSense = new fields.SchemaField({
-      base : new fields.NumberField({ initial: 0 }),
-      value : new fields.NumberField({ initial: 0 }),
-      modifiers : new fields.NumberField({ initial: 0 })
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 })
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
@@ -148,10 +155,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
    */
   prepareDerivedData() {
     super.prepareDerivedData()
+
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
       // Calculate the modifier using d20 rules.
-      if(this.abilities[key].base == 0){this.abilities[key].base = this.abilities[key].value}
+      if (this.abilities[key].base == 0) { this.abilities[key].base = this.abilities[key].value }
       this.abilities[key].value = this.abilities[key].base + this.abilities[key].modifiers
       this.abilities[key].mod = Math.floor(this.abilities[key].value - 5)
     }
@@ -190,7 +198,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers, 0)
     this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers, 0)
     this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers, 0)
-    this.radiationDC.value = (12 - this.abilities['end'].mod) + this.radiationDC.base + this.radiationDC.modifiers 
+    this.radiationDC.value = (12 - this.abilities['end'].mod) + this.radiationDC.base + this.radiationDC.modifiers
     this.penaltyTotal =
       this.penalties.hunger.value +
       this.penalties.dehydration.value +
@@ -207,6 +215,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.explosivesMastery = this.abilities['per'].mod + this.skills['explosives'].value
     this.unflipped = this.karmaCaps.filter(Boolean).length;
     this.totalKarma = this.karmaCaps.length;
+    if (this.health.value < 1) {
+      this.actionPoints.max = this.downedAP.base + this.downedAP.modifiers
+      this.actionPoints.value > 4 ? this.actionPoints.value = 4 : ''
+      this.stamina.value = 0
+    }
   }
 }
 
