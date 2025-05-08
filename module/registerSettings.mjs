@@ -1,3 +1,4 @@
+import { FALLOUTZERO } from './config.mjs'
 export function registerSystemSettings() {
     game.settings.register('core', 'CarryLoad', {
         name: 'Exact Carry Load Calculator',

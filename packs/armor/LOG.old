@@ -1,3 +1,5 @@
-2025/05/07-16:53:58.998 17430 Recovering log #1469
-2025/05/07-16:53:59.007 17430 Delete type=0 #1469
-2025/05/07-16:53:59.007 17430 Delete type=3 #1467
+2025/05/08-16:49:20.916 1a22c Log #1474: 0 ops saved to Table #1475 OK
+2025/05/08-16:49:20.916 1a22c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\armor/001474.log: OK
+2025/05/08-16:49:20.916 1a22c Table #1466: 20 entries OK
+2025/05/08-16:49:20.920 1a22c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\armor/MANIFEST-001473: OK
+2025/05/08-16:49:20.925 1a22c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\armor; recovered 1 files; 22846 bytes. Some data may have been lost. ****

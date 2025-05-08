@@ -1,3 +1,5 @@
-2025/05/07-16:53:59.066 139ac Recovering log #1098
-2025/05/07-16:53:59.074 139ac Delete type=0 #1098
-2025/05/07-16:53:59.074 139ac Delete type=3 #1096
+2025/05/08-16:49:21.056 4c98 Log #1103: 0 ops saved to Table #1104 OK
+2025/05/08-16:49:21.057 4c98 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/001103.log: OK
+2025/05/08-16:49:21.057 4c98 Table #1095: 18 entries OK
+2025/05/08-16:49:21.061 4c98 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/MANIFEST-001102: OK
+2025/05/08-16:49:21.065 4c98 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine; recovered 1 files; 11746 bytes. Some data may have been lost. ****
