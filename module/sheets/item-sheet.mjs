@@ -1,6 +1,7 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
 import FalloutZeroItem from '../documents/item.mjs'
+import { FALLOUTZERO } from '../config.mjs'
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -266,6 +267,10 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     // Active Effect management
     html.on('click', '.effect-control', (ev) => onManageActiveEffect(ev, this.item))
 
+    if (this.item.system.crafting.craftable) {
+      this.initCraftingListeners(html)
+    }
+
     // Weapon listeners
     this.initWeaponListeners(html)
   }
@@ -293,6 +298,104 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       this.item.update({
         ['system.damages']: this.item.system.damages,
       })
+    })
+  }
+
+  initCraftingListeners(html) {
+    document.querySelector('[data-add-requirement]')?.addEventListener('click', (event) => {
+      event.preventDefault()
+      const requirements = this.item.system.crafting.requirements
+      requirements.push({
+        keys: [FALLOUTZERO.abilities.str.id],
+        dc: 1,
+      })
+      this.item.update({
+        ['system.crafting.requirements']: requirements,
+      })
+    })
+
+    document.querySelectorAll('[data-remove-requirement]').forEach((el) => {
+      el.addEventListener('click', (event) => {
+        event.preventDefault()
+        const index = event.currentTarget.dataset.removeRequirement
+        if (!index) return
+
+        const requirements = this.item.system.crafting.requirements
+        requirements.splice(index, 1)
+        this.item.update({
+          ['system.crafting.requirements']: requirements,
+        })
+      })
+    })
+
+    const dragDrop = new DragDrop({
+      dropSelector: '[data-material-drop]',
+      callbacks: { drop: this._onDropMaterial.bind(this) },
+    })
+    dragDrop.bind(html[0])
+
+    html[0].querySelectorAll('[data-remove-material]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveMaterial.bind(this))
+    })
+  }
+
+  async _onRemoveMaterial(e) {
+    e.stopPropagation()
+    const { removeMaterial } = e.currentTarget.dataset
+    if (!removeMaterial) return
+
+    const newMaterials = this.item.system.crafting.materials.filter((req) => {
+      return req._id !== removeMaterial
+    })
+
+    this.item.update({
+      'system.crafting.materials': newMaterials,
+    })
+  }
+
+  async _onDropMaterial(e) {
+    e.stopPropagation()
+    e.preventDefault()
+
+    let dropData
+    try {
+      dropData = JSON.parse(event.dataTransfer.getData('text/plain'))
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+    if (dropData === undefined || dropData.type !== 'Item') return false
+
+    const permitted = [
+      'junk',
+      'material',
+    ]
+
+    const item = await fromUuid(dropData.uuid)
+
+    if (!permitted.includes(item.type)) {
+      ui.notifications.warn('Only material or junk are accepted here')
+      return false
+    }
+
+    const alreadyExists = this.item.system.crafting.materials.find((req) => {
+      return req.key === item.system.id
+    })
+
+    if (alreadyExists) {
+      ui.notifications.warn('Material is already required')
+      return false
+    }
+
+    const newMaterials = [...this.item.system.crafting.materials, {
+      id: item.system.type,
+      uuid: item.system.uuid,
+      name: item.system.name,
+      quantity: 1,
+    }]
+
+    this.item.update({
+      'system.crafting.materials': newMaterials,
     })
   }
 }

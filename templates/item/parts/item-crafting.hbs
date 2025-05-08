@@ -4,10 +4,55 @@
     <div>
       <input type="checkbox" name="system.crafting.craftable" {{checked system.crafting.craftable}}>
     </div>
-    {{#if craftable}}
-    <div>
-      <button>add requirements</button>
-    </div>
+  </div>
+  <div>
+    {{#if system.crafting.craftable}}
+      {{!-- time --}}
+      <fieldset>
+        <legend>Time</legend>
+        <div class="flex">
+          <div class="nowrap">Crafting time: </div>
+          <input type="number" name="system.crafting.time.value" value="{{system.crafting.time.value}}" placeholder="Crafting time"/>
+          <select name="system.crafting.time.unit">
+            <option value="minutes">Minutes</option>
+            <option value="hours">Hours</option>
+            <option value="days">Days</option>
+          </select>
+        </div>
+      </fieldset>
+
+      {{!-- skill requirement --}}
+      <fieldset>
+        <legend>Skill requirements</legend>
+        <div>
+          <button data-add-requirement>Add skill requirement</button>
+        </div>
+        {{#each system.crafting.requirements as |requirement|}}
+          <div class="flex gap-3">
+            <select class="multi-select" name="system.crafting.requirements.{{@index}}.keys" multiple>
+              {{#each ../skills as |skill|}}
+                <option value="{{skill.id}}" {{#if (IsIn skill.id requirement.keys)}} selected {{/if}}>{{skill.label}}</option>
+              {{/each}}
+            </select>
+            <input type="number" name="system.crafting.requirements.{{@index}}.dc" value="{{requirement.dc}}" placeholder="DC"/>
+            <button data-remove-requirement="{{@index}}">Remove</button>
+          </div>
+        {{/each}}
+      </fieldset>
+
+      {{!-- materials --}}
+      <fieldset>
+        <legend>Materials</legend>
+        <div class="drop-area" data-material-drop data-tooltip="drop material or junk here">
+          {{#each system.crafting.materials as |material|}}
+          <div class="flex">
+              <div>{{material.label}}</div>
+              <button data-remove-material="{{material._id}}" class="ml-5" type="button">
+                  <i class="fas fa-minus-square"></i>
+              </button>
+          </div>
+          {{/each}}
+        </div>
     {{/if}}
   </div>
 </section> 
