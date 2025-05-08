@@ -331,7 +331,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: '3AP Stow/Equip',
-        icon: '<i class="fas fa-tshirt"></i>',
+        icon: '',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)

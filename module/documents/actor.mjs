@@ -1666,6 +1666,7 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
             'ammunition',
             'armor',
             'chems',
+            'medicine',
             'explosives',
             'food-and-drinks',
             'melee-weapons',
