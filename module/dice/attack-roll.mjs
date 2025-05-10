@@ -337,7 +337,7 @@ export default class AttackRoll extends FormApplication {
           rolls: damageRolls,
           isCritical: roll.dice[0].total >= this.weapon.system.critical.dice,
           criticalCondition: this.weapon.system.critical.condition,
-          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus || ''}) * ${this.weapon.system.critical.multiplier || ''}`,
+          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier || ''}`,
         },
       },
     })
