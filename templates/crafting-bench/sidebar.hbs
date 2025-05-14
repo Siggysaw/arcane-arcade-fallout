@@ -1,13 +1,23 @@
 <aside>
     <div>
-        <div>
-            search
-        </div>
-        <input type="text" placeholder="search">
+        <input type="text" placeholder="Search">
     </div>
-    {{#each craftables as |craftable key|}}
-        <button data-action="select" data-craftable="{{ key }}">
-            {{ craftable.label }}
-        </button>
+    {{#each craftingTree as |branch branchKey|}}
+        <details
+            data-action="toggleBranch"
+            data-branch-key="{{branchKey}}"
+            {{#if (IsIn branchKey ../openBranches)}} open{{/if}}
+        >
+            <summary>{{ branch.label }}</summary>
+            {{#each branch.items as |leaf|}}
+                <button
+                    {{#if (Equals ../../selectedCraftable.uuid leaf.uuid) }} class="selected" {{/if}}
+                    data-action="select"
+                    data-branch="{{ branchKey }}"
+                    data-index="{{ @index }}">
+                    {{ leaf.name }}
+                </button>
+            {{/each}}
+        </details>
     {{/each}}
 </aside>

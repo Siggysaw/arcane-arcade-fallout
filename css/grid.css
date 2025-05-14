@@ -3,7 +3,10 @@
   display: grid;
   grid-column: span 2 / span 2;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  /*align-items: center;*/
+}
+
+.grid.align-items-center {
+  align-items: center;
 }
 
 .grid.justify-center {

@@ -4,6 +4,7 @@
 }
 
 .application button:hover {
+    color: white;
     background: var(--user-color);
 }
 
@@ -19,4 +20,8 @@
 }
 .application input[type="checkbox"]:checked::after {
     color: var(--user-color)
+}
+
+body.game .app button {
+    line-height: unset;
 }

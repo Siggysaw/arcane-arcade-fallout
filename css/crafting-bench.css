@@ -5,13 +5,40 @@
         padding: 0;
         flex-direction: row;
         height: 100%;
+        min-width: 800px;
+        min-height: 600px;
     }
 
     aside {
         flex: 0 0 200px;
+
+        button {
+            width: 100%;
+
+            &.selected {
+                color: white;
+                background-color: var(--user-color);
+            }
+        }
     }
 
     .main {
-        min-width: 300px;
+        padding: 20px;
+
+        section {
+            padding: 10px;
+
+            .grid {
+                border-top: 1px solid var(--user-color);
+                border-left: 1px solid var(--user-color);
+
+                > div {
+                    text-align: center;
+                    padding: 5px;
+                    border-bottom: 1px solid var(--user-color);
+                    border-right: 1px solid var(--user-color);
+                }
+            }
+        }
     }
 }

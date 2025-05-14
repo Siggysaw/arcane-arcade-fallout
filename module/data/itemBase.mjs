@@ -2,11 +2,9 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
   static defineSchema() {
     const fields = foundry.data.fields
     const schema = {}
-    const requiredInteger = { required: true, nullable: false, integer: true }
     schema.description = new fields.HTMLField()
     schema.hideItem = new fields.BooleanField({ initial: false })
     schema.itemEquipped = new fields.BooleanField({ initial: false })
-    schema.vaulttec = new fields.BooleanField({ initial: false })
     schema.wildWasteland = new fields.BooleanField()
     schema.abilityMod = new fields.StringField({ initial: '' })
     schema.skillBonus = new fields.StringField({ initial: '' })
@@ -17,9 +15,10 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
 
     schema.crafting = new fields.SchemaField({
       craftable: new fields.BooleanField({ initial: false }),
+      type: new fields.StringField({ initial: undefined }),
       requirements: new fields.ArrayField(
         new fields.SchemaField({
-          keys: new fields.ArrayField(new fields.StringField({ initial: undefined })),
+          keys: new fields.ArrayField(new fields.StringField()),
           dc: new fields.NumberField({ initial: 1, min: 1 }),
         })
       ),
@@ -29,11 +28,9 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
       }),
       materials: new fields.ArrayField(
         new fields.SchemaField({
-          _id: new fields.DocumentIdField({ initial: () => foundry.utils.randomID() }),
-          uuid: new fields.StringField({ initial: undefined }),
+          uuid: new fields.StringField(),
           name: new fields.StringField(),
           quantity: new fields.NumberField({
-            ...requiredInteger,
             initial: 1,
             min: 1
           }),
@@ -44,6 +41,5 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
   }
   prepareDerivedData() {
     super.prepareDerivedData()
-    this.vaulttec = game.settings.get('core', 'VaultTec')
   }
 }

@@ -22,6 +22,27 @@ export default class FalloutZeroActor extends Actor {
     return data
   }
 
+  get craftingMaterials() {
+    return this.items.filter((item) => ['junk', 'material'].includes(item.type))
+  }
+
+  getItemByName(name) {
+    if (!name) return false
+
+    return this.items.find((item) => item.name === name)
+  }
+
+  updateItemByName(name, updates) {
+    const item = this.getItemByName(name)
+    if (!item) return false
+    return this.updateEmbeddedDocuments('Item', [{
+      _id: item.id, system: {
+        ...item.system,
+        ...updates,
+      }
+    }])
+  }
+
   async openDialog(filename, title) {
     const myDialogOptions = { width: 700, height: 700, resizable: true }
     const myContent = await renderTemplate(`systems/arcane-arcade-fallout/${filename}`, this

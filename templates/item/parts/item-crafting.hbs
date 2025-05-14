@@ -7,13 +7,22 @@
   </div>
   <div>
     {{#if system.crafting.craftable}}
+      {{!-- type  --}}
+      <fieldset>
+        <legend>Type</legend>
+          <select name="system.crafting.type" value="system.crafting.type">
+            {{#each types as |type|}}
+              <option value="{{type.id}}">{{type.label}}</option>
+            {{/each}}
+          </select>
+      </fieldset>
+
       {{!-- time --}}
       <fieldset>
         <legend>Time</legend>
         <div class="flex">
-          <div class="nowrap">Crafting time: </div>
           <input type="number" name="system.crafting.time.value" value="{{system.crafting.time.value}}" placeholder="Crafting time"/>
-          <select name="system.crafting.time.unit">
+          <select name="system.crafting.time.unit" value="system.crafting.time.unit">
             <option value="minutes">Minutes</option>
             <option value="hours">Hours</option>
             <option value="days">Days</option>
@@ -44,14 +53,25 @@
       <fieldset>
         <legend>Materials</legend>
         <div class="drop-area" data-material-drop data-tooltip="drop material or junk here">
-          {{#each system.crafting.materials as |material|}}
-          <div class="flex">
-              <div>{{material.label}}</div>
-              <button data-remove-material="{{material._id}}" class="ml-5" type="button">
-                  <i class="fas fa-minus-square"></i>
+          <div class="grid grid-3col align-items-center">
+            <div>Item</div>
+            <div>Quantity</div>
+            <div>Remove</div>
+            {{#each system.crafting.materials as |material|}}
+              <input hidden value="{{material.name}}" name="system.crafting.materials.{{@index}}.name" />
+              <input hidden value="{{material.uuid}}" name="system.crafting.materials.{{@index}}.uuid" />
+              <div>{{material.name}}</div>
+              <input
+                type="number"
+                value="{{material.quantity}}"
+                name="system.crafting.materials.{{@index}}.quantity"
+                placeholder="quantity"
+              />
+              <button data-remove-material="{{@index}}" type="button" data-tooltip="Remove">
+                <i class="fas fa-minus-square"></i>
               </button>
+            {{/each}}
           </div>
-          {{/each}}
         </div>
     {{/if}}
   </div>

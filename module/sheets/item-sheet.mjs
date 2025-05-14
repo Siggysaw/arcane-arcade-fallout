@@ -1,7 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
 import FalloutZeroItem from '../documents/item.mjs'
-import { FALLOUTZERO } from '../config.mjs'
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -58,6 +57,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     context.conditions = CONFIG.FALLOUTZERO.conditions
     context.abilities = CONFIG.FALLOUTZERO.abilities
     context.skills = CONFIG.FALLOUTZERO.skills
+    context.types = CONFIG.FALLOUTZERO.craftingTypes
 
     return context
   }
@@ -302,52 +302,53 @@ export default class FalloutZeroItemSheet extends ItemSheet {
   }
 
   initCraftingListeners(html) {
-    document.querySelector('[data-add-requirement]')?.addEventListener('click', (event) => {
-      event.preventDefault()
-      const requirements = this.item.system.crafting.requirements
-      requirements.push({
-        keys: [FALLOUTZERO.abilities.str.id],
-        dc: 1,
-      })
-      this.item.update({
-        ['system.crafting.requirements']: requirements,
-      })
-    })
-
-    document.querySelectorAll('[data-remove-requirement]').forEach((el) => {
-      el.addEventListener('click', (event) => {
-        event.preventDefault()
-        const index = event.currentTarget.dataset.removeRequirement
-        if (!index) return
-
-        const requirements = this.item.system.crafting.requirements
-        requirements.splice(index, 1)
-        this.item.update({
-          ['system.crafting.requirements']: requirements,
-        })
-      })
-    })
-
     const dragDrop = new DragDrop({
       dropSelector: '[data-material-drop]',
       callbacks: { drop: this._onDropMaterial.bind(this) },
     })
     dragDrop.bind(html[0])
 
+    document.querySelector('[data-add-requirement]')?.addEventListener('click', this._onAddRequirement.bind(this))
+
+    document.querySelectorAll('[data-remove-requirement]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveRequirement.bind(this))
+    })
     html[0].querySelectorAll('[data-remove-material]').forEach((el) => {
       el.addEventListener('click', this._onRemoveMaterial.bind(this))
     })
   }
 
+  _onAddRequirement(e) {
+    e.preventDefault()
+    const requirements = this.item.system.crafting.requirements
+    requirements.push({
+      keys: [CONFIG.FALLOUTZERO.skills.crafting.id],
+      dc: 1,
+    })
+    this.item.update({
+      ['system.crafting.requirements']: requirements,
+    })
+  }
+
+  _onRemoveRequirement(e) {
+    e.preventDefault()
+    const index = e.currentTarget.dataset.removeRequirement
+    if (!index) return
+
+    const requirements = this.item.system.crafting.requirements
+    requirements.splice(index, 1)
+    this.item.update({
+      ['system.crafting.requirements']: requirements,
+    })
+  }
+
   async _onRemoveMaterial(e) {
     e.stopPropagation()
-    const { removeMaterial } = e.currentTarget.dataset
-    if (!removeMaterial) return
+    const index = e.currentTarget.dataset.removeMaterial
+    if (!index) return
 
-    const newMaterials = this.item.system.crafting.materials.filter((req) => {
-      return req._id !== removeMaterial
-    })
-
+    const newMaterials = this.item.system.crafting.materials
+    newMaterials.splice(index, 1)
     this.item.update({
       'system.crafting.materials': newMaterials,
     })
@@ -378,8 +379,8 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       return false
     }
 
-    const alreadyExists = this.item.system.crafting.materials.find((req) => {
-      return req.key === item.system.id
+    const alreadyExists = this.item.system.crafting.materials.find((m) => {
+      return m.uuid === item.uuid
     })
 
     if (alreadyExists) {
@@ -388,9 +389,8 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     }
 
     const newMaterials = [...this.item.system.crafting.materials, {
-      id: item.system.type,
-      uuid: item.system.uuid,
-      name: item.system.name,
+      uuid: item.uuid,
+      name: item.name,
       quantity: 1,
     }]
 
