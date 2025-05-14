@@ -26,14 +26,25 @@ export default class FalloutZeroActor extends Actor {
     return this.items.filter((item) => ['junk', 'material'].includes(item.type))
   }
 
-  getItemByName(name) {
-    if (!name) return false
+  getItemByCompendiumId(id) {
+    if (!id) return false
 
-    return this.items.find((item) => item.name === name)
+    console.log('search for', id)
+    const found = this.items.find((item) => {
+      console.log(item._stats.compendiumSource)
+      return item._stats.compendiumSource === id
+    })
+    return found
   }
 
-  updateItemByName(name, updates) {
-    const item = this.getItemByName(name)
+  getItemById(id) {
+    if (!id) return false
+
+    return this.items.find((item) => item.id === id)
+  }
+
+  updateItemById(id, updates) {
+    const item = this.getItemById(id)
     if (!item) return false
     return this.updateEmbeddedDocuments('Item', [{
       _id: item.id, system: {

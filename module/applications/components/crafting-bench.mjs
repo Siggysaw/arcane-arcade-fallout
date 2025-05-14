@@ -31,13 +31,33 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
     get materials() {
         return this.actor.craftingMaterials.reduce((acc, mat) => {
-            // #TODO BETTER ID HERE?
-            acc[mat.name] = {
+            acc[mat._stats.compendiumSource] = {
                 name: mat.name,
                 quantity: mat.system.quantity
             }
             return acc
         }, {})
+    }
+
+    get hasMaterials() {
+        if (!this.selectedCraftable) return false
+
+        return this.selectedCraftable.materials.every((mat) => {
+            return (this.materials[mat.uuid].quantity ?? 0) > mat.quantity
+        })
+    }
+
+    get hasRequirements() {
+        if (!this.selectedCraftable) return false
+
+        return this.selectedCraftable.requirements.reduce((passes, req) => {
+            req.keys.forEach((skill) => {
+                if (this.skills[skill] < req.dc) {
+                    passes = false
+                }
+            })
+            return passes
+        }, true)
     }
 
     async init() {
@@ -133,7 +153,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             name: this.craftingTree[branch].items[index].name,
             ...this.craftingTree[branch].items[index].system.crafting
         } : null
-        this.owned = this.actor.getItemByName(this.selectedCraftable.name)?.system.quantity ?? 0
+        this.owned = this.actor.getItemByCompendiumId(this.selectedCraftable.uuid)?.system?.quantity ?? 0
         this.render()
     }
 
@@ -146,23 +166,10 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         }
     }
 
-    static async craft() {
-        const hasMaterials = this.selectedCraftable.materials.every((mat) => {
-            return (this.materials[mat.name].quantity ?? 0) > mat.quantity
-        })
-
-        if (!hasMaterials) {
+    static craft() {
+        if (!this.hasMaterials) {
             return ui.notifications.warn('You do not have the required materials')
         }
-
-        const hasRequirements = this.selectedCraftable.requirements.reduce((passes, req) => {
-            req.keys.forEach((skill) => {
-                if (this.skills[skill] < req.dc) {
-                    passes = false
-                }
-            })
-            return passes
-        }, true)
         if (hasRequirements) {
             this._createOrUpdateItem()
         } else {
@@ -179,7 +186,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
                         label: 'Yes',
                         callback: () => {
                             // #TODO need to add ability to switch required skill
-
                         },
                     },
                 },
@@ -189,27 +195,31 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     }
 
     async _createOrUpdateItem() {
-        const craftedItem = await fromUuid(this.selectedCraftable.uuid)
-        const craftedItemClone = craftedItem.clone()
-        const existingItem = this.actor.getItemByName(craftedItemClone.name)
+        const existingItem = this.actor.getItemByCompendiumId(this.selectedCraftable.uuid)
 
         // Update or create new
         if (existingItem) {
             const newQty = existingItem.system.quantity + 1
-            this.actor.updateItemByName(existingItem.name, {
+            this.actor.updateItemById(existingItem.id, {
                 quantity: newQty
             })
             this.owned = newQty
         } else {
-            await Item.create(craftedItemClone, { parent: this.actor })
+            const craftedItem = await fromUuid(this.selectedCraftable.uuid)
+            craftedItem.update({
+                _stats: {
+                    compendiumSource: this.selectedCraftable.uuid
+                }
+            })
+            await Item.create(craftedItem.toObject(), { parent: this.actor })
             this.owned = 1
         }
 
         // reduce materials
         await Promise.all(
             this.selectedCraftable.materials.map(async (mat) => {
-                const item = this.actor.getItemByName(mat.name)
-                return await this.actor.updateItemByName(mat.name, {
+                const item = this.actor.getItemByCompendiumId(mat.uuid)
+                return await this.actor.updateItemById(item.id, {
                     quantity: item.system.quantity - mat.quantity
                 })
             })

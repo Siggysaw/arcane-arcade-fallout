@@ -71,8 +71,8 @@
                         </div>
                         <div>
                             {{!-- #TODO BETTER WAY TO LOOKUP? --}}
-                            {{#if (lookup ../materials material.name)}}
-                                {{#with (lookup ../materials material.name)~}}
+                            {{#if (lookup ../materials material.uuid)}}
+                                {{#with (lookup ../materials material.uuid)~}}
                                     {{ this.quantity }}
                                 {{/with}}
                             {{else}}
