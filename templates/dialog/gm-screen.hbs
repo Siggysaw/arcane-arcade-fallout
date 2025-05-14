@@ -11,8 +11,9 @@
                 Caps earned
             </div>
             {{#each actors as |actor|}}
+            {{#if actor.system.activePartymember}}
             <div>
-                {{ actor.name }}
+                {{actor.name }}
             </div>
             <div>
                 <input placeholder="xp to add" type="number" data-actor-xp="{{actor.id}}">
@@ -20,6 +21,7 @@
             <div>
                 <input placeholder="caps to add" type="number" data-actor-caps="{{actor.id}}">
             </div>
+            {{/if}}
             {{/each}}
         </div>
 

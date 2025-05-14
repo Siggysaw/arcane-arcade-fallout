@@ -1,5 +1,3 @@
-2025/05/08-16:49:21.033 1a22c Log #901: 0 ops saved to Table #902 OK
-2025/05/08-16:49:21.033 1a22c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\chems/000901.log: OK
-2025/05/08-16:49:21.034 1a22c Table #893: 33 entries OK
-2025/05/08-16:49:21.038 1a22c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\chems/MANIFEST-000900: OK
-2025/05/08-16:49:21.042 1a22c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\chems; recovered 1 files; 26797 bytes. Some data may have been lost. ****
+2025/05/13-22:40:57.809 2c358 Recovering log #907
+2025/05/13-22:40:57.819 2c358 Delete type=0 #907
+2025/05/13-22:40:57.819 2c358 Delete type=3 #906

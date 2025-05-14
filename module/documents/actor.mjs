@@ -195,6 +195,8 @@ export default class FalloutZeroActor extends Actor {
 
       if (success) {
         flavor += `Success! ${actor.name} rolled equal to or greater than ${saveDC}`
+
+        // On Nat 20, gain 2 Successes
         if (critSuccess) {
           !Success1 ? actor.update({ [success1]: true, [success2]: true }) :
             actor.update({
@@ -222,6 +224,8 @@ export default class FalloutZeroActor extends Actor {
         flavor += `Failure! ${actor.name} rolled lower than ${saveDC}`
         Failure1 ? actor.update({ [failure2]: true }) : actor.update({ [failure1]: true })
         Failure2 ? actor.update({ [failure3]: true }) : ''
+
+        // On Nat 1, gain 2 Failures
         if (critFailure) {
           !Failure1 ? actor.update({ [failure1]: true, [failure2]: true }) : actor.update({[failure2]:true,[failure3]:true})
         }
