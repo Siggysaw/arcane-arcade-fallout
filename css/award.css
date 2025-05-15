@@ -1,9 +1,84 @@
+@font-face {
+  font-family: 'Monofonto';
+  src: url('/systems/arcane-arcade-fallout/assets/fonts/monofonto.otf');
+}
+
+.gm-screen{
+    max-height:1000px;
+    overflow-y:scroll;
+    max-width:1700px;
+}
+.application h6 {
+  font-family: 'Monofonto', sans-serif;
+  letter-spacing: 0.1rem;
+}
 .award .group {
-    align-items: center;
-    gap: 1rem;
+  align-items: center;
+  gap: 1rem;
 }
 
 .award .characters {
-    align-items: center;
-    gap: 2rem 1rem;
+  align-items: center;
+  gap: 2rem 1rem;
 }
+
+.application .gm-screen input[type="checkbox"]:checked::before{
+    color:black;
+}
+
+.application input[type="text"],
+.application input[type="number"],
+.application input[type="password"],
+.application input[type="date"],
+.application input[type="time"],
+.application input[type="search"],
+.application input[type="file"],
+.application select {
+  background: none;
+}
+
+.application input[type="number"] {
+  width: 50px;
+}
+
+.application .gm-screen {
+  background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
+  background-size: cover;
+  text-align: center;
+}
+
+.application .name-label {
+  padding: 5px;
+}
+
+.application input[type="checkbox"] {
+  --checkbox-size: 15px;
+}
+
+.application .karmaCaps input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/Cap_Back_Facing.webp');
+  appearance: none;
+  display: block;
+  width: 25px;
+  height: 25px;
+  border: none;
+  background: none;
+  float:left;
+}
+
+.application .karmaCaps input[type='checkbox']:checked {
+  content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
+  background: none;
+}
+.application .character-details div{
+    border:dotted 1px;
+    padding:10px;
+    color:var(--user-color)
+}
+.application .character-details .armor{
+    border:none;
+    padding:0px;
+}
+  .application .gm-screen-conditions {
+      width:20px;
+  }

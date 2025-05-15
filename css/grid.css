@@ -188,6 +188,24 @@
 .grid-span-12 {
   grid-column-end: span 12;
 }
+.grid-span-13 {
+  grid-column-end: span 13;
+}
+.grid-span-14 {
+  grid-column-end: span 14;
+}
+.grid-span-15 {
+  grid-column-end: span 15;
+}
+.grid-span-16 {
+  grid-column-end: span 16;
+}
+.grid-span-17 {
+  grid-column-end: span 17;
+}
+.grid-span-18 {
+  grid-column-end: span 18;
+}
 
 .grid-span-19 {
   grid-column-end: span 19;

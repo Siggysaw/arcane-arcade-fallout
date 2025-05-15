@@ -1,31 +1,162 @@
-    <div class="award">
-        <h1>Award</h1>
-        <div class="grid grid-3col characters">
-            <div>
-                Name
+<div class="gm-screen grid grid-20col">
+    <div class="grid-span-4">
+        <div>
+            <div title="Use this to give out bulk rewards"><h6>Group Rewards</h6></div>
+            <div>Only Active Players <input data-activeOnly type="checkbox" name="activeOnly" {{checked activeOnly}}></div>
+
+            <hr />
+            <div class="grid grid-2col group">
+                <div class="label">
+                    XP
+                </div>
+                <div class="label">
+                    Caps
+                </div>
+                <div>
+                    <input placeholder="XP" type="number" data-group-xp value="{{ groupXp }}">+
+                    <input placeholder="% Bonus" type="number" data-group-xp-modifier value="{{ groupXpmodifier }}">%
+                </div>
+                <div>
+                    <input placeholder="Caps" type="number" data-group-caps value="{{ groupCaps }}">
+                </div>
             </div>
-            <div>
-                XP earned
+            <div class="my-2">
+                <button type="button" data-action="divideGroup">Prepare Rewards</button>
             </div>
-            <div>
-                Caps earned
+        </div>
+        <hr />
+        <div class="grid grid-5col characters">
+            <div class="grid-span-3 label">
+
             </div>
+            <div class="label">XP</div>
+            <div class="label">
+                Caps
+            </div>
+            {{#if activeOnly}}
             {{#each actors as |actor|}}
             {{#if actor.system.activePartymember}}
+            <div class="grid-span-3 name-label">
+                {{ actor.name }}
+            </div>
+            {{#with (lookup ../newActorData [id])~}}
             <div>
-                {{actor.name }}
+                <input style="border:none;" placeholder="0" type="number" data-actor-xp="{{actor.id}}" value="{{ xp }}" disabled>
             </div>
             <div>
-                <input placeholder="xp to add" type="number" data-actor-xp="{{actor.id}}">
+                <input placeholder="0" type="number" data-actor-caps="{{actor.id}}" value="{{ caps }}">
             </div>
-            <div>
-                <input placeholder="caps to add" type="number" data-actor-caps="{{actor.id}}">
-            </div>
+            {{/with}}
             {{/if}}
             {{/each}}
+            {{else}}
+            {{#each actors as |actor|}}
+            <div class="grid-span-3 name-label">
+                {{ actor.name }}
+            </div>
+            {{#with (lookup ../newActorData [id])~}}
+            <div>
+                <input style="border:none;" placeholder="0" type="number" data-actor-xp="{{actor.id}}" value="{{ xp }}" disabled>
+            </div>
+            <div>
+                <input placeholder="0" type="number" data-actor-caps="{{actor.id}}" value="{{ caps }}">
+            </div>
+            {{/with}}
+            {{/each}}
+            {{/if}}
         </div>
 
         <div class="dialog-buttons flexrow">
-            <button class="dialog-button award" data-award>Award XP and cap</button>
+            <button class="dialog-button">Send Rewards</button>
+            <button class="dialog-button" data-action="cancel">Cancel</button>
         </div>
     </div>
+    <div class="grid-span-16">
+        <h6>Character Details</h6>
+        <div class="grid grid-6col character-details">
+            <div>Name</div>
+            <div>Stats</div>
+            <div>Armor</div>
+            <div>Traits/Perks</div>
+            <div>Karma Caps</div>
+            <div>Notes</div>
+            {{#each actors as |actor id|}}
+            {{#if actor.system.activePartymember}}
+            <div>
+                {{actor.name}}
+                <br />
+                <img style="height:100px;width:auto;" src="{{actor.img}}" />
+            </div>
+            <div>
+                <div class="grid grid-2col armor">
+                    <div>SP:</div><div>{{actor.system.stamina.value}} / {{actor.system.stamina.max}}</div>
+                    <div>HP:</div><div>{{actor.system.health.value}} / {{actor.system.health.max}}</div>
+                    <div>AP:</div><div>{{actor.system.actionPoints.value}} / {{actor.system.actionPoints.max}}</div>
+                </div>
+                {{#each actor.items as |item id|}}
+                {{#Check item.type "armor"}}
+                {{#if item.system.isEquipped}}
+                {{item.name}}
+                {{/if}}
+                {{/Check}}
+                {{/each}}
+            </div>
+            <div>
+                <div class="grid grid-2col armor">
+                    <div class="no-border">AC: {{actor.system.armorClass.value}}</div>
+                    <div class="no-border">DT: {{actor.system.damageThreshold.value}}</div>
+                </div>
+            </div>
+            <div style="max-height:140px;overflow-y:scroll">
+                {{#each actor.items as |item id|}}
+                {{#Check item.type "trait"}}
+                <div>
+                    <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
+                        <a class="item-control"
+                           data-tooltip="TRAIT: {{item.system.description}}">
+                            {{item.name}}
+                        </a>
+                    </li>
+                </div>
+                {{/Check}}
+                {{#Check item.type "perk"}}
+                <div>
+                    <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
+                        <a class="item-control"
+                           data-tooltip="{{item.system.description}}">
+                            {{item.name}}
+                        </a>
+                    </li>
+                </div>
+                {{/Check}}
+                {{/each}}
+            </div>
+            <div class="karmaCaps">
+                {{#each actor.system.karmaCaps as |flipped key|}}
+                <input type="checkbox"
+                       name="system.karmaCaps.{{ key }}"
+                       {{checked flipped}} disabled />
+                {{/each}}
+            </div>
+            <div style="max-height:200px;overflow-y:scroll;text-align:initial">
+                <div style="border:none;">
+                    {{#each actor.items as |item condition|}}
+                    {{#Check item.type "condition"}}
+                    ({{#GreaterThan system.quantity 1}}
+                    {{#GreaterThan system.quantity 2}}{{system.quantity}}x{{/GreaterThan}}
+                    <span data-tooltip="{{ item.system.description }}">{{item.name}}</span> )
+                    {{/GreaterThan}}
+                    {{/Check}}
+                    {{/each}}
+                </div>
+                {{#if actor.system.properties}}
+                <details><summary>View Notes</summary>{{{actor.system.properties}}}</details>
+                {{/if}}
+            </div>
+            {{/if}}
+            {{/each}}
+
+        </div>
+    </div>
+</div>
+
