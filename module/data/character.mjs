@@ -188,7 +188,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
 
     //========= ARMOR AUTOMATION
     function searchArmor(actor) {
-      return actor.parent.items.filter((i) => i.type == 'armor').filter((i) => i.system.itemEquipped === true)
+      let armor
+      actor.parent.items.find((i) => i.type == 'armor') ? armor = actor.parent.items.filter((i) => i.type == 'armor').filter((i) => i.system.itemEquipped === true) : armor = ''
+        return armor
     }
 
     const equippedArmor = searchArmor(this)
