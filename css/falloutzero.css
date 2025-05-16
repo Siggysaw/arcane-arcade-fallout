@@ -1066,15 +1066,19 @@ a.inline-roll,
 .sheet nav a:hover,
 .sheet .tabs > [data-tab].active {
   background-color: var(--user-color);
-  color: var(--dark);
+  color: #333;
   text-decoration: none;
   text-shadow: none;
 }
+  .sheet nav a:hover,
+  .sheet .tabs > [data-tab].active:hover{
+      color:#333
+  }
 
-.sheet label {
-  font-size: 13pt;
-  padding: 5px;
-}
+  .sheet label {
+    font-size: 13pt;
+    padding: 5px;
+  }
 
   .sheet label.specials:hover {
     color: #000;
