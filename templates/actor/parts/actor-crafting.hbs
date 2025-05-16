@@ -6,8 +6,8 @@
                     <h3>
                         <i class="fa fa-sort-amount-asc" sortMat></i>&emsp; 
                             Materials  &emsp; 
-                        <i style="visibility:hidden;" class="fa fa-cubes" actorCraft title="Craft from materials in inventory"></i> &emsp; 
-                        <i class="fa fa-list" craftRecipes title="Browse through and craft from recipes"></i>  
+                        <i style="visibility:hidden;" class="fa fa-cubes" actorCraft data-tooltip="Craft from materials in inventory"></i> &emsp; 
+                        <i class="fa fa-list" craftRecipes data-tooltip="Browse through and craft from recipes"></i>  
                     </h3></td></tr>
                 <tr><td>Name</td><td>Qty</td><td></td></tr>
                 {{#each materials as |item id|}}
@@ -18,7 +18,7 @@
                                data-edit
                                data-item-id="{{ item._id }}"
                                draggable="true"
-                               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                               data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
                                 {{item.name}}
                             </a>
                         </li>
@@ -55,7 +55,7 @@
                             <a class="item-control"
                                data-edit
                                data-item-id="{{ item._id }}"
-                               title="{{localize 'DOCUMENT.Update' type='item'}}">
+                               data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
                                 {{item.name}}
                             </a>
                         </li>

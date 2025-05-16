@@ -1,13 +1,5 @@
-2025/05/16-16:14:53.850 1ce0c Recovering log #1152
-2025/05/16-16:14:53.858 1ce0c Delete type=0 #1152
-2025/05/16-16:14:53.858 1ce0c Delete type=3 #1151
-2025/05/16-16:15:31.180 1d174 Level-0 table #1156: started
-2025/05/16-16:15:31.180 1d174 Level-0 table #1156: 0 bytes OK
-2025/05/16-16:15:31.183 1d174 Delete type=0 #1154
-2025/05/16-16:15:31.201 1d174 Manual compaction at level-0 from '!items!0djoGBUStJ1fZ3hs' @ 72057594037927935 : 1 .. '!items!wtHB2oaobNI8BMSq' @ 0 : 0; will stop at '!items!wtHB2oaobNI8BMSq' @ 324 : 1
-2025/05/16-16:15:31.201 1d174 Compacting 1@0 + 0@1 files
-2025/05/16-16:15:31.204 1d174 Generated table #1157@0: 18 keys, 11746 bytes
-2025/05/16-16:15:31.204 1d174 Compacted 1@0 + 0@1 files => 11746 bytes
-2025/05/16-16:15:31.208 1d174 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/05/16-16:15:31.208 1d174 Delete type=2 #1146
-2025/05/16-16:15:31.225 1d174 Manual compaction at level-0 from '!items!wtHB2oaobNI8BMSq' @ 324 : 1 .. '!items!wtHB2oaobNI8BMSq' @ 0 : 0; will stop at (end)
+2025/05/16-16:16:50.132 1cee8 Log #1160: 0 ops saved to Table #1161 OK
+2025/05/16-16:16:50.132 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/001160.log: OK
+2025/05/16-16:16:50.132 1cee8 Table #1157: 18 entries OK
+2025/05/16-16:16:50.136 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine/MANIFEST-001158: OK
+2025/05/16-16:16:50.141 1cee8 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\medicine; recovered 1 files; 11746 bytes. Some data may have been lost. ****

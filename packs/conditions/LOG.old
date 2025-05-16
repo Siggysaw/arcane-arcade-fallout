@@ -1,13 +1,5 @@
-2025/05/16-16:14:54.026 1cfa4 Recovering log #893
-2025/05/16-16:14:54.034 1cfa4 Delete type=0 #893
-2025/05/16-16:14:54.034 1cfa4 Delete type=3 #892
-2025/05/16-16:15:31.287 1d174 Level-0 table #897: started
-2025/05/16-16:15:31.287 1d174 Level-0 table #897: 0 bytes OK
-2025/05/16-16:15:31.291 1d174 Delete type=0 #895
-2025/05/16-16:15:31.306 1d174 Manual compaction at level-0 from '!items!09g8TOOTRSOJlHYo' @ 72057594037927935 : 1 .. '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 0 : 0; will stop at '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 2160 : 1
-2025/05/16-16:15:31.306 1d174 Compacting 1@0 + 0@1 files
-2025/05/16-16:15:31.316 1d174 Generated table #898@0: 211 keys, 114133 bytes
-2025/05/16-16:15:31.316 1d174 Compacted 1@0 + 0@1 files => 114133 bytes
-2025/05/16-16:15:31.320 1d174 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/05/16-16:15:31.320 1d174 Delete type=2 #887
-2025/05/16-16:15:31.336 1d174 Manual compaction at level-0 from '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 2160 : 1 .. '!items.effects!zquzeDKQRNfFJEqp.tdhN7c3tdMGGlKm6' @ 0 : 0; will stop at (end)
+2025/05/16-16:16:50.477 1d3f8 Log #901: 0 ops saved to Table #902 OK
+2025/05/16-16:16:50.477 1d3f8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\conditions/000901.log: OK
+2025/05/16-16:16:50.478 1d3f8 Table #898: 211 entries OK
+2025/05/16-16:16:50.482 1d3f8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\conditions/MANIFEST-000899: OK
+2025/05/16-16:16:50.487 1d3f8 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\conditions; recovered 1 files; 114133 bytes. Some data may have been lost. ****

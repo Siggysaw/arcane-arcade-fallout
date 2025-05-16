@@ -1,7 +1,1 @@
-2025/05/16-16:15:41.588 1cfa4 Recovering log #1242
-2025/05/16-16:15:41.596 1cfa4 Delete type=0 #1242
-2025/05/16-16:15:41.596 1cfa4 Delete type=3 #1240
-2025/05/16-16:16:11.852 1d174 Level-0 table #1248: started
-2025/05/16-16:16:11.852 1d174 Level-0 table #1248: 0 bytes OK
-2025/05/16-16:16:11.856 1d174 Delete type=0 #1246
-2025/05/16-16:16:11.867 1d174 Manual compaction at level-0 from '!items!0JtyEY5h2xqvqjCj' @ 72057594037927935 : 1 .. '!items!zNfHOdeZQTTc56bm' @ 0 : 0; will stop at (end)
+2025/05/16-16:16:50.174 1d25c Delete type=3 #1

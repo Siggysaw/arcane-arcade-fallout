@@ -188,15 +188,16 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
 
     //========= ARMOR AUTOMATION
     function searchArmor(actor) {
-      let armor
-      actor.parent.items.find((i) => i.type == 'armor') ? armor = actor.parent.items.filter((i) => i.type == 'armor').filter((i) => i.system.itemEquipped === true) : armor = ''
-        return armor
+      const armorFound = actor.parent.items.find((i) => i.system.itemEquipped == true && i.type == "armor")
+      if (armorFound !== undefined) {
+        return armorFound
+      }
     }
 
     const equippedArmor = searchArmor(this)
 
-    equippedArmor ? this.armorClass.armor = equippedArmor[0].system.armorClass.value : this.armorClass.armor = 0
-    equippedArmor ? this.damageThreshold.armor = equippedArmor[0].system.damageThreshold.value : this.damageThreshold.armor = 0
+    equippedArmor ? this.armorClass.armor = equippedArmor.system.armorClass.value : this.armorClass.armor = 10
+    equippedArmor ? this.damageThreshold.armor = equippedArmor.system.damageThreshold.value : this.damageThreshold.armor = 0
 
 
     // Base Character Stat Creation

@@ -17,7 +17,7 @@
                         <td>{{ item.system.ammo.assigned }}</td>
                         <td>Owned</td>
                         <td rowspan="2" style="width:40px;background:#222;">
-                            <div title="Swap Your Current Ammo"
+                            <div data-tooltip="Swap Your Current Ammo"
                                  class="fakebutton"
                                  style="padding:10px;"
                                  data-ammoswap
@@ -37,7 +37,7 @@
                     <tr>
                         <td style="min-width:100px;">
                             {{ item.system.ammo.capacity.value }} / {{ item.system.ammo.capacity.max }}
-                            <i title="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+                            <i data-tooltip="Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
                                data-reload
                                data-weapon-id="{{ item._id }}"
                                class="fa fa-refresh"></i>
@@ -62,10 +62,10 @@
                         </td>
                     </tr>
                     <tr style="vertical-align: middle">
-                        <td style="width: 100px; border-right: none" title="0 is Broken, 10 is Full Functionality">
+                        <td style="width: 100px; border-right: none" data-tooltip="0 is Broken, 10 is Full Functionality">
                             CND:
                             {{#if editToggle}}
-                            <input title="0 is Broken, 10 is Full Functionality"
+                            <input data-tooltip="0 is Broken, 10 is Full Functionality"
                                    style="width: 50px"
                                    type="number"
                                    name="{{ item.system.decay }}"
@@ -83,7 +83,7 @@
                                    class="fas fa-minus-square fakebutton nobackground">
                                 </i>
                             </div>
-                            <progress title="{{item.system.decay}} out of 10"
+                            <progress data-tooltip="{{item.system.decay}} out of 10"
                                       style="width:75%;"
                                       class="statusbar"
                                       value="{{ item.system.decay }}"
@@ -131,10 +131,10 @@
                     </td>
                 </tr>
                 <tr style="vertical-align: middle">
-                    <td style="width: 100px; border-right: none" title="0 is Broken, 10 is Full Functionality">
+                    <td style="width: 100px; border-right: none" data-tooltip="0 is Broken, 10 is Full Functionality">
                         CND:
                         {{#if editToggle}}
-                        <input title="0 is Broken, 10 is Full Functionality"
+                        <input data-tooltip="0 is Broken, 10 is Full Functionality"
                                style="width: 50px"
                                type="number"
                                name="{{ item.system.decay }}"
@@ -152,7 +152,7 @@
                                class="fas fa-minus-square fakebutton nobackground">
                             </i>
                         </div>
-                        <progress title="{{item.system.decay}} out of 10"
+                        <progress data-tooltip="{{item.system.decay}} out of 10"
                                   style="width:75%;"
                                   class="statusbar"
                                   value="{{ item.system.decay }}"

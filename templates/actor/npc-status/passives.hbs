@@ -1,7 +1,7 @@
 <table>
     <tr>
-        <td title="Calculated: {{system.healingRate.value}} (End + Lvl)/2 &#013;Modifiers: {{system.healingRate.modifiers}} &#013;Manual Edits: {{system.healingRate.base}}">Healing Rate</td>
-        <td title="To Roll Intiative, Utilize Combat Tracker">
+        <td data-tooltip="Calculated: {{system.healingRate.value}} (End + Lvl)/2 &#013;Modifiers: {{system.healingRate.modifiers}} &#013;Manual Edits: {{system.healingRate.base}}">Healing Rate</td>
+        <td data-tooltip="To Roll Intiative, Utilize Combat Tracker">
             Combat Sequence
         </td>
         <td class="rollable"
@@ -11,11 +11,11 @@
             Rad DC
             <i class="fas fa-dice-d20"></i>
         </td>
-        <td title="12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}">
+        <td data-tooltip="12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}">
             Passive Sense
         </td>
-        <td title="Party Charisma Mods Added together divided by 2">Party Nerve</td>
-        <td title="Party Sneak Total divided by Player Number">Group Sneak</td>
+        <td data-tooltip="Party Charisma Mods Added together divided by 2">Party Nerve</td>
+        <td data-tooltip="Party Sneak Total divided by Player Number">Group Sneak</td>
     </tr>
     <tr>
         <td class="skill-value">

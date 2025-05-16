@@ -42,7 +42,7 @@
 {{#if item.system.itemEquipped}}
 <div class="grid grid-20col combat-tab" data-item-id="{{ item._id }}" draggable="true">
     <div class="grid-span-5 weapon-identity armor-identity context-menu" data-item-id="{{ item._id }}">
-        <div title="{{item.name}}" class="weapon-name">{{item.name}}</div>
+        <div data-tooltip="{{item.name}}" class="weapon-name">{{item.name}}</div>
     </div>
     <div class="armor-stats grid-span-3">
         <div class="skill-value">
@@ -54,7 +54,7 @@
         {{#if key.id}}
         <span class="upgrade-name"
               style="padding-left:5px;"
-              title="{{key.description}}">{{key.name}}</span>
+              data-tooltip="{{key.description}}">{{key.name}}</span>
         {{/if}}
         {{/each}}
         <div class="armor-condition">
@@ -64,14 +64,14 @@
                     data-weapon-id="{{ item._id }}"
                     class="edit-icon  fas fa-minus-square nobackground">
             </i>
-            <span title="CND">{{ item.system.decay }}</span>
+            <span data-tooltip="CND">{{ item.system.decay }}</span>
             <i data-add-decay
                data-field="item.system.decay"
                data-fieldvalue="{{item.system.decay}}"
                data-weapon-id="{{ item._id }}"
                class="edit-icon  fas fa-plus-square nobackground">
             </i>
-            <progress title="{{item.system.decay}} out of 10"
+            <progress data-tooltip="{{item.system.decay}} out of 10"
                       class="statusbar"
                       value="{{ item.system.decay }}"
                       max=10>
@@ -86,7 +86,7 @@
 {{#if item.system.itemEquipped}}
 <div class="grid grid-20col combat-tab armor-identity" data-item-id="{{ item._id }}">
     <div class="grid-span-5 weapon-identity context-menu" data-item-id="{{ item._id }}">
-        <div title="{{item.name}}" class="weapon-name" draggable="true">{{item.name}}</div>
+        <div data-tooltip="{{item.name}}" class="weapon-name" draggable="true">{{item.name}}</div>
     </div>
     <div class="armor-stats grid-span-5 armor-condition">
         CND <i data-reduce-decay
@@ -95,14 +95,14 @@
                data-weapon-id="{{ item._id }}"
                class="edit-icon  fas fa-minus-square nobackground">
         </i>
-        <span title="CND">{{ item.system.decay }}</span>
+        <span data-tooltip="CND">{{ item.system.decay }}</span>
         <i data-add-decay
            data-field="item.system.decay"
            data-fieldvalue="{{item.system.decay}}"
            data-weapon-id="{{ item._id }}"
            class="edit-icon  fas fa-plus-square nobackground">
         </i>
-        <progress title="{{item.system.decay}} out of 10"
+        <progress data-tooltip="{{item.system.decay}} out of 10"
                   class="statusbar"
                   value="{{ item.system.decay }}"
                   max=10>
@@ -114,7 +114,7 @@
         {{#if key.id}}
         <span class="upgrade-name"
               style="padding-left:5px;"
-              title="{{key.description}}">{{key.name}}</span>
+              data-tooltip="{{key.description}}">{{key.name}}</span>
         {{/if}}
         {{/each}}
     </div>

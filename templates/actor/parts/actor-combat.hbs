@@ -19,7 +19,7 @@
                    class="fas fa-minus-square  nobackground">
                 </i>
             </div>
-            <span title="CND">{{ item.system.decay }}</span>
+            <span data-tooltip="CND">{{ item.system.decay }}</span>
             <div style="float:right;">
                 <i style="padding: 2px;float:left"
                    data-add-decay
@@ -32,13 +32,13 @@
         </td>
         <td style="min-width:50px">AP: {{item.system.apCost}}<br />Crit: {{#Subtract item.system.critical.dice ../actor.system.critMod}}{{/Subtract}}</td>
         <td style="min-width:100px">{{ item.system.range.short }}ft - {{item.system.range.long}}ft</td>
-        <td title="{{item.system.ammo.assigned}}">{{item.system.ammo.capacity.value}}/{{ item.system.ammo.capacity.max }}</td>
+        <td data-tooltip="{{item.system.ammo.assigned}}">{{item.system.ammo.capacity.value}}/{{ item.system.ammo.capacity.max }}</td>
         <td style="min-width:50px">
-            <i title="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+            <i data-tooltip="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
                data-reload
                data-weapon-id="{{ item._id }}"
                class="fa fa-refresh"></i>
-            <i title="Roll An Attack"
+            <i data-tooltip="Roll An Attack"
                data-weapon-roll
                data-weapon-id="{{ item._id }}"
                class="fa fa-solid fa-crosshairs"></i>
@@ -63,7 +63,7 @@
                class="fas fa-minus-square  nobackground">
             </i>
         </div>
-        <span title="CND">{{ item.system.decay }}</span>
+        <span data-tooltip="CND">{{ item.system.decay }}</span>
         <div style="float:right;">
             <i style="padding: 2px;float:left"
                data-add-decay
@@ -77,16 +77,16 @@
     <td style="min-width:50px">AP: {{item.system.apCost}}<br />Crit: {{#Subtract item.system.critical.dice ../actor.system.critMod}}{{/Subtract}}</td>
     <td>5ft</td>
     {{#if item.system.ammo.assigned}}
-    <td title="{{item.system.ammo.assigned}}">{{item.system.ammo.capacity.value}}/{{ item.system.ammo.capacity.max }}</td>
+    <td data-tooltip="{{item.system.ammo.assigned}}">{{item.system.ammo.capacity.value}}/{{ item.system.ammo.capacity.max }}</td>
     {{else}}
     <td>NA</td>
     {{/if}}
     <td style="min-width:50px">
-        <i title="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+        <i data-tooltip="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
            data-reload
            data-weapon-id="{{ item._id }}"
            class="fa fa-refresh"></i>
-        <i title="Roll An Attack"
+        <i data-tooltip="Roll An Attack"
            data-weapon-roll
            data-weapon-id="{{ item._id }}"
            class="fa fa-solid fa-crosshairs"></i>
@@ -99,7 +99,7 @@
     {{#each explosives as |item id|}}
 <tr>
     <td style="max-width:120px;" class="context-menu" data-item-id="{{ item._id }}">
-        <p title="{{item.name}}" class="equipment-title">{{item.name}} {{#GreaterThan item.system.quantity 2}}({{item.system.quantity}}){{/GreaterThan}}</p>
+        <p data-tooltip="{{item.name}}" class="equipment-title">{{item.name}} {{#GreaterThan item.system.quantity 2}}({{item.system.quantity}}){{/GreaterThan}}</p>
     </td>
     <td>AP: {{ item.system.apCost }}</td>
     <td>
@@ -110,7 +110,7 @@
     </td>
     <td>{{ item.system.aoeRadius}}</td>
     <td>
-        <i title="Roll An Attack"
+        <i data-tooltip="Roll An Attack"
            data-weapon-roll
            data-weapon-id="{{ item._id }}"
            class="fa fa-solid fa-crosshairs"></i>

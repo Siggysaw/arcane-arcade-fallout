@@ -1135,6 +1135,7 @@ a.inline-roll,
 .item .weapon-description, .item .weapon-details {
   border: solid 1px;
   padding: 5px;
+  min-height:200px;
 }
 
 .sheet.item .item-label {
