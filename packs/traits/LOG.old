@@ -1,11 +1,13 @@
-2025/05/16-16:11:00.875 1bf7c Delete type=3 #1
-2025/05/16-16:11:50.614 1ceb8 Level-0 table #1066: started
-2025/05/16-16:11:50.614 1ceb8 Level-0 table #1066: 0 bytes OK
-2025/05/16-16:11:50.618 1ceb8 Delete type=0 #1064
-2025/05/16-16:11:50.643 1ceb8 Manual compaction at level-0 from '!items!1V9OTCsSgMSd7xaq' @ 72057594037927935 : 1 .. '!items.effects!eAicFcnUjKjpgPgz.nJd8engQUaWE1GFF' @ 0 : 0; will stop at '!items.effects!eAicFcnUjKjpgPgz.nJd8engQUaWE1GFF' @ 332 : 1
-2025/05/16-16:11:50.643 1ceb8 Compacting 1@0 + 0@1 files
-2025/05/16-16:11:50.647 1ceb8 Generated table #1067@0: 59 keys, 27205 bytes
-2025/05/16-16:11:50.647 1ceb8 Compacted 1@0 + 0@1 files => 27205 bytes
-2025/05/16-16:11:50.652 1ceb8 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/05/16-16:11:50.652 1ceb8 Delete type=2 #1057
-2025/05/16-16:11:50.652 1ceb8 Manual compaction at level-0 from '!items.effects!eAicFcnUjKjpgPgz.nJd8engQUaWE1GFF' @ 332 : 1 .. '!items.effects!eAicFcnUjKjpgPgz.nJd8engQUaWE1GFF' @ 0 : 0; will stop at (end)
+2025/05/16-16:14:53.898 1ce0c Recovering log #1073
+2025/05/16-16:14:53.907 1ce0c Delete type=0 #1073
+2025/05/16-16:14:53.907 1ce0c Delete type=3 #1072
+2025/05/16-16:15:31.228 1d174 Level-0 table #1077: started
+2025/05/16-16:15:31.228 1d174 Level-0 table #1077: 0 bytes OK
+2025/05/16-16:15:31.232 1d174 Delete type=0 #1075
+2025/05/16-16:15:31.244 1d174 Manual compaction at level-0 from '!items!1V9OTCsSgMSd7xaq' @ 72057594037927935 : 1 .. '!items.effects!eAicFcnUjKjpgPgz.nJd8engQUaWE1GFF' @ 0 : 0; will stop at '!items.effects!eAicFcnUjKjpgPgz.nJd8engQUaWE1GFF' @ 332 : 1
+2025/05/16-16:15:31.244 1d174 Compacting 1@0 + 0@1 files
+2025/05/16-16:15:31.247 1d174 Generated table #1078@0: 59 keys, 27205 bytes
+2025/05/16-16:15:31.247 1d174 Compacted 1@0 + 0@1 files => 27205 bytes
+2025/05/16-16:15:31.251 1d174 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/05/16-16:15:31.251 1d174 Delete type=2 #1067
+2025/05/16-16:15:31.281 1d174 Manual compaction at level-0 from '!items.effects!eAicFcnUjKjpgPgz.nJd8engQUaWE1GFF' @ 332 : 1 .. '!items.effects!eAicFcnUjKjpgPgz.nJd8engQUaWE1GFF' @ 0 : 0; will stop at (end)
