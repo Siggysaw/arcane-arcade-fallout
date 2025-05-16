@@ -1,3 +1,10 @@
+{{#unless system.editToggle}}
+<style>
+.edit-icon{
+    display:none;
+}
+</style>
+{{/unless}}
 <form autocomplete="off">
   <div class="character{{#isVaultTec}} vaulttec {{/isVaultTec}}{{log game.settings}}{{ cssClass }} {{ actor.type }} flexcol">
       {{log cssClass}}

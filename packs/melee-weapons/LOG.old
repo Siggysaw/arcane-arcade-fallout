@@ -1,3 +1,6 @@
-2025/05/13-22:40:57.868 2a13c Recovering log #1013
-2025/05/13-22:40:57.877 2a13c Delete type=0 #1013
-2025/05/13-22:40:57.877 2a13c Delete type=3 #1012
+2025/05/15-16:36:15.497 136e0 Log #1017: 4 ops saved to Table #1018 OK
+2025/05/15-16:36:15.497 136e0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\melee-weapons/001017.log: OK
+2025/05/15-16:36:15.497 136e0 Table #999: 62 entries OK
+2025/05/15-16:36:15.497 136e0 Table #1018: 4 entries OK
+2025/05/15-16:36:15.501 136e0 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\melee-weapons/MANIFEST-001016: OK
+2025/05/15-16:36:15.506 136e0 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\melee-weapons; recovered 2 files; 78182 bytes. Some data may have been lost. ****

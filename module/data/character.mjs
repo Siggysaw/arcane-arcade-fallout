@@ -185,7 +185,16 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
 
-    //========= END PERK AUTOMATION
+
+    //========= ARMOR AUTOMATION
+    function searchArmor(actor) {
+      return actor.parent.items.filter((i) => i.type == 'armor').filter((i) => i.system.itemEquipped === true)
+    }
+
+    const equippedArmor = searchArmor(this)
+
+    equippedArmor ? this.armorClass.armor = equippedArmor[0].system.armorClass.value : this.armorClass.armor = 0
+    equippedArmor ? this.damageThreshold.armor = equippedArmor[0].system.damageThreshold.value : this.damageThreshold.armor = 0
 
 
     // Base Character Stat Creation

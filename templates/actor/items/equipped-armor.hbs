@@ -3,7 +3,7 @@
         <span class="show-unequipped">
             Show Unequipped:
         </span>
-        <i data-showEquipped class="fas fa-toggle-{{#if system.showEquipped}}on{{else}}off{{/if}} show-unequipped"></i>
+        <i data-showEquipped class="edit-icon  fas fa-toggle-{{#if system.showEquipped}}on{{else}}off{{/if}} show-unequipped"></i>
     </div>
     <div style="border:solid 1px;"
          class="fakebutton combat-actions combat-menu grid-span-9">
@@ -14,28 +14,29 @@
     </div>
 </div>
 <div class="grid grid-10col combat-tab armor-identity">
-    <div class="grid-span-5 armor-stat">
+    <div class="grid-span-5 armor-stat" data-tooltip="Base: {{system.armorClass.base}} / Armor: {{system.armorClass.armor}} / Modifiers: {{system.armorClass.modifiers}}">
         <i data-statSubtraction
            data-stat="armorClass"
            data-type=""
-           class="fas fa-minus-square nobackground"></i>
+           class="edit-icon  fas fa-minus-square nobackground"></i>
         AC:{{ system.armorClass.value }}
         <i data-statAddition
            data-stat="armorClass"
            data-type=""
-           class="fas fa-plus-square nobackground"></i>
+           class="edit-icon  fas fa-plus-square nobackground"></i>
     </div>
-    <div class="grid-span-5 armor-stat">
-        <i data-statSubtraction"
-           data-stat="armorClass"
+    <div class="grid-span-5 armor-stat" data-tooltip="Base: {{system.damageThreshold.base}} / Armor: {{system.damageThreshold.armor}} / Modifiers: {{system.damageThreshold.modifiers}}">
+        <i data-statSubtraction
+           data-stat="damageThreshold"
            data-type=""
-           class="fas fa-minus-square nobackground"></i>
+           class="edit-icon  fas fa-minus-square nobackground"></i>
         DT:{{ system.damageThreshold.value }}
         <i data-statAddition
-           data-stat="armorClass"
+           data-stat="damageThreshold"
            data-type=""
-           class="fas fa-plus-square nobackground"></i>
+           class="edit-icon  fas fa-plus-square nobackground"></i>
     </div>
+
 </div>
 {{#each powerArmors as |item id|}}
 {{#if item.system.itemEquipped}}
@@ -61,14 +62,14 @@
                     data-field="item.system.decay"
                     data-fieldvalue="{{item.system.decay}}"
                     data-weapon-id="{{ item._id }}"
-                    class="fas fa-minus-square nobackground">
+                    class="edit-icon  fas fa-minus-square nobackground">
             </i>
             <span title="CND">{{ item.system.decay }}</span>
             <i data-add-decay
                data-field="item.system.decay"
                data-fieldvalue="{{item.system.decay}}"
                data-weapon-id="{{ item._id }}"
-               class="fas fa-plus-square nobackground">
+               class="edit-icon  fas fa-plus-square nobackground">
             </i>
             <progress title="{{item.system.decay}} out of 10"
                       class="statusbar"
@@ -92,14 +93,14 @@
                data-field="item.system.decay"
                data-fieldvalue="{{item.system.decay}}"
                data-weapon-id="{{ item._id }}"
-               class="fas fa-minus-square nobackground">
+               class="edit-icon  fas fa-minus-square nobackground">
         </i>
         <span title="CND">{{ item.system.decay }}</span>
         <i data-add-decay
            data-field="item.system.decay"
            data-fieldvalue="{{item.system.decay}}"
            data-weapon-id="{{ item._id }}"
-           class="fas fa-plus-square nobackground">
+           class="edit-icon  fas fa-plus-square nobackground">
         </i>
         <progress title="{{item.system.decay}} out of 10"
                   class="statusbar"

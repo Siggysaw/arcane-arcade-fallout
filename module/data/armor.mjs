@@ -38,8 +38,6 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
         initial: 0,
       }),
     })
-
-
     schema.damageThreshold = new fields.SchemaField({
       value: new fields.NumberField({
         initial: 0,

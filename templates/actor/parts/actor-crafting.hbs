@@ -24,12 +24,12 @@
                         </li>
                     </td>
                     <td style="width:80px">
-                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
+                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="edit-icon  fas fa-minus-square"></i>
                         {{ system.quantity }}
-                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
+                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="edit-icon  fas fa-plus-square"></i>
                     </td>
                     <td style="width:20px;">
-                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
+                        <i class="edit-icon  fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
                     </td>
                 </tr>
                 {{/each}}
@@ -48,7 +48,7 @@
                 {{#each junk as |item id|}}
                 <tr>
                     <td style="width:20px;">
-                        <i class="fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
+                        <i class="edit-icon  fas fa-ellipsis-v context-menu context-icon" data-item-id="{{ item._id }}"></i>
                     </td>
                     <td>
                         <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
@@ -61,9 +61,9 @@
                         </li>
                     </td>
                     <td style="width:80px;">
-                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="fas fa-minus-square"></i>
+                        <i style="padding:3px;" data-itemsubtraction data-item="{{item._id}}" class="edit-icon  fas fa-minus-square"></i>
                         {{ system.quantity }}
-                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="fas fa-plus-square"></i>
+                        <i style="padding:3px;" data-itemaddition data-item="{{item._id}}" class="edit-icon  fas fa-plus-square"></i>
                     </td>
                     <td>
                         {{#if (gt system.junk.quantity1 0)}} {{ system.junk.type1 }} ({{ system.junk.quantity1 }}){{/if}}

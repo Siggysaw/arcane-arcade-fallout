@@ -1,5 +1,5 @@
 <div class="gm-screen grid grid-20col">
-    <div class="grid-span-4">
+    <div class="grid-span-4 group-rewards">
         <div>
             <div title="Use this to give out bulk rewards"><h6>Group Rewards</h6></div>
             <div>Only Active Players <input data-activeOnly type="checkbox" name="activeOnly" {{checked activeOnly}}></div>
@@ -71,43 +71,36 @@
             <button class="dialog-button" data-action="cancel">Cancel</button>
         </div>
     </div>
-    <div class="grid-span-16">
+    <div></div>
+    <div class="grid-span-15">
         <h6>Character Details</h6>
-        <div class="grid grid-6col character-details">
+        <div class="grid grid-4col character-details">
             <div>Name</div>
-            <div>Stats</div>
-            <div>Armor</div>
             <div>Traits/Perks</div>
             <div>Karma Caps</div>
             <div>Notes</div>
             {{#each actors as |actor id|}}
             {{#if actor.system.activePartymember}}
-            <div>
-                {{actor.name}}
-                <br />
-                <img style="height:100px;width:auto;" src="{{actor.img}}" />
+        <div style="background-image:url('{{actor.img}}')"
+             class="character-stats">
+            <div class="actor-name">{{actor.name}}</div>
+            <div class="grid grid-4col stat-block">
+                <div data-tooltip="Armor Class" class="stat-icon"><i class="fa-solid fa-shield"></i></div>
+                <div class="stat-value">{{actor.system.armorClass.value}}</div>
+                <div data-tooltip="Damage Threshold" class="stat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="stat-value">{{actor.system.damageThreshold.value}}</div>
+                <div data-tooltip="Health" class="stat-icon"><i class="fa-solid fa-heart"></i></div>
+                <div class="stat-value">{{actor.system.health.value}}/{{actor.system.health.max}}</div>
+                <div data-tooltip="Stamina" class="stat-icon"><i class="fa-solid fa-droplet"></i></div>
+                <div class="stat-value">{{actor.system.stamina.value}}/{{actor.system.stamina.max}}</div>
+                <div data-tooltip="Penalties" class="stat-icon"><i class="fa-solid fa-skull"></i></div>
+                <div class="stat-value">-{{actor.system.penaltyTotal}}</div>
+                <div data-tooltip="Action Points" class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="stat-value">{{actor.system.actionPoints.value}}/{{actor.system.actionPoints.max}}</div>
             </div>
-            <div>
-                <div class="grid grid-2col armor">
-                    <div>SP:</div><div>{{actor.system.stamina.value}} / {{actor.system.stamina.max}}</div>
-                    <div>HP:</div><div>{{actor.system.health.value}} / {{actor.system.health.max}}</div>
-                    <div>AP:</div><div>{{actor.system.actionPoints.value}} / {{actor.system.actionPoints.max}}</div>
-                </div>
-                {{#each actor.items as |item id|}}
-                {{#Check item.type "armor"}}
-                {{#if item.system.isEquipped}}
-                {{item.name}}
-                {{/if}}
-                {{/Check}}
-                {{/each}}
-            </div>
-            <div>
-                <div class="grid grid-2col armor">
-                    <div class="no-border">AC: {{actor.system.armorClass.value}}</div>
-                    <div class="no-border">DT: {{actor.system.damageThreshold.value}}</div>
-                </div>
-            </div>
-            <div style="max-height:140px;overflow-y:scroll">
+
+        </div>
+            <div style="max-height:200px;overflow-y:scroll">
                 {{#each actor.items as |item id|}}
                 {{#Check item.type "trait"}}
                 <div>
@@ -139,6 +132,9 @@
                 {{/each}}
             </div>
             <div style="max-height:200px;overflow-y:scroll;text-align:initial">
+                {{#if actor.system.properties}}
+                <details><summary>View Notes</summary>{{{actor.system.properties}}}</details>
+                {{/if}}
                 <div style="border:none;">
                     {{#each actor.items as |item condition|}}
                     {{#Check item.type "condition"}}
@@ -149,9 +145,6 @@
                     {{/Check}}
                     {{/each}}
                 </div>
-                {{#if actor.system.properties}}
-                <details><summary>View Notes</summary>{{{actor.system.properties}}}</details>
-                {{/if}}
             </div>
             {{/if}}
             {{/each}}

@@ -7,7 +7,9 @@
     <tr>
         <td colspan="999" style="text-align:left;font-size:10pt;">
             <div>
-                <span>Lvl {{#GM}}<input style="width:35px;text-align:center" type="number" name="system.level" value="{{/GM}}{{system.level}}{{#GM}}" />{{/GM}}</span>
+                <span>
+                    Lvl {{#GM}}<input style="width:35px;text-align:center"type="number" name="system.level" value="{{/GM}}{{system.level}}" {{#unless system.editToggle}} disabled {{/unless}} {{#GM}}/>{{/GM}}
+                </span>
                 {{#each races as |item id|}}
                 <span class="context-menu"
                       data-item-id="{{ item._id }}"
@@ -22,7 +24,7 @@
                     {{item.name}}
                 </span>
                 {{/each}}
-</td>
+        </td>
     </tr>
     <tr>
         <td colspan="999" id="xpbar">
@@ -37,7 +39,7 @@
     <tr>
         <td class="bio-label"><span class="label">XP:</span></td>
         <td>
-            <input style="width:50%" id="xp" type="number" name="system.xp" value="{{ xp }}" />
+            <input style="width:50%" id="xp" type="number" name="system.xp" value="{{ xp }}" {{#unless system.editToggle}} disabled {{/unless}} />
             <div class="fakebutton leveledUp"
                  {{#GreaterThan xp 1000}} data-leveledup {{/GreaterThan}}
                  style="width:50%;float:right;{{#LesserThan xp 1000}}opacity:25%;{{/LesserThan}}">
@@ -47,29 +49,30 @@
     </tr>
     <tr>
         <td colspan="999">
-            <fieldset><legend>Conditions</legend>
-            <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll;overflow-x:hidden;">
-                {{#each conditions as |item condition|}}
-                {{#GreaterThan system.quantity 1}}
-                <div class="active-conditions">
-                    <li class="item flexrow" data-item-id="{{ item._id }}">
-                        <div class="item-controls individual-condition" style="padding:0px;">
-                            {{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}<br />
-                            <a class="item-control"
-                               data-edit
-                               data-item-id="{{ item._id }}"
-                               title="{{item.name}}">
-                                <img class="condition-icon" src="{{ item.img }}" title="{{ item.name }}" />
-                            </a><br />
-                            <a class="item-control item-delete">
-                                <i class="fa fa-close"></i>
-                            </a>
-                        </div>
-                    </li>
+            <fieldset>
+                <legend>Conditions</legend>
+                <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll;overflow-x:hidden;">
+                    {{#each conditions as |item condition|}}
+                    {{#GreaterThan system.quantity 1}}
+                    <div class="active-conditions">
+                        <li class="item flexrow" data-item-id="{{ item._id }}">
+                            <div class="item-controls individual-condition" style="padding:0px;">
+                                {{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}<br />
+                                <a class="item-control"
+                                   data-edit
+                                   data-item-id="{{ item._id }}"
+                                   title="{{item.name}}">
+                                    <img class="condition-icon" src="{{ item.img }}" title="{{ item.name }}" />
+                                </a><br />
+                                <a class="item-control item-delete">
+                                    <i class="fa fa-close"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </div>
+                    {{/GreaterThan}}
+                    {{/each}}
                 </div>
-                {{/GreaterThan}}
-                {{/each}}
-            </div>
             </fieldset>
         </td>
     </tr>

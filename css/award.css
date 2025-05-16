@@ -3,15 +3,17 @@
   src: url('/systems/arcane-arcade-fallout/assets/fonts/monofonto.otf');
 }
 
-.gm-screen{
-    max-height:1000px;
-    overflow-y:scroll;
-    max-width:1700px;
+.gm-screen {
+  max-height: 1000px;
+  overflow-y: scroll;
+  max-width: 1700px;
 }
+
 .application h6 {
   font-family: 'Monofonto', sans-serif;
   letter-spacing: 0.1rem;
 }
+
 .award .group {
   align-items: center;
   gap: 1rem;
@@ -22,22 +24,29 @@
   gap: 2rem 1rem;
 }
 
-.application .gm-screen input[type="checkbox"]:checked::before{
-    color:black;
+.application .gm-screen input[type="checkbox"]:checked::before {
+  color: black;
 }
 
-.application input[type="text"],
-.application input[type="number"],
-.application input[type="password"],
-.application input[type="date"],
-.application input[type="time"],
-.application input[type="search"],
-.application input[type="file"],
+.application .gm-screen input[type="text"],
+.application .gm-screen input[type="number"],
+.application .gm-screen input[type="password"],
+.application .gm-screen input[type="date"],
+.application .gm-screen input[type="time"],
+.application .gm-screen input[type="search"],
+.application .gm-screen input[type="file"],
 .application select {
   background: none;
+  color:white;
+}
+.gm-screen .group-rewards{
+    color:var(--user-color);
+}
+.application{
+    background:black;
 }
 
-.application input[type="number"] {
+.application .gm-screen input[type="number"] {
   width: 50px;
 }
 
@@ -51,7 +60,7 @@
   padding: 5px;
 }
 
-.application input[type="checkbox"] {
+.application .gm-screen input[type="checkbox"] {
   --checkbox-size: 15px;
 }
 
@@ -63,22 +72,52 @@
   height: 25px;
   border: none;
   background: none;
-  float:left;
+  float: left;
 }
 
-.application .karmaCaps input[type='checkbox']:checked {
-  content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
-  background: none;
-}
-.application .character-details div{
-    border:dotted 1px;
-    padding:10px;
-    color:var(--user-color)
-}
-.application .character-details .armor{
-    border:none;
-    padding:0px;
-}
-  .application .gm-screen-conditions {
-      width:20px;
+  .application .karmaCaps input[type='checkbox']:checked {
+    content: url('/systems/arcane-arcade-fallout/assets/Cap_Front_Facing.webp');
+    background: none;
   }
+
+.application .character-details div {
+  border: dotted 1px;
+  color: var(--user-color)
+}
+
+.application .character-details .armor {
+  border: none;
+  padding: 0px;
+}
+
+.application .gm-screen-conditions {
+  width: 20px;
+}
+
+/* Character Stats and Penalties */
+
+.gm-screen .character-details .actor-name {
+  background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
+  background-size: cover;
+  border: none;
+  padding:5px;
+  font-size:10pt;
+
+}
+
+.gm-screen .character-stats {
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.gm-screen .stat-block {
+  background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
+  background-size: cover;
+  border:none;
+  margin-top:auto;
+}
