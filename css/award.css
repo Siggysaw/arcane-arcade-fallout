@@ -35,7 +35,7 @@
 .application .gm-screen input[type="time"],
 .application .gm-screen input[type="search"],
 .application .gm-screen input[type="file"],
-.application select {
+.application .gm-screen select {
   background: none;
   color:white;
 }
