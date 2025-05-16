@@ -1,4 +1,155 @@
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
+
+const ATTEMPT_RESULT = {
+    FAIL: 'fail',
+    CRITICAL_FAIL: 'critical fail',
+    SUCCESS: 'success',
+    CRITICAL_SUCCESS: 'critical success',
+}
+
+async function updateCreateCraftedItem({ actor, selectedCraftable }) {
+    const existingItem = actor.getItemByCompendiumId(selectedCraftable.uuid)
+    let newQty = existingItem?.system?.quantity ?? 0
+
+    // Update or create crafted item
+    if (existingItem) {
+        newQty += 1
+        actor.updateItemById(existingItem.id, {
+            quantity: newQty
+        })
+    } else {
+        const craftedItem = await fromUuid(selectedCraftable.uuid)
+        craftedItem.update({
+            _stats: {
+                compendiumSource: selectedCraftable.uuid
+            }
+        })
+        await Item.create(craftedItem.toObject(), { parent: actor })
+        newQty = 1
+    }
+
+    return newQty
+}
+
+async function updateActorMaterials({ actor, materials, attemptResult = ATTEMPT_RESULT.SUCCESS, materialChange = { index: -1, value: 0 } }) {
+    return await Promise.all(
+        materials.map(async (mat, matIndex) => {
+            const item = actor.getItemByCompendiumId(mat.uuid)
+
+            // on critical success, add the materialChange value to specific material quantity
+            if (attemptResult === ATTEMPT_RESULT.CRITICAL_SUCCESS) {
+                if (materialChange.index === matIndex) {
+                    // reduce one material by less based on the materialChange value
+                    return await actor.updateItemById(item.id, {
+                        quantity: Math.max(0, item.system.quantity - Math.max(1, (mat.quantity - materialChange.value)))
+                    })
+                } else {
+                    // other items get normal reduction
+                    return await actor.updateItemById(item.id, {
+                        quantity: Math.max(0, item.system.quantity - mat.quantity)
+                    })
+                }
+            }
+
+            if ([ATTEMPT_RESULT.FAIL, ATTEMPT_RESULT.CRITICAL_FAIL].includes(attemptResult)) {
+                return await actor.updateItemById(item.id, {
+                    quantity: Math.max(0, item.system.quantity - materialChange.value)
+                })
+            }
+
+            // on all other cases, subtract the material quantity from the actor
+            return await actor.updateItemById(item.id, {
+                quantity: Math.max(0, item.system.quantity - (mat.quantity + materialChange.value))
+            })
+        })
+    )
+}
+
+class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
+    constructor({ actor, craftable }, options = {}) {
+        super(options);
+        this.actor = actor
+        this.craftable = craftable
+        this.selectedSkill = 'crafting' // #TODO: make this dynamic
+        this.diceRoll = null
+    }
+
+    static DEFAULT_OPTIONS = {
+        actions: {
+            roll: CraftingAttempt.roll,
+            cancel: CraftingAttempt.cancel,
+        },
+        classes: ['attempt-crafting'],
+        window: {
+            title: 'Roll to craft',
+            resizable: false
+        },
+        tag: 'dialog',
+        modal: true,
+    }
+
+    static PARTS = {
+        main: {
+            template: 'systems/arcane-arcade-fallout/templates/crafting-bench/attempt-roll.hbs',
+        },
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
+    };
+
+    async _prepareContext() {
+        const skillBonus = this.actor.system.skills[this.selectedSkill].value
+        return {
+            actor: this.actor,
+            craftable: this.craftable,
+            dc: this.dc,
+            hasSkillChoice: this.hasSkillChoice,
+            selectedSkill: this.selectedSkill,
+            skillBonus: `${skillBonus >= 0 ? '+' : '-'}${skillBonus}`,
+        }
+    }
+
+    /** @override */
+    async _onFirstRender(_context, _options) {
+        if (this.options.modal) this.element.showModal();
+        else this.element.show();
+    }
+
+    get hasSkillChoice() {
+        return this.craftable.requirements.find((req) => {
+            return req.keys.includes('crafting')
+        })?.keys.length > 1
+    }
+
+    get dc() {
+        if (!this.craftable) return null
+        return this.craftable.requirements.find((req) => {
+            return req.keys.includes(this.selectedSkill)
+        })?.dc + 10 ?? null
+    }
+
+    static async create(options) {
+        const app = new this(options);
+        const { promise, resolve } = Promise.withResolvers();
+        app.addEventListener("close", () => resolve({ dice: app.diceRoll, dc: app.dc }), { once: true });
+        app.render({ force: true });
+        return promise;
+    }
+
+    static async roll() {
+        const selectedSkill = this.selectedSkill
+        const skillBonus = this.actor.system.skills[selectedSkill].value
+        const roll = new Roll(`1d20 + ${skillBonus}`)
+        this.diceRoll = await roll.evaluate()
+
+        this.close()
+    }
+
+    static cancel() {
+        this.close()
+    }
+}
 export default class CraftingBench extends HandlebarsApplicationMixin(ApplicationV2) {
     constructor(actorId, options = {}) {
         super(options);
@@ -14,6 +165,20 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             }
             return acc
         }, {})
+    }
+
+    static DEFAULT_OPTIONS = {
+        actions: {
+            select: CraftingBench.selectCraftable,
+            toggleBranch: CraftingBench.toggleBranch,
+            craft: CraftingBench.craft,
+            attemptCraft: CraftingBench.attemptCraft,
+        },
+        classes: ['crafting-bench'],
+        window: {
+            title: 'Crafting bench',
+            resizable: true
+        }
     }
 
     get actor() {
@@ -43,7 +208,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         if (!this.selectedCraftable) return false
 
         return this.selectedCraftable.materials.every((mat) => {
-            return (this.materials[mat.uuid].quantity ?? 0) > mat.quantity
+            return (this.materials[mat.uuid].quantity ?? 0) >= mat.quantity
         })
     }
 
@@ -60,13 +225,21 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         }, true)
     }
 
+    get craftDC() {
+        if (!this.selectedCraftable) return null
+
+        return this.selectedCraftable.requirements.reduce((acc, req) => {
+            return acc + req.dc
+        }, 0)
+    }
+
     async init() {
         try {
             const packsToGet = [
                 'arcane-arcade-fallout.armor',
                 'arcane-arcade-fallout.ammunition',
                 'arcane-arcade-fallout.explosives',
-            ]
+            ] // #TODO: add to this
             const packsWithCraftables = game.packs.filter((p) => packsToGet.includes(p.collection))
             const packCraftables = await Promise.all(
                 packsWithCraftables.map(async (pack) => {
@@ -86,19 +259,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         }
     }
 
-    static DEFAULT_OPTIONS = {
-        actions: {
-            select: CraftingBench.selectCraftable,
-            toggleBranch: CraftingBench.toggleBranch,
-            craft: CraftingBench.craft,
-        },
-        classes: ['crafting-bench'],
-        window: {
-            title: 'Crafting bench',
-            resizable: true
-        }
-    }
-
     static PARTS = {
         sidebar: {
             template: 'systems/arcane-arcade-fallout/templates/crafting-bench/sidebar.hbs',
@@ -106,27 +266,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         main: {
             template: 'systems/arcane-arcade-fallout/templates/crafting-bench/main.hbs',
         },
-    }
-
-    /** @override */
-    _configureRenderOptions(options) {
-        // This fills in `options.parts` with an array of ALL part keys by default
-        // So we need to call `super` first
-        super._configureRenderOptions(options);
-        // // Completely overriding the parts
-        // options.parts = ['header', 'tabs', 'description']
-        // // Don't show the other tabs if only limited view
-        // if (this.document.limited) return;
-        // // Keep in mind that the order of `parts` *does* matter
-        // // So you may need to use array manipulation
-        // switch (this.document.type) {
-        //     case 'typeA':
-        //         options.parts.push('foo')
-        //         break;
-        //     case 'typeB':
-        //         options.parts.push('bar')
-        //         break;
-        // }
     }
 
     activateListeners(html) {
@@ -141,6 +280,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             materials: this.materials,
             skills: this.skills,
             owned: this.owned,
+            hasRequirements: this.hasRequirements
         }
     }
 
@@ -166,65 +306,72 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         }
     }
 
-    static craft() {
+    static async craft() {
         if (!this.hasMaterials) {
-            return ui.notifications.warn('You do not have the required materials')
+            return this._missingMaterialsWarning()
         }
-        if (hasRequirements) {
-            this._createOrUpdateItem()
-        } else {
-            return new Dialog({
-                title: `Craft ${this.selectedCraftable.name}`,
-                content: 'Attempt to craft item?',
-                buttons: {
-                    cancel: {
-                        icon: '<i class="fas fa-times"></i>',
-                        label: 'Cancel',
-                    },
-                    craft: {
-                        icon: '<i class="fas fa-chevron-right"></i>',
-                        label: 'Yes',
-                        callback: () => {
-                            // #TODO need to add ability to switch required skill
-                        },
-                    },
-                },
-                default: 'close',
-            }).render(true)
-        }
+        this.owned = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.selectedCraftable })
+        await updateActorMaterials({ actor: this.actor, materials: this.selectedCraftable.materials })
+        this.render()
     }
 
-    async _createOrUpdateItem() {
-        const existingItem = this.actor.getItemByCompendiumId(this.selectedCraftable.uuid)
+    static async attemptCraft() {
+        if (!this.hasMaterials) {
+            return this._missingMaterialsWarning()
+        }
+        const { dice, dc } = await CraftingAttempt.create({ actor: this.actor, craftable: this.selectedCraftable })
 
-        // Update or create new
-        if (existingItem) {
-            const newQty = existingItem.system.quantity + 1
-            this.actor.updateItemById(existingItem.id, {
-                quantity: newQty
-            })
-            this.owned = newQty
+        if (!dice) return
+
+        let result
+        if (dice.total <= dc) {
+            result = ATTEMPT_RESULT.FAIL
+            if (dice.total <= (dc - 8)) {
+                result = ATTEMPT_RESULT.CRITICAL_FAIL
+            }
         } else {
-            const craftedItem = await fromUuid(this.selectedCraftable.uuid)
-            craftedItem.update({
-                _stats: {
-                    compendiumSource: this.selectedCraftable.uuid
-                }
-            })
-            await Item.create(craftedItem.toObject(), { parent: this.actor })
-            this.owned = 1
+            result = ATTEMPT_RESULT.SUCCESS
+            if (dice.total >= (dc + 8)) {
+                result = ATTEMPT_RESULT.CRITICAL_SUCCESS
+            }
         }
 
-        // reduce materials
-        await Promise.all(
-            this.selectedCraftable.materials.map(async (mat) => {
-                const item = this.actor.getItemByCompendiumId(mat.uuid)
-                return await this.actor.updateItemById(item.id, {
-                    quantity: item.system.quantity - mat.quantity
-                })
-            })
-        )
+        let materialChange = 0
+        if (result !== ATTEMPT_RESULT.SUCCESS) {
+            const diceSides = result === ATTEMPT_RESULT.CRITICAL_FAIL ? '6' : '4'
+            const roll = await new Roll(`1d${diceSides}`).evaluate()
+            materialChange = roll.total
+        }
 
-        this.render(true)
+        if ([ATTEMPT_RESULT.SUCCESS, ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(result)) {
+            this.owned = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.selectedCraftable })
+        }
+
+        const critSuccessMatRoll = await new Roll(`1d${this.selectedCraftable.materials.length - 1}`).evaluate()
+        const critSuccessMatIndex = critSuccessMatRoll.total
+        await updateActorMaterials({
+            actor: this.actor,
+            materials: this.selectedCraftable.materials,
+            attemptResult: result,
+            materialChange: {
+                index: result === ATTEMPT_RESULT.CRITICAL_SUCCESS ? critSuccessMatIndex : -1,
+                value: materialChange
+            }
+        })
+
+        dice.toMessage({
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            flavor: `
+                ${result}: Crafting attempt for ${this.selectedCraftable.name} <br>
+                ${[ATTEMPT_RESULT.CRITICAL_FAIL, ATTEMPT_RESULT.FAIL].includes(result) ? `You lose ${materialChange} materials` : ''} <br>
+                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(result) ? `You use ${materialChange} less ${this.selectedCraftable.materials[critSuccessMatIndex].name}` : ''}
+            `
+        })
+
+        this.render()
+    }
+
+    _missingMaterialsWarning() {
+        ui.notifications.warn('You do not have the required materials')
     }
 }

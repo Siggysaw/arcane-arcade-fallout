@@ -587,24 +587,31 @@ td,
   background-size: cover;
 }
 
-  .sheet .equipped-stats td {
-    border: solid 1px;
-    vertical-align: middle;
-    padding: 2px;
-    letter-spacing: 0rem;
-  }
+.sheet .equipped-stats td {
+  border: solid 1px;
+  vertical-align: middle;
+  padding: 2px;
+  letter-spacing: 0rem;
+}
 
-  .sheet .fas,
-  .sheet .fa {
-    cursor: pointer;
-  }
+.sheet .fas,
+.sheet .fa {
+  cursor: pointer;
+}
 
-  .sheet .fakebutton,
-  .sheet button {
-    border: var(--dark);
-    padding: 5px;
-    cursor: pointer;
+.sheet .fakebutton,
+.sheet button {
+  border: var(--dark);
+  padding: 5px;
+  cursor: pointer;
+}
+
+button {
+  &:disabled {
+    opacity: 25%;
+    cursor: not-allowed;
   }
+}
 
 .window-app .window-content div .no-background,
 .window-app .window-content div .no-background:hover {

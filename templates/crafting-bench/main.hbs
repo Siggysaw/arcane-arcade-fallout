@@ -83,9 +83,21 @@
                 </div>
             </section>
             <section>
-                <div>
-                    <button data-action="craft">
+                <div class="flex gap-3">
+                    <button
+                        data-action="craft"
+                        {{#unless hasRequirements}}
+                            disabled
+                            data-tooltip="You do not have the required skills to craft this item."
+                        {{/unless}}
+                    >
                         Craft item
+                    </button>
+                    <button
+                        data-action="attemptCraft"
+                        data-tooltip="Roll an attempt to see if you can craft item?"
+                    >
+                        Attempt craft roll
                     </button>
                 </div>
             </section>
