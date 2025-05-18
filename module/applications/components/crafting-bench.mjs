@@ -31,6 +31,40 @@ async function updateCreateCraftedItem({ actor, selectedCraftable }) {
     return newQty
 }
 
+function attemptToMessage(actor, craftable, { attemptType, attemptDice, critSuccessDice, materialChange }) {
+    const materialsUsedMessage = craftable.materials.reduce((acc, mat, index) => {
+        if (attemptType === ATTEMPT_RESULT.CRITICAL_SUCCESS && critSuccessDice.total === index) {
+            acc += `${Math.max(1, mat.quantity - materialChange)} ${mat.name} consumed <br>`
+            return acc
+        }
+        acc += `${mat.quantity} ${mat.name} consumed <br>`
+        return acc
+    }, '')
+
+    if (attemptDice) {
+        attemptDice.toMessage({
+            speaker: ChatMessage.getSpeaker({ actor }),
+            flavor: `
+                ${attemptType}: Crafting attempt for ${craftable.name} <br>
+                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? `${craftable.name} crafted successfully` : ''} <br>
+                ${[ATTEMPT_RESULT.CRITICAL_FAIL, ATTEMPT_RESULT.FAIL].includes(attemptType) ? `Lose ${materialChange} materials of each item used` : ''} <br>
+                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(attemptType) ? `Use ${materialChange} less ${craftable.materials[critSuccessDice.total].name}` : ''} <br>
+                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? materialsUsedMessage : ''}
+            `
+        })
+    } else {
+        const chatData = {
+            author: game.user._id,
+            speaker: ChatMessage.getSpeaker({ actor }),
+            flavor: `
+                ${craftable.name} crafted <br>
+                ${materialsUsedMessage}
+            `,
+        }
+        ChatMessage.create(chatData, {})
+    }
+}
+
 async function updateActorMaterials({ actor, materials, attemptResult = ATTEMPT_RESULT.SUCCESS, materialChange = { index: -1, value: 0 } }) {
     return await Promise.all(
         materials.map(async (mat, matIndex) => {
@@ -71,7 +105,7 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
         this.actor = actor
         this.craftable = craftable
         this.selectedSkill = 'crafting' // #TODO: make this dynamic
-        this.diceRoll = null
+        this.newOwnedQty = null
     }
 
     static DEFAULT_OPTIONS = {
@@ -82,7 +116,8 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
         classes: ['attempt-crafting'],
         window: {
             title: 'Roll to craft',
-            resizable: false
+            resizable: false,
+            minimizable: false,
         },
         tag: 'dialog',
         modal: true,
@@ -106,7 +141,7 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
             dc: this.dc,
             hasSkillChoice: this.hasSkillChoice,
             selectedSkill: this.selectedSkill,
-            skillBonus: `${skillBonus >= 0 ? '+' : '-'}${skillBonus}`,
+            skillBonus: `${skillBonus >= 0 ? '+' : '-'}${skillBonus} `,
         }
     }
 
@@ -132,7 +167,7 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     static async create(options) {
         const app = new this(options);
         const { promise, resolve } = Promise.withResolvers();
-        app.addEventListener("close", () => resolve({ dice: app.diceRoll, dc: app.dc }), { once: true });
+        app.addEventListener("close", () => resolve(app.newOwnedQty), { once: true });
         app.render({ force: true });
         return promise;
     }
@@ -140,8 +175,55 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     static async roll() {
         const selectedSkill = this.selectedSkill
         const skillBonus = this.actor.system.skills[selectedSkill].value
-        const roll = new Roll(`1d20 + ${skillBonus}`)
-        this.diceRoll = await roll.evaluate()
+        const roll = new Roll(`1d20 + ${skillBonus} `)
+        const dice = await roll.evaluate()
+
+        let result
+        if (dice.total <= this.dc) {
+            result = ATTEMPT_RESULT.FAIL
+            if (dice.total <= (this.dc - 8)) {
+                result = ATTEMPT_RESULT.CRITICAL_FAIL
+            }
+        } else {
+            result = ATTEMPT_RESULT.SUCCESS
+            if (dice.total >= (this.dc + 8)) {
+                result = ATTEMPT_RESULT.CRITICAL_SUCCESS
+            }
+        }
+
+        let materialChange = 0
+        if (result !== ATTEMPT_RESULT.SUCCESS) {
+            const diceSides = result === ATTEMPT_RESULT.CRITICAL_FAIL ? '6' : '4'
+            const roll = await new Roll(`1d${diceSides} `).evaluate()
+            materialChange = roll.total
+        }
+
+        // if successful, create the crafted item
+        if ([ATTEMPT_RESULT.SUCCESS, ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(result)) {
+            this.newOwnedQty = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.craftable })
+        }
+
+        const critSuccessDice = await new Roll(`1d${this.craftable.materials.length - 1} `).evaluate()
+        await updateActorMaterials({
+            actor: this.actor,
+            materials: this.craftable.materials,
+            attemptResult: result,
+            materialChange: {
+                index: result === ATTEMPT_RESULT.CRITICAL_SUCCESS ? critSuccessDice.total : -1,
+                value: materialChange
+            }
+        })
+
+        attemptToMessage(
+            this.actor,
+            this.craftable,
+            {
+                attemptType: result,
+                attemptDice: dice,
+                critSuccessDice: critSuccessDice,
+                materialChange: materialChange,
+            }
+        )
 
         this.close()
     }
@@ -312,6 +394,15 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         }
         this.owned = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.selectedCraftable })
         await updateActorMaterials({ actor: this.actor, materials: this.selectedCraftable.materials })
+
+        attemptToMessage(
+            this.actor,
+            this.selectedCraftable,
+            {
+                attemptType: ATTEMPT_RESULT.SUCCESS,
+            }
+        )
+
         this.render()
     }
 
@@ -319,54 +410,12 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         if (!this.hasMaterials) {
             return this._missingMaterialsWarning()
         }
-        const { dice, dc } = await CraftingAttempt.create({ actor: this.actor, craftable: this.selectedCraftable })
+        const result = await CraftingAttempt.create({ actor: this.actor, craftable: this.selectedCraftable })
 
-        if (!dice) return
-
-        let result
-        if (dice.total <= dc) {
-            result = ATTEMPT_RESULT.FAIL
-            if (dice.total <= (dc - 8)) {
-                result = ATTEMPT_RESULT.CRITICAL_FAIL
-            }
-        } else {
-            result = ATTEMPT_RESULT.SUCCESS
-            if (dice.total >= (dc + 8)) {
-                result = ATTEMPT_RESULT.CRITICAL_SUCCESS
-            }
+        // if the crafting attempt was successful, update the owned quantity
+        if (result) {
+            this.owned = result
         }
-
-        let materialChange = 0
-        if (result !== ATTEMPT_RESULT.SUCCESS) {
-            const diceSides = result === ATTEMPT_RESULT.CRITICAL_FAIL ? '6' : '4'
-            const roll = await new Roll(`1d${diceSides}`).evaluate()
-            materialChange = roll.total
-        }
-
-        if ([ATTEMPT_RESULT.SUCCESS, ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(result)) {
-            this.owned = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.selectedCraftable })
-        }
-
-        const critSuccessMatRoll = await new Roll(`1d${this.selectedCraftable.materials.length - 1}`).evaluate()
-        const critSuccessMatIndex = critSuccessMatRoll.total
-        await updateActorMaterials({
-            actor: this.actor,
-            materials: this.selectedCraftable.materials,
-            attemptResult: result,
-            materialChange: {
-                index: result === ATTEMPT_RESULT.CRITICAL_SUCCESS ? critSuccessMatIndex : -1,
-                value: materialChange
-            }
-        })
-
-        dice.toMessage({
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            flavor: `
-                ${result}: Crafting attempt for ${this.selectedCraftable.name} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_FAIL, ATTEMPT_RESULT.FAIL].includes(result) ? `You lose ${materialChange} materials` : ''} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(result) ? `You use ${materialChange} less ${this.selectedCraftable.materials[critSuccessMatIndex].name}` : ''}
-            `
-        })
 
         this.render()
     }
