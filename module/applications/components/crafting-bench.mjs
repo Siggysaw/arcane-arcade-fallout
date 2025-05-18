@@ -106,6 +106,7 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
         this.craftable = craftable
         this.selectedSkill = 'crafting' // #TODO: make this dynamic
         this.newOwnedQty = null
+        this.searchQuery
     }
 
     static DEFAULT_OPTIONS = {
@@ -128,10 +129,6 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
             template: 'systems/arcane-arcade-fallout/templates/crafting-bench/attempt-roll.hbs',
         },
     }
-
-    activateListeners(html) {
-        super.activateListeners(html);
-    };
 
     async _prepareContext() {
         const skillBonus = this.actor.system.skills[this.selectedSkill].value
@@ -240,13 +237,14 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         this.openBranches = []
         this.owned = 0
 
-        this.craftingTree = Object.keys(CONFIG.FALLOUTZERO.craftingTypes).reduce((acc, typeKey) => {
+        this.fullCraftingTree = Object.keys(CONFIG.FALLOUTZERO.craftingTypes).reduce((acc, typeKey) => {
             acc[typeKey] = {
                 ...CONFIG.FALLOUTZERO.craftingTypes[typeKey],
                 items: [],
             }
             return acc
         }, {})
+        this.craftingTree = this.fullCraftingTree
     }
 
     static DEFAULT_OPTIONS = {
@@ -255,11 +253,38 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             toggleBranch: CraftingBench.toggleBranch,
             craft: CraftingBench.craft,
             attemptCraft: CraftingBench.attemptCraft,
+            search: CraftingBench.search,
         },
         classes: ['crafting-bench'],
         window: {
             title: 'Crafting bench',
             resizable: true
+        }
+    }
+
+    static PARTS = {
+        sidebar: {
+            template: 'systems/arcane-arcade-fallout/templates/crafting-bench/sidebar.hbs',
+        },
+        main: {
+            template: 'systems/arcane-arcade-fallout/templates/crafting-bench/main.hbs',
+        },
+    }
+
+    _onRender() {
+        this.element.querySelector('[data-action=search]')?.addEventListener('input', (e) => this.search(e))
+    };
+
+    async _prepareContext() {
+        return {
+            craftingTree: this.craftingTree,
+            selectedCraftable: this.selectedCraftable,
+            openBranches: this.openBranches,
+            materials: this.materials,
+            skills: this.skills,
+            owned: this.owned,
+            hasRequirements: this.hasRequirements,
+            searchQuery: this.searchQuery,
         }
     }
 
@@ -341,31 +366,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         }
     }
 
-    static PARTS = {
-        sidebar: {
-            template: 'systems/arcane-arcade-fallout/templates/crafting-bench/sidebar.hbs',
-        },
-        main: {
-            template: 'systems/arcane-arcade-fallout/templates/crafting-bench/main.hbs',
-        },
-    }
-
-    activateListeners(html) {
-        super.activateListeners(html);
-    };
-
-    async _prepareContext() {
-        return {
-            craftingTree: this.craftingTree,
-            selectedCraftable: this.selectedCraftable,
-            openBranches: this.openBranches,
-            materials: this.materials,
-            skills: this.skills,
-            owned: this.owned,
-            hasRequirements: this.hasRequirements
-        }
-    }
-
     static selectCraftable(e, target) {
         e.stopPropagation()
         e.preventDefault()
@@ -417,6 +417,34 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             this.owned = result
         }
 
+        this.render()
+    }
+
+    search(event) {
+        this.searchQuery = event.currentTarget.value.toLowerCase()
+
+        if (!this.searchQuery) {
+            this.craftingTree = this.fullCraftingTree
+            return
+        }
+
+        this.craftingTree = Object.keys(this.fullCraftingTree).reduce((acc, branchKey) => {
+            const branch = this.fullCraftingTree[branchKey]
+            // if branch label is a match, return branch and all leafs
+            if (branch.label.toLowerCase().includes(this.searchQuery)) {
+                acc[branchKey] = branch
+            } else {
+                const leafMatches = branch.items.filter((leaf) => leaf.name.toLowerCase().includes(this.searchQuery))
+                // filter branch leafs
+                if (leafMatches.length) {
+                    acc[branchKey] = {
+                        ...branch,
+                        items: leafMatches,
+                    }
+                }
+            }
+            return acc
+        }, {})
         this.render()
     }
 
