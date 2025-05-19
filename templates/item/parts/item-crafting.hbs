@@ -10,10 +10,8 @@
       {{!-- type  --}}
       <fieldset>
         <legend>Type</legend>
-          <select name="system.crafting.type" value="system.crafting.type">
-            {{#each types as |type|}}
-              <option value="{{type.id}}">{{type.label}}</option>
-            {{/each}}
+          <select name="system.crafting.type">
+            {{selectOptions types selected=system.crafting.type valueAttr="id" labelAttr="label"}}
           </select>
       </fieldset>
 
@@ -22,10 +20,8 @@
         <legend>Time</legend>
         <div class="flex">
           <input type="number" name="system.crafting.time.value" value="{{system.crafting.time.value}}" placeholder="Crafting time"/>
-          <select name="system.crafting.time.unit" value="system.crafting.time.unit">
-            <option value="minutes">Minutes</option>
-            <option value="hours">Hours</option>
-            <option value="days">Days</option>
+          <select name="system.crafting.time.unit">
+            {{selectOptions timeUnits selected=system.crafting.time.unit valueAttr="id" labelAttr="label"}}
           </select>
         </div>
       </fieldset>

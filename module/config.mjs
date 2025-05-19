@@ -1,4 +1,6 @@
-export const FALLOUTZERO = {}
+export const FALLOUTZERO = {
+  systemId: 'falloutzero',
+}
 
 /**
  * The set of Ability Scores used within the system.

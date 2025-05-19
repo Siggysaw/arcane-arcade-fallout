@@ -315,7 +315,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         if (!this.selectedCraftable) return false
 
         return this.selectedCraftable.materials.every((mat) => {
-            return (this.materials[mat.uuid].quantity ?? 0) >= mat.quantity
+            return (this.materials?.[mat.uuid]?.quantity ?? 0) >= mat.quantity
         })
     }
 

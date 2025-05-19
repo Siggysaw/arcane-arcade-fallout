@@ -58,6 +58,20 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     context.abilities = CONFIG.FALLOUTZERO.abilities
     context.skills = CONFIG.FALLOUTZERO.skills
     context.types = CONFIG.FALLOUTZERO.craftingTypes
+    context.timeUnits = [
+      {
+        id: 'minutes',
+        label: 'Minutes',
+      },
+      {
+        id: 'hours',
+        label: 'Hours',
+      },
+      {
+        id: 'days',
+        label: 'Days',
+      }
+    ]
 
     return context
   }
@@ -306,14 +320,14 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       dropSelector: '[data-material-drop]',
       callbacks: { drop: this._onDropMaterial.bind(this) },
     })
-    dragDrop.bind(html[0])
+    dragDrop.bind(html[2])
 
     document.querySelector('[data-add-requirement]')?.addEventListener('click', this._onAddRequirement.bind(this))
 
     document.querySelectorAll('[data-remove-requirement]').forEach((el) => {
       el.addEventListener('click', this._onRemoveRequirement.bind(this))
     })
-    html[0].querySelectorAll('[data-remove-material]').forEach((el) => {
+    html[2].querySelectorAll('[data-remove-material]').forEach((el) => {
       el.addEventListener('click', this._onRemoveMaterial.bind(this))
     })
   }

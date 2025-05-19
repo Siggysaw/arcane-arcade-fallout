@@ -1,4 +1,12 @@
 export function registerSystemSettings() {
+    game.settings.register(CONFIG.FALLOUTZERO.systemId, 'MigrationVersion', {
+        name: 'Migration Version',
+        hint: 'The current migration version of the system',
+        scope: 'world',
+        config: false,
+        type: String,
+        default: '0.0.0',
+    })
     game.settings.register('core', 'CarryLoad', {
         name: 'Exact Carry Load Calculator',
         hint: 'Checked: 23 x 10mm ammo = 2.3 load | Unchecked: 23 x 10mm ammo = 2 load',
