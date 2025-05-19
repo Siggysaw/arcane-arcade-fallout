@@ -320,14 +320,17 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       dropSelector: '[data-material-drop]',
       callbacks: { drop: this._onDropMaterial.bind(this) },
     })
-    dragDrop.bind(html[2])
+    const form = Object.values(html).find((element) => element.tagName === 'FORM')
+    if (form) {
+      dragDrop.bind(form)
+    }
 
     document.querySelector('[data-add-requirement]')?.addEventListener('click', this._onAddRequirement.bind(this))
 
     document.querySelectorAll('[data-remove-requirement]').forEach((el) => {
       el.addEventListener('click', this._onRemoveRequirement.bind(this))
     })
-    html[2].querySelectorAll('[data-remove-material]').forEach((el) => {
+    form.querySelectorAll('[data-remove-material]').forEach((el) => {
       el.addEventListener('click', this._onRemoveMaterial.bind(this))
     })
   }
@@ -384,6 +387,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     const permitted = [
       'junk',
       'material',
+      'ammo',
     ]
 
     const item = await fromUuid(dropData.uuid)
