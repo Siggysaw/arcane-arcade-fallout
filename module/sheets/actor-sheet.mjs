@@ -330,8 +330,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: 'Equip/Unequip',
-        icon: '<i class="fas fa-tshirt"></i>',
+        name: '3AP Stow/Equip',
+        icon: '',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
@@ -376,7 +376,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: 'Use Chem',
+        name: '4AP Use Chem',
         icon: '<i class="fas fa-syringe"></i>',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
@@ -392,7 +392,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: 'Use Med',
+        name: '4AP Use Med',
         icon: '<i class="fas fa-medkit"></i>',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
@@ -511,13 +511,20 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         callback: (element) => {
           this.actor.applyApCost(5)
         },
+      }, {
+        name: 'Use Med/Chem (4 AP)',
+        icon: '<i class="fas fa-shoe"></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(4)
+        },
       },
       {
         name: 'Grapple (3 AP)',
         icon: '<i class="fas fa-shoe"></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
-          this.actor.applyApCost(5)
+          this.actor.applyApCost(3)
         },
       },
       {
@@ -533,7 +540,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         icon: '<i class="fas fa-shoe"></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
-          this.actor.applyApCost(5)
+          this.actor.applyApCost(6)
         },
       },
       {
@@ -541,7 +548,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         icon: '<i class="fas fa-shoe"></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
-          this.actor.applyApCost(5)
+          this.actor.applyApCost(3)
         },
       },
       {
@@ -549,7 +556,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         icon: '<i class="fas fa-shoe"></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
-          this.actor.applyApCost(5)
+          this.actor.applyApCost(6)
         },
       },
       {
@@ -557,7 +564,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         icon: '<i class="fas fa-shoe"></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
-          this.actor.applyApCost(5)
+          this.actor.applyApCost(3)
         },
       },
       {
@@ -565,7 +572,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         icon: '<i class="fas fa-shoe"></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
-          this.actor.applyApCost(5)
+          this.actor.applyApCost(3)
         },
       },
       {
@@ -573,7 +580,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         icon: '<i class="fas fa-shoe"></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
-          this.actor.applyApCost(5)
+          this.actor.applyApCost(4)
         },
       },
       {
@@ -581,7 +588,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         icon: '<i class="fas fa-shoe"></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
-          this.actor.applyApCost(5)
+          this.actor.applyApCost(6)
         },
       },
       {
@@ -613,10 +620,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     new ContextMenu(html, '.context-menu', itemContextMenu, { eventName: 'click', _expandUp: true })
     new ContextMenu(html, '.combat-menu', combatContextMenu, { eventName: 'click', _expandUp: true })
 
+    //Death Saves
+    html.on('click', '[data-rolldeathsave]', (ev) => {
+      this.actor.deathSave()
+    })
+
     //show rule information
     html.on('click', '[data-condition]', (ev) => {
       const condition = ev.currentTarget.dataset.condition
-      this.actor.ruleinfo(condition)
+      
     })
     //show Combat Action Information
     html.on('click', '[data-combatActions]', (ev) => {

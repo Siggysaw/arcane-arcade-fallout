@@ -5,7 +5,7 @@
                    class="context-menu backpack-item item"
                    data-item-id="{{ item._id }}"
                       draggable="true"
-                   title="{{localize 'DOCUMENT.Update' type='item'}}">
+                   data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
                     {{item.name}}({{item.system.quantity}})
                 </li>
         {{/each}}
@@ -18,7 +18,7 @@
               class="context-menu backpack-item item"
               data-item-id="{{ item._id }}"
               draggable="true"
-              title="{{localize 'DOCUMENT.Update' type='item'}}">
+              data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
             {{item.name}}({{item.system.quantity}})
         </li>
 

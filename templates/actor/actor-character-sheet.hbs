@@ -5,19 +5,26 @@
     <header class="sheet-header">
       <div class="header-fields">
         {{#GM}}
-        <span title="Toggle if a Character is Active For Party Bonuses"
+        <span data-tooltip="Toggle if a Character is Active For Party Bonuses"
           >Active:<i
             data-activeCheck
             class="fas fa-toggle-{{#if system.activePartymember}}on{{else}}off{{/if}}"
           ></i
         ></span>
         {{/GM}}
-        <span title="Toggle Edit Mode"
+        <span data-tooltip="Toggle Edit Mode"
           >Edit:<i
             data-editToggle
             class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"
           ></i
         ></span>
+          {{#unless system.editToggle}}
+            <style>
+            .edit-icon{
+                display:none;
+            }
+            </style>
+            {{/unless}}
         <table>
           <tr>
             <td>

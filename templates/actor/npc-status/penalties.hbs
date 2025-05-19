@@ -12,11 +12,11 @@
          <td>
             <p class="condition" data-condition="Fatigue_and_Exhaustion">Exhaustion</p>
          </td>
-        <td class="status-info-label" title="10 Levels of Rads = Dead">
+        <td class="status-info-label" data-tooltip="10 Levels of Rads = Dead">
             <p class="condition"><a class="content-link" data-link="" data-uuid="Compendium.arcane-arcade-fallout.conditions.Item.0KeR41HcadOH78KN" data-id="0KeR41HcadOH78KN" data-type="Item" data-pack="arcane-arcade-fallout.conditions" data-tooltip="Click for details.">Rad LVL</a></p>
         </td>
         <td class="status-info-label"
-            title="Every 10 levels resets and gives 1 level radiation">
+            data-tooltip="Every 10 levels resets and gives 1 level radiation">
             <p class="condition" data-condition="Irradiation">Irradiation</p>
         </td>
     </tr>
@@ -97,7 +97,7 @@
                     </i>
                 </div>
                 <div>
-                    <progress title="{{irradiated}} out of 10"
+                    <progress data-tooltip="{{irradiated}} out of 10"
                               style="width:100%;"
                               class="statusbar"
                               value="{{ irradiated }}"

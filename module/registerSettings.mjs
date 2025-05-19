@@ -1,3 +1,4 @@
+import { FALLOUTZERO } from './config.mjs'
 export function registerSystemSettings() {
     game.settings.register(CONFIG.FALLOUTZERO.systemId, 'MigrationVersion', {
         name: 'Migration Version',
@@ -137,12 +138,12 @@ export function registerHbsHelpers() {
         return options.inverse(this)
     })
     // If Vault Tec Sheets
-    Handlebars.registerHelper('VaultTec', function (actorType, options) {
-        if (game.settings.get('core', 'VaultTec')) {
-            return options.fn(this)
-        }
-        return options.inverse(this)
-    })
+  Handlebars.registerHelper('isVaultTec', function (options) {
+    if (game.settings.get('core', 'VaultTec')) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  })
     // If Value equals something
     Handlebars.registerHelper('Check', function (v1, v2, options) {
         if (v1 == v2) {

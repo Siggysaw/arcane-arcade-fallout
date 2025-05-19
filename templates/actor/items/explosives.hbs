@@ -49,7 +49,7 @@
                                      data-label="Attempt to Arm a {{ item.name }} They'll need to match or beat a {{#Sum item.system.armDC 10}}{{/Sum}}"
                                      data-roll="d20+ {{../skills.explosives.value}}+@per.mod - @penaltyTotal + @luckmod"
                                      {{/GreaterThan}}
-                                     title="d20 + explosives({{../skills.explosives.value}}) - penalties({{../penaltyTotal}}) + Luck Modifier ({{../luckmod}})" />
+                                     data-tooltip="d20 + explosives({{../skills.explosives.value}}) - penalties({{../penaltyTotal}}) + Luck Modifier ({{../luckmod}})" />
                                 ARM DC: {{#Sum item.system.armDC 10}}{{/Sum}}
                                 {{else}}
                                 Auto Succeeds
@@ -129,14 +129,14 @@
                         <a style="float: right; margin-right: 10px"
                            class="item-control item-delete"
                            data-item-id="{{ item._id }}"
-                           title="{{localize 'DOCUMENT.Delete' type='item'}}">
+                           data-tooltip="{{localize 'DOCUMENT.Delete' type='item'}}">
                             <i class="fas fa-trash"></i>
                         </a>
                         <a style="float: right; margin-right: 10px"
                            data-edit
                            data-item-id="{{ item._id }}"
                            class="item-control"
-                           title="{{localize 'DOCUMENT.Update' type='item'}}">
+                           data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
                             <i class="fas fa-edit"></i>
                         </a>
                         {{#DifferentFrom item.system.description ""}}
@@ -144,7 +144,7 @@
                             data-sendToChat
                             data-item-id="{{ item._id }}"
                             class="item-control"
-                            title="Send description to Chat">
+                            data-tooltip="Send description to Chat">
                                 <i class="fa-solid fa-comment"></i>
                             </a>
                         {{/DifferentFrom}}

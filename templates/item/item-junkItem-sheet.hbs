@@ -1,6 +1,6 @@
-<form class="{{ cssClass }}{{#if system.vaulttec}} vaulttec {{/if}}" autocomplete="off">
+<form class="{{ cssClass }}{{#isVaultTec}} vaulttec {{/isVaultTec}}" autocomplete="off">
     <header class="sheet-header">
-        <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
+        <img class="profile-img" src="{{ item.img }}" data-edit="img" data-tooltip="{{ item.name }}" />
         <div class="header-fields">
             <h1 class="charname">
                 <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
@@ -10,7 +10,6 @@
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="crafting">Crafting</a>
         <a class="item" data-tab="effects">Effects</a>
     </nav>
 
@@ -26,14 +25,11 @@
                         <div class="weapon-label">Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
                     </div>
                 </div>
-                <div class="grid-span-7 weapon-description">
+                <div class="grid-span-7 crafting-table">{{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}</div>
+                <div class="grid-span-10 weapon-description">
                     {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
                 </div>
             </div>
-        </div>
-        {{!-- Crafting Tab --}}
-        <div class="tab crafting" data-group="primary" data-tab="crafting">
-            {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
         </div>
         {{!-- Effects Tab --}}
         <div class="tab effects" data-group="primary" data-tab="effects">

@@ -1,4 +1,4 @@
-<div class="{{#if system.vaulttec}} vaulttec {{/if}}">
+<div class="{{#isVaultTec}} vaulttec {{/isVaultTec}}">
     <form autocomplete="off">
         <header class="sheet-header">
             <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" /><br />
@@ -18,57 +18,44 @@
         {{!-- Sheet Body --}}
         <section class="sheet-body">
             {{!-- Description Tab --}}
-            <div class="tab htmlfield" item-description data-group="primary" data-tab="description">
-                <div class="grid grid-2col gap-3">
+            <div class="tab" item-description data-group="primary" data-tab="description">
+                <div class="grid grid-10col">
+                    <div class="grid-span-3">
+                        <div class="grid grid-2col weapon-details">
+                            <div class="weapon-label">Level:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
+                            <div class="weapon-label">Repeatable:</div><div style="text-align:center;padding:0px;"><input type="checkbox" name="system.repeat.canRepeat" {{checked system.repeat.canRepeat}} /></div>
+                            <div class="weapon-label">Gen Req:</div><div><input type="text" name="system.requirement.value" value="{{ system.requirement.value }}" /></div>
+                            <div class="weapon-label">Lvl Req:</div><div> <input type="number" min="1" name="system.lvlReq" value="{{system.lvlReq}}" /></div>
+                            <div class="grid-span-2"><hr /></div>
+                            <div class="grid-span-2" style="text-align:center;">SPECIAL Req:</div>
+                            <div>
+                                <select name="system.specialReq.special">
+                                    {{selectOptions specialOptions selected=system.specialReq.special valueAttr="id" labelAttr="label" blank="None"}}
+                                </select>
+                            </div>
+                            <div>
+                                {{#if system.specialReq.special }}
+                                <input type="number" value={{system.specialReq.value}} min="1" max="10" name="system.specialReq.value" placeholder="SPECIAL Value" />
+                                {{/if}}
+                            </div>
+                            <div class="grid-span-2">Race Req: </div>
+                            <div data-race-drop class="drop-area grid-span-2" data-tooltip="drop race here to add">
+                                {{#each system.raceReq as |race|}}
+                                <div class="flex">
+                                    <div>{{race.label}}</div>
+                                    <button data-remove-race="{{race.id}}" class="ml-5 no-background" type="button">
+                                        <i class="fas fa-minus-square"></i>
+                                    </button>
+                                </div>
+                                {{/each}}
+                            </div>
 
-                    <div class="nowrap">Repeatable</div>
-                    <input type="checkbox" name="system.repeat.canRepeat" {{checked system.repeat.canRepeat}} />
-                    {{#if system.repeat.canRepeat}}
-                    Times: <input name="system.repeat.times" value="{{ system.repeat.times }}" type="number" />
-                    Repeat Rewards: <input name="system.repeat.requirement" value="{{ system.repeat.requirement }}" placeholder="requirement" type="text" />
-                    {{/if}}
-
-                    {{!-- Requirement (text field, no automation) --}}
-                    <div class="nowrap">Req: </div>
-                    <input type="text"
-                           name="system.requirement.value"
-                           value="{{ system.requirement.value }}" />
-
-                    {{!-- Character level requirement --}}
-                    <div class="nowrap">Level Req: </div>
-                    <input type="number"
-                           min="1"
-                           name="system.lvlReq"
-                           value="{{system.lvlReq}}" />
-
-                    {{!-- Special requirement --}}
-                    <div class="nowrap">SPECIAL Req: </div>
-                    <div class="flex gap-3">
-                        <select name="system.specialReq.special">
-                            {{selectOptions specialOptions selected=system.specialReq.special valueAttr="id" labelAttr="label" blank="None"}}
-                        </select>
-                        {{#if system.specialReq.special }}
-                        <input type="number" value={{system.specialReq.value}} min="1" max="10" name="system.specialReq.value" placeholder="Required special value" />
-                        {{/if}}
-                    </div>
-
-
-                    {{!-- Race requirements --}}
-                    <div class="nowrap">Race Req: </div>
-                    <div data-race-drop class="drop-area" data-tooltip="drop race here to add">
-                        {{#each system.raceReq as |race|}}
-                        <div class="flex">
-                            <div>{{race.label}}</div>
-                            <button data-remove-race="{{race.id}}" class="ml-5" type="button">
-                                <i class="fas fa-minus-square"></i>
-                            </button>
                         </div>
-                        {{/each}}
+                    </div>
+                    <div class="grid-span-7 weapon-description">
+                        {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
                     </div>
                 </div>
-                {{{ system.repeat.requirement }}}<br />
-                {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
-                {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
             </div>
             {{!-- Effects Tab --}}
             <div class="tab effects" data-group="primary" data-tab="effects">
@@ -76,5 +63,5 @@
             </div>
         </section>
     </form>
-    </div>
+</div>
 {{ log this }}

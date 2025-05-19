@@ -319,7 +319,7 @@ details > summary {
   background-color: var(--dark);
 }
 
-.sheet {
+.sheet .actor {
   text-transform: capitalize;
 }
 
@@ -594,10 +594,11 @@ td,
   letter-spacing: 0rem;
 }
 
-.sheet .fas,
-.sheet .fa {
-  cursor: pointer;
-}
+  .sheet .fas,
+  .sheet .fa,
+  .sheet .far{
+    cursor: pointer;
+  }
 
 .sheet .fakebutton,
 .sheet button {
@@ -1073,15 +1074,19 @@ a.inline-roll,
 .sheet nav a:hover,
 .sheet .tabs > [data-tab].active {
   background-color: var(--user-color);
-  color: var(--dark);
+  color: #333;
   text-decoration: none;
   text-shadow: none;
 }
+  .sheet nav a:hover,
+  .sheet .tabs > [data-tab].active:hover{
+      color:#333
+  }
 
-.sheet label {
-  font-size: 13pt;
-  padding: 5px;
-}
+  .sheet label {
+    font-size: 13pt;
+    padding: 5px;
+  }
 
   .sheet label.specials:hover {
     color: #000;
@@ -1138,6 +1143,7 @@ a.inline-roll,
 .item .weapon-description, .item .weapon-details {
   border: solid 1px;
   padding: 5px;
+  min-height:200px;
 }
 
 .sheet.item .item-label {
@@ -1302,7 +1308,8 @@ a.inline-roll,
   padding: 3px;
 }
 
-.sheet .backpack-row:hover a {
+.sheet .backpack-row:hover a,
+.sheet .backpack-row:hover .item{
   color: black;
 }
 
@@ -1321,6 +1328,18 @@ a.inline-roll,
 .sheet .status .show-unequipped {
   display: none;
 }
+
+.sheet .backpack .segment{
+    margin:5px;
+    padding:5px;
+}
+
+/* Death Saving Rolls*/
+.sheet .death-saves div{
+    padding:5px;
+}
+
+
 
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {

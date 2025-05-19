@@ -1,3 +1,8 @@
+<style>
+    .sheet .backpack i{
+        cursor:default;
+    }
+</style>
 <div class="grid grid-2col backpack-tab">
     <div class="left segment">
         <h3>Weapons</h3>
@@ -20,9 +25,9 @@
             <li class="item" data-item-id="{{ item._id }}" draggable="true">
                 {{item.name}}
         </div>
-        <div class="grid-span-3">{{item.system.quantity}}</div>
         <div class="grid-span-3">{{item.system.cost}}</div>
-        <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+        <div class="grid-span-3">{{item.system.quantity}}</div>
+        <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
     </div>
         {{/each}}
         {{#each meleeWeapons as |item id|}}
@@ -37,7 +42,7 @@
             <li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
-            <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
         <h3>Ammunition</h3>
@@ -52,7 +57,7 @@
             <div class="grid-span-11 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
-            <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
         {{#if explosives}}<h3>Explosives</h3>
@@ -68,7 +73,7 @@
             <div class="grid-span-11 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
-            <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
     </div>
@@ -92,7 +97,7 @@
             <div class="grid-span-10 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
-            <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
         {{#each powerArmors as |item id|}}
@@ -106,7 +111,7 @@
             <div class="grid-span-10 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
-            <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
         {{#each miscItems as |item id|}}
@@ -120,7 +125,7 @@
             <div class="grid-span-10 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
-            <div class="grid-span-3">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
     </div>
@@ -140,7 +145,7 @@
             <div class="grid-span-7 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-2">{{item.system.cost}}</div>
             <div class="grid-span-2">{{item.system.quantity}}</div>
-            <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-2" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
             <div class="grid-span-6 description">{{{item.system.description}}}</div>
         </div>
         {{/each}}
@@ -149,7 +154,7 @@
             <div class="grid-span-7 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-2">{{item.system.cost}}</div>
             <div class="grid-span-2">{{item.system.quantity}}</div>
-            <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-2" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
             <div class="grid-span-6 description">{{{item.system.description}}}</div>
         </div>
         {{/each}}
@@ -158,7 +163,7 @@
             <div class="grid-span-7 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-2">{{item.system.cost}}</div>
             <div class="grid-span-2">{{item.system.quantity}}</div>
-            <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-2" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
             <div></div>
         </div>
         {{/each}}
@@ -176,7 +181,7 @@
             <div class="grid-span-12 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
-            <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-2" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
         <h3>Materials</h3>
@@ -191,7 +196,7 @@
             <div class="grid-span-12 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
-            <div class="grid-span-2">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+            <div class="grid-span-2" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
     </div>

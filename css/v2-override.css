@@ -12,9 +12,6 @@
     margin: 0;
 }
 
-.application label {
-    color: var(--user-color);
-}
 .application input[type="checkbox"]:checked::before {
     color: white;
 }

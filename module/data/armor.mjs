@@ -38,8 +38,6 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
         initial: 0,
       }),
     })
-
-
     schema.damageThreshold = new fields.SchemaField({
       value: new fields.NumberField({
         initial: 0,
@@ -144,7 +142,7 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
   }
 
   prepareDerivedData() {   
-    this.vaulttec = game.settings.get('core', 'VaultTec')
+    
   }
 
 async addUpgrade(myItem,myUpgrade){

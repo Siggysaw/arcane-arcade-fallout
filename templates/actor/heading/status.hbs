@@ -19,7 +19,7 @@
                            type="number"
                            class="numberwithbuttons"
                            name="system.health.max"
-                           title="Base Max = {{ health.tooltip }}"
+                           data-tooltip="Base Max = {{ health.tooltip }}"
                            value="{{ health.max }}" />
                 </tr>
                 <tr>
@@ -56,7 +56,7 @@
                            type="number"
                            class="numberwithbuttons"
                            name="system.stamina.max"
-                           title="Base Max = {{ stamina.tooltip }}"
+                           data-tooltip="Base Max = {{ stamina.tooltip }}"
                            value="{{ stamina.max }}" />
                 </tr>
                 <tr>
@@ -94,7 +94,7 @@
                            type="number"
                            class="numberwithbuttons"
                            name="system.actionPoints.max"
-                           title="Base Max = {{ system.actionPoints.tooltip }}"
+                           data-tooltip="Base Max = {{ system.actionPoints.tooltip }}"
                            value="{{ system.actionPoints.max }}" />
                 </tr>
                 <tr>
@@ -112,10 +112,10 @@
         </td>
     </tr>
 </table>
-    <i title="Short Rest" data-rest="short" class="header-icon fas fa-campground fakebutton"></i>
-    <i title="Long Rest" data-rest="long" class="header-icon fas fa-bed fakebutton"></i>
-    <i title="Custom Dice Roll" data-custom-roll class="header-icon fas fa-dice fakebutton"></i>
-    <i title="Perks List" data-view-perks class=" header-icon fas fa-radiation-alt fakebutton"></i>
+    <i data-tooltip="Short Rest" data-rest="short" class="header-icon fas fa-campground fakebutton"></i>
+    <i data-tooltip="Long Rest" data-rest="long" class="header-icon fas fa-bed fakebutton"></i>
+    <i data-tooltip="Custom Dice Roll" data-custom-roll class="header-icon fas fa-dice fakebutton"></i>
+    <i data-tooltip="Perks List" data-view-perks class=" header-icon fas fa-radiation-alt fakebutton"></i>
 
 
 

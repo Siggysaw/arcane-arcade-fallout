@@ -1,36 +1,71 @@
 <table style="max-width:200px;">
-  <tr>
-    <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
-      <img class="profile-pic" src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
-        {{#if actor.inCombat}}<div class="combat-icon">In Combat!</div>{{/if}}
+    <tr>
+        <td class="profile-image-td" style="padding: 10px; padding-top: 0px">
+            <img class="profile-pic" src="{{ actor.img }}" data-edit="img" data-tooltip="{{ actor.name }}" />
+            {{#if actor.inCombat}}<div class="combat-icon">In Combat!</div>{{/if}}
+            {{#if actor.system.saveFailures.third}}<div class="combat-icon">DECEASED</div>{{/if}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="current-caps">
+                <tr>
+                    <td>
+                        <img data-tooltip="Bottlecaps"
+                             style="border: none"
+                             class="custom-icon"
+                             src="/systems/arcane-arcade-fallout/assets/caps.webp" />
+                    </td>
+                    <td>
+                        <input id="caps" type="number" name="system.caps" value="{{ caps }}" />
+                    </td>
+                </tr>
+            </table>
+    <tr>
+        <td>
+            {{#GM}}
+            <div style="max-width:90%;margin:auto;" class="fakebutton" data-pc-loot data-tooltip="Player loots a room or container">
+                <i class="fa-regular">ROOM LOOT</i>
+            </div>
+            {{/GM}}
+            {{#LesserThan system.health.value 1}}
+            <div class="death-saves">Death Saving Rolls</div>
+            <div class="grid grid-4col death-saves">
+                <div>Live</div>
+                <div>
+                    <i data-save1
+                       class="{{#if system.saveSuccesses.first}}fas fa-heartbeat{{else}}far fa-circle{{/if}}"></i>
+                </div>
+                <div>
+                    <i data-save2
+                       class="{{#if system.saveSuccesses.second}}fas fa-heartbeat{{else}}far fa-circle{{/if}}"></i>
+                </div>
+                <div>
+                    <i data-save3
+                       class="{{#if system.saveSuccesses.third}}fas fa-heartbeat{{else}}far fa-circle{{/if}}"></i>
+
+                </div>
+            </div>
+            <div class="grid grid-4col death-saves">
+                <div>Die</div>
+                <div>
+                    <i data-fail1
+                       class="{{#if system.saveFailures.first}}fas fa-skull{{else}}far fa-circle{{/if}}"></i>
+                </div>
+                <div>
+                    <i data-fail2
+                       class="{{#if system.saveFailures.second}}fas fa-skull{{else}}far fa-circle{{/if}}"></i>
+                </div>
+                <div>
+                    <i data-fail3
+                       class="{{#if system.saveFailures.third}}fas fa-skull{{else}}far fa-circle{{/if}}"></i>
+                </div>
+            </div>
+            <div class="death-saves fakebutton" data-apusage="2" {{#GreaterThan system.actionPoints.value 1}}data-rolldeathsave{{/GreaterThan}}>Roll Death Save</div>
+
+            {{/LesserThan}}
+        </td>
+    </tr>
     </td>
-  </tr>
-  <tr>
-    <td>
-      <table class="current-caps">
-        <tr>
-          <td>
-            <img
-              title="Bottlecaps"
-              style="border: none"
-              class="custom-icon"
-              src="/systems/arcane-arcade-fallout/assets/caps.webp"
-            />
-          </td>
-          <td>
-            <input id="caps" type="number" name="system.caps" value="{{ caps }}" />
-          </td>
-        </tr>
-      </table>
-  <tr>
-      <td>
-          {{#GM}}
-          <div style="max-width:90%;margin:auto;" class="fakebutton" data-pc-loot title="Player loots a room or container">
-              <i class="fa-regular">ROOM LOOT</i>
-          </div>
-          {{/GM}}
-      </td>
-  </tr>
-    </td>
-  </tr>
+    </tr>
 </table>

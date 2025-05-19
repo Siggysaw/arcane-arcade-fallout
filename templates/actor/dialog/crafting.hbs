@@ -1,18 +1,20 @@
 <table style="max-height:40px;">
-  <td>
-    <select style="padding-left:20px" name="packSelect" id = "packSelect"><option value='nothing'>Select a Compendium to start</option></select>
-  </td>
-  <td>
-    <select style="padding-left:20px" name="itemSelect" id = "itemSelect"><option value='nothing'>Select a Compendium to start</option></select>
-  </td>
-</table>
-<table id="buttonsTable" style="max-height:40px;width:100%">
-  <tr>
-    <td style="width: 20%">
-      <button id="safeCraft" style="color:var(--user-color);visibility:hidden" >Safe Craft</button>
+    <td>
+        <select style="padding-left:20px" name="packSelect" id="packSelect">
+        <option value='nothing'>Select a Compendium to start</option>
+        </select>
     </td>
     <td>
-      <p style="
+        <select style="padding-left:20px" name="itemSelect" id="itemSelect"><option value='nothing'>Select a Compendium to start</option></select>
+    </td>
+</table>
+<table id="buttonsTable" style="max-height:40px;width:100%">
+    <tr>
+        <td style="width: 20%">
+            <button id="safeCraft" style="color:var(--user-color);visibility:hidden">Safe Craft</button>
+        </td>
+        <td>
+            <p style="
       color: var(--user-color);
       max-height:30px;
       letter-spacing: 0;
@@ -20,29 +22,35 @@
       justify-content: center;
       align-items: center;
       text-transform: uppercase;"
-      id="itemName"></p>
-    </td>
-    <td style="width: 25%">
-      <button id="rollCraft2" style="color:var(--user-color);visibility:hidden">Other Roll</button>
-    </td>
-    <td style="width: 20%">
-      <button id="rollCraft" style="color:var(--user-color);visibility:hidden">Crafting Roll</button>
-    </td>
-  </tr>
-  <tr></tr>
+               id="itemName"></p>
+        </td>
+        <td style="width: 25%">
+            <button id="rollCraft2" style="color:var(--user-color);visibility:hidden">Other Roll</button>
+        </td>
+        <td style="width: 20%">
+            <button id="rollCraft" style="color:var(--user-color);visibility:hidden">Crafting Roll</button>
+        </td>
+    </tr>
+    <tr></tr>
 </table>
 <table class="craftingTable" style="text-align:center;visibility:hidden;">
-  <th class="tt" style="width:40%">Crafting Details</th>                    <th  style="width:20%" class="tt">Required<br>(in stock)</th><th  style="width:40%" class="tt">Required Material</th>
-  <tr style="height:8%"><td id="craftingTime"></td>                        <td  id="matsReq1.qty"></td><td id="matsReq1.mat" ></td></tr>
-  <tr style="height:8%"><td id="craftingDC" style="visibility:hidden;"></td><td  id="matsReq2.qty"></td><td id="matsReq2.mat" ></td></tr>
-  <tr style="height:8%"><td id="craftingDC2" style="visibility:hidden;"></td><td  id="matsReq3.qty"></td><td id="matsReq3.mat" ></td></tr>
-  <tr style="height:8%"><td id="multiple.qty"></td><td  id="matsReq4.qty"></td><td id="matsReq4.mat" ></td></tr>
-  <tr style="height:8%"><td ></td>                           <td  id="matsReq5.qty"></td><td id="matsReq5.mat" ></td></tr>
-  <tr style="height:8%"><td ></td>                           <td  id="matsReq6.qty"></td><td id="matsReq6.mat" ></td></tr>
-  <tr style="height:8%"><td ></td>                           <td  id="matsReq7.qty"></td><td id="matsReq7.mat" ></td></tr>
-  <tr style="height:8%"><td ></td>                           <td  id="matsReq8.qty"></td><td id="matsReq8.mat" ></td></tr>
-  <tr style="height:8%"><td ></td>                           <td  id="matsReq9.qty"></td><td id="matsReq9.mat" ></td></tr>
-  <tr style="height:8%"><td ></td>                           <td  id="matsReq10.qty"></td><td id="matsReq10.mat" ></td></tr>
-  <tr style="height:8%"><td ></td>                           <td  id="matsReq11.qty"></td><td id="matsReq11.mat" ></td></tr>
-  <tr style="height:8%"><td ></td>                           <td  id="matsReq12.qty"></td><td id="matsReq12.mat" ></td></tr>
+    <th class="tt" style="width:40%">Crafting Details</th>
+    <th style="width:20%" class="tt">Required<br>(in stock)</th>
+    <th style="width:40%" class="tt">Required Material</th>
+    <tr style="height:8%"><td id="craftingTime"></td>                        <td id="matsReq1.qty"></td><td id="matsReq1.mat"></td></tr>
+    <tr style="height:8%">
+    <td id="craftingDC" style="visibility:hidden;"></td>
+    <td id="matsReq2.qty"></td><td id="matsReq2.mat"></td></tr>
+    <tr style="height:8%"><td id="craftingDC2" style="visibility:hidden;"></td>
+    <td id="matsReq3.qty"></td><td id="matsReq3.mat"></td></tr>
+    <tr style="height:8%"><td id="multiple.qty"></td><td id="matsReq4.qty"></td>
+    <td id="matsReq4.mat"></td></tr>
+    <tr style="height:8%"><td></td>                           <td id="matsReq5.qty"></td><td id="matsReq5.mat"></td></tr>
+    <tr style="height:8%"><td></td>                           <td id="matsReq6.qty"></td><td id="matsReq6.mat"></td></tr>
+    <tr style="height:8%"><td></td>                           <td id="matsReq7.qty"></td><td id="matsReq7.mat"></td></tr>
+    <tr style="height:8%"><td></td>                           <td id="matsReq8.qty"></td><td id="matsReq8.mat"></td></tr>
+    <tr style="height:8%"><td></td>                           <td id="matsReq9.qty"></td><td id="matsReq9.mat"></td></tr>
+    <tr style="height:8%"><td></td>                           <td id="matsReq10.qty"></td><td id="matsReq10.mat"></td></tr>
+    <tr style="height:8%"><td></td>                           <td id="matsReq11.qty"></td><td id="matsReq11.mat"></td></tr>
+    <tr style="height:8%"><td></td>                           <td id="matsReq12.qty"></td><td id="matsReq12.mat"></td></tr>
 </table> 

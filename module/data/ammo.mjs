@@ -26,6 +26,6 @@ export default class FalloutZeroItemAmmo extends FalloutZeroItemBase {
   }
 
   prepareDerivedData() {
-    this.vaulttec = game.settings.get('core', 'VaultTec')
+    
 }
 }

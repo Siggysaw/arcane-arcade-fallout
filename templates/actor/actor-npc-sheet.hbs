@@ -4,16 +4,10 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header">
       <div class="header-fields">
-        <span title="Toggle Edit Mode"
+        <span data-tooltip="Toggle Edit Mode"
           >Edit:<i
             data-editToggle
             class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"
-          ></i
-        ></span>
-                  <span title="Toggle Vault Tech Sheet Mode"
-          >Vault-Tec:<i
-            data-sheetToggle
-            class="fas fa-toggle-{{#if system.vaulttec}}on{{else}}off{{/if}}"
           ></i
         ></span>
         <table>

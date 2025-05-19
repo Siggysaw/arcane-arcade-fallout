@@ -5,6 +5,7 @@ export default class AttackRoll extends FormApplication {
     this.weapon = weapon
     this.actor = actor
     this.formDataCache = {
+      automaticAttack: false,
       consumesAp: true,
       skillBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus),
       attackBonus: this.actor.getAttackBonus(),
@@ -210,6 +211,7 @@ export default class AttackRoll extends FormApplication {
   }
 
   getFinalApCost() {
+    this.formDataCache.automaticAttack ? this.formDataCache.totalApCost = 0 :''
     if (this.formDataCache.overrideAp) {
       return this.formDataCache.adjustedApCost
     }
@@ -264,7 +266,8 @@ export default class AttackRoll extends FormApplication {
     /**
      * Deconstruct dialog form
      */
-    const {
+    let {
+      automaticAttack,
       skillBonus,
       attackBonus,
       damageBonus,
@@ -277,7 +280,7 @@ export default class AttackRoll extends FormApplication {
     } = this.formDataCache
 
     const rollBonusTotal = Number(skillBonus + attackBonus + abilityBonus + actorLuck + Number(bonus) - actorPenalties - decayPenalty)
-    console.log(`${rollBonusTotal} = ${skillBonus} + ${attackBonus} + ${abilityBonus} + ${actorLuck} + ${bonus} - ${actorPenalties} - ${decayPenalty}`)
+    //console.log(`${rollBonusTotal} = ${skillBonus} + ${attackBonus} + ${abilityBonus} + ${actorLuck} + ${bonus} - ${actorPenalties} - ${decayPenalty}`)
 
     /**
      * Roll to hit
@@ -312,6 +315,7 @@ export default class AttackRoll extends FormApplication {
     /**
      * Generate damage rolls
      */
+    automaticAttack ? abilityBonus = 0 :''
     const damageRolls = this.formDataCache.damages.map((damage) => {
       return {
         type: damage.selectedDamageType,
@@ -337,7 +341,7 @@ export default class AttackRoll extends FormApplication {
           rolls: damageRolls,
           isCritical: roll.dice[0].total >= this.weapon.system.critical.dice,
           criticalCondition: this.weapon.system.critical.condition,
-          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus || ''}) * ${this.weapon.system.critical.multiplier || ''}`,
+          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier || ''}`,
         },
       },
     })
