@@ -1468,16 +1468,108 @@ FALLOUTZERO.tokenHPColors = {
 }
 
 FALLOUTZERO.craftingTypes = {
-  explosive: {
-    id: 'explosive',
-    label: 'Explosive',
-  },
-  blades: {
-    id: 'blades',
-    label: 'Blades',
-  },
   ammunition: {
     id: 'ammunition',
     label: 'Ammo',
+  },
+  armor: {
+    id: 'armor',
+    label: 'Armor',
+  },
+  big_guns: {
+    id: 'big_guns',
+    label: 'Big guns',
+  },
+  blades: {
+    id: 'blades',
+    label: 'Bladed weapons',
+  },
+  blunt: {
+    id: 'blunt',
+    label: 'Blunt weapons',
+  },
+  chems: {
+    id: 'chems',
+    label: 'Chems',
+  },
+  drinks: {
+    id: 'drinks',
+    label: 'Drinks',
+  },
+  energy_ammo: {
+    id: 'energy_ammo',
+    label: 'Energy ammo',
+  },
+  energy_weapons: {
+    id: 'energy_weapons',
+    label: 'Energy weapons',
+  },
+  fist: {
+    id: 'fist',
+    label: 'Fist weapons',
+  },
+  food: {
+    id: 'food',
+    label: 'Food',
+  },
+  gear: {
+    id: 'gear',
+    label: 'Gear',
+  },
+  heavy_ammo: {
+    id: 'heavy_ammo',
+    label: 'Heavy ammo',
+  },
+  medicine: {
+    id: 'medicine',
+    label: 'Medicine',
+  },
+  mechanical: {
+    id: 'mechanical',
+    label: 'Mechanical weapons',
+  },
+  pistols: {
+    id: 'pistols',
+    label: 'Pistols',
+  },
+  placed_explosives: {
+    id: 'placed_explosive',
+    label: 'Placed explosives',
+  },
+  power_armor: {
+    id: 'power_armor',
+    label: 'Power armor',
+  },
+  ranged_weapon_mods: {
+    id: 'ranged_weapon_mods',
+    label: 'Ranged weapon mods',
+  },
+  rifles: {
+    id: 'rifles',
+    label: 'Rifles',
+  },
+  shotguns: {
+    id: 'shotguns',
+    label: 'Shotguns',
+  },
+  special_ammo: {
+    id: 'special_ammo',
+    label: 'Special ammo',
+  },
+  special_energy_ammo: {
+    id: 'special_energy_ammo',
+    label: 'Special energy ammo',
+  },
+  sub_machine_guns: {
+    id: 'sub_machine_guns',
+    label: 'Sub-Machine guns',
+  },
+  syringe_ammo: {
+    id: 'syringe_ammo',
+    label: 'Syringe ammo',
+  },
+  thrown_explosives: {
+    id: 'thrown_explosive',
+    label: 'Thrown explosives',
   },
 }
