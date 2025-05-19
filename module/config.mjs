@@ -1520,9 +1520,9 @@ FALLOUTZERO.craftingTypes = {
     id: 'heavy_ammo',
     label: 'Heavy ammo',
   },
-  medicine: {
-    id: 'medicine',
-    label: 'Medicine',
+  medicines: {
+    id: 'medicines',
+    label: 'Medicines',
   },
   mechanical: {
     id: 'mechanical',
@@ -1533,7 +1533,7 @@ FALLOUTZERO.craftingTypes = {
     label: 'Pistols',
   },
   placed_explosives: {
-    id: 'placed_explosive',
+    id: 'placed_explosives',
     label: 'Placed explosives',
   },
   power_armor: {
@@ -1569,7 +1569,7 @@ FALLOUTZERO.craftingTypes = {
     label: 'Syringe ammo',
   },
   thrown_explosives: {
-    id: 'thrown_explosive',
+    id: 'thrown_explosives',
     label: 'Thrown explosives',
   },
 }

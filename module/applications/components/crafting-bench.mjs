@@ -272,7 +272,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     }
 
     _onRender() {
-        this.element.querySelector('[data-action=search]')?.addEventListener('input', (e) => this.search(e))
+        this.element.querySelector('[data-action=search]')?.addEventListener('search', (e) => this.search(e))
     };
 
     async _prepareContext() {
@@ -431,6 +431,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
         if (!this.searchQuery) {
             this.craftingTree = this.fullCraftingTree
+            this.render()
             return
         }
 
