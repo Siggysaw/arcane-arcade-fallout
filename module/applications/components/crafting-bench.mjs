@@ -149,15 +149,13 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     get hasSkillChoice() {
-        return this.craftable.requirements.find((req) => {
-            return req.keys.includes('crafting')
-        })?.keys.length > 1
+        return this.craftable.mainRequirements.length > 1
     }
 
     get dc() {
         if (!this.craftable) return null
-        return this.craftable.requirements.find((req) => {
-            return req.keys.includes(this.selectedSkill)
+        return this.craftable.mainRequirements.find((req) => {
+            return req.key === this.selectedSkill
         })?.dc + 10 ?? null
     }
 
@@ -279,6 +277,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         return {
             craftingTree: this.craftingTree,
             selectedCraftable: this.selectedCraftable,
+            allRequirements: this.allRequirements,
             openBranches: this.openBranches,
             materials: this.materials,
             skills: this.skills,
@@ -319,25 +318,21 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         })
     }
 
-    get hasRequirements() {
-        if (!this.selectedCraftable) return false
-
-        return this.selectedCraftable.requirements.reduce((passes, req) => {
-            req.keys.forEach((skill) => {
-                if (this.skills[skill] < req.dc) {
-                    passes = false
-                }
-            })
-            return passes
-        }, true)
+    get allRequirements() {
+        if (!this.selectedCraftable) return []
+        return [
+            ...this.selectedCraftable.mainRequirements,
+            ...this.selectedCraftable.additionalRequirements,
+        ]
     }
 
-    get craftDC() {
-        if (!this.selectedCraftable) return null
-
-        return this.selectedCraftable.requirements.reduce((acc, req) => {
-            return acc + req.dc
-        }, 0)
+    get hasRequirements() {
+        return this.allRequirements.reduce((passes, req) => {
+            if (this.skills[req.key] < req.dc) {
+                passes = false
+            }
+            return passes
+        }, true)
     }
 
     async init() {
@@ -351,7 +346,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
                 'arcane-arcade-fallout.food-and-drinks',
                 'arcane-arcade-fallout.melee-weapons',
                 'arcane-arcade-fallout.rangedWeapons',
-
             ]
             const packsWithCraftables = game.packs.filter((p) => packsToGet.includes(p.collection))
             const packCraftables = await Promise.all(

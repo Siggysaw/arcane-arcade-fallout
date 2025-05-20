@@ -15,11 +15,23 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
 
     schema.crafting = new fields.SchemaField({
       craftable: new fields.BooleanField({ initial: false }),
+      quantity: new fields.NumberField({ initial: 1, min: 1 }),
       type: new fields.StringField({ initial: undefined }),
-      requirements: new fields.ArrayField(
+      mainRequirements: new fields.ArrayField(
         new fields.SchemaField({
-          keys: new fields.ArrayField(new fields.StringField()),
-          dc: new fields.NumberField({ initial: 1, min: 1 }),
+          key: new fields.StringField(),
+          dc: new fields.NumberField(),
+        }), {
+        initial: [{
+          key: CONFIG.FALLOUTZERO.skills.crafting.id,
+          dc: 5,
+        }]
+      }
+      ),
+      additionalRequirements: new fields.ArrayField(
+        new fields.SchemaField({
+          key: new fields.StringField(),
+          dc: new fields.NumberField(),
         })
       ),
       time: new fields.SchemaField({

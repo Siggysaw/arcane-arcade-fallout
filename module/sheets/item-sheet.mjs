@@ -325,37 +325,65 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       dragDrop.bind(form)
     }
 
-    document.querySelector('[data-add-requirement]')?.addEventListener('click', this._onAddRequirement.bind(this))
+    document.querySelector('[data-add-main-requirement]')?.addEventListener('click', this._onAddMainRequirement.bind(this))
+    document.querySelector('[data-add-additional-requirement]')?.addEventListener('click', this._onAddAdditionalRequirement.bind(this))
 
-    document.querySelectorAll('[data-remove-requirement]').forEach((el) => {
-      el.addEventListener('click', this._onRemoveRequirement.bind(this))
+    document.querySelectorAll('[data-remove-main-requirement]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveMainRequirement.bind(this))
+    })
+    document.querySelectorAll('[data-remove-additional-requirement]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveAdditionalRequirement.bind(this))
     })
     form.querySelectorAll('[data-remove-material]').forEach((el) => {
       el.addEventListener('click', this._onRemoveMaterial.bind(this))
     })
   }
 
-  _onAddRequirement(e) {
+  _onAddMainRequirement(e) {
     e.preventDefault()
-    const requirements = this.item.system.crafting.requirements
+    const requirements = this.item.system.crafting.mainRequirements
     requirements.push({
-      keys: [CONFIG.FALLOUTZERO.skills.crafting.id],
+      key: CONFIG.FALLOUTZERO.skills.crafting.id,
       dc: 1,
     })
     this.item.update({
-      ['system.crafting.requirements']: requirements,
+      ['system.crafting.mainRequirements']: requirements,
     })
   }
 
-  _onRemoveRequirement(e) {
+  _onAddAdditionalRequirement(e) {
     e.preventDefault()
-    const index = e.currentTarget.dataset.removeRequirement
+    const requirements = this.item.system.crafting.additionalRequirements
+    requirements.push({
+      key: CONFIG.FALLOUTZERO.skills.crafting.id,
+      dc: 1,
+    })
+    this.item.update({
+      ['system.crafting.additionalRequirements']: requirements,
+    })
+  }
+
+  _onRemoveMainRequirement(e) {
+    e.preventDefault()
+    const index = e.currentTarget.dataset.removeMainRequirement
     if (!index) return
 
-    const requirements = this.item.system.crafting.requirements
+    const requirements = this.item.system.crafting.mainRequirements
     requirements.splice(index, 1)
     this.item.update({
-      ['system.crafting.requirements']: requirements,
+      ['system.crafting.mainRequirements']: requirements,
+    })
+  }
+
+  _onRemoveAdditionalRequirement(e) {
+    e.preventDefault()
+    const index = e.currentTarget.dataset.removeAdditionalRequirement
+    if (!index) return
+
+    const requirements = this.item.system.crafting.additionalRequirements
+    requirements.splice(index, 1)
+    this.item.update({
+      ['system.crafting.additionalRequirements']: requirements,
     })
   }
 
@@ -388,12 +416,13 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       'junk',
       'material',
       'ammo',
+      'miscItem',
     ]
 
     const item = await fromUuid(dropData.uuid)
 
     if (!permitted.includes(item.type)) {
-      ui.notifications.warn('Only material or junk are accepted here')
+      ui.notifications.warn('Only material, junk, ammo, or miscellaneous items are accepted here')
       return false
     }
 

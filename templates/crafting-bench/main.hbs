@@ -32,20 +32,15 @@
                     <div>
                         Actor modifier
                     </div>
-                    {{#each selectedCraftable.requirements as |requirement|}}
+                    {{#each allRequirements as |requirement|}}
                         <div>
-                            {{#each requirement.keys as |key|}}
-                                {{#GreaterThan @index 1}} or {{/GreaterThan}} {{key}}
-                            {{/each}}
+                            {{requirement.key}}
                         </div>
                         <div>
                             {{ requirement.dc }}
                         </div>
                         <div>
-                            {{!-- #TODO HOW TO HANDLE MULTIPLE? --}}
-                            {{#each requirement.keys as |key|}}
-                                {{lookup ../../skills key}} 
-                            {{/each}}
+                            {{lookup ../skills requirement.key}} 
                         </div>
                     {{/each}}
                 </div>

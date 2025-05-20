@@ -15,6 +15,12 @@
           </select>
       </fieldset>
 
+      {{!-- quantity  --}}
+      <fieldset>
+        <legend>Quantity</legend>
+        <input type="number" name="system.crafting.quantity" value="{{system.crafting.quantity}}" placeholder="Quantity"/>
+      </fieldset>
+
       {{!-- time --}}
       <fieldset>
         <legend>Time</legend>
@@ -26,21 +32,40 @@
         </div>
       </fieldset>
 
-      {{!-- skill requirement --}}
+      {{!-- main skill requirement --}}
       <fieldset>
-        <legend>Skill requirements</legend>
+        <legend>Main skill requirements</legend>
         <div>
-          <button data-add-requirement>Add skill requirement</button>
+          <button data-add-main-requirement>Add skill requirement</button>
         </div>
-        {{#each system.crafting.requirements as |requirement|}}
+        {{#each system.crafting.mainRequirements as |requirement|}}
           <div class="flex gap-3">
-            <select class="multi-select" name="system.crafting.requirements.{{@index}}.keys" multiple>
+            <select name="system.crafting.mainRequirements.{{@index}}.key">
               {{#each ../skills as |skill|}}
-                <option value="{{skill.id}}" {{#if (IsIn skill.id requirement.keys)}} selected {{/if}}>{{skill.label}}</option>
+                <option value="{{skill.id}}" {{#if (Equals skill.id requirement.key)}} selected {{/if}}>{{skill.label}}</option>
               {{/each}}
             </select>
-            <input type="number" name="system.crafting.requirements.{{@index}}.dc" value="{{requirement.dc}}" placeholder="DC"/>
-            <button data-remove-requirement="{{@index}}">Remove</button>
+            <input type="number" name="system.crafting.mainRequirements.{{@index}}.dc" value="{{requirement.dc}}" placeholder="DC"/>
+            <button data-remove-main-requirement="{{@index}}">Remove</button>
+          </div>
+        {{/each}}
+      </fieldset>
+
+      {{!-- additional skill requirement --}}
+      <fieldset>
+        <legend>Additional skill requirements</legend>
+        <div>
+          <button data-add-additional-requirement>Add skill requirement</button>
+        </div>
+        {{#each system.crafting.additionalRequirements as |requirement|}}
+          <div class="flex gap-3">
+            <select name="system.crafting.additionalRequirements.{{@index}}.key">
+              {{#each ../skills as |skill|}}
+                <option value="{{skill.id}}" {{#if (Equals skill.id requirement.key)}} selected {{/if}}>{{skill.label}}</option>
+              {{/each}}
+            </select>
+            <input type="number" name="system.crafting.additionalRequirements.{{@index}}.dc" value="{{requirement.dc}}" placeholder="DC"/>
+            <button data-remove-additional-requirement="{{@index}}">Remove</button>
           </div>
         {{/each}}
       </fieldset>
