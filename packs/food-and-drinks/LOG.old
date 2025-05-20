@@ -1,5 +1,5 @@
-2025/05/20-00:08:39.735161 30c3fe000 Delete type=3 #1
-2025/05/20-10:32:35.262069 305aef000 Level-0 table #1256: started
-2025/05/20-10:32:35.262328 305aef000 Level-0 table #1256: 0 bytes OK
-2025/05/20-10:32:35.262478 305aef000 Delete type=0 #1254
-2025/05/20-10:32:35.270841 305aef000 Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)
+2025/05/16-16:16:50.155 1d25c Log #1247: 0 ops saved to Table #1248 OK
+2025/05/16-16:16:50.155 1d25c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\food-and-drinks/001247.log: OK
+2025/05/16-16:16:50.156 1d25c Table #1244: 86 entries OK
+2025/05/16-16:16:50.160 1d25c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\food-and-drinks/MANIFEST-001245: OK
+2025/05/16-16:16:50.164 1d25c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\food-and-drinks; recovered 1 files; 73927 bytes. Some data may have been lost. ****

@@ -1,5 +1,5 @@
-2025/05/20-00:08:39.808198 30cc01000 Delete type=3 #1
-2025/05/20-10:32:35.283233 305aef000 Level-0 table #836: started
-2025/05/20-10:32:35.283371 305aef000 Level-0 table #836: 0 bytes OK
-2025/05/20-10:32:35.283627 305aef000 Delete type=0 #834
-2025/05/20-10:32:35.284023 305aef000 Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)
+2025/05/16-16:16:50.598 1d3f8 Log #827: 0 ops saved to Table #828 OK
+2025/05/16-16:16:50.598 1d3f8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\targeted-attacks/000827.log: OK
+2025/05/16-16:16:50.598 1d3f8 Table #824: 35 entries OK
+2025/05/16-16:16:50.602 1d3f8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\targeted-attacks/MANIFEST-000825: OK
+2025/05/16-16:16:50.607 1d3f8 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\targeted-attacks; recovered 1 files; 5766 bytes. Some data may have been lost. ****
