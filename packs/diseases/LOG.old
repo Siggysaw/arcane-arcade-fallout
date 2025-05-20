@@ -1,6 +1,16 @@
-2025/05/16-16:16:50.550 1cee8 Log #542: 0 ops saved to Table #543 OK
-2025/05/16-16:16:50.551 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/000542.log: OK
-2025/05/16-16:16:50.551 1cee8 Table #262: 21 entries OK
-2025/05/16-16:16:50.555 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/MANIFEST-000273: OK
-2025/05/16-16:16:50.555 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/MANIFEST-000538: OK
-2025/05/16-16:16:50.559 1cee8 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases; recovered 1 files; 2904 bytes. Some data may have been lost. ****
+2025/05/20-10:42:18.303623 30c3fe000 Recovering log #545
+2025/05/20-10:42:18.303688 30c3fe000 Recovering log #562
+2025/05/20-10:42:18.304159 30c3fe000 Delete type=0 #562
+2025/05/20-10:42:18.304188 30c3fe000 Delete type=3 #544
+2025/05/20-10:42:18.304223 30c3fe000 Delete type=0 #545
+2025/05/20-10:43:14.865883 305aef000 Level-0 table #565: started
+2025/05/20-10:43:14.866274 305aef000 Level-0 table #565: 3737 bytes OK
+2025/05/20-10:43:14.866459 305aef000 Delete type=0 #563
+2025/05/20-10:43:14.867604 305aef000 Manual compaction at level-0 from '!tables!MNa7qyTubqcZiqn1' @ 72057594037927935 : 1 .. '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 0 : 0; will stop at '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 809 : 1
+2025/05/20-10:43:14.867612 305aef000 Compacting 2@0 + 0@1 files
+2025/05/20-10:43:14.867836 305aef000 Generated table #566@0: 21 keys, 3737 bytes
+2025/05/20-10:43:14.867846 305aef000 Compacted 2@0 + 0@1 files => 3737 bytes
+2025/05/20-10:43:14.867905 305aef000 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/05/20-10:43:14.867971 305aef000 Delete type=2 #262
+2025/05/20-10:43:14.868055 305aef000 Delete type=2 #565
+2025/05/20-10:43:14.868129 305aef000 Manual compaction at level-0 from '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 809 : 1 .. '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 0 : 0; will stop at (end)

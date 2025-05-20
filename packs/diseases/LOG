@@ -1,1 +1,8 @@
-2025/05/16-16:16:50.570 1cee8 Delete type=3 #1
+2025/05/20-10:43:42.512219 30c3fe000 Recovering log #564
+2025/05/20-10:43:42.512695 30c3fe000 Delete type=3 #560
+2025/05/20-10:43:42.512766 30c3fe000 Delete type=0 #564
+2025/05/20-10:43:42.512787 30c3fe000 Delete type=3 #546
+2025/05/20-10:44:47.058331 305aef000 Level-0 table #570: started
+2025/05/20-10:44:47.058448 305aef000 Level-0 table #570: 0 bytes OK
+2025/05/20-10:44:47.058591 305aef000 Delete type=0 #568
+2025/05/20-10:44:47.059082 305aef000 Manual compaction at level-0 from '!tables!MNa7qyTubqcZiqn1' @ 72057594037927935 : 1 .. '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 0 : 0; will stop at (end)
