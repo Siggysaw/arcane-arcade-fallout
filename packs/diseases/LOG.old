@@ -1,6 +1,5 @@
-2025/05/16-16:16:50.550 1cee8 Log #542: 0 ops saved to Table #543 OK
-2025/05/16-16:16:50.551 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/000542.log: OK
-2025/05/16-16:16:50.551 1cee8 Table #262: 21 entries OK
-2025/05/16-16:16:50.555 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/MANIFEST-000273: OK
-2025/05/16-16:16:50.555 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/MANIFEST-000538: OK
-2025/05/16-16:16:50.559 1cee8 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases; recovered 1 files; 2904 bytes. Some data may have been lost. ****
+2025/05/20-00:08:39.799270 30cc01000 Delete type=3 #1
+2025/05/20-10:32:35.279669 305aef000 Level-0 table #551: started
+2025/05/20-10:32:35.279780 305aef000 Level-0 table #551: 0 bytes OK
+2025/05/20-10:32:35.280036 305aef000 Delete type=0 #549
+2025/05/20-10:32:35.281182 305aef000 Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)

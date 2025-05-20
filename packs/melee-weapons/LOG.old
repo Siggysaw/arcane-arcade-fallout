@@ -1,5 +1,12 @@
-2025/05/16-16:16:50.178 1d3f8 Log #1064: 0 ops saved to Table #1065 OK
-2025/05/16-16:16:50.178 1d3f8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\melee-weapons/001064.log: OK
-2025/05/16-16:16:50.178 1d3f8 Table #1061: 62 entries OK
-2025/05/16-16:16:50.182 1d3f8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\melee-weapons/MANIFEST-001062: OK
-2025/05/16-16:16:50.187 1d3f8 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\melee-weapons; recovered 1 files; 72773 bytes. Some data may have been lost. ****
+2025/05/20-00:08:39.742020 30c3fe000 Delete type=3 #1
+2025/05/20-10:32:35.262531 305aef000 Level-0 table #1073: started
+2025/05/20-10:32:35.264868 305aef000 Level-0 table #1073: 227937 bytes OK
+2025/05/20-10:32:35.265375 305aef000 Delete type=0 #1071
+2025/05/20-10:32:35.271297 305aef000 Manual compaction at level-0 from '!items!00bmnvvy9RauCXIM' @ 72057594037927935 : 1 .. '!items!zKA49xkwsMeZGHFo' @ 0 : 0; will stop at '!items!zKA49xkwsMeZGHFo' @ 2195 : 1
+2025/05/20-10:32:35.271311 305aef000 Compacting 2@0 + 0@1 files
+2025/05/20-10:32:35.272992 305aef000 Generated table #1074@0: 62 keys, 82387 bytes
+2025/05/20-10:32:35.273001 305aef000 Compacted 2@0 + 0@1 files => 82387 bytes
+2025/05/20-10:32:35.273058 305aef000 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/05/20-10:32:35.273100 305aef000 Delete type=2 #931
+2025/05/20-10:32:35.274141 305aef000 Delete type=2 #1073
+2025/05/20-10:32:35.275941 305aef000 Manual compaction at level-0 from '!items!zKA49xkwsMeZGHFo' @ 2195 : 1 .. '!items!zKA49xkwsMeZGHFo' @ 0 : 0; will stop at (end)

@@ -1,5 +1,5 @@
-2025/05/16-16:16:50.246 1d3f8 Log #1289: 0 ops saved to Table #1290 OK
-2025/05/16-16:16:50.246 1d3f8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\enemies/001289.log: OK
-2025/05/16-16:16:50.247 1d3f8 Table #1286: 355 entries OK
-2025/05/16-16:16:50.252 1d3f8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\enemies/MANIFEST-001287: OK
-2025/05/16-16:16:50.257 1d3f8 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\enemies; recovered 1 files; 363932 bytes. Some data may have been lost. ****
+2025/05/20-00:08:39.758597 30cc01000 Delete type=3 #1
+2025/05/20-10:32:35.275542 305aef000 Level-0 table #1298: started
+2025/05/20-10:32:35.275666 305aef000 Level-0 table #1298: 0 bytes OK
+2025/05/20-10:32:35.275872 305aef000 Delete type=0 #1296
+2025/05/20-10:32:35.275956 305aef000 Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)

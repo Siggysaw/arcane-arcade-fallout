@@ -1,5 +1,12 @@
-2025/05/16-16:16:50.526 1cee8 Log #1042: 0 ops saved to Table #1043 OK
-2025/05/16-16:16:50.527 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot/001042.log: OK
-2025/05/16-16:16:50.527 1cee8 Table #1039: 402 entries OK
-2025/05/16-16:16:50.531 1cee8 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot/MANIFEST-001040: OK
-2025/05/16-16:16:50.536 1cee8 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot; recovered 1 files; 54504 bytes. Some data may have been lost. ****
+2025/05/20-00:08:39.794299 30bbfb000 Delete type=3 #1
+2025/05/20-10:32:35.280081 305aef000 Level-0 table #1051: started
+2025/05/20-10:32:35.280629 305aef000 Level-0 table #1051: 17643 bytes OK
+2025/05/20-10:32:35.280918 305aef000 Delete type=0 #1049
+2025/05/20-10:32:35.281563 305aef000 Manual compaction at level-0 from '!tables!2ODfF6qNWM2kFpmJ' @ 72057594037927935 : 1 .. '!tables.results!yNX6xo1QnoSe38l1.tjU06Pkhtst3PtcG' @ 0 : 0; will stop at '!tables.results!yNX6xo1QnoSe38l1.tjU06Pkhtst3PtcG' @ 7922 : 0
+2025/05/20-10:32:35.281575 305aef000 Compacting 2@0 + 0@1 files
+2025/05/20-10:32:35.282310 305aef000 Generated table #1052@0: 96 keys, 17643 bytes
+2025/05/20-10:32:35.282320 305aef000 Compacted 2@0 + 0@1 files => 17643 bytes
+2025/05/20-10:32:35.282372 305aef000 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/05/20-10:32:35.282426 305aef000 Delete type=2 #1046
+2025/05/20-10:32:35.283137 305aef000 Delete type=2 #1051
+2025/05/20-10:32:35.284018 305aef000 Manual compaction at level-0 from '!tables.results!yNX6xo1QnoSe38l1.tjU06Pkhtst3PtcG' @ 7922 : 0 .. '!tables.results!yNX6xo1QnoSe38l1.tjU06Pkhtst3PtcG' @ 0 : 0; will stop at (end)
