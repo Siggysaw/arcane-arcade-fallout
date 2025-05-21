@@ -413,16 +413,18 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     if (dropData === undefined || dropData.type !== 'Item') return false
 
     const permitted = [
-      'junk',
+      'junkItem',
       'material',
       'ammo',
       'miscItem',
+      'foodAnddrink',
+      'chem',
     ]
 
     const item = await fromUuid(dropData.uuid)
 
     if (!permitted.includes(item.type)) {
-      ui.notifications.warn('Only material, junk, ammo, or miscellaneous items are accepted here')
+      ui.notifications.warn('Item type not accepted here')
       return false
     }
 
