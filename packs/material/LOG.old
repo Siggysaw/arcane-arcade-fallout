@@ -1,14 +1,14 @@
-2025/05/20-19:19:16.101239 30cc01000 Recovering log #1017
-2025/05/20-19:19:16.101811 30cc01000 Delete type=3 #1015
-2025/05/20-19:19:16.101887 30cc01000 Delete type=0 #1017
-2025/05/21-18:41:41.585288 305aef000 Level-0 table #1023: started
-2025/05/21-18:41:41.585589 305aef000 Level-0 table #1023: 890 bytes OK
-2025/05/21-18:41:41.585880 305aef000 Delete type=0 #1021
-2025/05/21-18:41:41.586344 305aef000 Manual compaction at level-0 from '!items!07UkVBDVqk8zkVNR' @ 72057594037927935 : 1 .. '!items.effects!brfG9hAhIex3iVwV.zicA32ajp0N3pjQm' @ 0 : 0; will stop at '!items!l5sqvXHyuBxclGvC' @ 892 : 1
-2025/05/21-18:41:41.586349 305aef000 Compacting 1@0 + 1@1 files
-2025/05/21-18:41:41.586927 305aef000 Generated table #1024@0: 90 keys, 25653 bytes
-2025/05/21-18:41:41.586933 305aef000 Compacted 1@0 + 1@1 files => 25653 bytes
-2025/05/21-18:41:41.586976 305aef000 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/05/21-18:41:41.587005 305aef000 Delete type=2 #1023
-2025/05/21-18:41:41.587051 305aef000 Delete type=2 #1019
-2025/05/21-18:41:41.588084 305aef000 Manual compaction at level-0 from '!items!l5sqvXHyuBxclGvC' @ 892 : 1 .. '!items.effects!brfG9hAhIex3iVwV.zicA32ajp0N3pjQm' @ 0 : 0; will stop at (end)
+2025/05/21-18:42:21.326312 30c3fe000 Recovering log #1022
+2025/05/21-18:42:21.326839 30c3fe000 Delete type=0 #1022
+2025/05/21-18:42:21.326923 30c3fe000 Delete type=3 #1020
+2025/05/21-22:34:14.545755 305aef000 Level-0 table #1028: started
+2025/05/21-22:34:14.546128 305aef000 Level-0 table #1028: 1917 bytes OK
+2025/05/21-22:34:14.546611 305aef000 Delete type=0 #1026
+2025/05/21-22:34:14.551611 305aef000 Manual compaction at level-0 from '!items!07UkVBDVqk8zkVNR' @ 72057594037927935 : 1 .. '!items.effects!brfG9hAhIex3iVwV.zicA32ajp0N3pjQm' @ 0 : 0; will stop at '!items!tlVNnczLrEpr9rrx' @ 894 : 1
+2025/05/21-22:34:14.551623 305aef000 Compacting 1@0 + 1@1 files
+2025/05/21-22:34:14.552320 305aef000 Generated table #1029@0: 92 keys, 26309 bytes
+2025/05/21-22:34:14.552332 305aef000 Compacted 1@0 + 1@1 files => 26309 bytes
+2025/05/21-22:34:14.552398 305aef000 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/05/21-22:34:14.552460 305aef000 Delete type=2 #1024
+2025/05/21-22:34:14.553010 305aef000 Delete type=2 #1028
+2025/05/21-22:34:14.553511 305aef000 Manual compaction at level-0 from '!items!tlVNnczLrEpr9rrx' @ 894 : 1 .. '!items.effects!brfG9hAhIex3iVwV.zicA32ajp0N3pjQm' @ 0 : 0; will stop at (end)
