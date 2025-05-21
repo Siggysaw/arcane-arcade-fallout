@@ -345,7 +345,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
                 'arcane-arcade-fallout.medicine',
                 'arcane-arcade-fallout.food-and-drinks',
                 'arcane-arcade-fallout.melee-weapons',
-                'arcane-arcade-fallout.rangedWeapons',
+                'arcane-arcade-fallout.rangedweapons',
             ]
             const packsWithCraftables = game.packs.filter((p) => packsToGet.includes(p.collection))
             const packCraftables = await Promise.all(
