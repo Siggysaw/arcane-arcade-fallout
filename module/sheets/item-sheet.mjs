@@ -316,13 +316,18 @@ export default class FalloutZeroItemSheet extends ItemSheet {
   }
 
   initCraftingListeners(html) {
-    const dragDrop = new DragDrop({
+    const materialDragDrop = new DragDrop({
       dropSelector: '[data-material-drop]',
       callbacks: { drop: this._onDropMaterial.bind(this) },
     })
+    const altMaterialDragDrop = new DragDrop({
+      dropSelector: '[data-alt-material-drop]',
+      callbacks: { drop: this._onDropAltMaterial.bind(this) },
+    })
     const form = Object.values(html).find((element) => element.tagName === 'FORM')
     if (form) {
-      dragDrop.bind(form)
+      materialDragDrop.bind(form)
+      altMaterialDragDrop.bind(form)
     }
 
     document.querySelector('[data-add-main-requirement]')?.addEventListener('click', this._onAddMainRequirement.bind(this))
@@ -336,6 +341,9 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     })
     form.querySelectorAll('[data-remove-material]').forEach((el) => {
       el.addEventListener('click', this._onRemoveMaterial.bind(this))
+    })
+    form.querySelectorAll('[data-remove-alt-material]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveAltMaterial.bind(this))
     })
   }
 
@@ -416,6 +424,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       'junkItem',
       'material',
       'ammo',
+      'medicine',
       'miscItem',
       'foodAnddrink',
       'chem',
@@ -445,6 +454,68 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     this.item.update({
       'system.crafting.materials': newMaterials,
+    })
+  }
+
+  async _onRemoveAltMaterial(e) {
+    e.stopPropagation()
+    const index = e.currentTarget.dataset.removeMaterial
+    if (!index) return
+
+    const newMaterials = this.item.system.crafting.altMaterials
+    newMaterials.splice(index, 1)
+    this.item.update({
+      'system.crafting.altMaterials': newMaterials,
+    })
+  }
+
+  async _onDropAltMaterial(e) {
+    e.stopPropagation()
+    e.preventDefault()
+
+    let dropData
+    try {
+      dropData = JSON.parse(event.dataTransfer.getData('text/plain'))
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+    if (dropData === undefined || dropData.type !== 'Item') return false
+
+    const permitted = [
+      'junkItem',
+      'material',
+      'medicine',
+      'ammo',
+      'miscItem',
+      'foodAnddrink',
+      'chem',
+    ]
+
+    const item = await fromUuid(dropData.uuid)
+
+    if (!permitted.includes(item.type)) {
+      ui.notifications.warn('Item type not accepted here')
+      return false
+    }
+
+    const alreadyExists = this.item.system.crafting.altMaterials.find((m) => {
+      return m.uuid === item.uuid
+    })
+
+    if (alreadyExists) {
+      ui.notifications.warn('Material is already required')
+      return false
+    }
+
+    const newMaterials = [...this.item.system.crafting.altMaterials, {
+      uuid: item.uuid,
+      name: item.name,
+      quantity: 1,
+    }]
+
+    this.item.update({
+      'system.crafting.altMaterials': newMaterials,
     })
   }
 }

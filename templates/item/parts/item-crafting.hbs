@@ -94,6 +94,32 @@
             {{/each}}
           </div>
         </div>
+      </fieldset>
+
+      {{!-- alt materials --}}
+      <fieldset>
+        <legend>Alternative Materials</legend><div class="drop-area" data-alt-material-drop data-tooltip="drop material or junk here">
+          <div class="grid grid-3col align-items-center">
+            <div>Item</div>
+            <div>Quantity</div>
+            <div>Remove</div>
+            {{#each system.crafting.altMaterials as |material|}}
+              <input hidden value="{{material.name}}" name="system.crafting.altMaterials.{{@index}}.name" />
+              <input hidden value="{{material.uuid}}" name="system.crafting.altMaterials.{{@index}}.uuid" />
+              <div>{{material.name}}</div>
+              <input
+                type="number"
+                value="{{material.quantity}}"
+                name="system.crafting.altMaterials.{{@index}}.quantity"
+                placeholder="quantity"
+              />
+              <button data-remove-alt-material="{{@index}}" type="button" data-tooltip="Remove">
+                <i class="fas fa-minus-square"></i>
+              </button>
+            {{/each}}
+          </div>
+      </fieldset>
+
     {{/if}}
   </div>
 </section> 

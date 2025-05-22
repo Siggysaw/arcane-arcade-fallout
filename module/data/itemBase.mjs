@@ -47,7 +47,17 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
             min: 1
           }),
         })
-      )
+      ),
+      altMaterials: new fields.ArrayField(
+        new fields.SchemaField({
+          uuid: new fields.StringField(),
+          name: new fields.StringField(),
+          quantity: new fields.NumberField({
+            initial: 1,
+            min: 1
+          }),
+        })
+      ),
     })
     return schema
   }

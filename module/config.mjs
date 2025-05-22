@@ -1572,4 +1572,8 @@ FALLOUTZERO.craftingTypes = {
     id: 'thrown_explosives',
     label: 'Thrown explosives',
   },
+  unique: {
+    id: 'unique',
+    label: 'Unique',
+  },
 }
