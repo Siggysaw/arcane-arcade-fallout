@@ -1,7 +1,9 @@
-2025/05/22-09:05:05.302021 30cc01000 Recovering log #870
-2025/05/22-09:05:05.302717 30cc01000 Delete type=3 #868
-2025/05/22-09:05:05.302766 30cc01000 Delete type=0 #870
-2025/05/22-14:04:57.863176 305aef000 Level-0 table #875: started
-2025/05/22-14:04:57.863303 305aef000 Level-0 table #875: 0 bytes OK
-2025/05/22-14:04:57.863614 305aef000 Delete type=0 #873
-2025/05/22-14:04:57.865739 305aef000 Manual compaction at level-0 from '!tables!0vMPVFTdB09FEW9L' @ 72057594037927935 : 1 .. '!tables.results!yoxWp3f42vrm6PJs.sMUWpCBS0b40YQkR' @ 0 : 0; will stop at (end)
+2025/05/23-00:49:03.078440 30cc01000 Log #844: 0 ops saved to Table #886 OK
+2025/05/23-00:49:03.078574 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks/000844.log: OK
+2025/05/23-00:49:03.078651 30cc01000 Log #883: 0 ops saved to Table #887 OK
+2025/05/23-00:49:03.078738 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks/000883.log: OK
+2025/05/23-00:49:03.079075 30cc01000 Table #885: 35 entries OK
+2025/05/23-00:49:03.079319 30cc01000 Table #836: 35 entries OK
+2025/05/23-00:49:03.079526 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks/MANIFEST-000881: OK
+2025/05/23-00:49:03.079650 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks/MANIFEST-000843: OK
+2025/05/23-00:49:03.079923 30cc01000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks; recovered 2 files; 11532 bytes. Some data may have been lost. ****

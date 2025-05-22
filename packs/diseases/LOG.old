@@ -1,7 +1,8 @@
-2025/05/22-09:05:05.296153 30b3f8000 Recovering log #585
-2025/05/22-09:05:05.296577 30b3f8000 Delete type=3 #583
-2025/05/22-09:05:05.296822 30b3f8000 Delete type=0 #585
-2025/05/22-14:04:57.862793 305aef000 Level-0 table #590: started
-2025/05/22-14:04:57.862885 305aef000 Level-0 table #590: 0 bytes OK
-2025/05/22-14:04:57.863120 305aef000 Delete type=0 #588
-2025/05/22-14:04:57.863702 305aef000 Manual compaction at level-0 from '!tables!MNa7qyTubqcZiqn1' @ 72057594037927935 : 1 .. '!tables.results!MNa7qyTubqcZiqn1.zrXL4pbm8iMpsNKk' @ 0 : 0; will stop at (end)
+2025/05/23-00:49:03.068998 30cc01000 Log #559: 0 ops saved to Table #601 OK
+2025/05/23-00:49:03.069148 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/diseases/000559.log: OK
+2025/05/23-00:49:03.069179 30cc01000 Log #598: 0 ops saved to Table #602 OK
+2025/05/23-00:49:03.069232 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/diseases/000598.log: OK
+2025/05/23-00:49:03.069458 30cc01000 Table #600: 21 entries OK
+2025/05/23-00:49:03.069691 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/diseases/MANIFEST-000558: OK
+2025/05/23-00:49:03.069755 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/diseases/MANIFEST-000596: OK
+2025/05/23-00:49:03.070059 30cc01000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/diseases; recovered 1 files; 3737 bytes. Some data may have been lost. ****

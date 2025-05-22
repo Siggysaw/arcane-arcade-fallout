@@ -1,14 +1,8 @@
-2025/05/22-09:05:05.241868 30cc01000 Recovering log #1001
-2025/05/22-09:05:05.242482 30cc01000 Delete type=3 #999
-2025/05/22-09:05:05.242571 30cc01000 Delete type=0 #1001
-2025/05/22-14:04:57.813783 305aef000 Level-0 table #1006: started
-2025/05/22-14:04:57.816456 305aef000 Level-0 table #1006: 189928 bytes OK
-2025/05/22-14:04:57.817094 305aef000 Delete type=0 #1004
-2025/05/22-14:04:57.834902 305aef000 Manual compaction at level-0 from '!items!2T9Jw6BEB36yuMCo' @ 72057594037927935 : 1 .. '!items!zgc3yQ9BIcLj9atf' @ 0 : 0; will stop at '!items!xFNHuq3eaZMhSR0d' @ 853 : 1
-2025/05/22-14:04:57.834922 305aef000 Compacting 1@0 + 1@1 files
-2025/05/22-14:04:57.835928 305aef000 Generated table #1007@0: 33 keys, 32384 bytes
-2025/05/22-14:04:57.835946 305aef000 Compacted 1@0 + 1@1 files => 32384 bytes
-2025/05/22-14:04:57.836028 305aef000 compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/05/22-14:04:57.836105 305aef000 Delete type=2 #982
-2025/05/22-14:04:57.837376 305aef000 Delete type=2 #1006
-2025/05/22-14:04:57.840581 305aef000 Manual compaction at level-0 from '!items!xFNHuq3eaZMhSR0d' @ 853 : 1 .. '!items!zgc3yQ9BIcLj9atf' @ 0 : 0; will stop at (end)
+2025/05/23-00:49:02.963768 30b3f8000 Log #1015: 0 ops saved to Table #1018 OK
+2025/05/23-00:49:02.963848 30b3f8000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/chems/001015.log: OK
+2025/05/23-00:49:02.963875 30b3f8000 Log #975: 0 ops saved to Table #1019 OK
+2025/05/23-00:49:02.963958 30b3f8000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/chems/000975.log: OK
+2025/05/23-00:49:02.964411 30b3f8000 Table #1017: 33 entries OK
+2025/05/23-00:49:02.964574 30b3f8000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/chems/MANIFEST-001013: OK
+2025/05/23-00:49:02.964752 30b3f8000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/chems/MANIFEST-000974: OK
+2025/05/23-00:49:02.965080 30b3f8000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/chems; recovered 1 files; 32384 bytes. Some data may have been lost. ****

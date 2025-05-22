@@ -1,7 +1,8 @@
-2025/05/22-09:05:05.299014 30c3fe000 Recovering log #1018
-2025/05/22-09:05:05.299558 30c3fe000 Delete type=0 #1018
-2025/05/22-09:05:05.299594 30c3fe000 Delete type=3 #1016
-2025/05/22-14:04:57.862039 305aef000 Level-0 table #1023: started
-2025/05/22-14:04:57.862160 305aef000 Level-0 table #1023: 0 bytes OK
-2025/05/22-14:04:57.862756 305aef000 Delete type=0 #1021
-2025/05/22-14:04:57.863691 305aef000 Manual compaction at level-0 from '!tables!1kZpcERbuR7YQPO0' @ 72057594037927935 : 1 .. '!tables.results!uRqCBY6RCvISsaxr.lrrRv7NJYoxc55wc' @ 0 : 0; will stop at (end)
+2025/05/23-00:49:03.073590 30bbfb000 Log #992: 0 ops saved to Table #1034 OK
+2025/05/23-00:49:03.073746 30bbfb000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/monster-loot/000992.log: OK
+2025/05/23-00:49:03.073803 30bbfb000 Log #1031: 0 ops saved to Table #1035 OK
+2025/05/23-00:49:03.073882 30bbfb000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/monster-loot/001031.log: OK
+2025/05/23-00:49:03.074237 30bbfb000 Table #1033: 75 entries OK
+2025/05/23-00:49:03.074436 30bbfb000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/monster-loot/MANIFEST-000991: OK
+2025/05/23-00:49:03.074636 30bbfb000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/monster-loot/MANIFEST-001029: OK
+2025/05/23-00:49:03.074840 30bbfb000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/monster-loot; recovered 1 files; 11531 bytes. Some data may have been lost. ****
