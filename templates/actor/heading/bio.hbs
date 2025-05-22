@@ -8,7 +8,7 @@
         <td colspan="999" style="text-align:left;font-size:10pt;">
             <div>
                 <span>
-                    Lvl {{#GM}}<input style="width:35px;text-align:center"type="number" name="system.level" value="{{/GM}}{{system.level}}" {{#unless system.editToggle}} disabled {{/unless}} {{#GM}}/>{{/GM}}
+                    Lvl {{#GM}}<input style="width:35px;text-align:center"type="number" name="system.level" value="{{system.level}}"/>{{else}}{{system.level}}{{/GM}}
                 </span>
                 {{#each races as |item id|}}
                 <span class="context-menu"
