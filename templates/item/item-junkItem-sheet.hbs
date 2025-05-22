@@ -17,7 +17,7 @@
     <section class="sheet-body">
         {{!-- Description Tab --}}
         <div class="tab" item-description data-group="primary" data-tab="description">
-            <div style="min-height:200px;" class="grid grid-10col">
+            <div class="grid grid-10col">
                 <div class="grid-span-3">
                     <div class="grid grid-2col weapon-details">
                         <div class="weapon-label">Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
@@ -25,9 +25,13 @@
                         <div class="weapon-label">Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
                     </div>
                 </div>
-                <div class="grid-span-7 crafting-table">{{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}</div>
-                <div class="grid-span-10 weapon-description">
+                <div class="grid-span-7 crafting-table" style="border:solid 1px;padding:5px;min-height:200px;">
                     {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+
+                </div>
+                <hr />
+                <div class="grid-span-10 weapon-description">
+                    {{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}
                 </div>
             </div>
         </div>
