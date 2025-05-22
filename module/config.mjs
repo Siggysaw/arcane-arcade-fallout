@@ -1577,3 +1577,30 @@ FALLOUTZERO.craftingTypes = {
     label: 'Unique',
   },
 }
+
+
+FALLOUTZERO.craftingItemTypes = [
+  'junk',
+  'material',
+  'armor',
+  'ammunition',
+  'explosives',
+  'food-and-drinks',
+  'melee-weapons',
+  'rangedweapons',
+  'miscellaneous',
+  'medicine',
+  'chem',
+]
+
+FALLOUTZERO.packsWithCraftables = [
+  'arcane-arcade-fallout.armor',
+  'arcane-arcade-fallout.ammunition',
+  'arcane-arcade-fallout.explosives',
+  'arcane-arcade-fallout.chems',
+  'arcane-arcade-fallout.medicine',
+  'arcane-arcade-fallout.food-and-drinks',
+  'arcane-arcade-fallout.melee-weapons',
+  'arcane-arcade-fallout.rangedweapons',
+  'arcane-arcade-fallout.miscellaneous',
+]

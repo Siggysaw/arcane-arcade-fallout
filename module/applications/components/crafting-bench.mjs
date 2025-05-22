@@ -104,7 +104,7 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
         super(options);
         this.actor = actor
         this.craftable = craftable
-        this.selectedSkill = 'crafting' // #TODO: make this dynamic
+        this.selectedSkill = craftable.mainRequirements[0].key
         this.newOwnedQty = null
         this.searchQuery
     }
@@ -277,7 +277,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         return {
             craftingTree: this.craftingTree,
             selectedCraftable: this.selectedCraftable,
-            allRequirements: this.allRequirements,
             openBranches: this.openBranches,
             materials: this.materials,
             skills: this.skills,
@@ -337,17 +336,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
     async init() {
         try {
-            const packsToGet = [
-                'arcane-arcade-fallout.armor',
-                'arcane-arcade-fallout.ammunition',
-                'arcane-arcade-fallout.explosives',
-                'arcane-arcade-fallout.chems',
-                'arcane-arcade-fallout.medicine',
-                'arcane-arcade-fallout.food-and-drinks',
-                'arcane-arcade-fallout.melee-weapons',
-                'arcane-arcade-fallout.rangedweapons',
-            ]
-            const packsWithCraftables = game.packs.filter((p) => packsToGet.includes(p.collection))
+            const packsWithCraftables = game.packs.filter((p) => CONFIG.FALLOUTZERO.packsWithCraftables.includes(p.collection))
             const packCraftables = await Promise.all(
                 packsWithCraftables.map(async (pack) => {
                     const items = await pack.getDocuments()
@@ -376,6 +365,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             ...this.craftingTree[branch].items[index].system.crafting
         } : null
         this.owned = this.actor.getItemByCompendiumId(this.selectedCraftable.uuid)?.system?.quantity ?? 0
+        this.selectedSkill = this.selectedCraftable.mainRequirements[0]
         this.render()
     }
 

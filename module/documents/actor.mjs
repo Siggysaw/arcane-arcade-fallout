@@ -23,7 +23,7 @@ export default class FalloutZeroActor extends Actor {
   }
 
   get craftingMaterials() {
-    return this.items.filter((item) => ['junk', 'material'].includes(item.type))
+    return this.items.filter((item) => CONFIG.FALLOUTZERO.craftingItemTypes.includes(item.type))
   }
 
   getItemByCompendiumId(id) {

@@ -32,7 +32,7 @@
                     <div>
                         Actor modifier
                     </div>
-                    {{#each allRequirements as |requirement|}}
+                    {{#each selectedCraftable.mainRequirements as |requirement|}}
                         <div>
                             {{requirement.key}}
                         </div>
@@ -45,6 +45,34 @@
                     {{/each}}
                 </div>
             </section>
+
+            {{#if selectedCraftable.additionalRequirements}}
+                <section>
+                    <h5> Additional requirements</h5>
+                    <div class="grid grid-3col">
+                        <div>
+                            Skill
+                        </div>
+                        <div>
+                            DC
+                        </div>
+                        <div>
+                            Actor modifier
+                        </div>
+                        {{#each selectedCraftable.additionalRequirements as |requirement|}}
+                            <div>
+                                {{requirement.key}}
+                            </div>
+                            <div>
+                                {{ requirement.dc }}
+                            </div>
+                            <div>
+                                {{lookup ../skills requirement.key}} 
+                            </div>
+                        {{/each}}
+                    </div>
+                </section>
+            {{/if}}
             <section>
                 <h5>Material requirements</h5>
                 <div class="grid grid-3col">
