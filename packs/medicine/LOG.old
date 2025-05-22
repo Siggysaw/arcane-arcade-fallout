@@ -1,7 +1,8 @@
-2025/05/21-16:58:55.081 10154 Recovering log #1171
-2025/05/21-16:58:55.099 10154 Delete type=0 #1171
-2025/05/21-16:58:55.099 10154 Delete type=3 #1170
-2025/05/21-18:43:13.438 118d0 Level-0 table #1175: started
-2025/05/21-18:43:13.438 118d0 Level-0 table #1175: 0 bytes OK
-2025/05/21-18:43:13.441 118d0 Delete type=0 #1173
-2025/05/21-18:43:13.446 118d0 Manual compaction at level-0 from '!items!0djoGBUStJ1fZ3hs' @ 72057594037927935 : 1 .. '!items!wtHB2oaobNI8BMSq' @ 0 : 0; will stop at (end)
+2025/05/23-00:49:02.969485 30b3f8000 Log #1177: 0 ops saved to Table #1220 OK
+2025/05/23-00:49:02.969637 30b3f8000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine/001177.log: OK
+2025/05/23-00:49:02.969698 30b3f8000 Log #1217: 0 ops saved to Table #1221 OK
+2025/05/23-00:49:02.969762 30b3f8000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine/001217.log: OK
+2025/05/23-00:49:02.970028 30b3f8000 Table #1219: 18 entries OK
+2025/05/23-00:49:02.970390 30b3f8000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine/MANIFEST-001215: OK
+2025/05/23-00:49:02.970499 30b3f8000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine/MANIFEST-001176: OK
+2025/05/23-00:49:02.970685 30b3f8000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/medicine; recovered 1 files; 14559 bytes. Some data may have been lost. ****

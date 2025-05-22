@@ -1,7 +1,9 @@
-2025/05/21-16:58:55.259 12824 Recovering log #1300
-2025/05/21-16:58:55.275 12824 Delete type=0 #1300
-2025/05/21-16:58:55.276 12824 Delete type=3 #1299
-2025/05/21-18:43:13.468 118d0 Level-0 table #1304: started
-2025/05/21-18:43:13.468 118d0 Level-0 table #1304: 0 bytes OK
-2025/05/21-18:43:13.472 118d0 Delete type=0 #1302
-2025/05/21-18:43:13.480 118d0 Manual compaction at level-0 from '!actors!0Kql8q2zx1LbOSyw' @ 72057594037927935 : 1 .. '!actors.items.effects!weMV8MuixV5vIlZ1.CecD8LlJ2mRqUV0Q.XMcoogXUApncYIaO' @ 0 : 0; will stop at (end)
+2025/05/23-00:49:02.997612 30cc01000 Log #1345: 0 ops saved to Table #1348 OK
+2025/05/23-00:49:02.997694 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/enemies/001345.log: OK
+2025/05/23-00:49:02.997720 30cc01000 Log #1306: 0 ops saved to Table #1349 OK
+2025/05/23-00:49:02.997793 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/enemies/001306.log: OK
+2025/05/23-00:49:02.999637 30cc01000 Table #1347: 355 entries OK
+2025/05/23-00:49:03.001559 30cc01000 Table #1298: 355 entries OK
+2025/05/23-00:49:03.001823 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/enemies/MANIFEST-001305: OK
+2025/05/23-00:49:03.001894 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/enemies/MANIFEST-001343: OK
+2025/05/23-00:49:03.002222 30cc01000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/enemies; recovered 2 files; 727864 bytes. Some data may have been lost. ****

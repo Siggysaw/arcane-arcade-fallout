@@ -1,7 +1,8 @@
-2025/05/21-16:58:55.152 db80 Recovering log #1075
-2025/05/21-16:58:55.167 db80 Delete type=0 #1075
-2025/05/21-16:58:55.167 db80 Delete type=3 #1074
-2025/05/21-18:43:13.450 118d0 Level-0 table #1079: started
-2025/05/21-18:43:13.450 118d0 Level-0 table #1079: 0 bytes OK
-2025/05/21-18:43:13.454 118d0 Delete type=0 #1077
-2025/05/21-18:43:13.462 118d0 Manual compaction at level-0 from '!items!00bmnvvy9RauCXIM' @ 72057594037927935 : 1 .. '!items!zKA49xkwsMeZGHFo' @ 0 : 0; will stop at (end)
+2025/05/23-00:49:02.979987 30c3fe000 Log #1081: 0 ops saved to Table #1126 OK
+2025/05/23-00:49:02.980326 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/melee-weapons/001081.log: OK
+2025/05/23-00:49:02.980384 30c3fe000 Log #1123: 0 ops saved to Table #1127 OK
+2025/05/23-00:49:02.980447 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/melee-weapons/001123.log: OK
+2025/05/23-00:49:02.981440 30c3fe000 Table #1125: 62 entries OK
+2025/05/23-00:49:02.981647 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/melee-weapons/MANIFEST-001121: OK
+2025/05/23-00:49:02.981767 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/melee-weapons/MANIFEST-001080: OK
+2025/05/23-00:49:02.982029 30c3fe000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/melee-weapons; recovered 1 files; 84734 bytes. Some data may have been lost. ****

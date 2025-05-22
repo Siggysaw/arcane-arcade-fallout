@@ -1,0 +1,133 @@
+<section class="main">
+    {{#if selectedCraftable}}
+    <h1>Crafting {{ selectedCraftable.name }}</h1>
+        <div>
+            <section>
+                <h5>Currently owned</h5>
+                <div class="grid grid-2col">
+                    <div>
+                        Owned
+                    </div>
+                    <div>
+                        {{ owned }}
+                    </div>
+                </div>
+
+            </section>
+            <section>
+                <h5>Time requirement</h5>
+                <div>
+                {{ selectedCraftable.time.value }} {{ selectedCraftable.time.unit }}
+                </div>
+            </section>
+            <section>
+                <h5>Skill requirements</h5>
+                <div class="grid grid-3col">
+                    <div>
+                        Skill
+                    </div>
+                    <div>
+                        DC
+                    </div>
+                    <div>
+                        Actor modifier
+                    </div>
+                    {{#each selectedCraftable.mainRequirements as |requirement|}}
+                        <div>
+                            {{requirement.key}}
+                        </div>
+                        <div>
+                            {{ requirement.dc }}
+                        </div>
+                        <div>
+                            {{lookup ../skills requirement.key}} 
+                        </div>
+                    {{/each}}
+                </div>
+            </section>
+
+            {{#if selectedCraftable.additionalRequirements}}
+                <section>
+                    <h5> Additional requirements</h5>
+                    <div class="grid grid-3col">
+                        <div>
+                            Skill
+                        </div>
+                        <div>
+                            DC
+                        </div>
+                        <div>
+                            Actor modifier
+                        </div>
+                        {{#each selectedCraftable.additionalRequirements as |requirement|}}
+                            <div>
+                                {{requirement.key}}
+                            </div>
+                            <div>
+                                {{ requirement.dc }}
+                            </div>
+                            <div>
+                                {{lookup ../skills requirement.key}} 
+                            </div>
+                        {{/each}}
+                    </div>
+                </section>
+            {{/if}}
+            <section>
+                <h5>Material requirements</h5>
+                <div class="grid grid-3col">
+                    <div>
+                        Material
+                    </div>
+                    <div>
+                        Quantity
+                    </div>
+                    <div>
+                        Owned
+                    </div>
+                    {{#each selectedCraftable.materials as |material|}}
+                        <div>
+                            {{material.name}}
+                        </div>
+                        <div>
+                            {{material.quantity}}
+                        </div>
+                        <div>
+                            {{!-- #TODO BETTER WAY TO LOOKUP? --}}
+                            {{#if (lookup ../materials material.uuid)}}
+                                {{#with (lookup ../materials material.uuid)~}}
+                                    {{ this.quantity }}
+                                {{/with}}
+                            {{else}}
+                                0
+                            {{/if}}
+                        </div>
+                    {{/each}}
+                </div>
+            </section>
+            <section>
+                <div class="flex gap-3">
+                    <button
+                        data-action="craft"
+                        {{#unless hasRequirements}}
+                            disabled
+                            data-tooltip="You do not have the required skills to craft this item."
+                        {{/unless}}
+                    >
+                        Craft item
+                    </button>
+                    <button
+                        data-action="attemptCraft"
+                        data-tooltip="Roll an attempt to see if you can craft item?"
+                    >
+                        Attempt craft roll
+                    </button>
+                </div>
+            </section>
+        </div>
+    {{else}}
+        <h1>Select something to craft</h1>
+    {{/if}}
+</section>
+
+{{ log this }}

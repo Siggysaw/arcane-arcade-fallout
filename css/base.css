@@ -129,3 +129,13 @@ button > i:hover {
 .scrollable-y {
   overflow-y: scroll;
 }
+
+select.multi-select {
+  min-width: 120px;
+
+  option {
+    &[selected] {
+      background-color: whitesmoke;
+    }
+  }
+}

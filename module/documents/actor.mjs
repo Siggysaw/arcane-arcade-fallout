@@ -22,9 +22,41 @@ export default class FalloutZeroActor extends Actor {
     return data
   }
 
-  async openDialog(filename,title) {
+  get craftingMaterials() {
+    return this.items.filter((item) => CONFIG.FALLOUTZERO.craftingItemTypes.includes(item.type))
+  }
+
+  getItemByCompendiumId(id) {
+    if (!id) return false
+
+    console.log('search for', id)
+    const found = this.items.find((item) => {
+      console.log(item._stats.compendiumSource)
+      return item._stats.compendiumSource === id
+    })
+    return found
+  }
+
+  getItemById(id) {
+    if (!id) return false
+
+    return this.items.find((item) => item.id === id)
+  }
+
+  updateItemById(id, updates) {
+    const item = this.getItemById(id)
+    if (!item) return false
+    return this.updateEmbeddedDocuments('Item', [{
+      _id: item.id, system: {
+        ...item.system,
+        ...updates,
+      }
+    }])
+  }
+
+  async openDialog(filename, title) {
     const myDialogOptions = { width: 700, height: 700, resizable: true }
-    const myContent = await renderTemplate(`systems/arcane-arcade-fallout/${filename}`,this
+    const myContent = await renderTemplate(`systems/arcane-arcade-fallout/${filename}`, this
     )
 
     new Dialog(
@@ -67,7 +99,7 @@ export default class FalloutZeroActor extends Actor {
   async _onUpdate(data, options, userId) {
     super._onUpdate(data, options, userId)
 
-    const {hp} = options.falloutzero
+    const { hp } = options.falloutzero
 
     if (hp) {
       this._onHPUpdate(this.system.health, options.falloutzero.hp)
@@ -174,7 +206,7 @@ export default class FalloutZeroActor extends Actor {
       const Failure1 = actor.system.saveFailures.first
       const Failure2 = actor.system.saveFailures.second
       const Failure3 = actor.system.saveFailures.third
-      
+
       withAdvantage !== 'false' ? rollInput = `20d20${withAdvantage}` : rollInput = "1d20"
       if (withModifiers === 'true') {
         const penaltyTotal = actor.system.penaltyTotal
@@ -191,7 +223,7 @@ export default class FalloutZeroActor extends Actor {
 
       roll.terms[0].values[0] == 20 ? critSuccess = true : critSuccess = false
       roll.terms[0].values[0] == 1 ? critFailure = true : critFailure = false
-      critSuccess || critFailure ? flavor ="Critical ": flavor = ''
+      critSuccess || critFailure ? flavor = "Critical " : flavor = ''
 
       if (success) {
         flavor += `Success! ${actor.name} rolled equal to or greater than ${saveDC}`
@@ -219,7 +251,7 @@ export default class FalloutZeroActor extends Actor {
           [failure3]: false,
           'system.health.value': 1
         }) : ''
-      } 
+      }
       if (!success) {
         flavor += `Failure! ${actor.name} rolled lower than ${saveDC}`
         Failure1 ? actor.update({ [failure2]: true }) : actor.update({ [failure1]: true })
@@ -227,9 +259,9 @@ export default class FalloutZeroActor extends Actor {
 
         // On Nat 1, gain 2 Failures
         if (critFailure) {
-          !Failure1 ? actor.update({ [failure1]: true, [failure2]: true }) : actor.update({[failure2]:true,[failure3]:true})
+          !Failure1 ? actor.update({ [failure1]: true, [failure2]: true }) : actor.update({ [failure2]: true, [failure3]: true })
         }
-      } 
+      }
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this }),
         flavor,
@@ -328,7 +360,7 @@ export default class FalloutZeroActor extends Actor {
       } else {
         rollInput += `2d20${withAdvantage}`
       }
-        rollInput += `+ ${theAbility.mod}`
+      rollInput += `+ ${theAbility.mod}`
       if (withModifiers === 'true') {
         const penaltyTotal = actor.system.penaltyTotal
         if (penaltyTotal > 0) {
@@ -406,7 +438,7 @@ export default class FalloutZeroActor extends Actor {
       if (packrat && load < 3 && load > 1) {
         load = 1
       }
-      if (!AmmoLoad && item.type == "ammo" || !JunkLoad && item.type == "junkItem" || !JunkLoad && item.type == "material" ) {
+      if (!AmmoLoad && item.type == "ammo" || !JunkLoad && item.type == "junkItem" || !JunkLoad && item.type == "material") {
         load = 0
       }
       if (item.type != "race" && item.type != "background" && item.type != "perk" && item.type != "trait" && item.type != "condition") {
@@ -1210,7 +1242,7 @@ export default class FalloutZeroActor extends Actor {
       let ammoFound = this.items.find((item) => item.name === ammoFullname)
 
       if (ammoFound) {
-        message += `<option value="${ammoFullname}">${ammoFullname.charAt(0).toUpperCase() + ammoFullname.slice(1) }: ${ammoFound.system.quantity}</option><br>`
+        message += `<option value="${ammoFullname}">${ammoFullname.charAt(0).toUpperCase() + ammoFullname.slice(1)}: ${ammoFound.system.quantity}</option><br>`
       }
     }
     message += '</select>'
@@ -1264,14 +1296,14 @@ export default class FalloutZeroActor extends Actor {
     const manualReload = weapon.system.description.includes('Manual Reload')
     const quickReload = weapon.system.description.includes('Quick Reload')
     const rapid = weapon.parent.items.find((i) => i.name == 'Rapid Reload')
-    
+
 
     // Do you have the AP?
     let apCost = 6
     quickReload ? apCost = 4 : apCost = 6
-    
+
     if (!this.inCombat) {
-      apCost=0
+      apCost = 0
     }
     rapid ? apCost = apCost - 3 : apCost = apCost
     if (manualReload) {
@@ -1294,8 +1326,8 @@ export default class FalloutZeroActor extends Actor {
       ammoType.includes('2mm EC')
 
     // Do you have Ammo?
-      if (!ammoFound && weapon.type != "meleeWeapon") {
-        ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
+    if (!ammoFound && weapon.type != "meleeWeapon") {
+      ui.notifications.warn(`You don't have any ${ammoType} to reload with! Swap Ammo!`)
       console.log(weapon)
       return
     }
@@ -1326,7 +1358,7 @@ export default class FalloutZeroActor extends Actor {
       ])
     } else {
       if (manualReload) {
-       rapid ? ammoReloaded > 3 ? capacity = currentMag + 3 : capacity = currentMag + ammoReloaded : capacity = currentMag + 1
+        rapid ? ammoReloaded > 3 ? capacity = currentMag + 3 : capacity = currentMag + ammoReloaded : capacity = currentMag + 1
       }
       this.updateEmbeddedDocuments('Item', [
         { _id: weaponId, 'system.ammo.capacity.value': capacity },
@@ -1360,7 +1392,7 @@ export default class FalloutZeroActor extends Actor {
   async rollSave({ formula, saveDC, type }) {
     let roll = new Roll(`${formula} - ${this.system.penaltyTotal}`, this.getRollData())
     await roll.evaluate()
-    
+
     let flavor = ''
     const success = roll.total >= saveDC
     if (success) {
@@ -1415,7 +1447,7 @@ export default class FalloutZeroActor extends Actor {
             No: {
               icon: '<i class="fa-solid fa-x"></i>',
               label: 'Nope!',
-              callback: async () => {},
+              callback: async () => { },
             },
           },
           default: 'No',
@@ -1523,11 +1555,11 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
         myActor.items.filter((i) => i.type == 'junkItem').filter((i) => i.system.quantity > 0)
           .length > 0
           ? this.formatCompendiumItem(
-              'perks',
-              'Randomizer',
-              `A random mat will be reduced by ${myActor.system.abilities.lck.mod}. A random Junk item will also be crafted for free.`,
-              true,
-            )
+            'perks',
+            'Randomizer',
+            `A random mat will be reduced by ${myActor.system.abilities.lck.mod}. A random Junk item will also be crafted for free.`,
+            true,
+          )
           : `<b style="color:red">${this.formatCompendiumItem('perks', 'Randomizer', `No junk item in inventory to activate this perk!`, true)}</b>`
       newCell.id = 'randomizer'
     }
@@ -1870,9 +1902,9 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
         abilities.length == 1
           ? myActor.system.abilities[abilities[0]].mod
           : Math.max(
-              myActor.system.abilities[abilities[0]].mod,
-              myActor.system.abilities[abilities[1]].mod,
-            )
+            myActor.system.abilities[abilities[0]].mod,
+            myActor.system.abilities[abilities[1]].mod,
+          )
       const actorLuck = myActor.system.luckmod
       const actorPenalties = myActor.system.penaltyTotal
       const roll = new Roll(
@@ -1983,18 +2015,18 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
           mat == 'Caps'
             ? (itemLink = `&ensp;Caps<br>`)
             : this.formatCompendiumItem(
-                existingMat.type,
-                existingMat.name,
-                'Removed from inventory.',
-                true,
-              )
+              existingMat.type,
+              existingMat.name,
+              'Removed from inventory.',
+              true,
+            )
         mat == 'Caps'
           ? await myActor.update({ 'system.caps': newQty })
           : await existingMat.update({ 'system.quantity': newQty })
         chatContent =
           mat == randomDiscount
             ? chatContent +
-              `${reduceQty}x ${itemLink.replace(`<br>`, '')}(${this.formatCompendiumItem('perk', 'Randomizer', `Replaced ${mat} as a material.\nInitial requirement : ${matQty}\nUsed luck bonus : ${myActor.system.abilities.lck.mod}`, true).replace('<br>', '')})<br>`
+            `${reduceQty}x ${itemLink.replace(`<br>`, '')}(${this.formatCompendiumItem('perk', 'Randomizer', `Replaced ${mat} as a material.\nInitial requirement : ${matQty}\nUsed luck bonus : ${myActor.system.abilities.lck.mod}`, true).replace('<br>', '')})<br>`
             : chatContent + `${reduceQty}x ${itemLink}`
       }
     }
@@ -2168,7 +2200,7 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
           No: {
             icon: '<i class="fa-solid fa-x"></i>',
             label: 'Nope!',
-            callback: async () => {},
+            callback: async () => { },
           },
         },
         default: 'No',
@@ -2467,8 +2499,8 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
     }
     return truncated
       ? returnedText
-          .replace(`<i class="fas fa-suitcase"></i>`, ``)
-          .replace(`draggable="true"`, `draggable="false"`)
+        .replace(`<i class="fas fa-suitcase"></i>`, ``)
+        .replace(`draggable="true"`, `draggable="false"`)
       : returnedText
   }
 
@@ -2790,19 +2822,19 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
     this.update({ 'system.karmaCaps': this.system.karmaCaps })
   }
 
-    getPerks() {
-        return this.items.filter((item) => item.type === 'perk')
+  getPerks() {
+    return this.items.filter((item) => item.type === 'perk')
+  }
+  PowerArmorHealth(armorID) {
+    const armor = this.items.get(armorID)
+    const armorHealth = armor.system.armorHP
+    const armorMax = Math.floor(armor.system.defensePoint.value * armor.system.decay)
+    if (armorHealth.value == 0 && armor.system.decay > 0) {
+      this.updateEmbeddedDocuments('Item', [{ _id: armorID, 'system.armorHP.max': armorMax },])
+      this.updateEmbeddedDocuments('Item', [{ _id: armorID, 'system.armorHP.value': armorMax },])
     }
-    PowerArmorHealth(armorID) {
-        const armor = this.items.get(armorID)
-        const armorHealth = armor.system.armorHP
-        const armorMax = Math.floor(armor.system.defensePoint.value * armor.system.decay)
-        if (armorHealth.value == 0 && armor.system.decay > 0) {
-            this.updateEmbeddedDocuments('Item', [{ _id: armorID, 'system.armorHP.max': armorMax },])
-            this.updateEmbeddedDocuments('Item', [{ _id: armorID, 'system.armorHP.value': armorMax },])
-        }
-        console.log(armor)
-    }
+    console.log(armor)
+  }
 
   sortTable(tableID) {
     var table, rows, switching, col, i, x, y, shouldSwitch
@@ -2850,93 +2882,93 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
    * @returns {Promise<Actor>}                     A Promise which resolves once the damage has been applied.
    */
   async applyDamage(damages, options = {}) {
-      const hp = this.system.health
-      const sp = this.system.stamina
-      const dt = this.system.damageThreshold
+    const hp = this.system.health
+    const sp = this.system.stamina
+    const dt = this.system.damageThreshold
 
-      if (Number.isNumeric(damages)) {
-          damages = [{ value: damages }]
-          options.ignore ??= true
+    if (Number.isNumeric(damages)) {
+      damages = [{ value: damages }]
+      options.ignore ??= true
+    }
+
+    damages = this.calculateDamage(damages, options)
+    if (!damages) return this
+
+    // Round damage towards zero
+    let amount = damages.reduce((acc, d) => {
+      acc += d.value
+      return acc
+    }, 0)
+
+    // Get SP damage
+    let totalDamage = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
+    const PowerArmor = this.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
+    if (PowerArmor.length > 0) {
+      const ArmorID = PowerArmor[0]._id
+      const armorStat = PowerArmor[0].system
+      let armorMax
+      let armorHP = armorStat.armorHP.value
+      armorMax = Math.floor(armorStat.defensePoint.value * armorStat.decay)
+      if (totalDamage >= armorHP) {
+        totalDamage = totalDamage - armorHP
+        this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.decay': 0 },])
+        this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': 0 },])
+      } else {
+        const armorDamage = Math.floor(armorHP - totalDamage)
+        this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': armorDamage },])
+        totalDamage = 0
       }
+    }
+    const deltaTempSp = totalDamage > 0 ? Math.min(sp.temp, totalDamage) : 0
+    const deltaSP = Math.clamp(totalDamage - deltaTempSp, -sp.damage, sp.value)
+    const spDamageDealt = deltaTempSp + deltaSP
+    let leftOverDamage = totalDamage - spDamageDealt
 
-      damages = this.calculateDamage(damages, options)
-      if (!damages) return this
+    // Get HP damage modified by dr/dv
+    let hpDamage
 
-      // Round damage towards zero
-      let amount = damages.reduce((acc, d) => {
+    if (dt.value >= leftOverDamage) {
+      hpDamage = 0
+    } else {
+      hpDamage = damages.reduce((acc, d) => {
+        if (this.system.dr.includes(d.type)) {
+          acc += Math.floor(d.value / 2)
+        } else if (this.system.dv.includes(d.type)) {
+          acc += Math.floor(d.value * 2)
+        } else {
           acc += d.value
-          return acc
+        }
+        return acc
       }, 0)
 
-      // Get SP damage
-      let totalDamage = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
-      const PowerArmor = this.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
-      if (PowerArmor.length > 0) {
-          const ArmorID = PowerArmor[0]._id
-          const armorStat = PowerArmor[0].system
-          let armorMax
-          let armorHP = armorStat.armorHP.value
-          armorMax = Math.floor(armorStat.defensePoint.value * armorStat.decay)
-          if (totalDamage >= armorHP) {
-              totalDamage = totalDamage - armorHP
-              this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.decay': 0 },])
-              this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': 0 },])
-          } else {
-              const armorDamage = Math.floor(armorHP - totalDamage)
-              this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': armorDamage },])
-              totalDamage = 0
-          }
-      }
-      const deltaTempSp = totalDamage > 0 ? Math.min(sp.temp, totalDamage) : 0
-      const deltaSP = Math.clamp(totalDamage - deltaTempSp, -sp.damage, sp.value)
-      const spDamageDealt = deltaTempSp + deltaSP
-      let leftOverDamage = totalDamage - spDamageDealt
+      // reduce HP damage by damage already dealt to SP
+      hpDamage -= spDamageDealt
 
-      // Get HP damage modified by dr/dv
-      let hpDamage
-  
-      if (dt.value >= leftOverDamage) {
+      if (dt.value >= hpDamage) {
+        // dt > hp damage
         hpDamage = 0
       } else {
-        hpDamage = damages.reduce((acc, d) => {
-          if (this.system.dr.includes(d.type)) {
-            acc += Math.floor(d.value / 2)
-          } else if (this.system.dv.includes(d.type)) {
-            acc += Math.floor(d.value * 2)
-          } else {
-            acc += d.value
-          }
-          return acc
-        }, 0)
-
-        // reduce HP damage by damage already dealt to SP
-        hpDamage -= spDamageDealt
-
-        if (dt.value >= hpDamage) {
-          // dt > hp damage
-          hpDamage = 0
-        } else {
-          // reduce total HP damage by dt
-          hpDamage -= dt.value
-        }
+        // reduce total HP damage by dt
+        hpDamage -= dt.value
       }
+    }
 
-      const deltaTempHp = hpDamage > 0 ? Math.min(hp.temp, amount) : 0
-      const deltaHP = Math.clamp(hpDamage - deltaTempHp, -hp.damage, hp.value)
+    const deltaTempHp = hpDamage > 0 ? Math.min(hp.temp, amount) : 0
+    const deltaHP = Math.clamp(hpDamage - deltaTempHp, -hp.damage, hp.value)
 
-      const updates = {
-        'system.stamina.temp': sp.temp - deltaTempSp,
-        'system.stamina.value': sp.value - deltaSP,
-        'system.health.temp': hp.temp - deltaTempHp,
-        'system.health.value': hp.value - deltaHP,
-      }
+    const updates = {
+      'system.stamina.temp': sp.temp - deltaTempSp,
+      'system.stamina.value': sp.value - deltaSP,
+      'system.health.temp': hp.temp - deltaTempHp,
+      'system.health.value': hp.value - deltaHP,
+    }
 
-      if (game.settings.get('core', 'DamageChatCard')) {
-        this.createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP })
-      }
+    if (game.settings.get('core', 'DamageChatCard')) {
+      this.createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP })
+    }
 
-      await this.update(updates)
-      return this
+    await this.update(updates)
+    return this
   }
 
   createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP }) {

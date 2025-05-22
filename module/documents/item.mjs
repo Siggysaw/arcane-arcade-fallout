@@ -1,6 +1,5 @@
 import AttackRoll from '../dice/attack-roll.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
-import FalloutZeroActor from '../documents/actor.mjs'
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -13,21 +12,6 @@ export default class FalloutZeroItem extends Item {
     // As with the actor class, items are documents that can have their data
     // preparation methods overridden (such as prepareBaseData()).
     super.prepareData()
-    /*if (this.type === "rangedWeapon" && this.parent.type == "npc" || this.type === "meleeWeapon" && this.parent.type == "npc") {
-      let correct = this.system.damage.formula
-      if (correct.length > 0) {
-        this.system.damages.splice(0, 1)
-        this.update({
-          ['system.damages']: this.system.damages,
-        })
-        this.system.damages.push({
-          type: null,
-          altType: null,
-          formula: correct,
-        })
-        this.update({'system.damage.formula' : '' })
-      }
-    }*/
   }
 
   //Checks char items before creating one, stops it and updates quantity if it exists and is not equipped.
@@ -59,7 +43,7 @@ export default class FalloutZeroItem extends Item {
         myItem.update({ 'system.quantity': qty })
         return false
       } else {
-        if (this.system.itemEquipped == true){
+        if (this.system.itemEquipped == true) {
           data.system.itemEquipped = false
         }
       }
@@ -69,7 +53,7 @@ export default class FalloutZeroItem extends Item {
   /** @inheritDoc */
   prepareDerivedData() {
     super.prepareDerivedData()
-    if (this.type == "powerArmor"){
+    if (this.type == "powerArmor") {
       this.system.cost = this.system.baseCost.value
     }
   }
@@ -314,7 +298,7 @@ export default class FalloutZeroItem extends Item {
 
           //await this.addUpgrade(weapon,myUpgrade);
           await weapon.createEmbeddedDocuments('ActiveEffect', myUpgrade.effects._source)
-          
+
           //equip
           if (wasEquipped) {
             await this.toggleEffects(weapon, false)
@@ -453,7 +437,7 @@ export default class FalloutZeroItem extends Item {
   }
 
   async rollAttack({ advantageMode }) {
-    const roll = await new AttackRoll(this.actor, this, { advantageMode }, () => {})
+    const roll = await new AttackRoll(this.actor, this, { advantageMode }, () => { })
     roll.render(true)
   }
 }

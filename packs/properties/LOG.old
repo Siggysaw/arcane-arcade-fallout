@@ -1,7 +1,9 @@
-2025/05/21-16:58:55.455 12a70 Recovering log #859
-2025/05/21-16:58:55.471 12a70 Delete type=0 #859
-2025/05/21-16:58:55.471 12a70 Delete type=3 #858
-2025/05/21-18:43:13.494 118d0 Level-0 table #863: started
-2025/05/21-18:43:13.494 118d0 Level-0 table #863: 0 bytes OK
-2025/05/21-18:43:13.497 118d0 Delete type=0 #861
-2025/05/21-18:43:13.501 118d0 Manual compaction at level-0 from '!items!0FWQ5wE9lYP7RX44' @ 72057594037927935 : 1 .. '!items!zr8O7JwRX63efKzC' @ 0 : 0; will stop at (end)
+2025/05/23-00:49:03.056132 30c3fe000 Log #904: 0 ops saved to Table #907 OK
+2025/05/23-00:49:03.056258 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/properties/000904.log: OK
+2025/05/23-00:49:03.056306 30c3fe000 Log #865: 0 ops saved to Table #908 OK
+2025/05/23-00:49:03.056414 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/properties/000865.log: OK
+2025/05/23-00:49:03.056823 30c3fe000 Table #857: 67 entries OK
+2025/05/23-00:49:03.057088 30c3fe000 Table #906: 67 entries OK
+2025/05/23-00:49:03.057270 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/properties/MANIFEST-000902: OK
+2025/05/23-00:49:03.057379 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/properties/MANIFEST-000864: OK
+2025/05/23-00:49:03.057641 30c3fe000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/properties; recovered 2 files; 53200 bytes. Some data may have been lost. ****

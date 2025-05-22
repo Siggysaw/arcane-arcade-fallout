@@ -1,0 +1,23 @@
+<aside>
+    <div>
+        <input type="search" placeholder="Search" data-action="search" value="{{searchQuery}}">
+    </div>
+    {{#each craftingTree as |branch branchKey|}}
+        <details
+            data-action="toggleBranch"
+            data-branch-key="{{branchKey}}"
+            {{#if (IsIn branchKey ../openBranches)}} open{{/if}}
+        >
+            <summary>{{ branch.label }}</summary>
+            {{#each branch.items as |leaf|}}
+                <button
+                    {{#if (Equals ../../selectedCraftable.uuid leaf.uuid) }} class="selected" {{/if}}
+                    data-action="select"
+                    data-branch="{{ branchKey }}"
+                    data-index="{{ @index }}">
+                    {{ leaf.name }}
+                </button>
+            {{/each}}
+        </details>
+    {{/each}}
+</aside>

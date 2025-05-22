@@ -37,7 +37,6 @@ export default class ChatTrayElement extends HTMLElement {
    * @param {PointerEvent} event  Triggering click event.
    */
   _handleClickHeader(event) {
-    event.preventDefault()
     event.stopImmediatePropagation()
     if (!event.target.closest('.collapsible-content')) this.toggleAttribute('open')
   }

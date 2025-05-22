@@ -77,7 +77,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           console.log("0s need to be deleted")
         }
         let { load = 0, quantity = 1 } = item.system
-        if (item.type === "armor" && item.system.itemEquipped===true) {
+        if (item.type === "armor" && item.system.itemEquipped === true) {
           load = Math.floor(load / 2)
         }
         if (packrat && load < 3 && load > 1) {
@@ -86,7 +86,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         if (!AmmoLoad && item.type == "ammo" ||
           !JunkLoad && item.type == "junkItem" ||
           !JunkLoad && item.type == "material" ||
-          item.system.worn){
+          item.system.worn) {
           load = 0
         }
         acc += Math.floor(load * quantity)
@@ -114,15 +114,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     }
     const activePlayercount = activeCharacterList.length
     actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
-      actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
+    actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
 
 
-      //PowerArmor Setup
-      const PowerArmor = actorData.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
-      if (PowerArmor.length > 0) {
-          const ArmorID = PowerArmor[0]._id
-          this.actor.PowerArmorHealth(ArmorID)
-      }
+    //PowerArmor Setup
+    const PowerArmor = actorData.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
+    if (PowerArmor.length > 0) {
+      const ArmorID = PowerArmor[0]._id
+      this.actor.PowerArmorHealth(ArmorID)
+    }
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData()
@@ -144,7 +144,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
    *
    * @return {undefined}
    */
-  _prepareCharacterData() {}
+  _prepareCharacterData() { }
 
   /**
    * Organize and classify Items for Character sheets.
@@ -498,7 +498,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       {
         name: 'Move 5 Ft (1 AP)',
         icon: '<i class="fas fa-shoe"></i>',
-        title:'Move 1 Square',
+        title: 'Move 1 Square',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(1)
@@ -632,7 +632,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
     //show Combat Action Information
     html.on('click', '[data-combatActions]', (ev) => {
-      this.actor.openDialog("/templates/dialog/combat-actions.hbs","Combat Actions")
+      this.actor.openDialog("/templates/dialog/combat-actions.hbs", "Combat Actions")
     })
 
     // Actor Rest Buttons
@@ -669,7 +669,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     // Toggle Active Party Member
     html.on('click', '[data-activeCheck]', (ev) => {
-        this.actor.update({ 'system.activePartymember': !this.actor.system.activePartymember })
+      this.actor.update({ 'system.activePartymember': !this.actor.system.activePartymember })
     })
 
     // Toggle Equipped Items
@@ -794,7 +794,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const statField = ev.currentTarget.dataset.field
       this.actor.statSubtraction(stat, statType, statField)
     })
-   
+
     html.on('click', '[data-statAddition]', (ev) => {
       const stat = ev.currentTarget.dataset.stat
       const statType = ev.currentTarget.dataset.type
@@ -835,7 +835,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     html.on('click', '[data-skill-roll]', async (ev) => {
       const skillKey = ev.currentTarget.dataset.skillRoll
-      const roll = await new SkillRoll(this.actor, skillKey, () => {})
+      const roll = await new SkillRoll(this.actor, skillKey, () => { })
       roll.render(true)
     })
 
@@ -1040,6 +1040,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-rollable]', this._onRoll.bind(this))
     html.on('click', '[data-roll-save]', this._onRollSave.bind(this))
 
+    html.on('click', '[data-crafting-bench]', async () => {
+      const bench = new game.falloutzero.applications.components.CraftingBench(this.actor.id)
+      await bench.init()
+      bench.render(true)
+    })
+
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = (ev) => this._onDragStart(ev)
@@ -1214,7 +1220,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const dataset = element.dataset
     const saveDC = dataset.rollSave
     const saveType = dataset.saveType
-    
+
     this.actor.rollSave({
       formula: '1d20',
       saveDC,

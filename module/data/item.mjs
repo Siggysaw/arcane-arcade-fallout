@@ -17,7 +17,7 @@ export default class FalloutZeroItem extends FalloutZeroItemBase {
     })
 
     schema.formula = new fields.StringField({ blank: true })
-    
+
     return schema
   }
 

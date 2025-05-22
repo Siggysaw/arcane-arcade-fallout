@@ -12,7 +12,7 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
             acc[skill.id] = skill.base
             return acc
         }, {})
-        
+
         const initialSkillPoints = this.getSkillPointPool()
         this.hasSkillPoints = initialSkillPoints > 0
         this.skillPointPool = initialSkillPoints
@@ -47,21 +47,6 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
         },
     }
 
-    activateListeners(html) {
-        super.activateListeners(html);
-        html[0].querySelector('button[type="submit"]')?.addEventListener('click', () => {
-            if (this.skillPointPool > 0) {
-                ui.notifications.warn('You still have skill points to spend!')
-                return
-            } else if (this.perkOrSpecial && (!this.newPerk && !this.specialBoost)) {
-                ui.notifications.warn('You still need to take a perk or boost a SPECIAL!')
-                return
-            }
-            this.performLevelup()
-            this.close()
-        })
-    };
-
     get nextLevel() {
         return this.actor.system.level + 1
     }
@@ -70,7 +55,7 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
         return this.nextLevel % 2
     }
 
-    get newHPMax () {
+    get newHPMax() {
         if (!this.attributeBoost) return this.actor.system.health.max
         const currentHPMax = this.actor.system.health.max
         const endMod = this.actor.system.abilities.end.mod
@@ -84,7 +69,7 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
         return currentHPvalue + endMod + 5
     }
 
-    get newSPMax () {
+    get newSPMax() {
         if (!this.attributeBoost) return this.actor.system.stamina.max
         const currentSPMax = this.actor.system.stamina.max
         const agiMod = this.actor.system.abilities.agi.mod
@@ -155,7 +140,7 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
             'system.xp': newXP,
             'system.level': this.nextLevel,
             ...skillUpdates,
-            ...(this.specialBoost && {[`system.abilities.${this.specialBoost.id}.base`]: this.actor.system.abilities[this.specialBoost.id].base + 1})
+            ...(this.specialBoost && { [`system.abilities.${this.specialBoost.id}.base`]: this.actor.system.abilities[this.specialBoost.id].base + 1 })
         })
 
         if (this.newPerk) {
@@ -166,14 +151,14 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
         this.close()
     }
 
-    static onIncSkill (e, target) {
+    static onIncSkill(e, target) {
         const { skill } = target.dataset
         this.skillChanges[skill]++
         this.skillPointPool--
         this.render(true)
     }
 
-    static onDecSkill (e, target) {
+    static onDecSkill(e, target) {
         const { skill } = target.dataset
         const newValue = this.skillChanges[skill] - 1
         if (newValue < 0) return
@@ -186,19 +171,19 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
         this.render(true)
     }
 
-    static async onChoosePerk () {
+    static async onChoosePerk() {
         const perk = await ChoosePerk.create(this.actor);
         this.newPerk = perk || null
         this.render()
     }
-    
-    static async onChooseSpecial () {
+
+    static async onChooseSpecial() {
         const special = await ChooseSpecial.create();
         this.specialBoost = special || null
         this.render()
     }
 
-    static onCancel () {
+    static onCancel() {
         this.close()
     }
 }

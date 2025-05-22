@@ -1,0 +1,35 @@
+<div>
+    <div>
+        Attempt to craft {{ craftable.name }}?
+    </div>
+    {{#if hasSkillChoice}}
+        <div>
+            <div>
+                Select a skill to roll against
+                <select name="selectedSkill">
+                    {{selectOptions craftable.mainRequirements selected=selectedSkill valueAttr="key" labelAttr="key"}}
+                </select>
+            </div>
+        </div>
+    {{else}}
+        <div>
+            Your {{ selectedSkill }} bonus is {{ skillBonus }}
+        </div>
+    {{/if}}
+    <div>
+        <div>
+            DC to beat is {{ dc }}
+        </div>
+    </div>
+
+    <div class="flex gap-3">
+        <button data-action="cancel">
+            Cancel
+        </button>
+        <button data-action="roll">
+            Roll dice
+        </button>
+    </div>
+</div>
+
+{{log this}}

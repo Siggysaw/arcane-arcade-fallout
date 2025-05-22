@@ -14,6 +14,10 @@ import { registerHooks } from './registerHooks.mjs'
 /* -------------------------------------------- */
 
 Hooks.once('init', function () {
+
+  // Add custom constants for configuration.
+  CONFIG.FALLOUTZERO = FALLOUTZERO
+
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.falloutzero = {
@@ -27,9 +31,6 @@ Hooks.once('init', function () {
   const sheetColor = game.settings.get('core', 'Sheet-Color');
   const r = document.querySelector(':root');
   r.style.setProperty('--sheetcolor', sheetColor);
-
-  // Add custom constants for configuration.
-  CONFIG.FALLOUTZERO = FALLOUTZERO
 
   /**
    * Set an initiative formula for the system

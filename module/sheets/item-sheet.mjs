@@ -1,7 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
 import FalloutZeroItem from '../documents/item.mjs'
-import FalloutZeroActor from '../documents/actor.mjs'
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -58,6 +57,21 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     context.conditions = CONFIG.FALLOUTZERO.conditions
     context.abilities = CONFIG.FALLOUTZERO.abilities
     context.skills = CONFIG.FALLOUTZERO.skills
+    context.types = CONFIG.FALLOUTZERO.craftingTypes
+    context.timeUnits = [
+      {
+        id: 'minutes',
+        label: 'Minutes',
+      },
+      {
+        id: 'hours',
+        label: 'Hours',
+      },
+      {
+        id: 'days',
+        label: 'Days',
+      }
+    ]
 
     return context
   }
@@ -76,44 +90,44 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       FalloutZeroItem.prototype.getUpgradeList(this)
     })
 
-    html.on('click','[id=customEffectsNav]', () => {
+    html.on('click', '[id=customEffectsNav]', () => {
       var mySelectors = document.getElementsByClassName("pathSelector")
       FalloutZeroItem.prototype.getMods(mySelectors, this.object)
     })
 
     //Save Attributes (This has to be done to prevent losing info when modifying other parts of the item sheet)
-    html.on('click','[id=effectSaveBtn]', () => {
+    html.on('click', '[id=effectSaveBtn]', () => {
       let myData = {}
       //Save paths
       let tag = document.getElementsByClassName("pathSelector")
       let newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "modifiers")
-      Object.assign(myData,newData)
+      Object.assign(myData, newData)
       //Save ModTypes
       tag = document.getElementsByClassName("modSelector")
       newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "modifiers")
-      Object.assign(myData,newData)
+      Object.assign(myData, newData)
       //Save Values
       tag = document.getElementsByClassName("valueBox")
       newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "modifiers")
-      Object.assign(myData,newData)
+      Object.assign(myData, newData)
       //Save Checks
       tag = document.getElementsByClassName("checkSelector")
       newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "checks")
-      Object.assign(myData,newData)
+      Object.assign(myData, newData)
       //Save Checks
       tag = document.getElementsByClassName("dcBox")
       newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "checks")
-      Object.assign(myData,newData)
+      Object.assign(myData, newData)
       tag = document.getElementsByClassName("condition")
       newData = FalloutZeroItem.prototype.updateCustomEffects(tag, "checks")
-      Object.assign(myData,newData)
+      Object.assign(myData, newData)
       let mySelectors = document.getElementsByClassName("pathSelector")
       let saveMessage = document.getElementById("savedMessage")
       FalloutZeroItem.prototype.checkSaveReactions(mySelectors, myData, saveMessage, this.object)
-      })
+    })
 
     //Choose upgrade
-    html.on('change','[name=upgradesSelector]', (ev) => {
+    html.on('change', '[name=upgradesSelector]', (ev) => {
       var select = document.getElementById('upgradesSelector')
       const pack = game.packs.find((p) => p.metadata.name == 'upgrades')
       if (pack) {
@@ -165,15 +179,15 @@ export default class FalloutZeroItemSheet extends ItemSheet {
           if (this.object.system.quantity > 1 && this.object.system.baseCost.base == 0) {
             FalloutZeroArmor.prototype.splitDialog(this.object, pack, myUpgrade._id)
           } else {
-              FalloutZeroItem.prototype.checkUpgradeType(this.object, pack, myUpgrade._id)
+            FalloutZeroItem.prototype.checkUpgradeType(this.object, pack, myUpgrade._id)
           }
-        } 
+        }
         else {
           alert('Could not find a upgrade named ' + select.value)
         }
-    } else {
-      alert("Could not find a compendium named 'upgrades'")
-    }
+      } else {
+        alert("Could not find a compendium named 'upgrades'")
+      }
     })
     //Prevent submit on pressing enter
     $(document).ready(function () {
@@ -219,14 +233,12 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
     //On worn, activate effects
     html.on('change', '[worn]', () => {
-          FalloutZeroItem.prototype.toggleEffects(this.object, this.object.system.worn)
+      FalloutZeroItem.prototype.toggleEffects(this.object, this.object.system.worn)
     })
 
     //Drag and drop items into description box creates a link to it, whether it's a compendium or someone else's inventory.
-    html.on('click','[item-description]', () => {
-      //try{
-        if (this.object.system.description.includes("@UUID")){
-        // Original link example : `@UUID[Compendium.arcane-arcade-fallout.junk.Item.n7OMTyzznsUINuMi]{Adjustable Wrench}`
+    html.on('click', '[item-description]', () => {
+      if (this.object.system.description.includes("@UUID")) {
         let UUID = ""
         let ID = ""
         let descStr = this.object.system.description
@@ -234,98 +246,44 @@ export default class FalloutZeroItemSheet extends ItemSheet {
         let item_name = itemName[1].split(" ").join("_")
         let matches = []
         //This catches errors where there is a space within ONE item name
-        if (itemName){
+        if (itemName) {
           descStr = descStr.split(itemName[1]).join(item_name)
         }
         let desc = descStr.split(" ")
-        for (var str of desc){
+        for (var str of desc) {
           if (str.includes("@UUID")) {
             matches = str.match(/\[(.*?)\]/);
             if (matches) {
-                UUID = matches[1];
-                ID = UUID.split(".");
-                let newLink = `<a class="content-link" 
+              UUID = matches[1];
+              ID = UUID.split(".");
+              let newLink = `<a class="content-link" 
                 draggable="true" data-link="" 
                 data-uuid="${UUID}" 
-                data-id="${ID[ID.length -1]}" 
+                data-id="${ID[ID.length - 1]}" 
                 data-type="Item" 
                 data-pack="arcane-arcade-fallout.conditions" 
                 data-tooltip="Click for details."
                 >
                 ${itemName[1]}
                 </a>`;
-                descStr = this.object.system.description.split(`@UUID[${UUID}]{${itemName[1]}}`).join(newLink);
-                if (UUID.includes("conditions")){
-                  FalloutZeroItem.prototype.getReactions(ID[ID.length -1], this.object)
-                }
-                this.object.update({'system.description' : descStr});
-                return;
+              descStr = this.object.system.description.split(`@UUID[${UUID}]{${itemName[1]}}`).join(newLink);
+              if (UUID.includes("conditions")) {
+                FalloutZeroItem.prototype.getReactions(ID[ID.length - 1], this.object)
+              }
+              this.object.update({ 'system.description': descStr });
+              return;
             }
           }
         }
       }
-    //}
-      //catch{}
     })
-
-    //Button to break down into materials from the item sheet
-    html.on('click', '[clickToBreakdown]', (ev) =>{
-      if (this.item.parent){
-        FalloutZeroActor.prototype.checkConvert(this.item._id, this.item.parent)
-      } else {
-        alert (`You break it, you own it! Or... the other way around. \n \nAdd the item to your inventory and try again.`)
-      }
-
-    })
-    //Button to craft from the craftable item sheet
-    html.on('click', '[clickToCraft]', (ev) =>{
-      FalloutZeroActor.prototype.checkCraftActor(this.item)
-    })
-
-    //Change Junk materials quantity (up!)
-    html.on('click', '[data-junk-add]', (ev) => {
-      let matQty = ev.currentTarget.dataset.mat
-      let myMat = matQty.split('.')
-      let myItem = this.item
-      let qty = (myItem.system.junk[myMat[2]] + 1)
-      this.item.update({ [matQty]: qty })
-    })
-
-    //Change Junk materials quantity (down!)
-    html.on('click', '[data-junk-subtract]', (ev) => {
-      let matQty = ev.currentTarget.dataset.mat
-      let myMat = matQty.split('.')
-      let myItem = this.item
-      let qty = (myItem.system.junk[myMat[2]] - 1)
-      if (qty != -1){
-        this.item.update({ [matQty]: qty })
-      }
-    })
-
-    //Change crafting materials quantity (up!)
-    html.on('click', '[data-mat-add]', (ev) => {
-      let matQty = ev.currentTarget.dataset.mat
-      let myMat = matQty.split('.')
-      let myItem = this.item
-      let qty = (myItem.system.crafting[myMat[2]].qty + 1)
-      this.item.update({ [matQty]: qty })
-    })
-
-    //Change crafting materials quantity (down!)
-    html.on('click', '[data-mat-subtract]', (ev) => {
-      let matQty = ev.currentTarget.dataset.mat
-      let myMat = matQty.split('.')
-      let myItem = this.item
-      let qty = (myItem.system.crafting[myMat[2]].qty - 1)
-      if (qty != -1){
-        this.item.update({ [matQty]: qty })
-      }
-    })
-
-    // Roll handlers, click handlers, etc. would go here.
 
     // Active Effect management
     html.on('click', '.effect-control', (ev) => onManageActiveEffect(ev, this.item))
+
+    if (this.item.system.crafting.craftable) {
+      this.initCraftingListeners(html)
+    }
 
     // Weapon listeners
     this.initWeaponListeners(html)
@@ -354,6 +312,210 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       this.item.update({
         ['system.damages']: this.item.system.damages,
       })
+    })
+  }
+
+  initCraftingListeners(html) {
+    const materialDragDrop = new DragDrop({
+      dropSelector: '[data-material-drop]',
+      callbacks: { drop: this._onDropMaterial.bind(this) },
+    })
+    const altMaterialDragDrop = new DragDrop({
+      dropSelector: '[data-alt-material-drop]',
+      callbacks: { drop: this._onDropAltMaterial.bind(this) },
+    })
+    const form = Object.values(html).find((element) => element.tagName === 'FORM')
+    if (form) {
+      materialDragDrop.bind(form)
+      altMaterialDragDrop.bind(form)
+    }
+
+    document.querySelector('[data-add-main-requirement]')?.addEventListener('click', this._onAddMainRequirement.bind(this))
+    document.querySelector('[data-add-additional-requirement]')?.addEventListener('click', this._onAddAdditionalRequirement.bind(this))
+
+    document.querySelectorAll('[data-remove-main-requirement]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveMainRequirement.bind(this))
+    })
+    document.querySelectorAll('[data-remove-additional-requirement]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveAdditionalRequirement.bind(this))
+    })
+    form.querySelectorAll('[data-remove-material]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveMaterial.bind(this))
+    })
+    form.querySelectorAll('[data-remove-alt-material]').forEach((el) => {
+      el.addEventListener('click', this._onRemoveAltMaterial.bind(this))
+    })
+  }
+
+  _onAddMainRequirement(e) {
+    e.preventDefault()
+    const requirements = this.item.system.crafting.mainRequirements
+    requirements.push({
+      key: CONFIG.FALLOUTZERO.skills.crafting.id,
+      dc: 1,
+    })
+    this.item.update({
+      ['system.crafting.mainRequirements']: requirements,
+    })
+  }
+
+  _onAddAdditionalRequirement(e) {
+    e.preventDefault()
+    const requirements = this.item.system.crafting.additionalRequirements
+    requirements.push({
+      key: CONFIG.FALLOUTZERO.skills.crafting.id,
+      dc: 1,
+    })
+    this.item.update({
+      ['system.crafting.additionalRequirements']: requirements,
+    })
+  }
+
+  _onRemoveMainRequirement(e) {
+    e.preventDefault()
+    const index = e.currentTarget.dataset.removeMainRequirement
+    if (!index) return
+
+    const requirements = this.item.system.crafting.mainRequirements
+    requirements.splice(index, 1)
+    this.item.update({
+      ['system.crafting.mainRequirements']: requirements,
+    })
+  }
+
+  _onRemoveAdditionalRequirement(e) {
+    e.preventDefault()
+    const index = e.currentTarget.dataset.removeAdditionalRequirement
+    if (!index) return
+
+    const requirements = this.item.system.crafting.additionalRequirements
+    requirements.splice(index, 1)
+    this.item.update({
+      ['system.crafting.additionalRequirements']: requirements,
+    })
+  }
+
+  async _onRemoveMaterial(e) {
+    e.stopPropagation()
+    const index = e.currentTarget.dataset.removeMaterial
+    if (!index) return
+
+    const newMaterials = this.item.system.crafting.materials
+    newMaterials.splice(index, 1)
+    this.item.update({
+      'system.crafting.materials': newMaterials,
+    })
+  }
+
+  async _onDropMaterial(e) {
+    e.stopPropagation()
+    e.preventDefault()
+
+    let dropData
+    try {
+      dropData = JSON.parse(event.dataTransfer.getData('text/plain'))
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+    if (dropData === undefined || dropData.type !== 'Item') return false
+
+    const permitted = [
+      'junkItem',
+      'material',
+      'ammo',
+      'medicine',
+      'miscItem',
+      'foodAnddrink',
+      'chem',
+    ]
+
+    const item = await fromUuid(dropData.uuid)
+
+    if (!permitted.includes(item.type)) {
+      ui.notifications.warn('Item type not accepted here')
+      return false
+    }
+
+    const alreadyExists = this.item.system.crafting.materials.find((m) => {
+      return m.uuid === item.uuid
+    })
+
+    if (alreadyExists) {
+      ui.notifications.warn('Material is already required')
+      return false
+    }
+
+    const newMaterials = [...this.item.system.crafting.materials, {
+      uuid: item.uuid,
+      name: item.name,
+      quantity: 1,
+    }]
+
+    this.item.update({
+      'system.crafting.materials': newMaterials,
+    })
+  }
+
+  async _onRemoveAltMaterial(e) {
+    e.stopPropagation()
+    const index = e.currentTarget.dataset.removeMaterial
+    if (!index) return
+
+    const newMaterials = this.item.system.crafting.altMaterials
+    newMaterials.splice(index, 1)
+    this.item.update({
+      'system.crafting.altMaterials': newMaterials,
+    })
+  }
+
+  async _onDropAltMaterial(e) {
+    e.stopPropagation()
+    e.preventDefault()
+
+    let dropData
+    try {
+      dropData = JSON.parse(event.dataTransfer.getData('text/plain'))
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+    if (dropData === undefined || dropData.type !== 'Item') return false
+
+    const permitted = [
+      'junkItem',
+      'material',
+      'medicine',
+      'ammo',
+      'miscItem',
+      'foodAnddrink',
+      'chem',
+    ]
+
+    const item = await fromUuid(dropData.uuid)
+
+    if (!permitted.includes(item.type)) {
+      ui.notifications.warn('Item type not accepted here')
+      return false
+    }
+
+    const alreadyExists = this.item.system.crafting.altMaterials.find((m) => {
+      return m.uuid === item.uuid
+    })
+
+    if (alreadyExists) {
+      ui.notifications.warn('Material is already required')
+      return false
+    }
+
+    const newMaterials = [...this.item.system.crafting.altMaterials, {
+      uuid: item.uuid,
+      name: item.name,
+      quantity: 1,
+    }]
+
+    this.item.update({
+      'system.crafting.altMaterials': newMaterials,
     })
   }
 }
