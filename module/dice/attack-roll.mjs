@@ -1,5 +1,5 @@
 export default class AttackRoll extends FormApplication {
-  constructor(actor, weapon, options = {}, callback = () => {}) {
+  constructor(actor, weapon, options = {}, callback = () => { }) {
     super(actor, options)
 
     this.weapon = weapon
@@ -11,7 +11,7 @@ export default class AttackRoll extends FormApplication {
       attackBonus: this.actor.getAttackBonus(),
       damageBonus: this.actor.getDamageBonus(),
       abilityBonus: this.weapon.getAbilityBonus(),
-      decayPenalty: weapon.type == "explosive" ?  0 : this.weapon.getDecayValue(),
+      decayPenalty: weapon.type == "explosive" ? 0 : this.weapon.getDecayValue(),
       actorLuck: this.actor.system.luckmod,
       actorPenalties: this.actor.system.penaltyTotal,
       totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - this.weapon.getDecayValue() - this.actor.system.penaltyTotal + this.actor.system.luckmod,
@@ -194,11 +194,18 @@ export default class AttackRoll extends FormApplication {
 
   getFlavor(target) {
     let flavor = ''
-    this.weapon.type == "explosive" ? flavor = `GET DOWN! ${this.weapon.name} thrown! this will detonate _____ <hr>
-    1: In hand <br>
-    2: Halfway to target <br>
-    3 - 14: Start of your next turn. <br>
-    15+: End of your turn.` : flavor = `BOOM! Attack with ${this.weapon.name}`
+    if (this.weapon.type === 'explosive') {
+      return `
+        GET DOWN! ${this.weapon.name} thrown! this will detonate _____ <hr>
+        1: In hand <br>
+        2: Halfway to target <br>
+        3 - 14: Start of your next turn. <br>
+        15+: End of your turn.
+      `
+    } else {
+      flavor = `BOOM! Attack with ${this.weapon.name}`
+    }
+
     if (!target) {
       return flavor
     }
@@ -211,7 +218,7 @@ export default class AttackRoll extends FormApplication {
   }
 
   getFinalApCost() {
-    this.formDataCache.automaticAttack ? this.formDataCache.totalApCost = 0 :''
+    this.formDataCache.automaticAttack ? this.formDataCache.totalApCost = 0 : ''
     if (this.formDataCache.overrideAp) {
       return this.formDataCache.adjustedApCost
     }
@@ -315,7 +322,7 @@ export default class AttackRoll extends FormApplication {
     /**
      * Generate damage rolls
      */
-    automaticAttack ? abilityBonus = 0 :''
+    automaticAttack ? abilityBonus = 0 : ''
     const damageRolls = this.formDataCache.damages.map((damage) => {
       return {
         type: damage.selectedDamageType,
@@ -334,6 +341,7 @@ export default class AttackRoll extends FormApplication {
       rollMode: game.settings.get('core', 'rollMode'),
       'flags.falloutzero': {
         type: 'attack',
+        itemId: this.weapon.id,
         tooltip: attackTooltip,
         abilityBonus,
         targeted: this.formDataCache.targeted,
