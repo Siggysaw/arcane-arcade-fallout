@@ -1,8 +1,7 @@
-2025/05/23-00:49:02.985949 30c3fe000 Log #1221: 0 ops saved to Table #1267 OK
-2025/05/23-00:49:02.986080 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/rangedweapons/001221.log: OK
-2025/05/23-00:49:02.986119 30c3fe000 Log #1264: 0 ops saved to Table #1268 OK
-2025/05/23-00:49:02.986176 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/rangedweapons/001264.log: OK
-2025/05/23-00:49:02.987379 30c3fe000 Table #1266: 63 entries OK
-2025/05/23-00:49:02.987631 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/rangedweapons/MANIFEST-001220: OK
-2025/05/23-00:49:02.987689 30c3fe000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/rangedweapons/MANIFEST-001262: OK
-2025/05/23-00:49:02.987955 30c3fe000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/rangedweapons; recovered 1 files; 110609 bytes. Some data may have been lost. ****
+2025/05/22-21:19:29.688 edec Recovering log #1277
+2025/05/22-21:19:29.696 edec Delete type=0 #1277
+2025/05/22-21:19:29.696 edec Delete type=3 #1275
+2025/05/22-21:20:51.314 5e34 Level-0 table #1283: started
+2025/05/22-21:20:51.314 5e34 Level-0 table #1283: 0 bytes OK
+2025/05/22-21:20:51.318 5e34 Delete type=0 #1281
+2025/05/22-21:20:51.318 5e34 Manual compaction at level-0 from '!items!1Pzn07kWapNFEP1o' @ 72057594037927935 : 1 .. '!items!wWme3VlMe2jrYxgf' @ 0 : 0; will stop at (end)

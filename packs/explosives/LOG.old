@@ -1,8 +1,7 @@
-2025/05/23-00:49:02.945440 30cc01000 Log #1033: 0 ops saved to Table #1080 OK
-2025/05/23-00:49:02.945587 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/explosives/001033.log: OK
-2025/05/23-00:49:02.945653 30cc01000 Log #1077: 0 ops saved to Table #1081 OK
-2025/05/23-00:49:02.945715 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/explosives/001077.log: OK
-2025/05/23-00:49:02.946159 30cc01000 Table #1079: 19 entries OK
-2025/05/23-00:49:02.946343 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/explosives/MANIFEST-001075: OK
-2025/05/23-00:49:02.946453 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/explosives/MANIFEST-001032: OK
-2025/05/23-00:49:02.946722 30cc01000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/explosives; recovered 1 files; 24825 bytes. Some data may have been lost. ****
+2025/05/22-21:19:29.608 dec8 Recovering log #1090
+2025/05/22-21:19:29.617 dec8 Delete type=0 #1090
+2025/05/22-21:19:29.617 dec8 Delete type=3 #1088
+2025/05/22-21:20:51.284 5e34 Level-0 table #1096: started
+2025/05/22-21:20:51.284 5e34 Level-0 table #1096: 0 bytes OK
+2025/05/22-21:20:51.288 5e34 Delete type=0 #1094
+2025/05/22-21:20:51.300 5e34 Manual compaction at level-0 from '!items!Cw88Vbyfdgw49s4a' @ 72057594037927935 : 1 .. '!items!v9T3qKhJs9sqJZ6n' @ 0 : 0; will stop at (end)

@@ -1,9 +1,7 @@
-2025/05/23-00:49:03.083331 30bbfb000 Log #886: 0 ops saved to Table #889 OK
-2025/05/23-00:49:03.083433 30bbfb000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/npc-attacks/000886.log: OK
-2025/05/23-00:49:03.083459 30bbfb000 Log #847: 0 ops saved to Table #890 OK
-2025/05/23-00:49:03.083540 30bbfb000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/npc-attacks/000847.log: OK
-2025/05/23-00:49:03.083793 30bbfb000 Table #839: 27 entries OK
-2025/05/23-00:49:03.084072 30bbfb000 Table #888: 27 entries OK
-2025/05/23-00:49:03.084309 30bbfb000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/npc-attacks/MANIFEST-000846: OK
-2025/05/23-00:49:03.084369 30bbfb000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/npc-attacks/MANIFEST-000884: OK
-2025/05/23-00:49:03.084689 30bbfb000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/npc-attacks; recovered 2 files; 27712 bytes. Some data may have been lost. ****
+2025/05/22-21:19:29.857 eb5c Recovering log #899
+2025/05/22-21:19:29.866 eb5c Delete type=0 #899
+2025/05/22-21:19:29.866 eb5c Delete type=3 #897
+2025/05/22-21:20:51.383 5e34 Level-0 table #905: started
+2025/05/22-21:20:51.383 5e34 Level-0 table #905: 0 bytes OK
+2025/05/22-21:20:51.387 5e34 Delete type=0 #903
+2025/05/22-21:20:51.391 5e34 Manual compaction at level-0 from '!items!0Dd3oX2x9FEooc4u' @ 72057594037927935 : 1 .. '!items!ysazG00af8R9YMXc' @ 0 : 0; will stop at (end)

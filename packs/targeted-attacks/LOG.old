@@ -1,9 +1,3 @@
-2025/05/23-00:49:03.078440 30cc01000 Log #844: 0 ops saved to Table #886 OK
-2025/05/23-00:49:03.078574 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks/000844.log: OK
-2025/05/23-00:49:03.078651 30cc01000 Log #883: 0 ops saved to Table #887 OK
-2025/05/23-00:49:03.078738 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks/000883.log: OK
-2025/05/23-00:49:03.079075 30cc01000 Table #885: 35 entries OK
-2025/05/23-00:49:03.079319 30cc01000 Table #836: 35 entries OK
-2025/05/23-00:49:03.079526 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks/MANIFEST-000881: OK
-2025/05/23-00:49:03.079650 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks/MANIFEST-000843: OK
-2025/05/23-00:49:03.079923 30cc01000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/targeted-attacks; recovered 2 files; 11532 bytes. Some data may have been lost. ****
+2025/04/09-00:22:36.949 d1bc Recovering log #549
+2025/04/09-00:22:36.957 d1bc Delete type=0 #549
+2025/04/09-00:22:36.957 d1bc Delete type=3 #548

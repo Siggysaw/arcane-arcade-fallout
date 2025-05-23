@@ -1,9 +1,7 @@
-2025/05/23-00:49:02.922497 30cc01000 Log #1390: 0 ops saved to Table #1393 OK
-2025/05/23-00:49:02.922810 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/perks/001390.log: OK
-2025/05/23-00:49:02.922853 30cc01000 Log #1359: 0 ops saved to Table #1394 OK
-2025/05/23-00:49:02.923098 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/perks/001359.log: OK
-2025/05/23-00:49:02.924128 30cc01000 Table #1392: 198 entries OK
-2025/05/23-00:49:02.925335 30cc01000 Table #1351: 198 entries OK
-2025/05/23-00:49:02.925901 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/perks/MANIFEST-001358: OK
-2025/05/23-00:49:02.926042 30cc01000 Archiving /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/perks/MANIFEST-001388: OK
-2025/05/23-00:49:02.926350 30cc01000 **** Repaired leveldb /Users/christopherbrown/Library/Application Support/FoundryVTT/Data/systems/arcane-arcade-fallout/packs/perks; recovered 2 files; 186454 bytes. Some data may have been lost. ****
+2025/05/22-21:19:29.574 e538 Recovering log #1403
+2025/05/22-21:19:29.583 e538 Delete type=0 #1403
+2025/05/22-21:19:29.583 e538 Delete type=3 #1401
+2025/05/22-21:20:51.274 5e34 Level-0 table #1409: started
+2025/05/22-21:20:51.274 5e34 Level-0 table #1409: 0 bytes OK
+2025/05/22-21:20:51.278 5e34 Delete type=0 #1407
+2025/05/22-21:20:51.282 5e34 Manual compaction at level-0 from '!folders!BX8ob4hygqZQjOsE' @ 72057594037927935 : 1 .. '!items.effects!tY5wYBBZwYNC9MSN.w3Tw4LeCxyybYwn6' @ 0 : 0; will stop at (end)
