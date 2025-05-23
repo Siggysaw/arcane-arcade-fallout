@@ -1,7 +1,5 @@
-2025/05/22-21:19:29.597 edec Recovering log #1147
-2025/05/22-21:19:29.605 edec Delete type=0 #1147
-2025/05/22-21:19:29.606 edec Delete type=3 #1145
-2025/05/22-21:20:51.271 5e34 Level-0 table #1153: started
-2025/05/22-21:20:51.271 5e34 Level-0 table #1153: 0 bytes OK
-2025/05/22-21:20:51.274 5e34 Delete type=0 #1151
-2025/05/22-21:20:51.282 5e34 Manual compaction at level-0 from '!items!0P6jhjOp71uF1tZr' @ 72057594037927935 : 1 .. '!items.effects!RgflvKJOChVEp0RD.RVVcbj4MxEqfA0lM' @ 0 : 0; will stop at (end)
+2025/05/22-21:24:18.921 d018 Log #1155: 0 ops saved to Table #1156 OK
+2025/05/22-21:24:18.921 d018 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition/001155.log: OK
+2025/05/22-21:24:18.921 d018 Table #1149: 86 entries OK
+2025/05/22-21:24:18.926 d018 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition/MANIFEST-001154: OK
+2025/05/22-21:24:18.930 d018 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\ammunition; recovered 1 files; 55671 bytes. Some data may have been lost. ****

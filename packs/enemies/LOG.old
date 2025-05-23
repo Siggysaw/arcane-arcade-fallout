@@ -1,7 +1,5 @@
-2025/05/22-21:19:29.709 e538 Recovering log #1358
-2025/05/22-21:19:29.718 e538 Delete type=0 #1358
-2025/05/22-21:19:29.718 e538 Delete type=3 #1356
-2025/05/22-21:20:51.324 5e34 Level-0 table #1364: started
-2025/05/22-21:20:51.324 5e34 Level-0 table #1364: 0 bytes OK
-2025/05/22-21:20:51.328 5e34 Delete type=0 #1362
-2025/05/22-21:20:51.336 5e34 Manual compaction at level-0 from '!actors!0Kql8q2zx1LbOSyw' @ 72057594037927935 : 1 .. '!actors.items.effects!weMV8MuixV5vIlZ1.CecD8LlJ2mRqUV0Q.XMcoogXUApncYIaO' @ 0 : 0; will stop at (end)
+2025/05/22-21:24:19.146 b950 Log #1366: 0 ops saved to Table #1367 OK
+2025/05/22-21:24:19.147 b950 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\enemies/001366.log: OK
+2025/05/22-21:24:19.147 b950 Table #1360: 355 entries OK
+2025/05/22-21:24:19.151 b950 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\enemies/MANIFEST-001365: OK
+2025/05/22-21:24:19.156 b950 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\enemies; recovered 1 files; 363932 bytes. Some data may have been lost. ****

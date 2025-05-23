@@ -1,7 +1,5 @@
-2025/05/22-21:19:29.688 edec Recovering log #1277
-2025/05/22-21:19:29.696 edec Delete type=0 #1277
-2025/05/22-21:19:29.696 edec Delete type=3 #1275
-2025/05/22-21:20:51.314 5e34 Level-0 table #1283: started
-2025/05/22-21:20:51.314 5e34 Level-0 table #1283: 0 bytes OK
-2025/05/22-21:20:51.318 5e34 Delete type=0 #1281
-2025/05/22-21:20:51.318 5e34 Manual compaction at level-0 from '!items!1Pzn07kWapNFEP1o' @ 72057594037927935 : 1 .. '!items!wWme3VlMe2jrYxgf' @ 0 : 0; will stop at (end)
+2025/05/22-21:24:19.102 d8cc Log #1285: 0 ops saved to Table #1286 OK
+2025/05/22-21:24:19.102 d8cc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/001285.log: OK
+2025/05/22-21:24:19.103 d8cc Table #1279: 63 entries OK
+2025/05/22-21:24:19.107 d8cc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons/MANIFEST-001284: OK
+2025/05/22-21:24:19.111 d8cc **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\rangedweapons; recovered 1 files; 110609 bytes. Some data may have been lost. ****

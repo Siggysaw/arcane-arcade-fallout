@@ -1,3 +1,11 @@
-2025/05/22-21:22:21.792 cc64 Recovering log #922
-2025/05/22-21:22:21.800 cc64 Delete type=0 #922
-2025/05/22-21:22:21.801 cc64 Delete type=3 #920
+2025/05/22-21:24:19.308 b950 Delete type=3 #1
+2025/05/22-21:32:45.629 cf30 Level-0 table #930: started
+2025/05/22-21:32:45.629 cf30 Level-0 table #930: 0 bytes OK
+2025/05/22-21:32:45.633 cf30 Delete type=0 #928
+2025/05/22-21:32:45.645 cf30 Manual compaction at level-0 from '!items!0FWQ5wE9lYP7RX44' @ 72057594037927935 : 1 .. '!items!zr8O7JwRX63efKzC' @ 0 : 0; will stop at '!items!zr8O7JwRX63efKzC' @ 500 : 1
+2025/05/22-21:32:45.645 cf30 Compacting 1@0 + 0@1 files
+2025/05/22-21:32:45.648 cf30 Generated table #931@0: 67 keys, 26600 bytes
+2025/05/22-21:32:45.648 cf30 Compacted 1@0 + 0@1 files => 26600 bytes
+2025/05/22-21:32:45.652 cf30 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/05/22-21:32:45.652 cf30 Delete type=2 #919
+2025/05/22-21:32:45.680 cf30 Manual compaction at level-0 from '!items!zr8O7JwRX63efKzC' @ 500 : 1 .. '!items!zr8O7JwRX63efKzC' @ 0 : 0; will stop at (end)
