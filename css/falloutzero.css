@@ -60,14 +60,25 @@ details > summary {
   padding: 5px;
 }
 
+.themed.theme-light #context-menu, .themed.theme-light#context-menu {
+  background: #333;
+}
+#context-menu li.context-item:hover {
+  color: #333;
+  background: var(--sheetcolor)
+}
+
 .rollable:hover,
 .rollable:focus,
 .sheet .backpack-row:hover {
   cursor: pointer;
-  background-color: var(--user-color);
+  background-color: var(--sheetcolor);
   color: var(--dark);
   text-decoration: none;
   text-shadow: none;
+}
+.window-app button:hover{
+    box-shadow:none;
 }
 
 .flex-group-center,
@@ -475,7 +486,7 @@ table .bio-label {
   height: 175px;
   width: 200px;
   object-fit: cover;
-  border: solid 1px var(--user-color);
+  border: solid 1px var(--sheetcolor);
 }
 
 .sheet header.sheet-header .custom-icon {
@@ -1073,7 +1084,7 @@ a.inline-roll,
 
 .sheet nav a:hover,
 .sheet .tabs > [data-tab].active {
-  background-color: var(--user-color);
+  background-color: var(--sheetcolor);
   color: #333;
   text-decoration: none;
   text-shadow: none;
@@ -1093,7 +1104,7 @@ a.inline-roll,
   }
 
 .window-app .window-content label:active {
-  color: var(--var-user-color);
+  color: var(--sheetcolor);
   background-color: white;
 }
 
@@ -1195,6 +1206,8 @@ a.inline-roll,
 .sheet .weapon-image img {
   width: 60px;
   height: auto;
+  display:block;
+  margin:auto;
 }
 
 .sheet .combat-ammo div,
@@ -1331,6 +1344,12 @@ a.inline-roll,
 .sheet .backpack .segment{
     margin:5px;
     padding:5px;
+}
+
+.sheet .crafting-button{
+    text-transform:uppercase;
+    font-weight:bold;
+    color:white;
 }
 
 /* Death Saving Rolls*/

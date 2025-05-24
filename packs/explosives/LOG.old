@@ -1,5 +1,3 @@
-2025/05/22-21:24:18.944 b950 Log #1098: 0 ops saved to Table #1099 OK
-2025/05/22-21:24:18.945 b950 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\explosives/001098.log: OK
-2025/05/22-21:24:18.945 b950 Table #1092: 19 entries OK
-2025/05/22-21:24:18.949 b950 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\explosives/MANIFEST-001097: OK
-2025/05/22-21:24:18.953 b950 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\explosives; recovered 1 files; 24825 bytes. Some data may have been lost. ****
+2025/05/23-19:42:32.835 10dbc Recovering log #1110
+2025/05/23-19:42:32.843 10dbc Delete type=0 #1110
+2025/05/23-19:42:32.843 10dbc Delete type=3 #1108

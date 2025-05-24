@@ -14,7 +14,8 @@
                     {{#if (Equals ../../selectedCraftable.uuid leaf.uuid) }} class="selected" {{/if}}
                     data-action="select"
                     data-branch="{{ branchKey }}"
-                    data-index="{{ @index }}">
+                    data-index="{{ @index }}"
+                    class="crafting-option">
                     {{ leaf.name }}
                 </button>
             {{/each}}

@@ -1,9 +1,9 @@
 <section class="main">
     {{#if selectedCraftable}}
     <h1>Crafting {{ selectedCraftable.name }}</h1>
-        <div>
+        <div class="crafting-content">
             <section>
-                <h5>Currently owned</h5>
+                <h5>Currently Owned</h5>
                 <div class="grid grid-2col">
                     <div>
                         Owned
@@ -15,7 +15,7 @@
 
             </section>
             <section>
-                <h5>Time requirement</h5>
+                <h5>Time Requirement</h5>
                 <div>
                 {{ selectedCraftable.time.value }} {{ selectedCraftable.time.unit }}
                 </div>
@@ -30,7 +30,7 @@
                         DC
                     </div>
                     <div>
-                        Actor modifier
+                        Roll Bonus
                     </div>
                     {{#each selectedCraftable.mainRequirements as |requirement|}}
                         <div>
@@ -48,7 +48,7 @@
 
             {{#if selectedCraftable.additionalRequirements}}
                 <section>
-                    <h5> Additional requirements</h5>
+                    <h5> Additional Requirements</h5>
                     <div class="grid grid-3col">
                         <div>
                             Skill
@@ -57,7 +57,7 @@
                             DC
                         </div>
                         <div>
-                            Actor modifier
+                            Roll Bonus
                         </div>
                         {{#each selectedCraftable.additionalRequirements as |requirement|}}
                             <div>
@@ -74,7 +74,7 @@
                 </section>
             {{/if}}
             <section>
-                <h5>Material requirements</h5>
+                <h5>Material Requirements</h5>
                 <div class="grid grid-3col">
                     <div>
                         Material
@@ -120,13 +120,13 @@
                         data-action="attemptCraft"
                         data-tooltip="Roll an attempt to see if you can craft item?"
                     >
-                        Attempt craft roll
+                        Attempt Craft Roll
                     </button>
                 </div>
             </section>
         </div>
     {{else}}
-        <h1>Select something to craft</h1>
+        <h1>Select Your Recipe!</h1>
     {{/if}}
 </section>
 

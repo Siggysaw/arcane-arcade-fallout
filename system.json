@@ -5,7 +5,7 @@
   "version": "0.1.17",
   "compatibility": {
     "minimum": "12",
-    "verified": "12.332"
+    "verified": "13.342"
   },
   "url": "https://github.com/Siggysaw/fallout-arcane-arcade.git",
   "manifest": "https://github.com/Siggysaw/fallout-arcane-arcade/releases/latest/download/system.json",
@@ -31,7 +31,9 @@
     "module/falloutzero.mjs"
   ],
   "styles": [
-    "css/falloutzero.css"
+    {
+      "src": "css/falloutzero.css"
+    }
   ],
   "languages": [
     {
@@ -43,7 +45,8 @@
     {
       "lang": "fr",
       "name": "Français",
-      "path": "lang/fr.json"
+      "path": "lang/fr.json",
+      "flags": {}
     }
   ],
   "packFolders": [
@@ -401,6 +404,18 @@
       "type": "Item",
       "name": "upgrades",
       "path": "packs/upgrades",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "References",
+      "type": "Item",
+      "name": "references",
+      "path": "packs/references",
       "system": "arcane-arcade-fallout",
       "ownership": {
         "PLAYER": "OBSERVER",

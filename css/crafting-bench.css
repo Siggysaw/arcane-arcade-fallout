@@ -17,7 +17,7 @@
 
             &.selected {
                 color: white;
-                background-color: var(--user-color);
+                background-color: var(--sheetcolor);
             }
         }
     }
@@ -29,14 +29,14 @@
             padding: 10px;
 
             .grid {
-                border-top: 1px solid var(--user-color);
-                border-left: 1px solid var(--user-color);
+                border-top: 1px solid var(--sheetcolor);
+                border-left: 1px solid var(--sheetcolor);
 
                 > div {
                     text-align: center;
                     padding: 5px;
-                    border-bottom: 1px solid var(--user-color);
-                    border-right: 1px solid var(--user-color);
+                    border-bottom: 1px solid var(--sheetcolor);
+                    border-right: 1px solid var(--sheetcolor);
                 }
             }
         }
@@ -46,4 +46,18 @@
 .attempt-crafting {
     padding: 0;
     margin: 0;
+}
+
+.crafting-option{
+    font-size:10pt;
+}
+.application h1{
+    font-size:16pt;
+    text-align:center;
+}
+.application .crafting-content {
+  font-family: Monofonto;
+  text-transform: capitalize;
+  font-size: 12pt;
+  color: white;
 }
