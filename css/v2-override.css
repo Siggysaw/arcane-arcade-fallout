@@ -20,10 +20,11 @@
 .application button {
     border-color: var(--sheetcolor);
     color: var(--sheetcolor);
+    font-weight:bold;
 }
 
 .application button:hover {
-    color: white;
+    color: #333;
     background: var(--sheetcolor);
 }
 
@@ -42,11 +43,6 @@ body.game .app button {
     line-height: unset;
 }
 
-body.game details {
-  max-height: 400px;
-  overflow-y: scroll;
-  font-size: 10pt;
-}
 body.game summary{
     text-transform:capitalize;
 }

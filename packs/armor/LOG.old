@@ -1,3 +1,11 @@
-2025/05/23-19:42:32.812 151a8 Recovering log #1624
-2025/05/23-19:42:32.820 151a8 Delete type=0 #1624
-2025/05/23-19:42:32.820 151a8 Delete type=3 #1622
+2025/05/24-13:57:23.653 17354 Delete type=3 #1
+2025/05/24-16:27:10.804 13ec4 Level-0 table #1635: started
+2025/05/24-16:27:10.804 13ec4 Level-0 table #1635: 0 bytes OK
+2025/05/24-16:27:10.807 13ec4 Delete type=0 #1633
+2025/05/24-16:27:10.825 13ec4 Manual compaction at level-0 from '!items!3VSZN9bW1SJHgU9n' @ 72057594037927935 : 1 .. '!items.effects!ofJ31ZteGa6dGhLk.U9ZFVtHqtdoYEocY' @ 0 : 0; will stop at '!items.effects!ofJ31ZteGa6dGhLk.U9ZFVtHqtdoYEocY' @ 287 : 1
+2025/05/24-16:27:10.825 13ec4 Compacting 1@0 + 0@1 files
+2025/05/24-16:27:10.829 13ec4 Generated table #1636@0: 20 keys, 24001 bytes
+2025/05/24-16:27:10.829 13ec4 Compacted 1@0 + 0@1 files => 24001 bytes
+2025/05/24-16:27:10.832 13ec4 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/05/24-16:27:10.832 13ec4 Delete type=2 #1626
+2025/05/24-16:27:10.832 13ec4 Manual compaction at level-0 from '!items.effects!ofJ31ZteGa6dGhLk.U9ZFVtHqtdoYEocY' @ 287 : 1 .. '!items.effects!ofJ31ZteGa6dGhLk.U9ZFVtHqtdoYEocY' @ 0 : 0; will stop at (end)
