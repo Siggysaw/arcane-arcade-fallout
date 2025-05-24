@@ -38,6 +38,7 @@
 
   .crafting-bench aside {
     flex: 0 0 300px;
+    overflow-y:scroll;
   }
 
   .crafting-bench .main {
@@ -48,7 +49,7 @@
 
   .crafting-bench button {
     width: 100%;
-    font-size: 16pt;
+    font-size: 14pt;
     text-transform: capitalize;
     background: none;
   }
@@ -98,7 +99,7 @@
 }
 
 .crafting-option {
-  font-size: 16pt;
+  font-size: 14pt;
   border: none;
   background: none;
 }
