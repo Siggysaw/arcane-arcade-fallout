@@ -1,11 +1,30 @@
+@font-face {
+  font-family: 'Monofonto';
+  src: url('/systems/arcane-arcade-fallout/assets/fonts/monofonto.otf');
+}
+
+@font-face {
+  font-family: 'fixedsys';
+  src: url('/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf');
+}
+
+.application,
+.application h1,
+.application h2,
+.application h3,
+.application h4{
+  font-family: 'Monofonto', sans-serif;
+  letter-spacing: 0.1rem;
+}
+
 .application button {
-    border-color: var(--user-color);
-    color: var(--user-color);
+    border-color: var(--sheetcolor);
+    color: var(--sheetcolor);
 }
 
 .application button:hover {
     color: white;
-    background: var(--user-color);
+    background: var(--sheetcolor);
 }
 
 .application button > i {
@@ -16,9 +35,18 @@
     color: white;
 }
 .application input[type="checkbox"]:checked::after {
-    color: var(--user-color)
+    color: var(--sheetcolor)
 }
 
 body.game .app button {
     line-height: unset;
+}
+
+body.game details {
+  max-height: 400px;
+  overflow-y: scroll;
+  font-size: 10pt;
+}
+body.game summary{
+    text-transform:capitalize;
 }

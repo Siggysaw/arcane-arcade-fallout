@@ -1,5 +1,5 @@
 <div class="gm-screen grid grid-20col">
-    <div class="grid-span-4 group-rewards">
+    <div class="grid-span-4 group-rewards" style="padding:5px;">
         <div>
             <div title="Use this to give out bulk rewards"><h6>Group Rewards</h6></div>
             <div>Only Active Players <input data-activeOnly type="checkbox" name="activeOnly" {{checked activeOnly}}></div>
@@ -71,8 +71,7 @@
             <button class="dialog-button" data-action="cancel">Cancel</button>
         </div>
     </div>
-    <div></div>
-    <div class="grid-span-15">
+    <div class="grid-span-16">
         <h6>Character Details</h6>
         <div class="grid grid-4col character-details">
             <div>Name</div>
@@ -81,45 +80,54 @@
             <div>Notes</div>
             {{#each actors as |actor id|}}
             {{#if actor.system.activePartymember}}
-        <div style="background-image:url('{{actor.img}}')"
-             class="character-stats">
-            <div class="actor-name">{{actor.name}}</div>
-            <div class="grid grid-4col stat-block">
-                <div data-tooltip="Armor Class" class="stat-icon"><i class="fa-solid fa-shield"></i></div>
-                <div class="stat-value">{{actor.system.armorClass.value}}</div>
-                <div data-tooltip="Damage Threshold" class="stat-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                <div class="stat-value">{{actor.system.damageThreshold.value}}</div>
-                <div data-tooltip="Health" class="stat-icon"><i class="fa-solid fa-heart"></i></div>
-                <div class="stat-value">{{actor.system.health.value}}/{{actor.system.health.max}}</div>
-                <div data-tooltip="Stamina" class="stat-icon"><i class="fa-solid fa-droplet"></i></div>
-                <div class="stat-value">{{actor.system.stamina.value}}/{{actor.system.stamina.max}}</div>
-                <div data-tooltip="Penalties" class="stat-icon"><i class="fa-solid fa-skull"></i></div>
-                <div class="stat-value">-{{actor.system.penaltyTotal}}</div>
-                <div data-tooltip="Action Points" class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
-                <div class="stat-value">{{actor.system.actionPoints.value}}/{{actor.system.actionPoints.max}}</div>
+            <div style="background-image:url('{{actor.img}}')"
+                 class="character-stats">
+                <div class="actor-name">
+                    {{actor.name}}<br />
+                    <span class="character-bg">
+                    Lvl {{actor.system.level}}
+                    {{#each actor.items as |item id|}}
+                    {{#Check item.type "background"}}
+                    {{item.name}}
+                    {{/Check}}
+                    {{/each}}
+                        </span>
+                </div>
+                <div class="grid grid-4col stat-block">
+                    <div data-tooltip="Armor Class" class="stat-icon"><i class="fa-solid fa-shield"></i></div>
+                    <div class="stat-value">{{actor.system.armorClass.value}}</div>
+                    <div data-tooltip="Damage Threshold" class="stat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="stat-value">{{actor.system.damageThreshold.value}}</div>
+                    <div data-tooltip="Health" class="stat-icon"><i class="fa-solid fa-heart"></i></div>
+                    <div class="stat-value">{{actor.system.health.value}}/{{actor.system.health.max}}</div>
+                    <div data-tooltip="Stamina" class="stat-icon"><i class="fa-solid fa-droplet"></i></div>
+                    <div class="stat-value">{{actor.system.stamina.value}}/{{actor.system.stamina.max}}</div>
+                    <div data-tooltip="Penalties<hr />
+                         Hunger: {{actor.system.penalties.hunger.value}}<br />
+                         Dehydration: {{actor.system.penalties.dehydration.value}}<br />
+                         Radiation: {{actor.system.penalties.radiation.value}}<br />
+                         Fatigue: {{actor.system.penalties.fatigue.value}}<br />
+                         Exhaustion: {{actor.system.penalties.exhaustion.value}}<br />" class="stat-icon"><i class="fa-solid fa-skull"></i></div>
+                    <div class="stat-value">-{{actor.system.penaltyTotal}}</div>
+                    <div data-tooltip="Action Points" class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="stat-value">{{actor.system.actionPoints.value}}/{{actor.system.actionPoints.max}}</div>
+                </div>
             </div>
-
-        </div>
             <div style="max-height:200px;overflow-y:scroll">
                 {{#each actor.items as |item id|}}
                 {{#Check item.type "trait"}}
                 <div>
                     <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
                         <a class="item-control"
-                           data-tooltip="TRAIT: {{item.system.description}}">
+                           data-tooltip="TRAIT:<br> {{item.system.description}}">
                             {{item.name}}
                         </a>
                     </li>
                 </div>
                 {{/Check}}
                 {{#Check item.type "perk"}}
-                <div>
-                    <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
-                        <a class="item-control"
-                           data-tooltip="{{item.system.description}}">
-                            {{item.name}}
-                        </a>
-                    </li>
+                <div data-tooltip="{{item.system.description}}">
+                    {{item.name}}
                 </div>
                 {{/Check}}
                 {{/each}}
@@ -130,21 +138,22 @@
                        name="system.karmaCaps.{{ key }}"
                        {{checked flipped}} disabled />
                 {{/each}}
+                <br /><br />
+                <div class="conditions">
+                    {{#each actor.items as |item condition|}}
+                    {{#Check item.type "condition"}}
+                    {{#GreaterThan system.quantity 1}}
+                    {{#GreaterThan system.quantity 2}}{{system.quantity}}x{{/GreaterThan}}
+                    <span data-tooltip="{{ item.system.description }}">[{{item.name}}]</span>
+                    {{/GreaterThan}}
+                    {{/Check}}
+                    {{/each}}
+                </div>
             </div>
             <div style="max-height:200px;overflow-y:scroll;text-align:initial">
                 {{#if actor.system.properties}}
                 <details><summary>View Notes</summary>{{{actor.system.properties}}}</details>
                 {{/if}}
-                <div style="border:none;">
-                    {{#each actor.items as |item condition|}}
-                    {{#Check item.type "condition"}}
-                    ({{#GreaterThan system.quantity 1}}
-                    {{#GreaterThan system.quantity 2}}{{system.quantity}}x{{/GreaterThan}}
-                    <span data-tooltip="{{ item.system.description }}">{{item.name}}</span> )
-                    {{/GreaterThan}}
-                    {{/Check}}
-                    {{/each}}
-                </div>
             </div>
             {{/if}}
             {{/each}}

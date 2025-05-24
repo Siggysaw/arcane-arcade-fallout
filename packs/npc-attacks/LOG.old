@@ -1,5 +1,3 @@
-2025/05/22-21:24:19.399 d8cc Log #907: 0 ops saved to Table #908 OK
-2025/05/22-21:24:19.399 d8cc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\npc-attacks/000907.log: OK
-2025/05/22-21:24:19.399 d8cc Table #901: 27 entries OK
-2025/05/22-21:24:19.403 d8cc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\npc-attacks/MANIFEST-000906: OK
-2025/05/22-21:24:19.407 d8cc **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\npc-attacks; recovered 1 files; 13856 bytes. Some data may have been lost. ****
+2025/05/23-19:42:33.071 1209c Recovering log #919
+2025/05/23-19:42:33.080 1209c Delete type=0 #919
+2025/05/23-19:42:33.081 1209c Delete type=3 #917

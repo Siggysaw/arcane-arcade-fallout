@@ -6,7 +6,7 @@
 .gm-screen {
   max-height: 1000px;
   overflow-y: scroll;
-  max-width: 1700px;
+  max-width: 1300px;
 }
 
 .application h6 {
@@ -42,6 +42,12 @@
 .gm-screen .group-rewards{
     color:var(--user-color);
 }
+
+.gm-screen input{
+    text-align:center;
+}
+
+
 .application{
     background:black;
 }

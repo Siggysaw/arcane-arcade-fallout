@@ -1,6 +1,3 @@
-2025/05/22-21:24:19.334 d8cc Log #617: 0 ops saved to Table #618 OK
-2025/05/22-21:24:19.334 d8cc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/000617.log: OK
-2025/05/22-21:24:19.334 d8cc Table #249: 21 entries OK
-2025/05/22-21:24:19.338 d8cc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/MANIFEST-000270: OK
-2025/05/22-21:24:19.339 d8cc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/MANIFEST-000614: OK
-2025/05/22-21:24:19.343 d8cc **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases; recovered 1 files; 2904 bytes. Some data may have been lost. ****
+2025/05/23-19:42:33.037 15344 Recovering log #629
+2025/05/23-19:42:33.045 15344 Delete type=0 #629
+2025/05/23-19:42:33.045 15344 Delete type=3 #627

@@ -252,7 +252,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         },
         classes: ['crafting-bench'],
         window: {
-            title: 'Crafting bench',
+            title: 'Crafting Bench',
             resizable: true
         }
     }

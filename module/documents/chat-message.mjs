@@ -28,22 +28,6 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /* -------------------------------------------- */
 
-  /**
-   * Should roll DCs and other challenge details be displayed on this card?
-   * @type {boolean}
-   */
-  get shouldDisplayChallenge() {
-    if (game.user.isGM || this.author === game.user) return true
-    switch (game.settings.get('falloutzero', 'challengeVisibility')) {
-      case 'all':
-        return true
-      case 'player':
-        return !this.author.isGM
-      default:
-        return false
-    }
-  }
-
   get actor() {
     const { scene: sceneId, token: tokenId, actor: actorId } = this.speaker
     return game.scenes.get(sceneId)?.tokens.get(tokenId)?.actor ?? game.actors.get(actorId)
@@ -79,6 +63,12 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /** @inheritDoc */
   async renderHTML(...args) {
+    const contentForAA = document.createElement('div')
+    contentForAA.setAttribute('data-actor-id', this.speaker.actor ?? '')
+    contentForAA.setAttribute('data-token-id', this.speaker.token ?? '')
+    contentForAA.setAttribute('data-item-id', this.flags.falloutzero?.itemId ?? '')
+    this.content = contentForAA
+
     const html = await super.renderHTML()
 
     this._displayChatActionButtons(html)
@@ -117,8 +107,6 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     if (chatCard.length > 0) {
       const flavor = html.querySelector('.flavor-text')
       if (flavor.text() === html.querySelector('.item-name').text()) flavor.remove()
-
-      if (this.shouldDisplayChallenge) chatCard[0].dataset.displayChallenge = ''
 
       // Conceal effects that the user cannot apply.
       chatCard.find('.effects-tray .effect').each((i, el) => {
@@ -169,6 +157,10 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // Header matter
     const { scene: sceneId, token: tokenId, actor: actorId } = this.speaker
     const actor = game.scenes.get(sceneId)?.tokens.get(tokenId)?.actor ?? game.actors.get(actorId)
+
+    html.setAttribute('data-item-id', this.flags.itemId ?? '')
+    html.setAttribute('data-token-id', tokenId ?? '')
+    html.setAttribute('data-actor-id', actorId ?? '')
 
     let img
     let nameText
