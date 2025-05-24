@@ -166,9 +166,10 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     static async roll() {
-        const selectedSkill = this.selectedSkill
-        const skillBonus = this.actor.system.skills[selectedSkill].value
-        const roll = new Roll(`1d20 + ${skillBonus} `)
+        const skillBonus = this.actor.getSkillBonus(this.selectedSkill)
+        const penaltyTotal = this.actor.system.penaltyTotal
+        const luckModSkillBonus = this.actor.getLuckModSkillBonus()
+        const roll = new Roll(`1d20 + ${skillBonus} + ${penaltyTotal} + ${luckModSkillBonus}`)
         const dice = await roll.evaluate()
 
         let result
