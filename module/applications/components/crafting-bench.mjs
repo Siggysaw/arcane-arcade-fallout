@@ -29,7 +29,7 @@ async function updateCreateCraftedItem({ actor, selectedCraftable }) {
 }
 
 function attemptToMessage(actor, craftable, { attemptType, attemptDice, critSuccessDice, materialChange }) {
-    const materialsUsedMessage = craftable.materials.reduce((acc, mat, index) => {
+    const materialsUsedMessage = craftable.system.crafting.materials.reduce((acc, mat, index) => {
         if (attemptType === ATTEMPT_RESULT.CRITICAL_SUCCESS && critSuccessDice.total === index) {
             acc += `${Math.max(1, mat.quantity - materialChange)} ${mat.name} consumed <br>`
             return acc
@@ -45,7 +45,7 @@ function attemptToMessage(actor, craftable, { attemptType, attemptDice, critSucc
                 ${attemptType}: Crafting attempt for ${craftable.name} <br>
                 ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? `${craftable.name} crafted successfully` : ''} <br>
                 ${[ATTEMPT_RESULT.CRITICAL_FAIL, ATTEMPT_RESULT.FAIL].includes(attemptType) ? `Lose ${materialChange} materials of each item used` : ''} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(attemptType) ? `Use ${materialChange} less ${craftable.materials[critSuccessDice.total].name}` : ''} <br>
+                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(attemptType) ? `Use ${materialChange} less ${craftable.system.crafting.materials[critSuccessDice.total]?.name}` : ''} <br>
                 ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? materialsUsedMessage : ''}
             `
         })
@@ -101,9 +101,10 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
         super(options);
         this.actor = actor
         this.craftable = craftable
-        this.selectedSkill = craftable.mainRequirements[0].key
+        this.selectedSkill = craftable.system.crafting.mainRequirements[0].key
         this.newOwnedQty = null
         this.searchQuery
+        this.onlyCraftables = true
     }
 
     static DEFAULT_OPTIONS = {
@@ -146,12 +147,12 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     get hasSkillChoice() {
-        return this.craftable.mainRequirements.length > 1
+        return this.craftable.system.crafting.mainRequirements.length > 1
     }
 
     get dc() {
         if (!this.craftable) return null
-        return this.craftable.mainRequirements.find((req) => {
+        return this.craftable.system.crafting.mainRequirements.find((req) => {
             return req.key === this.selectedSkill
         })?.dc + 10 ?? null
     }
@@ -195,10 +196,10 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
             this.newOwnedQty = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.craftable })
         }
 
-        const critSuccessDice = await new Roll(`1d${this.craftable.materials.length - 1} `).evaluate()
+        const critSuccessDice = await new Roll(`1d${Math.max(0, this.craftable.system.crafting.materials.length - 1)} `).evaluate()
         await updateActorMaterials({
             actor: this.actor,
-            materials: this.craftable.materials,
+            materials: this.craftable.system.crafting.materials,
             attemptResult: result,
             materialChange: {
                 index: result === ATTEMPT_RESULT.CRITICAL_SUCCESS ? critSuccessDice.total : -1,
@@ -239,7 +240,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             }
             return acc
         }, {})
-        this.craftingTree = this.fullCraftingTree
     }
 
     static DEFAULT_OPTIONS = {
@@ -248,7 +248,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             toggleBranch: CraftingBench.toggleBranch,
             craft: CraftingBench.craft,
             attemptCraft: CraftingBench.attemptCraft,
-            search: CraftingBench.search,
+            onlyCraftables: CraftingBench.toggleOnlyCraftables,
         },
         classes: ['crafting-bench'],
         window: {
@@ -280,6 +280,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             owned: this.owned,
             hasRequirements: this.hasRequirements,
             searchQuery: this.searchQuery,
+            onlyCraftables: this.onlyCraftables,
         }
     }
 
@@ -306,19 +307,11 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         }, {})
     }
 
-    get hasMaterials() {
-        if (!this.selectedCraftable) return false
-
-        return this.selectedCraftable.materials.every((mat) => {
-            return (this.materials?.[mat.uuid]?.quantity ?? 0) >= mat.quantity
-        })
-    }
-
     get allRequirements() {
         if (!this.selectedCraftable) return []
         return [
-            ...this.selectedCraftable.mainRequirements,
-            ...this.selectedCraftable.additionalRequirements,
+            ...this.selectedCraftable.system.crafting.mainRequirements,
+            ...this.selectedCraftable.system.crafting.additionalRequirements,
         ]
     }
 
@@ -329,6 +322,57 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
             }
             return passes
         }, true)
+    }
+
+    get craftingTree() {
+        if (!this.searchQuery && !this.onlyCraftables) {
+            return this.fullCraftingTree
+        }
+
+        let tree = this.fullCraftingTree
+
+        // if onlyCraftables is set, filter the crafting tree
+        if (this.onlyCraftables) {
+            tree = Object.keys(tree).reduce((acc, branchKey) => {
+                const branch = this.fullCraftingTree[branchKey]
+                // if branch has no items, skip it
+                if (!branch.items.length) return acc
+                // if branch has items, filter them
+                const filteredItems = branch.items.filter((item) => this.hasMaterials(item))
+                // if branch has no items, skip it
+                if (!filteredItems.length) return acc
+
+                // else add branch to the crafting tree
+                acc[branchKey] = {
+                    ...branch,
+                    items: filteredItems
+                }
+                return acc
+            }, {})
+        }
+
+        // if searchQuery is set, filter the crafting tree
+        if (this.searchQuery) {
+            tree = Object.keys(tree).reduce((acc, branchKey) => {
+                const branch = this.fullCraftingTree[branchKey]
+                // if branch label is a match, return branch and all leafs
+                if (branch.label.toLowerCase().includes(this.searchQuery)) {
+                    acc[branchKey] = branch
+                } else {
+                    const leafMatches = branch.items.filter((leaf) => leaf.name.toLowerCase().includes(this.searchQuery))
+                    // filter branch leafs
+                    if (leafMatches.length) {
+                        acc[branchKey] = {
+                            ...branch,
+                            items: leafMatches,
+                        }
+                    }
+                }
+                return acc
+            }, {})
+        }
+
+        return tree
     }
 
     async init() {
@@ -356,13 +400,9 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         e.stopPropagation()
         e.preventDefault()
         const { branch, index } = target.dataset
-        this.selectedCraftable = this.craftingTree[branch].items[index].uuid ? {
-            uuid: this.craftingTree[branch].items[index].uuid,
-            name: this.craftingTree[branch].items[index].name,
-            ...this.craftingTree[branch].items[index].system.crafting
-        } : null
+        this.selectedCraftable = this.craftingTree[branch].items[index] ?? null
         this.owned = this.actor.getItemByCompendiumId(this.selectedCraftable.uuid)?.system?.quantity ?? 0
-        this.selectedSkill = this.selectedCraftable.mainRequirements[0]
+        this.selectedSkill = this.selectedCraftable.system.crafting.mainRequirements[0]
         this.render()
     }
 
@@ -376,11 +416,11 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     }
 
     static async craft() {
-        if (!this.hasMaterials) {
+        if (!this.hasMaterials(this.selectedCraftable)) {
             return this._missingMaterialsWarning()
         }
         this.owned = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.selectedCraftable })
-        await updateActorMaterials({ actor: this.actor, materials: this.selectedCraftable.materials })
+        await updateActorMaterials({ actor: this.actor, materials: this.selectedCraftable.system.crafting.materials })
 
         attemptToMessage(
             this.actor,
@@ -394,7 +434,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     }
 
     static async attemptCraft() {
-        if (!this.hasMaterials) {
+        if (!this.hasMaterials(this.selectedCraftable)) {
             return this._missingMaterialsWarning()
         }
         const result = await CraftingAttempt.create({ actor: this.actor, craftable: this.selectedCraftable })
@@ -407,32 +447,21 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         this.render()
     }
 
+    hasMaterials(craftableItem) {
+        if (!craftableItem) return false
+
+        return craftableItem.system.crafting.materials.every((mat) => {
+            return (this.materials?.[mat.uuid]?.quantity ?? 0) >= mat.quantity
+        })
+    }
+
     search(event) {
         this.searchQuery = event.currentTarget.value.toLowerCase()
+        this.render()
+    }
 
-        if (!this.searchQuery) {
-            this.craftingTree = this.fullCraftingTree
-            this.render()
-            return
-        }
-
-        this.craftingTree = Object.keys(this.fullCraftingTree).reduce((acc, branchKey) => {
-            const branch = this.fullCraftingTree[branchKey]
-            // if branch label is a match, return branch and all leafs
-            if (branch.label.toLowerCase().includes(this.searchQuery)) {
-                acc[branchKey] = branch
-            } else {
-                const leafMatches = branch.items.filter((leaf) => leaf.name.toLowerCase().includes(this.searchQuery))
-                // filter branch leafs
-                if (leafMatches.length) {
-                    acc[branchKey] = {
-                        ...branch,
-                        items: leafMatches,
-                    }
-                }
-            }
-            return acc
-        }, {})
+    static toggleOnlyCraftables() {
+        this.onlyCraftables = !this.onlyCraftables
         this.render()
     }
 
