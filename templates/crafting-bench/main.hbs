@@ -17,7 +17,7 @@
             <section>
                 <h5>Time Requirement</h5>
                 <div>
-                {{ selectedCraftable.system.crafting.time.value }} {{ selectedCraftable.system.crafting.time.unit }}
+                {{ selectedCraftable.time.value }} {{ selectedCraftable.time.unit }}
                 </div>
             </section>
             <section>
@@ -32,7 +32,7 @@
                     <div>
                         Roll Bonus
                     </div>
-                    {{#each selectedCraftable.system.crafting.mainRequirements as |requirement|}}
+                    {{#each selectedCraftable.mainRequirements as |requirement|}}
                         <div>
                             {{requirement.key}}
                         </div>
@@ -46,7 +46,7 @@
                 </div>
             </section>
 
-            {{#if selectedCraftable.system.crafting.additionalRequirements}}
+            {{#if selectedCraftable.additionalRequirements}}
                 <section>
                     <h5> Additional Requirements</h5>
                     <div class="grid grid-3col">
@@ -59,7 +59,7 @@
                         <div>
                             Roll Bonus
                         </div>
-                        {{#each selectedCraftable.system.crafting.additionalRequirements as |requirement|}}
+                        {{#each selectedCraftable.additionalRequirements as |requirement|}}
                             <div>
                                 {{requirement.key}}
                             </div>
@@ -85,7 +85,7 @@
                     <div>
                         Owned
                     </div>
-                    {{#each selectedCraftable.system.crafting.materials as |material|}}
+                    {{#each selectedCraftable.materials as |material|}}
                         <div>
                             {{material.name}}
                         </div>
