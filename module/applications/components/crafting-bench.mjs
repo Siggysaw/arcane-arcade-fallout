@@ -18,13 +18,10 @@ async function updateCreateCraftedItem({ actor, selectedCraftable }) {
             quantity: newQty
         })
     } else {
-        const craftedItem = await fromUuid(selectedCraftable.uuid)
-        craftedItem.update({
-            _stats: {
-                compendiumSource: selectedCraftable.uuid
-            }
-        })
-        await Item.create(craftedItem.toObject(), { parent: actor })
+        const compendiumItem = await fromUuid(selectedCraftable.uuid)
+        const craftedItem = compendiumItem.toObject()
+        craftedItem._stats.compendiumSource = selectedCraftable.uuid
+        await Item.create(craftedItem, { parent: actor })
         newQty = 1
     }
 
