@@ -1,5 +1,5 @@
 export default class SkillRoll extends FormApplication {
-  constructor(actor, skillKey, options = {}, callback = () => {}) {
+  constructor(actor, skillKey, options = {}, callback = () => { }) {
     super(actor, options)
 
     this.actor = actor
@@ -11,7 +11,7 @@ export default class SkillRoll extends FormApplication {
       selectedAbility: abilities[0].abbr,
       selectedAbilityBonus: this.actor.getAbilityMod(abilities[0].abbr),
       skillBonus: this.actor.getSkillBonus(skillKey),
-      actorLuck: this.actor.system.luckmod,
+      actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
       actorPenalties: this.actor.system.penaltyTotal,
       bonus: '',
       advantageMode:
@@ -56,6 +56,7 @@ export default class SkillRoll extends FormApplication {
     return {
       ...(await super.getData()),
       ...this.formDataCache,
+      abilities: CONFIG.FALLOUTZERO.abilities,
     }
   }
 
