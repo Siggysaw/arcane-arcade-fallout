@@ -195,29 +195,49 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     if ([ATTEMPT_RESULT.SUCCESS, ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(result)) {
       this.newOwnedQty = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.craftable })
     }
+    static async roll() {
+        const skillBonus = this.actor.getSkillBonus(this.selectedSkill)
+        const abilityBonus = this.actor.getAbilityMod(CONFIG.FALLOUTZERO.skills[this.selectedSkill].ability[0])
+        const penaltyTotal = this.actor.system.penaltyTotal
+        const luckModSkillBonus = this.actor.getLuckModSkillBonus()
+        const roll = new Roll(`1d20 + ${skillBonus} + ${abilityBonus} + ${penaltyTotal} + ${luckModSkillBonus}`)
+        const dice = await roll.evaluate()
 
-    const critSuccessDice = await new Roll(`1d${Math.max(0, this.craftable.system.crafting.materials.length - 1)} `).evaluate()
-    await updateActorMaterials({
-      actor: this.actor,
-      materials: this.craftable.system.crafting.materials,
-      attemptResult: result,
-      materialChange: {
-        index: result === ATTEMPT_RESULT.CRITICAL_SUCCESS ? critSuccessDice.total : -1,
-        value: materialChange
-      }
-    })
+        let result
+        if (dice.total <= this.dc) {
+            result = ATTEMPT_RESULT.FAIL
+            if (dice.total <= (this.dc - 8)) {
+                result = ATTEMPT_RESULT.CRITICAL_FAIL
+            }
+        } else {
+            result = ATTEMPT_RESULT.SUCCESS
+            if (dice.total >= (this.dc + 8)) {
+                result = ATTEMPT_RESULT.CRITICAL_SUCCESS
+            }
+        }
 
-    attemptToMessage(
-      this.actor,
-      this.craftable,
-      {
-        attemptType: result,
-        attemptDice: dice,
-        critSuccessDice: critSuccessDice,
-        materialChange: materialChange,
-      }
-    )
+        let materialChange = 0
+        if (result !== ATTEMPT_RESULT.SUCCESS) {
+            const diceSides = result === ATTEMPT_RESULT.CRITICAL_FAIL ? '6' : '4'
+            const roll = await new Roll(`1d${diceSides} `).evaluate()
+            materialChange = roll.total
+        }
 
+        // if successful, create the crafted item
+        if ([ATTEMPT_RESULT.SUCCESS, ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(result)) {
+            this.newOwnedQty = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.craftable })
+        }
+
+        const critSuccessDice = await new Roll(`1d${Math.max(0, this.craftable.system.crafting.materials.length - 1)} `).evaluate()
+        await updateActorMaterials({
+            actor: this.actor,
+            materials: this.craftable.system.crafting.materials,
+            attemptResult: result,
+            materialChange: {
+                index: result === ATTEMPT_RESULT.CRITICAL_SUCCESS ? critSuccessDice.total : -1,
+                value: materialChange
+            }
+        })
     this.close()
   }
 
