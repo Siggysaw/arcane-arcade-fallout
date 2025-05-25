@@ -175,13 +175,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       return actor.parent.items.find((i) => i.name == search)
     }
 
-    const dumbLuck = searchItems(this, "Dumb Luck")
     const alertness = searchItems(this, "Alertness")
     const aliveandkickin = searchItems(this, "Alive and Kickin'")
     const packrat = searchItems(this, "Pack Rat")
 
     alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
-    dumbLuck ? this.luckmod = Math.floor(this.abilities['lck'].mod) : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
 
