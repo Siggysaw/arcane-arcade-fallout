@@ -30,7 +30,11 @@
   "esmodules": [
     "module/falloutzero.mjs"
   ],
+<<<<<<< HEAD
   "styles": [ "css/falloutzero.css" ],
+=======
+"styles": [ "css/falloutzero.css" ]
+>>>>>>> ff62eca2d462d6f33b4cb8df443ebb5cfdc170b7
   ],
   "languages": [
     {
