@@ -358,7 +358,7 @@ details > summary {
   background: #222;
 }
 
-.sheet.journal-entry .journal-entry-content,
+
 .prosemirror.menu-dialog form {
   background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
   background-repeat: no-repeat;
@@ -378,10 +378,16 @@ details > summary {
 }
 
 #chat-popout .flavor-text {
-  color: var(--sheetcolor;
+  color: var(--sheetcolor)
   )
 }
 
+.sheet.journal-entry .journal-entry-content {
+  background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-color: var(--sheetcolor);
+}
 .sheet.journal-entry .title {
   display: none;
 }

@@ -35,15 +35,33 @@ export function registerSystemSettings() {
         default: true,
         requiresReload: true,
     })
-    game.settings.register('core', 'JunkLoad', {
-        name: 'Does Junk Have Load?',
-        hint: 'If Checked: 5 Junk is 1 Load, 10 Material is 1 Load',
-        scope: 'world',
-        config: true,
-        type: Boolean,
-        default: true,
-        requiresReload: true,
-    })
+  game.settings.register('core', 'JunkLoad', {
+    name: 'Does Junk Have Load?',
+    hint: 'If Checked: 5 Junk is 1 Load, 10 Material is 1 Load',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  })
+  game.settings.register('core', 'GroupSneak', {
+    name: 'Override Group Sneak',
+    hint: 'If the auto calculator seems incorrect, overwrite it here',
+    scope: 'world',
+    config: true,
+    type: Number,
+    default: 0,
+    requiresReload: false,
+  })
+  game.settings.register('core', 'PartyNerve', {
+    name: 'Override Party Nerve',
+    hint: 'If the auto calculator seems incorrect, overwrite it here',
+    scope: 'world',
+    config: true,
+    type: Number,
+    default: 0,
+    requiresReload: false,
+  })
     game.settings.register('core', 'Sheet-Color', {
         name: 'Your Sheet Theme Color',
         hint: 'An override for sheet color. Green = #1bff80 / Amber = #ffb641 or you can use custom hex or just say "red" or "green" Blank puts it back to User Color being used.',

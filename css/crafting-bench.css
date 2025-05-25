@@ -1,63 +1,106 @@
-
-
-.crafting-bench {
-    .window-content {
-        padding: 0;
-        flex-direction: row;
-        height: 100%;
-        min-width: 600px;
-        min-height: 600px;
-    }
-
-    aside {
-        flex: 0 0 200px;
-
-        button {
-            width: 100%;
-
-            &.selected {
-                color: white;
-                background-color: var(--sheetcolor);
-            }
-        }
-    }
-
-    .main {
-        padding: 20px;
-
-        section {
-            padding: 10px;
-
-            .grid {
-                border-top: 1px solid var(--sheetcolor);
-                border-left: 1px solid var(--sheetcolor);
-
-                > div {
-                    text-align: center;
-                    padding: 5px;
-                    border-bottom: 1px solid var(--sheetcolor);
-                    border-right: 1px solid var(--sheetcolor);
-                }
-            }
-        }
-    }
+.application h1 {
+  font-size: 16pt;
+  text-align: center;
 }
 
-.attempt-crafting {
-    padding: 0;
-    margin: 0;
-}
-
-.crafting-option{
-    font-size:10pt;
-}
-.application h1{
-    font-size:16pt;
-    text-align:center;
-}
-.application .crafting-content {
+.application .crafting-content,
+.crafting-content h5 {
   font-family: Monofonto;
   text-transform: capitalize;
   font-size: 12pt;
   color: white;
+}
+
+.crafting-bench section {
+  margin-top: 20px;
+}
+
+.crafting-content h5 {
+  font-size: 15pt;
+  text-transform: uppercase;
+  color: var(--sheetcolor);
+}
+
+.crafting-bench {
+  background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: var(--sheetcolor);
+  background-color: var(--sheetcolor);
+}
+
+  .crafting-bench .window-content {
+    padding: 0;
+    flex-direction: row;
+    height: 100%;
+    min-height: 600px;
+  }
+
+  .crafting-bench aside {
+    flex: 0 0 300px;
+    overflow-y:scroll;
+  }
+
+  .crafting-bench .main {
+    width: 900px;
+    padding: 20px;
+    border: solid 1px;
+    overflow-y:scroll;
+  }
+
+  .crafting-bench button {
+    width: 100%;
+    font-size: 14pt;
+    text-transform: capitalize;
+    background: none;
+  }
+
+    .crafting-bench button .main {
+      padding: 20px;
+    }
+
+    .crafting-bench button section {
+      padding: 10px;
+    }
+
+    .crafting-bench button .main .grid {
+      border: solid 1px var(--sheetcolor);
+    }
+
+  .crafting-bench .main .grid > div {
+    text-align: center;
+    padding: 5px;
+    border: solid 1px var(--sheetcolor);
+  }
+
+.craftables-img {
+  background: black;
+}
+
+  .craftables-img img {
+    width: 200px;
+    height: auto;
+    display: block;
+    margin: auto;
+  }
+
+.attempt-crafting {
+  padding: 0;
+  margin: 0;
+}
+
+.craftables-list {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.craftables-type {
+  font-size: 14pt;
+  padding: 5px;
+}
+
+.crafting-option {
+  font-size: 14pt;
+  border: none;
+  background: none;
 }

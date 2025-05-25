@@ -1,132 +1,131 @@
 <section class="main">
     {{#if selectedCraftable}}
     <h1>Crafting {{ selectedCraftable.name }}</h1>
-        <div class="crafting-content">
-            <section>
-                <h5>Currently Owned</h5>
-                <div class="grid grid-2col">
-                    <div>
-                        Owned
-                    </div>
-                    <div>
-                        {{ owned }}
-                    </div>
-                </div>
-
-            </section>
-            <section>
-                <h5>Time Requirement</h5>
+    <div class="crafting-content">
+        <section>
+            <div class="craftables-img grid grid-2col">
+            <div><img src="{{selectedCraftable.img}}" /></div>
+            <div>{{{selectedCraftable.system.description}}}</div> 
+            </div>
+            <br />
+            <div class="grid grid-2col">
                 <div>
-                {{ selectedCraftable.system.crafting.time.value }} {{ selectedCraftable.system.crafting.time.unit }}
+                    Owned
                 </div>
-            </section>
-            <section>
-                <h5>Skill requirements</h5>
-                <div class="grid grid-3col">
-                    <div>
-                        Skill
-                    </div>
-                    <div>
-                        DC
-                    </div>
-                    <div>
-                        Roll Bonus
-                    </div>
-                    {{#each selectedCraftable.system.crafting.mainRequirements as |requirement|}}
-                        <div>
-                            {{requirement.key}}
-                        </div>
-                        <div>
-                            {{ requirement.dc }}
-                        </div>
-                        <div>
-                            {{lookup ../skills requirement.key}} 
-                        </div>
-                    {{/each}}
+                <div>
+                    {{ owned }}
                 </div>
-            </section>
+            </div>
 
-            {{#if selectedCraftable.system.crafting.additionalRequirements}}
-                <section>
-                    <h5> Additional Requirements</h5>
-                    <div class="grid grid-3col">
-                        <div>
-                            Skill
-                        </div>
-                        <div>
-                            DC
-                        </div>
-                        <div>
-                            Roll Bonus
-                        </div>
-                        {{#each selectedCraftable.system.crafting.additionalRequirements as |requirement|}}
-                            <div>
-                                {{requirement.key}}
-                            </div>
-                            <div>
-                                {{ requirement.dc }}
-                            </div>
-                            <div>
-                                {{lookup ../skills requirement.key}} 
-                            </div>
-                        {{/each}}
-                    </div>
-                </section>
-            {{/if}}
-            <section>
-                <h5>Material Requirements</h5>
-                <div class="grid grid-3col">
-                    <div>
-                        Material
-                    </div>
-                    <div>
-                        Quantity
-                    </div>
-                    <div>
-                        Owned
-                    </div>
-                    {{#each selectedCraftable.system.crafting.materials as |material|}}
-                        <div>
-                            {{material.name}}
-                        </div>
-                        <div>
-                            {{material.quantity}}
-                        </div>
-                        <div>
-                            {{!-- #TODO BETTER WAY TO LOOKUP? --}}
-                            {{#if (lookup ../materials material.uuid)}}
-                                {{#with (lookup ../materials material.uuid)~}}
-                                    {{ this.quantity }}
-                                {{/with}}
-                            {{else}}
-                                0
-                            {{/if}}
-                        </div>
-                    {{/each}}
+        </section>
+        <section>
+            <div>
+               TIME REQ: {{ selectedCraftable.system.crafting.time.value }} {{ selectedCraftable.system.crafting.time.unit }}
+            </div>
+        </section>
+        <section>
+            <h5>Skill requirements</h5>
+            <div class="grid grid-3col">
+                <div>
+                    Skill
                 </div>
-            </section>
-            <section>
-                <div class="flex gap-3">
-                    <button
-                        data-action="craft"
+                <div>
+                    DC
+                </div>
+                <div>
+                    Roll Bonus
+                </div>
+                {{#each selectedCraftable.system.crafting.mainRequirements as |requirement|}}
+                <div>
+                    {{requirement.key}}
+                </div>
+                <div>
+                    {{ requirement.dc }}
+                </div>
+                <div>
+                    {{lookup ../skills requirement.key}}
+                </div>
+                {{/each}}
+            </div>
+        </section>
+
+        {{#if selectedCraftable.system.crafting.additionalRequirements}}
+        <section>
+            <h5> Additional Requirements</h5>
+            <div class="grid grid-3col">
+                <div>
+                    Skill
+                </div>
+                <div>
+                    DC
+                </div>
+                <div>
+                    Roll Bonus
+                </div>
+                {{#each selectedCraftable.system.crafting.additionalRequirements as |requirement|}}
+                <div>
+                    {{requirement.key}}
+                </div>
+                <div>
+                    {{ requirement.dc }}
+                </div>
+                <div>
+                    {{lookup ../skills requirement.key}}
+                </div>
+                {{/each}}
+            </div>
+        </section>
+        {{/if}}
+        <section>
+            <h5>Material Requirements</h5>
+            <div class="grid grid-3col">
+                <div>
+                    Material
+                </div>
+                <div>
+                    Quantity
+                </div>
+                <div>
+                    Owned
+                </div>
+                {{#each selectedCraftable.system.crafting.materials as |material|}}
+                <div>
+                    {{material.name}}
+                </div>
+                <div>
+                    {{material.quantity}}
+                </div>
+                <div>
+                    {{!-- #TODO BETTER WAY TO LOOKUP? --}}
+                    {{#if (lookup ../materials material.uuid)}}
+                    {{#with (lookup ../materials material.uuid)~}}
+                    {{ this.quantity }}
+                    {{/with}}
+                    {{else}}
+                    0
+                    {{/if}}
+                </div>
+                {{/each}}
+            </div>
+        </section>
+        <section>
+            <div class="flex gap-3">
+                <button data-action="craft"
                         {{#unless hasRequirements}}
-                            disabled
-                            data-tooltip="You do not have the required skills to craft this item."
-                        {{/unless}}
-                    >
-                        Craft item
-                    </button>
-                    <button
-                        data-action="attemptCraft"
-                        data-tooltip="Roll an attempt to see if you can craft item?"
-                    >
-                        Attempt Craft Roll
-                    </button>
-                </div>
-            </section>
-        </div>
+                        disabled
+                        data-tooltip="You do not have the required skills to craft this item."
+                        {{/unless}}>
+                    Craft item
+                </button>
+                <button data-action="attemptCraft"
+                        data-tooltip="Roll an attempt to see if you can craft item?">
+                    Attempt Craft Roll
+                </button>
+            </div>
+        </section>
+    </div>
     {{else}}
-        <h1>Select Your Recipe!</h1>
+    <h1>Select Your Recipe!</h1>
     {{/if}}
 </section>
 
