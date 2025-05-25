@@ -313,7 +313,7 @@ export default class FalloutZeroActor extends Actor {
         rollInput += withAdvantage
       }
       if (withModifiers === 'true') {
-        const luckmod = actor.system.luckmod
+        const luckmod = actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
         const penaltyTotal = actor.system.penaltyTotal
         rollInput += ` + ${luckmod} - ${penaltyTotal}`
       }
@@ -1913,7 +1913,7 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
             myActor.system.abilities[abilities[0]].mod,
             myActor.system.abilities[abilities[1]].mod,
           )
-      const actorLuck = myActor.system.luckmod
+      const actorLuck = myActor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
       const actorPenalties = myActor.system.penaltyTotal
       const roll = new Roll(
         `${myDice} + ${skillBonus} + ${abilityBonus} + ${actorLuck} - ${actorPenalties}`,
@@ -2800,15 +2800,15 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
     }
   }
 
-
-  getLuckModSkillBonus() {
-    if (this.hasDumbLuck()) {
-      return this.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
-    }
-    return Math.floor(this.getAbilityMod('lck') / 2)
-  }
-
   getAbilityMod(ability) {
+    if (ability === CONFIG.FALLOUTZERO.abilities.lck.id) {
+
+      if (this.hasDumbLuck()) {
+        return this.system.abilities[ability].mod
+      }
+      return Math.floor(this.system.abilities[ability].mod / 2)
+
+    }
     return this.system.abilities[ability].mod
   }
 

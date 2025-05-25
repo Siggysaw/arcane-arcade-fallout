@@ -72,7 +72,7 @@
       <div class="flex space-between">
         <div>Ability:</div>
         <select name="selectedAbility">
-          {{selectOptions abilities selected=selectedAbility valueAttr="abbr" labelAttr="label"}}
+          {{selectOptions abilities selected=selectedAbility valueAttr="id" labelAttr="label"}}
         </select>
       </div>
     </fieldset>
@@ -86,4 +86,5 @@
     <button type="submit">Roll</button>
   </div>
 </form>
-{{ log 'skill' this}}
+{{ log 'skill'}}
+{{ log this}}

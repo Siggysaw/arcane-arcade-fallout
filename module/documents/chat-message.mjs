@@ -63,11 +63,15 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /** @inheritDoc */
   async renderHTML(...args) {
-    const contentForAA = document.createElement('div')
-    contentForAA.setAttribute('data-actor-id', this.speaker.actor ?? '')
-    contentForAA.setAttribute('data-token-id', this.speaker.token ?? '')
-    contentForAA.setAttribute('data-item-id', this.flags.falloutzero?.itemId ?? '')
-    this.content = contentForAA
+
+    // add ids for automated animations if chat was made by item
+    if (this.flags.falloutzero?.itemId) {
+      const contentForAA = document.createElement('div')
+      contentForAA.setAttribute('data-actor-id', this.speaker.actor ?? '')
+      contentForAA.setAttribute('data-token-id', this.speaker.token ?? '')
+      contentForAA.setAttribute('data-item-id', this.flags.falloutzero?.itemId ?? '')
+      this.content = contentForAA
+    }
 
     const html = await super.renderHTML()
 

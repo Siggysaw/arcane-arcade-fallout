@@ -112,8 +112,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       groupSneaktotal +=
         character.system.skills.sneak.base +
         character.system.skills.sneak.modifiers +
-        character.system.abilities.agi.mod + 
-        character.system.luckmod
+        character.system.abilities.agi.mod +
+        character.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
     }
     const activePlayercount = activeCharacterList.length
     ManualPartyNerve > 0 ? actorData.system.partyNerve.base = ManualPartyNerve : actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
@@ -631,7 +631,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     //show rule information
     html.on('click', '[data-condition]', (ev) => {
       const condition = ev.currentTarget.dataset.condition
-      
+
     })
     //show Combat Action Information
     html.on('click', '[data-combatActions]', (ev) => {
