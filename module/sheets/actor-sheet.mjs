@@ -64,6 +64,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const AmmoLoad = game.settings.get('core', 'AmmoLoad')
     const JunkLoad = game.settings.get('core', 'JunkLoad')
     const VaultTec = game.settings.get('core', 'VaultTec')
+    const ManualGroupSneak = game.settings.get('core', 'GroupSneak')
+    const ManualPartyNerve = game.settings.get('core', 'PartyNerve')
 
 
 
@@ -110,11 +112,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       groupSneaktotal +=
         character.system.skills.sneak.base +
         character.system.skills.sneak.modifiers +
-        character.system.abilities.agi.mod
+        character.system.abilities.agi.mod + 
+        character.system.luckmod
     }
     const activePlayercount = activeCharacterList.length
-    actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
-    actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
+    ManualPartyNerve > 0 ? actorData.system.partyNerve.base = ManualPartyNerve : actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
+    ManualGroupSneak > 0 ? actorData.system.groupSneak.base = ManualGroupSneak : actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
 
 
     //PowerArmor Setup

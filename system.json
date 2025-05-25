@@ -413,7 +413,7 @@
     },
     {
       "label": "References",
-      "type": "Item",
+      "type": "JournalEntry",
       "name": "references",
       "path": "packs/references",
       "system": "arcane-arcade-fallout",
