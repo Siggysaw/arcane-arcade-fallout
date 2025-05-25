@@ -66,11 +66,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
     // add ids for automated animations if chat was made by item
     if (this.flags.falloutzero?.itemId) {
-      const contentForAA = document.createElement('div')
-      contentForAA.setAttribute('data-actor-id', this.speaker.actor ?? '')
-      contentForAA.setAttribute('data-token-id', this.speaker.token ?? '')
-      contentForAA.setAttribute('data-item-id', this.flags.falloutzero?.itemId ?? '')
-      this.content = contentForAA
+      this.flags.itemId = this.flags.falloutzero.itemId
     }
 
     const html = await super.renderHTML()
@@ -161,10 +157,6 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // Header matter
     const { scene: sceneId, token: tokenId, actor: actorId } = this.speaker
     const actor = game.scenes.get(sceneId)?.tokens.get(tokenId)?.actor ?? game.actors.get(actorId)
-
-    html.setAttribute('data-item-id', this.flags.itemId ?? '')
-    html.setAttribute('data-token-id', tokenId ?? '')
-    html.setAttribute('data-actor-id', actorId ?? '')
 
     let img
     let nameText
