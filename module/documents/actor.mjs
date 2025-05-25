@@ -54,14 +54,6 @@ export default class FalloutZeroActor extends Actor {
     }])
   }
 
-  get perks() {
-    return this.items.filter((i) => i.type === 'perk')
-  }
-
-  hasDumbLuck() {
-    return this.perks.find((p) => p.name === 'Dumb Luck')
-  }
-
   async openDialog(filename, title) {
     const myDialogOptions = { width: 700, height: 700, resizable: true }
     const myContent = await renderTemplate(`systems/arcane-arcade-fallout/${filename}`, this
@@ -2800,22 +2792,12 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
     }
   }
 
-
-  getLuckModSkillBonus() {
-    if (this.hasDumbLuck()) {
-      return this.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
-    }
-    return Math.floor(this.getAbilityMod('lck') / 2)
-  }
-
   getAbilityMod(ability) {
     return this.system.abilities[ability].mod
   }
-
   getAttackBonus() {
     return this.system.attackBonus
   }
-
   getDamageBonus() {
     return this.system.damageBonus
   }
@@ -2823,7 +2805,7 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
   hasKarmaCapAvailable() {
     if (this.type !== 'character' || this.system.karmaCaps.length === 0) return false
 
-    return this.karmaCapsAvailable() > 0
+    return this.karmaCapsAvailable()
   }
 
   karmaCapsAvailable() {
@@ -2840,6 +2822,9 @@ Success by 8+ : You craft the item and use 1d4 less of one material (randomized)
     this.update({ 'system.karmaCaps': this.system.karmaCaps })
   }
 
+  getPerks() {
+    return this.items.filter((item) => item.type === 'perk')
+  }
   PowerArmorHealth(armorID) {
     const armor = this.items.get(armorID)
     const armorHealth = armor.system.armorHP
