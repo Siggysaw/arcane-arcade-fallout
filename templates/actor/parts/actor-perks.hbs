@@ -5,7 +5,7 @@
             <tr>
                 <td>
                     <div class="perk-div">
-                        <h3>{{ item.name }}</h3>
+                        <h3 class="context-menu" data-item-id="{{ item._id }}">{{ item.name }}</h3>
                         <a class="item-control"
                            data-edit
                            data-item-id="{{ item._id }}"
@@ -22,9 +22,6 @@
                            data-item="{{ item._id }}"
                            class="fas fa-plus-square"></i>
                     </div>
-                    <div class="perk-div" style="text-align:left;">
-                        <i class="fas fa-ellipsis-v context-menu context-icon perk-context" data-item-id="{{ item._id }}"></i>
-                    </div>
                 </td>
     </tr>
     </table>
@@ -39,7 +36,7 @@
             <tr>
                 <td>
                     <div class="perk-div">
-                        <h3>{{ item.name }}</h3>
+                        <h3 class="context-menu" data-item-id="{{ item._id }}">{{ item.name }}</h3>
                         <a class="item-control"
                            data-edit
                            data-item-id="{{ item._id }}"
@@ -57,9 +54,6 @@
                            data-itemaddition
                            data-item="{{ item._id }}"
                            class="fas fa-plus-square"></i>
-                    </div>
-                    <div class="perk-div" style="text-align:left;">
-                        <i class="fas fa-ellipsis-v context-menu context-icon perk-context" data-item-id="{{ item._id }}"></i>
                     </div>
                 </td>
     </tr>

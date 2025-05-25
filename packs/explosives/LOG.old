@@ -1,7 +1,5 @@
-2025/05/24-20:46:34.240 1c8a4 Recovering log #1143
-2025/05/24-20:46:34.249 1c8a4 Delete type=0 #1143
-2025/05/24-20:46:34.250 1c8a4 Delete type=3 #1141
-2025/05/24-20:47:10.053 1cff8 Level-0 table #1148: started
-2025/05/24-20:47:10.053 1cff8 Level-0 table #1148: 0 bytes OK
-2025/05/24-20:47:10.057 1cff8 Delete type=0 #1146
-2025/05/24-20:47:10.061 1cff8 Manual compaction at level-0 from '!items!Cw88Vbyfdgw49s4a' @ 72057594037927935 : 1 .. '!items!v9T3qKhJs9sqJZ6n' @ 0 : 0; will stop at (end)
+2025/05/25-19:11:35.202 23360 Log #1151: 0 ops saved to Table #1152 OK
+2025/05/25-19:11:35.202 23360 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\explosives/001151.log: OK
+2025/05/25-19:11:35.202 23360 Table #1122: 19 entries OK
+2025/05/25-19:11:35.208 23360 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\explosives/MANIFEST-001149: OK
+2025/05/25-19:11:35.212 23360 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\explosives; recovered 1 files; 24825 bytes. Some data may have been lost. ****
