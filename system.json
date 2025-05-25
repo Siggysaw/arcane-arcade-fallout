@@ -2,10 +2,10 @@
   "id": "arcane-arcade-fallout",
   "title": "The Arcane Arcade Fallout TTRPG",
   "description": "Foundry version of Arcane Arcade's Fallout TTRPG system by Jacob Budz. Inspired by the game series of the same name by Interplay and Bethesda.",
-  "version": "0.1.23",
+  "version": "0.1.10",
   "compatibility": {
     "minimum": "12",
-    "verified": "13"
+    "verified": "12.332"
   },
   "url": "https://github.com/Siggysaw/fallout-arcane-arcade.git",
   "manifest": "https://github.com/Siggysaw/fallout-arcane-arcade/releases/latest/download/system.json",
@@ -30,7 +30,8 @@
   "esmodules": [
     "module/falloutzero.mjs"
   ],
-"styles": [ "css/falloutzero.css" ]
+  "styles": [
+    "css/falloutzero.css"
   ],
   "languages": [
     {
@@ -42,8 +43,7 @@
     {
       "lang": "fr",
       "name": "Français",
-      "path": "lang/fr.json",
-      "flags": {}
+      "path": "lang/fr.json"
     }
   ],
   "packFolders": [
