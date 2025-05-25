@@ -5,7 +5,8 @@
   "version": "0.1.22",
   "compatibility": {
     "minimum": "12",
-    "verified": "12.332"
+    "verified": "12.332",
+    "maximum": "13"
   },
   "url": "https://github.com/Siggysaw/fallout-arcane-arcade.git",
   "manifest": "https://github.com/Siggysaw/fallout-arcane-arcade/releases/latest/download/system.json",
