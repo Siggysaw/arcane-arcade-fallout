@@ -30,12 +30,12 @@
             <div style="min-height:200px;" class="grid grid-10col">
                 <div class="grid-span-3">
                     <div style="min-height:200px;" class="grid grid-2col weapon-details">
-                        <div class="weapon-label">Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
-                        <div class="weapon-label" title="Armor Class - Difficulty Value for Enemies to Roll To Hit You">AC:</div><div><input type="number" name="system.armorClass.value" value="{{ system.armorClass.value }}" /></div>
-                        <div class="weapon-label" title="Damage Threshold - Absorbs the First Damage that reaches your AP after SP">DT:</div><div><input type="number" name="system.damageThreshold.value" value="{{ system.damageThreshold.value }}" /></div>
-                        <div class="weapon-label">Load:</div><div><input type="number" name="system.load" value="{{ system.load }}" /></div>
-                        <div class="weapon-label">Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
-                        <div class="weapon-label">CND:</div><div><input type="number" name="system.decay" value="{{system.decay}}" max="10" min="0" /></div>
+                        <div>Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
+                        <div title="Armor Class - Difficulty Value for Enemies to Roll To Hit You">AC:</div><div><input type="number" name="system.armorClass.value" value="{{ system.armorClass.value }}" /></div>
+                        <div title="Damage Threshold - Absorbs the First Damage that reaches your AP after SP">DT:</div><div><input type="number" name="system.damageThreshold.value" value="{{ system.damageThreshold.value }}" /></div>
+                        <div>Load:</div><div><input type="number" name="system.load" value="{{ system.load }}" /></div>
+                        <div>Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
+                        <div>CND:</div><div><input type="number" name="system.decay" value="{{system.decay}}" max="10" min="0" /></div>
                     </div>
                 </div>
                 <div class="grid-span-7 weapon-description">
@@ -49,60 +49,15 @@
             {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
         </div>
         {{!-- Upgrades Tab --}}
-    <div class="tab" data-armor-id data-group="primary" data-tab="upgrades">
-        <button style="max-width:fit-content;text-align:left" class="fakeButton" addUpgradeBtn id="addUpgradeBtn">ADD</button>
-        <select name="upgradesSelector" data-itemType="armor" id="upgradesSelector">
-            <option value="Upgrades">Upgrades</option>
-        </select>
-        {{#LesserThan system.baseCost.base 1}}
-        <div>Select an upgrade and press the ADD button above to upgrade your weapon. Upgrades will appear here as you add them. </div>
-        {{else}}
-        <ol>
-            {{#each system.upgrades as |key|}}
-            {{#if key.id}}
-            <div class="box-perks box-upgrades">
-            <li class="item flexrow" data-item-id="{{ key.id }}">
-                <table class="perk-table" style="border: solid 1px">
-                    <tr>
-                        <td>
-                            <div class="perk-div">
-                                <h3>{{ key.name }}</h3>
-                                <a class="item-control"
-                                   seeUpgrade
-                                   id="{{ key.id }}"
-                                   title="View Item Details">
-                                    <img class="perk-image" src="{{key.img}}" />
-                                </a>
-                            </div>
-                            <div class="perk-div">
-                                <i style="padding: 3px"
-                                   downgradeRank
-                                   id="{{key.id}}"
-                                   name="{{ key.rank }}"
-                                   class="fas fa-minus-square"></i>
-                                {{ key.rank }}
-                                <i style="padding: 3px"
-                                   upgradeRank
-                                   id="{{key.id}}"
-                                   name="{{ key.rank }}"
-                                   class="fas fa-plus-square"></i>
-                            </div>
-            <li class="item flexrow" data-item-id="{{ item._id }}">
-                <div class="item-controls" style="background: black">
-                    <a class="item-control upgrade-delete" deleteUpgrade title="Delete Upgrade" id="delete{{key.id}}">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </div>
-            </li>
-            </td>
-            </tr>
-            </table>
-            </li>
-    </div>
-        {{/if}}
-        {{/each}}
-        </ol>
-        {{/LesserThan}}
+    <div class="tab" data-group="primary" data-tab="upgrades">
+        <fieldset>
+            <legend># of Slots</legend>
+            <input type="number" name="system.upgrade.slotCount" value="{{system.upgrade.slotCount}}" min="0" max="10" />
+        </fieldset>
+        <div>
+            {{#each system.upgrade.slots as |slot|}}
+                <div>{{slot.name}}</div>
+            {{/each}}
         </div>
 
         {{!-- Effects Tab --}}
