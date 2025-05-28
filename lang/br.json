@@ -1,0 +1,171 @@
+{
+  "FALLOUTZERO": {
+    "Ability": {
+      "str": {
+        "long": "Força",
+        "abbr": "for"
+      },
+      "per": {
+        "long": "Percepção",
+        "abbr": "per"
+      },
+      "end": {
+        "long": "Resistência",
+        "abbr": "res"
+      },
+      "cha": {
+        "long": "Carisma",
+        "abbr": "car"
+      },
+      "int": {
+        "long": "Inteligencia",
+        "abbr": "int"
+      },
+      "agi": {
+        "long": "Agilidade",
+        "abbr": "agi"
+      },
+      "lck": {
+        "long": "Sorte",
+        "abbr": "srt"
+      }
+},
+    "Skills": {
+      "barter": {
+        "label": "Barganha"
+      },
+      "breach": {
+        "label": "Arrombamento"
+      },
+      "crafting": {
+        "label": "Criação"
+      },
+      "energy_weapons": {
+        "label": "Armas de Energia"
+      },
+      "explosives": {
+        "label": "Explosivos"
+      },
+      "guns": {
+        "label": "Armas de Fogo"
+      },
+      "intimidation": {
+        "label": "Intimidação"
+      },
+      "medicine": {
+        "label": "Medicina"
+      },
+      "melee_weapons": {
+        "label": "Armas Corpo a Corpo"
+      },
+      "science": {
+        "label": "Ciência"
+      },
+      "sneak": {
+        "label": "Furtividade"
+      },
+      "speech": {
+        "label": "Persuasão"
+      },
+      "survival": {
+        "label": "Sobrevivência"
+      },
+      "unarmed": {
+        "label": "Desarmado"
+      }
+    },
+    "Passives": {
+      "hunger": {
+        "label": "Fome"
+      },
+      "dehydration": {
+        "label": "Desidratação"
+      },
+      "fatigue": {
+        "label": "Fadiga"
+      },
+      "exhaustion": {
+        "label": "Exaustão"
+      },
+      "rad_lvl": {
+        "label": "Nível de Rad"
+      },
+      "irradiation": {
+        "label": "Irradiação"
+      },
+      "healing_rate": {
+        "label": "Taxa de Cura"
+      },
+      "combat_sequence": {
+        "label": "Sequência de Combate"
+      },
+      "rad_dc": {
+        "label": "CD de Rad"
+      },
+      "passive_sense": {
+        "label": "Sentido Passivo"
+      },
+      "party_nerve": {
+        "label": "Nervo do Grupo"
+      },
+      "group_sneak": {
+        "label": "Furtividade em Grupo"
+      },
+      "short_rest": {
+        "label": "Descanso Curto"
+      },
+      "long_rest": {
+        "label": "Descanso Longo"
+      },
+      "perk_list": {
+        "label": "Lista de Vantagens"
+      },
+      "custom_dice": {
+        "label": "Rolagem Personalizada"
+      }
+
+    },
+    "SheetLabels": {
+      "Actor": "Ficha de Ator falloutzero",
+      "Item": "Ficha de Item falloutzero",
+      "Background": "Ficha de Antecedente falloutzero"
+    },
+    "Item": {
+      "Spell": {
+        "SpellLVL": "Level {level} Spells",
+        "AddLVL": "Add LVL {level}"
+      }
+    },
+    "Effect": {
+      "Source": "Origem",
+      "Toggle": "Ativar Efeito",
+      "Temporary": "Efeito Temporario",
+      "Passive": "Efeito Passivo",
+      "Inactive": "Efeito Inativo"
+    }
+  },
+  "TYPES": {
+    "Ator": {
+      "character": "Personagem",
+      "npc": "NPC"
+    },
+    "Item": {
+      "item": "Item",
+      "race": "Raça",
+      "background": "Antecedente",
+      "ammo": "Ammo",
+      "explosive": "Explosivo",
+      "rangedWeapon": "Arma de Distancia",
+      "meleeWeapon": "Arma Corpo a Corpo",
+      "armor": "Armadura",
+      "perk": "Talento",
+      "trait": "Traço",
+      "foodAnddrink": "Comida e Bebida",
+      "medicine": "Medicina",
+      "chem": "Chem",
+      "junkItem": "Lixo",
+      "material": "Material",
+      "miscItem": "Diversos"
+    }
+  }
+}

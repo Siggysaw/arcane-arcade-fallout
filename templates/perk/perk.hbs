@@ -53,7 +53,8 @@
                         </div>
                     </div>
                     <div class="grid-span-7 weapon-description">
-                        {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+                        {{#CheckLang 'en'}}{{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
+                        {{#CheckLang 'pt-BR'}}{{editor system.description_br target="system.description_br" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
                     </div>
                 </div>
             </div>

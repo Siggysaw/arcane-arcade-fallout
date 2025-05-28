@@ -27,6 +27,10 @@
   src: url('/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf');
 }
 
+.AA-autorec-settings label{
+    color:black;
+}
+
 .window-app {
   font-family: 'Monofonto', sans-serif;
   letter-spacing: 0.1rem;
