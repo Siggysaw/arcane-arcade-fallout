@@ -1,0 +1,400 @@
+{
+  "FALLOUTZERO": {
+    "Common": {
+      "Status": "Status",
+      "Perks": "Perks",
+      "Combat": "Combat",
+      "Aid": "Aid",
+      "Backpack": "Backpack",
+      "Crafting": "Crafting",
+      "Notes": "Notes",
+      "Effects": "Effects",
+      "In Combat!": "In Combat!",
+      "Room Loot": "Room Loot",
+      "HP": "HP",
+      "AP": "AP",
+      "SP": "SP",
+      "health": "Health",
+      "action_points": "Action Points",
+      "stamina_points": "Stamina Points",
+      "caps": "Caps",
+      "Conditions": "Conditions",
+      "Carry Load": "Carry Load",
+      "Bonus": "Bonus",
+      "Temp": "Temp",
+      "Fire": "Fire!",
+      "Swing": "Swing!",
+      "Load": "Load",
+      "Equipped": "Equipped"
+    },
+    "RollData" {
+      "Skill": "Skill Bonus",
+      "Ability": "Ability",
+      "Luck": "Luck",
+      "Penalties": "Penalties",
+      "Total": "Total",
+      "Normal": "Normal",
+      "Advantage": "Advantage",
+      "Disadvantage": "Disadvantage",
+      "Situational Bonus": "Situational Bonus",
+      "Roll": "Roll",
+      "Automatic": "Automatic",
+      "AP Override": "AP Override",
+      "Critical Formula": "Critical Formula",
+      "Critical Multiplier": "Critical Multiplier",
+      "Damage": "Damage",
+      "Custom to Hit": "Custom To Hit",
+      "Custom for Damage": "Custom For DMG",
+      "Targeted Attack": {
+        "label": "Targeted Attack",
+        "head": "Head",
+        "torso": "Torso",
+        "legs": "Legs",
+        "Eyes": "Eyes",
+        "carried": "Carried Item",
+        "groin": "Groin"
+      }
+    },
+    "Ability": {
+      "str": {
+        "long": "Força",
+        "abbr": "for"
+      },
+      "per": {
+        "long": "Percepção",
+        "abbr": "per"
+      },
+      "end": {
+        "long": "Resistência",
+        "abbr": "res"
+      },
+      "cha": {
+        "long": "Carisma",
+        "abbr": "car"
+      },
+      "int": {
+        "long": "Inteligencia",
+        "abbr": "int"
+      },
+      "agi": {
+        "long": "Agilidade",
+        "abbr": "agi"
+      },
+      "lck": {
+        "long": "Sorte",
+        "abbr": "srt"
+      }
+    },
+    "Skills": {
+      "barter": {
+        "label": "Barganha"
+      },
+      "breach": {
+        "label": "Arrombamento"
+      },
+      "crafting": {
+        "label": "Criação"
+      },
+      "energy_weapons": {
+        "label": "Armas de Energia"
+      },
+      "explosives": {
+        "label": "Explosivos"
+      },
+      "guns": {
+        "label": "Armas de Fogo"
+      },
+      "intimidation": {
+        "label": "Intimidação"
+      },
+      "medicine": {
+        "label": "Medicina"
+      },
+      "melee_weapons": {
+        "label": "Armas Corpo a Corpo"
+      },
+      "science": {
+        "label": "Ciência"
+      },
+      "sneak": {
+        "label": "Furtividade"
+      },
+      "speech": {
+        "label": "Persuasão"
+      },
+      "survival": {
+        "label": "Sobrevivência"
+      },
+      "unarmed": {
+        "label": "Desarmado"
+      }
+    },
+    "Passives": {
+      "hunger": {
+        "label": "Fome"
+      },
+      "dehydration": {
+        "label": "Desidratação"
+      },
+      "fatigue": {
+        "label": "Fadiga"
+      },
+      "exhaustion": {
+        "label": "Exaustão"
+      },
+      "rad_lvl": {
+        "label": "Nível de Rad"
+      },
+      "irradiation": {
+        "label": "Irradiação"
+      },
+      "healing_rate": {
+        "label": "Taxa de Cura"
+      },
+      "combat_sequence": {
+        "label": "Sequência de Combate"
+      },
+      "rad_dc": {
+        "label": "CD de Rad"
+      },
+      "passive_sense": {
+        "label": "Sentido Passivo"
+      },
+      "party_nerve": {
+        "label": "Nervo do Grupo"
+      },
+      "group_sneak": {
+        "label": "Furtividade em Grupo"
+      },
+      "short_rest": {
+        "label": "Descanso Curto"
+      },
+      "long_rest": {
+        "label": "Descanso Longo"
+      },
+      "perk_list": {
+        "label": "Lista de Vantagens"
+      },
+      "custom_dice": {
+        "label": "Rolagem Personalizada"
+      }
+    },
+    "Perks": {
+      "Action Hero": "Action Hero",
+      "Adamantium Skeleton": "Adamantium Skeleton",
+      "Adaptive Reflexes": "Adaptive Reflexes",
+      "Adroit Alchemist": "Adroit Alchemist",
+      "Alertness": "Alertness",
+      "Alive and Kickin'": "Alive and Kickin'",
+      "And Stay Back": "And Stay Back",
+      "Animal Friend": "Animal Friend",
+      "Anticipated Reflexes": "Anticipated Reflexes",
+      "Assert Power": "Assert Power",
+      "Atomic!": "Atomic!",
+      "Back to Back": "Back to Back",
+      "Battle Cry": "Battle Cry",
+      "Been There Done That.": "Been There Done That.",
+      "Beyond the Sea": "Beyond the Sea",
+      "Big Crits": "Big Crits",
+      "Big Ego": "Big Ego",
+      "Blind Devil": "Blind Devil",
+      "Bloody Mess": "Bloody Mess",
+      "Butcher": "Butcher",
+      "Cannibal": "Cannibal",
+      "Can't Put Me Down": "Can't Put Me Down",
+      "Careful Aim": "Careful Aim",
+      "Careful Detonations": "Careful Detonations",
+      "Celebrity": "Celebrity",
+      "Chem Resistant": "Chem Resistant",
+      "Chemist": "Chemist",
+      "Commander": "Commander",
+      "Computer Cousin": "Computer Cousin",
+      "Computer Whiz": "Computer Whiz",
+      "Concentrated Fire": "Concentrated Fire",
+      "Cowboy": "Cowboy",
+      "Critical Banker": "Critical Banker",
+      "Cunning Strategist": "Cunning Strategist",
+      "Deadeye": "Deadeye",
+      "Dealer's Choice": "Dealer's Choice",
+      "Demolitions Expert": "Demolitions Expert",
+      "Determination is not a Malfunction": "Determination is not a Malfunction",
+      "Duelist": "Duelist",
+      "Dumb Luck": "Dumb Luck",
+      "Educated": "Educated",
+      "Efficient Diagnosis": "Efficient Diagnosis",
+      "Efficient Munitions": "Efficient Munitions",
+      "Efficient Speedster": "Efficient Speedster",
+      "Empowered Energy": "Empowered Energy",
+      "Empowering Personality": "Empowering Personality",
+      "Entomologist": "Entomologist",
+      "Evasive Action": "Evasive Action",
+      "Evolution": "Evolution",
+      "Expert Engineer": "Expert Engineer",
+      "Explorer": "Explorer",
+      "Eye for an Eye": "Eye for an Eye",
+      "Factory Reset": "Factory Reset",
+      "Fan the Hammer": "Fan the Hammer",
+      "Feel No Wounds": "Feel No Wounds",
+      "Ferocious Loyalty": "Ferocious Loyalty",
+      "Fight the Power!": "Fight the Power!",
+      "Fine-Toothed Giant": "Fine-Toothed Giant",
+      "Fisticuffs": "Fisticuffs",
+      "Flaunt 'n Taunt": "Flaunt 'n Taunt",
+      "Fortune Favors the Bold": "Fortune Favors the Bold",
+      "Fortune Finder": "Fortune Finder",
+      "Friend of the Night": "Friend of the Night",
+      "Ghastly Scavenger": "Ghastly Scavenger",
+      "Grim Reaper's Sprint": "Grim Reaper's Sprint",
+      "Grit": "Grit",
+      "Group Camouflage": "Group Camouflage",
+      "Gunslinger": "Gunslinger",
+      "Hardware Upgrade": "Hardware Upgrade",
+      "Hauler": "Hauler",
+      "Heave Ho!": "Heave Ho!",
+      "Heavyweight": "Heavyweight",
+      "Here and Now": "Here and Now",
+      "Hit the Deck": "Hit the Deck",
+      "Holey Moley": "Holey Moley",
+      "How do you do fellow Ghouls?": "How do you do fellow Ghouls?",
+      "Hunter's Wisdom": "Hunter's Wisdom",
+      "Implant Y-7": "Implant Y-7",
+      "In Shining Armor": "In Shining Armor",
+      "Indomitable Spirit": "Indomitable Spirit",
+      "Infiltrator": "Infiltrator",
+      "Inspiring Action": "Inspiring Action",
+      "It Just Works": "It Just Works",
+      "K.O.": "K.O.",
+      "Leaping Powerhouse": "Leaping Powerhouse",
+      "Legend of the Wastelander": "Legend of the Wastelander",
+      "Lifegiver": "Lifegiver",
+      "Light Step": "Light Step",
+      "Light Touch": "Light Touch",
+      "Living Weapons": "Living Weapons",
+      "Mad Dash": "Mad Dash",
+      "Make it Double": "Make it Double",
+      "Master Chef": "Master Chef",
+      "Math Wrath": "Math Wrath",
+      "Medicinal Master": "Medicinal Master",
+      "Meltdown": "Meltdown",
+      "Mister Sandman": "Mister Sandman",
+      "Multitarget Hotshot": "Multitarget Hotshot",
+      "Mysterious Stranger": "Mysterious Stranger",
+      "NEMEAN Sub-Dermal Armor": "NEMEAN Sub-Dermal Armor",
+      "Nerd Rage!": "Nerd Rage!",
+      "Nerves of Steel": "Nerves of Steel",
+      "Never Tell Me the Odds": "Never Tell Me the Odds",
+      "Never Unarmed": "Never Unarmed",
+      "Nimble Dash": "Nimble Dash",
+      "Ninja": "Ninja",
+      "No Gods, No Masters": "No Gods, No Masters",
+      "Nuclear Reactor": "Nuclear Reactor",
+      "Old World Gourmet": "Old World Gourmet",
+      "On a Fluke!": "On a Fluke!",
+      "On-the-Go Mechanic": "On-the-Go Mechanic",
+      "Oracle": "Oracle",
+      "Outrageous Advantage": "Outrageous Advantage",
+      "Overcharge": "Overcharge",
+      "Pack Rat": "Pack Rat",
+      "Pain Train": "Pain Train",
+      "Paralyzing Punch": "Paralyzing Punch",
+      "Partition Reset": "Partition Reset",
+      "Party Animal": "Party Animal",
+      "Patch Up": "Patch Up",
+      "PHOENIX Implant": "PHOENIX Implant",
+      "Piercing Strikes": "Piercing Strikes",
+      "Poker Face": "Poker Face",
+      "Pulsion Perforation": "Pulsion Perforation",
+      "Pump the Coolant": "Pump the Coolant",
+      "Pure Determination": "Pure Determination",
+      "Purifier": "Purifier",
+      "Quick Draw": "Quick Draw",
+      "Quick Recovery": "Quick Recovery",
+      "Quick Repair": "Quick Repair",
+      "Rad Absorption": "Rad Absorption",
+      "Rad-Tastic!": "Rad-Tastic!",
+      "Randomizer": "Randomizer",
+      "Ranger's Deadly Aim": "Ranger's Deadly Aim",
+      "Rapid Reload": "Rapid Reload",
+      "Reaction Reactor": "Reaction Reactor",
+      "Reanimated": "Reanimated",
+      "Reinforced Recovery": "Reinforced Recovery",
+      "Remedial Atomizer": "Remedial Atomizer",
+      "Retention": "Retention",
+      "Ricochet": "Ricochet",
+      "Robotic Expert:": "Robotic Expert:",
+      "Rooted": "Rooted",
+      "Roughin' It": "Roughin' It",
+      "Savage Sprint": "Savage Sprint",
+      "Savvy Salesman": "Savvy Salesman",
+      "Scrounger": "Scrounger",
+      "Slayer": "Slayer",
+      "Sneering Imperialist": "Sneering Imperialist",
+      "Sniper": "Sniper",
+      "Solar Powered": "Solar Powered",
+      "Splash Damage": "Splash Damage",
+      "Spray and Pray": "Spray and Pray",
+      "Springboard Recovery": "Springboard Recovery",
+      "Stand and Fight": "Stand and Fight",
+      "Standoff": "Standoff",
+      "Stitched Together": "Stitched Together",
+      "Stonewall": "Stonewall",
+      "Super Slam!": "Super Slam!",
+      "Survivorship Bias": "Survivorship Bias",
+      "Swift Learner": "Swift Learner",
+      "Synergizing Teamwork": "Synergizing Teamwork",
+      "Terrifying Presence": "Terrifying Presence",
+      "The Dance": "The Dance",
+      "The Long Road": "The Long Road",
+      "Thick Plating": "Thick Plating",
+      "Toughness": "Toughness",
+      "Trailblazer's Instinct": "Trailblazer's Instinct",
+      "Unstoppable Force": "Unstoppable Force",
+      "Volatile Hucker": "Volatile Hucker",
+      "Wasteland Camel": "Wasteland Camel",
+      "Weapon Handling": "Weapon Handling",
+      "Weatherboy!": "Weatherboy!"
+    },
+    "SheetLabels": {
+      "Actor": "Ficha de Ator falloutzero",
+      "Item": "Ficha de Item falloutzero",
+      "Background": "Ficha de Antecedente falloutzero"
+    },
+    "Item": {
+      "Spell": {
+        "SpellLVL": "Level {level} Spells",
+        "AddLVL": "Add LVL {level}"
+      }
+    },
+    "Effect": {
+      "Source": "Origem",
+      "Toggle": "Ativar Efeito",
+      "Temporary": "Efeito Temporario",
+      "Passive": "Efeito Passivo",
+      "Inactive": "Efeito Inativo"
+    }
+  },
+  "TYPES": {
+    "Ator": {
+      "character": "Personagem",
+      "npc": "NPC"
+    },
+    "Item": {
+      "item": "Item",
+      "race": "Raça",
+      "background": "Antecedente",
+      "ammo": "Ammo",
+      "explosive": "Explosivo",
+      "rangedWeapon": "Arma de Distancia",
+      "meleeWeapon": "Arma Corpo a Corpo",
+      "armor": "Armadura",
+      "perk": "Talento",
+      "trait": "Traço",
+      "foodAnddrink": "Comida e Bebida",
+      "medicine": "Medicina",
+      "chem": "Chem",
+      "junkItem": "Lixo",
+      "material": "Material",
+      "miscItem": "Diversos"
+    }
+  }
+}

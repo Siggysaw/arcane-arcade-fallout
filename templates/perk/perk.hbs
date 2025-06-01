@@ -4,7 +4,11 @@
             <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" /><br />
             <div class="header-fields">
                 <h1 class="charname">
+                    {{#CheckLang 'en'}}
                     <input class="item-label" name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+                    {{else}}
+                    {{localize (concat 'FALLOUTZERO.Perks.' item.name )}}
+                    {{/CheckLang}}
                 </h1>
             </div>
         </header>
@@ -53,7 +57,8 @@
                         </div>
                     </div>
                     <div class="grid-span-7 weapon-description">
-                        {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
+                        {{#CheckLang 'en'}}{{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
+                        {{#CheckLang 'pt-BR'}}{{editor system.description_br target="system.description_br" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
                     </div>
                 </div>
             </div>

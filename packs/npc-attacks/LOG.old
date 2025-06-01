@@ -1,5 +1,7 @@
-2025/05/25-19:11:35.649 23360 Log #960: 0 ops saved to Table #961 OK
-2025/05/25-19:11:35.649 23360 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\npc-attacks/000960.log: OK
-2025/05/25-19:11:35.649 23360 Table #931: 27 entries OK
-2025/05/25-19:11:35.654 23360 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\npc-attacks/MANIFEST-000958: OK
-2025/05/25-19:11:35.658 23360 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\npc-attacks; recovered 1 files; 13856 bytes. Some data may have been lost. ****
+2025/05/25-22:03:36.247 236ac Recovering log #990
+2025/05/25-22:03:36.256 236ac Delete type=0 #990
+2025/05/25-22:03:36.256 236ac Delete type=3 #988
+2025/05/25-22:50:48.802 25048 Level-0 table #995: started
+2025/05/25-22:50:48.802 25048 Level-0 table #995: 0 bytes OK
+2025/05/25-22:50:48.806 25048 Delete type=0 #993
+2025/05/25-22:50:48.806 25048 Manual compaction at level-0 from '!items!0Dd3oX2x9FEooc4u' @ 72057594037927935 : 1 .. '!items!ysazG00af8R9YMXc' @ 0 : 0; will stop at (end)

@@ -59,10 +59,11 @@
   {{!-- Sheet Body --}}
   <section class="sheet-body">
     {{!-- Description Tab --}}
-    <div class="tab htmlfield" item-description data-group="primary" data-tab="description">
-      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
-    </div>    
+      <div class="tab htmlfield" item-description data-group="primary" data-tab="description">
+          {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
+          {{#CheckLang 'en'}}{{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
+          {{#CheckLang 'pt-BR'}}{{editor system.description_br target="system.description_br" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
+      </div>    
     {{!-- Crafting Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
       {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
