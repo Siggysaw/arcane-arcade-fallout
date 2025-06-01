@@ -1,21 +1,24 @@
 <table>
     <tr>
-        <td data-tooltip="Calculated: {{system.healingRate.value}} (End + Lvl)/2 &#013;Modifiers: {{system.healingRate.modifiers}} &#013;Manual Edits: {{system.healingRate.base}}">Healing Rate</td>
+        <td data-tooltip="Calculated: {{system.healingRate.value}} (End + Lvl)/2 &#013;Modifiers: {{system.healingRate.modifiers}} &#013;Manual Edits: {{system.healingRate.base}}">
+            {{localize 'FALLOUTZERO.Passives.healing_rate.label'}}
+
+        </td>
         <td data-tooltip="To Roll Intiative, Utilize Combat Tracker">
-            Combat Sequence
+            {{localize 'FALLOUTZERO.Passives.combat_sequence.label'}}
         </td>
         <td class="rollable"
             data-roll-save="{{system.radiationDC.value}}"
             data-save-type="radiation"
             data-tooltip="D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll {{system.radiationDC.value}} or higher to succeed. On Fail gain level of Radiation">
-            Rad DC
+            {{localize 'FALLOUTZERO.Passives.rad_dc.label'}}
             <i class="fas fa-dice-d20"></i>
         </td>
         <td data-tooltip="12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}">
-            Passive Sense
+            {{localize 'FALLOUTZERO.Passives.passive_sense.label'}}
         </td>
-        <td data-tooltip="Party Charisma Mods Added together divided by 2">Party Nerve</td>
-        <td data-tooltip="Party Sneak Total divided by Player Number">Group Sneak</td>
+        <td data-tooltip="Party Charisma Mods Added together divided by 2">{{localize 'FALLOUTZERO.Passives.party_nerve.label'}}</td>
+        <td data-tooltip="Party Sneak Total divided by Player Number">{{localize 'FALLOUTZERO.Passives.group_sneak.label'}}</td>
     </tr>
     <tr>
         <td class="skill-value">

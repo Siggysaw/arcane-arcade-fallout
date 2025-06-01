@@ -17,9 +17,10 @@
   {{!-- Sheet Body --}}
   <section class="sheet-body">
     {{!-- Description Tab --}}
-    <div class="tab" item-description  data-group="primary" data-tab="description">
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
-    </div>
+      <div class="tab" item-description data-group="primary" data-tab="description">
+          {{#CheckLang 'en'}}{{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
+          {{#CheckLang 'pt-BR'}}{{editor system.description_br target="system.description_br" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
+      </div>
     {{!-- Effects Tab --}}
     <div class="tab effects" data-group="primary" data-tab="effects">
       {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
