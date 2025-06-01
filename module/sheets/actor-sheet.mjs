@@ -1,7 +1,6 @@
 import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import FalloutZeroArmor from '../data/armor.mjs'
-import FalloutZeroItem from '../documents/item.mjs'
 import SkillRoll from '../dice/skill-roll.mjs'
 import PerkListApplication from '../applications/components/perk-list.mjs'
 
@@ -178,6 +177,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const races = []
     const conditions = []
     const properties = []
+    const upgrades = []
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -222,10 +222,13 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         conditions.push(i)
       } else if (i.type === 'property') {
         properties.push(i)
+      } else if (i.type === 'armorUpgrade' || i.type === 'weaponUpgrade') {
+        upgrades.push(i)
       }
     }
 
     // Assign and return
+    context.upgrades = upgrades
     context.gear = gear
     context.features = features
     context.perks = perks
@@ -353,8 +356,30 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           let cost = 3
           item.type == "powerArmor" ? cost = 6 : cost = cost
           if (this.actor.applyApCost(cost)) {
-            item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+            if (item.system.itemEquipped) {
+              this.actor.unEquipArmor(item.uuid)
+            } else {
+              this.actor.equipArmor(item.uuid)
+            }
           }
+        },
+      },
+      {
+        name: 'Attach/Detach upgrade',
+        icon: '',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (
+            item.type === 'armor' ||
+            item.type === 'powerArmor'
+          ) {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          new game.falloutzero.applications.components.SelectUpgrade(this.actor.id, itemId).render(true)
         },
       },
       {
@@ -975,16 +1000,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       switch (item.type) {
         case 'trait':
           this._onItemDeleteTrait(item)
-          break
-        case 'armor':
-          if (item.system.itemEquipped) {
-            FalloutZeroArmor.prototype.changeEquipStatus(item)
-          }
-          break
-        case 'powerArmor':
-          if (item.system.itemEquipped) {
-            FalloutZeroArmor.prototype.changeEquipStatus(item)
-          }
           break
         case 'background':
           return new Dialog({

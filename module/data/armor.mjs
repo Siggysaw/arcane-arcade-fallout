@@ -1,6 +1,4 @@
 import { FalloutZeroItemBase } from './_module.mjs'
-import FalloutZeroItem from '../documents/item.mjs'
-import FalloutZeroActor from '../documents/actor.mjs'
 
 export default class FalloutZeroArmor extends FalloutZeroItemBase {
   static defineSchema() {
@@ -46,14 +44,6 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
         initial: 0,
       }),
     })
-    schema.slots = new fields.SchemaField({
-      value: new fields.NumberField({
-        initial: 0,
-      }),
-      base: new fields.NumberField({
-        initial: 0,
-      }),
-    })
     schema.strReq = new fields.SchemaField({
       value: new fields.NumberField({
         initial: 0,
@@ -64,13 +54,17 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
     })
     schema.load = new fields.NumberField({ initial: 0, min: 0 })
     schema.baseLoad = new fields.NumberField({ initial: 0, min: 0 })
+    schema.armorType = new fields.StringField({ initial: '' })
     schema.upgrade = new fields.SchemaField({
       slotCount: new fields.NumberField({ initial: 0, min: 0 }),
-      slots: new fields.SchemaField({
-        name: new fields.StringField({ initial: '', }),
-        uuid: new fields.StringField({ initial: '', }),
-        img: new fields.StringField({ initial: '', })
-      })
+      slots: new fields.ArrayField(
+        new fields.SchemaField({
+          name: new fields.StringField(),
+          uuid: new fields.StringField(),
+          img: new fields.StringField(),
+          type: new fields.StringField(),
+        })
+      )
     })
     return schema
   }

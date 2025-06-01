@@ -58,6 +58,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
     context.abilities = CONFIG.FALLOUTZERO.abilities
     context.skills = CONFIG.FALLOUTZERO.skills
     context.types = CONFIG.FALLOUTZERO.craftingTypes
+    context.armorTypes = CONFIG.FALLOUTZERO.armorTypes
     context.timeUnits = [
       {
         id: 'minutes',

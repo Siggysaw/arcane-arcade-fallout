@@ -42,21 +42,21 @@ function attemptToMessage(actor, craftable, { attemptType, attemptDice, critSucc
     attemptDice.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
       flavor: `
-                ${attemptType}: Crafting attempt for ${craftable.name} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? `${craftable.name} crafted successfully` : ''} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_FAIL, ATTEMPT_RESULT.FAIL].includes(attemptType) ? `Lose ${materialChange} materials of each item used` : ''} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(attemptType) ? `Use ${materialChange} less ${craftable.system.crafting.materials[critSuccessDice.total]?.name}` : ''} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? materialsUsedMessage : ''}
-            `
+        ${attemptType}: Crafting attempt for ${craftable.name} <br>
+        ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? `${craftable.name} crafted successfully` : ''} <br>
+        ${[ATTEMPT_RESULT.CRITICAL_FAIL, ATTEMPT_RESULT.FAIL].includes(attemptType) ? `Lose ${materialChange} materials of each item used` : ''} <br>
+        ${[ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(attemptType) ? `Use ${materialChange} less ${craftable.system.crafting.materials[critSuccessDice.total]?.name}` : ''} <br>
+        ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? materialsUsedMessage : ''}
+      `
     })
   } else {
     const chatData = {
       author: game.user._id,
       speaker: ChatMessage.getSpeaker({ actor }),
       flavor: `
-                ${craftable.name} crafted <br>
-                ${materialsUsedMessage}
-            `,
+        ${craftable.name} crafted <br>
+        ${materialsUsedMessage}
+      `,
     }
     ChatMessage.create(chatData, {})
   }
@@ -251,6 +251,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       craft: CraftingBench.craft,
       attemptCraft: CraftingBench.attemptCraft,
       onlyCraftables: CraftingBench.toggleOnlyCraftables,
+      search: CraftingBench.search,
     },
     classes: ['crafting-bench'],
     window: {

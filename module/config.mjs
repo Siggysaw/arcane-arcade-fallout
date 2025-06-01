@@ -1604,3 +1604,34 @@ FALLOUTZERO.packsWithCraftables = [
   'arcane-arcade-fallout.rangedweapons',
   'arcane-arcade-fallout.miscellaneous',
 ]
+
+FALLOUTZERO.armorTypes = {
+  cloth: {
+    id: 'cloth',
+    label: 'Cloth',
+  },
+  leather: {
+    id: 'leather',
+    label: 'Leather',
+  },
+  metal: {
+    id: 'metal',
+    label: 'Metal',
+  },
+  multilayered: {
+    id: 'multilayered',
+    label: 'Multilayered',
+  },
+  ballistic: {
+    id: 'ballistic',
+    label: 'Ballistic weave',
+  },
+  steel: {
+    id: 'steel',
+    label: 'Steel',
+  },
+  power: {
+    id: 'power',
+    label: 'Power',
+  },
+}

@@ -155,7 +155,6 @@ export function registerHooks() {
         const canAffordAP = actor.applyApCost(cost)
         if (canAffordAP) {
             item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-            FalloutZeroArmor.prototype.changeEquipStatus(item)
         }
     })
 

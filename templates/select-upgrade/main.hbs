@@ -1,0 +1,34 @@
+<div>
+    <div>
+        <fieldset>
+            <legend>Attached ({{usedSlots}}/{{maxSlots}})</legend>
+            <ul>
+                {{#each attachedUpgrades as |upgrade|}}
+                    <li class="upgrade-slot">
+                        <button data-action="detach" data-upgrade-id="{{upgrade.uuid}}" data-tooltip="attach">
+                            {{upgrade.name}} ({{upgrade.type}})
+                        </button>
+                    </li>
+                {{/each}}
+            </ul>
+        </fieldset>
+    </div>
+    <div class="my-2">
+        <fieldset>
+            <legend>Detached</legend>
+            <ul>
+                {{#each detachedUpgrades as |upgrade|}}
+                    <li class="upgrade-slot">
+                        <button data-action="attach" data-upgrade-id="{{upgrade.uuid}}" data-tooltip="detach">
+                            {{upgrade.name}} ({{upgrade.system.type}})
+                        </button>
+                    </li>
+                {{/each}}
+            </ul>
+        </fieldset>
+    </div>
+    <div class="my-2">
+        <button data-action="done">Done</button>
+    </div>
+</div>
+{{ log this }}

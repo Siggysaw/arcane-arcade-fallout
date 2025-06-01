@@ -37,6 +37,64 @@ export default class FalloutZeroActor extends Actor {
     return found
   }
 
+  get equippedArmor() {
+    return this.items.filter((item) => item.type === 'armor' && item.system.itemEquipped)
+  }
+
+  get equippedArmorUpgrades() {
+    return this.items.filter((item) => item.type === 'armorUpgrade' && item.system.itemEquipped)
+  }
+
+  equipArmor(uuid) {
+    if (!uuid) return false
+
+    const armor = fromUuidSync(uuid)
+    if (!armor || armor.type !== 'armor') return false
+
+    // Disable all armor upgrades
+    this.equippedArmorUpgrades.forEach((upgrade) => {
+      upgrade.effects.forEach((effect) => {
+        effect.update({ 'disabled': true })
+      })
+    })
+
+    // Unequip all armor
+    this.equippedArmor.forEach((armor) => {
+      armor.update({ 'system.itemEquipped': false })
+    })
+
+    // Equip armor
+    armor.update({ 'system.itemEquipped': true })
+
+    // Enable all armor upgrades
+    armor.system.upgrade.slots.forEach((slot) => {
+      if (!slot.uuid) return
+      const upgrade = fromUuidSync(slot.uuid)
+      upgrade.effects.forEach((effect) => {
+        effect.update({ 'disabled': false })
+      })
+    })
+  }
+
+  unEquipArmor(uuid) {
+    if (!uuid) return false
+
+    const armor = fromUuidSync(uuid)
+    if (!armor || armor.type !== 'armor') return false
+
+    // Disable all armor upgrades
+    this.equippedArmorUpgrades.forEach((upgrade) => {
+      upgrade.effects.forEach((effect) => {
+        effect.update({ 'disabled': true })
+      })
+    })
+
+    // Unequip all armor
+    this.equippedArmor.forEach((armor) => {
+      armor.update({ 'system.itemEquipped': false })
+    })
+  }
+
   getItemById(id) {
     if (!id) return false
 
@@ -64,8 +122,7 @@ export default class FalloutZeroActor extends Actor {
 
   async openDialog(filename, title) {
     const myDialogOptions = { width: 700, height: 700, resizable: true }
-    const myContent = await renderTemplate(`systems/arcane-arcade-fallout/${filename}`, this
-    )
+    const myContent = await renderTemplate(`systems/arcane-arcade-fallout/${filename}`, this)
 
     new Dialog(
       {

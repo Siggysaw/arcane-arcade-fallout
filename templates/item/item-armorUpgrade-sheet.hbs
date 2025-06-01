@@ -1,9 +1,3 @@
-<style>
-  .sheet .editor-content {
-    line-height: 2;
-  }
-</style>
-
 <form class="{{ cssClass }}{{#isVaultTec}} vaulttec {{/isVaultTec}}" autocomplete="off">
   <header class="sheet-header">
     <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.img }}" />
@@ -11,64 +5,28 @@
       <h1 class="upgradeName">
         <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
       </h1>
-      <table style = "display: inline-flex"> 
-        <tr>
-          <td>Short name </td>                         
-          <td>Pre-requisite</td>
-          <td>Type</td>
-          <td>Cost</td>
-        </tr>
-        <tr>
-          <td>
-            <input name="system.short" type="text" value="{{system.short}}" placeholder="{{ item.name}} (but shorter)" />
-          </td>
-          <td>
-            <input name="system.requirement" type="text" value="{{ system.requirement }}" placeholder="Requirement" />
-          </td>
-          <td>
-            <input name="system.upgradeType" type="text" value="{{ system.upgradeType }}" title="'armor' or 'powerArmor' must be entered here" placeholder="armor or powerArmor" />
-          </td>
-          <td>
-            <input type="number" name="system.baseCost" value="{{ system.baseCost }}" />
-          </td>
-        </tr>
-      </table>
     </div>
   </header>
 
-
-{{!-- Upgrade Values --}}
-  <table>
-    <tr>
-      <td>AC</td>
-      <td>DT</td>
-      <td>Rank</td>
-      <td>Load</td>
-      <td>Slot</td>
-      <td>STR Req.</td>
-    </tr>
-    <tr>
-      <td>
-        <input type="number" name="system.armorClass" value="{{ system.armorClass }}" />
-      </td>
-      <td>
-        <input type="number" name="system.damageThreshold" value="{{ system.damageThreshold }}" />
-      </td>
-      <td>
-        <input type="number" name="system.rank" value="{{ system.rank }}" />
-      </td>
-      <td>
-        <input type="number" name="system.load" value="{{ system.load }}" />
-      </td>
-      <td>
-        <input type="number" name="system.slots" value="{{ system.slots }}" /></td>
-      <td>
-        <input type="number" name="system.strReq" value="{{ system.strReq }}" />
-      </td>
-    </tr>
-  </table>
-
-
+  <section>
+    <div class="flex">
+      <div>
+        rank: 
+      </div>
+      <div>
+        <input type="number" name="system.rank" value="{{system.rank}}" min="0" max="3" />
+      </div>
+    </div>
+    <div class="flex">
+      <div>
+        type:
+      </div>
+      <div>
+        <select name="system.type">
+          {{selectOptions armorTypes selected=system.type valueAttr="id" labelAttr="label"}}
+        </select>
+    </div>
+  </section>
 
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
@@ -77,15 +35,13 @@
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
-  
-
   {{!-- Sheet Body --}}
   <section class="sheet-body">
     {{!-- Description Tab --}}
     <div class="tab htmlfield" item-description data-group="primary" data-tab="description">
       {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
-    </div>      
+    </div>
     {{!-- Crafting Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
       {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}

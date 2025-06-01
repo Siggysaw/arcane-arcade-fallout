@@ -1,5 +1,4 @@
 import AttackRoll from '../dice/attack-roll.mjs'
-import FalloutZeroArmor from '../data/armor.mjs'
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}

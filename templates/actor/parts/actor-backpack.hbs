@@ -128,6 +128,16 @@
             <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
+        <h3>Upgrades</h3>
+        {{#each upgrades as |item id|}}
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+            <div></div>
+            <div class="grid-span-10 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
+            <div class="grid-span-3">{{item.system.cost}}</div>
+            <div class="grid-span-3">{{item.system.quantity}}</div>
+            <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
+        </div>
+        {{/each}}
     </div>
     </div>
 <div class="grid grid-2col backpack-tab">
