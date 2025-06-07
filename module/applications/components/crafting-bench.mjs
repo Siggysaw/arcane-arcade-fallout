@@ -462,7 +462,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     e.preventDefault()
     const { branch, index } = target.dataset
     this.selectedCraftable = this.craftingTree[branch].items[index] ?? null
-    this.selectedBaseItemId = this.baseMaterialOptions?.[0]?.system.armorType ?? null
+    this.selectedBaseItemId = this.baseMaterialOptions?.[this.selectedCraftable.system.type]?.id ?? null
     const itemOwned = this.actor.items.find((i) => i.name == this.selectedCraftable.name)
     itemOwned !== undefined ? this.owned = itemOwned.system.quantity : this.owned = 0
     this.selectedSkill = this.selectedCraftable.system.crafting.mainRequirements[0]

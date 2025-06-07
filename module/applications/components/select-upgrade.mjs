@@ -27,7 +27,9 @@ export default class SelectUpgrade extends HandlebarsApplicationMixin(Applicatio
     }
 
     get detachedUpgrades() {
-        return this.actor.items.filter((item) => item.type === 'armorUpgrade' && !this.attachedUpgrades.map((u) => u.uuid).includes(item.uuid))
+        return this.actor.items.filter((upgrade) => {
+            return (upgrade.type === 'armorUpgrade' && !upgrade.system.equipped && upgrade.system.type === this.item.system.armorType)
+        })
     }
 
     get attachedUpgrades() {
@@ -73,8 +75,12 @@ export default class SelectUpgrade extends HandlebarsApplicationMixin(Applicatio
         })
 
         await upgrade.update({ 'system.equipped': true })
-        for (const effect of upgrade.effects) {
-            await effect.update({ disabled: false })
+
+        // Enable all effects of the upgrade
+        if (this.item.system.itemEquipped) {
+            for (const effect of upgrade.effects) {
+                await effect.update({ disabled: false })
+            }
         }
         this.render(true)
     }
@@ -90,8 +96,12 @@ export default class SelectUpgrade extends HandlebarsApplicationMixin(Applicatio
         })
 
         await upgrade.update({ 'system.equipped': false })
-        for (const effect of upgrade.effects) {
-            await effect.update({ disabled: true })
+
+        // Disable all effects of the upgrade
+        if (this.item.system.itemEquipped) {
+            for (const effect of upgrade.effects) {
+                await effect.update({ disabled: true })
+            }
         }
         this.render(true)
     }

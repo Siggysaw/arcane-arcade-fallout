@@ -42,7 +42,7 @@ export default class FalloutZeroActor extends Actor {
   }
 
   get equippedArmorUpgrades() {
-    return this.items.filter((item) => item.type === 'armorUpgrade' && item.system.itemEquipped)
+    return this.items.filter((item) => item.type === 'armorUpgrade' && item.system.equipped)
   }
 
   equipArmor(uuid) {
