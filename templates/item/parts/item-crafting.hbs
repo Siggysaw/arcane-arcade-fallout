@@ -73,6 +73,13 @@
       {{!-- materials --}}
       <fieldset>
         <legend>Materials</legend>
+        <div class="flex">
+          <div>Require base materials?</div>
+          <input type="checkbox" name="system.crafting.materialBase.required" {{checked system.crafting.materialBase.required}} />
+          {{#if system.crafting.materialBase.required}}
+            <input type="number" name="system.crafting.materialBase.multiplier" value="{{system.crafting.materialBase.multiplier}}" placeholder="multiplier" />
+          {{/if}}
+        </div>
         <div class="drop-area" data-material-drop data-tooltip="drop material or junk here">
           <div class="grid grid-3col align-items-center">
             <div>Item</div>

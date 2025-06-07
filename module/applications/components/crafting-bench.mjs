@@ -7,8 +7,8 @@ const ATTEMPT_RESULT = {
   CRITICAL_SUCCESS: 'critical success',
 }
 
-async function updateCreateCraftedItem({ actor, selectedCraftable }) {
-  const existingItem = actor.getItemByCompendiumId(selectedCraftable.uuid)
+async function updateCreateCraftedItem({ actor, selectedCraftable, selectedBaseItemId }) {
+  const existingItem = selectedCraftable.type !== 'armorUpgrade' && actor.getItemByCompendiumId(selectedCraftable.uuid)
   let newQty = existingItem?.system?.quantity ?? 0
 
   // Update or create crafted item
@@ -21,6 +21,9 @@ async function updateCreateCraftedItem({ actor, selectedCraftable }) {
     const compendiumItem = await fromUuid(selectedCraftable.uuid)
     const craftedItem = compendiumItem.toObject()
     craftedItem._stats.compendiumSource = selectedCraftable.uuid
+    if (selectedBaseItemId) {
+      craftedItem.system.type = selectedBaseItemId
+    }
     await Item.create(craftedItem, { parent: actor })
     newQty = 1
   }
@@ -42,21 +45,21 @@ function attemptToMessage(actor, craftable, { attemptType, attemptDice, critSucc
     attemptDice.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
       flavor: `
-                ${attemptType}: Crafting attempt for ${craftable.name} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? `${craftable.name} crafted successfully` : ''} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_FAIL, ATTEMPT_RESULT.FAIL].includes(attemptType) ? `Lose ${materialChange} materials of each item used` : ''} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(attemptType) ? `Use ${materialChange} less ${craftable.system.crafting.materials[critSuccessDice.total]?.name}` : ''} <br>
-                ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? materialsUsedMessage : ''}
-            `
+        ${attemptType}: Crafting attempt for ${craftable.name} <br>
+        ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? `${craftable.name} crafted successfully` : ''} <br>
+        ${[ATTEMPT_RESULT.CRITICAL_FAIL, ATTEMPT_RESULT.FAIL].includes(attemptType) ? `Lose ${materialChange} materials of each item used` : ''} <br>
+        ${[ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(attemptType) ? `Use ${materialChange} less ${craftable.system.crafting.materials[critSuccessDice.total]?.name}` : ''} <br>
+        ${[ATTEMPT_RESULT.CRITICAL_SUCCESS, ATTEMPT_RESULT.SUCCESS].includes(attemptType) ? materialsUsedMessage : ''}
+      `
     })
   } else {
     const chatData = {
       author: game.user._id,
       speaker: ChatMessage.getSpeaker({ actor }),
       flavor: `
-                ${craftable.name} crafted <br>
-                ${materialsUsedMessage}
-            `,
+        ${craftable.name} crafted <br>
+        ${materialsUsedMessage}
+      `,
     }
     ChatMessage.create(chatData, {})
   }
@@ -97,10 +100,11 @@ async function updateActorMaterials({ actor, materials, attemptResult = ATTEMPT_
 }
 
 class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor({ actor, craftable }, options = {}) {
+  constructor({ actor, craftable, selectedBaseItemId }, options = {}) {
     super(options);
     this.actor = actor
     this.craftable = craftable
+    this.selectedBaseItemId = selectedBaseItemId
     this.selectedSkill = craftable.system.crafting.mainRequirements[0].key
     this.newOwnedQty = null
     this.searchQuery
@@ -128,6 +132,13 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     },
   }
 
+  _onRender() {
+    this.element.querySelector('[data-select-skill]')?.addEventListener('change', (e) => {
+      this.selectedSkill = e.currentTarget.value
+      this.render()
+    })
+  };
+
   async _prepareContext() {
     const skillBonus = this.actor.system.skills[this.selectedSkill].value
     return {
@@ -148,6 +159,18 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
 
   get hasSkillChoice() {
     return this.craftable.system.crafting.mainRequirements.length > 1
+  }
+
+  get selectedBaseItemMaterials() {
+    const uuid = CONFIG.FALLOUTZERO.armorTypes?.[this.selectedBaseItemId]?.uuid
+    if (!uuid || !this.craftable.system.crafting.materialBase.required) return []
+    const selectedBaseItem = fromUuidSync(uuid)
+    return selectedBaseItem.system.crafting.materials.map((mat) => {
+      return {
+        ...mat,
+        quantity: this.craftable.system.crafting.materialBase.multiplier
+      }
+    })
   }
 
   get dc() {
@@ -195,13 +218,13 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
 
     // if successful, create the crafted item
     if ([ATTEMPT_RESULT.SUCCESS, ATTEMPT_RESULT.CRITICAL_SUCCESS].includes(result)) {
-      this.newOwnedQty = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.craftable })
+      this.newOwnedQty = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.craftable, selectedBaseItemId: this.selectedBaseItemId })
     }
 
     const critSuccessDice = await new Roll(`1d${Math.max(0, this.craftable.system.crafting.materials.length - 1)} `).evaluate()
     await updateActorMaterials({
       actor: this.actor,
-      materials: this.craftable.system.crafting.materials,
+      materials: [...this.craftable.system.crafting.materials, ...this.selectedBaseItemMaterials],
       attemptResult: result,
       materialChange: {
         index: result === ATTEMPT_RESULT.CRITICAL_SUCCESS ? critSuccessDice.total : -1,
@@ -232,6 +255,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     super(options);
     this.actorId = actorId
     this.selectedCraftable = null
+    this.selectedBaseItemId = null
     this.openBranches = []
     this.owned = 0
 
@@ -269,7 +293,11 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
   }
 
   _onRender() {
-    this.element.querySelector('[data-action=search]')?.addEventListener('search', (e) => this.search(e))
+    this.element.querySelector('[data-search]')?.addEventListener('search', (e) => this.search(e))
+    this.element.querySelector('[data-base-item]')?.addEventListener('change', (e) => {
+      this.selectedBaseItemId = e.currentTarget.value
+      this.render()
+    })
   };
 
   async _prepareContext() {
@@ -283,6 +311,10 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       hasRequirements: this.hasRequirements,
       searchQuery: this.searchQuery,
       onlyCraftables: this.onlyCraftables,
+      baseMaterialOptions: this.baseMaterialOptions,
+      selectedBaseItemMaterials: this.selectedBaseItemMaterials,
+      selectedBaseItemId: this.selectedBaseItemId,
+      isArmorUpgrade: this.selectedCraftable?.type === 'armorUpgrade'
     }
   }
 
@@ -290,6 +322,11 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     return game.actors.find((actor) => {
       return actor.id === this.actorId
     })
+  }
+
+  get selectedBaseItemUuid() {
+    if (!this.selectedCraftable || !this.selectedBaseItemId || this.selectedCraftable.type !== 'armorUpgrade') return null
+    return CONFIG.FALLOUTZERO.armorTypes[this.selectedBaseItemId].uuid
   }
 
   get skills() {
@@ -347,7 +384,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         // else add branch to the crafting tree
         acc[branchKey] = {
           ...branch,
-          items: filteredItems
+          items: filteredItems,
         }
         return acc
       }, {})
@@ -377,6 +414,22 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     return tree
   }
 
+  get baseMaterialOptions() {
+    if (!this.selectedCraftable || this.selectedCraftable.type !== 'armorUpgrade') return []
+    return CONFIG.FALLOUTZERO.armorTypes
+  }
+
+  get selectedBaseItemMaterials() {
+    if (!this.selectedBaseItemUuid || !this.selectedCraftable.system.crafting.materialBase.required) return []
+    const selectedBaseItem = fromUuidSync(this.selectedBaseItemUuid)
+    return selectedBaseItem.system.crafting.materials.map((mat) => {
+      return {
+        ...mat,
+        quantity: this.selectedCraftable.system.crafting.materialBase.multiplier
+      }
+    })
+  }
+
   async init() {
     try {
       const packsWithCraftables = game.packs.filter((p) => CONFIG.FALLOUTZERO.packsWithCraftables.includes(p.collection))
@@ -387,10 +440,16 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         })
       )
 
+      // add items in compendia to the crafting tree
       for (const craftable of packCraftables.flat()) {
         const type = this.craftingTree[craftable.system.crafting.type]
         type.items.push(craftable)
       }
+
+      // sort items in each branch
+      Object.keys(this.craftingTree).forEach((branchKey) => {
+        this.craftingTree[branchKey].items.sort((a, b) => a.name.localeCompare(b.name))
+      })
 
     } catch (error) {
       console.error(error);
@@ -403,6 +462,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     e.preventDefault()
     const { branch, index } = target.dataset
     this.selectedCraftable = this.craftingTree[branch].items[index] ?? null
+    this.selectedBaseItemId = this.baseMaterialOptions?.[this.selectedCraftable.system.type]?.id ?? null
     const itemOwned = this.actor.items.find((i) => i.name == this.selectedCraftable.name)
     itemOwned !== undefined ? this.owned = itemOwned.system.quantity : this.owned = 0
     this.selectedSkill = this.selectedCraftable.system.crafting.mainRequirements[0]
@@ -422,8 +482,8 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     if (!this.hasMaterials(this.selectedCraftable)) {
       return this._missingMaterialsWarning()
     }
-    this.owned = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.selectedCraftable })
-    await updateActorMaterials({ actor: this.actor, materials: this.selectedCraftable.system.crafting.materials })
+    this.owned = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.selectedCraftable, selectedBaseItemId: this.selectedBaseItemId })
+    await updateActorMaterials({ actor: this.actor, materials: [...this.selectedCraftable.system.crafting.materials, ...this.selectedBaseItemMaterials] })
 
     attemptToMessage(
       this.actor,
@@ -440,7 +500,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     if (!this.hasMaterials(this.selectedCraftable)) {
       return this._missingMaterialsWarning()
     }
-    const result = await CraftingAttempt.create({ actor: this.actor, craftable: this.selectedCraftable })
+    const result = await CraftingAttempt.create({ actor: this.actor, craftable: this.selectedCraftable, selectedBaseItemUuid: this.selectedBaseItemUuid })
 
     // if the crafting attempt was successful, update the owned quantity
     if (result) {
@@ -453,7 +513,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
   hasMaterials(craftableItem) {
     if (!craftableItem) return false
 
-    return craftableItem.system.crafting.materials.every((mat) => {
+    return [...craftableItem.system.crafting.materials, ...this.selectedBaseItemMaterials].every((mat) => {
       return (this.materials?.[mat.uuid]?.quantity ?? 0) >= mat.quantity
     })
   }

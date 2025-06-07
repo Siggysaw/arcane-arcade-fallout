@@ -5,6 +5,7 @@ import PerkListApplication from './perk-list.mjs'
 import LevelUpApplication from './level-up.mjs'
 import ChoosePerk from './choose-perk.mjs'
 import CraftingBench from './crafting-bench.mjs'
+import SelectUpgrade from './select-upgrade.mjs'
 
 
 window.customElements.define('damage-application', DamageApplicationElement)
@@ -17,4 +18,5 @@ export {
     LevelUpApplication,
     ChoosePerk,
     CraftingBench,
+    SelectUpgrade,
 }

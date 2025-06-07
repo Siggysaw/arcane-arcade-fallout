@@ -1,7 +1,5 @@
 import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
-import FalloutZeroArmor from '../data/armor.mjs'
-import FalloutZeroItem from '../documents/item.mjs'
 import SkillRoll from '../dice/skill-roll.mjs'
 import PerkListApplication from '../applications/components/perk-list.mjs'
 
@@ -179,6 +177,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const races = []
     const conditions = []
     const properties = []
+    const upgrades = []
+    const armorUpgrades = []
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -223,10 +223,16 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         conditions.push(i)
       } else if (i.type === 'property') {
         properties.push(i)
+      } else if (i.type === 'weaponUpgrade') {
+        upgrades.push(i)
+      } else if (i.type === 'armorUpgrade') {
+        armorUpgrades.push(i)
       }
     }
 
     // Assign and return
+    context.armorUpgrades = armorUpgrades
+    context.upgrades = upgrades
     context.gear = gear
     context.features = features
     context.perks = perks
@@ -354,13 +360,30 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           let cost = 3
           item.type == "powerArmor" ? cost = 6 : cost = cost
           if (this.actor.applyApCost(cost)) {
-            item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-            if ((item.type == 'armor' || item.type == 'powerArmor') && item.parent) {
-              FalloutZeroArmor.prototype.changeEquipStatus(item)
+            if (item.system.itemEquipped) {
+              this.actor.unEquipArmor(item.uuid)
             } else {
-              FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
+              this.actor.equipArmor(item.uuid)
             }
           }
+        },
+      },
+      {
+        name: 'Attach/Detach upgrade',
+        icon: '',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (
+            item.type === 'armor' ||
+            item.type === 'powerArmor'
+          ) {
+            return true
+          }
+        },
+        callback: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          new game.falloutzero.applications.components.SelectUpgrade(this.actor.id, itemId).render(true)
         },
       },
       {
@@ -854,18 +877,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-equip]', (ev) => {
       const itemId = ev.currentTarget.dataset.itemId
       const item = this.actor.items.get(itemId)
-      let enoughAP = true
-      /*if (item.type == 'powerArmor') { //Removed AP consumption for Power Armor. We don't require it for any other kind of equipment equip. 
-        enoughAP = this.actor.applyApCost(6)
-      }
-      if (enoughAP) {*/
       item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-      if ((item.type == 'armor' || item.type == 'powerArmor') && item.parent) {
-        FalloutZeroArmor.prototype.changeEquipStatus(item)
-      } else {
-        FalloutZeroArmor.prototype.toggleEffects(myItem, item.system.itemEquipped)
-      }
-      //}
     })
 
     // Send an item's description to Chat.
@@ -962,11 +974,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       ])
     })
 
-    //Sort on clicking Crafting Navigation Button
-    html.on('click', '[craftRecipes]', () => {
-      this.actor.checkIfCanCraft(this.actor.name)
-    })
-
     //Sort Junk items
     html.on('click', '[sortJunk]', () => {
       this.actor.sortTable('junkTable')
@@ -992,16 +999,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       switch (item.type) {
         case 'trait':
           this._onItemDeleteTrait(item)
-          break
-        case 'armor':
-          if (item.system.itemEquipped) {
-            FalloutZeroArmor.prototype.changeEquipStatus(item)
-          }
-          break
-        case 'powerArmor':
-          if (item.system.itemEquipped) {
-            FalloutZeroArmor.prototype.changeEquipStatus(item)
-          }
           break
         case 'background':
           return new Dialog({

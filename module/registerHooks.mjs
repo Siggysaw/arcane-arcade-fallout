@@ -155,7 +155,6 @@ export function registerHooks() {
         const canAffordAP = actor.applyApCost(cost)
         if (canAffordAP) {
             item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-            FalloutZeroArmor.prototype.changeEquipStatus(item)
         }
     })
 
@@ -176,11 +175,9 @@ export function registerHooks() {
 
     Hooks.on('aafohud.useConsumable', async (actorUuid, itemId) => {
         const actor = fromUuidSync(actorUuid)
-        const item = actor.items.get(itemId)
         const cost = 4
         const canAffordAP = actor.applyApCost(cost)
         if (canAffordAP) {
-            FalloutZeroItem.prototype.toggleEffects(item, item.system.itemEquipped)
             actor.lowerInventory(itemId)
         }
     })
