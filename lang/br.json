@@ -2,57 +2,57 @@
   "FALLOUTZERO": {
     "Common": {
       "Status": "Status",
-      "Perks": "Perks",
-      "Combat": "Combat",
-      "Aid": "Aid",
-      "Backpack": "Backpack",
-      "Crafting": "Crafting",
-      "Notes": "Notes",
-      "Effects": "Effects",
-      "In Combat!": "In Combat!",
-      "Room Loot": "Room Loot",
-      "HP": "HP",
-      "AP": "AP",
-      "SP": "SP",
-      "health": "Health",
-      "action_points": "Action Points",
-      "stamina_points": "Stamina Points",
-      "caps": "Caps",
-      "Conditions": "Conditions",
-      "Carry Load": "Carry Load",
+      "Perks": "Talentos",
+      "Combat": "Combate",
+      "Aid": "Ajuda",
+      "Backpack": "Mochila",
+      "Crafting": "Criação",
+      "Notes": "Notas",
+      "Effects": "Efeitos",
+      "In Combat!": "Em Combate!",
+      "Room Loot": "Saque da Sala",
+      "HP": "PV",
+      "AP": "PA",
+      "SP": "PS",
+      "health": "Vida",
+      "action_points": "Pontos de Ação",
+      "stamina_points": "Pontos de Stamina",
+      "caps": "Tampas",
+      "Conditions": "Condições",
+      "Carry Load": "Capacidade de Carga",
       "Bonus": "Bonus",
       "Temp": "Temp",
-      "Fire": "Fire!",
-      "Swing": "Swing!",
-      "Load": "Load",
-      "Equipped": "Equipped"
+      "Fire": "Atirar!",
+      "Swing": "Atacar!",
+      "Load": "Carga",
+      "Equipped": "Equipado"
     },
-    "RollData" {
-      "Skill": "Skill Bonus",
-      "Ability": "Ability",
-      "Luck": "Luck",
-      "Penalties": "Penalties",
+    "RollData": {
+      "Skill": "Bônus de Habilidade",
+      "Ability": "Habilidade",
+      "Luck": "Sorte",
+      "Penalties": "Penalidades",
       "Total": "Total",
       "Normal": "Normal",
-      "Advantage": "Advantage",
-      "Disadvantage": "Disadvantage",
-      "Situational Bonus": "Situational Bonus",
-      "Roll": "Roll",
-      "Automatic": "Automatic",
-      "AP Override": "AP Override",
-      "Critical Formula": "Critical Formula",
-      "Critical Multiplier": "Critical Multiplier",
-      "Damage": "Damage",
-      "Custom to Hit": "Custom To Hit",
-      "Custom for Damage": "Custom For DMG",
+      "Advantage": "Vantagem",
+      "Disadvantage": "Desvantagem",
+      "Situational Bonus": "Bonus Situacionais",
+      "Roll": "Rolar",
+      "Automatic": "Automatico",
+      "AP Override": "Substituir PA",
+      "Critical Formula": "Formula Critico",
+      "Critical Multiplier": "Multiplicador Critico",
+      "Damage": "Dano",
+      "Custom to Hit": "Custumizar para Bater",
+      "Custom for Damage": "Customizar para Dano",
       "Targeted Attack": {
-        "label": "Targeted Attack",
-        "head": "Head",
+        "label": "Ataque Direcionado",
+        "head": "Cabeça",
         "torso": "Torso",
-        "legs": "Legs",
-        "Eyes": "Eyes",
-        "carried": "Carried Item",
-        "groin": "Groin"
+        "legs": "Pernas",
+        "Eyes": "Olhos",
+        "carried": "Item Carregado",
+        "groin": "Virilha"
       }
     },
     "Ability": {
@@ -73,7 +73,7 @@
         "abbr": "car"
       },
       "int": {
-        "long": "Inteligencia",
+        "long": "Inteligência",
         "abbr": "int"
       },
       "agi": {
@@ -398,3 +398,5 @@
     }
   }
 }
+
+

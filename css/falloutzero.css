@@ -338,22 +338,23 @@ details > summary {
   text-transform: capitalize;
 }
 
-  .window-app .window-content input,
-  .window-app .window-content .fakebutton,
-  .window-app .window-content button,
-  .window-app .window-content label,
-  .window-app .window-content select,
-  .dialog,
-  .window-app .window-content textarea,
-  .window-app form p,
-  #chat .chat-message .message-header,
-  .prosemirror.menu-dialog form p,
-  .prosemirror.menu-dialog form button,
-  .prosemirror.menu-dialog form input,
-  .sheet .item-piles-config-container p {
-    color: var(--sheetcolor);
-    letter-spacing: 0rem;
-  }
+.window-app .window-content input,
+.window-app .window-content .fakebutton,
+.window-app .window-content button,
+.window-app .window-content label,
+.window-app .window-content select,
+.dialog,
+.window-app .window-content textarea,
+.window-app form p,
+#chat .chat-message .message-header,
+.prosemirror.menu-dialog form p,
+.prosemirror.menu-dialog form button,
+.prosemirror.menu-dialog form input,
+.sheet .item-piles-config-container p,
+.item-piles-clickable-link {
+  color: var(--sheetcolor);
+  letter-spacing: 0rem;
+}
 
 .window-app .window-content div .fakebutton,
 .window-app .window-content button,
