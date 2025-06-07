@@ -46,6 +46,7 @@ export default class SelectUpgrade extends HandlebarsApplicationMixin(Applicatio
         return {
             maxSlots: this.item.system.upgrade.slotCount,
             usedSlots: this.attachedUpgrades.length,
+            item: this.item,
             detachedUpgrades: this.detachedUpgrades,
             attachedUpgrades: this.attachedUpgrades,
         }
