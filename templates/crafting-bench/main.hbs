@@ -76,6 +76,14 @@
             </div>
         </section>
         {{/if}}
+        {{#if isArmorUpgrade}}
+            <section>
+                Select a base item to craft upgrade for
+                <select name="selectedBaseItemId" data-base-item>
+                    {{selectOptions baseMaterialOptions selected=selectedBaseItemId valueAttr="id" labelAttr="name"}}
+                </select>
+            </section>
+        {{/if}}
         <section>
             <h5>Material Requirements</h5>
             <div class="grid grid-3col">
@@ -88,23 +96,44 @@
                 <div>
                     Owned
                 </div>
+                {{!-- Craftable requirements --}}
                 {{#each selectedCraftable.system.crafting.materials as |material|}}
-                <div>
-                    {{material.name}}
-                </div>
-                <div>
-                    {{material.quantity}}
-                </div>
-                <div>
-                    {{!-- #TODO BETTER WAY TO LOOKUP? --}}
-                    {{#if (lookup ../materials material.uuid)}}
-                    {{#with (lookup ../materials material.uuid)~}}
-                    {{ this.quantity }}
-                    {{/with}}
-                    {{else}}
-                    0
-                    {{/if}}
-                </div>
+                    <div>
+                        {{material.name}}
+                    </div>
+                    <div>
+                        {{material.quantity}}
+                    </div>
+                    <div>
+                        {{!-- #TODO BETTER WAY TO LOOKUP? --}}
+                        {{#if (lookup ../materials material.uuid)}}
+                        {{#with (lookup ../materials material.uuid)~}}
+                        {{ this.quantity }}
+                        {{/with}}
+                        {{else}}
+                        0
+                        {{/if}}
+                    </div>
+                {{/each}}
+
+                {{!-- Craftable selected base item requirements --}}
+                {{#each selectedBaseItemMaterials as |material|}}
+                    <div>
+                        {{material.name}}
+                    </div>
+                    <div>
+                        {{material.quantity}}
+                    </div>
+                    <div>
+                        {{!-- #TODO BETTER WAY TO LOOKUP? --}}
+                        {{#if (lookup ../materials material.uuid)}}
+                        {{#with (lookup ../materials material.uuid)~}}
+                        {{ this.quantity }}
+                        {{/with}}
+                        {{else}}
+                        0
+                        {{/if}}
+                    </div>
                 {{/each}}
             </div>
         </section>

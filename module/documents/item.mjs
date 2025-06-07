@@ -3,6 +3,10 @@ import AttackRoll from '../dice/attack-roll.mjs'
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
  */
+
+const nonStackableTypes = [
+  'armorUpgrade',
+]
 export default class FalloutZeroItem extends Item {
   /**
    * Augment the basic Item data model with additional dynamic data.
@@ -16,6 +20,10 @@ export default class FalloutZeroItem extends Item {
   //Checks char items before creating one, stops it and updates quantity if it exists and is not equipped.
   _preCreate(data, options, user) {
     super._preCreate(data, options, user)
+    if (nonStackableTypes.includes(data.type)) {
+      return
+    }
+
     if (this.parent) {
       let myItem
       if (this.system.itemEquipped == true || this.system.itemEquipped == false) {

@@ -39,6 +39,10 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
         value: new fields.NumberField({ initial: 1, min: 1 }),
         unit: new fields.StringField({ initial: 'hour' }),
       }),
+      materialBase: new fields.SchemaField({
+        required: new fields.BooleanField({ initial: false }),
+        multiplier: new fields.NumberField({ initial: 1 })
+      }),
       materials: new fields.ArrayField(
         new fields.SchemaField({
           uuid: new fields.StringField(),

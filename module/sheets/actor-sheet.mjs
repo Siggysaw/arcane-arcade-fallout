@@ -1,6 +1,5 @@
 import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
-import FalloutZeroArmor from '../data/armor.mjs'
 import SkillRoll from '../dice/skill-roll.mjs'
 import PerkListApplication from '../applications/components/perk-list.mjs'
 
@@ -179,6 +178,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const conditions = []
     const properties = []
     const upgrades = []
+    const armorUpgrades = []
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -223,12 +223,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         conditions.push(i)
       } else if (i.type === 'property') {
         properties.push(i)
-      } else if (i.type === 'armorUpgrade' || i.type === 'weaponUpgrade') {
+      } else if (i.type === 'weaponUpgrade') {
         upgrades.push(i)
+      } else if (i.type === 'armorUpgrade') {
+        armorUpgrades.push(i)
       }
     }
 
     // Assign and return
+    context.armorUpgrades = armorUpgrades
     context.upgrades = upgrades
     context.gear = gear
     context.features = features
@@ -969,11 +972,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this.actor.updateEmbeddedDocuments('Item', [
         { _id: armorId, 'system.armorHP.value': ev.target.value },
       ])
-    })
-
-    //Sort on clicking Crafting Navigation Button
-    html.on('click', '[craftRecipes]', () => {
-      this.actor.checkIfCanCraft(this.actor.name)
     })
 
     //Sort Junk items

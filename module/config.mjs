@@ -1476,6 +1476,10 @@ FALLOUTZERO.craftingTypes = {
     id: 'armor',
     label: 'Armor',
   },
+  armor_upgrade: {
+    id: 'armor_upgrade',
+    label: 'Armor Upgrade',
+  },
   big_guns: {
     id: 'big_guns',
     label: 'Big guns',
@@ -1590,6 +1594,7 @@ FALLOUTZERO.craftingItemTypes = [
   'rangedweapons',
   'miscellaneous',
   'medicine',
+  'armorUpgrade',
   'chem',
 ]
 
@@ -1602,6 +1607,7 @@ FALLOUTZERO.packsWithCraftables = [
   'arcane-arcade-fallout.food-and-drinks',
   'arcane-arcade-fallout.melee-weapons',
   'arcane-arcade-fallout.rangedweapons',
+  'arcane-arcade-fallout.upgrades',
   'arcane-arcade-fallout.miscellaneous',
 ]
 
@@ -1609,29 +1615,36 @@ FALLOUTZERO.armorTypes = {
   cloth: {
     id: 'cloth',
     label: 'Cloth',
+    uuid: 'Compendium.arcane-arcade-fallout.armor.Item.ofJ31ZteGa6dGhLk',
   },
   leather: {
     id: 'leather',
     label: 'Leather',
+    uuid: 'Compendium.arcane-arcade-fallout.armor.Item.9WBMPGzFlVcKfi0O',
   },
   metal: {
     id: 'metal',
     label: 'Metal',
+    uuid: 'Compendium.arcane-arcade-fallout.armor.Item.xpO4PovVem4jyIek',
   },
   multilayered: {
     id: 'multilayered',
     label: 'Multilayered',
+    uuid: 'Compendium.arcane-arcade-fallout.armor.Item.lO5HdXbJJZea9q3O',
   },
   ballistic: {
     id: 'ballistic',
     label: 'Ballistic weave',
+    uuid: 'Compendium.arcane-arcade-fallout.armor.Item.RvlAwPZoxSaPZ5dj',
   },
   steel: {
     id: 'steel',
     label: 'Steel',
+    uuid: 'Compendium.arcane-arcade-fallout.armor.Item.ubl4wd7zbO6KMT3z',
   },
   power: {
     id: 'power',
     label: 'Power',
+    uuid: 'Compendium.arcane-arcade-fallout.armor.Item.GPl8d41kmcj411Le',
   },
 }

@@ -4,7 +4,7 @@
             <i data-action="onlyCraftables" data-tooltip="Toggle only show craftables" class="fas fa-toggle-{{#if onlyCraftables}}on{{else}}off{{/if}}"></i>
     </div>
     <div>
-        <input type="search" placeholder="Search" data-action="search" value="{{searchQuery}}">
+        <input type="search" placeholder="Search" data-search value="{{searchQuery}}">
     </div>
     {{#each craftingTree as |branch branchKey|}}
         <details

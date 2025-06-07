@@ -400,6 +400,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       'medicine',
       'miscItem',
       'foodAnddrink',
+      'armorUpgrade',
       'chem',
     ]
 
@@ -432,7 +433,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
 
   async _onRemoveAltMaterial(e) {
     e.stopPropagation()
-    const index = e.currentTarget.dataset.removeMaterial
+    const index = e.currentTarget.dataset.removeAltMaterial
     if (!index) return
 
     const newMaterials = this.item.system.crafting.altMaterials
@@ -462,6 +463,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       'ammo',
       'miscItem',
       'foodAnddrink',
+      'armorUpgrade',
       'chem',
     ]
 
