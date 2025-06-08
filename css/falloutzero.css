@@ -176,6 +176,10 @@ details > summary {
 .falloutzero .sheet-body .tab .editor {
   height: 100%;
 }
+body.game .app .tabs.sheet-tabs [data-tab] {
+  color: var(--sheetcolor);
+  font-size:12pt;
+}
 
 .falloutzero .tox .tox-editor-container {
   background: #fff;
