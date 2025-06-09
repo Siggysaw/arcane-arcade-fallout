@@ -6,7 +6,7 @@
             <ul>
                 {{#each attachedUpgrades as |upgrade|}}
                     <li class="upgrade-slot">
-                        <button data-action="detach" data-upgrade-id="{{upgrade.uuid}}" data-tooltip="attach">
+                        <button data-action="detach" data-upgrade-id="{{upgrade.uuid}}" data-tooltip="{{upgrade.description}}">
                             {{upgrade.name}} ({{upgrade.type}})
                         </button>
                     </li>
@@ -20,7 +20,7 @@
             <ul>
                 {{#each detachedUpgrades as |upgrade|}}
                     <li class="upgrade-slot">
-                        <button data-action="attach" data-upgrade-id="{{upgrade.uuid}}" data-tooltip="detach">
+                        <button data-action="attach" data-upgrade-id="{{upgrade.uuid}}" data-tooltip="{{upgrade.system.description}}">
                             {{upgrade.name}} ({{upgrade.system.type}})
                         </button>
                     </li>

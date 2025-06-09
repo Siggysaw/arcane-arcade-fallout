@@ -226,7 +226,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       } else if (i.type === 'weaponUpgrade') {
         upgrades.push(i)
       } else if (i.type === 'armorUpgrade') {
-        armorUpgrades.push(i)
+        if (!i.system.equipped) {
+          armorUpgrades.push(i)
+        }
       }
     }
 
