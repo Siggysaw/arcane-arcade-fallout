@@ -226,7 +226,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       } else if (i.type === 'weaponUpgrade') {
         upgrades.push(i)
       } else if (i.type === 'armorUpgrade') {
-        armorUpgrades.push(i)
+        if (!i.system.equipped) {
+          armorUpgrades.push(i)
+        }
       }
     }
 
@@ -705,6 +707,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const item = this.actor.items.get(itemId)
       let cost = 3
       item.type == "powerArmor" ? cost = 6 : cost = cost
+
+      if (item.type === 'armor') {
+        return item.system.itemEquipped ? this.actor.unEquipArmor(item.uuid) : this.actor.equipArmor(item.uuid)
+      }
+
       if (this.actor.applyApCost(cost)) {
         item.update({ 'system.itemEquipped': !item.system.itemEquipped })
         item.update({ 'system.worn': !item.system.worn })

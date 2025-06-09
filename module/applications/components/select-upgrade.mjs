@@ -33,7 +33,12 @@ export default class SelectUpgrade extends HandlebarsApplicationMixin(Applicatio
     }
 
     get attachedUpgrades() {
-        return this.item.system.upgrade.slots
+        return this.item.system.upgrade.slots.map((slot) => {
+            return {
+                ...slot,
+                description: fromUuidSync(slot.uuid)?.system.description || '',
+            }
+        })
     }
 
     get item() {

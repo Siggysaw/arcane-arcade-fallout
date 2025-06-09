@@ -87,7 +87,7 @@
             <div class="grid-span-3"><i class="fas fa-weight-hanging"></i></div>
         </div>
         {{#each armors as |item id|}}
-        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
+        <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}" data-tooltip="{{#each item.system.upgrade.slots as |slot|}}<div>{{slot.name}}</div> {{/each}}">
             <div>
                 <i data-equipToggle data-item-id="{{ item._id}}"
                    class="pointer {{#if system.itemEquipped}}
