@@ -2203,12 +2203,13 @@ export default class FalloutZeroActor extends Actor {
 
   getAbilityMod(ability) {
     if (ability === CONFIG.FALLOUTZERO.abilities.lck.id) {
-
+      if (this.system.abilities[ability].mod < 0) {
+        return -1
+      }
       if (this.hasDumbLuck()) {
         return this.system.abilities[ability].mod
       }
       return Math.floor(this.system.abilities[ability].mod / 2)
-
     }
     return this.system.abilities[ability].mod
   }

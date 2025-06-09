@@ -176,10 +176,6 @@ details > summary {
 .falloutzero .sheet-body .tab .editor {
   height: 100%;
 }
-body.game .app .tabs.sheet-tabs [data-tab] {
-  color: var(--sheetcolor);
-  font-size:12pt;
-}
 
 .falloutzero .tox .tox-editor-container {
   background: #fff;
@@ -1097,22 +1093,26 @@ a.inline-roll,
   text-transform: uppercase;
 }
 
-.sheet nav a:hover,
-.sheet .tabs > [data-tab].active {
+body.game .app .tabs.sheet-tabs a:hover,
+body.game .app .tabs > [data-tab].active {
   background-color: var(--sheetcolor);
   color: #333;
   text-decoration: none;
   text-shadow: none;
 }
-  .sheet nav a:hover,
-  .sheet .tabs > [data-tab].active:hover{
-      color:#333
+  body.game .app .tabs a:hover,
+  body.game .app .tabs > [data-tab].active:hover {
+    color: #333
   }
 
-  .sheet label {
-    font-size: 13pt;
-    padding: 5px;
-  }
+body.game .app .tabs > [data-tab] {
+  color: var(--sheetcolor)
+}
+
+.sheet label {
+  font-size: 13pt;
+  padding: 5px;
+}
 
   .sheet label.specials:hover {
     color: #000;
@@ -1147,10 +1147,10 @@ a.inline-roll,
   font-size: 12pt;
   margin-top: 3px;
 }
-
-
+.sheet .item-piles-config-container p{
+    color: var(--sheetcolor)
+}
 /* ============New Grid Classes============ */
-
 /*Item Sheets*/
 .item .grid input {
   border: none;
