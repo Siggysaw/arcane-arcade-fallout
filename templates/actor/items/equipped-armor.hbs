@@ -110,13 +110,11 @@
         </progress>
     </div>
     <div class="grid-span-10 armor-upgrades armor-description">
-        {{#each system.upgrades as |key|}}
-        {{#if key.id}}
+        {{#each item.system.upgrade.slots as |slot|}}
+        {{log slot}}
         <span class="upgrade-name"
               style="padding-left:5px;"
-              data-tooltip="{{key.description}}">{{key.name}}</span>
-        {{/if}}
-        {{/each}}
+              data-tooltip="{{slot.description}}">{{slot.name}}</span> {{/each}}
     </div>
 </div>
 {{/if}}
