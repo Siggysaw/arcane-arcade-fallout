@@ -1,5 +1,60 @@
 {
   "FALLOUTZERO": {
+    "Common": {
+      "Status": "Status",
+      "Perks": "Perks",
+      "Combat": "Combat",
+      "Aid": "Aid",
+      "Backpack": "Backpack",
+      "Crafting": "Crafting",
+      "Notes": "Notes",
+      "Effects": "Effects",
+      "In Combat!": "In Combat!",
+      "Room Loot": "Room Loot",
+      "HP": "HP",
+      "AP": "AP",
+      "SP": "SP",
+      "health": "Health",
+      "action_points": "Action Points",
+      "stamina_points": "Stamina Points",
+      "caps": "Caps",
+      "Conditions": "Conditions",
+      "Carry Load": "Carry Load",
+      "Bonus": "Bonus",
+      "Temp": "Temp",
+      "Fire": "Fire!",
+      "Swing": "Swing!",
+      "Load": "Load",
+      "Equipped": "Equipped"
+    },
+    "RollData": {
+      "Skill": "Skill Bonus",
+      "Ability": "Ability",
+      "Luck": "Luck",
+      "Penalties": "Penalties",
+      "Total": "Total",
+      "Normal": "Normal",
+      "Advantage": "Advantage",
+      "Disadvantage": "Disadvantage",
+      "Situational Bonus": "Situational Bonus",
+      "Roll": "Roll",
+      "Automatic": "Automatic",
+      "AP Override": "AP Override",
+      "Critical Formula": "Critical Formula",
+      "Critical Multiplier": "Critical Multiplier",
+      "Damage": "Damage",
+      "Custom to Hit": "Custom To Hit",
+      "Custom for Damage": "Custom For DMG",
+      "Targeted Attack": {
+        "label": "Targeted Attack",
+        "head": "Head",
+        "torso": "Torso",
+        "legs": "Legs",
+        "Eyes": "Eyes",
+        "carried": "Carried Item",
+        "groin": "Groin"
+      }
+    },
     "Ability": {
       "str": {
         "long": "Strength",
@@ -160,12 +215,17 @@
       "armor": "Armor",
       "perk": "Perk",
       "trait": "Trait",
-      "foodAnddrink": "Food And Drink",
+      "foodAnddrink": "Food / Drink",
       "medicine": "Medicine",
       "chem": "Chem",
       "junkItem": "Junk",
       "material": "Material",
-      "miscItem": "Miscellaneous"
+      "miscItem": "Miscellaneous",
+      "armorUpgrade": "Armor Upgrade",
+      "weaponUpgrade": "Weapon Upgrade",
+      "condition": "Condition",
+      "property": "Weapon Property",
+      "powerArmor": "Power Armor"
     }
   }
 }

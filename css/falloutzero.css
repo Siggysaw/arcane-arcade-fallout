@@ -677,9 +677,6 @@ button {
   width: 60px;
 }
 
-.allcaps {
-  text-transform: uppercase;
-}
 
 .sheet table td select {
   background: none;
@@ -1515,4 +1512,8 @@ body.game .app .tabs > [data-tab] {
 
 .window-app .vaulttec p {
   color: #ccc;
+}
+
+.sheet .item {
+  text-transform: uppercase;
 }

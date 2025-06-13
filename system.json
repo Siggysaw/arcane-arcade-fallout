@@ -103,7 +103,8 @@
         "diseases",
         "npc-attacks",
         "npc-actions-sample",
-        "targeted-attacks"
+        "targeted-attacks",
+        "merchant-rolltable"
       ],
       "color": null,
       "folders": []
@@ -352,6 +353,17 @@
       "type": "RollTable",
       "name": "roomloot",
       "path": "packs/room-loot",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Merchant Randomization",
+      "type": "RollTable",
+      "name": "merchant-rolltable",
+      "path": "packs/merchant-rolltable",
       "system": "arcane-arcade-fallout",
       "ownership": {
         "ASSISTANT": "OWNER"

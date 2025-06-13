@@ -1,3 +1,5 @@
-2025/06/09-22:30:55.722 2f6ac Recovering log #1410
-2025/06/09-22:30:55.731 2f6ac Delete type=0 #1410
-2025/06/09-22:30:55.731 2f6ac Delete type=3 #1408
+2025/06/13-16:14:54.690 c7bc Recovering log #1427
+2025/06/13-16:14:54.690 c7bc Level-0 table #1429: started
+2025/06/13-16:14:54.698 c7bc Level-0 table #1429: 1763 bytes OK
+2025/06/13-16:14:54.707 c7bc Delete type=0 #1427
+2025/06/13-16:14:54.707 c7bc Delete type=3 #1426
