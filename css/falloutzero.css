@@ -130,6 +130,10 @@ details > summary {
   text-align: center;
 }
 
+/*Config CSS*/
+.windows-app .settings-config label{
+    color:black;
+}
 /* Styles limited to falloutzero sheets */
 .falloutzero .item-form {
   font-family: 'Monofonto', sans-serif;
@@ -341,7 +345,6 @@ details > summary {
 .window-app .window-content input,
 .window-app .window-content .fakebutton,
 .window-app .window-content button,
-.window-app .window-content label,
 .window-app .window-content select,
 .dialog,
 .window-app .window-content textarea,
