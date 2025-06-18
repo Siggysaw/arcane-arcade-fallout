@@ -6,15 +6,22 @@
 
             <hr />
             <div class="grid grid-2col group">
-                <div class="label">
-                    XP
+                <div class="label" data-tooltip='<h2 style="margin-top:0in;margin-right:0in;margin-bottom:.15pt;margin-left:
+                -.25pt"><span style="font-family: Calibri, sans-serif"><strong style="mso-bidi-font-weight:normal">Gaining XP</strong></span></h2>
+                <p class="MsoNormal" style="margin-top: 0in; margin-right: 2.4pt; margin-bottom: .65pt; margin-left: 1.0pt">The GM may award the players with XP at any time, but is typically awarded when the player characters spend any amount of time resting after completing a quest, encounter, or discovering something new. Whenever you gain XP, if your XP total is lower than any other player character’s total XP, you gain XP equal to the difference between your total and theirs. (Simply put: everyone shares the same amount of XP, defaulting to whoever has the highest). Additionally, the following modifiers are added to the total.</p>
+                <p class="MsoNormal" style="margin-right: 2.4pt; text-indent: .2in"><em style="mso-bidi-font-style:normal"><strong style="mso-bidi-font-weight:normal">Reaching 0 Hit Points.</strong></em> A 10% bonus of XP is awarded for each player character that fell to 0 hit points.</p>
+                <p class="MsoNormal" style="margin-right: 2.4pt; text-indent: .2in"><em style="mso-bidi-font-style:normal"><strong style="mso-bidi-font-weight:normal">Death.</strong></em> 1000 XP is awarded to each player character if another player character permanently dies.</p>
+                <p class="MsoNormal" style="margin-right: 10.5pt; text-indent: .2in"><em style="mso-bidi-font-style:normal"><strong style="mso-bidi-font-weight:normal">Creature Discovery.</strong></em> A 20% bonus of XP is awarded if the player characters roll combat sequence with a creature they have never rolled combat sequence with before.</p>
+                <p class="MsoNormal" style="margin-top: 0in; margin-right: 2.4pt; margin-bottom: 8.95pt; margin-left: .5pt; text-indent: .2in"><em style="mso-bidi-font-style:normal"><strong style="mso-bidi-font-weight:normal">Location Discovery.</strong></em> A 20% bonus of XP is awarded if the player characters rest in a city, town, ruin, dungeon, point of interest, or otherwise generalized location they have never rested in before.</p>
+                <p class="MsoNormal" style="margin-top: 0in; margin-right: 2.4pt; margin-bottom: 11.1pt; margin-left: 36.5pt; line-height: 111%"><em style="mso-bidi-font-style:normal">Note: XP is not rewarded by killing people or monsters, it is instead rewarded for surviving encounters in the wasteland. Sometimes failure is the best teacher.</em></p>' >
+                XP
                 </div>
                 <div class="label">
                     Caps
                 </div>
                 <div>
-                    <input placeholder="XP" type="number" data-group-xp value="{{ groupXp }}">+
-                    <input placeholder="% Bonus" type="number" data-group-xp-modifier value="{{ groupXpmodifier }}">%
+                    <input data-tooltip="Base Amount of XP to give the party" type="number" data-group-xp value="{{ groupXp }}">+
+                    <input data-tooltip="Total Percentage Bonus"type="number" data-group-xp-modifier value="{{ groupXpmodifier }}">%
                 </div>
                 <div>
                     <input placeholder="Caps" type="number" data-group-caps value="{{ groupCaps }}">
@@ -70,28 +77,139 @@
             <button class="dialog-button">Send Rewards</button>
             <button class="dialog-button" data-action="cancel">Cancel</button>
         </div>
+        <div>
+            <span
+                  title='
+Melee Weapons Targeted attack AP requirement is reduced by 2 to a minimum of 1.
+Severe: If the Attack Roll is a Crit, the Severe Injury occurs OR choose 2 of the other options
+
+Eyes 
++5 AP
+- To hit ranged attack modifier is halved
+- The total damage is halved. 
+1.	-5 to all attack rolls for two turns.
+2.	Disadvantage to all attack rolls for two turns. 
+3.	Blinded for two turns. 
+4.	Temporary Blindness. 
+Severe: Eye Gouged
+
+Head 
++3 AP
+- To hit ranged attack modifier is halved
+- Damage dice is increased by 1. (Example: 1d10 to 2d10) 
+1.	-2 to all attack rolls for two turns. 
+2.	-5 to all attack rolls for two turns. 
+3.	-2 AP for two turns. 
+4.	Rattled. 
+Severe: Sliced Jugular or Concussion.
+
+Arm 
++3 AP
+- Damage dice is decreased by 1 to minimum of 1. (Example: 2d10 to 1d10). 
+1.	Target drops whatever they are holding in that arm. 
+2.	-2 to all attack rolls for two turns. 
+3.	-5 to all attack rolls for two turns. 
+4.	Broken Arm.
+Severe: Severed Arm/Hand.
+
+Torso 
++2 AP
+1.	No condition. 
+2.	No condition. 
+3.	-2 AP for two turns. 
+4.	Gut Wallop. 
+Severe: Internal Bleeding
+
+Groin 
++3 AP 
+1.	-2 AP for two turns. 
+2.	-3 AP for two turns. 
+3.	The target falls prone. 
+4.	Painful Collapse. 
+Severe: Intense Agony
+
+Leg 
++2 AP
+- Damage dice is decreased by 1 to minimum of 1. (Example: 2d10 to 1d10). 
+1.	Can only move a maximum of 30 feet for two turns. 
+2.	Can only move a maximum of 20 feet for two turns. 
+3.	Can only move a maximum of 15 feet for two turns. 
+4.	Leg Cripple. 
+Severe: Severed Leg/Foot.
+
+Held or Carried Object 
++4 AP 
+1.	Target object gains one level of decay. (No Damage Dealt)
+2.	Target object gains two levels of decay. 
+3.	Target object flies one foot away. 
+4.	Object flies 1d4 x 5 feet away. 
+Severe: Choose either condition 1, 2, or 3. The target object is destroyed beyond repair (GM’s discretion)
+'>Targeted Attacks</span>
+        </div>
     </div>
-    <div class="grid-span-16">
+    <div class="grid-span-16"
+         style="border:none;">
         <h6>Character Details</h6>
-        <div class="grid grid-4col character-details">
-            <div>Name</div>
-            <div>Traits/Perks</div>
-            <div>Karma Caps</div>
-            <div>Notes</div>
+        <div 
+             class="grid grid-4col character-details"
+             style="border:none;">
+
             {{#each actors as |actor id|}}
             {{#if actor.system.activePartymember}}
+            <div>Name</div>
+            <div>Status</div>
+            <div>Perks/Traits</div>
+            <div>Notes</div>
             <div style="background-image:url('{{actor.img}}')"
                  class="character-stats">
-                <div class="actor-name">
-                    {{actor.name}}<br />
-                    <span class="character-bg">
-                    Lvl {{actor.system.level}}
-                    {{#each actor.items as |item id|}}
-                    {{#Check item.type "background"}}
-                    {{item.name}}
+                <div style="border:none;"
+                     class="conditions">
+                    {{#each actor.items as |item condition|}}
+                    {{#Check item.type "condition"}}
+                    {{#GreaterThan system.quantity 1}}
+                    {{#GreaterThan system.quantity 2}}{{system.quantity}}x{{/GreaterThan}}
+                    <span data-tooltip="{{item.name}}:<br/ >{{ item.system.description }}">
+                        <img style="width:20px;height:auto;" src="{{item.img}}" />
+                    </span>
+                    {{/GreaterThan}}
                     {{/Check}}
                     {{/each}}
-                        </span>
+                </div>
+                <div class="actor-name stat-block">
+                    {{actor.name}}<br />
+                    <span class="character-bg">
+                        Lvl {{actor.system.level}}
+                        {{#each actor.items as |item id|}}
+                        {{#Check item.type "background"}}
+                        {{item.name}}
+                        {{/Check}}
+                        {{/each}}
+                    </span>
+                </div>
+            </div>
+            <div class="character-stats">
+                <div class="grid grid-7col">
+                    <div>S</div>
+                    <div>P</div>
+                    <div>E</div>
+                    <div>C</div>
+                    <div>I</div>
+                    <div>A</div>
+                    <div>L</div>
+                    <div>{{actor.system.abilities.str.value}}</div>
+                    <div>{{actor.system.abilities.per.value}}</div>
+                    <div>{{actor.system.abilities.end.value}}</div>
+                    <div>{{actor.system.abilities.cha.value}}</div>
+                    <div>{{actor.system.abilities.int.value}}</div>
+                    <div>{{actor.system.abilities.agi.value}}</div>
+                    <div>{{actor.system.abilities.lck.value}}</div>
+                </div>
+                <div class="karmaCaps">
+                    {{#each actor.system.karmaCaps as |flipped key|}}
+                    <input type="checkbox"
+                           name="system.karmaCaps.{{ key }}"
+                           {{checked flipped}} disabled />
+                    {{/each}}
                 </div>
                 <div class="grid grid-4col stat-block">
                     <div data-tooltip="Armor Class" class="stat-icon"><i class="fa-solid fa-shield"></i></div>
@@ -103,11 +221,11 @@
                     <div data-tooltip="Stamina" class="stat-icon"><i class="fa-solid fa-droplet"></i></div>
                     <div class="stat-value">{{actor.system.stamina.value}}/{{actor.system.stamina.max}}</div>
                     <div data-tooltip="Penalties<hr />
-                         Hunger: {{actor.system.penalties.hunger.value}}<br />
-                         Dehydration: {{actor.system.penalties.dehydration.value}}<br />
-                         Radiation: {{actor.system.penalties.radiation.value}}<br />
-                         Fatigue: {{actor.system.penalties.fatigue.value}}<br />
-                         Exhaustion: {{actor.system.penalties.exhaustion.value}}<br />" class="stat-icon"><i class="fa-solid fa-skull"></i></div>
+                     Hunger: {{actor.system.penalties.hunger.value}}<br />
+                     Dehydration: {{actor.system.penalties.dehydration.value}}<br />
+                     Radiation: {{actor.system.penalties.radiation.value}}<br />
+                     Fatigue: {{actor.system.penalties.fatigue.value}}<br />
+                     Exhaustion: {{actor.system.penalties.exhaustion.value}}<br />" class="stat-icon"><i class="fa-solid fa-skull"></i></div>
                     <div class="stat-value">-{{actor.system.penaltyTotal}}</div>
                     <div data-tooltip="Action Points" class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
                     <div class="stat-value">{{actor.system.actionPoints.value}}/{{actor.system.actionPoints.max}}</div>
@@ -132,29 +250,12 @@
                 {{/Check}}
                 {{/each}}
             </div>
-            <div class="karmaCaps">
-                {{#each actor.system.karmaCaps as |flipped key|}}
-                <input type="checkbox"
-                       name="system.karmaCaps.{{ key }}"
-                       {{checked flipped}} disabled />
-                {{/each}}
-                <br /><br />
-                <div class="conditions">
-                    {{#each actor.items as |item condition|}}
-                    {{#Check item.type "condition"}}
-                    {{#GreaterThan system.quantity 1}}
-                    {{#GreaterThan system.quantity 2}}{{system.quantity}}x{{/GreaterThan}}
-                    <span data-tooltip="{{ item.system.description }}">[{{item.name}}]</span>
-                    {{/GreaterThan}}
-                    {{/Check}}
-                    {{/each}}
-                </div>
-            </div>
             <div style="max-height:200px;overflow-y:scroll;text-align:initial">
                 {{#if actor.system.properties}}
-                <details><summary>View Notes</summary>{{{actor.system.properties}}}</details>
+                <i class="fas fa-address-card" data-tooltip='{{actor.system.properties}}'></i>
                 {{/if}}
             </div>
+            <div class="grid-span-4" style="border:none;"><br /></div>
             {{/if}}
             {{/each}}
 
