@@ -1516,6 +1516,15 @@ body.game .app .tabs > [data-tab] {
 .window-app .vaulttec p {
   color: #ccc;
 }
+body.game .app .vaulttec .tabs > [data-tab] {
+  color: #dbd45a
+}
+body.game .app .vaulttec .tabs.sheet-tabs a:hover,
+body.game .app .vaulttec .tabs > [data-tab].active {
+  color: #333;
+  background-color: #dbd45a;
+  text-shadow: none;
+}
 
 .sheet .item {
   text-transform: uppercase;
