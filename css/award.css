@@ -62,10 +62,13 @@
   background-size: cover;
   text-align: center;
 }
+  .application .gm-screen .gm-cheatsheet{
+      text-align:left
+  }
 
-.application .name-label {
-  padding: 5px;
-}
+  .application .name-label {
+    padding: 5px;
+  }
 
 .application .gm-screen input[type="checkbox"] {
   --checkbox-size: 15px;

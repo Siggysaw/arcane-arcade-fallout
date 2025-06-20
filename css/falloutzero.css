@@ -387,7 +387,10 @@ details > summary {
 
 #chat-popout .flavor-text {
   color: var(--sheetcolor)
-  )
+}
+
+.journal-entry-page.pdf iframe{
+    height:775px;
 }
 
 .sheet.journal-entry .journal-entry-content {
@@ -433,8 +436,8 @@ form div label {
 
 .journal-entry-content table td,
 .sheet .prosemirror table td,
-.editor-content table td {
-  border: solid 1px var(--sheetcolordarker);
+.sheet .editor-content table td{
+  border: solid 1px var(--sheetcolor);
 }
 
 .sheet .character-name input {
@@ -1371,9 +1374,6 @@ body.game .app .tabs > [data-tab] {
 .sheet .death-saves div{
     padding:5px;
 }
-
-
-
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {
   background-color: #0066b1;
