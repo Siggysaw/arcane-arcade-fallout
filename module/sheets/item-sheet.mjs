@@ -170,6 +170,27 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       }
     })
 
+    //Change Junk materials quantity (up!)
+    html.on('click', '[data-junk-add]', (ev) => {
+      let matQty = ev.currentTarget.dataset.mat
+      let myMat = matQty.split('.')
+      let myItem = this.item
+      let qty = (myItem.system.junk[myMat[2]] + 1)
+      this.item.update({ [matQty]: qty })
+    })
+
+    //Change Junk materials quantity (down!)
+    html.on('click', '[data-junk-subtract]', (ev) => {
+      let matQty = ev.currentTarget.dataset.mat
+      let myMat = matQty.split('.')
+      let myItem = this.item
+      let qty = (myItem.system.junk[myMat[2]] - 1)
+      if (qty != -1) {
+        this.item.update({ [matQty]: qty })
+      }
+    })
+
+
     //Add Upgrade
     html.on('click', '[addUpgradeBtn]', (ev) => {
       var select = document.getElementById('upgradesSelector')
