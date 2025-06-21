@@ -230,6 +230,15 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       const item = ev.currentTarget.dataset.worn
       this.actor.trade(item)
     })
+    //Remove upgrade button
+    html.on('click', '[deleteUpgrade]', (ev) => {
+      let myId = ev.currentTarget.id.replace('delete', '')
+      if (this.object.type == 'armor' || this.object.type == 'powerArmor') {
+        FalloutZeroArmor.prototype.deleteWholeUpgrade(this.object, myId)
+      } else {
+        FalloutZeroItem.prototype.deleteWholeUpgrade(this.object, myId)
+      }
+    })
     //Drag and drop items into description box creates a link to it, whether it's a compendium or someone else's inventory.
     html.on('click', '[item-description]', () => {
       if (this.object.system.description.includes("@UUID")) {
