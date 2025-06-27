@@ -110,6 +110,16 @@
       "folders": []
     },
     {
+      "name": "Macros",
+      "sorting": "m",
+      "packs": [
+        "gm-macros"
+      ],
+      "color": null,
+      "folders": []
+    },
+
+    {
       "name": "Crafting",
       "sorting": "m",
       "packs": [
@@ -139,6 +149,18 @@
       "type": "Item",
       "name": "armor",
       "path": "packs/armor",
+      "system": "arcane-arcade-fallout",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "GM Macros",
+      "type": "Macro",
+      "name": "gm-macros",
+      "path": "packs/gm-macros",
       "system": "arcane-arcade-fallout",
       "ownership": {
         "PLAYER": "OBSERVER",
