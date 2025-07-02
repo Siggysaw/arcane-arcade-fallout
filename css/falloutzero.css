@@ -27,8 +27,8 @@
   src: url('/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf');
 }
 
-.AA-autorec-settings label{
-    color:black;
+.AA-autorec-settings label {
+  color: black;
 }
 
 .window-app {
@@ -67,6 +67,7 @@ details > summary {
 .themed.theme-light #context-menu, .themed.theme-light#context-menu {
   background: #333;
 }
+
 #context-menu li.context-item:hover {
   color: #333;
   background: var(--sheetcolor)
@@ -81,8 +82,9 @@ details > summary {
   text-decoration: none;
   text-shadow: none;
 }
-.window-app button:hover{
-    box-shadow:none;
+
+.window-app button:hover {
+  box-shadow: none;
 }
 
 .flex-group-center,
@@ -131,8 +133,8 @@ details > summary {
 }
 
 /*Config CSS*/
-.windows-app .settings-config label{
-    color:black;
+.windows-app .settings-config label {
+  color: black;
 }
 /* Styles limited to falloutzero sheets */
 .falloutzero .item-form {
@@ -366,6 +368,13 @@ details > summary {
   background: #222;
 }
 
+.window-app .window-content,
+.application {
+  border-width: 20px;
+  border-style: solid;
+  border-color: initial;
+  border-image: url("/systems/arcane-arcade-fallout/assets/graphics/metal_door_2.webp") 45 / 1 / 0 round;
+}
 
 .prosemirror.menu-dialog form {
   background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
@@ -389,8 +398,8 @@ details > summary {
   color: var(--sheetcolor)
 }
 
-.journal-entry-page.pdf iframe{
-    height:775px;
+.journal-entry-page.pdf iframe {
+  height: 775px;
 }
 
 .sheet.journal-entry .journal-entry-content {
@@ -399,6 +408,7 @@ details > summary {
   background-size: 100% 100%;
   background-color: var(--sheetcolor);
 }
+
 .sheet.journal-entry .title {
   display: none;
 }
@@ -409,6 +419,10 @@ details > summary {
 
 .sheet.journal-entry .journal-entry-content p {
   text-shadow: 2px 2px 2px black;
+}
+
+.sheet #terminal-text .terminal-content h3 {
+  text-transform: uppercase
 }
 
 .sheet input,
@@ -436,7 +450,7 @@ form div label {
 
 .journal-entry-content table td,
 .sheet .prosemirror table td,
-.sheet .editor-content table td{
+.sheet .editor-content table td {
   border: solid 1px var(--sheetcolor);
 }
 
@@ -594,7 +608,9 @@ td,
   float: left;
   min-height: 150px;
 }
-
+.sheet div .box-perks{
+    width:25%;
+}
 .sheet div .box-upgrades {
   width: 33%;
   float: left;
@@ -615,32 +631,25 @@ td,
   background-size: cover;
 }
 
-.sheet .equipped-stats td {
-  border: solid 1px;
-  vertical-align: middle;
-  padding: 2px;
-  letter-spacing: 0rem;
-}
+  .sheet .equipped-stats td {
+    border: solid 1px;
+    vertical-align: middle;
+    padding: 2px;
+    letter-spacing: 0rem;
+  }
 
   .sheet .fas,
   .sheet .fa,
-  .sheet .far{
+  .sheet .far {
     cursor: pointer;
   }
 
-.sheet .fakebutton,
-.sheet button {
-  border: var(--dark);
-  padding: 5px;
-  cursor: pointer;
-}
-
-button {
-  &:disabled {
-    opacity: 25%;
-    cursor: not-allowed;
+  .sheet .fakebutton,
+  .sheet button {
+    border: var(--dark);
+    padding: 5px;
+    cursor: pointer;
   }
-}
 
 .window-app .window-content div .no-background,
 .window-app .window-content div .no-background:hover {
@@ -1103,6 +1112,7 @@ body.game .app .tabs > [data-tab].active {
   text-decoration: none;
   text-shadow: none;
 }
+
   body.game .app .tabs a:hover,
   body.game .app .tabs > [data-tab].active:hover {
     color: #333
@@ -1150,8 +1160,9 @@ body.game .app .tabs > [data-tab] {
   font-size: 12pt;
   margin-top: 3px;
 }
-.sheet .item-piles-config-container p{
-    color: var(--sheetcolor)
+
+.sheet .item-piles-config-container p {
+  color: var(--sheetcolor)
 }
 /* ============New Grid Classes============ */
 /*Item Sheets*/
@@ -1206,7 +1217,8 @@ body.game .app .tabs > [data-tab] {
 
 .sheet .weapon-name,
 .sheet .combat-ammo .ammo-name,
-.sheet .backpack .item-name {
+.sheet .backpack .item-name,
+.sheet .perk-div h3{
   display: -webkit-box;
   max-width: 100%;
   -webkit-line-clamp: 1;
@@ -1224,8 +1236,8 @@ body.game .app .tabs > [data-tab] {
 .sheet .weapon-image img {
   width: 60px;
   height: auto;
-  display:block;
-  margin:auto;
+  display: block;
+  margin: auto;
 }
 
 .sheet .combat-ammo div,
@@ -1339,7 +1351,7 @@ body.game .app .tabs > [data-tab] {
 }
 
 .sheet .backpack-row:hover a,
-.sheet .backpack-row:hover .item{
+.sheet .backpack-row:hover .item {
   color: black;
 }
 
@@ -1359,21 +1371,30 @@ body.game .app .tabs > [data-tab] {
   display: none;
 }
 
-.sheet .backpack .segment{
-    margin:5px;
-    padding:5px;
+.sheet .backpack .segment {
+  margin: 5px;
+  padding: 5px;
 }
 
-.sheet .crafting-button{
-    text-transform:uppercase;
-    font-weight:bold;
-    color:white;
+.sheet .crafting-button {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: white;
 }
 
 /* Death Saving Rolls*/
-.sheet .death-saves div{
-    padding:5px;
+.sheet .death-saves div {
+  padding: 5px;
 }
+
+/*Journal CSS*/
+.journal-sidebar li{
+    list-style:none;
+}
+
+
+
+
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {
   background-color: #0066b1;
@@ -1468,12 +1489,12 @@ body.game .app .tabs > [data-tab] {
   text-shadow: none;
 }
 
-.sheet .vaulttec .backpack-row:hover a,
-.sheet .vaulttec .backpack-row:hover p,
-.sheet .vaulttec .backpack-row:hover li {
-  color: black;
-  text-shadow: none;
-}
+  .sheet .vaulttec .backpack-row:hover a,
+  .sheet .vaulttec .backpack-row:hover p,
+  .sheet .vaulttec .backpack-row:hover li {
+    color: black;
+    text-shadow: none;
+  }
 
 .sheet .vaulttec #context-menu li {
   background: #333;
@@ -1516,15 +1537,17 @@ body.game .app .tabs > [data-tab] {
 .window-app .vaulttec p {
   color: #ccc;
 }
+
 body.game .app .vaulttec .tabs > [data-tab] {
   color: #dbd45a
 }
-body.game .app .vaulttec .tabs.sheet-tabs a:hover,
-body.game .app .vaulttec .tabs > [data-tab].active {
-  color: #333;
-  background-color: #dbd45a;
-  text-shadow: none;
-}
+
+  body.game .app .vaulttec .tabs.sheet-tabs a:hover,
+  body.game .app .vaulttec .tabs > [data-tab].active {
+    color: #333;
+    background-color: #dbd45a;
+    text-shadow: none;
+  }
 
 .sheet .item {
   text-transform: uppercase;

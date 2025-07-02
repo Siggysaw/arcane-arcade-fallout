@@ -71,6 +71,14 @@
   background-color: #222;
   border: solid 1px;
 }
+.chat-message button {
+  width: 100%;
+  text-transform: uppercase;
+  font-family: 'fixedsys';
+  color: white;
+  background: #333;
+  text-shadow: 2px 2px 2px black;
+}
 .falloutzero :is(.card-tray, .effects-tray) {
   margin-top: 0.125rem;
 }

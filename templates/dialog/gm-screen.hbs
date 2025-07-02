@@ -129,6 +129,13 @@
                         {{/Check}}
                         {{/each}}
                     </span>
+                    <progress class="statusbar"
+                              value="{{ system.xp }}"
+                              max="1000"
+                              style="width:100%;height:5px;background:white;"
+                              data-tooltip="{{system.xp}} out of 1000xp">
+                        {{ system.xp }}
+                    </progress>
                 </div>
             </div>
             <div class="character-stats">

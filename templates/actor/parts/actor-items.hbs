@@ -1,13 +1,33 @@
 {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
+<br />
 {{>
     "systems/arcane-arcade-fallout/templates/actor/items/equipped-ranged-weapons.hbs"
     rangedWeapons=rangedWeapons
     abilities=system.abilities
     skills=system.skills
 }}
+
 {{>
     "systems/arcane-arcade-fallout/templates/actor/items/equipped-melee-weapons.hbs"
     meleeWeapons=meleeWeapons
     abilities=system.abilities
     skills=system.skills
 }}
+<hr />
+<br />
+{{#each explosives as |item id|}}
+{{#GreaterThan item.system.quantity 1}}
+<span class="context-menu"
+      style="padding:8px;"
+      data-item-id="{{ item._id}}"
+      data-weapon-id="{{ item._id }}"
+      data-tooltip="AP: {{item.system.apCost}}<br />
+      {{#GreaterThan item.system.thrown 1}}Throw Range: {{ item.system.thrown }} ft
+      {{else}}
+      ARM: {{#Sum item.system.armDC 10}}{{/Sum}}
+      {{/GreaterThan}}<br />AOE: {{ item.system.aoeRadius}}">
+        {{item.name}}({{item.system.quantity}})
+          </span>
+{{/GreaterThan}}
+{{/each}}
+

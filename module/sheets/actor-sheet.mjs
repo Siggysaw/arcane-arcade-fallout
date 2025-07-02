@@ -342,6 +342,24 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
+        name: 'Attack',
+        icon: '<i class="fa fa-solid fa-crosshairs"></i>',
+        condition: (element) => {
+          const itemId = element.closest('.context-menu').data('item-id')
+          const item = this.actor.items.get(itemId)
+          if (item.type == 'rangedWeapon' || item.type == 'meleeWeapon' && item.system.ammo.assigned || item.type=='explosive') {
+            return true
+          }
+        },
+        callback: (element) => {
+          const weaponId = element.closest('.context-menu').data('item-id')
+          const advantageMode = '1'
+          const weapon = this.actor.items.get(weaponId)
+
+          weapon.rollAttack({ advantageMode })
+        },
+      },
+      {
         name: '3AP Stow/Equip',
         icon: '',
         condition: (element) => {
