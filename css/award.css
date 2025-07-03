@@ -40,7 +40,7 @@
   color:white;
 }
 .gm-screen .group-rewards{
-    color:var(--user-color);
+    color:var(--sheetcolor);
 }
 
 .gm-screen input{
@@ -92,7 +92,7 @@
 
   .application .character-details div {
     border: dotted 1px;
-    color: var(--user-color)
+    color: var(--sheetcolor)
   }
   .application .character-details{
     border: none;

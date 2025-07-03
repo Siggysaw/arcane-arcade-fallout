@@ -39,6 +39,9 @@
 .chat-sidebar .message-header .subtitle {
   color: var(--user-color);
 }
+.chat-sidebar .table-description{
+    color:#ccc;
+}
 .chat-sidebar .message-header .message-metadata {
   transform: translate(2px, -4px);
   flex: none;

@@ -370,10 +370,13 @@ details > summary {
 
 .window-app .window-content,
 .application {
-  border-width: 20px;
+  border-width: 12px;
   border-style: solid;
   border-color: initial;
   border-image: url("/systems/arcane-arcade-fallout/assets/graphics/metal_door_2.webp") 45 / 1 / 0 round;
+}
+#file-picker.application{
+    border-width:0px;
 }
 
 .prosemirror.menu-dialog form {
@@ -1388,13 +1391,43 @@ body.game .app .tabs > [data-tab] {
 }
 
 /*Journal CSS*/
-.journal-sidebar li{
-    list-style:none;
+.sheet.journal-sheet {
+  background-color:var(--sheetcolor);
+  background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
 }
 
+  .sheet.journal-sheet .journal-entry-content {
+    margin-left: 20px;
+  }
+  .sheet.journal-sheet .journal-entry-content img{
+    border:none;
+  }
+    .sheet.journal-sheet .journal-entry-content .journal-page-content {
+      background: none;
+      border: solid 2px var(--sheetcolor);
+      border-top: solid 20px var(--sheetcolor);
+      padding: 20px;
+      background-image: url('/systems/arcane-arcade-fallout/assets/opacity-25.png');
+    }
 
-
-
+.sheet.journal-entry.application .journal-sidebar .toc .page-heading {
+  list-style: none;
+  color: var(--sheetcolor);
+  background: black;
+  border: solid 2px;
+  margin-bottom:10px;
+  border-left:solid 10px;
+  border-right:solid 10px;
+  text-align:center;
+  font-size:14pt;
+}
+.sheet.journal-entry.application .journal-sidebar .toc li.active .page-heading {
+  color: white;
+}
+.sheet.journal-entry.application .journal-sidebar .toc li.active .headings,
+.sheet.journal-entry.application .journal-sidebar .toc .page-heading .page-index{
+    display:none;
+}
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {
   background-color: #0066b1;
