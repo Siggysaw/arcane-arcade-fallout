@@ -123,7 +123,6 @@ export function registerHbsHelpers() {
 
   Handlebars.registerHelper('CheckLang', function (v1, options) {
     const language = game.settings.get('core', 'language')
-    console.log(`${v1} is equal to ${language}`)
     if (game.settings.get('core', 'language') === v1) {
       return options.fn(this)
     }

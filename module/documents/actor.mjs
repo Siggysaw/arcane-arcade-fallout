@@ -2207,7 +2207,10 @@ export default class FalloutZeroActor extends Actor {
         return -1
       }
       if (this.hasDumbLuck()) {
-        return this.system.abilities[ability].mod
+        const dumbLuck = this.perks.find((p) => p.name === 'Dumb Luck')
+        let dumbLuckModifier
+        dumbLuck.system.quantity > 1 ? dumbLuckModifier = this.system.abilities[ability].mod + 2 : dumbLuckModifier = this.system.abilities[ability].mod
+        return dumbLuckModifier
       }
       return Math.floor(this.system.abilities[ability].mod / 2)
     }

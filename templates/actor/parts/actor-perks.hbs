@@ -5,12 +5,15 @@
             <tr>
                 <td>
                     <div class="perk-div">
-                        <h3 class="context-menu" data-item-id="{{ item._id }}">{{ item.name }}</h3>
+                        <h3>{{ item.name }}</h3>
+                        <div class="perk-div" style="text-align:left;">
+                            <i class="fas fa-ellipsis-v context-menu context-icon perk-context" data-item-id="{{ item._id }}"></i>
+                        </div>
                         <a class="item-control"
                            data-edit
                            data-item-id="{{ item._id }}"
-                           data-tooltip="View Item Details">
-                            <img data-tooltip="{{ system.description }}" class="perk-image" src="{{ item.img }}" />
+                           title="View Item Details">
+                            <img title="{{ system.description }}" class="perk-image" src="{{ item.img }}" />
                         </a>
                     </div>
                     <div class="perk-div">
@@ -23,8 +26,8 @@
                            class="fas fa-plus-square"></i>
                     </div>
                 </td>
-    </tr>
-    </table>
+            </tr>
+        </table>
     </li>
 </div>
 {{/each}}
@@ -36,12 +39,15 @@
             <tr>
                 <td>
                     <div class="perk-div">
-                        <h3 class="context-menu" data-item-id="{{ item._id }}">{{ item.name }}</h3>
+                        <h3>{{ item.name }}</h3>
+                        <div class="perk-div" style="text-align:left;">
+                            <i class="fas fa-ellipsis-v context-menu context-icon perk-context" data-item-id="{{ item._id }}"></i>
+                        </div>
                         <a class="item-control"
                            data-edit
                            data-item-id="{{ item._id }}"
-                           data-tooltip="View Item Details">
-                            <img data-tooltip="{{ system.description }}" class="perk-image" src="{{ item.img }}" />
+                           title="View Item Details">
+                            <img title="{{ system.description }}" class="perk-image" src="{{ item.img }}" />
                         </a>
                     </div>
                     <div class="perk-div">
@@ -56,8 +62,8 @@
                            class="fas fa-plus-square"></i>
                     </div>
                 </td>
-    </tr>
-    </table>
+            </tr>
+        </table>
     </li>
 </div>
 {{/each}}
