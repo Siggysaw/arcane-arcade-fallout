@@ -63,6 +63,7 @@ export default class FalloutZeroArmor extends FalloutZeroItemBase {
           uuid: new fields.StringField(),
           img: new fields.StringField(),
           type: new fields.StringField(),
+          description: new fields.HTMLField()
         })
       )
     })

@@ -74,6 +74,7 @@ export default class SelectUpgrade extends HandlebarsApplicationMixin(Applicatio
             name: upgrade.name,
             img: upgrade.img,
             type: upgrade.system.type,
+            description: upgrade.system.description,
         }))
 
         this.item.update({

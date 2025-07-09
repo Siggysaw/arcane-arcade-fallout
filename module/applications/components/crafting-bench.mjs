@@ -433,6 +433,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
   async init() {
     try {
       const packsWithCraftables = game.packs.filter((p) => CONFIG.FALLOUTZERO.packsWithCraftables.includes(p.collection))
+      const gameItems = game.items.filter((item) => item.system.crafting.craftable)
       const packCraftables = await Promise.all(
         packsWithCraftables.map(async (pack) => {
           const items = await pack.getDocuments()
@@ -444,6 +445,10 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       for (const craftable of packCraftables.flat()) {
         const type = this.craftingTree[craftable.system.crafting.type]
         type.items.push(craftable)
+      }    
+      for (const gameItem of gameItems.flat()) {
+        const type = this.craftingTree[gameItem.system.crafting.type]
+        type.items.push(gameItem)
       }
 
       // sort items in each branch

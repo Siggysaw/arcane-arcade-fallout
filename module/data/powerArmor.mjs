@@ -156,7 +156,20 @@ export default class FalloutZeroPowerArmor extends FalloutZeroItemBase {
         description : new fields.StringField({initial: ``,}),
         rank : new fields.NumberField({initial: 1,}),
         img : new fields.StringField({initial: ``,})}),
-    })
+    }),
+      schema.armorType = new fields.StringField({ initial: 'power' }),
+      schema.upgrade = new fields.SchemaField({
+        slotCount: new fields.NumberField({ initial: 6, min: 0 }),
+        slots: new fields.ArrayField(
+          new fields.SchemaField({
+            name: new fields.StringField(),
+            uuid: new fields.StringField(),
+            img: new fields.StringField(),
+            type: new fields.StringField(),
+            description: new fields.HTMLField()
+          })
+        )
+      })
     return schema
   }
 

@@ -24,56 +24,60 @@
     </nav>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body">
-        {{!-- Description Tab --}}
-        <div class="tab" item-description data-group="primary" data-tab="description">
-            <div style="min-height:200px;" class="grid grid-10col">
-                <div class="grid-span-3">
-                    <div style="min-height:200px;" class="grid grid-2col weapon-details">
-                        <div>Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
-                        <div title="Armor Class - Difficulty Value for Enemies to Roll To Hit You">AC:</div><div><input type="number" name="system.armorClass.value" value="{{ system.armorClass.value }}" /></div>
-                        <div title="Damage Threshold - Absorbs the First Damage that reaches your AP after SP">DT:</div><div><input type="number" name="system.damageThreshold.value" value="{{ system.damageThreshold.value }}" /></div>
-                        <div>Load:</div><div><input type="number" name="system.load" value="{{ system.load }}" /></div>
-                        <div>Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
-                        <div>CND:</div><div><input type="number" name="system.decay" value="{{system.decay}}" max="10" min="0" /></div>
-                        <div>Armor type:</div>
-                        <select name="system.armorType">
-                            {{selectOptions armorTypes selected=system.armorType valueAttr="id" labelAttr="label"}}
-                        </select>
-                    </div>
-                </div>
-                <div class="grid-span-7 weapon-description">
-                    {{#CheckLang 'en'}}{{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
-                    {{#CheckLang 'pt-BR'}}{{editor system.description_br target="system.description_br" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
+<section class="sheet-body">
+    {{!-- Description Tab --}}
+    <div class="tab" item-description data-group="primary" data-tab="description">
+        <div style="min-height:200px;" class="grid grid-10col">
+            <div class="grid-span-3">
+                <div style="min-height:200px;" class="grid grid-2col weapon-details">
+                    <div>Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
+                    <div title="Armor Class - Difficulty Value for Enemies to Roll To Hit You">AC:</div><div><input type="number" name="system.armorClass.value" value="{{ system.armorClass.value }}" /></div>
+                    <div title="Damage Threshold - Absorbs the First Damage that reaches your AP after SP">DT:</div><div><input type="number" name="system.damageThreshold.value" value="{{ system.damageThreshold.value }}" /></div>
+                    <div>Load:</div><div><input type="number" name="system.load" value="{{ system.load }}" /></div>
+                    <div>Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
+                    <div>CND:</div><div><input type="number" name="system.decay" value="{{system.decay}}" max="10" min="0" /></div>
+                    <div>Armor type:</div>
+                    <select name="system.armorType">
+                        {{selectOptions armorTypes selected=system.armorType valueAttr="id" labelAttr="label"}}
+                    </select>
                 </div>
             </div>
-        </div>
-        {{!-- Crafting Tab --}}
-        <div class="tab crafting" data-group="primary" data-tab="crafting">
-            {{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}
-            {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
-        </div>
-        {{!-- Upgrades Tab --}}
-        <div class="tab" data-group="primary" data-tab="upgrades">
-            <fieldset>
-                <legend># of Slots</legend>
-                <input type="number" name="system.upgrade.slotCount" value="{{system.upgrade.slotCount}}" min="0" max="10" />
-            </fieldset>
-            <div class="my-3">
-                <h4>Upgrades</h4>
-                <ul>
-                    {{#each system.upgrade.slots as |slot|}}
-                        <li>{{slot.name}}</li>
-                    {{/each}}
-                </ul>
+            <div class="grid-span-7 weapon-description">
+                {{#CheckLang 'en'}}{{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
+                {{#CheckLang 'pt-BR'}}{{editor system.description_br target="system.description_br" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
             </div>
         </div>
+    </div>
+    {{!-- Crafting Tab --}}
+    <div class="tab crafting" data-group="primary" data-tab="crafting">
+        {{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}
+        {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
+    </div>
+    {{!-- Upgrades Tab --}}
+<div class="tab" data-group="primary" data-tab="upgrades">
+    <fieldset>
+        <legend># of Slots</legend>
+        <input type="number"
+               name="system.upgrade.slotCount"
+               value="{{system.upgrade.slotCount}}" min="0" max="10" />
+    </fieldset>
+    <h4>Upgrades</h4>
+    <div class="grid grid-3col">
+        {{#each system.upgrade.slots as |slot|}}
+    <div class="perk-div"
+         style="border:solid 1px;margin:5px;">
+        <h3 style="text-align:center;">{{ slot.name }}</h3>
+        <img data-tooltip="{{ slot.description }}" class="perk-image" src="{{ slot.img }}" />
+    </div>
+    {{/each}}
+    </div>
+</div>
 
-        {{!-- Effects Tab --}}
-        <div class="tab effects" data-group="primary" data-tab="effects">
-            {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
-        </div>
-    </section>
+    {{!-- Effects Tab --}}
+    <div class="tab effects" data-group="primary" data-tab="effects">
+        {{> "systems/arcane-arcade-fallout/templates/item/parts/item-effects.hbs"}}
+    </div>
+</section>
 </form>
 
 {{log system}}
