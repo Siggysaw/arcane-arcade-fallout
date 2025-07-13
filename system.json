@@ -4,7 +4,7 @@
   "description": "Foundry version of Arcane Arcade's Fallout TTRPG system by Jacob Budz. Inspired by the game series of the same name by Interplay and Bethesda.",
   "version": "0.1.32",
   "compatibility": {
-    "minimum": "13",
+    "minimum": "12",
     "verified": "13.345",
     "maximum": "13"
   },
