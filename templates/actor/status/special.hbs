@@ -8,6 +8,7 @@
                data-abilityroll="{{key}}"
                data-roll="d20+{{ ability.mod }}{{#if ability.penalties}}-@penaltyTotal{{/if}}"
                data-advantage="{{ ability.advantage }}"
+               data-pipboyselect
                data-label="{{ ability.label }}">{{localize (concat 'FALLOUTZERO.Ability.' key '.long')}}</label>
     </td>
     {{/each}}

@@ -63,6 +63,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const JunkLoad = game.settings.get('core', 'JunkLoad')
     const VaultTec = game.settings.get('core', 'VaultTec')
     const Language = game.settings.get('core', 'language')
+    const PlaySounds = game.settings.get('core', 'PlaySounds')
     const ManualGroupSneak = game.settings.get('core', 'GroupSneak')
     const ManualPartyNerve = game.settings.get('core', 'PartyNerve')
 
@@ -671,6 +672,32 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-rolldeathsave]', (ev) => {
       this.actor.deathSave()
     })
+
+    //==============Audio Triggers
+    //MUTE and UNMUTE
+    html.on('click', '[data-audioToggle]', (ev) => {
+      const PlaySounds = game.settings.get('core', 'PlaySounds')
+      game.settings.set('core', 'PlaySounds', !PlaySounds)
+      this.render(true)
+    })
+    //SPECIAL and SKILLS
+    html.on('click', '[data-pipboyselect]', (ev) => {
+      let randomNum = Math.floor(Math.random() * 2) + 1
+      var audio = new Audio(`/systems/arcane-arcade-fallout/assets/sounds/ui/select_pipboy_${randomNum}.mp3`);
+      if (game.settings.get('core', 'PlaySounds')) {
+        audio.play()
+      }
+    })
+    //TABS
+    html.on('click', '[data-tabs]', (ev) => {
+      let randomNum = Math.floor(Math.random() * 3) + 1
+      var audio = new Audio(`/systems/arcane-arcade-fallout/assets/sounds/ui/change-tab_pipboy_${randomNum}.mp3`);
+      if (game.settings.get('core', 'PlaySounds')) {
+        audio.play()
+      }
+    })
+
+    //===============END Audio Triggers
 
     //show rule information
     html.on('click', '[data-condition]', (ev) => {

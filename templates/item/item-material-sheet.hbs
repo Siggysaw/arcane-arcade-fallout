@@ -2,9 +2,15 @@
   <header class="sheet-header">
     <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
     <div class="header-fields">
-      <h1 class="charname">
-        <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
-      </h1>
+        <h1 class="charname">
+            <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+        </h1>
+        <div class="grid grid-3col">
+            <div class="weapon-label">Qty:<input style="width:30px;" type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
+            <div class="weapon-label">Load:<input style="width:30px;" type="number" name="system.load" value="{{ system.load }}" /></div>
+            <div class="weapon-label">Cost:<input style="width:30px;" type="number" name="system.cost" value="{{ system.cost }}" /></div>
+
+        </div>
     </div>
   </header>
   {{!-- Sheet Tab Navigation --}}
@@ -18,19 +24,10 @@
 <section class="sheet-body">
     {{!-- Description Tab --}}
     <div class="tab" item-description data-group="primary" data-tab="description">
-        <div style="min-height:200px;" class="grid grid-10col">
-            <div class="grid-span-3">
-                <div class="grid grid-2col weapon-details">
-                    <div class="weapon-label">Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
-                    <div class="weapon-label">Load:</div><div><input type="number" name="system.load" value="{{ system.load }}" /></div>
-                    <div class="weapon-label">Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
-                </div>
-            </div>
-            <div class="grid-span-7 weapon-description">
+
                 {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
             </div>
-        </div>
-    </div>
+
     {{!-- Crafting Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
         {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}

@@ -108,6 +108,8 @@ export default class AttackRoll extends FormApplication {
           const buttons = html[0].querySelectorAll('button')
           buttons.forEach((button) => {
             button.addEventListener('click', (e) => {
+              var audio = new Audio('systems/arcane-arcade-fallout/assets/sounds/vats/ui_vats_selecttargetpart.wav');
+              audio.play();
               const targetedAp = this.getTargetedApCost(e.target.name)
               this.formDataCache.targeted = {
                 target: e.target.name,

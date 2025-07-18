@@ -67,7 +67,9 @@ details > summary {
 .themed.theme-light #context-menu, .themed.theme-light#context-menu {
   background: #333;
 }
-
+.sheet .centered{
+    text-align:center;
+}
 #context-menu li.context-item:hover {
   color: #333;
   background: var(--sheetcolor)
@@ -1167,6 +1169,13 @@ body.game .app .tabs > [data-tab] {
 .sheet .item-piles-config-container p {
   color: var(--sheetcolor)
 }
+.sheet .dr-dv label{
+    font-size:8pt;
+}
+  .sheet .dr-dv label input[type=checkbox] {
+    transform: scale(.75);
+  }
+
 /* ============New Grid Classes============ */
 /*Item Sheets*/
 .item .grid input {
@@ -1428,6 +1437,10 @@ body.game .app .tabs > [data-tab] {
 .sheet.journal-entry.application .journal-sidebar .toc .page-heading .page-index{
     display:none;
 }
+
+.item-piles-config-container p{
+    color: var(--sheetcolor) !important;
+}
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {
   background-color: #0066b1;
@@ -1584,4 +1597,9 @@ body.game .app .vaulttec .tabs > [data-tab] {
 
 .sheet .item {
   text-transform: uppercase;
+}
+
+/*CHAT*/
+.message-content .item-piles-chat-card li:nth-child(odd){
+    display:none;
 }

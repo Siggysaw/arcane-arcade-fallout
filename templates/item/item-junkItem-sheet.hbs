@@ -4,36 +4,33 @@
         <div class="header-fields">
             <h1 class="charname">
                 <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
-            </h1>
+                </h1>
+            <div class="grid grid-3col">
+                <div class="weapon-label">Qty:<input style="width:30px;" type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
+                <div class="weapon-label">Load:<input style="width:30px;" type="number" name="system.load" value="{{ system.load }}" /></div>
+                <div class="weapon-label">Cost:<input style="width:30px;" type="number" name="system.cost" value="{{ system.cost }}" /></div>
+
+            </div>
         </div>
     </header>
     {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="effects">Effects</a>
-    </nav>
+<nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="breakdown">Breakdown</a>
+    <a class="item" data-tab="effects">Effects</a>
+</nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Description Tab --}}
         <div class="tab" item-description data-group="primary" data-tab="description">
-            <div class="grid grid-10col">
-                <div class="grid-span-3">
-                    <div class="grid grid-2col weapon-details">
-                        <div class="weapon-label">Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
-                        <div class="weapon-label">Load:</div><div><input type="number" name="system.load" value="{{ system.load }}" /></div>
-                        <div class="weapon-label">Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
-                    </div>
-                </div>
-                <div class="grid-span-7 crafting-table" style="border:solid 1px;padding:5px;min-height:200px;">
+                <div style="border:solid 1px;padding:5px;min-height:200px;">
                     {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
-
                 </div>
-                <hr />
-                <div class="grid-span-10 weapon-description">
-                    {{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}
-                </div>
-            </div>
+        </div>
+        {{!-- Breakdown Tab --}}
+        <div class="tab breakdown" data-group="primary" data-tab="breakdown">
+            {{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}
         </div>
         {{!-- Effects Tab --}}
         <div class="tab effects" data-group="primary" data-tab="effects">

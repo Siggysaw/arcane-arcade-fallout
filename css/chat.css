@@ -69,9 +69,8 @@
   margin-top: 10px;
 }
 .chat-sidebar .item-piles-chat-card li:nth-child(odd),
-.chat-sidebar .item-piles-chat-card li:nth-child(even),
-.chat-sidebar .item-piles-chat-card li:nth-child(odd) {
-  background-color: #222;
+.chat-sidebar .item-piles-chat-card li:nth-child(even){
+  background-color: #222 !important;
   border: solid 1px;
 }
 .chat-message button {

@@ -107,6 +107,15 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: true,
   })
+  game.settings.register('core', 'PlaySounds', {
+    name: 'Play Pip Boy Sounds',
+    hint: 'Enable/Disable Sounds on Actor Sheets',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: false,
+    requiresReload: false,
+  })
 }
 
 export function registerHbsHelpers() {
@@ -116,6 +125,12 @@ export function registerHbsHelpers() {
     }
     return options.inverse(this)
   })
+    Handlebars.registerHelper('PlaySounds', function (options) {
+      if (game.settings.get('core', 'PlaySounds')) {
+        return options.fn(this)
+      }
+      return options.inverse(this)
+    })
 
   Handlebars.registerHelper('toLowerCase', function (str) {
     return str.toLowerCase()

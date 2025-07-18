@@ -1,29 +1,47 @@
-<br />
-<div class="flex">
-  <div class="mr-2" style="border-right:1px solid;">
-    <h4>Resist</h4>
-    <ol class="trait-list">
-      {{#each this.dr as |dr|}}
-      <li>
-        <label class="checkbox">
-          <input type="checkbox" name="system.dr" value="{{ dr.id }}" {{checked dr.selected}} />
-          {{ dr.label }}
-        </label>
-      </li>
-      {{/each}}
-    </ol>
-  </div>
-  <div>
-    <h4>Weak</h4>
-    <ol class="trait-list">
-      {{#each this.dv as |dv|}}
-      <li>
-        <label class="checkbox">
-          <input type="checkbox" name="system.dv" value="{{ dv.id }}" {{checked dv.selected}} />
-          {{ dv.label }}
-        </label>
-      </li>
-      {{/each}}
-    </ol>
-  </div>
-</div>
+<div class=" dr-dv grid grid-10col">
+    <div class="grid-span-3">
+                                {{>
+                    "systems/arcane-arcade-fallout/templates/actor/status/skills.hbs"
+                    startingSkillpoints=system.startingSkillpoints
+                    skillPool=system.skillPool
+                    skills=system.skills
+                    abilities=system.abilities
+                    penaltyTotal=system.penaltyTotal
+                }}
+
+       <details>
+           <summary>
+           Resistances
+           </summary>
+        <ol>
+            {{#each this.dr as |dr|}}
+            <li>
+                <label class="checkbox">
+                    <input type="checkbox" name="system.dr" value="{{ dr.id }}" {{checked dr.selected}} />
+                    {{ dr.label }}
+                </label>
+            </li>
+            {{/each}}
+        </ol>
+        </details>
+        <details>
+            <summary>
+        Weaknesses
+            </summary>
+        <ol>
+            {{#each this.dv as |dv|}}
+            <li>
+                <label class="checkbox">
+                    <input type="checkbox" name="system.dv" value="{{ dv.id }}" {{checked dv.selected}} />
+                    {{ dv.label }}
+                </label>
+            </li>
+            {{/each}}
+        </ol>
+        </details>
+    </div>
+    <div class="grid-span-7">
+        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-notes.hbs"}}
+    </div>
+</div>    
+

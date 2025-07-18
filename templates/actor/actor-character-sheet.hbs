@@ -25,6 +25,10 @@
             }
             </style>
             {{/unless}}
+                      <span style="float:right;" data-tooltip="Toggle Audio Sounds Mode">
+                <i data-audioToggle
+                        class="fas fa-volume-{{#PlaySounds}}up{{else}}mute{{/PlaySounds}}"></i>
+            </span>
         <table>
           <tr>
             <td>
@@ -68,14 +72,14 @@
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
       {{!-- Default tab is specified in actor-sheet.mjs --}}
-        <a class="item allcaps" data-tab="status">{{localize 'FALLOUTZERO.Common.Status'}}</a>
-        <a class="item allcaps" data-tab="perks">{{localize 'FALLOUTZERO.Common.Perks'}}</a>
-        <a class="item allcaps" data-tab="items">{{localize 'FALLOUTZERO.Common.Combat'}}</a>
-        <a class="item allcaps" data-tab="medicine">{{localize 'FALLOUTZERO.Common.Aid'}}</a>
-        <a class="item allcaps" data-tab="backpack">{{localize 'FALLOUTZERO.Common.Backpack'}}</a>
-        <a class="item allcaps" data-tab="backpack" data-crafting-bench>{{localize 'FALLOUTZERO.Common.Crafting'}}</a>
-        <a class="item allcaps" data-tab="notes">{{localize 'FALLOUTZERO.Common.Notes'}}</a>
-        <a class="item allcaps" data-tab="effects">{{localize 'FALLOUTZERO.Common.Effects'}}</a>
+        <a class="item allcaps" data-tabs data-tab="status">{{localize 'FALLOUTZERO.Common.Status'}}</a>
+        <a class="item allcaps" data-tabs data-tab="perks">{{localize 'FALLOUTZERO.Common.Perks'}}</a>
+        <a class="item allcaps" data-tabs data-tab="items">{{localize 'FALLOUTZERO.Common.Combat'}}</a>
+        <a class="item allcaps" data-tabs data-tab="medicine">{{localize 'FALLOUTZERO.Common.Aid'}}</a>
+        <a class="item allcaps" data-tabs data-tab="backpack">{{localize 'FALLOUTZERO.Common.Backpack'}}</a>
+        <a class="item allcaps" data-tabs data-tab="backpack" data-crafting-bench>{{localize 'FALLOUTZERO.Common.Crafting'}}</a>
+        <a class="item allcaps" data-tabs data-tab="notes">{{localize 'FALLOUTZERO.Common.Notes'}}</a>
+        <a class="item allcaps" data-tabs data-tab="effects">{{localize 'FALLOUTZERO.Common.Effects'}}</a>
     </nav>
 
     {{!-- Sheet Body --}}

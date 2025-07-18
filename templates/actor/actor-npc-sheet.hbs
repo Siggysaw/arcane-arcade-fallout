@@ -3,17 +3,19 @@
       {{log cssClass}}
     {{!-- Sheet Header --}}
     <header class="sheet-header">
-      <div class="header-fields">
-        <span data-tooltip="Toggle Edit Mode"
-          >Edit:<i
-            data-editToggle
-            class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"
-          ></i
-        ></span>
-        <table>
-          <tr>
-            <td>
-              {{> 
+        <div class="header-fields">
+            <span data-tooltip="Toggle Edit Mode">
+                Edit:<i data-editToggle
+                        class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"></i>
+            </span>
+            <span style="float:right;" data-tooltip="Toggle Audio Sounds Mode">
+                <i data-audioToggle
+                        class="fas fa-volume-{{#PlaySounds}}up{{else}}mute{{/PlaySounds}}"></i>
+            </span>
+            <table>
+                <tr>
+                    <td>
+                        {{>
                 "systems/arcane-arcade-fallout/templates/actor/npc-heading/bio.hbs"
                 name=actor.name
                 races=races
@@ -21,40 +23,38 @@
                 level=system.level
                 xp=system.xp
                 carryLoad=system.carryLoad
-              }}
-            </td>
-            <td>
-              {{> 
+                        }}
+                    </td>
+                    <td>
+                        {{>
                 "systems/arcane-arcade-fallout/templates/actor/npc-heading/status.hbs"
                 health=system.health
                 stamina=system.stamina
                 actionPoints=system.actionPoints
                 armorClass=system.armorClass
                 damageThreshold=system.damageThreshold
-              }}
-            </td>
-            <td>
-              {{> 
+                        }}
+                    </td>
+                    <td>
+                        {{>
                 "systems/arcane-arcade-fallout/templates/actor/npc-heading/image.hbs"
                 actor=actor
                 caps=system.caps
-              }}
-            </td>
-          </tr>
-        </table>
-      </div>
+                        }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        {{> "systems/arcane-arcade-fallout/templates/actor/status/special.hbs"
+           abilities=system.abilities
+         }}
     </header>
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
       {{!-- Default tab is specified in actor-sheet.mjs --}}
-      <a class="item" data-tab="status">STATUS</a>
-      <a class="item" data-tab="perks">PERKS</a>
-      <a class="item" data-tab="items">COMBAT</a>
-      <a class="item" data-tab="medicine">AID</a>
-      <a class="item" data-tab="backpack">BACKPACK</a>
-      <a class="item" data-tab="crafting" id="craftingNav">CRAFTING</a>
-      <a class="item" data-tab="notes">NOTES</a>
-      <a class="item" data-tab="effects">EFFECTS</a>
+      <a class="item" data-tabs data-tab="status">STATUS</a>
+      <a class="item" data-tabs data-tab="backpack">BACKPACK</a>
+      <a class="item" data-tabs data-tab="effects">EFFECTS</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -64,86 +64,16 @@
       </div>
       {{!-- Owned status Tab --}}
       <div class="tab status" data-group="primary" data-tab="status">
-        <section>
-          {{>
-            "systems/arcane-arcade-fallout/templates/actor/npc-status/special.hbs"
-            abilities=system.abilities
-          }}
-          <table class="status-block">
-            <tr>
-              <td class="skill-table">
-                {{>
-                    "systems/arcane-arcade-fallout/templates/actor/npc-status/skills.hbs"
-                    startingSkillpoints=system.startingSkillpoints
-                    skillPool=system.skillPool
-                    skills=system.skills
-                    abilities=system.abilities
-                    penaltyTotal=system.penaltyTotal
-                }}
-              </td>
-              <td class="status-table">
-                   <table style="background:#ccc;color:#333">
-     <tr>
-         {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
-
- </table>
-                 {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-combat.hbs"}}
-                  {{>
-                    "systems/arcane-arcade-fallout/templates/actor/npc-status/penalties.hbs"
-                    penalties=system.penalties
-                    penaltyTotal=system.penaltyTotal
-                    radDC=system.radDC
-                    irradiated=system.irradiated
-                }}
-                <br />
-                {{>
-                    "systems/arcane-arcade-fallout/templates/actor/npc-status/passives.hbs"
-                    healingRate=system.healingRate
-                    combatSequence=system.combatSequence.value
-                    fatigue=system.penalties.fatigue
-                    passiveSense=system.passiveSense
-                    partyNerve=system.partyNerve
-                    groupSneak=system.groupSneak
-                    properties=system.properties
-                    penaltyTotal=system.penaltyTotal
-                }} 
-               {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-notes.hbs"}}
-              </td>
-            </tr>
-          </table>
-        </section>
-      </div>
-
-      {{!-- Owned Items Tab --}}
-      <div class="tab items" data-group="primary" data-tab="items">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
-      </div>
-
-      {{!-- Perks Tab --}}
-      <div class="tab perks" data-group="primary" data-tab="perks">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-perks.hbs"}}
-      </div>
-
-      {{!-- Medicine Tab --}}
-      <div class="tab medicine" data-group="primary" data-tab="medicine">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-medicines.hbs"}}
+          <section>
+              {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
+              {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-drdv.hbs"}}
+          </section>
       </div>
 
       {{!-- Backpack Tab --}}
       <div class="tab backpack" data-group="primary" data-tab="backpack">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-backpack.hbs"}}
       </div>
-
-      {{!-- Crafting Tab --}}
-      <div class="tab crafting" data-group="primary" data-tab="crafting">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-crafting.hbs"}}
-      </div>
-
-      {{!-- DRDV Tab --}}
-      <div class="tab" data-group="primary" data-tab="drdv">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-drdv.hbs"}}
-      </div>
-
       {{!-- Notes Tab --}}
       <div class="tab notes" data-group="primary" data-tab="notes">
       </div>

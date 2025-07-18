@@ -6,6 +6,10 @@ import AttackRoll from '../dice/attack-roll.mjs'
 
 const nonStackableTypes = [
   'armorUpgrade',
+  'armor',
+  'rangedWeapon',
+  'meleeWeapon',
+  'powerArmor'
 ]
 export default class FalloutZeroItem extends Item {
   /**
@@ -304,7 +308,6 @@ export default class FalloutZeroItem extends Item {
     if (nonStackableTypes.includes(data.type)) {
       return
     }
-
     if (this.parent) {
       let myItem
       if (this.system.itemEquipped == true || this.system.itemEquipped == false) {
