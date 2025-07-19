@@ -24,6 +24,67 @@
                 xp=system.xp
                 carryLoad=system.carryLoad
                         }}
+                        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-drdv.hbs"}}
+                        <div class="dr-dv grid grid-4col">
+                            <div data-tooltip="Healing Rate <hr> {{system.healingRate.value}} (End + Lvl)/2 &#013;Modifiers: {{system.healingRate.modifiers}} &#013;Manual Edits: {{system.healingRate.base}}"><i class="fas fa-heart"></i></div>
+                            <div data-tooltip="Combat Sequence <hr> To Roll Intiative, Utilize Combat Tracker"><i class="fas fa-dice-d20"></i></div>
+                            <div data-tooltip="Passive Sense <hr> 12 + Perception Mod ( {{system.abilities.per.mod}} ) {{#DifferentFrom system.passiveSense.base 0}} + Manual adjustments ({{system.passiveSense.base}}){{/DifferentFrom}} {{#DifferentFrom system.passiveSense.modifiers 0}} + Effects ( {{system.passiveSense.modifiers}} ){{/DifferentFrom}}">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="rollable"
+                                 data-roll-save="{{system.radiationDC.value}}"
+                                 data-save-type="radiation"
+                                 data-tooltip="Radiation DC <hr> D20 - PenaltyTotal({{penaltyTotal}}) against Radiation. Roll {{system.radiationDC.value}} or higher to succeed. On Fail gain level of Radiation"><i class="fas fa-radiation-alt"></i>
+                            </div>
+
+
+
+
+
+                            <div>
+                                {{#if system.editToggle}}<i style="padding: 3px"
+                                                            data-statSubtraction
+                                                            data-stat="healingRate"
+                                                            data-type=""
+                                                            class="fas fa-minus-square  nobackground"></i>{{/if}}
+                                {{system.healingRate.value}}
+                                {{#if system.editToggle}}<i style="padding: 3px"
+                                                            data-statAddition
+                                                            data-stat="healingRate"
+                                                            data-type=""
+                                                            class="fas fa-plus-square  nobackground"></i>{{/if}}
+                            </div>
+                            <div>
+                                {{#if system.editToggle}}<i style="padding: 3px"
+                                                            data-statSubtraction
+                                                            data-stat="combatSequence"
+                                                            data-type=""
+                                                            class="fas fa-minus-square  nobackground"></i>{{/if}}
+                                {{system.combatSequence.value}}
+                                {{#if system.editToggle}}<i style="padding: 3px"
+                                                            data-statAddition
+                                                            data-stat="combatSequence"
+                                                            data-type=""
+                                                            class="fas fa-plus-square  nobackground"></i>{{/if}}
+                            </div>
+                            <div>
+                                {{#if system.editToggle}}<i style="padding: 3px"
+                                                            data-statSubtraction
+                                                            data-stat="passiveSense"
+                                                            data-type=""
+                                                            class="fas fa-minus-square  nobackground"></i>{{/if}}
+                                {{system.passiveSense.value}}
+                                {{#if system.editToggle}}<i style="padding: 3px"
+                                                            data-statAddition
+                                                            data-stat="passiveSense"
+                                                            data-type=""
+                                                            class="fas fa-plus-square  nobackground"></i>{{/if}}
+                            </div>
+                            <div style="vertical-align:middle;">
+                                {{system.radiationDC.value}}
+                            </div>
+                        </div>
+
                     </td>
                     <td>
                         {{>
@@ -45,9 +106,6 @@
                 </tr>
             </table>
         </div>
-        {{> "systems/arcane-arcade-fallout/templates/actor/status/special.hbs"
-           abilities=system.abilities
-         }}
     </header>
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
@@ -66,7 +124,24 @@
       <div class="tab status" data-group="primary" data-tab="status">
           <section>
               {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-items.hbs"}}
-              {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-drdv.hbs"}}
+              {{> "systems/arcane-arcade-fallout/templates/actor/status/special.hbs"
+                     abilities=system.abilities
+               }}
+              <div class="grid grid-10col">
+                <div class="grid-span-3">
+                {{>
+                    "systems/arcane-arcade-fallout/templates/actor/status/skills.hbs"
+                    startingSkillpoints=system.startingSkillpoints
+                    skillPool=system.skillPool
+                    skills=system.skills
+                    abilities=system.abilities
+                    penaltyTotal=system.penaltyTotal
+                 }}
+                    </div>
+             <div class="grid-span-7">
+                {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-notes.hbs"}}
+            </div>
+                  </div>
           </section>
       </div>
 

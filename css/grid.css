@@ -83,6 +83,10 @@
   grid-column: span 12 / span 12;
   grid-template-columns: repeat(12, minmax(0, 1fr));
 }
+.grid-13col {
+  grid-column: span 12 / span 13;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+}
 .grid-14col {
   grid-column: span 14 / span 14;
   grid-template-columns: repeat(14, minmax(0, 1fr));
@@ -146,6 +150,10 @@
 
 .grid-start-12 {
   grid-column-start: 12;
+}
+
+.grid-start-13 {
+  grid-column-start: 13;
 }
 
 .grid-span-2 {

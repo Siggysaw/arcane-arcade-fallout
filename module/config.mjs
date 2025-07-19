@@ -1310,6 +1310,7 @@ FALLOUTZERO.damageTypes = {
   slashing: {
     id: 'slashing',
     label: 'Slashing',
+    icon: 'systems/arcane-arcade-fallout/assets/NPC-Attacks/claws.png'
   },
   piercing: {
     id: 'piercing',

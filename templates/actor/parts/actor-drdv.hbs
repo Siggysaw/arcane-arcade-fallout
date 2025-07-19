@@ -1,47 +1,10 @@
-<div class=" dr-dv grid grid-10col">
-    <div class="grid-span-3">
-                                {{>
-                    "systems/arcane-arcade-fallout/templates/actor/status/skills.hbs"
-                    startingSkillpoints=system.startingSkillpoints
-                    skillPool=system.skillPool
-                    skills=system.skills
-                    abilities=system.abilities
-                    penaltyTotal=system.penaltyTotal
-                }}
-
-       <details>
-           <summary>
-           Resistances
-           </summary>
-        <ol>
-            {{#each this.dr as |dr|}}
-            <li>
-                <label class="checkbox">
-                    <input type="checkbox" name="system.dr" value="{{ dr.id }}" {{checked dr.selected}} />
-                    {{ dr.label }}
-                </label>
-            </li>
-            {{/each}}
-        </ol>
-        </details>
-        <details>
-            <summary>
-        Weaknesses
-            </summary>
-        <ol>
-            {{#each this.dv as |dv|}}
-            <li>
-                <label class="checkbox">
-                    <input type="checkbox" name="system.dv" value="{{ dv.id }}" {{checked dv.selected}} />
-                    {{ dv.label }}
-                </label>
-            </li>
-            {{/each}}
-        </ol>
-        </details>
-    </div>
-    <div class="grid-span-7">
-        {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-notes.hbs"}}
-    </div>
-</div>    
-
+<div class="dr-dv grid grid-13col">
+    {{#each this.dr as |dr|}}
+    <div class="{{dr.id}}" data-tooltip="Half Damage From {{dr.label}}"><input type="checkbox" name="system.dr" value="{{ dr.id }}" {{checked dr.selected}} /></div>
+    {{/each}}
+</div>
+<div class="dr-dv grid grid-13col">
+    {{#each this.dv as |dv|}}
+    <div class="{{dv.id}}" data-tooltip="Double Damage From {{dv.label}}"><input type="checkbox" name="system.dv" value="{{ dv.id }}" {{checked dv.selected}} /></div>
+    {{/each}}
+</div>

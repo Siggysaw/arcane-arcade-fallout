@@ -1599,7 +1599,76 @@ body.game .app .vaulttec .tabs > [data-tab] {
   text-transform: uppercase;
 }
 
-/*CHAT*/
-.message-content .item-piles-chat-card li:nth-child(odd){
-    display:none;
+/*Resistance and Weakness Icons
+
+slashing
+piercing
+ballistic
+bludgeoning
+electricity
+plasma
+poison
+fire
+acid
+explosive
+laser
+radiation
+cryo
+    */
+
+.sheet .dr-dv{
+    max-width:300px;
+    text-align:center;
 }
+.sheet .dr-dv input[type='checkbox'] {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: auto;
+  border: none;
+  opacity:25%;
+  background:black;
+}
+.sheet .dr-dv input[type='checkbox']:checked {
+  opacity:100%;
+}
+.sheet .slashing input[type='checkbox'] {
+  content: url('/icons/svg/sword.svg');
+}
+.sheet .piercing input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/Bite.png');
+}
+.sheet .ballistic input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/gunshot.png');
+}
+.sheet .bludgeoning input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/falling-boulder.png');
+}
+.sheet .electricity input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/battery-pack.png');
+}
+.sheet .plasma input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/laser-beam.png');
+}
+.sheet .poison input[type='checkbox'] {
+  content: url('/icons/svg/poison.svg');
+}
+.sheet .fire input[type='checkbox'] {
+  content: url('/icons/svg/fire.svg');
+}
+.sheet .acid input[type='checkbox'] {
+  content: url('/icons/svg/acid.svg');
+}
+.sheet .explosive input[type='checkbox'] {
+  content: url('/icons/svg/explosion.svg');
+}
+.sheet .laser input[type='checkbox'] {
+  content: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/laser-beam.png');
+}
+.sheet .radiation input[type='checkbox'] {
+  content: url('/icons/svg/radiation.svg');
+}
+.sheet .cryo input[type='checkbox'] {
+  content: url('/icons/svg/frozen.svg');
+}
+

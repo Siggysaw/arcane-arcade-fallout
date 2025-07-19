@@ -71,6 +71,17 @@ export function registerHooks() {
         }
     })
 
+  Hooks.on('renderActorSheet', (app, html) => {
+    if (html?.[0].tagName === 'FORM') {
+      return
+    } else {
+      var audio = new Audio(`/systems/arcane-arcade-fallout/assets/sounds/ui/open-sheet_pipboy.mp3`);
+      if (game.settings.get('core', 'PlaySounds')) {
+        audio.play()
+      }
+    }
+  })
+
     /* --------------------------------------------  */
     /*  Token movement                                 */
     /* --------------------------------------------  */
