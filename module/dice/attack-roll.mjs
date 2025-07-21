@@ -23,6 +23,7 @@ export default class AttackRoll extends FormApplication {
       adjustedApCost: 0,
       critical: this.weapon.system.critical,
       repeat: 1,
+      fullAuto:false,
       damages: this.weapon.system.damages.map((damage) => {
         return {
           ...damage,
@@ -276,7 +277,8 @@ export default class AttackRoll extends FormApplication {
       actorLuck,
       actorPenalties,
       bonus,
-      bonusdamage
+      bonusdamage,
+      fullAuto
     } = this.formDataCache
 
     const rollBonusTotal = Number(skillBonus + attackBonus + abilityBonus + actorLuck + Number(bonus) - actorPenalties - decayPenalty)
@@ -360,9 +362,29 @@ export default class AttackRoll extends FormApplication {
       return
     }
 
-    const repeat = this.formDataCache.repeat || 1
+    let repeat = this.formDataCache.repeat || 1
+    this.formDataCache.fullAuto ? repeat = 20 : ''
+
     for (let i = 0; i < repeat; i++) {
-      await this.performRoll()
+      let actionPoints = this.actor.system.actionPoints.value
+      let APCost = this.getFinalApCost()
+      let ammoAvailable = this.weapon.system.ammo.capacity.value
+      let fireStatus = true
+
+      if (actionPoints < APCost) {
+        console.log("APCOST = ",APCost)
+        ui.notifications.notify("AP Depleted")
+        fireStatus=false
+        i=999
+      }
+      if (ammoAvailable < 1 && this.weapon.type == "rangedWeapon") {
+        ui.notifications.notify("Ammo Depleted")
+        fireStatus=false
+        i=999
+      }
+      if(fireStatus == true){
+        await this.performRoll()
+      }
     }
 
 

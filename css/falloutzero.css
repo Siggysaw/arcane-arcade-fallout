@@ -1601,22 +1601,7 @@ body.game .app .vaulttec .tabs > [data-tab] {
   text-transform: uppercase;
 }
 
-/*Resistance and Weakness Icons
-
-slashing
-piercing
-ballistic
-bludgeoning
-electricity
-plasma
-poison
-fire
-acid
-explosive
-laser
-radiation
-cryo
-    */
+/*Resistance and Weakness Icons*/
 
 .sheet .dr-dv{
     max-width:300px;

@@ -153,14 +153,17 @@
             {{/if}}
         </fieldset>
     </div>
-    <div class="form-group">
-        <label for="bonus">Custom to Hit</label>
-        <input type="text" name="bonus" value="{{ bonus }}" placeholder="1d4/20/etc" />
+    <div class="attack-grid grid grid-4col">
+        <div># Attacks</div>
+        <div>Full Auto</div>
+        <div>Bonus Hit</div>
+        <div>Bonus DMG</div>
+        <div><input id="repeat" type="number" name="repeat" value="{{ repeat }}" /></div>
+        <div data-tooltip="use these settings to attack until you run out of AP or Ammo"><input type="checkbox" name="fullAuto" {{checked fullAuto}} /></div>
+        <div><input type="text" name="bonus" value="{{ bonus }}"/></div>
+        <div><input type="text" name="bonusdamage" value="{{ bonusdamage }}" /></div>
     </div>
-    <div class="form-group">
-        <label for="bonus">Custom For DMG</label>
-        <input type="text" name="bonusdamage" value="{{ bonusdamage }}" placeholder="1d4/20/etc" />
-    </div>
+    <hr />
     <div class="form-group">
         {{#unless targeted}}
         <button type="button" data-add-target>Targeted Attack</button>
@@ -174,11 +177,6 @@
             </div>
         </div>
         {{/unless}}
-    </div>
-
-    <div class="form-group">
-        <label for="repeat">Repeat attack</label>
-        <input id="repeat" type="number" name="repeat" value="{{ repeat }}" />
     </div>
 
     <div class="dialog-buttons flex">

@@ -656,11 +656,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: 'Take Cover (5 AP)',
+        name: 'Take Cover (3 AP)',
         icon: '<i class="fas fa-shoe"></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
-          this.actor.applyApCost(5)
+          this.actor.applyApCost(3)
         },
       }
     ]
