@@ -247,7 +247,7 @@ export default class AttackRoll extends FormApplication {
      * Apply AP consumption
      */
     if (this.formDataCache.consumesAp) {
-      const canAfford = this.actor.applyApCost(this.getFinalApCost())
+      const canAfford = await this.actor.applyApCost(this.getFinalApCost())
       if (!canAfford) return
     }
 
@@ -261,7 +261,7 @@ export default class AttackRoll extends FormApplication {
     if (this.weapon.type == "explosive") {
       let Qty = this.weapon.system.quantity
       Qty = Qty - 1
-      this.weapon.update({ 'system.quantity': Qty })
+      await this.weapon.update({ 'system.quantity': Qty })
     }
     /**
      * Deconstruct dialog form
@@ -328,7 +328,7 @@ export default class AttackRoll extends FormApplication {
     /**
      * Display roll to hit chat message
      */
-    roll.toMessage({
+    await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: this.getFlavor(this.formDataCache.targeted?.target),
       rollMode: game.settings.get('core', 'rollMode'),
