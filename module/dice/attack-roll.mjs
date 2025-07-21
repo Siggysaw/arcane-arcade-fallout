@@ -22,6 +22,7 @@ export default class AttackRoll extends FormApplication {
       totalApCost: this.weapon.system.apCost,
       adjustedApCost: 0,
       critical: this.weapon.system.critical,
+      repeat: 1,
       damages: this.weapon.system.damages.map((damage) => {
         return {
           ...damage,
@@ -241,17 +242,7 @@ export default class AttackRoll extends FormApplication {
     }, '')
   }
 
-  async _updateObject(event, formData) {
-    Object.assign(this.formDataCache, formData)
-
-    /**
-     * Rerender form if update and not submitted
-     */
-    if (event.type !== 'submit') {
-      this.render()
-      return
-    }
-
+  async performRoll() {
     /**
      * Apply AP consumption
      */
@@ -355,6 +346,25 @@ export default class AttackRoll extends FormApplication {
         },
       },
     })
+    return roll
+  }
+
+  async _updateObject(event, formData) {
+    Object.assign(this.formDataCache, formData)
+
+    /**
+     * Rerender form if update and not submitted
+     */
+    if (event.type !== 'submit') {
+      this.render()
+      return
+    }
+
+    const repeat = this.formDataCache.repeat || 1
+    for (let i = 0; i < repeat; i++) {
+      await this.performRoll()
+    }
+
 
     this.onSubmitCallback()
     this.close()
