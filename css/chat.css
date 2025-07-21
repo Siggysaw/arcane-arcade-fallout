@@ -1,269 +1,320 @@
 .chat-sidebar .message-header {
-  margin-bottom: 0.375rem;
+margin-bottom: 0.375rem;
 }
-.chat-sidebar .message-header .message-sender {
-  display: flex;
-  align-items: start;
-  gap: 0.75rem;
-  white-space: unset;
+
+.chat-sidebar .message-header .message-sender,
+.chat-message .message-header .message-sender {
+display: flex;
+align-items: start;
+gap: 0.75rem;
+white-space: unset;
 }
-.chat-sidebar .message-header .message-sender .avatar {
-  height: 100%;
-  display: grid;
-  place-content: center;
+
+.chat-sidebar .message-header .message-sender .avatar,
+.chat-message .message-header .message-sender .avatar {
+height: 100%;
+display: grid;
+place-content: center;
 }
-.chat-sidebar .message-header .message-sender img {
-  width: 38px;
-  height: 38px;
-  border-radius: 100%;
-  box-shadow: 0 0 6px #000000;
-  object-fit: cover;
-  object-position: top;
-  border: none;
-  flex: none;
-  background: grey;
+
+.chat-sidebar .message-header .message-sender img,
+.chat-message img {
+width: 38px;
+height: 38px;
+border-radius: 100%;
+box-shadow: 0 0 6px #000000;
+object-fit: cover;
+object-position: top;
+border: none;
+flex: none;
+background: grey;
 }
-  .chat-sidebar .message-header .name-stacked {
-    flex: 1;
-    display: flex;
-    min-height: 32px;
-    flex-direction: column;
-    justify-content: center;
-    line-height: normal;
-    font-family: fixedsys;
-  }
+
+.chat-sidebar .message-header .name-stacked {
+flex: 1;
+display: flex;
+min-height: 32px;
+flex-direction: column;
+justify-content: center;
+line-height: normal;
+font-family: fixedsys;
+}
+
+.chat-sidebar .message-header .title,
+.chat-message .message-header .title {
+font-weight: bold;
+color: var(--user-color);
+}
+
+.chat-sidebar .message-header .subtitle,
+.chat-message .message-header .subtitle {
+color: var(--user-color);
+}
+
+.chat-sidebar .table-description,
+.chat-message .table-description {
+color: #ccc;
+}
+
+.chat-sidebar .message-header .message-metadata,
+.chat-message .message-header .message-metadata {
+transform: translate(2px, -4px);
+flex: none;
+}
+
+.chat-sidebar .message-header time,
+.chat-message .message-header time {
+color: var(--user-color);
+}
+
+.chat-sidebar .message-header .flavor-text,
+.chat-message .message-header .flavor-text {
+margin-block-start: 4px;
+margin-block-end: -4px;
+font-style: italic;
+color: var(--user-color);
+text-transform: capitalize;
+}
+
+#chat-popout .chat-form {
+color: black;
+}
+
 .chat-sidebar .message-header .title {
-  font-weight: bold;
-  color: var(--user-color);
+color: var(--user-color);
 }
-.chat-sidebar .message-header .subtitle {
-  color: var(--user-color);
-}
-.chat-sidebar .table-description{
-    color:#ccc;
-}
-.chat-sidebar .message-header .message-metadata {
-  transform: translate(2px, -4px);
-  flex: none;
-}
-.chat-sidebar .message-header time {
-  color: var(--user-color);
-}
-.chat-sidebar .message-header .flavor-text {
-  margin-block-start: 4px;
-  margin-block-end: -4px;
-  font-style: italic;
-  color: var(--user-color);
-  text-transform: capitalize;
-}
-#chat-popout .chat-form{
-    color:black;
-}
-.chat-sidebar .message-header .title{
-  color: var(--user-color);
-}
+
 .chat-sidebar .message-content .card-buttons {
-  margin-top: 10px;
+margin-top: 10px;
 }
+
 .chat-sidebar .message-content .card-buttons button:not(:first-of-type) {
-  margin-top: 10px;
+margin-top: 10px;
 }
+
 .chat-sidebar .item-piles-chat-card li:nth-child(odd),
-.chat-sidebar .item-piles-chat-card li:nth-child(even){
-  background-color: #222 !important;
-  border: solid 1px;
+.chat-sidebar .item-piles-chat-card li:nth-child(even) {
+background-color: #222 !important;
+border: solid 1px;
 }
+
 .chat-message button {
-  width: 100%;
-  text-transform: uppercase;
-  font-family: 'fixedsys';
-  color: white;
-  background: #333;
-  text-shadow: 2px 2px 2px black;
+width: 100%;
+text-transform: uppercase;
+font-family: 'fixedsys';
+color: white;
+background: #333;
+text-shadow: 2px 2px 2px black;
 }
+
 .falloutzero :is(.card-tray, .effects-tray) {
-  margin-top: 0.125rem;
+margin-top: 0.125rem;
 }
+
 .falloutzero :is(.card-tray:has(.effects:empty), .effects-tray):has(.effects:empty) {
-  display: none;
+display: none;
 }
+
 .falloutzero :is(.card-tray.damage-tray, .effects-tray).damage-tray {
-  margin-block-start: 8px;
-  text-align: center;
+margin-block-start: 8px;
+text-align: center;
 }
+
 .falloutzero :is(.card-tray > label, .effects-tray) > label {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  gap: 0.25rem;
+cursor: pointer;
+display: flex;
+justify-content: center;
+gap: 0.25rem;
 }
+
 .falloutzero :is(.card-tray > label > span, .effects-tray) > label > span {
-  flex: none;
+flex: none;
 }
+
 .falloutzero
-  :is(
-    .card-tray > label .fa-bolt,
-    .falloutzero :is(.card-tray > label .fa-heart-crack, .effects-tray) > label .fa-bolt,
-    .effects-tray
-  )
-  > label
-  .fa-heart-crack {
-  color: yellow;
+:is( .card-tray > label .fa-bolt, .falloutzero :is(.card-tray > label .fa-heart-crack, .effects-tray) > label .fa-bolt, .effects-tray ) > label
+.fa-heart-crack {
+color: yellow;
 }
+
 .falloutzero :is(.card-tray > label .fa-caret-down, .effects-tray) > label .fa-caret-down {
-  transition: all 250ms ease;
+transition: all 250ms ease;
 }
 
 .falloutzero .card-tray .targets {
-  display: flex;
-  flex-direction: column;
+display: flex;
+flex-direction: column;
 }
 
 .falloutzero .card-tray .targets .target {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding-bottom: 0.25rem;
-  margin-bottom: 0.25rem;
-  border-bottom: 1px solid grey;
+display: flex;
+gap: 0.5rem;
+align-items: center;
+padding-bottom: 0.25rem;
+margin-bottom: 0.25rem;
+border-bottom: 1px solid grey;
 }
 
 .falloutzero .card-tray .targets .target:last-child {
-  padding: 0;
-  margin: 0;
-  border: none;
+padding: 0;
+margin: 0;
+border: none;
 }
 
 .falloutzero .card-tray .targets .target > img {
-  width: 32px;
-  height: 32px;
+width: 32px;
+height: 32px;
 }
 
 .falloutzero .card-tray .targets .target .name-stacked {
-  flex: 1;
+flex: 1;
 }
 
 .falloutzero .card-tray .targets .target .name-stacked > .none {
-  text-align: center;
-  margin-block: 4px;
+text-align: center;
+margin-block: 4px;
 }
 
 .falloutzero .card-tray .targets .target {
-  flex-wrap: wrap;
+flex-wrap: wrap;
 }
+
 .falloutzero .card-tray .targets .target .subtitle {
-  display: flex;
-  gap: 4px;
+display: flex;
+gap: 4px;
 }
+
 .falloutzero .card-tray .targets .target .change-source {
-  width: 13px;
-  height: 13px;
-  padding: 0;
-  border-radius: 4px;
-  display: grid;
-  grid-template-areas: 'overlay';
-  font-size: inherit;
+width: 13px;
+height: 13px;
+padding: 0;
+border-radius: 4px;
+display: grid;
+grid-template-areas: 'overlay';
+font-size: inherit;
 }
+
 .falloutzero .card-tray .targets .target .change-source > * {
-  grid-area: overlay;
+grid-area: overlay;
 }
+
 .falloutzero .card-tray .targets .target .change-source > aafo-icon {
-  display: block;
+display: block;
 }
+
 .falloutzero .card-tray .targets .target .change-source > i {
-  color: red;
+color: red;
 }
+
 .falloutzero .card-tray .targets .target .change-source:not([aria-pressed='true']) .fa-slash {
-  display: none;
+display: none;
 }
+
 .falloutzero
-  .card-tray
-  .targets
-  .target
-  .change-source:not([aria-pressed='mixed'])
-  .fa-arrow-turn-down {
-  display: none;
+.card-tray
+.targets
+.target
+.change-source:not([aria-pressed='mixed'])
+.fa-arrow-turn-down {
+display: none;
 }
+
 .falloutzero .card-tray .targets .target .change-source .fa-arrow-turn-down {
-  position: relative;
-  left: 8px;
-  top: -1px;
+position: relative;
+left: 8px;
+top: -1px;
 }
+
 .falloutzero .card-tray .targets .target .calculated {
-  padding-inline-end: 4px;
-  font-weight: bold;
-  color: red;
+padding-inline-end: 4px;
+font-weight: bold;
+color: red;
 }
+
 .falloutzero .card-tray .targets .target .calculated.healing {
-  color: green;
+color: green;
 }
+
 .falloutzero .card-tray .targets .target .calculated.temp {
-  color: yellow;
+color: yellow;
 }
+
 .falloutzero .card-tray .targets .target .damage-multipliers {
-  display: grid;
-  width: 100%;
-  grid-template-columns: auto repeat(4, 1fr);
-  gap: 2px;
-  margin-inline: 3px;
+display: grid;
+width: 100%;
+grid-template-columns: auto repeat(4, 1fr);
+gap: 2px;
+margin-inline: 3px;
 }
+
 .falloutzero .card-tray .targets .target .damage-multipliers button {
-  display: flex;
-  gap: 3px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 3px;
-  font-size: inherit;
-  line-height: unset;
-  cursor: pointer;
+display: flex;
+gap: 3px;
+justify-content: center;
+align-items: center;
+border-radius: 3px;
+font-size: inherit;
+line-height: unset;
+cursor: pointer;
 }
+
 .falloutzero .card-tray .targets .target .damage-multipliers button::after {
-  content: '';
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 8px;
-  background-color: transparent;
+content: '';
+display: block;
+width: 8px;
+height: 8px;
+border-radius: 8px;
+background-color: transparent;
 }
+
 .falloutzero .card-tray .targets .target .damage-multipliers button[aria-pressed='true'] {
-  border-color: var(--sheetcolor);
+border-color: var(--sheetcolor);
 }
+
 .falloutzero .card-tray .targets .target .damage-multipliers button[aria-pressed='true']::after {
-  background-color: var(--sheetcolor);
+background-color: var(--sheetcolor);
 }
 
 .falloutzero .card-tray .wrapper > button {
-  margin: 3px;
-  width: calc(100% - 6px);
-  margin-block-start: 6px;
+margin: 3px;
+width: calc(100% - 6px);
+margin-block-start: 6px;
 }
 
 .falloutzero .hidden-dc {
-  display: contents;
+display: contents;
 }
+
 .falloutzero .visible-dc {
-  display: none;
+display: none;
 }
+
 .falloutzero [data-display-challenge] .hidden-dc {
-  display: none;
+display: none;
 }
+
 .falloutzero [data-display-challenge] .visible-dc {
-  display: contents;
+display: contents;
 }
+
 .falloutzero .collapsible.collapsed label .fa-caret-down {
-  transform: rotate(-90deg);
+transform: rotate(-90deg);
 }
+
 .falloutzero .collapsible.collapsed .collapsible-content {
-  grid-template-rows: 0fr;
+grid-template-rows: 0fr;
 }
+
 .falloutzero .collapsible .fa-caret-down {
-  transition: transform 250ms ease;
+transition: transform 250ms ease;
 }
+
 .falloutzero .collapsible .collapsible-content {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 250ms ease;
+display: grid;
+grid-template-rows: 1fr;
+transition: grid-template-rows 250ms ease;
 }
+
 .falloutzero .collapsible .collapsible-content > .wrapper {
-  overflow: hidden;
+overflow: hidden;
 }

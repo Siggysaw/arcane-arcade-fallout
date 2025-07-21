@@ -1168,20 +1168,16 @@ export default class FalloutZeroActor extends Actor {
    * @param {number} cost
    * @returns true if successful or false if not enough AP
    */
-  applyApCost(cost) {
+ async applyApCost(cost) {
     if (!this.inCombat) return true
-    const newAP = this.getAPAfterCost(cost)
+   const currentAP = this.system.actionPoints.value
+   const newAP = Number(currentAP) - Number(cost)
     if (newAP < 0) {
       ui.notifications.warn(`You don't have enough AP to perform this action!`)
       return false
     }
     this.update({ 'system.actionPoints.value': newAP })
     return true
-  }
-
-  getAPAfterCost(cost) {
-    const currentAP = this.system.actionPoints.value
-    return Number(currentAP) - Number(cost)
   }
 
   //Add any stat with modifiers

@@ -358,7 +358,8 @@ details > summary {
 .prosemirror.menu-dialog form button,
 .prosemirror.menu-dialog form input,
 .sheet .item-piles-config-container p,
-.item-piles-clickable-link {
+.item-piles-clickable-link,
+.chat-message{
   color: var(--sheetcolor);
   letter-spacing: 0rem;
 }
@@ -366,7 +367,8 @@ details > summary {
 .window-app .window-content div .fakebutton,
 .window-app .window-content button,
 .window-app .window-content select,
-.window-app .window-content option {
+.window-app .window-content option,
+.chat-message {
   background: #222;
 }
 
