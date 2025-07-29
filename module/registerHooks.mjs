@@ -90,8 +90,9 @@ export function registerHooks() {
         // if flag not active or not in combat, skip AP deduction
         if (!game.settings.get('core', 'DeductMovementAPInCombat') || !game.combats?.active?.started) return
 
-        const isTurn = game.combats.active.combatant.tokenId === token.id
-        if (!isTurn) {
+      const isTurn = game.combats.active.combatant.tokenId === token.id
+        
+      if (!isTurn && game.user.role !== 4) {
             ui.notifications.warn("Movement is based on combat turn, it's currently not your turn");
             return false
         }
@@ -112,6 +113,7 @@ export function registerHooks() {
             ui.notifications.warn("Not enough AP for this movement");
             return false
         }
+
 
         // Deduct AP
         if (movement.method !== 'undo') {

@@ -227,6 +227,12 @@ export default class FalloutZeroActor extends Actor {
     }
   }
 
+  //AP Cost for Movement
+  getAPAfterCost(cost) {
+    const currentAP = this.system.actionPoints.value
+    return Number(currentAP) - Number(cost)
+  }
+
   // Death Save Roll
   async deathSave() {
     const myDialogOptions = { width: 300, height: 300, resizable: true }
