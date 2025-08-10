@@ -79,6 +79,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.attackBonus = new fields.NumberField({ initial: 0 })
     schema.attackBonus = new fields.NumberField({ initial: 0 })
     schema.damageBonus = new fields.NumberField({ initial: 0 })
+    schema.downed = new fields.BooleanField({ initial: false })
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
@@ -224,11 +225,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.explosivesMastery = this.abilities['per'].mod + this.skills['explosives'].value
     this.unflipped = this.karmaCaps.filter(Boolean).length;
     this.totalKarma = this.karmaCaps.length;
-    if (this.health.value < 1) {
-      this.actionPoints.max = this.downedAP.base + this.downedAP.modifiers
-      this.actionPoints.value > 4 ? this.actionPoints.value = 4 : ''
-      this.stamina.value = 0
-    }
   }
 }
 

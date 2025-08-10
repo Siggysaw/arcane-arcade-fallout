@@ -67,7 +67,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const ManualGroupSneak = game.settings.get('core', 'GroupSneak')
     const ManualPartyNerve = game.settings.get('core', 'PartyNerve')
 
-
+    if (actorData.system.health.value < 1 && !actorData.system.downed) {
+      this.actor.update({ 'system.actionPoints.value': 4 })
+      this.actor.update({ 'system.downed': true })
+    }
+    if (actorData.system.health.value > 0 && actorData.system.downed) {
+      this.actor.update({ 'system.actionPoints.value': actorData.system.actionPoints.max })
+      this.actor.update({ 'system.downed': false })
+    }
 
     // Calculate Carry Load
     const packrat = actorData.items.find((i) => i.name == 'Pack Rat')
@@ -545,7 +552,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const combatContextMenu = [
       {
         name: 'Move 5 Ft (1 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         title: 'Move 1 Square',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
@@ -554,14 +561,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Sprint 50 Ft In a Line (5 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(5)
         },
       }, {
         name: 'Use Med/Chem (4 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(4)
@@ -569,7 +576,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Grapple (3 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
+        condition: (element) => element.closest('.combat-menu'),
+        callback: (element) => {
+          this.actor.applyApCost(3)
+        },
+      }, {
+        name: 'Block (3 AP)',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(3)
@@ -577,7 +591,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Escape Grapple (5 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(5)
@@ -585,7 +599,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Help (6 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(6)
@@ -593,7 +607,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Unarmed Strike (3 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(3)
@@ -601,7 +615,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Hide (6 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(6)
@@ -609,7 +623,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Interact With Object (3 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(3)
@@ -617,7 +631,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Search (3 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(3)
@@ -625,7 +639,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Shove (4 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(4)
@@ -633,7 +647,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Dodge (6 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(6)
@@ -641,7 +655,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Stand Up (5 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(5)
@@ -649,7 +663,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Ready (+2 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(2)
@@ -657,7 +671,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Take Cover (3 AP)',
-        icon: '<i class="fas fa-shoe"></i>',
+        icon: '<i class=""></i>',
         condition: (element) => element.closest('.combat-menu'),
         callback: (element) => {
           this.actor.applyApCost(3)

@@ -417,7 +417,14 @@ details > summary {
 }
 
 .sheet.journal-entry .title {
-  display: none;
+  font-size: 24pt;
+  background: none;
+  border: none;
+  border-bottom: solid 1px;
+  font-family: fixedsys;
+}
+.sheet.journal-entry .window-title{
+    color:transparent
 }
 
 .sheet.journal-entry .journal-entry-content img {
@@ -1435,10 +1442,7 @@ body.game .app .tabs > [data-tab] {
 .sheet.journal-entry.application .journal-sidebar .toc li.active .page-heading {
   color: white;
 }
-.sheet.journal-entry.application .journal-sidebar .toc li.active .headings,
-.sheet.journal-entry.application .journal-sidebar .toc .page-heading .page-index{
-    display:none;
-}
+
 
 .item-piles-config-container p{
     color: var(--sheetcolor) !important;

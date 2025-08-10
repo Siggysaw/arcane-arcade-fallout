@@ -309,7 +309,8 @@ export default class FalloutZeroActor extends Actor {
               [failure1]: false,
               [failure2]: false,
               [failure3]: false,
-              'system.health.value': 1
+              'system.health.value': 1,
+              'system.actionPoints.value': actor.system.actionPoints.max
             })
         }
         !Success1 ? actor.update({ [success1]: true }) : actor.update({ [success2]: true })
@@ -320,7 +321,8 @@ export default class FalloutZeroActor extends Actor {
           [failure1]: false,
           [failure2]: false,
           [failure3]: false,
-          'system.health.value': 1
+          'system.health.value': 1,
+          'system.actionPoints.value': actor.system.actionPoints.max
         }) : ''
       }
       if (!success) {
@@ -1282,8 +1284,11 @@ export default class FalloutZeroActor extends Actor {
     } else {
       maxForCalcs = this.system.actionPoints.max
     }
+    let maxAP
+    this.system.downed ? maxAP = 6 : maxAP = 15
     let RecycledAP = newAP + maxForCalcs + this.system.actionPoints.temp
-    let currentMax = Math.max(15, this.system.actionPoints.boostMax)
+    this.system.downed ? RecycledAP = newAP + 4 : ''
+    let currentMax = Math.max(maxAP, this.system.actionPoints.boostMax)
     if (RecycledAP <= currentMax) {
       this.update({ 'system.actionPoints.value': RecycledAP })
     } else {
@@ -1368,14 +1373,11 @@ export default class FalloutZeroActor extends Actor {
     // Do you have the AP?
     let apCost = 6
     quickReload ? apCost = 4 : apCost = 6
-
-    if (!this.inCombat) {
-      apCost = 0
-    }
     rapid ? apCost = apCost - 3 : apCost = apCost
-    if (manualReload) {
-      apCost = 1
-    }
+    manualReload ? apCost = 1 : ''
+    // If You are not in combat, you don't spend AP
+    !this.inCombat ? apCost = 0 : ''
+
     const newAP = this.system.actionPoints.value - apCost
     if (newAP < 0) {
       ui.notifications.warn(`Not enough action points to reload`)
