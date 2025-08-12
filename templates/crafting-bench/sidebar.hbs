@@ -1,30 +1,27 @@
 <aside>
     <div>
-            Only Craftable:
-            <i data-action="onlyCraftables" data-tooltip="Toggle only show craftables" class="fas fa-toggle-{{#if onlyCraftables}}on{{else}}off{{/if}}"></i>
+        Only Craftable:
+        <i data-action="onlyCraftables" data-tooltip="Toggle only show craftables" class="fas fa-toggle-{{#if onlyCraftables}}on{{else}}off{{/if}}"></i>
     </div>
     <div>
         <input type="search" placeholder="Search" data-search value="{{searchQuery}}">
     </div>
     {{#each craftingTree as |branch branchKey|}}
-        <details
-            data-action="toggleBranch"
-            data-branch-key="{{branchKey}}"
-            {{#if (IsIn branchKey ../openBranches)}} open{{/if}}
-        >
-            <summary><span class="craftables-type">{{ branch.label }}</span></summary>
-            <div class="craftables-list">
+    <details data-action="toggleBranch"
+             data-branch-key="{{branchKey}}"
+             {{#if (IsIn branchKey ../openBranches)}} open{{/if}}>
+        <summary><span class="craftables-type">{{ branch.label }}</span></summary>
+        <div class="craftables-list">
             {{#each branch.items as |leaf|}}
-                <button
-                    {{#if (Equals ../../selectedCraftable.uuid leaf.uuid) }} class="selected" {{/if}}
+            <button {{#if (Equals ../../selectedCraftable.uuid leaf.uuid) }} class="selected" {{/if}}
                     data-action="select"
                     data-branch="{{ branchKey }}"
                     data-index="{{ @index }}"
                     class="crafting-option">
-                    {{ leaf.name }}
-                </button>
+                {{ leaf.name }}
+            </button>
             {{/each}}
-                </div>
-        </details>
+        </div>
+    </details>
     {{/each}}
 </aside>

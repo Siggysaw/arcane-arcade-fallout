@@ -1,6 +1,7 @@
 import { FALLOUTZERO } from '../config.mjs'
 import FalloutZeroItem from './item.mjs'
 import LevelUpApplication from '../applications/components/level-up.mjs'
+import ChemApplication from '../applications/components/chem-application.mjs'
 /**
 /**
  * Extend the base Actor class to implement additional system-specific logic.
@@ -827,10 +828,15 @@ export default class FalloutZeroActor extends Actor {
     })
   }
 
+  testingMessage(chosenCharacter) {
+    console.log("YUP YOU MADE IT!",chosenCharacter)
+  }
+
   //Consume item
-  async lowerInventory(itemId) {
+  async lowerInventory(itemId, actor) {
+    !actor ? actor = this : ''
     let pack = game.packs.find((p) => p.metadata.name == 'conditions')
-    const item = this.items.get(itemId)
+    const item = actor.items.get(itemId)
     const updatedQty = item.system.quantity - 1
     let mods = { 'system.quantity': updatedQty }
     const description = item.system.description
@@ -845,7 +851,7 @@ export default class FalloutZeroActor extends Actor {
         if (item.system.modifiers.path1 != '' && item.system.modifiers.value1 != '') {
           chatContent +=
             'Adjusted ' +
-            (await this.addCustomEffect(
+            (await actor.addCustomEffect(
               item.system.modifiers.path1,
               item.system.modifiers.modType1,
               item.system.modifiers.value1,
@@ -854,7 +860,7 @@ export default class FalloutZeroActor extends Actor {
         if (item.system.modifiers.path2 != '' && item.system.modifiers.value2 != '') {
           chatContent +=
             ', ' +
-            (await this.addCustomEffect(
+            (await actor.addCustomEffect(
               item.system.modifiers.path2,
               item.system.modifiers.modType2,
               item.system.modifiers.value2,
@@ -863,7 +869,7 @@ export default class FalloutZeroActor extends Actor {
         if (item.system.modifiers.path3 != '' && item.system.modifiers.value3 != '') {
           chatContent +=
             ', ' +
-            (await this.addCustomEffect(
+            (await actor.addCustomEffect(
               item.system.modifiers.path3,
               item.system.modifiers.modType3,
               item.system.modifiers.value3,
@@ -872,7 +878,7 @@ export default class FalloutZeroActor extends Actor {
         if (item.system.modifiers.path4 != '' && item.system.modifiers.value4 != '') {
           chatContent +=
             ', ' +
-            (await this.addCustomEffect(
+            (await actor.addCustomEffect(
               item.system.modifiers.path4,
               item.system.modifiers.modType4,
               item.system.modifiers.value4,
@@ -881,17 +887,17 @@ export default class FalloutZeroActor extends Actor {
       }
 
       //Add effects according to endurance VALUE
-      if (this.system.abilities.end.value > 4) {
+      if (actor.system.abilities.end.value > 4) {
         //Endurance above or equal to 5
         if (description.includes('qT3KhtuyrbnpNfWy')) {
           //Highproof as a consumable condition
           chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
-          chatContent += await this.applyDrunkness('Drunk', this)
+          chatContent += await actor.applyDrunkness('Drunk', actor)
         }
         if (description.includes('o18dhjwLVVjGaCQR')) {
           //Alcoholic as a consumable condition
           chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
-          chatContent += await this.applyDrunkness('Buzzed', this)
+          chatContent += await actor.applyDrunkness('Buzzed', actor)
         }
         if (description.includes('HcvGeJhIRhCECZQ8')) {
           //Putrid as a consumable condition
@@ -902,40 +908,40 @@ export default class FalloutZeroActor extends Actor {
         if (description.includes('qT3KhtuyrbnpNfWy')) {
           //Highproof as a consumable condition
           chatContent += `You've had one too many! (End<5)<br><br>You're now `
-          chatContent += await this.applyDrunkness('Hammered', this)
+          chatContent += await actor.applyDrunkness('Hammered', actor)
         }
         if (description.includes('o18dhjwLVVjGaCQR')) {
           //Alcoholic as a consumable condition
           chatContent += `You've had one too many! (End>5)<br><br>You're now `
-          chatContent += await this.applyDrunkness('Drunk', this)
+          chatContent += await actor.applyDrunkness('Drunk', actor)
         }
         if (description.includes('HcvGeJhIRhCECZQ8')) {
           //Putrid as a consumable condition
           chatContent += `You throw up a little. (End<5)<br><br>And... you're `
-          chatContent += await this.applyDrunkness('Poisoned', this)
+          chatContent += await actor.applyDrunkness('Poisoned', actor)
         }
       }
 
       //Check for Snack
       let snacks = {}
       if (description.includes('2VO3ajTiEcRzHaS9')) {
-        if (this.system.penalties.snack == 0) {
+        if (actor.system.penalties.snack == 0) {
           Object.assign(snacks, { 'system.penalties.snack': 1 })
           console.log('Need one more snack!')
         } else {
-          let hunger = Math.max(this.system.penalties.hunger.base - 1, 0)
+          let hunger = Math.max(actor.system.penalties.hunger.base - 1, 0)
           Object.assign(snacks, {
             'system.penalties.snack': 0,
             'system.penalties.hunger.base': hunger,
           })
         }
-        await this.update(snacks)
+        await actor.update(snacks)
       }
 
       //Add active effects from each condition present on the consumable
       let descSplit = description.split(' ')
       let strSplit, newCondition, itemEf, actorEf
-      let actorEffects = this.items
+      let actorEffects = actor.items
       for (var str of descSplit) {
         if (str.includes('uuid')) {
           //Example : data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}"
@@ -975,7 +981,7 @@ export default class FalloutZeroActor extends Actor {
                   .length > 0
               ) {
                 //Create it if it has active effects
-                let addedCondition = await Item.create(newCondition, { parent: this })
+                let addedCondition = await Item.create(newCondition, { parent: actor })
                 //Modify Effects to get the @ values
                 if (addedCondition) {
                   let newArray
@@ -983,7 +989,7 @@ export default class FalloutZeroActor extends Actor {
                     newArray = ef.changes
                     for (var change of newArray) {
                       if (change.value.includes('@')) {
-                        change.value = await this.evaluateAtFormula(change.value)
+                        change.value = await actor.evaluateAtFormula(change.value)
                       }
                     }
                     await ef.update({ changes: newArray })
@@ -998,21 +1004,21 @@ export default class FalloutZeroActor extends Actor {
       //Ask for checks if item says so.
       if (typeof item.system.checks != 'undefined') {
         if (item.system.checks.check1 != '' && item.system.checks.dc1 != '') {
-          chatContent += await this.askForCheck(
+          chatContent += await actor.askForCheck(
             item.system.checks.check1,
             item.system.checks.dc1,
             item.system.checks.condition1,
           )
         }
         if (item.system.checks.check2 != '' && item.system.checks.dc2 != '') {
-          chatContent += await this.askForCheck(
+          chatContent += await actor.askForCheck(
             item.system.checks.check2,
             item.system.checks.dc2,
             item.system.checks.condition2,
           )
         }
         if (item.system.checks.check3 != '' && item.system.checks.dc3 != '') {
-          chatContent += await this.askForCheck(
+          chatContent += await actor.askForCheck(
             item.system.checks.check3,
             item.system.checks.dc3,
             item.system.checks.condition3,
@@ -1024,7 +1030,7 @@ export default class FalloutZeroActor extends Actor {
       //Add event listener for eventual Check button in Chat
       Hooks.once('renderChatMessage', (chatItem, html) => {
         html.find('#askForRoll').click((ev) => {
-          this.checkCheckResult(ev)
+          actor.checkCheckResult(ev)
         })
       })
       //Send "Ask for Check" Button to Chat
@@ -1048,9 +1054,6 @@ export default class FalloutZeroActor extends Actor {
     } else {
       return
     }
-  }
-  limbcondition(limb) {
-    ui.notifications.notify(`${limb} was Clicked!`)
   }
 
   getRaceType() {
@@ -1178,6 +1181,7 @@ export default class FalloutZeroActor extends Actor {
    */
   async applyApCost(cost) {
     if (!this.inCombat) return true
+    !this.inCombat ? cost = 0 : ''
     const currentAP = this.system.actionPoints.value
     const newAP = Number(currentAP) - Number(cost)
     if (newAP < 0) {

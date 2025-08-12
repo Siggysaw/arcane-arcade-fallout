@@ -1,0 +1,16 @@
+<div class="award">
+    <select data-character-select>
+        <option>Use on Self</option>
+        {{#each actors as |actor|}}
+            {{#with (lookup ../newActorData [id])~}}
+                <option value="{{actor.id}}">
+                    {{ actor.name }}
+          </option>
+            {{/with}}
+        {{/each}}
+        </select>
+    <div class="dialog-buttons flexrow">
+        <button class="dialog-button">Submit</button>
+    </div>
+</div>
+
