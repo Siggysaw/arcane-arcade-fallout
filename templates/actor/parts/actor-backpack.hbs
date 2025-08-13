@@ -128,7 +128,7 @@
             <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
-        <h3>Armor upgrades</h3>
+        {{#if armorUpgrades}}<h3>Armor upgrades</h3>{{/if}}
         {{#each armorUpgrades as |item id|}}
         <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
             <div>
@@ -198,7 +198,7 @@
             <div class="grid-span-2" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
-        <h3>Materials</h3>
+        {{#if materials}}<h3>Materials</h3>
         <div class="grid grid-20col labels">
             <div class="grid-span-12">Name</div>
             <div class="grid-span-3 caps-icon icon"><img class="custom-icon" src="/systems/arcane-arcade-fallout/assets/caps.webp" /></div>
@@ -213,6 +213,7 @@
             <div class="grid-span-2" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
         {{/each}}
+        {{/if}}
     </div>
 </div>
 
