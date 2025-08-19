@@ -279,7 +279,7 @@ export default class FalloutZeroActor extends Actor {
       const Failure2 = actor.system.saveFailures.second
       const Failure3 = actor.system.saveFailures.third
 
-      withAdvantage !== 'false' ? rollInput = `20d20${withAdvantage}` : rollInput = "1d20"
+      withAdvantage !== 'false' ? rollInput = `2d20${withAdvantage}` : rollInput = "1d20"
       if (withModifiers === 'true') {
         const penaltyTotal = actor.system.penaltyTotal
         rollInput += ` - ${penaltyTotal}`

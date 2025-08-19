@@ -355,7 +355,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type == 'rangedWeapon' || item.type == 'meleeWeapon' && item.system.ammo.assigned || item.type=='explosive') {
+          if (item.type == 'rangedWeapon' || item.type == 'meleeWeapon' && item.system.ammo.assigned || item.type=='explosive' && item.system.quantity > 0) {
             return true
           }
         },
@@ -436,7 +436,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type == 'chem' && item.system.quantity > 0 && this.actor.system.actionPoints.value > 4) {
+          if (item.type == 'chem' && item.system.quantity > 0 && (this.actor.system.actionPoints.value > 3 || !this.actor.inCombat)) {
             return true
           }
         },
@@ -452,7 +452,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type == 'medicine' && item.system.quantity > 0 && this.actor.system.actionPoints.value > 4) {
+          if (item.type == 'medicine' && item.system.quantity > 0 && (this.actor.system.actionPoints.value > 3 || !this.actor.inCombat)) {
             return true
           }
         },
@@ -685,6 +685,24 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     //Death Saves
     html.on('click', '[data-rolldeathsave]', (ev) => {
       this.actor.deathSave()
+    })
+    html.on('click', '[data-save1]', (ev) => {
+      this.actor.update({ 'system.saveSuccesses.first': !this.actor.system.saveSuccesses.first })
+    })
+    html.on('click', '[data-save2]', (ev) => {
+      this.actor.update({ 'system.saveSuccesses.second': !this.actor.system.saveSuccesses.second })
+    })
+    html.on('click', '[data-save3]', (ev) => {
+      this.actor.update({ 'system.saveSuccesses.third': !this.actor.system.saveSuccesses.third })
+    })
+    html.on('click', '[data-fail1]', (ev) => {
+      this.actor.update({ 'system.saveFailures.first': !this.actor.system.saveFailures.first })
+    })
+    html.on('click', '[data-fail2]', (ev) => {
+      this.actor.update({ 'system.saveFailures.second': !this.actor.system.saveFailures.second })
+    })
+    html.on('click', '[data-fail3]', (ev) => {
+      this.actor.update({ 'system.saveFailures.third': !this.actor.system.saveFailures.third })
     })
 
     //==============Audio Triggers
