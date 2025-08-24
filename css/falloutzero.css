@@ -26,6 +26,21 @@
   font-family: 'fixedsys';
   src: url('/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf');
 }
+#pause {
+  background: url('/systems/arcane-arcade-fallout/assets/terminal_long.png');
+  background-size: cover;
+  height:300px;
+}
+#pause figcaption{
+  font-family: fixedsys;
+  color:var(--user-color);
+}
+#pause img {
+  content: url('/systems/arcane-arcade-fallout/assets/vaultboy/vaultboy.webp');
+  height:200px;
+  width:200px;
+}
+
 
 .AA-autorec-settings label {
   color: black;
