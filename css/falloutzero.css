@@ -26,6 +26,9 @@
   font-family: 'fixedsys';
   src: url('/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf');
 }
+input {
+    text-transform:capitalize
+}
 #pause {
   background: url('/systems/arcane-arcade-fallout/assets/terminal_long.png');
   background-size: cover;
@@ -1151,14 +1154,14 @@ body.game .app .tabs > [data-tab] {
   color: var(--sheetcolor)
 }
 
-.sheet label {
+.sheet label.specials{
   font-size: 13pt;
   padding: 5px;
 }
 
-  .sheet label.specials:hover {
-    color: #000;
-  }
+.sheet label.specials:hover {
+  color: #000;
+}
 
 .window-app .window-content label:active {
   color: var(--sheetcolor);
@@ -1451,7 +1454,6 @@ body.game .app .tabs > [data-tab] {
   margin-bottom:10px;
   border-left:solid 10px;
   border-right:solid 10px;
-  text-align:center;
   font-size:14pt;
 }
 .sheet.journal-entry.application .journal-sidebar .toc li.active .page-heading {

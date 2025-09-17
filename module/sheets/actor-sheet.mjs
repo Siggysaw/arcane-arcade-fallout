@@ -66,6 +66,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const PlaySounds = game.settings.get('core', 'PlaySounds')
     const ManualGroupSneak = game.settings.get('core', 'GroupSneak')
     const ManualPartyNerve = game.settings.get('core', 'PartyNerve')
+    const KeepZeroes = game.settings.get('core', 'KeepZeroes')
 
     if (actorData.system.health.value < 1 && !actorData.system.downed) {
       this.actor.update({ 'system.actionPoints.value': 4 })
@@ -80,11 +81,32 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const packrat = actorData.items.find((i) => i.name == 'Pack Rat')
     const capsLoad = CapsLoad ? Math.floor(actorData.system.caps / 50) : 0
 
+    // Delete Zeroed Items
+
+    const toDelete = [
+      'junkItem',
+      'material',
+      'ammo',
+      'medicine',
+      'miscItem',
+      'foodAnddrink',
+      'armorUpgrade',
+      'chem',
+    ]
+
+    let zeroes = actorData.items.filter((i) => i.system.quantity == 0)
+    for (let zero of zeroes) {
+      let zeroID = zero._id
+      if (toDelete.includes(zero.type)) {
+        let item = this.actor.items.get(zeroID)
+        // So GMs can't accidentally delete a player's items by opening their sheet
+        !KeepZeroes && game.user.role < 3 ? item.delete() : ''
+      }
+    }
+    
+
     actorData.system.carryLoad.base =
       actorData.items.reduce((acc, item) => {
-        if (item.system.qty === 0 && !KeepZeroes) {
-          console.log("0s need to be deleted")
-        }
         let { load = 0, quantity = 1 } = item.system
         if (item.type === "armor" && item.system.itemEquipped === true) {
           load = Math.floor(load / 2)
@@ -243,18 +265,18 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // Assign and return
     context.armorUpgrades = armorUpgrades
     context.upgrades = upgrades
-    context.gear = gear
+    context.gear = gear.sort((a, b) => a.name.localeCompare(b.name))
     context.features = features
-    context.perks = perks
-    context.armors = armors
+    context.perks = perks.sort((a, b) => a.name.localeCompare(b.name))
+    context.armors = armors.sort((a, b) => a.name.localeCompare(b.name))
     context.powerArmors = powerArmors
-    context.medicines = medicines
-    context.foodAnddrinks = foodAnddrinks
-    context.ammos = ammos
-    context.junk = junk
-    context.materials = materials
+    context.medicines = medicines.sort((a, b) => a.name.localeCompare(b.name))
+    context.foodAnddrinks = foodAnddrinks.sort((a, b) => a.name.localeCompare(b.name))
+    context.ammos = ammos.sort((a, b) => a.name.localeCompare(b.name))
+    context.junk = junk.sort((a, b) => a.name.localeCompare(b.name))
+    context.materials = materials.sort((a, b) => a.name.localeCompare(b.name))
     context.traits = traits
-    context.chems = chems
+    context.chems = chems.sort((a, b) => a.name.localeCompare(b.name))
     context.races = races
     context.conditions = conditions
     context.properties = properties

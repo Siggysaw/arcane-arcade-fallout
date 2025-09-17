@@ -1307,19 +1307,11 @@ export default class FalloutZeroActor extends Actor {
     const weapon = this.items.get(weaponId)
     const actor = this
     const ammoBase = weapon.system.ammo.type
+    let ammoList = this.items.filter((i) => i.type === "ammo").filter((i) => i.system.type == ammoBase)
     let message = "<select id='ammoselect' name=chosenammo>"
-    const ammoList = FALLOUTZERO.specialammo[ammoBase]
-    for (let ammo of ammoList.available) {
-      let ammoFullname = `${ammoBase} ${ammo}`
-      console.log(`${ammoBase} ${ammo}`)
-      if (ammoBase === ammo) {
-        ammoFullname = ammoBase
-      }
-      let ammoFound = this.items.find((item) => item.name === ammoFullname)
+    for (let ammo of ammoList) {
 
-      if (ammoFound) {
-        message += `<option value="${ammoFullname}">${ammoFullname.charAt(0).toUpperCase() + ammoFullname.slice(1)}: ${ammoFound.system.quantity}</option><br>`
-      }
+      message += `<option value="${ammo.name}">${ammo.name} (${ammo.system.quantity})</option><br>`
     }
     message += '</select>'
     new Dialog({
@@ -1338,6 +1330,7 @@ export default class FalloutZeroActor extends Actor {
       const chosenAmmo = html.find('select#ammoselect').val()
       const currentType = weapon.system.ammo.assigned
       const currentItem = actor.items.find((item) => item.name === currentType)
+      const ammoDescription = actor.items.find((item) => item.name === chosenAmmo).system.description
       const currentMag = weapon.system.ammo.capacity.value
       const energyWeapon =
         currentType.includes('Core') ||
@@ -1355,6 +1348,7 @@ export default class FalloutZeroActor extends Actor {
       }
 
       actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.assigned': chosenAmmo }])
+      actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.description': ammoDescription }])
       actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.ammo.capacity.value': 0 }])
     }
   }
@@ -1372,7 +1366,6 @@ export default class FalloutZeroActor extends Actor {
     const manualReload = weapon.system.description.includes('Manual Reload')
     const quickReload = weapon.system.description.includes('Quick Reload')
     const rapid = weapon.parent.items.find((i) => i.name == 'Rapid Reload')
-
 
     // Do you have the AP?
     let apCost = 6

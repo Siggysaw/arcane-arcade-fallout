@@ -226,6 +226,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.explosivesMastery = this.abilities['per'].mod + this.skills['explosives'].value
     this.unflipped = this.karmaCaps.filter(Boolean).length;
     this.totalKarma = this.karmaCaps.length;
+
   }
 }
 

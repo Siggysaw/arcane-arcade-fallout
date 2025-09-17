@@ -8,6 +8,33 @@ export function registerSystemSettings() {
     type: String,
     default: '0.0.0',
   })
+  game.settings.register('core', 'Sheet-Color', {
+    name: 'Your Sheet Theme Color',
+    hint: 'An override for sheet color. Green = #1bff80 / Amber = #ffb641 or you can use custom hex or just say "red" or "green" Blank puts it back to User Color being used.',
+    scope: 'client',
+    config: true,
+    type: String,
+    default: '',
+    requiresReload: true,
+  })
+  game.settings.register('core', 'VaultTec', {
+    name: 'Use Vault-Tec Colors',
+    hint: 'An Alternate Color Scheme Sponsored By Vault Tec!',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: false,
+    requiresReload: true,
+  })
+  game.settings.register('core', 'KeepZeroes', {
+    name: 'Keep Empty Items',
+    hint: 'Do Not Delete Items When They Hit 0 Quantity. This affects all consumables other than ammo',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: false,
+    requiresReload: false,
+  })
   game.settings.register('core', 'CarryLoad', {
     name: 'Exact Carry Load Calculator',
     hint: 'Checked: 23 x 10mm ammo = 2.3 load | Unchecked: 23 x 10mm ammo = 2 load',
@@ -61,24 +88,6 @@ export function registerSystemSettings() {
     type: Number,
     default: 0,
     requiresReload: false,
-  })
-  game.settings.register('core', 'Sheet-Color', {
-    name: 'Your Sheet Theme Color',
-    hint: 'An override for sheet color. Green = #1bff80 / Amber = #ffb641 or you can use custom hex or just say "red" or "green" Blank puts it back to User Color being used.',
-    scope: 'client',
-    config: true,
-    type: String,
-    default: '',
-    requiresReload: true,
-  })
-  game.settings.register('core', 'VaultTec', {
-    name: 'Use Vault-Tec Colors',
-    hint: 'An Alternate Color Scheme Sponsored By Vault Tec!',
-    scope: 'client',
-    config: true,
-    type: Boolean,
-    default: false,
-    requiresReload: true,
   })
   game.settings.register('core', 'DeductMovementAPInCombat', {
     name: 'Auto deduct movement AP',
@@ -171,7 +180,6 @@ export function registerHbsHelpers() {
     }
     return options.inverse(this)
   })
-
   // If Character is a NPC
   Handlebars.registerHelper('NPC', function (actorType, options) {
     if (actorType == 'npc') {

@@ -34,7 +34,7 @@
             </div>
             {{/GreaterThan}}
         </div>
-        <div data-tooltip="{{item.system.ammo.assigned}}"
+        <div data-tooltip="{{item.system.ammo.assigned}}{{#if item.system.ammo.description}}<hr />{{item.system.ammo.description}}{{/if}}"
              class="ammo-name">{{ item.system.ammo.assigned }}</div>
         <div class="weapon-capacity">
             {{ item.system.ammo.capacity.value }} / {{ item.system.ammo.capacity.max }}
