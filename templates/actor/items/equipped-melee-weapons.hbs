@@ -56,7 +56,7 @@
         {{/if}}
     </div>
     <div class="grid-span-2 weapon-stats">
-        <div>AP:{{system.apCost}}</div>
+        <div>AP:{{#Subtract system.apCost system.APSubtraction}}{{/Subtract}}</div>
         <div>Load:{{system.load}}</div>
         <div>STR:{{item.system.strengthRequirement}}</div>
         <div class="weapon-condition">
@@ -85,11 +85,11 @@
         </div>
     </div>
     <div class="grid-span-4 weapon-usage">
-        <div data-tooltip="NORMAL < DISADVANTAGED > NAT 20 REQUIRED">
-            {{ item.system.range.short }}ft - {{item.system.range.long}}ft
+        <div>
+            5ft.
         </div>
         <div data-tooltip="Bonus {{item.system.critical.formula}}{{#GreaterThan item.system.critical.multiplier 2}}x{{item.system.critical.multiplier}}{{/GreaterThan}} Damage {{item.system.critical.condition}}">
-            Crit:{{#Subtract item.system.critical.dice ../actor.system.critMod}}{{/Subtract}}
+            Crit:{{#Subtract system.critMeleeBonus ../actor.system.critMod}}{{/Subtract}}
         </div>
         {{#each item.system.damages as |damage|}}
         <div class="weapon-damage">{{damage.formula}} {{damage.type}}</div>
@@ -158,7 +158,7 @@
         {{/if}}
     </div>
     <div class="grid-span-2 weapon-stats">
-        <div>AP:{{system.apCost}}</div>
+        <div>AP:{{#Subtract system.apCost system.APSubtraction}}{{/Subtract}}</div>
         <div>Load:{{system.load}}</div>
         <div>STR:{{item.system.strengthRequirement}}</div>
         <div class="weapon-condition">
@@ -191,7 +191,7 @@
             {{ item.system.range.short }}ft - {{item.system.range.long}}ft
         </div>
         <div data-tooltip="Bonus {{item.system.critical.formula}}{{#GreaterThan item.system.critical.multiplier 2}}x{{item.system.critical.multiplier}}{{/GreaterThan}} Damage {{item.system.critical.condition}}">
-            Crit:{{#Subtract item.system.critical.dice ../actor.system.critMod}}{{/Subtract}}
+            Crit:{{#Subtract system.critMeleeBonus ../actor.system.critMod}}{{/Subtract}}
         </div>
         {{#each item.system.damages as |damage|}}
         <div class="weapon-damage">{{damage.formula}} {{damage.type}}</div>

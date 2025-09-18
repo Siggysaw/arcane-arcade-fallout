@@ -26,13 +26,10 @@
   font-family: 'fixedsys';
   src: url('/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf');
 }
-input {
-    text-transform:capitalize
-}
 #pause {
   background: url('/systems/arcane-arcade-fallout/assets/terminal_long.png');
   background-size: cover;
-  height:300px;
+  height: 300px;
 }
 #pause figcaption{
   font-family: fixedsys;

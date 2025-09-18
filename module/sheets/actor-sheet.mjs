@@ -77,12 +77,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this.actor.update({ 'system.downed': false })
     }
 
-    // Calculate Carry Load
-    const packrat = actorData.items.find((i) => i.name == 'Pack Rat')
-    const capsLoad = CapsLoad ? Math.floor(actorData.system.caps / 50) : 0
-
     // Delete Zeroed Items
-
     const toDelete = [
       'junkItem',
       'material',
@@ -103,8 +98,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         !KeepZeroes && game.user.role < 3 ? item.delete() : ''
       }
     }
-    
 
+    // Calculate Carry Load
+    const packrat = actorData.items.find((i) => i.name == 'Pack Rat')
+    const capsLoad = CapsLoad ? Math.floor(actorData.system.caps / 50) : 0
+    
     actorData.system.carryLoad.base =
       actorData.items.reduce((acc, item) => {
         let { load = 0, quantity = 1 } = item.system

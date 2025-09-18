@@ -19,7 +19,7 @@ export default class AttackRoll extends FormApplication {
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
       apCost: this.weapon.system.apCost,
-      totalApCost: this.weapon.system.apCost,
+      totalApCost: this.weapon.system.apCost - this.weapon.system.APSubtraction,
       adjustedApCost: 0,
       critical: this.weapon.system.critical,
       repeat: 1,

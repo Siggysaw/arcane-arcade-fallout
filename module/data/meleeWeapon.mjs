@@ -8,6 +8,8 @@ export default class FalloutZeroMeleeWeapon extends FalloutZeroWeapon {
     schema.abilityMod = new fields.StringField({ initial: 'str' })
     schema.skillBonus = new fields.StringField({ initial: 'melee_weapons' })
     schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
+    schema.critMeleeBonus = new fields.NumberField({ initial: 0 })
+    schema.APSubtraction = new fields.NumberField({ initial: 0 })
     schema.consumesAmmo = new fields.BooleanField({ initial: false })
     schema.hideItem = new fields.BooleanField({ initial: false })
     schema.junk = new fields.SchemaField({
@@ -25,5 +27,16 @@ export default class FalloutZeroMeleeWeapon extends FalloutZeroWeapon {
 
   prepareDerivedData() {
     super.prepareDerivedData()
+    //========= PERK AUTOMATION
+    function searchItems(actor, search) {
+      return actor.parent.items.find((i) => i.name == search)
+    }
+
+    const slayer = searchItems(this.parent, "Slayer")
+    if (slayer) {
+      this.critMeleeBonus = this.critical.dice - 1
+      this.APSubtraction = 1
+    }
+    console.log(`DETAILS INCOMING! Crit Dice: ${this.critical.dice} / Slayer Stats: Crit ${this.critMeleeBonus} & APBonus: ${this.APSubtraction}`)
   }
 }
