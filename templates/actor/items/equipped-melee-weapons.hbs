@@ -187,8 +187,8 @@
         </div>
     </div>
     <div class="grid-span-4 weapon-usage">
-        <div data-tooltip="NORMAL < DISADVANTAGED > NAT 20 REQUIRED">
-            {{ item.system.range.short }}ft - {{item.system.range.long}}ft
+        <div>
+            5ft.
         </div>
         <div data-tooltip="Bonus {{item.system.critical.formula}}{{#GreaterThan item.system.critical.multiplier 2}}x{{item.system.critical.multiplier}}{{/GreaterThan}} Damage {{item.system.critical.condition}}">
             Crit:{{#Subtract system.critMeleeBonus ../actor.system.critMod}}{{/Subtract}}

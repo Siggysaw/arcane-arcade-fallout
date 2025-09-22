@@ -36,7 +36,8 @@ export default class FalloutZeroMeleeWeapon extends FalloutZeroWeapon {
     if (slayer) {
       this.critMeleeBonus = this.critical.dice - 1
       this.APSubtraction = 1
+    } else {
+      this.critMeleeBonus = this.critical.dice
     }
-    console.log(`DETAILS INCOMING! Crit Dice: ${this.critical.dice} / Slayer Stats: Crit ${this.critMeleeBonus} & APBonus: ${this.APSubtraction}`)
   }
 }

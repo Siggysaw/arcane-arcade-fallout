@@ -9,6 +9,8 @@ export default class FalloutZeroRangedWeapon extends FalloutZeroWeapon {
     schema.skillBonus = new fields.StringField({ initial: 'guns' })
     schema.quantity = new fields.StringField({ initial: '1' })
     schema.consumesAmmo = new fields.BooleanField({ initial: true })
+    schema.critMeleeBonus = new fields.NumberField({ initial: 0 })
+    schema.APSubtraction = new fields.NumberField({ initial: 0 })
     schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
     schema.junk = new fields.SchemaField({
       quantity1 : new fields.NumberField({initial:3, min: 0,}),
