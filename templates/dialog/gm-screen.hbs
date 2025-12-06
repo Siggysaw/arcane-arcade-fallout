@@ -143,13 +143,17 @@
                     <div>I</div>
                     <div>A</div>
                     <div>L</div>
-                    <div>{{actor.system.abilities.str.value}}</div>
-                    <div>{{actor.system.abilities.per.value}}</div>
-                    <div>{{actor.system.abilities.end.value}}</div>
-                    <div>{{actor.system.abilities.cha.value}}</div>
-                    <div>{{actor.system.abilities.int.value}}</div>
-                    <div>{{actor.system.abilities.agi.value}}</div>
-                    <div>{{actor.system.abilities.lck.value}}</div>
+                    <div data-tooltip="{{#GreaterThan actor.system.abilities.str.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.str.mod}}">{{actor.system.abilities.str.value}}</div>
+                    <div data-tooltip="{{#GreaterThan actor.system.abilities.per.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.per.mod}}">{{actor.system.abilities.per.value}}</div>
+                    <div data-tooltip="{{#GreaterThan actor.system.abilities.end.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.end.mod}}">{{actor.system.abilities.end.value}}</div>
+                    <div data-tooltip="{{#GreaterThan actor.system.abilities.cha.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.cha.mod}}">{{actor.system.abilities.cha.value}}</div>
+                    <div data-tooltip="{{#GreaterThan actor.system.abilities.int.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.int.mod}}">{{actor.system.abilities.int.value}}</div>
+                    <div data-tooltip="{{#GreaterThan actor.system.abilities.agi.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.agi.mod}}">{{actor.system.abilities.agi.value}}</div>
+                    <div data-tooltip="{{#GreaterThan actor.system.abilities.lck.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.lck.mod}}">{{actor.system.abilities.lck.value}}</div>
+
+
+
+
                 </div>
                 <div class="karmaCaps">
                     {{#each actor.system.karmaCaps as |flipped key|}}
@@ -158,6 +162,7 @@
                            {{checked flipped}} disabled />
                     {{/each}}
                 </div>
+                <div>Caps: {{actor.system.caps}}</div>
                 <div class="grid grid-4col stat-block">
                     <div data-tooltip="Armor Class" class="stat-icon"><i class="fa-solid fa-shield"></i></div>
                     <div class="stat-value">{{actor.system.armorClass.value}}</div>

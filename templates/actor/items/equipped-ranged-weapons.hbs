@@ -42,7 +42,7 @@
             {{#GreaterThan ammo.system.quantity 0}}({{ammo.system.quantity}}){{/GreaterThan}}
             {{/each}}
             <i style="float:right;"
-               data-tooltip="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+               data-tooltip="AP to Reload: {{#Reload item.system.description item.system.apCost ../this.items}}{{/Reload}}<br>You Have Reloaded {{ system.reloadDecay }} Times <hr> 10 Reloads = 1 Level of Decay"
                data-reload
                data-weapon-id="{{ item._id }}"
                class="fa fa-refresh"></i>
@@ -144,7 +144,7 @@
             {{#GreaterThan ammo.system.quantity 0}}({{ammo.system.quantity}}){{/GreaterThan}}
             {{/each}}
             <i style="float:right;"
-               data-tooltip="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+               data-tooltip="AP to Reload: {{#Reload item.system.description item.system.apCost ../this.items}}{{/Reload}}<br>You Have Reloaded {{ system.reloadDecay }} Times <hr> 10 Reloads = 1 Level of Decay"
                data-reload
                data-weapon-id="{{ item._id }}"
                class="fa fa-refresh"></i>

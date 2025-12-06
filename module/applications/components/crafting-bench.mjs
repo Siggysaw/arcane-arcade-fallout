@@ -307,7 +307,8 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       openBranches: this.openBranches,
       materials: this.materials,
       skills: this.skills,
-      skillBonus: this.actor.system.abilities.int.mod,
+      luck: this.actor.system.luckmod,
+      abilityBonus: this.actor.system.abilities.int.mod,
       owned: this.owned,
       hasRequirements: this.hasRequirements,
       searchQuery: this.searchQuery,
@@ -357,7 +358,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
   get hasRequirements() {
     return this.allRequirements.reduce((passes, req) => {
-      this.skillBonus = this.skills[req.key] + this.actor.system.abilities.int.mod
+      this.skillBonus = this.skills[req.key] + this.actor.system.abilities.int.mod + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
       if (this.skillBonus < req.dc) {
         passes = false
       }

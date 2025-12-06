@@ -154,14 +154,19 @@ export function registerHbsHelpers() {
   })
 
 
-  Handlebars.registerHelper('Reload', function (v1) {
-    if (v1.includes("Manual Reload")) {
-      return 1
+  Handlebars.registerHelper('Reload', function (v1, v2, v3) {
+    let apCost = 6
+    const manualReload = v1.includes("Manual Reload")
+    const quickReload = v1.includes("Quick Reload")
+
+    quickReload ? apCost = 4 : ''
+    manualReload ? apCost = 1 : ''
+    if (v3) {
+      const rapidReload = v3.find((i) => i.name === "Rapid Reload")
+      rapidReload ? apCost = apCost - 3 : ''
     }
-    if (v1.includes("Quick Reload")) {
-      return 4
-    }
-    return 6
+    apCost < 1 ? apCost = 1 : ''
+    return apCost
   })
 
   Handlebars.registerHelper('log', function (v1) {

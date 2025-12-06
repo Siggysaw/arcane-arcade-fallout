@@ -1,36 +1,43 @@
 <form class="{{ cssClass }}{{#isVaultTec}} vaulttec {{/isVaultTec}}" autocomplete="off">
     <header class="sheet-header">
-        <img class="profile-img" src="{{ item.img }}" data-edit="img" data-tooltip="{{ item.name }}" />
+        <img class="profile-img bla" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
         <div class="header-fields">
             <h1 class="charname">
                 <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
-                </h1>
-            <div class="grid grid-3col">
-                <div class="weapon-label">Qty:<input style="width:30px;" type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
-                <div class="weapon-label">Load:<input style="width:30px;" type="number" name="system.load" value="{{ system.load }}" /></div>
-                <div class="weapon-label">Cost:<input style="width:30px;" type="number" name="system.cost" value="{{ system.cost }}" /></div>
-
-            </div>
+            </h1>
+            <table>
+                <tr>
+                    <td>Cost</td>
+                    <td>Load</td>
+                    <td>Quantity</td>
+                </tr>
+                <tr>
+                    <td><input type="number" name="system.cost" value="{{ system.cost }}" /></td>
+                    <td><input type="number" name="system.load" value="{{ system.load }}" /></td>
+                    <td><input type="number" name="system.quantity" value="{{ system.quantity }}" min="0" /></td>
+                    <td><input type="text" name="system.type" value="{{ system.type }}" /></td>
+                </tr>
+            </table>
         </div>
     </header>
     {{!-- Sheet Tab Navigation --}}
-<nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="breakdown">Breakdown</a>
-    <a class="item" data-tab="effects">Effects</a>
-</nav>
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="description">Description</a>
+        <a class="item" data-tab="crafting">Crafting</a>
+        <a class="item" data-tab="effects">Effects</a>
+    </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Description Tab --}}
         <div class="tab" item-description data-group="primary" data-tab="description">
-                <div style="border:solid 1px;padding:5px;min-height:200px;">
-                    {{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}
-                </div>
+            {{#CheckLang 'en'}}{{editor system.description target="system.description" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
+            {{#CheckLang 'pt-BR'}}{{editor system.description_br target="system.description_br" rollData=rollData button=true owner=owner engine="prosemirror" editable=editable}}{{/CheckLang}}
         </div>
-        {{!-- Breakdown Tab --}}
-        <div class="tab breakdown" data-group="primary" data-tab="breakdown">
+        {{!-- Crafting Tab --}}
+        <div class="tab crafting" data-group="primary" data-tab="crafting">
             {{> "systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs"}}
+            {{> "systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs"}}
         </div>
         {{!-- Effects Tab --}}
         <div class="tab effects" data-group="primary" data-tab="effects">
@@ -38,3 +45,5 @@
         </div>
     </section>
 </form>
+
+{{log system}}

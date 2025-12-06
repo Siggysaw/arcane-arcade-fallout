@@ -81,7 +81,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const toDelete = [
       'junkItem',
       'material',
-      'ammo',
       'medicine',
       'miscItem',
       'foodAnddrink',
@@ -153,7 +152,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const ArmorID = PowerArmor[0]._id
       this.actor.PowerArmorHealth(ArmorID)
     }
-
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData()
 
@@ -803,7 +801,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const itemId = ev.currentTarget.dataset.itemId
       const item = this.actor.items.get(itemId)
       let cost = 3
-      item.type == "powerArmor" ? cost = 6 : cost = cost
+      item.type == "powerArmor" ? cost = 6 : ''
+      const quickDraw = this.actor.items.find((i) => i.name == 'Quick Draw')
+      quickDraw ? cost = cost - 2 : ''
 
       if (item.type === 'armor') {
         return item.system.itemEquipped ? this.actor.unEquipArmor(item.uuid) : this.actor.equipArmor(item.uuid)
@@ -1044,14 +1044,14 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-add-decay]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       let newDecay = Number(ev.target.dataset.fieldvalue) + 1
-      console.log(newDecay)
+      //console.log(newDecay)
       this.actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.decay': newDecay }])
     })
     // Updates Weapon Decay
     html.on('click', '[data-reduce-decay]', (ev) => {
       const weaponId = ev.currentTarget.dataset.weaponId
       let newDecay = Number(ev.target.dataset.fieldvalue) - 1
-      console.log(newDecay)
+      //console.log(newDecay)
       this.actor.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.decay': newDecay }])
     })
 

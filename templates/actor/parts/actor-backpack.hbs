@@ -53,12 +53,14 @@
             <div class="grid-span-3"><i class="fas fa-weight-hanging"></i></div>
         </div>
         {{#each ammos as |item id|}}
+        {{#GreaterThan item.system.quantity 1}}
         <div class="grid grid-20col backpack-row" data-item-id="{{item._id}}">
             <div class="grid-span-11 context-menu" data-item-id="{{item._id}}"><li class="item" data-item-id="{{ item._id }}" draggable="true">{{item.name}}</li></div>
             <div class="grid-span-3">{{item.system.cost}}</div>
             <div class="grid-span-3">{{item.system.quantity}}</div>
             <div class="grid-span-3" data-tooltip="Qty ({{item.system.quantity}}) x Load ({{item.system.load}})">{{#Multiply item.system.load item.system.quantity}}{{/Multiply}}</div>
         </div>
+        {{/GreaterThan}}
         {{/each}}
         {{#if explosives}}<h3>Explosives</h3>
         <div class="grid grid-20col labels">

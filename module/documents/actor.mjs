@@ -1319,7 +1319,7 @@ export default class FalloutZeroActor extends Actor {
       content: message,
       buttons: {
         button1: {
-          label: 'Display Value',
+          label: 'Swap To This Ammo',
           callback: (html) => setammo(html),
           icon: `<i class="fas fa-check"></i>`,
         },
@@ -1436,6 +1436,7 @@ export default class FalloutZeroActor extends Actor {
       updatedAmmo = ammoOwned - 1
       this.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     } else {
+      rapid && ammoReloaded > 3 && manualReload ? updatedAmmo = ammoOwned - 3 :''
       this.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     }
 
@@ -2219,7 +2220,10 @@ export default class FalloutZeroActor extends Actor {
   }
 
   getAttackBonus() {
-    return this.system.attackBonus
+    let finesse = this.items.find((i) => i.name == 'Finesse')
+    let penalty = 0
+    finesse ? finesse.system.wildWasteland ? penalty = 2 : penalty = 1 :''
+    return this.system.attackBonus - penalty
   }
 
   getDamageBonus() {

@@ -296,7 +296,6 @@ export default class AttackRoll extends FormApplication {
 
     const attackTooltip = `
       <div>
-        <div>Die roll: ${roll.result.split(' ')[0]}</div><br />
         <div>Skill bonus: ${skillBonus}</div>
         <div>Perks bonus: ${attackBonus}</div>
         <div>Ability bonus: ${abilityBonus}</div>
@@ -310,7 +309,6 @@ export default class AttackRoll extends FormApplication {
     `
     const damageTooltip = `
       <div>
-        <div>Die roll: ${roll.result.split(' ')[0]}</div>
         <div>Ability bonus: ${abilityBonus}</div>
        <div>Traits/Perks bonus: ${damageBonus}</div>`
 
@@ -326,7 +324,17 @@ export default class AttackRoll extends FormApplication {
           : damage.formula + `+ ${damageBonus || ''} + ${bonusdamage || ''}`,
       }
     })
-
+    if (this.actor.type != "npc") {
+      let finesse = this.actor.items.find((i) => i.name == 'Finesse')
+      let critBonus = 1
+      if (finesse) {
+        finesse.system.wildWasteland ? critBonus = 2 : ''
+        const startCrit = this.weapon.system.critical.formula
+        const startMult = this.weapon.system.critical.multiplier
+        startCrit ? this.weapon.system.critical.formula = Number(startCrit.split("d")[0]) + critBonus + "d" + startCrit[2] : ''
+        startMult > 1 ? this.weapon.system.critical.multiplier = this.weapon.system.critical.multiplier + critBonus : ''
+      }
+    }
     /**
      * Display roll to hit chat message
      */

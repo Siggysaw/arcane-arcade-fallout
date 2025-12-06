@@ -35,10 +35,7 @@
                     {{requirement.key}}
                 </div>
                 <div>
-                    <div class="grid grid-2col">
-                        <div>INT:{{../skillBonus}}</div>
-                        <div>SKILL:{{lookup ../skills requirement.key}}</div>
-                    </div>
+                        <div data-tooltip="INT + SKILL + LUCK">{{../abilityBonus}} + {{lookup ../skills requirement.key}} + {{../luck}}</div>
                 </div>
                 <div style="padding:10px;">{{ requirement.dc }}</div>
                 <div style="padding:10px;">
