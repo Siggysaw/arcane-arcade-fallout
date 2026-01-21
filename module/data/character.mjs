@@ -127,6 +127,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       modifiers: new fields.NumberField({ initial: 0 })
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
+    schema.boostDice = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
     schema.activePartymember = new fields.BooleanField({ initial: true })
     schema.editToggle = new fields.BooleanField({ initial: true })
@@ -136,9 +137,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
 
   prepareBaseData() {
     super.prepareBaseData()
-    /*for (const key in this.penalties) {
-      this.penalties[key].label = FALLOUTZERO.penalties[key].label
-    }*/
     for (const key in this.limbdamage) {
       this.limbdamage[key].description = FALLOUTZERO.limbdamage[key].description
       this.limbdamage[key].label = FALLOUTZERO.limbdamage[key].label
@@ -180,12 +178,28 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const aliveandkickin = searchItems(this, "Alive and Kickin'")
     const packrat = searchItems(this, "Pack Rat")
     const dumbLuck = searchItems(this, "Dumb Luck")
+    const evolution = searchItems(this, "Evolution")
+    const actionHero = searchItems(this, "Action Hero")
 
     alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
     dumbLuck ? this.luckmod = this.abilities['lck'].mod : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     dumbLuck && dumbLuck.system.quantity > 1 ? this.luckmod = this.abilities['lck'].mod + 2 : ''
+    actionHero ? this.actionPoints.boostMax += 2 : ''
+    actionHero && this.actionPoints.max > 15 ? this.actionPoints.max = 15 : ''
+    if (evolution) {
+      this.health.boostMax += this.level
+      this.stamina.boostMax += this.level
+      this.armorClass.modifiers += 1
+      this.damageThreshold.modifiers += 1
+    }
+
+    //========= Condition Automation
+    const stimulant = searchItems(this, "Stimulant")
+    const superstimulant = searchItems(this, "Superstimulant")
+    const hyperstimulant = searchItems(this, "Hyperstimulant")
+
     //========= ARMOR AUTOMATION
     function searchArmor(actor) {
       const armorFound = actor.parent.items.find((i) => i.system.itemEquipped == true && i.type == "armor")
@@ -221,12 +235,15 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.carryLoad.baseMax = this.abilities['str'].value * 10
     this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
     this.healingRate.value = this.healingRate.base + Math.floor((this.level + this.abilities['end'].value) / 2) + this.healingRate.modifiers
-    this.level > 2 ? this.health.tooltip = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['end'].mod) : this.health.tooltip = this.abilities['end'].mod + 10
-    this.level > 2 ? this.stamina.tooltip = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) : this.stamina.tooltip = this.abilities['agi'].mod + 10
-    this.actionPoints.tooltip = this.abilities['agi'].mod + 10
+    this.health.max = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['end'].mod) + this.health.boostMax
+    this.stamina.max = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) + this.stamina.boostMax
+    this.actionPoints.max = this.abilities['agi'].mod + 10 + this.actionPoints.boostMax
+    this.actionPoints.max > 15 ? this.actionPoints.max = 15 : ''
     this.explosivesMastery = this.abilities['per'].mod + this.skills['explosives'].value
     this.unflipped = this.karmaCaps.filter(Boolean).length;
     this.totalKarma = this.karmaCaps.length;
+    (superstimulant || hyperstimulant) && this.penalties.exhaustion.base == 0 ? this.boostDice += 2 : ''
+    stimulant && this.penalties.exhaustion.base == 0 ? this.boostDice += 1 : ''
 
   }
 }

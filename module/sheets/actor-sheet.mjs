@@ -2,6 +2,7 @@ import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import SkillRoll from '../dice/skill-roll.mjs'
 import PerkListApplication from '../applications/components/perk-list.mjs'
+import ChemApplication from '../applications/components/chem-application.mjs'
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -449,12 +450,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: '4AP Use Chem',
-        icon: '<i class="fas fa-syringe"></i>',
+        name: 'Use on Self',
+        icon: '4AP ',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type == 'chem' && item.system.quantity > 0 && (this.actor.system.actionPoints.value > 3 || !this.actor.inCombat)) {
+          if ((item.type == 'chem'|| item.type =='medicine') && item.system.quantity > 0 && (this.actor.system.actionPoints.value > 3 || !this.actor.inCombat)) {
             return true
           }
         },
@@ -465,19 +466,19 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
       },
       {
-        name: '4AP Use Med',
-        icon: '<i class="fas fa-medkit"></i>',
+        name: 'Use on Others',
+        icon: '4AP ',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if (item.type == 'medicine' && item.system.quantity > 0 && (this.actor.system.actionPoints.value > 3 || !this.actor.inCombat)) {
+          if ((item.type == 'chem' || item.type =='medicine') && item.system.quantity > 0 && (this.actor.system.actionPoints.value > 3 || !this.actor.inCombat)) {
             return true
           }
         },
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          this.actor.applyApCost(4) ? this.actor.lowerInventory(itemId) : console.log("Failed To Apply Cost")
+          new game.falloutzero.applications.components.ChemApplication(game.actors.filter((actor) => actor.type === "character"), itemId, this.actor).render(true)
         },
       },
       {
@@ -778,8 +779,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
     // Ability Roll Button
     html.on('click', '[data-abilityroll]', (ev) => {
-      const ability = ev.currentTarget.dataset.abilityroll
-      this.actor.abilityRoll(ability)
+      let ability = ev.currentTarget.dataset.abilityroll
+      let special = this.actor.system.abilities[ability]
+      console.log("SPECIAL HERE!",special)
+      new game.falloutzero.applications.components.AbilityRoll(this.actor,special).render(true)
+
     })
 
     // Toggle Edit Mode

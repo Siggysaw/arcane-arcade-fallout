@@ -7,6 +7,7 @@ import ChoosePerk from './choose-perk.mjs'
 import CraftingBench from './crafting-bench.mjs'
 import SelectUpgrade from './select-upgrade.mjs'
 import ChemApplication from './chem-application.mjs'
+import AbilityRoll from './ability-roll.mjs'
 
 
 window.customElements.define('damage-application', DamageApplicationElement)
@@ -21,4 +22,5 @@ export {
     CraftingBench,
     SelectUpgrade,
     ChemApplication,
+    AbilityRoll
 }

@@ -13,6 +13,7 @@ export default class SkillRoll extends FormApplication {
       skillBonus: this.actor.getSkillBonus(skillKey),
       actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
       actorPenalties: this.actor.system.penaltyTotal,
+      actorBoost: this.actor.system.boostDice,
       bonus: '',
       advantageMode:
         this.skill.advantage === 0
@@ -109,13 +110,13 @@ export default class SkillRoll extends FormApplication {
     /**
      * Deconstruct dialog form
      */
-    const { skillBonus, selectedAbility, actorLuck, actorPenalties, bonus } = this.formDataCache
-    const abilityBonus = this.actor.getAbilityMod(selectedAbility)
+    let { skillBonus, selectedAbility, actorLuck, actorPenalties,actorBoost, bonus } = this.formDataCache
+    let abilityBonus = this.actor.getAbilityMod(selectedAbility)
     /**
      * Roll to hit
      */
     const roll = new Roll(
-      `${this.getDice()} + ${skillBonus} + ${abilityBonus} + ${actorLuck} + ${bonus || 0} - ${actorPenalties}`,
+      `${this.getDice()} + ${abilityBonus} + ${bonus || 0} + ${actorBoost || 0} - ${actorPenalties}`,
       this.actor.getRollData(),
     )
 

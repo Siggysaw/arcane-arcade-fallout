@@ -323,6 +323,7 @@ export default class AttackRoll extends FormApplication {
           ? this.getTargetedDamage(damage.formula + ` + ${damageBonus} + ${bonusdamage || ''}`)
           : damage.formula + `+ ${damageBonus || ''} + ${bonusdamage || ''}`,
       }
+      console.log("MAYBE THIS WORKS", damage.formula)
     })
     if (this.actor.type != "npc") {
       let finesse = this.actor.items.find((i) => i.name == 'Finesse')

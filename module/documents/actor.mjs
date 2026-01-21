@@ -396,65 +396,6 @@ export default class FalloutZeroActor extends Actor {
       })
     }
   }
-
-
-
-
-  // Ability Roll
-  async abilityRoll(rolledAbility) {
-    const myDialogOptions = { width: 275, resizable: true }
-    const myContent = await renderTemplate(
-      'systems/arcane-arcade-fallout/templates/actor/dialog/ability-roll.hbs',
-    )
-    const actor = this
-    const abilities = this.system.abilities[rolledAbility]
-    new Dialog(
-      {
-        title: `${abilities.label} Roll`,
-        content: myContent,
-        buttons: {
-          button1: {
-            label: 'Roll It!',
-            callback: (html) => rollDice(html, actor, rolledAbility),
-          },
-        },
-      },
-      myDialogOptions,
-    ).render(true)
-
-    async function rollDice(html, actor, rolledAbility) {
-      let theAbility = actor.system.abilities[rolledAbility]
-      const withModifiers = html.find('select#modified').val()
-      const withAdvantage = html.find('select#advantage').val()
-      let rollBonus = html.find('input#bonus').val()
-      let rollInput = ``
-
-      if (withAdvantage == 'false') {
-        rollInput += '1d20'
-      } else {
-        rollInput += `2d20${withAdvantage}`
-      }
-      rollInput += `+ ${theAbility.mod}`
-      if (withModifiers === 'true') {
-        const penaltyTotal = actor.system.penaltyTotal
-        if (penaltyTotal > 0) {
-          rollInput += ` - ${penaltyTotal}`
-        }
-      }
-      if (rollBonus.length > 0) {
-        rollInput += `+ ${rollBonus}`
-      }
-      const roll = new Roll(`${rollInput}`, actor.getRollData())
-      await roll.evaluate()
-
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this }),
-        flavor: `${actor.name} Performed a ${theAbility.label} Check!`,
-        rollMode: game.settings.get('core', 'rollMode'),
-      })
-    }
-  }
-
   // Short Rest and Long Rest Button Functionality
   restRecovery(rest) {
     const raceItem = this.items.filter((i) => i.type == 'race')
@@ -828,10 +769,6 @@ export default class FalloutZeroActor extends Actor {
     })
   }
 
-  testingMessage(chosenCharacter) {
-    console.log("YUP YOU MADE IT!",chosenCharacter)
-  }
-
   //Consume item
   async lowerInventory(itemId, actor) {
     !actor ? actor = this : ''
@@ -842,6 +779,14 @@ export default class FalloutZeroActor extends Actor {
     const description = item.system.description
     let details = description
     let chatContent = ``
+
+    //Update Healing Items to take Ghouls into account
+    const isGhoul = actor.items.find((i) => i.name == "Ghoul")
+    if (isGhoul && item.system.modifiers.path1.includes('system.health.value') && !item.system.modifiers.value1.includes(' / 2')) {
+      const newPath = item.system.modifiers.value1 + " / 2 "
+      await item.update({'system.modifiers.value1': newPath})
+    }
+
     if (item.type != 'explosive') {
       if (item.type == 'food-and-drinks' || item.type == 'chems') {
         details = description.replace('<p>', "<p>It's ")
@@ -989,6 +934,7 @@ export default class FalloutZeroActor extends Actor {
                     newArray = ef.changes
                     for (var change of newArray) {
                       if (change.value.includes('@')) {
+                        console.log("OVER HERE!",change)
                         change.value = await actor.evaluateAtFormula(change.value)
                       }
                     }

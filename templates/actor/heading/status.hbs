@@ -13,14 +13,15 @@
                            type="number"
                            class="numberwithbuttons"
                            name="system.health.value"
-                           value="{{ health.value }}" />
+                           value="{{ health.value }}" 
+                            />
                     /
                     <input style="height:30px"
                            type="number"
                            class="numberwithbuttons"
                            name="system.health.max"
-                           data-tooltip="Base Max = {{ health.tooltip }}"
-                           value="{{ health.max }}" />
+                           value="{{ health.max }}"
+                           disabled />
                 </tr>
                 <tr>
                     <td>Bonus:</td>
@@ -56,8 +57,8 @@
                            type="number"
                            class="numberwithbuttons"
                            name="system.stamina.max"
-                           data-tooltip="Base Max = {{ stamina.tooltip }}"
-                           value="{{ stamina.max }}" />
+                           value="{{ stamina.max }}"
+                           disabled/>
                 </tr>
                 <tr>
                     <td>Bonus:</td>
@@ -94,8 +95,8 @@
                            type="number"
                            class="numberwithbuttons"
                            name="system.actionPoints.max"
-                           data-tooltip="Base Max = {{ system.actionPoints.tooltip }}"
-                           value="{{ system.actionPoints.max }}" />
+                           value="{{ system.actionPoints.max }}" 
+                           disabled/>
                 </tr>
                 <tr>
                     <td>Bonus:</td>

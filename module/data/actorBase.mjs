@@ -26,12 +26,19 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         ...requiredInteger,
         initial: 10,
       }),
+      maxModifiers: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
       temp: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
       }),
       tooltip: new fields.NumberField({
         ...requiredInteger,
+        initial: 0,
+      }),
+      boostMax: new fields.NumberField({
         initial: 0,
       }),
     })
@@ -55,6 +62,9 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
       }),
       tooltip: new fields.NumberField({
         ...requiredInteger,
+        initial: 0,
+      }),
+      boostMax: new fields.NumberField({
         initial: 0,
       }),
     })

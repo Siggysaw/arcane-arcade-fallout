@@ -3,7 +3,7 @@
       <fieldset>
           <legend>Bonuses / Penalties</legend>
           <div class="flex space-between">
-              <div>Skill Bonus:</div>
+              <div>Skill:</div>
               <div>{{ skillBonus }}</div>
           </div>
           <div class="flex space-between">
@@ -15,12 +15,16 @@
               <div>{{ actorLuck }}</div>
           </div>
           <div class="flex space-between">
+              <div>Other:</div>
+              <div>{{ actorBoost }}</div>
+          </div>
+          <div class="flex space-between">
               <div>Penalties:</div>
               <div>{{ actorPenalties }}</div>
           </div><hr />
           <div class="flex space-between">
               <div>Total:</div>
-              <div>{{#Skills skillBonus selectedAbilityBonus actorLuck actorPenalties}}{{/Skills}}</div>
+              <div>{{#Skills skillBonus actorBoost selectedAbilityBonus actorLuck actorPenalties}}{{/Skills}}</div>
           </div>
       </fieldset>
   </div>
