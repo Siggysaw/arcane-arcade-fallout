@@ -1,9 +1,7 @@
-2026/01/22-19:33:36.320 f11c Recovering log #1691
-2026/01/22-19:33:36.329 f11c Delete type=0 #1691
-2026/01/22-19:33:36.329 f11c Delete type=3 #1690
-2026/01/22-21:23:22.407 1136c Compacting 1@0 + 1@1 files
-2026/01/22-21:23:22.420 1136c Generated table #1694@0: 211 keys, 113552 bytes
-2026/01/22-21:23:22.420 1136c Compacted 1@0 + 1@1 files => 113552 bytes
-2026/01/22-21:23:22.424 1136c compacted to: files[ 0 1 0 0 0 0 0 ]
-2026/01/22-21:23:22.424 1136c Delete type=2 #1684
-2026/01/22-21:23:22.424 1136c Delete type=2 #1688
+2026/01/23-01:00:24.016 14124 Log #1697: 1 ops saved to Table #1698 OK
+2026/01/23-01:00:24.016 14124 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\conditions/001697.log: OK
+2026/01/23-01:00:24.022 14124 Table #1694: 211 entries OK
+2026/01/23-01:00:24.022 14124 Table #1696: 22 entries OK
+2026/01/23-01:00:24.022 14124 Table #1698: 1 entries OK
+2026/01/23-01:00:24.027 14124 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\conditions/MANIFEST-001695: OK
+2026/01/23-01:00:24.032 14124 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\conditions; recovered 3 files; 125096 bytes. Some data may have been lost. ****

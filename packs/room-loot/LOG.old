@@ -1,3 +1,5 @@
-2026/01/22-19:33:36.345 f4e8 Recovering log #1480
-2026/01/22-19:33:36.353 f4e8 Delete type=0 #1480
-2026/01/22-19:33:36.353 f4e8 Delete type=3 #1479
+2026/01/23-01:00:24.072 14124 Log #1484: 0 ops saved to Table #1485 OK
+2026/01/23-01:00:24.072 14124 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot/001484.log: OK
+2026/01/23-01:00:24.072 14124 Table #1222: 417 entries OK
+2026/01/23-01:00:24.076 14124 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot/MANIFEST-001483: OK
+2026/01/23-01:00:24.081 14124 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\room-loot; recovered 1 files; 72431 bytes. Some data may have been lost. ****

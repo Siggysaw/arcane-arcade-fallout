@@ -250,8 +250,8 @@ export function registerHbsHelpers() {
     let subtract = Number(v1) - Number(v2)
     return subtract
   })
-  Handlebars.registerHelper('Skills', function (v1, v2, v3, v4) {
-    let sum = Number(v1) + Number(v2) + Number(v3) - Number(v4)
+  Handlebars.registerHelper('Skills', function (v1, v2, v3, v4, v5) {
+    let sum = Number(v1) + Number(v2) + Number(v3) + Number(v4) - Number(v5)
     return sum
   })
   //division

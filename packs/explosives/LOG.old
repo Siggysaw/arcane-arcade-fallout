@@ -1,3 +1,5 @@
-2026/01/22-19:33:36.151 f4e8 Recovering log #1806
-2026/01/22-19:33:36.160 f4e8 Delete type=0 #1806
-2026/01/22-19:33:36.160 f4e8 Delete type=3 #1805
+2026/01/23-01:00:23.623 14684 Log #1810: 0 ops saved to Table #1811 OK
+2026/01/23-01:00:23.624 14684 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\explosives/001810.log: OK
+2026/01/23-01:00:23.625 14684 Table #1548: 19 entries OK
+2026/01/23-01:00:23.631 14684 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\explosives/MANIFEST-001809: OK
+2026/01/23-01:00:23.646 14684 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\explosives; recovered 1 files; 24825 bytes. Some data may have been lost. ****

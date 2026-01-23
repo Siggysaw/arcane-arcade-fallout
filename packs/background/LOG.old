@@ -1,3 +1,5 @@
-2026/01/22-19:33:36.163 e0fc Recovering log #1662
-2026/01/22-19:33:36.171 e0fc Delete type=0 #1662
-2026/01/22-19:33:36.172 e0fc Delete type=3 #1661
+2026/01/23-01:00:23.663 14684 Log #1666: 0 ops saved to Table #1667 OK
+2026/01/23-01:00:23.663 14684 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\background/001666.log: OK
+2026/01/23-01:00:23.669 14684 Table #1404: 40 entries OK
+2026/01/23-01:00:23.674 14684 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\background/MANIFEST-001665: OK
+2026/01/23-01:00:23.678 14684 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\background; recovered 1 files; 89090 bytes. Some data may have been lost. ****

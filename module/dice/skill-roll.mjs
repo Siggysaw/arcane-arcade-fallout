@@ -8,12 +8,12 @@ export default class SkillRoll extends FormApplication {
 
     this.formDataCache = {
       abilities,
+      actorBoost: this.actor.system.boostDice,
       selectedAbility: abilities[0].abbr,
       selectedAbilityBonus: this.actor.getAbilityMod(abilities[0].abbr),
       skillBonus: this.actor.getSkillBonus(skillKey),
       actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
       actorPenalties: this.actor.system.penaltyTotal,
-      actorBoost: this.actor.system.boostDice,
       bonus: '',
       advantageMode:
         this.skill.advantage === 0
@@ -110,13 +110,13 @@ export default class SkillRoll extends FormApplication {
     /**
      * Deconstruct dialog form
      */
-    let { skillBonus, selectedAbility, actorLuck, actorPenalties,actorBoost, bonus } = this.formDataCache
-    let abilityBonus = this.actor.getAbilityMod(selectedAbility)
+    const { skillBonus, selectedAbility, actorLuck, actorPenalties, bonus } = this.formDataCache
+    const abilityBonus = this.actor.getAbilityMod(selectedAbility)
     /**
      * Roll to hit
      */
     const roll = new Roll(
-      `${this.getDice()} + ${abilityBonus} + ${bonus || 0} + ${actorBoost || 0} - ${actorPenalties}`,
+      `${this.getDice()} + ${skillBonus} + ${abilityBonus} + ${this.actor.system.boostDice} + ${actorLuck} + ${bonus || 0} - ${actorPenalties}`,
       this.actor.getRollData(),
     )
 
@@ -127,6 +127,7 @@ export default class SkillRoll extends FormApplication {
           <div>Die roll: ${roll.result.split(' ')[0]}</div>
           <div>Skill bonus: ${skillBonus}</div>
           <div>Ability bonus: ${abilityBonus}</div>
+          <div>Boosts: ${this.actor.system.boostDice}</div>
           <div>Luck bonus: ${actorLuck}</div>
           ${bonus && `<div>Other bonus: ${bonus || 0}</div>`}
           <div>Penalties total: ${actorPenalties}</div>

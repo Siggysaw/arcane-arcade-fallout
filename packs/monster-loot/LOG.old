@@ -1,3 +1,5 @@
-2026/01/22-19:33:36.381 e0fc Recovering log #1410
-2026/01/22-19:33:36.390 e0fc Delete type=0 #1410
-2026/01/22-19:33:36.390 e0fc Delete type=3 #1409
+2026/01/23-01:00:24.155 14124 Log #1414: 0 ops saved to Table #1415 OK
+2026/01/23-01:00:24.155 14124 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\monster-loot/001414.log: OK
+2026/01/23-01:00:24.155 14124 Table #1152: 75 entries OK
+2026/01/23-01:00:24.160 14124 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\monster-loot/MANIFEST-001413: OK
+2026/01/23-01:00:24.164 14124 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\monster-loot; recovered 1 files; 11531 bytes. Some data may have been lost. ****
