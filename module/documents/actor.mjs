@@ -234,6 +234,24 @@ export default class FalloutZeroActor extends Actor {
     return Number(currentAP) - Number(cost)
   }
 
+  // Blocking with Melee Weapon
+  async blockingMelee(weaponId) {
+    const meleeWeapon = this.items.get(weaponId)
+    let defensiveWeapon = meleeWeapon.system.description.includes("Defensive")
+    let search = this.items.find((i) => i.name == 'Blocking')
+    let qty
+    defensiveWeapon ? qty = 2: qty = 1
+
+    if (!search) {
+      let pack = game.packs.find((p) => p.metadata.name == 'conditions')
+      let blocking = await pack.getDocument('hfCqus38oNRoSpVu')
+      await this.createEmbeddedDocuments('Item', [blocking])
+      await this.items.find((i) => i.name == "Blocking").update({"system.quantity": qty})
+      this.applyApCost(3)
+    }
+  }
+
+
   // Death Save Roll
   async deathSave() {
     const myDialogOptions = { width: 300, height: 300, resizable: true }
@@ -934,7 +952,6 @@ export default class FalloutZeroActor extends Actor {
                     newArray = ef.changes
                     for (var change of newArray) {
                       if (change.value.includes('@')) {
-                        console.log("OVER HERE!",change)
                         change.value = await actor.evaluateAtFormula(change.value)
                       }
                     }
@@ -2320,6 +2337,10 @@ export default class FalloutZeroActor extends Actor {
         hpDamage = 0
       } else {
         // reduce total HP damage by dt
+        const blocking = this.items.find((i) => i.name == "Blocking")
+        let dtBoost = 0
+        blocking && blocking.system.quantity > 1 ? dtBoost = 2 : ''
+        blocking ? dt.value += (2 * this.system.abilities.end.mod) + dtBoost: ''
         hpDamage -= dt.value
       }
     }
@@ -2405,79 +2426,11 @@ export default class FalloutZeroActor extends Actor {
 
     const multiplier = options.multiplier ?? 1
 
-    // const downgrade = (type) => options.downgrade === true || options.downgrade?.has?.(type)
-    // const ignore = (category, type, skipDowngrade) => {
-    //   return (
-    //     options.ignore === true ||
-    //     options.ignore?.[category] === true ||
-    //     options.ignore?.[category]?.has?.(type) ||
-    //     (category === 'immunity' && downgrade(type) && !skipDowngrade) ||
-    //     (category === 'resistance' && downgrade(type) && !hasEffect('di', type))
-    //   )
-    // }
-
-    // const traits = this.system.traits ?? {}
-    // const hasEffect = (category, type, properties) => {
-    //   if (
-    //     category === 'dr' &&
-    //     downgrade(type) &&
-    //     hasEffect('di', type, properties) &&
-    //     !ignore('immunity', type, true)
-    //   )
-    //     return true
-    //   const config = traits[category]
-    //   if (!config?.value.has(type)) return false
-    //   if (!CONFIG.AAFO.damageTypes[type]?.isPhysical || !properties?.size) return true
-    //   return !config.bypasses?.intersection(properties)?.size
-    // }
-
-    // const skipped = (type) => {
-    //   if (options.only === 'damage') return type in CONFIG.AAFO.healingTypes
-    //   if (options.only === 'healing') return type in CONFIG.AAFO.damageTypes
-    //   return false
-    // }
-
-    // const rollData = this.getRollData({ deterministic: true })
 
     damages.forEach((d) => {
       d.active ??= {}
-
-      // Skip damage types with immunity
-      // if (
-      //   skipped(d.type) ||
-      //   (!ignore('immunity', d.type) && hasEffect('di', d.type, d.properties))
-      // ) {
-      //   d.value = 0
-      //   d.active.multiplier = 0
-      //   d.active.immunity = true
-      //   return
-      // }
-
-      // Apply type-specific damage reduction
-      // if (
-      //   !ignore('modification', d.type) &&
-      //   traits.dm?.amount[d.type] &&
-      //   !traits.dm.bypasses.intersection(d.properties).size
-      // ) {
-      //   const modification = simplifyBonus(traits.dm.amount[d.type], rollData)
-      //   if (Math.sign(d.value) !== Math.sign(d.value + modification)) d.value = 0
-      //   else d.value += modification
-      //   d.active.modification = true
-      // }
-
       let damageMultiplier = multiplier
 
-      // Apply type-specific damage resistance
-      // if (!ignore('resistance', d.type) && hasEffect('dr', d.type, d.properties)) {
-      //   damageMultiplier /= 2
-      //   d.active.resistance = true
-      // }
-
-      // Apply type-specific damage vulnerability
-      // if (!ignore('vulnerability', d.type) && hasEffect('dv', d.type, d.properties)) {
-      //   damageMultiplier *= 2
-      //   d.active.vulnerability = true
-      // }
 
       // Negate healing types
       if (options.invertHealing !== false && d.type === 'healing') damageMultiplier *= -1

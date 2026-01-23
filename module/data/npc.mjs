@@ -157,16 +157,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       return actor.parent.items.find((i) => i.name == search)
     }
 
-    const dumbLuck = searchItems(this, "Dumb Luck")
-    const alertness = searchItems(this, "Alertness")
-    const aliveandkickin = searchItems(this, "Alive and Kickin'")
-    const packrat = searchItems(this, "Pack Rat")
-
-    alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
-    dumbLuck ? this.luckmod = Math.floor(this.abilities['lck'].mod) : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
-    aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
-    packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
-
     //========= END PERK AUTOMATION
 
 
@@ -197,6 +187,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.level > 2 ? this.stamina.tooltip = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) : this.stamina.tooltip = this.abilities['agi'].mod + 10
     this.actionPoints.tooltip = this.abilities['agi'].mod + 10
     this.explosivesMastery = this.abilities['per'].mod + this.skills['explosives'].value
+    this.health.effectiveMax = this.health.max + (this.health.temp ?? 0)
+    this.health.damage = this.health.max - this.health.value
+    this.stamina.effectiveMax = this.stamina.max + (this.stamina.temp ?? 0)
+    this.stamina.damage = this.stamina.max - this.stamina.value
   }
 }
 

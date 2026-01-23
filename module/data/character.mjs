@@ -199,6 +199,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const stimulant = searchItems(this, "Stimulant")
     const superstimulant = searchItems(this, "Superstimulant")
     const hyperstimulant = searchItems(this, "Hyperstimulant")
+    const blocking = searchItems(this, "Blocking")
+    let dtBoost = 0
+    blocking && blocking.system.quantity > 1 ? dtBoost = 2 : ''
+   
+
 
     //========= ARMOR AUTOMATION
     function searchArmor(actor) {
@@ -217,6 +222,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     // Base Character Stat Creation
     this.critMod = Math.floor(this.abilities['lck'].mod / 2)
     this.critMod < 0 ? this.critMod = 0 : ''
+    blocking ? this.damageThreshold.modifiers += (2 * this.abilities.end.mod) + dtBoost : ''
     this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
     this.damageThreshold.value = this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
     this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)
@@ -239,6 +245,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.stamina.max = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) + this.stamina.boostMax
     this.actionPoints.max = this.abilities['agi'].mod + 10 + this.actionPoints.boostMax
     this.actionPoints.max > 15 ? this.actionPoints.max = 15 : ''
+    this.health.effectiveMax = this.health.max + (this.health.temp ?? 0)
+    this.health.damage = this.health.max - this.health.value
+    this.stamina.effectiveMax = this.stamina.max + (this.stamina.temp ?? 0)
+    this.stamina.damage = this.stamina.max - this.stamina.value
     this.explosivesMastery = this.abilities['per'].mod + this.skills['explosives'].value
     this.unflipped = this.karmaCaps.filter(Boolean).length;
     this.totalKarma = this.karmaCaps.length;

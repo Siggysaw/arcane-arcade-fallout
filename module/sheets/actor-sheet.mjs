@@ -750,11 +750,18 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     //===============END Audio Triggers
 
+    // Add Blocking Condition
+    html.on('click', '[data-block]', async (ev) => {
+      const weaponId = ev.currentTarget.dataset.weaponId
+      const weapon = this.actor.items.get(weaponId)
+      this.actor.blockingMelee(weaponId)
+    })
+
     //show rule information
     html.on('click', '[data-condition]', (ev) => {
       const condition = ev.currentTarget.dataset.condition
-
     })
+
     //show Combat Action Information
     html.on('click', '[data-combatActions]', (ev) => {
       this.actor.openDialog("/templates/dialog/combat-actions.hbs", "Combat Actions")
@@ -781,7 +788,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-abilityroll]', (ev) => {
       let ability = ev.currentTarget.dataset.abilityroll
       let special = this.actor.system.abilities[ability]
-      console.log("SPECIAL HERE!",special)
       new game.falloutzero.applications.components.AbilityRoll(this.actor,special).render(true)
 
     })

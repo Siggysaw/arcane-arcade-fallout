@@ -1,5 +1,5 @@
-2026/01/21-18:32:49.199 ad04 Recovering log #1686
-2026/01/21-18:32:49.199 ad04 Level-0 table #1688: started
-2026/01/21-18:32:49.203 ad04 Level-0 table #1688: 28329 bytes OK
-2026/01/21-18:32:49.211 ad04 Delete type=0 #1686
-2026/01/21-18:32:49.211 ad04 Delete type=3 #1685
+2026/01/22-22:46:13.327 120bc Recovering log #1693
+2026/01/22-22:46:13.328 120bc Level-0 table #1696: started
+2026/01/22-22:46:13.331 120bc Level-0 table #1696: 10157 bytes OK
+2026/01/22-22:46:13.340 120bc Delete type=0 #1693
+2026/01/22-22:46:13.340 120bc Delete type=3 #1692

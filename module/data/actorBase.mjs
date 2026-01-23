@@ -252,10 +252,13 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
    */
   prepareDerivedData() {
     super.prepareDerivedData()
-    this.health.effectiveMax = this.health.max + (this.health.temp ?? 0)
-    this.health.damage = this.health.max - this.health.value
-    this.stamina.effectiveMax = this.stamina.max + (this.stamina.temp ?? 0)
-    this.stamina.damage = this.stamina.max - this.stamina.value
+    
+    if (this.type == "npc") {
+      this.health.effectiveMax = this.health.max + (this.health.temp ?? 0)
+      this.health.damage = this.health.max - this.health.value
+      this.stamina.effectiveMax = this.stamina.max + (this.stamina.temp ?? 0)
+      this.stamina.damage = this.stamina.max - this.stamina.value
+    }
     this.caps = Math.floor(this.caps)
     this.xp = Math.floor(this.xp)
   }

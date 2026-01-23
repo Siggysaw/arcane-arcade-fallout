@@ -5,6 +5,7 @@ export default class AttackRoll extends FormApplication {
     this.weapon = weapon
     this.actor = actor
     this.formDataCache = {
+      weaponType:weapon.type,
       automaticAttack: false,
       consumesAp: true,
       skillBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus),
@@ -23,7 +24,7 @@ export default class AttackRoll extends FormApplication {
       adjustedApCost: 0,
       critical: this.weapon.system.critical,
       repeat: 1,
-      fullAuto:false,
+      fullAuto: false,
       damages: this.weapon.system.damages.map((damage) => {
         return {
           ...damage,
@@ -319,11 +320,12 @@ export default class AttackRoll extends FormApplication {
     const damageRolls = this.formDataCache.damages.map((damage) => {
       return {
         type: damage.selectedDamageType,
+        weapon:this.weaponType,
         formula: this.formDataCache.targeted
           ? this.getTargetedDamage(damage.formula + ` + ${damageBonus} + ${bonusdamage || ''}`)
           : damage.formula + `+ ${damageBonus || ''} + ${bonusdamage || ''}`,
       }
-      console.log("MAYBE THIS WORKS", damage.formula)
+
     })
     if (this.actor.type != "npc") {
       let finesse = this.actor.items.find((i) => i.name == 'Finesse')
@@ -362,7 +364,6 @@ export default class AttackRoll extends FormApplication {
 
   async _updateObject(event, formData) {
     Object.assign(this.formDataCache, formData)
-
     /**
      * Rerender form if update and not submitted
      */
@@ -381,7 +382,7 @@ export default class AttackRoll extends FormApplication {
       let fireStatus = true
 
       if (actionPoints < APCost) {
-        console.log("APCOST = ",APCost)
+
         ui.notifications.notify("AP Depleted")
         fireStatus=false
         i=999
@@ -396,7 +397,8 @@ export default class AttackRoll extends FormApplication {
       }
     }
 
-
+    let blocking = this.actor.items.find((i) => i.name == "Blocking")
+    blocking ? blocking.delete():''
     this.onSubmitCallback()
     this.close()
   }

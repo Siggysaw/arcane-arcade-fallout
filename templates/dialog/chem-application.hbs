@@ -1,5 +1,6 @@
 <div class="award">
     <select data-character-select>
+        <option>Select Patient</option>
         {{#each actors as |actor|}}
             {{#with (lookup ../newActorData [id])~}}
                 <option value="{{actor.id}}">

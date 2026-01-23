@@ -1,4 +1,5 @@
 <form autocomplete="off">
+    <div style="display:none;"><input type="text" name="weaponType" value="{{weaponType}}"></div>
     <div class="form-group">
         <fieldset>
             <legend>Bonuses / Penalties</legend>
@@ -77,41 +78,40 @@
                 <label for="consumesAp">Consume AP</label>
                 <input type="checkbox" name="consumesAp" {{checked consumesAp}} />
             </div>
+            <div class="flex space-between">
+                <label for="overrideAp">Override AP Cost</label>
+                <input type="checkbox" name="overrideAp" {{checked overrideAp}} />
+            </div>
+            <div class="flex space-between">
+                <label data-tooltip="If you are using a weapon with the Automatic Property, check this for the bonus shots after the first." for="automatic">Automatic Attack</label>
+                <input type="checkbox" name="automaticAttack" {{checked automaticAttack}} />
+            </div>
             <div>
-                <div class="flex space-between">
-                    <label for="overrideAp">Override AP Cost</label>
-                    <input type="checkbox" name="overrideAp" {{checked overrideAp}} />
-                </div>
-                <div class="flex space-between">
-                    <label data-tooltip="If you are using a weapon with the Automatic Property, check this for the bonus shots after the first." for="automatic">Automatic Attack</label>
-                    <input type="checkbox" name="automaticAttack" {{checked automaticAttack}} />
-                </div>
-                <div>
 
+            </div>
+            <div class="flex space-between">
+                <div>Weapon:</div>
+                <div>{{ apCost }}</div>
+            </div>
+            {{#if targeted}}
+            <div class="flex space-between">
+                <div>Targeted({{ targeted.target }}):</div>
+                <div>{{ targeted.cost }}</div>
+            </div>
+            {{/if}}
+            <div class="flex space-between">
+                <div>Total:</div>
+                {{#if overrideAp}}
+                <div class="flex">
+                    <button type="button" class="flex no-border px-0 mr-2" data-override-ap="dec"><i class="fas fa-minus-square "></i></button>
+                    <div>{{ adjustedApCost }}</div>
+                    <button type="button" class="flex no-border px-0 ml-2" data-override-ap="inc"><i class="fas fa-plus-square "></i></button>
                 </div>
-                <div class="flex space-between">
-                    <div>Weapon:</div>
-                    <div>{{ apCost }}</div>
-                </div>
-                {{#if targeted}}
-                <div class="flex space-between">
-                    <div>Targeted({{ targeted.target }}):</div>
-                    <div>{{ targeted.cost }}</div>
-                </div>
+                {{else}}
+                <div>{{ totalApCost }}</div>
                 {{/if}}
-                <div class="flex space-between">
-                    <div>Total:</div>
-                    {{#if overrideAp}}
-                    <div class="flex">
-                        <button type="button" class="flex no-border px-0 mr-2" data-override-ap="dec"><i class="fas fa-minus-square "></i></button>
-                        <div>{{ adjustedApCost }}</div>
-                        <button type="button" class="flex no-border px-0 ml-2" data-override-ap="inc"><i class="fas fa-plus-square "></i></button>
-                    </div>
-                    {{else}}
-                    <div>{{ totalApCost }}</div>
-                    {{/if}}
-                </div>
-</fieldset>
+            </div>
+        </fieldset>
     </div>
     <div class="form-group">
         <fieldset>
@@ -160,7 +160,7 @@
         <div>Bonus DMG</div>
         <div><input id="repeat" type="number" name="repeat" value="{{ repeat }}" /></div>
         <div data-tooltip="use these settings to attack until you run out of AP or Ammo"><input type="checkbox" name="fullAuto" {{checked fullAuto}} /></div>
-        <div><input type="text" name="bonus" value="{{ bonus }}"/></div>
+        <div><input type="text" name="bonus" value="{{ bonus }}" /></div>
         <div><input type="text" name="bonusdamage" value="{{ bonusdamage }}" /></div>
     </div>
     <hr />
