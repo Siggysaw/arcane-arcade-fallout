@@ -199,6 +199,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const onerousRegeneration = searchItems(this, 'Onerous Regeneration')
     const triggerDiscipline = searchItems(this, 'Trigger Discipline')
     const vigilantWatch = searchItems(this, 'Vigilant Watch')
+    const finesse = searchItems(this, 'Finesse')
 
     alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
