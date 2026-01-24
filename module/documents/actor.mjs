@@ -77,6 +77,11 @@ export default class FalloutZeroActor extends Actor {
     })
   }
 
+  abilityRoll(rolledAbility) {
+    const fullAbility = this.system.abilities[rolledAbility]
+    new game.falloutzero.applications.components.AbilityRoll(this, fullAbility).render(true)
+  }
+
   unEquipArmor(uuid) {
     if (!uuid) return false
 

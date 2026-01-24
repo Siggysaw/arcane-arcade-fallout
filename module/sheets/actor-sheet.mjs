@@ -791,7 +791,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       let ability = ev.currentTarget.dataset.abilityroll
       let special = this.actor.system.abilities[ability]
       new game.falloutzero.applications.components.AbilityRoll(this.actor,special).render(true)
-
+      console.log("special from actor-sheet.mjs ",special)
     })
 
     // Toggle Edit Mode

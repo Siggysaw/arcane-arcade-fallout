@@ -105,7 +105,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       base: new fields.NumberField({ initial: 0 }),
       value: new fields.NumberField({ initial: 0 }),
       modifiers: new fields.NumberField({ initial: 0 }),
-      advantage: new fields.NumberField({ initial: 0 })
+      advantage: new fields.NumberField({ initial: 0 }),
+      formula: new fields.StringField({ initial: "1d20" })
     })
     schema.partyNerve = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
@@ -196,6 +197,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const hotBlooded = searchItems(this, "Hot Blooded")
     const longDays = searchItems(this, 'Long Days, Long Nights')
     const onerousRegeneration = searchItems(this, 'Onerous Regeneration')
+    const triggerDiscipline = searchItems(this, 'Trigger Discipline')
+    const vigilantWatch = searchItems(this, 'Vigilant Watch')
 
     alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
@@ -210,6 +213,15 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     hotBlooded && hotBlooded.system.wildWasteland && this.stamina.value == 0 ? this.damageBonus += 5 : ''
     longDays ? this.stamina.boostMax += Math.floor(this.level / 2) : ''
     longDays && longDays.system.wildWasteland ? this.stamina.boostMax += Math.floor(this.level / 2) : ''
+    triggerDiscipline ? this.combatSequence.modifiers -= 2 : ''
+    triggerDiscipline && triggerDiscipline.system.wildWasteland ? this.combatSequence.modifiers -= 3 : ''
+    vigilantWatch ? this.combatSequence.modifiers -= 1 : ''
+
+    if (vigilantWatch && vigilantWatch.system.wildWasteland) {
+      this.combatSequence.modifiers -= 1
+      this.combatSequence.formula = "2d20kl"
+    }
+
     if (cheaperParts) {
       this.healingRate.modifiers += 2
       this.armorClass.modifiers += -1

@@ -345,7 +345,21 @@ export default class FalloutZeroChatMessage extends ChatMessage {
         return
       }
     }
-    const newRoll = await this.rolls[0].reroll()
+    let rollFormula = this.rolls[0]._formula
+    const persistant = this.actor.items.find((i) => i.name == "Persistent")
+    if (persistant && consumeKarmaCap) {
+      ui.notifications.notify("Persistent Perk Activated! Advantage Gained!")
+
+      let newRollFormula = rollFormula
+      rollFormula.includes("1d20") ? newRollFormula = rollFormula.replace("1d20", "2d20kh") : 
+      rollFormula.includes("2d20kl") ? newRollFormula = rollFormula.replace("2d20kl", "1d20") : 
+      rollFormula.includes("2d20kh") ? newRollFormula = rollFormula.replace("2d20kh", "3d20kh") : ''
+
+      this.rolls[0]._formula = newRollFormula
+    }
+
+    let newRoll = await this.rolls[0].reroll()
+    
     newRoll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: this.flavor,

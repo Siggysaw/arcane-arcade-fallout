@@ -144,7 +144,6 @@ export default class AttackRoll extends FormApplication {
   activateListeners($html) {
     const form = $html[0]
     form.addEventListener('change', (e) => {
-      console.log(e)
       Object.assign(this.formDataCache, this._getSubmitData())
       this.render()
     })

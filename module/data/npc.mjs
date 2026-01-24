@@ -86,7 +86,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       base: new fields.NumberField({ initial: 0 }),
       value: new fields.NumberField({ initial: 0 }),
       modifiers: new fields.NumberField({ initial: 0 }),
-      advantage: new fields.NumberField({ initial: 0 })
+      advantage: new fields.NumberField({ initial: 0 }),
+      formula: new fields.StringField({ initial: "1d20" })
     })
     schema.partyNerve = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),

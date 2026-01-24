@@ -90,7 +90,8 @@ export default class AbilityRoll extends FormApplication {
   }
 
   getFlavor() {
-    return `Performed a roll`
+    const label = this.formDataCache.abilities.label
+    return `Performed a ${label} roll`
   }
 
   async _updateObject(event, formData) {
