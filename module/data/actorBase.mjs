@@ -18,6 +18,10 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         initial: 10,
         min: 0
       }),
+      modifiers: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
+      }),
       min: new fields.NumberField({
         ...requiredInteger,
         initial: 0,
@@ -47,6 +51,10 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
         ...requiredInteger,
         min: 0,
         initial: 10,
+      }),
+      modifiers: new fields.NumberField({
+        ...requiredInteger,
+        initial: 0,
       }),
       min: new fields.NumberField({
         ...requiredInteger,

@@ -201,7 +201,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const vigilantWatch = searchItems(this, 'Vigilant Watch')
     const finesse = searchItems(this, 'Finesse')
 
-    alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
     dumbLuck ? this.luckmod = this.abilities['lck'].mod : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
@@ -244,7 +243,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     }
     if (onerousRegeneration) {
       this.healingRate.modifiers += 2
-      !onerousRegeneration.system.wildWasteland ? this.stamina.modifiers -= this.level:''
+      !onerousRegeneration.system.wildWasteland ? this.stamina.boostMax -= this.level:''
       }
     if (denseCircuitry) {
       this.healingRate.modifiers += 2
@@ -259,6 +258,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.radiationDC.modifiers += 3
       if (fastMetabolism.system.wildWasteland) {
         this.healingRate.modifiers += this.level - 2
+        this.radiationDC.modifiers += 1
       }
     }
     if (implantY7) {
@@ -347,6 +347,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.totalKarma = this.karmaCaps.length;
     (superstimulant || hyperstimulant) && this.penalties.exhaustion.base == 0 ? this.boostDice += 2 : ''
     stimulant && this.penalties.exhaustion.base == 0 ? this.boostDice += 1 : ''
+    alertness ? this.passiveSense.value += this.abilities.per.value + this.passiveSense.modifiers : ''
 
   }
 }
