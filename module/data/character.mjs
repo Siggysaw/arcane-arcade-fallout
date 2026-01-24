@@ -226,7 +226,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.healingRate.modifiers += 2
       this.armorClass.modifiers += -1
       if (cheaperParts.system.wildWasteland) {
-        this.healingRate.modifiers += this.level - 2
+        this.healingRate.modifiers += this.level
         this.damageThreshold.modifiers += -2
       }
     }
@@ -243,22 +243,23 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     }
     if (onerousRegeneration) {
       this.healingRate.modifiers += 2
-      !onerousRegeneration.system.wildWasteland ? this.stamina.boostMax -= this.level:''
-      }
+      onerousRegeneration.system.wildWasteland ? this.healingRate.modifiers += Number(this.level) : ''
+    }
     if (denseCircuitry) {
       this.healingRate.modifiers += 2
       this.combatSequence.modifiers += -2
       if (denseCircuitry.system.wildWasteland) {
-        this.healingRate.modifiers += this.level - 2
+        this.healingRate.modifiers += this.level
         this.combatSequence.modifiers += -2
       }
     }
+
     if (fastMetabolism) {
       this.healingRate.modifiers += 2
       this.radiationDC.modifiers += 3
       if (fastMetabolism.system.wildWasteland) {
-        this.healingRate.modifiers += this.level - 2
-        this.radiationDC.modifiers += 1
+        this.healingRate.modifiers += this.level
+        this.radiationDC.modifiers += 3
       }
     }
     if (implantY7) {
