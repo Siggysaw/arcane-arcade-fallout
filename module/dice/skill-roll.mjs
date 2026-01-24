@@ -3,6 +3,10 @@ export default class SkillRoll extends FormApplication {
     super(actor, options)
 
     this.actor = actor
+    const gifted = this.actor.items.find((i) => i.name == "Gifted")
+    let skillsLost = 0
+    gifted ? skillsLost = 3 : ''
+    gifted && gifted.system.wildWasteland ? skillsLost = 6 : ''
     this.skill = actor.system.skills[skillKey]
     const abilities = this.skill.ability.map((key) => this.actor.system.abilities[key])
 
@@ -11,7 +15,7 @@ export default class SkillRoll extends FormApplication {
       actorBoost: this.actor.system.boostDice,
       selectedAbility: abilities[0].abbr,
       selectedAbilityBonus: this.actor.getAbilityMod(abilities[0].abbr),
-      skillBonus: this.actor.getSkillBonus(skillKey),
+      skillBonus: this.actor.getSkillBonus(skillKey) - skillsLost,
       actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
       actorPenalties: this.actor.system.penaltyTotal,
       bonus: '',

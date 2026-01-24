@@ -261,5 +261,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     }
     this.caps = Math.floor(this.caps)
     this.xp = Math.floor(this.xp)
+    this.partyNerve.value = this.partyNerve.base + this.partyNerve.modifiers
+
   }
 }

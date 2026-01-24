@@ -143,7 +143,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         character.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
     }
     const activePlayercount = activeCharacterList.length
-    ManualPartyNerve > 0 ? actorData.system.partyNerve.base = ManualPartyNerve : actorData.system.partyNerve.base = Math.floor(charismaModtotal / 2)
+    let partyNerve = Math.floor(charismaModtotal / 2)
+    this.actor.update({ 'system.partyNerve.base': partyNerve })
+    ManualPartyNerve > 0 ? actorData.system.partyNerve.base = ManualPartyNerve : '' 
     ManualGroupSneak > 0 ? actorData.system.groupSneak.base = ManualGroupSneak : actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
 
 

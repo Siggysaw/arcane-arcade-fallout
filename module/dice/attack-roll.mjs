@@ -4,6 +4,13 @@ export default class AttackRoll extends FormApplication {
 
     this.weapon = weapon
     this.actor = actor
+    const oneHander = this.actor.items.find((i) => i.name == 'One Hander')
+    const twoHandedWeapon = weapon.system.description.includes("Two Handed")
+    oneHander && !twoHandedWeapon ? this.actor.system.attackBonus += 2 : ''
+    oneHander && twoHandedWeapon ? this.actor.system.attackBonus -= 2 : ''
+    oneHander && oneHander.system.wildWasteland && !twoHandedWeapon ? this.actor.system.damageBonus += 2 : ''
+    oneHander && oneHander.system.wildWasteland && twoHandedWeapon ? this.actor.system.damageBonus -= 2 : ''
+
     this.formDataCache = {
       weaponType:weapon.type,
       automaticAttack: false,

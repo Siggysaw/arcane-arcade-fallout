@@ -154,6 +154,14 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
    */
   prepareDerivedData() {
     super.prepareDerivedData()
+    function searchItems(actor, search) {
+      return actor.parent.items.find((i) => i.name == search)
+    }
+
+    const gifted = searchItems(this, "Gifted")
+    let skillsLost = 0
+    gifted ? skillsLost = 3 : ''
+    gifted && gifted.system.wildWasteland ? skillsLost = 6 : ''
 
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
@@ -164,22 +172,30 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     }
     // Loop through skill scores, and add their modifiers to our sheet output.
     for (const key in this.skills) {
+
       this.skills[key].ability = FALLOUTZERO.skills[key].ability
-      this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
+      this.skills[key].value = this.skills[key].base + this.skills[key].modifiers - skillsLost
     }
 
 
-    //========= PERK AUTOMATION
-    function searchItems(actor, search) {
-      return actor.parent.items.find((i) => i.name == search)
-    }
-
+    //========= PERK/TRAIT AUTOMATION
     const alertness = searchItems(this, "Alertness")
     const aliveandkickin = searchItems(this, "Alive and Kickin'")
     const packrat = searchItems(this, "Pack Rat")
     const dumbLuck = searchItems(this, "Dumb Luck")
     const evolution = searchItems(this, "Evolution")
     const actionHero = searchItems(this, "Action Hero")
+    const brawny = searchItems(this, "Brawny")
+    const smallFrame = searchItems(this, "Small Frame")
+    const implantY7 = searchItems(this, "Implant Y-7")
+    const cheaperParts = searchItems(this, "Cheaper Parts")
+    const activatedActinides = searchItems(this, "Activated Actinides")
+    const builttoDestroy = searchItems(this, "Built to Destroy")
+    const denseCircuitry = searchItems(this, "Dense Circuitry")
+    const fastMetabolism = searchItems(this, "Fast Metabolism")
+    const hotBlooded = searchItems(this, "Hot Blooded")
+    const longDays = searchItems(this, 'Long Days, Long Nights')
+    const onerousRegeneration = searchItems(this, 'Onerous Regeneration')
 
     alertness ? this.passiveSense.value = 12 + this.passiveSense.base + (this.abilities.per.mod * 2) + this.passiveSense.modifiers : this.passiveSense.value
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
@@ -188,11 +204,75 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     dumbLuck && dumbLuck.system.quantity > 1 ? this.luckmod = this.abilities['lck'].mod + 2 : ''
     actionHero ? this.actionPoints.boostMax += 2 : ''
     actionHero && this.actionPoints.max > 15 ? this.actionPoints.max = 15 : ''
+    activatedActinides && activatedActinides.system.wildWasteland ? this.healingRate.modifiers += 2 : ''
+    builttoDestroy && builttoDestroy.system.wildWasteland ? this.damageBonus += 1 : ''
+    hotBlooded ? this.attackBonus += -2 : ''
+    hotBlooded && hotBlooded.system.wildWasteland && this.stamina.value == 0 ? this.damageBonus += 5 : ''
+    longDays ? this.stamina.boostMax += Math.floor(this.level / 2) : ''
+    longDays && longDays.system.wildWasteland ? this.stamina.boostMax += Math.floor(this.level / 2) : ''
+    if (cheaperParts) {
+      this.healingRate.modifiers += 2
+      this.armorClass.modifiers += -1
+      if (cheaperParts.system.wildWasteland) {
+        this.healingRate.modifiers += this.level - 2
+        this.damageThreshold.modifiers += -2
+      }
+    }
+    if (gifted) {
+      this.carryLoad.modifiersMax += 10
+      this.combatSequence.modifiers += 1
+      this.partyNerve.modifiers += 1
+
+      if (gifted.system.wildWasteland) {
+        this.carryLoad.modifiersMax += 10
+        this.combatSequence.modifiers += 1
+        this.partyNerve.modifiers += 1
+      }
+    }
+    if (onerousRegeneration) {
+      this.healingRate.modifiers += 2
+      !onerousRegeneration.system.wildWasteland ? this.stamina.modifiers -= this.level:''
+      }
+    if (denseCircuitry) {
+      this.healingRate.modifiers += 2
+      this.combatSequence.modifiers += -2
+      if (denseCircuitry.system.wildWasteland) {
+        this.healingRate.modifiers += this.level - 2
+        this.combatSequence.modifiers += -2
+      }
+    }
+    if (fastMetabolism) {
+      this.healingRate.modifiers += 2
+      this.radiationDC.modifiers += 3
+      if (fastMetabolism.system.wildWasteland) {
+        this.healingRate.modifiers += this.level - 2
+      }
+    }
+    if (implantY7) {
+      this.health.boostMax += 2 * this.level
+      this.healingRate.modifiers += 2
+    }
     if (evolution) {
       this.health.boostMax += this.level
       this.stamina.boostMax += this.level
       this.armorClass.modifiers += 1
       this.damageThreshold.modifiers += 1
+    }
+    if (brawny) {
+      this.health.boostMax += this.level
+      this.stamina.boostMax -= this.level
+      if (brawny.system.wildWasteland) {
+        this.health.boostMax += this.level
+        this.stamina.boostMax -= this.level
+      }
+    }
+    if (smallFrame) {
+      this.stamina.boostMax += this.level
+      this.health.boostMax -= this.level
+      if (smallFrame.system.wildWasteland) {
+        this.stamina.boostMax += this.level
+        this.health.boostMax -= this.level
+      }
     }
 
     //========= Condition Automation
@@ -224,7 +304,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.critMod < 0 ? this.critMod = 0 : ''
     blocking ? this.damageThreshold.modifiers += (2 * this.abilities.end.mod) + dtBoost : ''
     this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
-    this.damageThreshold.value = this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
+    this.damageThreshold.value += this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
     this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)
     this.passiveSense.value = 12 + this.passiveSense.base + this.abilities.per.mod + this.passiveSense.modifiers
     this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base - this.penalties.exhaustion.ignored + this.penalties.exhaustion.modifiers, 0)

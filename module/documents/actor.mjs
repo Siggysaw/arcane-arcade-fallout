@@ -278,7 +278,11 @@ export default class FalloutZeroActor extends Actor {
       const withModifiers = html.find('select#modified').val()
       const withAdvantage = html.find('select#advantage').val()
       let rollAbility = html.find('select#rollAbility').val()
+      let partyNerve = actor.system.partyNerve.value
       let abilityMod = '@' + rollAbility + '.mod'
+      const endure = actor.items.find((i) => i.name == "Endure the Battle")
+      endure ? abilityMod = 0 : ''
+      endure ? partyNerve = 0 : ''
       let rollBonus = html.find('input#bonus').val()
       let rollInput
       let critSuccess
@@ -305,7 +309,7 @@ export default class FalloutZeroActor extends Actor {
       if (rollBonus.length > 0) {
         rollInput += `+ ${rollBonus}`
       }
-      const roll = new Roll(`${rollInput}+${abilityMod}`, actor.getRollData())
+      const roll = new Roll(`${rollInput}+${abilityMod}+${partyNerve}`, actor.getRollData())
       await roll.evaluate()
 
       const saveDC = 10
@@ -425,13 +429,16 @@ export default class FalloutZeroActor extends Actor {
     const maxAP = this.system.actionPoints.max
     const endurance = this.system.abilities.end.value
     const robotHeal = Math.max(this.system.abilities.int.value, this.system.abilities.per.value)
-
+    const onerousRegeneration = this.items.find((i) => i.name == 'Onerous Regeneration')
+    let divideBy = 2
+    onerousRegeneration.system.wildWasteland ? divideBy = 4 : ''
     // Short Rest
     if (rest === 'short') {
       let newSP = 0
-      race === ('Human' || 'Ghoul' || 'Super Mutant') & currentSP < Math.floor(maxSP / 2)
-        ? (newSP = Math.floor(maxSP / 2))
+      race === ('Human' || 'Ghoul' || 'Super Mutant') & currentSP < Math.floor(maxSP / divideBy)
+        ? (newSP = Math.floor(maxSP / divideBy))
         : (newSP = currentSP)
+      
       newSP > maxSP ? (newSP = maxSP) : (newSP = newSP)
       this.update({ 'system.stamina.value': newSP })
     }
@@ -800,7 +807,8 @@ export default class FalloutZeroActor extends Actor {
 
     //Update Healing Items to take Ghouls into account
     const isGhoul = actor.items.find((i) => i.name == "Ghoul")
-    if (isGhoul && item.system.modifiers.path1.includes('system.health.value') && !item.system.modifiers.value1.includes(' / 2')) {
+    let Actinides = actor.items.find((i) => i.name == "Activated Actinides")
+    if (isGhoul && !Actinides && item.system.modifiers.path1.includes('system.health.value') && !item.system.modifiers.value1.includes(' / 2')) {
       const newPath = item.system.modifiers.value1 + " / 2 "
       await item.update({'system.modifiers.value1': newPath})
     }
