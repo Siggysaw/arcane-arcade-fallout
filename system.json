@@ -2,7 +2,7 @@
   "id": "arcane-arcade-fallout",
   "title": "The Arcane Arcade Fallout TTRPG",
   "description": "Foundry version of Arcane Arcade's Fallout TTRPG system by Jacob Budz. Inspired by the game series of the same name by Interplay and Bethesda.",
-  "version": "0.1.48",
+  "version": "0.1.49",
   "compatibility": {
     "minimum": "12",
     "maximum": "13",

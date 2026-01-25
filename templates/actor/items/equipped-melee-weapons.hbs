@@ -34,6 +34,7 @@
             </div>
             {{/GreaterThan}}
         </div>
+
         <div data-tooltip="{{item.system.ammo.assigned}}"
              class="ammo-name">{{ item.system.ammo.assigned }}</div>
         <div class="weapon-capacity">
@@ -54,6 +55,12 @@
             SWING!
         </div>
         {{/if}}
+        <div class="weapon-attack rollable resource-label"
+             data-block
+             data-weapon-id="{{ item._id }}"
+             data-tooltip="3AP to block using this weapon. <br>Blocking adds 2 DT against other Melee Attacks until your next attack ">
+            BLOCK!
+        </div>
     </div>
     <div class="grid-span-2 weapon-stats">
         <div>AP:{{#Subtract system.apCost system.APSubtraction}}{{/Subtract}}</div>
@@ -136,12 +143,7 @@
             </div>
             {{/GreaterThan}}
         </div>
-        <div class="weapon-attack rollable resource-label"
-             data-block
-             data-weapon-id="{{ item._id }}"
-             data-tooltip="3AP to block using this weapon. <br>Blocking adds 2 DT against other Melee Attacks until your next attack ">
-            BLOCK!
-        </div>
+
         <div data-tooltip="{{item.system.ammo.assigned}}"
              class="ammo-name">{{ item.system.ammo.assigned }}</div>
         <div class="weapon-capacity">
@@ -162,12 +164,12 @@
             SWING!
         </div>
         {{/if}}
-    <div class="weapon-attack rollable resource-label"
-         data-block
-         data-weapon-id="{{ item._id }}"
-         data-tooltip="3AP to block using this weapon. <br>Blocking adds 2 DT against other Melee Attacks until your next attack ">
-        BLOCK!
-    </div>
+        <div class="weapon-attack rollable resource-label"
+             data-block
+             data-weapon-id="{{ item._id }}"
+             data-tooltip="3AP to block using this weapon. <br>Blocking adds 2 DT against other Melee Attacks until your next attack ">
+            BLOCK!
+        </div>
     </div>
     <div class="grid-span-2 weapon-stats">
         <div>AP:{{#Subtract system.apCost system.APSubtraction}}{{/Subtract}}</div>

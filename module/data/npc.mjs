@@ -152,20 +152,17 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.skills[key].value = this.skills[key].base + this.skills[key].modifiers
     }
 
-
-    //========= PERK AUTOMATION
     function searchItems(actor, search) {
       return actor.parent.items.find((i) => i.name == search)
     }
-
-    //========= END PERK AUTOMATION
-
+    const blocking = searchItems(this, "Blocking")
+    let dtBoost = 0
+    blocking && blocking.system.quantity > 1 ? dtBoost = 2 : ''
 
     // Base Character Stat Creation
     this.critMod = Math.floor(this.abilities['lck'].mod / 2)
     this.critMod < 0 ? this.critMod = 0 : ''
-    this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
-    this.damageThreshold.value = this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
+    blocking ? this.damageThreshold.modifiers += (2 + this.abilities.end.mod) + dtBoost : ''
     this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)
     this.passiveSense.value = 12 + this.passiveSense.base + this.abilities.per.mod + this.passiveSense.modifiers
     this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base - this.penalties.exhaustion.ignored + this.penalties.exhaustion.modifiers, 0)
@@ -192,6 +189,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.health.damage = this.health.max - this.health.value
     this.stamina.effectiveMax = this.stamina.max + (this.stamina.temp ?? 0)
     this.stamina.damage = this.stamina.max - this.stamina.value
+    this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
+    this.damageThreshold.value = this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
+
   }
 }
 

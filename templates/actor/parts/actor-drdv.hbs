@@ -1,10 +1,14 @@
 <div class="dr-dv grid grid-13col">
     {{#each this.dr as |dr|}}
-    <div class="{{dr.id}}" data-tooltip="Half Damage From {{dr.label}}"><input type="checkbox" name="system.dr" value="{{ dr.id }}" {{checked dr.selected}} /></div>
+    <div class="{{dr.id}}" data-tooltip="Half Damage From {{dr.label}}">
+    <input data-dr="{{dr.id}}" type="checkbox" name="system.dr" value="{{ dr.id }}" {{checked dr.selected}} />
+    </div>
     {{/each}}
 </div>
 <div class="dr-dv grid grid-13col">
     {{#each this.dv as |dv|}}
-    <div class="{{dv.id}}" data-tooltip="Double Damage From {{dv.label}}"><input type="checkbox" name="system.dv" value="{{ dv.id }}" {{checked dv.selected}} /></div>
+    <div class="{{dv.id}}" data-tooltip="Double Damage From {{dv.label}}">
+    <input data-dv="{{dv.id}}" type="checkbox" name="system.dv" value="{{ dv.id }}" {{checked dv.selected}} />
+    </div>
     {{/each}}
 </div>
