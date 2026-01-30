@@ -294,6 +294,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const superstimulant = searchItems(this, "Superstimulant")
     const hyperstimulant = searchItems(this, "Hyperstimulant")
     const blocking = searchItems(this, "Blocking")
+    const slowed = searchItems(this, "Slowed")
     let dtBoost = 0
     blocking && blocking.system.quantity > 1 ? dtBoost = 2 : ''
    
@@ -317,8 +318,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.critMod = Math.floor(this.abilities['lck'].mod / 2)
     this.critMod < 0 ? this.critMod = 0 : ''
     blocking ? this.damageThreshold.modifiers += (2 + this.abilities.end.mod) + dtBoost : ''
-    this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
-    this.damageThreshold.value += this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
     this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)
     this.passiveSense.value = 12 + this.passiveSense.base + this.abilities.per.mod + this.passiveSense.modifiers
     this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base - this.penalties.exhaustion.ignored + this.penalties.exhaustion.modifiers, 0)
@@ -339,6 +338,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.stamina.max = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) + this.stamina.boostMax
     this.actionPoints.max = this.abilities['agi'].mod + 10 + this.actionPoints.boostMax
     this.actionPoints.max > 15 ? this.actionPoints.max = 15 : ''
+    slowed && this.actionPoints.max > 6 ? this.actionPoints.max = 6 : ''
     this.health.effectiveMax = this.health.max + (this.health.temp ?? 0)
     this.health.damage = this.health.max - this.health.value
     this.stamina.effectiveMax = this.stamina.max + (this.stamina.temp ?? 0)
@@ -349,7 +349,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     (superstimulant || hyperstimulant) && this.penalties.exhaustion.base == 0 ? this.boostDice += 2 : ''
     stimulant && this.penalties.exhaustion.base == 0 ? this.boostDice += 1 : ''
     alertness ? this.passiveSense.value += this.abilities.per.value + this.passiveSense.modifiers : ''
-
+    this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
+    this.damageThreshold.value += this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
+    this.damageThreshold.value < 1 ? this.damageThreshold.value = 0 : ''
   }
 }
 

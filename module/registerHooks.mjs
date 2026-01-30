@@ -98,9 +98,11 @@ export function registerHooks() {
         }
 
         // Get total cost
-        const passedApCost = getApCost(movement.passed.cost)
+        let passedApCost = getApCost(movement.passed.cost)
         let pendingWaypoints = movement.pending.waypoints
         let pendingApCost = 0
+        const rooted = token.actor.items.find((i) => i.name == "Rooted Condition")
+
         while (pendingWaypoints.length) {
             const waypointGroup = getLastWaypointGroup(pendingWaypoints)
             pendingApCost += sumWaypoints(waypointGroup)
@@ -116,8 +118,8 @@ export function registerHooks() {
 
 
         // Deduct AP
-        if (movement.method !== 'undo') {
-            token.actor.applyApCost(getApCost(movement.passed.cost))
+      if (movement.method !== 'undo') {
+        rooted ? token.actor.applyApCost(getApCost(movement.passed.cost)*2): token.actor.applyApCost(getApCost(movement.passed.cost))
         } else {
             // If undo movement, restore AP
             try {

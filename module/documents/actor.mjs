@@ -234,8 +234,11 @@ export default class FalloutZeroActor extends Actor {
   }
 
   //AP Cost for Movement
-  getAPAfterCost(cost) {
+  getAPAfterCost(APCost) {
+    let cost = APCost 
     const currentAP = this.system.actionPoints.value
+    const rooted = this.items.find((i) => i.name == "Rooted ")
+    rooted ? cost + 1:''
     return Number(currentAP) - Number(cost)
   }
 
@@ -434,17 +437,16 @@ export default class FalloutZeroActor extends Actor {
     const maxAP = this.system.actionPoints.max
     const endurance = this.system.abilities.end.value
     const robotHeal = Math.max(this.system.abilities.int.value, this.system.abilities.per.value)
-    const onerousRegeneration = this.items.find((i) => i.name == 'Onerous Regeneration')
-    let divideBy = 2
-    onerousRegeneration.system.wildWasteland ? divideBy = 4 : ''
+
     // Short Rest
     if (rest === 'short') {
       let newSP = 0
-      race === ('Human' || 'Ghoul' || 'Super Mutant') & currentSP < Math.floor(maxSP / divideBy)
-        ? (newSP = Math.floor(maxSP / divideBy))
+      race === ('Human' || 'Ghoul' || 'Super Mutant') & currentSP < Math.floor(maxSP / 2)
+        ? (newSP = Math.floor(maxSP / 2))
         : (newSP = currentSP)
-      
       newSP > maxSP ? (newSP = maxSP) : (newSP = newSP)
+      const onerousRegeneration = this.items.find((i) => i.name == 'Onerous Regeneration')
+      onerousRegeneration ? newSP = newSP/2 : ''
       this.update({ 'system.stamina.value': newSP })
     }
     // Long Rest

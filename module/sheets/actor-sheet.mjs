@@ -453,7 +453,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Use on Self',
-        icon: '4AP ',
+        icon: '[4AP] ',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
@@ -469,11 +469,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       },
       {
         name: 'Use on Others',
-        icon: '4AP ',
+        icon: '[GM] ',
         condition: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
           const item = this.actor.items.get(itemId)
-          if ((item.type == 'chem' || item.type =='medicine') && item.system.quantity > 0 && (this.actor.system.actionPoints.value > 3 || !this.actor.inCombat)) {
+          if (game.user.role > 2 && (item.type == 'chem' || item.type =='medicine') && item.system.quantity > 0 && (this.actor.system.actionPoints.value > 3 || !this.actor.inCombat)) {
             return true
           }
         },
