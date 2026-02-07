@@ -58,6 +58,75 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this._prepareItems(context)
     }
 
+    //Temporary Notes Parsing
+
+    if (actorData.name == "Lucy Maclean") {
+      let content = "<textarea style='height:1000px;'>name,race,level,background,health,stamina,actionPoints,str,per,end,cha,int,agi,lck,barter,breach,crafting,energyWeapons,explosives,guns,intimidation,medicine,meleeWeapons,science,sneak,speech,survival,unarmed,armorClass,damageThreshold,healingRate,passiveSense,properties<br>"
+      let rawData = actorData.system.properties
+      let paragraphs = rawData.split(/<h2>/)
+      for (let creature of paragraphs) {
+        creature = new String(creature)
+        let name = creature.split(/<\/h2>/)[0]
+        name = name.replaceAll(",", "-")
+        let level = creature.split(/((?<=LVL\s)[^d+<]*)/)[1] || 0
+        let hitPoints = creature.split(/((?<=Hit Points\s)[^d+<]*)/)[1] || 0
+        let staminaPoints = creature.split(/((?<=Stamina Points\s)[^d+<]*)/)[1] || 0
+        let actionPoints = creature.split(/((?<=Action Points\s)[^d+<]*)/)[1] || 0
+        let armorClass = creature.split(/((?<=Armor Class\s)[^d+<]*)/)[1] || 0
+        let damageThreshold = creature.split(/((?<=Damage Threshold\s)[^<]*)/)[1] || 0
+        let healingRate = creature.split(/((?<=Healing Rate\s)[^<]*)/)[1] || 0
+        let passiveSense = creature.split(/((?<=passive sense\s)[^<]*)/)[1] || 0
+
+
+        let abilities = creature.split(/(?<=<\/tr>)(.*?)(?=<\/tr>)/)[1]
+        let abilityString = new String(abilities)
+        abilityString = abilityString.replaceAll("<tr>", "")
+        abilityString = abilityString.replaceAll("</tr>", "")
+        abilityString = abilityString.replaceAll("<td>", "")
+        abilityString = abilityString.replaceAll("</td>", "")
+        abilityString = abilityString.replaceAll("<p>", "")
+        abilityString = abilityString.replaceAll("</p>", "")
+        abilityString = abilityString.replaceAll(/ \(\+\d*\)/g, ",")
+        abilityString = abilityString.replaceAll(/ \(\-\d*\)/g, ",")
+        abilities = abilityString.replace(/,\s*$/, "");
+
+        let barter = creature.split(/((?<=Barter\s\+)[^,|<]*)/)[1] || 0
+        let breach = creature.split(/((?<=Breach\s\+)[^,|<]*)/)[1] || 0
+        let crafting = creature.split(/((?<=Crafting\s\+)[^,|<]*)/)[1] || 0
+        let energyWeapons = creature.split(/((?<=Energy Weapons\s\+)[^,|<]*)/)[1] || 0
+        let explosives = creature.split(/((?<=Explosives\s\+)[^,|<]*)/)[1] || 0
+        let guns = creature.split(/((?<=Guns\s\+)[^,|<]*)/)[1] || 0
+        let intimidation = creature.split(/((?<=Intimidation\s\+)[^,|<]*)/)[1] || 0
+        let medicine = creature.split(/((?<=Medicine\s\+)[^,|<]*)/)[1] || 0
+        let meleeWeapons = creature.split(/((?<=Melee\sWeapons\s\+)[^,|<]*)/)[1] || 0
+        let science = creature.split(/((?<=Science\s\+)[^,|<]*)/)[1] || 0
+        let sneak = creature.split(/((?<=Sneak\s\+)[^,|<]*)/)[1] || 0
+        let speech = creature.split(/((?<=Speech\s\+)[^,|<]*)/)[1] || 0
+        let survival = creature.split(/((?<=Survival\s\+)[^,|<]*)/)[1] || 0
+        let unarmed = creature.split(/((?<=Unarmed\s\+)[^,|<]*)/)[1] || 0
+        let properties = creature.replaceAll(",", " Comma ")
+
+
+
+        content = content + `${name},Human,${level},,${hitPoints},${staminaPoints},${actionPoints},${abilities},${barter},${breach},${crafting},${energyWeapons},${explosives},${guns},${intimidation},${medicine},${meleeWeapons},${science},${sneak},${speech},${survival},${unarmed},${armorClass},${damageThreshold},${healingRate},${passiveSense},<h2>${properties} \r`
+      }
+      content = content + '</textarea>'
+      const myDialogOptions = { width: 500, height: 1000, resizable: true }
+      new Dialog({
+          title: `Output`,
+          content: content,
+          buttons: {},
+        },
+        myDialogOptions,
+      ).render(true)
+    }
+    
+
+
+
+
+
+
     const carryLoadSetting = game.settings.get('core', 'CarryLoad')
     const CapsLoad = game.settings.get('core', 'CapsLoad')
     const AmmoLoad = game.settings.get('core', 'AmmoLoad')

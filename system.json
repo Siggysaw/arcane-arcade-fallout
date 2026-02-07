@@ -97,7 +97,7 @@
       "sorting": "m",
       "packs": [
         "enemies",
-        "community_enemies",
+        "agentFuse_enemies",
         "monsterloot",
         "roomloot",
         "diseases",
@@ -300,10 +300,10 @@
       "flags": {}
     },
     {
-      "label": "Community Enemies",
+      "label": "Agent Fuse's Enemies",
       "type": "Actor",
-      "name": "community_enemies",
-      "path": "packs/community_enemies",
+      "name": "agentFuse_enemies",
+      "path": "packs/agentFuse_enemies",
       "system": "arcane-arcade-fallout",
       "ownership": {
         "ASSISTANT": "OWNER"

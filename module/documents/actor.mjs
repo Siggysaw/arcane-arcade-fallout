@@ -1435,6 +1435,7 @@ export default class FalloutZeroActor extends Actor {
   }
 
   async rollSave({ formula, saveDC, type }) {
+    console.log(`Formula: ${formula} SaveDC:${saveDC},Type:${type}`)
     let roll = new Roll(`${formula} - ${this.system.penaltyTotal}`, this.getRollData())
     await roll.evaluate()
 
