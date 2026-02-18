@@ -1,5 +1,3 @@
-2026/02/18-01:22:36.388 59cc Recovering log #19
-2026/02/18-01:22:36.388 59cc Level-0 table #21: started
-2026/02/18-01:22:36.396 59cc Level-0 table #21: 3659 bytes OK
-2026/02/18-01:22:36.404 59cc Delete type=0 #19
-2026/02/18-01:22:36.405 59cc Delete type=3 #18
+2026/02/18-01:48:19.571 a1bc Recovering log #22
+2026/02/18-01:48:19.588 a1bc Delete type=0 #22
+2026/02/18-01:48:19.588 a1bc Delete type=3 #20
