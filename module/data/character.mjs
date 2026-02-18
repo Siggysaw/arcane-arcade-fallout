@@ -200,6 +200,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const triggerDiscipline = searchItems(this, 'Trigger Discipline')
     const vigilantWatch = searchItems(this, 'Vigilant Watch')
     const finesse = searchItems(this, 'Finesse')
+    const hazmatSuit = searchItems(this, 'Hazmat Suit')
 
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
@@ -216,6 +217,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     triggerDiscipline ? this.combatSequence.modifiers -= 2 : ''
     triggerDiscipline && triggerDiscipline.system.wildWasteland ? this.combatSequence.modifiers -= 3 : ''
     vigilantWatch ? this.combatSequence.modifiers -= 1 : ''
+    hazmatSuit && hazmatSuit.system.worn ? this.radiationDC.modifiers -= hazmatSuit.system.decay : ''
 
     if (vigilantWatch && vigilantWatch.system.wildWasteland) {
       this.combatSequence.modifiers -= 1

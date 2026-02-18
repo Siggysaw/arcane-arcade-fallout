@@ -60,7 +60,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
     //Temporary Notes Parsing
 
-    if (actorData.name == "Lucy Maclean") {
+    if (actorData.name == "ImportNPCs") {
       let content = "<textarea style='height:1000px;'>name,race,level,background,health,stamina,actionPoints,str,per,end,cha,int,agi,lck,barter,breach,crafting,energyWeapons,explosives,guns,intimidation,medicine,meleeWeapons,science,sneak,speech,survival,unarmed,armorClass,damageThreshold,healingRate,passiveSense,properties<br>"
       let rawData = actorData.system.properties
       let paragraphs = rawData.split(/<h2>/)

@@ -23,9 +23,11 @@
                     <div class="grid grid-2col weapon-details">
                         <div class="weapon-label">Qty:</div><div><input type="number" name="system.quantity" value="{{ system.quantity }}" /></div>
                         <div class="weapon-label">Cost:</div><div><input type="number" name="system.cost" value="{{ system.cost }}" /></div>
+                        <div class="weapon-label">Condition:</div><div><input type="number" name="system.decay" value="{{ system.decay }}" /></div>
+
                         <div class="grid-span-2" style="border-top:solid 2px;border-bottom:solid 2px;margin:5px;text-align:center;font-weight:bold;">Load Calculation</div>
                         <div class="weapon-label">Load:</div><div><input title="The calculated load based on the below fields" type="number" name="system.load" value="{{#if system.worn}}{{system.wornload}}{{/if}}{{#if system.filled}}{{system.full}}{{/if}}{{#unless system.filled}}{{#unless system.worn}}{{system.loaddefault}}{{/unless}}{{/unless}}" /></div>
-                        <div class="weapon-label" >Empty:</div><div><input title="How much load is the item when it is empty and not being worn?" type="number" name="system.loaddefault" value="{{ system.loaddefault }}" /></div>
+                        <div class="weapon-label">Empty:</div><div><input title="How much load is the item when it is empty and not being worn?" type="number" name="system.loaddefault" value="{{ system.loaddefault }}" /></div>
                         <div class="weapon-label" title="Is your item currently being worn?">Worn:<input style="height:10px;" type="checkbox" name="system.worn" worn="{{item._id}}" {{checked system.worn}} /></div><div><input title="How much load is the item when it is being worn?" type="number" name="system.wornload" value="{{ system.wornload }}" /></div>
                         <div class="weapon-label" title="Is your item currently full of liquid?">Full:<input style="height:10px;" type="checkbox" name="system.filled" {{checked system.filled}} /></div><div><input title="How much load does this item have when filled with liquid? Typically for Canteens,Bottles,etc" type="number" name="system.full" value="{{ system.full }}" /></div>
                     </div>
