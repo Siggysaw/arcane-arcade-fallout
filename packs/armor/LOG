@@ -1,5 +1,5 @@
-2026/02/18-01:48:19.270 a1bc Recovering log #2440
-2026/02/18-01:48:19.270 a1bc Level-0 table #2442: started
-2026/02/18-01:48:19.280 a1bc Level-0 table #2442: 197 bytes OK
-2026/02/18-01:48:19.300 a1bc Delete type=0 #2440
-2026/02/18-01:48:19.301 a1bc Delete type=3 #2439
+2026/02/18-13:55:02.528 af44 Recovering log #2443
+2026/02/18-13:55:02.528 af44 Level-0 table #2445: started
+2026/02/18-13:55:02.535 af44 Level-0 table #2445: 3343 bytes OK
+2026/02/18-13:55:02.545 af44 Delete type=0 #2443
+2026/02/18-13:55:02.545 af44 Delete type=3 #2441
