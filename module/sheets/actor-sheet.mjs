@@ -217,6 +217,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     ManualPartyNerve > 0 ? actorData.system.partyNerve.base = ManualPartyNerve : '' 
     ManualGroupSneak > 0 ? actorData.system.groupSneak.base = ManualGroupSneak : actorData.system.groupSneak.base = Math.floor(groupSneaktotal / activePlayercount)
 
+    //Remove Imported error for Agent Fuse NPCs
+    actorData.system.properties.replace("Comma", ",")
 
     //PowerArmor Setup
     const PowerArmor = actorData.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)

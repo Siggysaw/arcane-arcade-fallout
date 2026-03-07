@@ -1482,8 +1482,11 @@ export default class FalloutZeroActor extends Actor {
         newQuantity = Number(existingMat.system.quantity) + Number(mats[i][0]) * Number(qtyMat)
         existingMat.update({ 'system.quantity': newQuantity })
       } else {
-        let newItem = await Item.create(matData, { parent: myActor })
-        newItem.update({ 'system.quantity': Number(mats[i][0]) * Number(qtyMat) })
+        let newItem = await myActor.createEmbeddedDocuments('Item', [matData])
+        newItem[0].update({
+          'system.quantity': Number(mats[i][0]) * Number(qtyMat),
+          '_stats.compendiumSource': matData.uuid
+        })
       }
       i++
     }

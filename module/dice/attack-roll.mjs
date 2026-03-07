@@ -191,13 +191,16 @@ export default class AttackRoll extends FormApplication {
   }
 
   getTargetedDamage(formula) {
+    let newDice
     const [diceCount, ...rest] = formula
     switch (this.formDataCache.targeted?.target) {
       case 'head':
         return `${Number(diceCount) + 1}${rest.join('')}`
       case 'arm':
       case 'leg':
-        return `${Number(diceCount) - 1}${rest.join('')}`
+        newDice = Number(diceCount) - 1
+        newDice < 1 ? newDice = 1 : ''
+        return `${newDice}${rest.join('')}`
       case 'carried':
         return 0
       default:

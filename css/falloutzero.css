@@ -200,6 +200,7 @@ details > summary {
 .falloutzero .sheet-body .tab,
 .falloutzero .sheet-body .tab .editor {
   height: 100%;
+  min-height:100px;
 }
 
 .falloutzero .tox .tox-editor-container {
@@ -1462,6 +1463,10 @@ body.game .app .tabs > [data-tab] {
 
 .item-piles-config-container p{
     color: var(--sheetcolor) !important;
+}
+
+.sheet .prosemirror .editor-container, prose-mirror .editor-container{
+    min-height:360px;
 }
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {

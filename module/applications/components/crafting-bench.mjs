@@ -339,11 +339,14 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
   }
 
   get materials() {
+    const actorMaterials = this.actor.craftingMaterials
+    console.log("Actor Materials: ", actorMaterials)
     return this.actor.craftingMaterials.reduce((acc, mat) => {
       acc[mat._stats.compendiumSource] = {
         name: mat.name,
         quantity: mat.system.quantity
       }
+      console.log("ACC: ",acc)
       return acc
     }, {})
   }

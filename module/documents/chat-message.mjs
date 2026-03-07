@@ -290,7 +290,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   _addApplyDamageButtons(html) {
     if (this.cardType !== 'damage') return
-    if (!game.user.isGM && this.author !== game.user) return
+    if (!game.user.isGM) return
 
     const damageTypes = this.flags?.falloutzero.damageTypes
     const damageApplication = document.createElement('damage-application')
