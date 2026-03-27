@@ -247,6 +247,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
         let descStr = this.object.system.description
         let itemName = descStr.match(/\{(.*?)\}/);
         let item_name = itemName[1].split(" ").join("_")
+        let found =''
         let matches = []
         //This catches errors where there is a space within ONE item name
         if (itemName) {
@@ -264,15 +265,12 @@ export default class FalloutZeroItemSheet extends ItemSheet {
                 data-uuid="${UUID}" 
                 data-id="${ID[ID.length - 1]}" 
                 data-type="Item" 
-                data-pack="arcane-arcade-fallout.conditions" 
+                data-pack="arcane-arcade-fallout.conditions"
                 data-tooltip="Click for details."
                 >
                 ${itemName[1]}
                 </a>`;
               descStr = this.object.system.description.split(`@UUID[${UUID}]{${itemName[1]}}`).join(newLink);
-              if (UUID.includes("conditions")) {
-                FalloutZeroItem.prototype.getReactions(ID[ID.length - 1], this.object)
-              }
               this.object.update({ 'system.description': descStr });
               return;
             }

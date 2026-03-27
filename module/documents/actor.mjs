@@ -28,6 +28,7 @@ export default class FalloutZeroActor extends Actor {
   }
 
   getItemByCompendiumId(id) {
+    console.log("Yup I happened!")
     if (!id) return false
 
     console.log('search for', id)
@@ -2349,7 +2350,9 @@ export default class FalloutZeroActor extends Actor {
       }, 0)
 
       // reduce HP damage by damage already dealt to SP
+      console.log(`${hpDamage} - ${spDamageDealt}`)
       hpDamage -= spDamageDealt
+      console.log(hpDamage)
 
       if (dt.value >= hpDamage) {
         // dt > hp damage

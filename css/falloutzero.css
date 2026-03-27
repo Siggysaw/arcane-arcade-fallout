@@ -1468,6 +1468,22 @@ body.game .app .tabs > [data-tab] {
 .sheet .prosemirror .editor-container, prose-mirror .editor-container{
     min-height:360px;
 }
+.sheet .manualValues{
+    border:solid 1px;
+}
+.sheet .manualValues div{
+    border-bottom:dotted 1px;
+    margin:5px;
+}
+.sheet .manualTitle{
+    padding-top:3px;
+    font-weight:bold;
+    text-align:right;
+    text-transform:uppercase;
+    color:#eee;
+}
+
+
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {
   background-color: #0066b1;

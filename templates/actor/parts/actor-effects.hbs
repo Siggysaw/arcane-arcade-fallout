@@ -60,3 +60,30 @@
   </ol>
   {{/each}}
 </ol>
+<h3>Manual Value Adjustments</h3>
+<div class="manualValues grid grid-4col">
+    <div class="manualTitle">Max Health</div>
+    <div><input type="number" name="system.health.manualMax" value="{{system.health.manualMax}}" /></div>
+    <div class="manualTitle">Max Stamina</div>
+    <div><input type="number" name="system.stamina.manualMax" value="{{system.stamina.manualMax}}" /></div>
+    <div class="manualTitle" data-tooltip="Armor Class">AC</div>
+    <div><input type="number" name="system.armorClass.base" value="{{system.armorClass.base}}" /></div>
+    <div class="manualTitle" data-tooltip="Damage Threshold">DT</div>
+    <div><input type="number" name="system.damageThreshold.base" value="{{system.damageThreshold.base}}" /></div>
+    <div class="manualTitle">Max Action Points</div>
+    <div><input type="number" name="system.actionPoints.manualMax" value="{{system.actionPoints.manualMax}}" /></div>
+    <div class="manualTitle">Max Carry Load</div>
+    <div><input type="number" name="system.carryLoad.manualMax" value="{{system.carryLoad.manualMax}}" /></div>
+    <div class="manualTitle">Bonus To Hit</div>
+    <div><input type="number" name="system.attackBonus" value="{{system.attackBonus}}" /></div>
+    <div class="manualTitle">Bonus To Damage</div>
+    <div><input data-tooltip="Can be in dice format (1d4) or flat number" type="text" name="system.damageBonus" value="{{system.attackBonus}}" /></div>
+    <div class="manualTitle">Combat Sequence</div>
+    <div><input type="number" name="system.combatSequence.base" value="{{system.combatSequence.base}}" /></div>
+    <div class="manualTitle">Healing Rate</div>
+    <div><input type="number" name="system.healingRate.base" value="{{system.healingRate.base}}" /></div>
+    <div class="manualTitle">Passive Sense</div>
+    <div><input type="number" name="system.passiveSense.base" value="{{system.passiveSense.base}}" /></div>
+    <div class="manualTitle">Party Nerve</div>
+    <div><input type="number" name="system.partyNerve.modifiers" value="{{system.partyNerve.modifiers}}" /></div>
+</div>

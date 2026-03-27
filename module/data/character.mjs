@@ -84,7 +84,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.healingRate = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
       value: new fields.NumberField({ initial: 0 }),
-      modifiers: new fields.NumberField({ initial: 0 })
+      modifiers: new fields.NumberField({ initial: 0 }),
+      manualMax: new fields.NumberField({initial: 0 }),
     })
     schema.saveSuccesses = new fields.SchemaField({
       first: new fields.BooleanField({ initial: false }),
@@ -106,13 +107,16 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       value: new fields.NumberField({ initial: 0 }),
       modifiers: new fields.NumberField({ initial: 0 }),
       advantage: new fields.NumberField({ initial: 0 }),
-      formula: new fields.StringField({ initial: "1d20" })
+      formula: new fields.StringField({ initial: "1d20" }),
+      manualMax: new fields.NumberField({ initial: 0 }),
+
     })
     schema.partyNerve = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
       value: new fields.NumberField({ initial: 0 }),
       modifiers: new fields.NumberField({ initial: 0 }),
-      advantage: new fields.NumberField({ initial: 0 })
+      advantage: new fields.NumberField({ initial: 0 }),
+      manualMax: new fields.NumberField({ initial: 0 })
     })
     schema.groupSneak = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
@@ -125,7 +129,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.passiveSense = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
       value: new fields.NumberField({ initial: 0 }),
-      modifiers: new fields.NumberField({ initial: 0 })
+      modifiers: new fields.NumberField({ initial: 0 }),
+      manualMax: new fields.NumberField({ initial: 0 }),
+
     })
     schema.penaltyTotal = new fields.NumberField({ initial: 0, min: 0 })
     schema.properties = new fields.HTMLField()
@@ -334,10 +340,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.penalties.fatigue.value
     this.carryLoad.baseMax = this.abilities['str'].value * 10
     this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
-    this.healingRate.value = this.healingRate.base + Math.floor((this.level + this.abilities['end'].value) / 2) + this.healingRate.modifiers
-    this.health.max = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['end'].mod) + this.health.boostMax
-    this.stamina.max = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) + this.stamina.boostMax
-    this.actionPoints.max = this.abilities['agi'].mod + 10 + this.actionPoints.boostMax
+    this.healingRate.value = this.healingRate.base + Math.floor((this.level + this.abilities['end'].value) / 2) + this.healingRate.modifiers + this.healingRate.manualMax
+    this.health.max = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['end'].mod) + this.health.boostMax + this.health.manualMax
+    this.stamina.max = (1 + Math.ceil(this.level / 2)) * 5 + (Math.ceil(this.level / 2) * this.abilities['agi'].mod) + this.stamina.boostMax + this.stamina.manualMax
+    this.actionPoints.max = this.abilities['agi'].mod + 10 + this.actionPoints.boostMax + this.actionPoints.manualMax
     this.actionPoints.max > 15 ? this.actionPoints.max = 15 : ''
     slowed && this.actionPoints.max > 6 ? this.actionPoints.max = 6 : ''
     this.health.effectiveMax = this.health.max + (this.health.temp ?? 0)
