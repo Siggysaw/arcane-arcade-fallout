@@ -86,6 +86,7 @@
 {{#if item.system.itemEquipped}}
 <div class="grid grid-20col combat-tab armor-identity" data-item-id="{{ item._id }}">
     <div class="grid-span-5 weapon-identity context-menu" data-item-id="{{ item._id }}">
+        <div>{{#if item.system.broken}}[BROKEN]{{/if}}</div>
         <div data-tooltip="{{item.name}}" class="weapon-name" draggable="true">{{item.name}}</div>
     </div>
     <div class="armor-stats grid-span-5 armor-condition">

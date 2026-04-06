@@ -9,3 +9,9 @@
     width:75px;
     text-align:center;
 }
+.attack-dialog{
+    font-size:14pt;
+}
+.attack-dialog div{
+    border-bottom:dotted 1px;
+}

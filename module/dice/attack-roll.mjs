@@ -5,13 +5,25 @@ export default class AttackRoll extends FormApplication {
     this.weapon = weapon
     this.actor = actor
     const oneHander = this.actor.items.find((i) => i.name == 'One Hander')
+    const properMaintenance = this.actor.items.find((i) => i.name == 'Proper Maintenance')
     const rooted = this.actor.items.find((i) => i.name == 'Rooted Condition')
     const twoHandedWeapon = weapon.system.description.includes("Two Handed")
+    let decayValue = this.weapon.getDecayValue()
+    let gunCondition = this.weapon.system.decay
     oneHander && !twoHandedWeapon ? this.actor.system.attackBonus += 2 : ''
     oneHander && twoHandedWeapon ? this.actor.system.attackBonus -= 2 : ''
     oneHander && oneHander.system.wildWasteland && !twoHandedWeapon ? this.actor.system.damageBonus += 2 : ''
     oneHander && oneHander.system.wildWasteland && twoHandedWeapon ? this.actor.system.damageBonus -= 2 : ''
-    rooted && weapon.type =='meleeWeapon'? this.actor.system.damageBonus += 2 : ''
+    properMaintenance ? decayValue -= 1  : ''
+    properMaintenance && properMaintenance.system.wildWasteland ? decayValue -= 1 : ''
+    decayValue < 0 ? decayValue == 0 : ''
+    rooted && weapon.type == 'meleeWeapon' ? this.actor.system.damageBonus += 2 : ''
+
+    //Alert if Weapon is Broken
+    gunCondition == 0 ||
+      properMaintenance && gunCondition <= 2 ||
+      properMaintenance && properMaintenance.system.wildWasteland && gunCondition <= 5
+      ? ui.notifications.warn(`${this.weapon.name} has decayed too much and is broken`) : ''
 
     this.formDataCache = {
       weaponType:weapon.type,
@@ -21,10 +33,10 @@ export default class AttackRoll extends FormApplication {
       attackBonus: this.actor.getAttackBonus(),
       damageBonus: this.actor.getDamageBonus(),
       abilityBonus: this.weapon.getAbilityBonus(),
-      decayPenalty: weapon.type == "explosive" ? 0 : this.weapon.getDecayValue(),
+      decayPenalty: weapon.type == "explosive" ? 0 : decayValue,
       actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
       actorPenalties: this.actor.system.penaltyTotal,
-      totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - this.weapon.getDecayValue() - this.actor.system.penaltyTotal + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
+      totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - decayValue - this.actor.system.penaltyTotal + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
       bonus: 0,
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,

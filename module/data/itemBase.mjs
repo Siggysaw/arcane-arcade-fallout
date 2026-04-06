@@ -14,7 +14,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
     schema.cost = new fields.NumberField({ initial: 0, required: true, nullable: false, integer: true })
     schema.load = new fields.NumberField({ initial: 0.1, required: true, nullable: false, integer: false })
     schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
-
+    schema.broken = new fields.BooleanField({ initial: false })
 
     schema.crafting = new fields.SchemaField({
       craftable: new fields.BooleanField({ initial: false }),

@@ -28,7 +28,6 @@ export default class FalloutZeroActor extends Actor {
   }
 
   getItemByCompendiumId(id) {
-    console.log("Yup I happened!")
     if (!id) return false
 
     console.log('search for', id)

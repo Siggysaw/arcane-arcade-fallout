@@ -85,7 +85,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       base: new fields.NumberField({ initial: 0 }),
       value: new fields.NumberField({ initial: 0 }),
       modifiers: new fields.NumberField({ initial: 0 }),
-      manualMax: new fields.NumberField({initial: 0 }),
+      manualMax: new fields.NumberField({ initial: 0 }),
     })
     schema.saveSuccesses = new fields.SchemaField({
       first: new fields.BooleanField({ initial: false }),
@@ -302,9 +302,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const hyperstimulant = searchItems(this, "Hyperstimulant")
     const blocking = searchItems(this, "Blocking")
     const slowed = searchItems(this, "Slowed")
+    const properMaintenance = searchItems(this, "Proper Maintenance")
     let dtBoost = 0
     blocking && blocking.system.quantity > 1 ? dtBoost = 2 : ''
-   
+
 
 
     //========= ARMOR AUTOMATION
@@ -320,6 +321,21 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     equippedArmor ? this.armorClass.armor = equippedArmor.system.armorClass.value : this.armorClass.armor = 10
     equippedArmor ? this.damageThreshold.armor = equippedArmor.system.damageThreshold.value : this.damageThreshold.armor = 0
 
+    // Armor AC and DT decrease by armor decay halved rounded down
+    let armorDecaybase = (equippedArmor.system.decay - 10) * -1
+    properMaintenance && properMaintenance.system.wildWasteland ? armorDecaybase -= 2 :
+      properMaintenance ? armorDecaybase -= 1 : ''
+    let armorDecay = Math.floor(armorDecaybase / 2)
+    armorDecay < 0 ? armorDecay = 0 : ''
+    this.armorClass.modifiers -= armorDecay
+    this.damageThreshold.modifiers -= armorDecay
+    if (equippedArmor.system.decay == 0 ||
+      properMaintenance && equippedArmor.system.decay < 3 ||
+      properMaintenance && properMaintenance.system.wildWasteland && equippedArmor.system.decay < 6) {
+      equippedArmor.system.broken = true
+    } else {
+      equippedArmor.system.broken = false
+    }
 
     // Base Character Stat Creation
     this.critMod = Math.floor(this.abilities['lck'].mod / 2)
@@ -359,6 +375,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
     this.damageThreshold.value += this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
     this.damageThreshold.value < 1 ? this.damageThreshold.value = 0 : ''
+    this.armorClass.value < 10 ? this.armorClass.value = 10 : ''
   }
 }
 
