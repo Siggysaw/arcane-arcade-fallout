@@ -188,6 +188,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const alertness = searchItems(this, "Alertness")
     const aliveandkickin = searchItems(this, "Alive and Kickin'")
     const packrat = searchItems(this, "Pack Rat")
+    const blindDevil = searchItems(this, "Blind Devil")
     const dumbLuck = searchItems(this, "Dumb Luck")
     const evolution = searchItems(this, "Evolution")
     const actionHero = searchItems(this, "Action Hero")
@@ -209,6 +210,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
 
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
+    blindDevil ? this.combatSequence.advantage += 1 : ''
     dumbLuck ? this.luckmod = this.abilities['lck'].mod : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
     dumbLuck && dumbLuck.system.quantity > 1 ? this.luckmod = this.abilities['lck'].mod + 2 : ''
     actionHero ? this.actionPoints.boostMax += 2 : ''
@@ -302,12 +304,16 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const hyperstimulant = searchItems(this, "Hyperstimulant")
     const blocking = searchItems(this, "Blocking")
     const slowed = searchItems(this, "Slowed")
+    const anxiolytic = searchItems(this, "Anxiolytic")
+    anxiolytic ? this.combatSequence.advantage += 1 : ''
+
     const properMaintenance = searchItems(this, "Proper Maintenance")
     let dtBoost = 0
     blocking && blocking.system.quantity > 1 ? dtBoost = 2 : ''
 
 
-
+    this.combatSequence.advantage > 0 ? this.combatSequence.formula = "2d20kh" :
+      this.combatSequence.advantage < 0 ? this.combatSequence.formula = "2d20kl" : ''
     //========= ARMOR AUTOMATION
     function searchArmor(actor) {
       const armorFound = actor.parent.items.find((i) => i.system.itemEquipped == true && i.type == "armor")
