@@ -1,3 +1,5 @@
-2026/04/17-11:34:23.779 a4e0 Recovering log #2331
-2026/04/17-11:34:23.788 a4e0 Delete type=0 #2331
-2026/04/17-11:34:23.788 a4e0 Delete type=3 #2329
+2026/04/18-01:09:10.651 12ffc Log #2336: 0 ops saved to Table #2337 OK
+2026/04/18-01:09:10.652 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\enemies/002336.log: OK
+2026/04/18-01:09:10.653 12ffc Table #2306: 355 entries OK
+2026/04/18-01:09:10.658 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\enemies/MANIFEST-002335: OK
+2026/04/18-01:09:10.662 12ffc **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\enemies; recovered 1 files; 364909 bytes. Some data may have been lost. ****

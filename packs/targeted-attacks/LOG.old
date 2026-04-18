@@ -1,3 +1,5 @@
-2026/04/17-11:34:24.025 b44c Recovering log #1504
-2026/04/17-11:34:24.036 b44c Delete type=0 #1504
-2026/04/17-11:34:24.036 b44c Delete type=3 #1502
+2026/04/18-01:09:10.934 11d10 Log #1509: 0 ops saved to Table #1510 OK
+2026/04/18-01:09:10.934 11d10 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\targeted-attacks/001509.log: OK
+2026/04/18-01:09:10.935 11d10 Table #1297: 35 entries OK
+2026/04/18-01:09:10.938 11d10 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\targeted-attacks/MANIFEST-001508: OK
+2026/04/18-01:09:10.943 11d10 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\targeted-attacks; recovered 1 files; 5766 bytes. Some data may have been lost. ****

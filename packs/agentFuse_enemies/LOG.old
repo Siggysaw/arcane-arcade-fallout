@@ -1,3 +1,5 @@
-2026/04/17-11:34:23.806 9160 Recovering log #110
-2026/04/17-11:34:23.815 9160 Delete type=0 #110
-2026/04/17-11:34:23.815 9160 Delete type=3 #108
+2026/04/18-01:09:10.686 12ffc Log #115: 0 ops saved to Table #116 OK
+2026/04/18-01:09:10.687 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\agentFuse_enemies/000115.log: OK
+2026/04/18-01:09:10.690 12ffc Table #85: 508 entries OK
+2026/04/18-01:09:10.695 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\agentFuse_enemies/MANIFEST-000114: OK
+2026/04/18-01:09:10.700 12ffc **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\agentFuse_enemies; recovered 1 files; 1648660 bytes. Some data may have been lost. ****

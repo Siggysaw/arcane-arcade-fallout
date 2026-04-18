@@ -315,33 +315,28 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.combatSequence.advantage > 0 ? this.combatSequence.formula = "2d20kh" :
       this.combatSequence.advantage < 0 ? this.combatSequence.formula = "2d20kl" : ''
     //========= ARMOR AUTOMATION
-    function searchArmor(actor) {
-      const armorFound = actor.parent.items.find((i) => i.system.itemEquipped == true && i.type == "armor")
+
+      const armorFound = this.parent.items.find((i) => i.system.itemEquipped == true && i.type == "armor")
       if (armorFound !== undefined) {
-        return armorFound
+        equippedArmor ? this.armorClass.armor = equippedArmor.system.armorClass.value : this.armorClass.armor = 10
+        equippedArmor ? this.damageThreshold.armor = equippedArmor.system.damageThreshold.value : this.damageThreshold.armor = 0
+
+        // Armor AC and DT decrease by armor decay halved rounded down
+        let armorDecaybase = (equippedArmor.system.decay - 10) * -1
+        properMaintenance && properMaintenance.system.wildWasteland ? armorDecaybase -= 2 :
+          properMaintenance ? armorDecaybase -= 1 : ''
+        let armorDecay = Math.floor(armorDecaybase / 2)
+        armorDecay < 0 ? armorDecay = 0 : ''
+        this.armorClass.modifiers -= armorDecay
+        this.damageThreshold.modifiers -= armorDecay
+        if (equippedArmor.system.decay == 0 ||
+          properMaintenance && equippedArmor.system.decay < 3 ||
+          properMaintenance && properMaintenance.system.wildWasteland && equippedArmor.system.decay < 6) {
+          equippedArmor.system.broken = true
+        } else {
+          equippedArmor.system.broken = false
+        }
       }
-    }
-
-    const equippedArmor = searchArmor(this)
-
-    equippedArmor ? this.armorClass.armor = equippedArmor.system.armorClass.value : this.armorClass.armor = 10
-    equippedArmor ? this.damageThreshold.armor = equippedArmor.system.damageThreshold.value : this.damageThreshold.armor = 0
-
-    // Armor AC and DT decrease by armor decay halved rounded down
-    let armorDecaybase = (equippedArmor.system.decay - 10) * -1
-    properMaintenance && properMaintenance.system.wildWasteland ? armorDecaybase -= 2 :
-      properMaintenance ? armorDecaybase -= 1 : ''
-    let armorDecay = Math.floor(armorDecaybase / 2)
-    armorDecay < 0 ? armorDecay = 0 : ''
-    this.armorClass.modifiers -= armorDecay
-    this.damageThreshold.modifiers -= armorDecay
-    if (equippedArmor.system.decay == 0 ||
-      properMaintenance && equippedArmor.system.decay < 3 ||
-      properMaintenance && properMaintenance.system.wildWasteland && equippedArmor.system.decay < 6) {
-      equippedArmor.system.broken = true
-    } else {
-      equippedArmor.system.broken = false
-    }
 
     // Base Character Stat Creation
     this.critMod = Math.floor(this.abilities['lck'].mod / 2)

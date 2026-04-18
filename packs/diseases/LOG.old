@@ -1,3 +1,5 @@
-2026/04/17-11:34:23.981 9160 Recovering log #1568
-2026/04/17-11:34:23.990 9160 Delete type=0 #1568
-2026/04/17-11:34:23.990 9160 Delete type=3 #1566
+2026/04/18-01:09:10.887 11d10 Log #1573: 0 ops saved to Table #1574 OK
+2026/04/18-01:09:10.887 11d10 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/001573.log: OK
+2026/04/18-01:09:10.887 11d10 Table #1361: 21 entries OK
+2026/04/18-01:09:10.891 11d10 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases/MANIFEST-001572: OK
+2026/04/18-01:09:10.897 11d10 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\diseases; recovered 1 files; 3738 bytes. Some data may have been lost. ****

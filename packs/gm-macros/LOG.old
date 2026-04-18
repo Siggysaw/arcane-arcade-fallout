@@ -1,3 +1,5 @@
-2026/04/17-11:34:23.543 b44c Recovering log #743
-2026/04/17-11:34:23.552 b44c Delete type=0 #743
-2026/04/17-11:34:23.552 b44c Delete type=3 #741
+2026/04/18-01:09:10.380 12c0c Log #748: 0 ops saved to Table #749 OK
+2026/04/18-01:09:10.380 12c0c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\gm-macros/000748.log: OK
+2026/04/18-01:09:10.380 12c0c Table #536: 1 entries OK
+2026/04/18-01:09:10.385 12c0c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\gm-macros/MANIFEST-000747: OK
+2026/04/18-01:09:10.390 12c0c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\gm-macros; recovered 1 files; 714 bytes. Some data may have been lost. ****

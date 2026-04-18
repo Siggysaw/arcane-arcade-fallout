@@ -1,3 +1,5 @@
-2026/04/17-11:34:23.834 8698 Recovering log #1952
-2026/04/17-11:34:23.842 8698 Delete type=0 #1952
-2026/04/17-11:34:23.842 8698 Delete type=3 #1950
+2026/04/18-01:09:10.719 12ffc Log #1957: 0 ops saved to Table #1958 OK
+2026/04/18-01:09:10.719 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\junk/001957.log: OK
+2026/04/18-01:09:10.719 12ffc Table #1745: 67 entries OK
+2026/04/18-01:09:10.723 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\junk/MANIFEST-001956: OK
+2026/04/18-01:09:10.728 12ffc **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\junk; recovered 1 files; 13915 bytes. Some data may have been lost. ****
