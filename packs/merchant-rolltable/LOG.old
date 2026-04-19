@@ -1,5 +1,1 @@
-2026/04/18-01:09:10.863 12c04 Log #820: 0 ops saved to Table #821 OK
-2026/04/18-01:09:10.863 12c04 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\merchant-rolltable/000820.log: OK
-2026/04/18-01:09:10.863 12c04 Table #608: 650 entries OK
-2026/04/18-01:09:10.868 12c04 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\merchant-rolltable/MANIFEST-000819: OK
-2026/04/18-01:09:10.873 12c04 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\merchant-rolltable; recovered 1 files; 121541 bytes. Some data may have been lost. ****
+2026/04/18-01:09:10.883 12c04 Delete type=3 #1

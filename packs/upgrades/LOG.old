@@ -1,5 +1,1 @@
-2026/04/18-01:09:10.979 11d10 Log #1976: 0 ops saved to Table #1977 OK
-2026/04/18-01:09:10.979 11d10 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\upgrades/001976.log: OK
-2026/04/18-01:09:10.979 11d10 Table #1946: 131 entries OK
-2026/04/18-01:09:10.983 11d10 Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\upgrades/MANIFEST-001975: OK
-2026/04/18-01:09:10.988 11d10 **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\upgrades; recovered 1 files; 82003 bytes. Some data may have been lost. ****
+2026/04/18-01:09:10.998 11d10 Delete type=3 #1

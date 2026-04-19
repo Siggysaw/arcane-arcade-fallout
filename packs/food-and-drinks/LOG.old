@@ -1,5 +1,1 @@
-2026/04/18-01:09:10.553 12ffc Log #2281: 0 ops saved to Table #2282 OK
-2026/04/18-01:09:10.554 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\food-and-drinks/002281.log: OK
-2026/04/18-01:09:10.554 12ffc Table #2069: 86 entries OK
-2026/04/18-01:09:10.558 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\food-and-drinks/MANIFEST-002280: OK
-2026/04/18-01:09:10.563 12ffc **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\food-and-drinks; recovered 1 files; 82539 bytes. Some data may have been lost. ****
+2026/04/18-01:09:10.572 12ffc Delete type=3 #1

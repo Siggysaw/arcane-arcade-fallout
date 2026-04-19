@@ -1,6 +1,1 @@
-2026/04/18-01:09:10.502 12ffc Log #1997: 0 ops saved to Table #1998 OK
-2026/04/18-01:09:10.503 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\chems/001997.log: OK
-2026/04/18-01:09:10.503 12ffc Table #1784: 33 entries OK
-2026/04/18-01:09:10.503 12ffc Table #1996: 2 entries OK
-2026/04/18-01:09:10.507 12ffc Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\chems/MANIFEST-001995: OK
-2026/04/18-01:09:10.512 12ffc **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\chems; recovered 2 files; 34335 bytes. Some data may have been lost. ****
+2026/04/18-01:09:10.523 12ffc Delete type=3 #1

@@ -23,6 +23,7 @@ export default class FalloutZeroCondition extends FalloutZeroItemBase {
     schema.wornload = new fields.NumberField({})
     schema.full = new fields.NumberField({})
     schema.worn = new fields.BooleanField({})
+    schema.carryBonus = new fields.NumberField({ initial: 0 })
     schema.filled = new fields.BooleanField({})
     schema.abilityMod = new fields.StringField({ initial: 'per' })
     schema.skillBonus = new fields.StringField({ initial: 'explosives' })

@@ -164,6 +164,13 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       return actor.parent.items.find((i) => i.name == search)
     }
 
+    //Update Carry Load Max for Bags/Bandoliers/etc
+    const wornGear = this.parent.items.filter((item) => item.type === 'miscItem' && item.system.worn)
+    let carryBonus = 0
+    wornGear.forEach((item) => {
+      this.carryLoad.modifiersMax += item.system.carryBonus
+    })
+
     const gifted = searchItems(this, "Gifted")
     let skillsLost = 0
     gifted ? skillsLost = 3 : ''
