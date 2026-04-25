@@ -343,6 +343,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     context.medicines = medicines.sort((a, b) => a.name.localeCompare(b.name))
     context.foodAnddrinks = foodAnddrinks.sort((a, b) => a.name.localeCompare(b.name))
     context.ammos = ammos.sort((a, b) => a.name.localeCompare(b.name))
+    context.rangedWeapons = rangedWeapons.sort((a, b) => a.name.localeCompare(b.name))
+    context.meleeWeapons = meleeWeapons.sort((a, b) => a.name.localeCompare(b.name))
     context.junk = junk.sort((a, b) => a.name.localeCompare(b.name))
     context.materials = materials.sort((a, b) => a.name.localeCompare(b.name))
     context.traits = traits
@@ -388,9 +390,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
     context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps
     context.canRemoveCaps = this.actor.system.karmaCaps.length > 1
+
     if (this.actor.type == "character") {
       this.actor.update({ 'prototypeToken.actorLink': true })
     }
+
     const drdv = Object.values(FALLOUTZERO.damageTypes).reduce(
       (acc, type) => {
         acc.dr.push({

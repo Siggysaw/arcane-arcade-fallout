@@ -1,5 +1,11 @@
 {{> "systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs"}}
 <br />
+    <div class="grid-span-10">
+        <span class="show-unequipped">
+            Show Unequipped:
+        </span>
+        <i data-showEquipped class="fas fa-toggle-{{#if system.showEquipped}}on{{else}}off{{/if}} show-unequipped"></i>
+    </div>
 {{>
     "systems/arcane-arcade-fallout/templates/actor/items/equipped-ranged-weapons.hbs"
     rangedWeapons=rangedWeapons
