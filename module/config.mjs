@@ -1238,6 +1238,10 @@ FALLOUTZERO.damageTypes = {
     id: 'bludgeoning',
     label: 'Bludgeoning',
   },
+  impact: {
+    id: 'impact',
+    label: 'Impact',
+  },
   electricity: {
     id: 'electricity',
     label: 'Electricity',

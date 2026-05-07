@@ -1699,4 +1699,7 @@ body.game .app .vaulttec .tabs > [data-tab] {
 .sheet .cryo input[type='checkbox'] {
   content: url('/icons/svg/frozen.svg');
 }
+.sheet .impact input[type='checkbox'] {
+  content: url('/icons/svg/falling.svg');
+}
 
