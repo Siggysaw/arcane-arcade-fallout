@@ -18,15 +18,36 @@
   <tr>
     {{#each abilities as |ability key|}}
     <td>
-        <div class="flex justify-center gap-5">
-            {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statSubtraction data-stat="{{ ability.abbr }}" data-type="abilities">
-                <i class="fas fa-minus-square "></i>
-            </button>{{/if}}
-            <span class="skillvalue">{{ability.value}}</span>
-            {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statAddition data-stat="{{ ability.abbr }}" data-type="abilities">
-                <i class="fas fa-plus-square"></i>
-            </button>{{/if}}
+      <div class="flex justify-center gap-5">
+        {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statSubtraction
+          data-stat="{{ ability.abbr }}" data-type="abilities">
+          <i class="fas fa-minus-square "></i>
+        </button>{{/if}}
+        {{#if ../system.showSpecialBaseMod}}
+        <div class="flex gap-3">
+          <div class="flex items-center" style="flex-direction: column;">
+            <span style="opacity: 0.5; font-size: 0.65rem; line-height: 1;">Base</span>
+            <span class="skillvalue">{{ability.base}}</span>
+          </div>
+          {{#LesserThan ability.modifiers 0}}
+          <span class="flex items-center">-</span>
+          {{/LesserThan}}
+          {{#GreaterThan ability.modifiers 0}}
+          <span class="flex items-center">+</span>
+          {{/GreaterThan}}
+          <div class="flex items-center" style="flex-direction: column;">
+            <span style="opacity: 0.5; font-size: 0.65rem; line-height: 1;">Modifier</span>
+            <span class="skillvalue">{{ability.modifiers}}</span>
+          </div>
         </div>
+        {{else}}
+        <span class="skillvalue">{{ability.value}}</span>
+        {{/if}}
+        {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statAddition
+          data-stat="{{ ability.abbr }}" data-type="abilities">
+          <i class="fas fa-plus-square"></i>
+        </button>{{/if}}
+      </div>
     </td>
     {{/each}}
   </tr>
@@ -40,3 +61,9 @@
     {{/each}}
   </tr>
 </table>
+<div class="flex justify-center" style="margin-top: 4px;">
+  <label>
+    <input type="checkbox" data-show-special-base-mod {{checked ../system.showSpecialBaseMod}} />
+    Show Base + Modifier
+  </label>
+</div>
