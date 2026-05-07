@@ -13,6 +13,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     schema.totalSkillpoints = new fields.NumberField({ initial: 0 })
     schema.explosiveMastery = new fields.NumberField({ initial: 0 })
     schema.boostDice = new fields.NumberField({ initial: 0, min: 0 })
+    schema.showSpecialBaseMod = new fields.BooleanField({ initial: false })
     schema.health = new fields.SchemaField({
       value: new fields.NumberField({
         ...requiredInteger,
