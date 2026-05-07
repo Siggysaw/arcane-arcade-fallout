@@ -1,5 +1,6 @@
 export const FALLOUTZERO = {
   systemId: 'falloutzero',
+  OVERRIDE_UNSET: -999,
 }
 
 /**
@@ -45,6 +46,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    override: FALLOUTZERO.OVERRIDE_UNSET,
     penalties: true,
   },
   per: {
@@ -53,6 +55,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    override: FALLOUTZERO.OVERRIDE_UNSET,
     penalties: true,
   },
   end: {
@@ -61,6 +64,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    override: FALLOUTZERO.OVERRIDE_UNSET,
     penalties: true,
   },
   cha: {
@@ -69,6 +73,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    override: FALLOUTZERO.OVERRIDE_UNSET,
     penalties: true,
   },
   int: {
@@ -77,6 +82,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    override: FALLOUTZERO.OVERRIDE_UNSET,
     penalties: true,
   },
   agi: {
@@ -85,6 +91,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    override: FALLOUTZERO.OVERRIDE_UNSET,
     penalties: true,
   },
   lck: {
@@ -93,6 +100,7 @@ FALLOUTZERO.abilities = {
     reference: '',
     modifiers: 0,
     base: 0,
+    override: FALLOUTZERO.OVERRIDE_UNSET,
     penalties: false,
   },
 }
