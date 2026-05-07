@@ -142,8 +142,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
       // Calculate the modifier using d20 rules.
-      if (this.abilities[key].base == 0) { this.abilities[key].base = this.abilities[key].value }
-      this.abilities[key].value = this.abilities[key].base + this.abilities[key].modifiers
+      const override = this.abilities[key].override
+      const effectiveBase = (override == FALLOUTZERO.OVERRIDE_UNSET) ? this.abilities[key].base : override
+      this.abilities[key].value = effectiveBase + this.abilities[key].modifiers
       this.abilities[key].mod = Math.floor(this.abilities[key].value - 5)
     }
     // Loop through skill scores, and add their modifiers to our sheet output.
