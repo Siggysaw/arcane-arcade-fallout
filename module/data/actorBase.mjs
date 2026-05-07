@@ -146,6 +146,10 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
           penalties: new fields.BooleanField({
             initial: FALLOUTZERO.abilities[ability].penalties,
           }),
+          override: new fields.NumberField({
+            ...requiredInteger,
+            initial: FALLOUTZERO.OVERRIDE_UNSET,
+          }),
           abbr: new fields.StringField({
             initial: FALLOUTZERO.abilities[ability].id,
           }),
