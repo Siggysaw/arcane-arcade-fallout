@@ -405,12 +405,17 @@ export default class FalloutZeroActorSheet extends ActorSheet {
           ...type,
           selected: this.actor.system.dv.includes(type.id),
         })
+        acc.di.push({
+          ...type,
+          selected: this.actor.system.di.includes(type.id),
+        })
         return acc
       },
-      { dr: [], dv: [] },
+      { dr: [], dv: [], di: [] },
     )
     context.dr = drdv.dr
     context.dv = drdv.dv
+    context.di = drdv.di
   }
 
   /* -------------------------------------------- */

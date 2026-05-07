@@ -12,3 +12,10 @@
     </div>
     {{/each}}
 </div>
+<div class="dr-dv grid grid-14col">
+    {{#each this.di as |di|}}
+    <div class="{{di.id}}" data-tooltip="No Damage From {{di.label}}">
+    <input data-di="{{di.id}}" type="checkbox" name="system.di" value="{{ di.id }}" {{checked di.selected}} />
+    </div>
+    {{/each}}
+</div>
