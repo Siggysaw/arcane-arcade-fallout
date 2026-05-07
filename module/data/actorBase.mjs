@@ -256,6 +256,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
 
     schema.dv = new fields.ArrayField(new fields.StringField(), { initial: [] })
     schema.dr = new fields.ArrayField(new fields.StringField(), { initial: [] })
+    schema.di = new fields.ArrayField(new fields.StringField(), { initial: [] })
 
     return schema
   }

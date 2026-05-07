@@ -2338,7 +2338,9 @@ export default class FalloutZeroActor extends Actor {
       hpDamage = 0
     } else {
       hpDamage = damages.reduce((acc, d) => {
-        if (this.system.dr.includes(d.type)) {
+        if (this.system.di.includes(d.type)) {
+          return acc
+        } else if (this.system.dr.includes(d.type)) {
           acc += Math.floor(d.value / 2)
         } else if (this.system.dv.includes(d.type)) {
           acc += Math.floor(d.value * 2)
