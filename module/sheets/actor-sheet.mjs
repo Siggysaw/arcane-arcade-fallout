@@ -878,6 +878,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this.actor.update({ 'system.showEquipped': !this.actor.system.showEquipped })
     })
 
+    // Toggle Special Base + Modifier Display
+    html.on('change', '[data-show-special-base-mod]', (ev) => {
+      this.actor.update({ 'system.showSpecialBaseMod': ev.currentTarget.checked })
+    })
+
     // Toggle Active Party Member
     html.on('click', '[data-activeCheck]', (ev) => {
       this.actor.update({ 'system.activePartymember': !this.actor.system.activePartymember })
