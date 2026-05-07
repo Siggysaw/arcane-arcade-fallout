@@ -189,9 +189,10 @@ export default class AttackRoll extends FormApplication {
   }
 
   getTargetedApCost(target) {
+    let deadEye = this.actor.items.find((i) => i.name == 'deadEye')
+    target=='head' && deadEye? attackBonus += 2 * deadEye.system.quantity :''
     const isMelee = this.weapon.type === 'meleeWeapon'
     let apCost = AttackRoll.TARGET_COST?.[target] ?? 0
-    console.log(this.actor.items)
     const triggerDiscipline = this.actor.items.find((i) => i.name == 'Trigger Discipline')
     if (triggerDiscipline) {
       apCost -= 1

@@ -194,6 +194,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     //========= PERK/TRAIT AUTOMATION
     const alertness = searchItems(this, "Alertness")
     const aliveandkickin = searchItems(this, "Alive and Kickin'")
+    const deadEye = searchItems(this, "Deadeye")
     const packrat = searchItems(this, "Pack Rat")
     const blindDevil = searchItems(this, "Blind Devil")
     const dumbLuck = searchItems(this, "Dumb Luck")
@@ -216,6 +217,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const hazmatSuit = searchItems(this, 'Hazmat Suit')
 
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
+    deadEye ? this.attackBonus += 2 * deadEye.system.quantity:''
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
     blindDevil ? this.combatSequence.advantage += 1 : ''
     dumbLuck ? this.luckmod = this.abilities['lck'].mod : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)

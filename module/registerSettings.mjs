@@ -185,9 +185,16 @@ export function registerHbsHelpers() {
     }
     return options.inverse(this)
   })
-  // If Character is a NPC
+  // If Actor is a NPC
   Handlebars.registerHelper('NPC', function (actorType, options) {
     if (actorType == 'npc') {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  })
+  // If Actor is a Character
+  Handlebars.registerHelper('Character', function (actorType, options) {
+    if (actorType != 'npc') {
       return options.fn(this)
     }
     return options.inverse(this)
