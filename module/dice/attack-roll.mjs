@@ -4,20 +4,9 @@ export default class AttackRoll extends FormApplication {
 
     this.weapon = weapon
     this.actor = actor
-    const oneHander = this.actor.items.find((i) => i.name == 'One Hander')
     const properMaintenance = this.actor.items.find((i) => i.name == 'Proper Maintenance')
-    const rooted = this.actor.items.find((i) => i.name == 'Rooted Condition')
-    const twoHandedWeapon = weapon.system.description.includes("Two Handed")
     let decayValue = this.weapon.getDecayValue()
     let gunCondition = this.weapon.system.decay
-    oneHander && !twoHandedWeapon ? this.actor.system.attackBonus += 2 : ''
-    oneHander && twoHandedWeapon ? this.actor.system.attackBonus -= 2 : ''
-    oneHander && oneHander.system.wildWasteland && !twoHandedWeapon ? this.actor.system.damageBonus += 2 : ''
-    oneHander && oneHander.system.wildWasteland && twoHandedWeapon ? this.actor.system.damageBonus -= 2 : ''
-    properMaintenance ? decayValue -= 1  : ''
-    properMaintenance && properMaintenance.system.wildWasteland ? decayValue -= 1 : ''
-    decayValue < 0 ? decayValue == 0 : ''
-    rooted && weapon.type == 'meleeWeapon' ? this.actor.system.damageBonus += 2 : ''
 
     //Alert if Weapon is Broken
     gunCondition == 0 ||
@@ -30,8 +19,8 @@ export default class AttackRoll extends FormApplication {
       automaticAttack: false,
       consumesAp: true,
       skillBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus),
-      attackBonus: this.actor.getAttackBonus(),
-      damageBonus: this.actor.getDamageBonus(),
+      attackBonus: this.actor.getAttackBonus(weapon),
+      damageBonus: this.actor.getDamageBonus(weapon),
       abilityBonus: this.weapon.getAbilityBonus(),
       decayPenalty: weapon.type == "explosive" ? 0 : decayValue,
       actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),

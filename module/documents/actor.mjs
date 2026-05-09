@@ -2201,16 +2201,69 @@ export default class FalloutZeroActor extends Actor {
     return this.system.abilities[ability].mod
   }
 
-  getAttackBonus() {
-    let finesse = this.items.find((i) => i.name == 'Finesse')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  getAttackBonus(weapon) {
+    const finesse = this.items.find((i) => i.name == 'Finesse')
+    const oneHander = this.items.find((i) => i.name == 'One Hander')
+    const deadeye = this.items.find((i) => i.name == 'Deadeye')
+    const gunslinger = this.items.find((i) => i.name == 'Gunslinger')
+
     let penalty = 0
-    finesse ? finesse.system.wildWasteland ? penalty = 2 : penalty = 1 :''
-    return this.system.attackBonus - penalty
+    let totalBonus = 0
+    let twoHandedWeapon = false
+    let handgun = false
+    weapon ? twoHandedWeapon = weapon.system.description.includes("Two Handed") : ''
+    weapon ? handgun = weapon.system.description.includes("Handgun") : ''
+
+    oneHander && !twoHandedWeapon ? this.system.attackBonus.modifiers += 2 : ''
+    oneHander && twoHandedWeapon ? this.system.attackBonus.modifiers -= 2 : ''
+    finesse ? finesse.system.wildWasteland ? penalty = 2 : penalty = 1 : ''
+    deadeye ? this.system.attackBonus.modifiers += 2 * deadeye.system.quantity : ''
+    gunslinger && handgun ? this.system.attackBonus.modifiers += 2 : ''
+
+    totalBonus = this.system.attackBonus.base + this.system.attackBonus.modifiers - penalty
+    this.system.attackBonus.modifiers = 0
+    return totalBonus
   }
 
-  getDamageBonus() {
-    return this.system.damageBonus
+
+
+
+
+  getDamageBonus(weapon) {
+    const oneHander = this.items.find((i) => i.name == 'One Hander')
+    const rooted = this.items.find((i) => i.name == 'Rooted Condition')
+    const deadeye = this.items.find((i) => i.name == 'Deadeye')
+
+    let penalty = 0
+    let totalBonus = 0
+    totalBonus = 0 
+    const twoHandedWeapon = false 
+
+    oneHander && oneHander.system.wildWasteland && !twoHandedWeapon ? this.system.damageBonus += 2 : ''
+    oneHander && oneHander.system.wildWasteland && twoHandedWeapon ? this.system.damageBonus -= 2 : ''
+    rooted && weapon.type == 'meleeWeapon' ? this.system.damageBonus.modifiers += 2 : ''
+    deadeye ? this.system.damageBonus.modifiers += 2 * deadeye.system.quantity: ''
+
+
+    totalBonus = this.system.damageBonus.base + this.system.damageBonus.modifiers - penalty
+    this.system.damageBonus.modifiers = 0
+    return totalBonus
   }
+
 
   hasKarmaCapAvailable() {
     if (this.type !== 'character' || this.system.karmaCaps.length === 0) return false

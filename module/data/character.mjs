@@ -77,8 +77,16 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.unflipped = new fields.NumberField({ initial: 0 })
     schema.totalKarma = new fields.NumberField({ initial: 0 })
     schema.luckmod = new fields.NumberField({ initial: 0 })
-    schema.attackBonus = new fields.NumberField({ initial: 0 })
-    schema.damageBonus = new fields.NumberField({ initial: 0 })
+    schema.attackBonus = new fields.SchemaField({
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 }),
+    })
+    schema.damageBonus = new fields.SchemaField({
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 }),
+    })
     schema.downed = new fields.BooleanField({ initial: false })
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.SchemaField({
@@ -175,6 +183,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     let skillsLost = 0
     gifted ? skillsLost = 3 : ''
     gifted && gifted.system.wildWasteland ? skillsLost = 6 : ''
+    const powerArmor = this.parent.items.find((i) => i.type == "powerArmor")
+
 
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (const key in this.abilities) {
@@ -215,9 +225,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const vigilantWatch = searchItems(this, 'Vigilant Watch')
     const finesse = searchItems(this, 'Finesse')
     const hazmatSuit = searchItems(this, 'Hazmat Suit')
+    const back2back = searchItems(this, 'Back to Back Condition')
 
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
-    deadEye ? this.attackBonus += 2 * deadEye.system.quantity:''
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
     blindDevil ? this.combatSequence.advantage += 1 : ''
     dumbLuck ? this.luckmod = this.abilities['lck'].mod : this.luckmod = Math.floor(this.abilities['lck'].mod / 2)
@@ -225,15 +235,17 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     actionHero ? this.actionPoints.boostMax += 2 : ''
     actionHero && this.actionPoints.max > 15 ? this.actionPoints.max = 15 : ''
     activatedActinides && activatedActinides.system.wildWasteland ? this.healingRate.modifiers += 2 : ''
-    builttoDestroy && builttoDestroy.system.wildWasteland ? this.damageBonus += 1 : ''
-    hotBlooded ? this.attackBonus += -2 : ''
-    hotBlooded && hotBlooded.system.wildWasteland && this.stamina.value == 0 ? this.damageBonus += 5 : ''
+    builttoDestroy && builttoDestroy.system.wildWasteland ? this.damageBonus.modifiers += 1 : ''
+    hotBlooded ? this.attackBonus.modifiers += -2 : ''
+    hotBlooded && hotBlooded.system.wildWasteland && this.stamina.value == 0 ? this.damageBonus.modfiers += 5 : ''
     longDays ? this.stamina.boostMax += Math.floor(this.level / 2) : ''
     longDays && longDays.system.wildWasteland ? this.stamina.boostMax += Math.floor(this.level / 2) : ''
     triggerDiscipline ? this.combatSequence.modifiers -= 2 : ''
     triggerDiscipline && triggerDiscipline.system.wildWasteland ? this.combatSequence.modifiers -= 3 : ''
     vigilantWatch ? this.combatSequence.modifiers -= 1 : ''
     hazmatSuit && hazmatSuit.system.worn ? this.radiationDC.modifiers -= hazmatSuit.system.decay : ''
+    back2back ? this.damageThreshold.modifiers += 2 : ''
+    back2back ? this.armorClass.modifiers += 1 :''
 
     if (vigilantWatch && vigilantWatch.system.wildWasteland) {
       this.combatSequence.modifiers -= 1
@@ -389,6 +401,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.damageThreshold.value += this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
     this.damageThreshold.value < 1 ? this.damageThreshold.value = 0 : ''
     this.armorClass.value < 10 ? this.armorClass.value = 10 : ''
+    if (powerArmor && powerArmor.system.itemEquipped) {
+      this.abilities.str.value = 12
+      this.abilities.str.mod = 7
+      powerArmor.system.load=0
+    }
   }
 }
 

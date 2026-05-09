@@ -1,3 +1,5 @@
-2026/05/06-21:22:58.634 d2e4 Recovering log #2284
-2026/05/06-21:22:58.642 d2e4 Delete type=0 #2284
-2026/05/06-21:22:58.642 d2e4 Delete type=3 #2283
+2026/05/09-12:00:57.966 5ccc Recovering log #2288
+2026/05/09-12:00:57.967 5ccc Level-0 table #2290: started
+2026/05/09-12:00:57.970 5ccc Level-0 table #2290: 24015 bytes OK
+2026/05/09-12:00:57.979 5ccc Delete type=0 #2288
+2026/05/09-12:00:57.979 5ccc Delete type=3 #2287
