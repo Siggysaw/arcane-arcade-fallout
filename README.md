@@ -1,3 +1,5 @@
+If you would like to chat with the Devs and meet up with others using system, join us on [Discord!](https://discord.gg/G39A8Xn7XS)
+
 ## Releasing
 
 ### Release candidate
