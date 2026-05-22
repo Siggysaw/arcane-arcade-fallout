@@ -59,6 +59,7 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/arcane-arcade-fallout/templates/item/parts/item-crafting.hbs',
     'systems/arcane-arcade-fallout/templates/item/parts/item-breakdown.hbs',
     'systems/arcane-arcade-fallout/templates/item/parts/weapon-damage.hbs',
+    'systems/arcane-arcade-fallout/templates/item/parts/npc-attack.hbs',
     'systems/arcane-arcade-fallout/templates/item/item-condition-sheet.hbs',
 
     // Background partials
