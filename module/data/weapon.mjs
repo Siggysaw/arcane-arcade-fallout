@@ -81,6 +81,8 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
       // flat: new fields.NumberField({ initial: null, min: 1})
     })
 
+    schema.staticRange = new fields.BooleanField({ initial: false })
+
     schema.upgrades = new fields.SchemaField({
       upgrade1: new fields.SchemaField({
         name: new fields.StringField({ initial: `` }),
