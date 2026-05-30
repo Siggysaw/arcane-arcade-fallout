@@ -185,6 +185,7 @@ export default class AttackRoll extends FormApplication {
     const triggerDiscipline = this.actor.items.find((i) => i.name == 'Trigger Discipline')
     if (triggerDiscipline) {
       apCost -= 1
+      triggerDiscipline.system.wildWasteland ? apCost -= 1:''
     }
     if (isMelee) {
       apCost -= 2
