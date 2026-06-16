@@ -109,7 +109,7 @@ export default class AbilityRoll extends FormApplication {
      * Deconstruct dialog form
      */
     let { skillBonus, selectedAbility, actorLuck, actorPenalties, actorBoost, bonus } = this.formDataCache
-    let abilityBonus = this.actor.getAbilityMod(selectedAbility)
+    let abilityBonus = this.actor.system.abilities[selectedAbility].mod
     /**
      * Roll to hit
      */

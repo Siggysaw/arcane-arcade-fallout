@@ -76,12 +76,12 @@ export default class AttackRoll extends FormApplication {
 
   static TARGET_COST = {
     eyes: 5,
-    head: 4,
+    head: 3,
     arm: 3,
     torso: 2,
     groin: 3,
     leg: 2,
-    carried: 3,
+    carried: 4,
   }
 
   async getData() {

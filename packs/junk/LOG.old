@@ -1,5 +1,1 @@
-2026/05/29-22:41:13.460 754c Log #1989: 0 ops saved to Table #1990 OK
-2026/05/29-22:41:13.461 754c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\junk/001989.log: OK
-2026/05/29-22:41:13.462 754c Table #1979: 67 entries OK
-2026/05/29-22:41:13.466 754c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\junk/MANIFEST-001988: OK
-2026/05/29-22:41:13.471 754c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\junk; recovered 1 files; 13915 bytes. Some data may have been lost. ****
+2026/05/29-22:41:13.482 754c Delete type=3 #1

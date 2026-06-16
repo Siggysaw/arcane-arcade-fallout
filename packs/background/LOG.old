@@ -1,5 +1,1 @@
-2026/05/29-22:41:13.110 754c Log #1944: 0 ops saved to Table #1945 OK
-2026/05/29-22:41:13.111 754c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\background/001944.log: OK
-2026/05/29-22:41:13.117 754c Table #1934: 40 entries OK
-2026/05/29-22:41:13.121 754c Archiving C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\background/MANIFEST-001943: OK
-2026/05/29-22:41:13.126 754c **** Repaired leveldb C:\Users\Sig\AppData\Local\FoundryVTT\Data\systems\arcane-arcade-fallout\packs\background; recovered 1 files; 89150 bytes. Some data may have been lost. ****
+2026/05/29-22:41:13.138 754c Delete type=3 #1
