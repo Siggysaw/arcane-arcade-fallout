@@ -48,10 +48,28 @@
                       <div class="weapon-label">Long:</div><div>
                           <input type="number" name="system.range.long" value="{{ system.range.long }}" />
                       </div>
+                        <div class="weapon-label">Static Range:</div>
+                        <div>
+                          <input type="checkbox" name="system.staticRange" title="Used mainly for NPCs, which generally use static weapon range values; As opposed to Perception or Strength modified range values." {{#if system.staticRange}}checked{{/if}} />
+                        </div>
                       <div style="text-align:right;border-right:solid 1px;padding:5px;">
-                          {{#if item.parent}}{{#Multiply item.parent.system.abilities.per.value system.range.short}}{{/Multiply}}ft{{else}}NA{{/if}}
+                          {{#if item.parent}}
+                            {{#if system.staticRange}}
+                              {{system.range.short}}ft
+                            {{else}}
+                              {{#Multiply item.parent.system.abilities.per.value system.range.short}}{{/Multiply}}ft
+                            {{/if}}
+                          {{else}}NA{{/if}}
                       </div>
-                      <div style="padding:5px;">{{#if item.parent}}{{#Multiply item.parent.system.abilities.per.value system.range.long}}{{/Multiply}}ft{{else}}NA{{/if}}</div>
+                      <div style="padding:5px;">
+                          {{#if item.parent}}
+                            {{#if system.staticRange}}
+                              {{system.range.long}}ft
+                            {{else}}
+                              {{#Multiply item.parent.system.abilities.per.value system.range.long}}{{/Multiply}}ft
+                            {{/if}}
+                          {{else}}NA{{/if}}
+                      </div>
                       <div class="grid-span-2">
                           <select name="system.abilityMod" style="width:100%;">
                               {{selectOptions abilities selected=system.abilityMod blank="None"}}

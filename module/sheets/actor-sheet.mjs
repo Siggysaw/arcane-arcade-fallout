@@ -354,7 +354,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     context.properties = properties
     context.backgrounds = backgrounds
     context.explosives = explosives.map((weapon) => {
-      weapon.system.thrown = this.actor.system.abilities['str'].value * weapon.system.range.short
+      if (!weapon.system.staticRange) {
+        weapon.system.thrown = this.actor.system.abilities['str'].value * weapon.system.range.short
+      } else {
+        weapon.system.thrown = weapon.system.range.short
+      }
       return weapon
     })
     context.miscItems = miscItems
@@ -365,7 +369,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         ])
       }
       weapon.ammos = ammos.filter((ammo) => ammo.name === weapon.system.ammo.assigned)
-      if (this.actor.type != 'npc') {
+      if (!weapon.system.staticRange) {
         weapon.system.range.short =
           this.actor.system.abilities['per'].value * weapon.system.range.short
         weapon.system.range.long =
@@ -380,7 +384,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         ])
       }
       weapon.ammos = ammos.filter((ammo) => ammo.name === weapon.system.ammo.assigned)
-      if (this.actor.type != 'npc') {
+      if (!weapon.system.staticRange) {
         weapon.system.range.short =
           this.actor.system.abilities['str'].value * weapon.system.range.short
         weapon.system.range.long =
