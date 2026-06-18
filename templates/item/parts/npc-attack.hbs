@@ -1,0 +1,51 @@
+<fieldset>
+  <legend>NPC Attack</legend>
+  <div class="grid grid-2col" style="margin-top: 1rem;">
+    <div
+      class="weapon-label"
+      data-tooltip="When enabled, the attack dialog uses the weapon's custom hit and damage bonuses instead of actor-derived perks and traits."
+    >
+      NPC Attack
+    </div>
+    <div>
+      <input
+        type="checkbox"
+        name="system.npcAttack"
+        data-tooltip="Enable this to override the attack dialog bonuses for this weapon."
+        {{checked system.npcAttack}}
+      />
+    </div>
+
+    {{#if system.npcAttack}}
+    <div
+      class="weapon-label"
+      data-tooltip="Flat bonus added to the to-hit total when this weapon is used in the attack dialog."
+    >
+      To Hit Bonus
+    </div>
+    <div>
+      <input
+        type="number"
+        name="system.npcAttackBonus"
+        value="{{ system.npcAttackBonus }}"
+        data-tooltip="Flat bonus added to the to-hit total when this weapon is used in the attack dialog."
+      />
+    </div>
+
+    <div
+      class="weapon-label"
+      data-tooltip="Flat bonus added to the damage formula when this weapon is used in the attack dialog."
+    >
+      To Damage Bonus
+    </div>
+    <div>
+      <input
+        type="number"
+        name="system.npcDamageBonus"
+        value="{{ system.npcDamageBonus }}"
+        data-tooltip="Flat bonus added to the damage formula when this weapon is used in the attack dialog."
+      />
+    </div>
+    {{/if}}
+  </div>
+</fieldset>

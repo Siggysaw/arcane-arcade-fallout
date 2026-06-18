@@ -14,18 +14,28 @@ export default class AttackRoll extends FormApplication {
       properMaintenance && properMaintenance.system.wildWasteland && gunCondition <= 5
       ? ui.notifications.warn(`${this.weapon.name} has decayed too much and is broken`) : ''
 
+    const isNpcAttack = this.weapon.system.npcAttack === true
+    const attackBonus = isNpcAttack
+      ? Number(this.weapon.system.npcAttackBonus ?? 0)
+      : this.actor.getAttackBonus(weapon)
+    const damageBonus = isNpcAttack
+      ? Number(this.weapon.system.npcDamageBonus ?? 0)
+      : this.actor.getDamageBonus(weapon)
+    const abilityBonus = isNpcAttack ? 0 : this.weapon.getAbilityBonus()
+    const actorLuck = isNpcAttack ? 0 : this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
+
     this.formDataCache = {
       weaponType:weapon.type,
       automaticAttack: false,
       consumesAp: true,
       skillBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus),
-      attackBonus: this.actor.getAttackBonus(weapon),
-      damageBonus: this.actor.getDamageBonus(weapon),
-      abilityBonus: this.weapon.getAbilityBonus(),
+      attackBonus,
+      damageBonus,
+      abilityBonus,
       decayPenalty: weapon.type == "explosive" ? 0 : decayValue,
-      actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
+      actorLuck,
       actorPenalties: this.actor.system.penaltyTotal,
-      totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - decayValue - this.actor.system.penaltyTotal + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
+      totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + attackBonus + abilityBonus - decayValue - this.actor.system.penaltyTotal + actorLuck,
       bonus: 0,
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
