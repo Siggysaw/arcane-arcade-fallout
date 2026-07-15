@@ -120,12 +120,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         myDialogOptions,
       ).render(true)
     }
-    
-
-
-
-
-
 
     const carryLoadSetting = game.settings.get('core', 'CarryLoad')
     const CapsLoad = game.settings.get('core', 'CapsLoad')
@@ -171,7 +165,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // Calculate Carry Load
     const packrat = actorData.items.find((i) => i.name == 'Pack Rat')
     const capsLoad = CapsLoad ? Math.floor(actorData.system.caps / 50) : 0
-    
+
     actorData.system.carryLoad.base =
       actorData.items.reduce((acc, item) => {
         let { load = 0, quantity = 1 } = item.system
@@ -195,6 +189,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       actorData.system.carryLoad.base + actorData.system.carryLoad.modifiers
     actorData.system.carryLoad.max =
       actorData.system.carryLoad.baseMax + actorData.system.carryLoad.modifiersMax + actorData.system.carryLoad.manualMax
+
 
     //Set Group Sneak and Party Nerve
     const characterList = game.actors.filter((entries) => entries.type === 'character')

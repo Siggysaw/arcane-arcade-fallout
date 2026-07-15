@@ -6,51 +6,6 @@ import { getApCost, getLastWaypointGroup, sumWaypoints } from './helpers/movemen
 
 export function registerHooks() {
 
-    Hooks.once('ready', async function () {
-        const migrationVersion = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'MigrationVersion')
-        if (!isNewerVersion(game.system.version, migrationVersion)) {
-            return
-        }
-        if (isNewerVersion('0.1.0', migrationVersion)) {
-            // Migrate items to new compendium system
-            ui.notifications.warn('Migrating world items, please be patient...')
-            for (let item of game.items) {
-                if (item._stats.compendiumSource) {
-                    const uuid = item._stats.compendiumSource
-                    const compendiumItem = await fromUuid(uuid)
-                    if (compendiumItem?.system?.crafting) {
-                        item.update({
-                            ['system.crafting']: compendiumItem.system.crafting
-                        })
-                    }
-                }
-            }
-            ui.notifications.warn('Migrating world items complete')
-
-
-            // Migrate items to new compendium system
-            ui.notifications.warn('Migrating world actor items, please be patient...')
-            for (let actor of game.actors) {
-                console.log('actor', actor.name)
-                for (let item of actor.items) {
-                    console.log('item', item.name)
-                    if (item._stats.compendiumSource) {
-                        const uuid = item._stats.compendiumSource
-                        const compendiumItem = await fromUuid(uuid)
-                        if (compendiumItem?.system?.crafting) {
-                            item.update({
-                                ['system.crafting']: compendiumItem.system.crafting
-                            })
-                        }
-                    }
-                }
-            }
-            ui.notifications.warn('Migrating world actor items complete')
-        }
-
-        game.settings.set(CONFIG.FALLOUTZERO.systemId, 'MigrationVersion', game.system.version)
-    })
-
     Hooks.once('ready', function () {
         // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
         Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot))
@@ -111,7 +66,7 @@ export function registerHooks() {
 
         // Check if actor can afford movement
         const apAfterCost = token.actor.getAPAfterCost(passedApCost + pendingApCost)
-        if (apAfterCost < 0) {
+      if (apAfterCost < 0 && game.user.role !== 4) {
             ui.notifications.warn("Not enough AP for this movement");
             return false
         }
@@ -142,6 +97,13 @@ export function registerHooks() {
     /* --------------------------------------------  */
     /*  Other Hooks                                  */
     /* --------------------------------------------  */
+  Hooks.on('deleteCombat', (combat, options, userId) => {
+    // Check if the user is the GM to prevent the code from running multiple times
+    if (!game.user.isGM) return;
+    canvas.tokens.placeables.forEach((combatant) => {
+      combatant.actor.refillAp()
+    })
+  });
 
     Hooks.on('renderPause', (app, [html]) => {
         const img = html.querySelector('img')

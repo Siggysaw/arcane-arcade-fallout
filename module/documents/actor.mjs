@@ -514,15 +514,15 @@ export default class FalloutZeroActor extends Actor {
   }
 
   async addCustomEffect(path, modType, initialValue) {
-    let actorValue = await this.deep_value(this, path)
+    let actorValue = foundry.utils.getProperty(this, path)
     let consumValue, valueMax, valueMin
+
     if (typeof actorValue === 'number') {
-      if (initialValue.includes('@')) {
-        //Find the value
+      if (typeof initialValue === 'string' && initialValue.includes('@')) {
         try {
           consumValue = await this.evaluateAtFormula(initialValue)
         } catch {
-          consumValue = initialValue
+          consumValue = Number(initialValue)
         }
       } else {
         consumValue = Number(initialValue)
@@ -530,240 +530,225 @@ export default class FalloutZeroActor extends Actor {
     } else {
       consumValue = initialValue
     }
-    if (typeof actorValue != typeof consumValue) {
-      alert(
-        'Check Custom Effect Values for your consumable. If field is a Number, you need a Number as value or specify dependent stat using @ (ex.: @system.level or @system.abilities.luck.value) ',
+
+    if (typeof actorValue !== typeof consumValue) {
+      ui.notifications.warn(
+        'Check Custom Effect Values for your consumable. If field is a Number, you need a Number as value or specify dependent stat using @ (ex.: @system.level or @system.abilities.luck.value).'
       )
       return
     }
-    if (modType == 'Add') {
-      //Add Radiation levels if irradiated
-      if (path == 'system.irradiated') {
+
+    if (modType === 'Add') {
+      if (path === 'system.irradiated') {
         await this.handleIrradiated('system.irradiated', actorValue, consumValue)
-      }
-      //This should work with numbers and/or strings
-      else {
-        //If there is a max, don't go over it
+      } else {
         if (
           path.includes('value') &&
-          typeof (await this.deep_value(this, path.replace('.value', '.max'))) == 'number'
+          typeof foundry.utils.getProperty(this, path.replace('.value', '.max')) === 'number'
         ) {
-          valueMax = await this.deep_value(this, path.replace('.value', '.max'))
-          actorValue = Math.min(actorValue + consumValue, valueMax)
+          valueMax = foundry.utils.getProperty(this, path.replace('.value', '.max'))
+          actorValue = Math.min(Number(actorValue) + Number(consumValue), valueMax)
         } else {
           actorValue = actorValue + consumValue
         }
-        //Don't go under minimum
+
         if (
           path.includes('value') &&
-          typeof (await this.deep_value(this, path.replace('.value', '.min'))) == 'number'
+          typeof foundry.utils.getProperty(this, path.replace('.value', '.min')) === 'number'
         ) {
-          valueMin = await this.deep_value(this, path.replace('.value', '.min'))
+          valueMin = foundry.utils.getProperty(this, path.replace('.value', '.min'))
           actorValue = Math.max(actorValue, valueMin)
-        } else {
-          if (actorValue < 0 && !path.includes('dvantage')) {
-            actorValue = 0
-          } //most stuff has a minimum of 0.
+        } else if (actorValue < 0 && !path.includes('dvantage')) {
+          actorValue = 0
         }
       }
     } else {
-      //If not Add
-      if (typeof consumValue == Number) {
+      if (typeof consumValue === 'number') {
         if (
-          (modType == 'Upgrade' && actorValue > consumValue) ||
-          (modType == 'Downgrade' && actorValue > consumValue) ||
-          modType == 'Override'
+          (modType === 'Upgrade' && actorValue > consumValue) ||
+          (modType === 'Downgrade' && actorValue > consumValue) ||
+          modType === 'Override'
         ) {
           actorValue = consumValue
         }
-        if (modType == 'Multiply') {
+
+        if (modType === 'Multiply') {
           actorValue = actorValue * consumValue
         }
       } else {
         actorValue = consumValue
       }
     }
+
     await this.update({ [path]: actorValue })
+
     let descSplit = path.split('.')
     let modifiedValue = descSplit[descSplit.length - 2]
-    if (modifiedValue == 'system') {
-      modifiedValue = descSplit[descSplit.length - 1]
-    }
-    let chatDesc = `${modifiedValue}<br>`
-    return chatDesc
+    if (modifiedValue === 'system') modifiedValue = descSplit[descSplit.length - 1]
+
+    return `${modifiedValue}<br>`
   }
 
-  async evaluateAtFormula(string, myActor = this) {
-    let strList = string.split(' ')
-    string = ''
-    for (var str of strList) {
-      if (str.includes('@')) {
-        str = await this.deep_value(myActor, str.split('@').join(''))
+  async evaluateAtFormula(str, myActor = this) {
+    const tokens = String(str).trim().split(/\s+/)
+    let output = ''
+
+    for (let token of tokens) {
+      if (token.includes('@')) {
+        token = foundry.utils.getProperty(myActor, token.replace('@', ''))
       }
-      string += str + ' '
+      output += `${token} `
     }
-    return Math.ceil(eval(string))
+
+    return Math.ceil(Function(`"use strict"; return (${output.trim()});`)())
   }
 
   async askForCheck(ability, dc, condition) {
-    let abilityLabel = this.deep_value(this, ability.replace('mod', 'label'))
-    if (dc.includes('@')) {
+    const abilityLabel = foundry.utils.getProperty(this, ability.replace('mod', 'label'))
+
+    if (typeof dc === 'string' && dc.includes('@')) {
       try {
         dc = await this.evaluateAtFormula(dc)
       } catch {
-        dc = dc
+        // leave dc as-is
       }
     }
-    const button = `
+
+    return `
     <div class="card-buttons">
       <button type="button" data-condition="${condition}" data-action="check" id="askForRoll" data-ability="${ability}" data-dc="${dc}">
         <i class="fas fa-shield-heart"></i>
         <span class="visible-dc">DC${dc} ${abilityLabel} Check for ${condition}</span>
       </button>
     </div>`
-    return button
   }
 
-  //Apply level of alcohol condition (Buzzed, Drunk, Hammered or Wasted)
   async applyDrunkness(condition, myActor) {
-    //condition can be Drunk or Hammered depending on Endurance
     let newCondition
     let currentCondition
     let oldCondition
     let chatContent = ``
-    let addedCondition //This effect has an @level that needs to be changed
-    let pack = game.packs.find((p) => p.metadata.name == 'conditions')
+    let addedCondition
+    const pack = game.packs.get('conditions') ?? game.packs.find((p) => p.metadata.name === 'conditions')
 
-    //Apply poison first.
-    if (condition == 'Poisoned') {
-      //activate poisoned
-      if (myActor.items.find((i) => i.name == 'Poisoned')) {
-        newCondition = await myActor.items.get(
-          await myActor.items.find((i) => i.name == 'Poisoned')._id,
-        )
-        await newCondition.update({ 'system.quantity': currentCondition.system.quantity + 1 })
+    if (condition === 'Poisoned') {
+      const poisoned = myActor.items.find((i) => i.name === 'Poisoned')
+      if (poisoned) {
+        currentCondition = poisoned
+        await poisoned.update({ 'system.quantity': poisoned.system.quantity + 1 })
+        newCondition = poisoned
       } else {
-        //add poisoned
-        newCondition = await pack.getDocument('om8uTrsKZqMfhPWb') //Apply Poisoned
-        addedCondition = await Item.create(newCondition, { parent: myActor })
+        newCondition = await pack.getDocument('om8uTrsKZqMfhPWb')
+        addedCondition = await myActor.createEmbeddedDocuments('Item', [newCondition.toObject()])
       }
+
       chatContent += `${this.formatCompendiumItem('condition', newCondition.name, 'Click for details').split('<br>').join('')} for 4 hours.`
       return chatContent
     }
 
-    //Evaluate Drunkness for all its levels
-    if (myActor.items.find((i) => i.name == 'Wasted')) {
-      //If wasted already
-      currentCondition = await myActor.items.get(
-        await myActor.items.find((i) => i.name == 'Wasted')._id,
-      )
-      await currentCondition.update({ 'system.quantity': currentCondition.system.quantity + 1 })
+    const wasted = myActor.items.find((i) => i.name === 'Wasted')
+    if (wasted) {
+      currentCondition = wasted
+      await wasted.update({ 'system.quantity': wasted.system.quantity + 1 })
     } else {
-      //Not currently wasted
-      if (myActor.items.find((i) => i.name == 'Hammered')) {
-        //If Hammered already
-        currentCondition = await myActor.items.get(
-          await myActor.items.find((i) => i.name == 'Hammered')._id,
-        )
-        if (currentCondition.system.quantity < 3) {
-          //Hammered less than 3
-          await currentCondition.update({ 'system.quantity': currentCondition.system.quantity + 1 }) //Add a Hammered level
-        } else {
-          //Hammered for a third time
-          newCondition = await pack.getDocument('8jmOpO92JUHjddr5') //Apply Wasted
-          addedCondition = await Item.create(newCondition, { parent: myActor })
-          oldCondition = await this.items.get(currentCondition._id) //Delete Hammered
-          oldCondition.delete()
-        }
-      } else {
-        //Neither wasted nor hammered
-        currentCondition = await myActor.items.find((i) => i.name == 'Drunk')
-        if (currentCondition || condition == 'Hammered') {
-          newCondition = await pack.getDocument('CbcBeOsQnIm5BtXL') //Apply Hammered
-          addedCondition = await Item.create(newCondition, { parent: myActor })
-          if (currentCondition) {
-            //If Drunk, delete drunk
-            oldCondition = await this.items.get(currentCondition._id) //Delete Drunk (if present)
-            oldCondition.delete()
+      const hammered = myActor.items.find((i) => i.name === 'Hammered')
+      if (condition === 'Hammered' || hammered) {
+        if (hammered) {
+          currentCondition = hammered
+          if (currentCondition.system.quantity < 3) {
+            await currentCondition.update({ 'system.quantity': currentCondition.system.quantity + 1 })
+          } else {
+            newCondition = await pack.getDocument('8jmOpO92JUHjddr5')
+            addedCondition = await myActor.createEmbeddedDocuments('Item', [newCondition.toObject()])
+            await currentCondition.delete()
           }
         } else {
-          //Neither wasted nor hammered, NOR Drunk (but maybe buzzed...)
-          currentCondition = await myActor.items.find((i) => i.name == 'Buzzed')
-          if (currentCondition || condition == 'Drunk') {
-            newCondition = await pack.getDocument('Qw9wbkfMEkjX3XxB') //Apply Drunk
-            addedCondition = await Item.create(newCondition, { parent: myActor })
-            if (currentCondition) {
-              //If Buzzed, delete Buzzed
-              oldCondition = await this.items.get(currentCondition._id) //Delete Buzzed (if present)
-              oldCondition.delete()
-            }
+          newCondition = await pack.getDocument('8jmOpO92JUHjddr5')
+          addedCondition = await myActor.createEmbeddedDocuments('Item', [newCondition.toObject()])
+        }
+      } else {
+        const drunk = myActor.items.find((i) => i.name === 'Drunk')
+        if (condition === 'Drunk' || drunk) {
+          if (drunk) {
+            currentCondition = drunk
+            newCondition = await pack.getDocument('CbcBeOsQnIm5BtXL')
+            addedCondition = await myActor.createEmbeddedDocuments('Item', [newCondition.toObject()])
+            await currentCondition.delete()
           } else {
-            //Not suffering from any current alcoholic condition
-            newCondition = await pack.getDocument('NPlxn4CVIQRnimWK') //Apply Buzzed
-            addedCondition = await Item.create(newCondition, { parent: myActor })
+            newCondition = await pack.getDocument('CbcBeOsQnIm5BtXL')
+            addedCondition = await myActor.createEmbeddedDocuments('Item', [newCondition.toObject()])
+          }
+        } else {
+          const buzzed = myActor.items.find((i) => i.name === 'Buzzed')
+          if (condition === 'Drunk' || buzzed) {
+            newCondition = await pack.getDocument('Qw9wbkfMEkjX3XxB')
+            addedCondition = await myActor.createEmbeddedDocuments('Item', [newCondition.toObject()])
+            if (buzzed) await buzzed.delete()
+          } else {
+            newCondition = await pack.getDocument('NPlxn4CVIQRnimWK')
+            addedCondition = await myActor.createEmbeddedDocuments('Item', [newCondition.toObject()])
           }
         }
       }
     }
+
     if (newCondition) {
       chatContent += `${this.formatCompendiumItem('condition', newCondition.name, 'Click for details').split('<br>').join('')} for [[/r 1d4]] hours.`
     } else {
       chatContent += `${this.formatCompendiumItem('condition', currentCondition.name, 'Click for details').split('<br>').join('')} for an additional [[/r 1d4]] hours.`
     }
-    //Modify Effects to get the @ values
-    if (addedCondition) {
-      let newArray
-      for (var ef of addedCondition.effects) {
-        newArray = ef.changes
-        for (var change of newArray) {
-          if (change.value.includes('@')) {
-            change.value = await this.evaluateAtFormula(change.value)
+
+    if (addedCondition?.length) {
+      const created = addedCondition[0]
+      for (const ef of created.effects) {
+        const newArray = ef.changes.map((change) => {
+          if (typeof change.value === 'string' && change.value.includes('@')) {
+            change.value = this.evaluateAtFormula(change.value)
           }
-        }
+          return change
+        })
+        await ef.update({ changes: newArray })
       }
     }
+
     return chatContent
   }
 
   async getConsequence(result, condition) {
     let chatMessage = ''
-    let actorEf
-    let conditionObj
-    let actorEffects = this.items
-    if (result == true) {
+    const actorEffects = this.items
+    const existing = actorEffects.find((e) => e.name === condition)
+
+    if (result === true) {
       chatMessage = 'Okie-dokie! You tolerate it well.'
-      if (actorEffects.find((e) => e.name == condition)) {
-        //Remove inactive condition
-        actorEf = await actorEffects.get(actorEffects.find((e) => e.name == condition)._id)
-        conditionObj = await actorEf.effects._source[0]
-        if (conditionObj.disabled == false) {
-          await actorEf.delete()
-        }
+      if (existing) {
+        const actorEf = await actorEffects.get(existing.id)
+        const activeEffect = actorEf?.effects?.find((e) => !e.disabled)
+        if (activeEffect) await actorEf.delete()
       }
     } else {
-      //Activate effect
-      if (actorEffects.find((e) => e.name == condition)) {
-        actorEf = await actorEffects.get(actorEffects.find((e) => e.name == condition)._id)
-      } else {
-        //Create new effect if not already on character
-        let pack = await game.packs.find((p) => p.metadata.name == 'conditions')
-        conditionObj = await pack.getDocument(pack.find((o) => o.name == condition)._id)
-        actorEf = await Item.create(conditionObj, { parent: this })
-        //Modify Effects to get the @ values
+      let actorEf = existing ? await actorEffects.get(existing.id) : null
+
+      if (!actorEf) {
+        const pack = game.packs.get('conditions') ?? game.packs.find((p) => p.metadata.name === 'conditions')
+        const conditionDoc = pack.index.find((o) => o.name === condition)
+        const compendiumDoc = await pack.getDocument(conditionDoc._id)
+        actorEf = await this.createEmbeddedDocuments('Item', [compendiumDoc.toObject()]).then((docs) => docs[0])
+
         if (actorEf) {
-          let newArray
-          for (var ef of actorEf.effects) {
-            newArray = ef.changes
-            for (var change of newArray) {
-              if (change.value.includes('@')) {
-                change.value = await this.evaluateAtFormula(change.value)
+          for (const ef of actorEf.effects) {
+            const newArray = ef.changes.map((change) => {
+              if (typeof change.value === 'string' && change.value.includes('@')) {
+                change.value = this.evaluateAtFormula(change.value)
               }
-            }
+              return change
+            })
             await ef.update({ changes: newArray })
           }
         }
       }
-      if (condition == 'Psychosis') {
+
+      if (condition === 'Psychosis') {
         chatMessage = `Uh-oh! Your ${this.formatCompendiumItem('conditions', 'Psychosis', 'Click for details')} pushes you to attack the nearest creature.`
       } else {
         try {
@@ -773,20 +758,22 @@ export default class FalloutZeroActor extends Actor {
         }
       }
     }
+
     return chatMessage
   }
 
   async checkCheckResult(ev) {
-    let path = ev.currentTarget.dataset.ability
-    let abilityLabel = this.deep_value(this, path.replace('mod', 'label'))
-    let mod = this.deep_value(this, path)
-    let lckMod = Math.floor(this.deep_value(this, 'system.abilities.lck.mod') / 2)
-    let dc = ev.currentTarget.dataset.dc
-    const roll = new Roll(`d20+${mod}+-@penaltyTotal+${lckMod}`, this.getRollData())
-    await roll.evaluate()
+    const path = ev.currentTarget.dataset.ability
+    const abilityLabel = foundry.utils.getProperty(this, path.replace('mod', 'label'))
+    const mod = foundry.utils.getProperty(this, path)
+    const lckMod = Math.floor(foundry.utils.getProperty(this, 'system.abilities.lck.mod') / 2)
+    const dc = Number(ev.currentTarget.dataset.dc)
+
+    const roll = await (new Roll(`1d20 + ${mod} - @penaltyTotal + ${lckMod}`, this.getRollData())).evaluate({ async: true })
+
     let rollContent = ''
-    if (typeof Number(dc) == 'number') {
-      if (roll._total > dc) {
+    if (Number.isFinite(dc)) {
+      if (roll.total > dc) {
         rollContent += await this.getConsequence(true, ev.currentTarget.dataset.condition)
       } else {
         rollContent += await this.getConsequence(false, ev.currentTarget.dataset.condition)
@@ -794,120 +781,87 @@ export default class FalloutZeroActor extends Actor {
     } else {
       rollContent += 'Could not evaluate success or failure. Apply consequence manually.'
     }
+
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this }),
-      flavor: `${this.name} rolls a ${abilityLabel} Check, DC ${dc} for ${ev.currentTarget.dataset.condition}. <p>${rollContent}</p"`,
+      flavor: `${this.name} rolls a ${abilityLabel} Check, DC ${dc} for ${ev.currentTarget.dataset.condition}. <p>${rollContent}</p>`,
       rollMode: game.settings.get('core', 'rollMode'),
     })
   }
 
-  //Consume item
-  async lowerInventory(itemId, actor) {
-    !actor ? actor = this : ''
-    let pack = game.packs.find((p) => p.metadata.name == 'conditions')
+  async lowerInventory(itemId, actor = this) {
+    const pack = game.packs.get('conditions') ?? game.packs.find((p) => p.metadata.name === 'conditions')
     const item = actor.items.get(itemId)
     const updatedQty = item.system.quantity - 1
-    let mods = { 'system.quantity': updatedQty }
+    const mods = { 'system.quantity': updatedQty }
     const description = item.system.description
     let details = description
     let chatContent = ``
 
-    //Update Healing Items to take Ghouls into account
-    const isGhoul = actor.items.find((i) => i.name == "Ghoul")
-    let Actinides = actor.items.find((i) => i.name == "Activated Actinides")
-    if (isGhoul && !Actinides && item.system.modifiers.path1.includes('system.health.value') && !item.system.modifiers.value1.includes(' / 2')) {
-      const newPath = item.system.modifiers.value1 + " / 2 "
-      await item.update({'system.modifiers.value1': newPath})
+    const isGhoul = actor.items.find((i) => i.name === 'Ghoul')
+    const actinides = actor.items.find((i) => i.name === 'Activated Actinides')
+    if (
+      isGhoul &&
+      !actinides &&
+      item.system.modifiers?.path1?.includes('system.health.value') &&
+      !item.system.modifiers?.value1?.includes(' / 2')
+    ) {
+      await item.update({ 'system.modifiers.value1': `${item.system.modifiers.value1} / 2 ` })
     }
 
-    if (item.type != 'explosive') {
-      if (item.type == 'food-and-drinks' || item.type == 'chems') {
+    if (item.type !== 'explosive') {
+      if (item.type === 'food-and-drinks' || item.type === 'chems') {
         details = description.replace('<p>', "<p>It's ")
       }
-      //Add reactions (custom effects with instantaneous results)
-      if (typeof item.system.modifiers != 'undefined') {
-        if (item.system.modifiers.path1 != '' && item.system.modifiers.value1 != '') {
-          chatContent +=
-            'Adjusted ' +
-            (await actor.addCustomEffect(
-              item.system.modifiers.path1,
-              item.system.modifiers.modType1,
-              item.system.modifiers.value1,
-            ))
+
+      if (item.system.modifiers) {
+        if (item.system.modifiers.path1 && item.system.modifiers.value1) {
+          chatContent += 'Adjusted ' + (await actor.addCustomEffect(item.system.modifiers.path1, item.system.modifiers.modType1, item.system.modifiers.value1))
         }
-        if (item.system.modifiers.path2 != '' && item.system.modifiers.value2 != '') {
-          chatContent +=
-            ', ' +
-            (await actor.addCustomEffect(
-              item.system.modifiers.path2,
-              item.system.modifiers.modType2,
-              item.system.modifiers.value2,
-            ))
+        if (item.system.modifiers.path2 && item.system.modifiers.value2) {
+          chatContent += ', ' + (await actor.addCustomEffect(item.system.modifiers.path2, item.system.modifiers.modType2, item.system.modifiers.value2))
         }
-        if (item.system.modifiers.path3 != '' && item.system.modifiers.value3 != '') {
-          chatContent +=
-            ', ' +
-            (await actor.addCustomEffect(
-              item.system.modifiers.path3,
-              item.system.modifiers.modType3,
-              item.system.modifiers.value3,
-            ))
+        if (item.system.modifiers.path3 && item.system.modifiers.value3) {
+          chatContent += ', ' + (await actor.addCustomEffect(item.system.modifiers.path3, item.system.modifiers.modType3, item.system.modifiers.value3))
         }
-        if (item.system.modifiers.path4 != '' && item.system.modifiers.value4 != '') {
-          chatContent +=
-            ', ' +
-            (await actor.addCustomEffect(
-              item.system.modifiers.path4,
-              item.system.modifiers.modType4,
-              item.system.modifiers.value4,
-            ))
+        if (item.system.modifiers.path4 && item.system.modifiers.value4) {
+          chatContent += ', ' + (await actor.addCustomEffect(item.system.modifiers.path4, item.system.modifiers.modType4, item.system.modifiers.value4))
         }
       }
 
-      //Add effects according to endurance VALUE
       if (actor.system.abilities.end.value > 4) {
-        //Endurance above or equal to 5
         if (description.includes('qT3KhtuyrbnpNfWy')) {
-          //Highproof as a consumable condition
           chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
           chatContent += await actor.applyDrunkness('Drunk', actor)
         }
         if (description.includes('o18dhjwLVVjGaCQR')) {
-          //Alcoholic as a consumable condition
           chatContent += `You can hold your liquor! (End>4)<br><br>Still, you're `
           chatContent += await actor.applyDrunkness('Buzzed', actor)
         }
         if (description.includes('HcvGeJhIRhCECZQ8')) {
-          //Putrid as a consumable condition
           chatContent += `That was disgusting! (End>4)<br><br>But... you're fine.`
         }
       } else {
-        // Endurance below or equal to 4
         if (description.includes('qT3KhtuyrbnpNfWy')) {
-          //Highproof as a consumable condition
           chatContent += `You've had one too many! (End<5)<br><br>You're now `
           chatContent += await actor.applyDrunkness('Hammered', actor)
         }
         if (description.includes('o18dhjwLVVjGaCQR')) {
-          //Alcoholic as a consumable condition
           chatContent += `You've had one too many! (End>5)<br><br>You're now `
           chatContent += await actor.applyDrunkness('Drunk', actor)
         }
         if (description.includes('HcvGeJhIRhCECZQ8')) {
-          //Putrid as a consumable condition
           chatContent += `You throw up a little. (End<5)<br><br>And... you're `
           chatContent += await actor.applyDrunkness('Poisoned', actor)
         }
       }
 
-      //Check for Snack
-      let snacks = {}
+      const snacks = {}
       if (description.includes('2VO3ajTiEcRzHaS9')) {
-        if (actor.system.penalties.snack == 0) {
+        if (actor.system.penalties.snack === 0) {
           Object.assign(snacks, { 'system.penalties.snack': 1 })
-          console.log('Need one more snack!')
         } else {
-          let hunger = Math.max(actor.system.penalties.hunger.base - 1, 0)
+          const hunger = Math.max(actor.system.penalties.hunger.base - 1, 0)
           Object.assign(snacks, {
             'system.penalties.snack': 0,
             'system.penalties.hunger.base': hunger,
@@ -916,110 +870,68 @@ export default class FalloutZeroActor extends Actor {
         await actor.update(snacks)
       }
 
-      //Add active effects from each condition present on the consumable
-      let descSplit = description.split(' ')
-      let strSplit, newCondition, itemEf, actorEf
-      let actorEffects = actor.items
-      for (var str of descSplit) {
+      const descSplit = description.split(' ')
+      for (const str of descSplit) {
         if (str.includes('uuid')) {
-          //Example : data-uuid="Compendium.arcane-arcade-fallout.${compendium}.Item.${myItem._id}"
-          strSplit = str.replace(/"/g, '').split('.')
-          newCondition = await pack.getDocument(strSplit[strSplit.length - 1])
-          if (newCondition) {
-            let i = 0
-            if (
-              await actorEffects.find((e) => e.name == newCondition.name && e.type == 'condition')
-            ) {
-              //if condition exists on actor
-              actorEf = await actorEffects.get(
-                actorEffects.find((e) => e.name == newCondition.name && e.type == 'condition')._id,
-              )
-              const itemEffects = actorEf.collections.effects.contents
-              const qty = actorEf.system.quantity
-              while (i < itemEffects.length) {
-                //IF levels of effects are present, it will upgrade according to quantity.
-                itemEf = await actorEf.effects.get(itemEffects[i]._id)
-                if (Number(itemEf.name.slice(-1)) == qty + 1) {
-                  await actorEf.update({ 'system.quantity': qty + 1 })
-                  let j = 0
-                  let otherEffect
-                  while (j < itemEffects.length) {
-                    otherEffect = await actorEf.effects.get(itemEffects[j]._id)
-                    await otherEffect.update({ disabled: true })
-                    j++
-                  }
-                  await itemEf.update({ disabled: false })
+          const strSplit = str.replace(/"/g, '').split('.')
+          const newCondition = await pack.getDocument(strSplit[strSplit.length - 1])
+          if (!newCondition) continue
+
+          const existingCondition = actor.items.find((e) => e.name === newCondition.name && e.type === 'condition')
+          if (existingCondition) {
+            const actorEf = await actor.items.get(existingCondition.id)
+            const itemEffects = actorEf.collections.effects.contents
+            const qty = actorEf.system.quantity
+
+            for (let i = 0; i < itemEffects.length; i++) {
+              const itemEf = await actorEf.effects.get(itemEffects[i]._id)
+              if (Number(itemEf.name.slice(-1)) === qty + 1) {
+                await actorEf.update({ 'system.quantity': qty + 1 })
+                for (const effectRef of itemEffects) {
+                  const otherEffect = await actorEf.effects.get(effectRef._id)
+                  await otherEffect.update({ disabled: true })
                 }
-                i++
+                await itemEf.update({ disabled: false })
               }
-            } else {
-              // condition is not on actor, create it
-              if (
-                newCondition.collections.effects.contents.filter((e) => e.disabled == false)
-                  .length > 0
-              ) {
-                //Create it if it has active effects
-                let addedCondition = await Item.create(newCondition, { parent: actor })
-                //Modify Effects to get the @ values
-                if (addedCondition) {
-                  let newArray
-                  for (var ef of addedCondition.effects) {
-                    newArray = ef.changes
-                    for (var change of newArray) {
-                      if (change.value.includes('@')) {
-                        change.value = await actor.evaluateAtFormula(change.value)
-                      }
-                    }
-                    await ef.update({ changes: newArray })
-                  }
+            }
+          } else if (newCondition.effects.contents.some((e) => !e.disabled)) {
+            const [addedCondition] = await actor.createEmbeddedDocuments('Item', [newCondition.toObject()])
+            for (const ef of addedCondition.effects) {
+              const newArray = ef.changes.map((change) => {
+                if (typeof change.value === 'string' && change.value.includes('@')) {
+                  change.value = actor.evaluateAtFormula(change.value)
                 }
-              }
+                return change
+              })
+              await ef.update({ changes: newArray })
             }
           }
         }
       }
 
-      //Ask for checks if item says so.
-      if (typeof item.system.checks != 'undefined') {
-        if (item.system.checks.check1 != '' && item.system.checks.dc1 != '') {
-          chatContent += await actor.askForCheck(
-            item.system.checks.check1,
-            item.system.checks.dc1,
-            item.system.checks.condition1,
-          )
+      if (item.system.checks) {
+        if (item.system.checks.check1 && item.system.checks.dc1) {
+          chatContent += await actor.askForCheck(item.system.checks.check1, item.system.checks.dc1, item.system.checks.condition1)
         }
-        if (item.system.checks.check2 != '' && item.system.checks.dc2 != '') {
-          chatContent += await actor.askForCheck(
-            item.system.checks.check2,
-            item.system.checks.dc2,
-            item.system.checks.condition2,
-          )
+        if (item.system.checks.check2 && item.system.checks.dc2) {
+          chatContent += await actor.askForCheck(item.system.checks.check2, item.system.checks.dc2, item.system.checks.condition2)
         }
-        if (item.system.checks.check3 != '' && item.system.checks.dc3 != '') {
-          chatContent += await actor.askForCheck(
-            item.system.checks.check3,
-            item.system.checks.dc3,
-            item.system.checks.condition3,
-          )
+        if (item.system.checks.check3 && item.system.checks.dc3) {
+          chatContent += await actor.askForCheck(item.system.checks.check3, item.system.checks.dc3, item.system.checks.condition3)
         }
       }
-      //Finally update the item quantity
+
       await item.update(mods)
-      //Add event listener for eventual Check button in Chat
+
       Hooks.once('renderChatMessage', (chatItem, html) => {
-        html.find('#askForRoll').click((ev) => {
-          actor.checkCheckResult(ev)
-        })
+        html.find('#askForRoll').click((ev) => actor.checkCheckResult(ev))
       })
-      //Send "Ask for Check" Button to Chat
-      let chatData = {
-        author: game.user._id,
-        speaker: ChatMessage.getSpeaker(),
+
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
         content: chatContent,
         flavor: `Consumed ${item.name} : ${details}`,
-      }
-      ChatMessage.create(chatData, {})
-      Hooks.once()
+      })
     }
   }
 
@@ -2201,20 +2113,6 @@ export default class FalloutZeroActor extends Actor {
     return this.system.abilities[ability].mod
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   getAttackBonus(weapon) {
     const finesse = this.items.find((i) => i.name == 'Finesse')
     const oneHander = this.items.find((i) => i.name == 'One Hander')
@@ -2238,10 +2136,6 @@ export default class FalloutZeroActor extends Actor {
     this.system.attackBonus.modifiers = 0
     return totalBonus
   }
-
-
-
-
 
   getDamageBonus(weapon) {
     const oneHander = this.items.find((i) => i.name == 'One Hander')

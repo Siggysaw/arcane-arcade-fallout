@@ -75,6 +75,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       }),
     })
     schema.unflipped = new fields.NumberField({ initial: 0 })
+    schema.critMod = new fields.NumberField({ initial: 0, min : 0 })
     schema.totalKarma = new fields.NumberField({ initial: 0 })
     schema.luckmod = new fields.NumberField({ initial: 0 })
     schema.attackBonus = new fields.SchemaField({
@@ -365,6 +366,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     // Base Character Stat Creation
     this.critMod = Math.floor(this.abilities['lck'].mod / 2)
     this.critMod < 0 ? this.critMod = 0 : ''
+
     blocking ? this.damageThreshold.modifiers += (2 + this.abilities.end.mod) + dtBoost : ''
     this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)
     this.passiveSense.value = 12 + this.passiveSense.base + this.abilities.per.mod + this.passiveSense.modifiers
