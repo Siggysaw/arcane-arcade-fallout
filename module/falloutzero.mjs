@@ -28,7 +28,7 @@ Hooks.once('init', function () {
   // Registers system settings
   registerSystemSettings()
 
-  const sheetColor = game.settings.get('core', 'Sheet-Color');
+  const sheetColor = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'Sheet-Color');
   const r = document.querySelector(':root');
   r.style.setProperty('--sheetcolor', sheetColor);
 

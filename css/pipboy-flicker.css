@@ -1,0 +1,134 @@
+/* ---- Scanlines + subtle curvature vignette overlay ---- */
+.pipboy-crt {
+  position: relative;
+  isolation: isolate; /* keeps the overlay pseudo-elements contained */
+}
+
+  .pipboy-crt::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    background-image: repeating-linear-gradient( to bottom, rgba(0, 0, 0, 0.25) 0px, rgba(0, 0, 0, 0.25) 1px, transparent 2px, transparent 3px ), radial-gradient( ellipse at center, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.35) 100% );
+    mix-blend-mode: multiply;
+    animation: pipboy-scan-drift 60s linear infinite;
+  }
+
+/* Slow vertical drift on the scanlines so they don't look static */
+@keyframes pipboy-scan-drift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+
+  100% {
+    background-position: 0 120px, 0 0;
+  }
+}
+
+/* ---- Overall screen flicker: brightness/opacity jitter ---- */
+@keyframes pipboy-flicker {
+  0% {
+    filter: brightness(1) contrast(1.02);
+  }
+
+  2% {
+    filter: brightness(0.96) contrast(1.04);
+  }
+
+  3% {
+    filter: brightness(1) contrast(1.02);
+  }
+
+  55% {
+    filter: brightness(1) contrast(1.02);
+  }
+
+  56% {
+    filter: brightness(0.94) contrast(1.03);
+  }
+
+  57% {
+    filter: brightness(1) contrast(1.02);
+  }
+
+  100% {
+    filter: brightness(1) contrast(1.02);
+  }
+}
+
+/* ---- Occasional harder "signal drop" glitch ---- */
+.pipboy-crt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 998;
+  pointer-events: none;
+  background: var(--sheetcolor, #3ce03c);
+  opacity: 0;
+  mix-blend-mode: overlay;
+  animation: pipboy-glitch 20s infinite;
+}
+
+@keyframes pipboy-glitch {
+  0%, 98%, 100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  98.3% {
+    opacity: 0.04;
+    transform: translateY(1px);
+  }
+
+  98.6% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  99% {
+    opacity: 0.05;
+    transform: translateY(1px);
+  }
+
+  99.3% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Green phosphor glow on all sheet text ---- */
+.pipboy-crt,
+.pipboy-crt input,
+.pipboy-crt h1,
+.pipboy-crt h2,
+.pipboy-crt h3,
+.pipboy-crt a,
+.pipboy-crt li,
+.pipboy-crt label,
+.pipboy-crt span {
+  text-shadow: 0 0 1px var(--sheetcolor, #3ce03c), 0 0 6px rgba(60, 224, 60, 0.35);
+}
+
+@keyframes pipboy-glow-pulse {
+  0%, 100% {
+    text-shadow: 0 0 2px var(--sheetcolor, #3ce03c), 0 0 6px rgba(60, 224, 60, 0.35);
+  }
+
+  50% {
+    text-shadow: 0 0 3px var(--sheetcolor, #3ce03c), 0 0 9px rgba(60, 224, 60, 0.5);
+  }
+}
+
+/* ---- Profile image / border accents: static, no pulse or flicker ---- */
+.pipboy-crt .profile-img,
+.pipboy-crt header.sheet-header img {
+  filter: contrast(1.1) saturate(1.1);
+}
+
+/* ---- Boot-up sweep when the sheet first renders (runs once), plus
+   the continuous screen flicker and glow pulse ---- */
+.pipboy-crt {
+  animation: pipboy-flicker 14s infinite, pipboy-glow-pulse 6s ease-in-out infinite, pipboy-bootup 1.2s ease-out 1;
+}
+

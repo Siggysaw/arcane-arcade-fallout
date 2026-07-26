@@ -15,6 +15,7 @@
 @import 'level-up.css';
 @import 'crafting-bench.css';
 @import 'v2-override.css';
+@import 'pipboy-flicker.css';
 
 /* Global styles */
 @font-face {

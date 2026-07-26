@@ -118,8 +118,10 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     },
     classes: ['attempt-crafting'],
     window: {
-      title: 'Roll to craft',
-      resizable: false,
+      title: 'Crafting Check',
+      width: 700,
+      height: 700,
+      resizable: true,
       minimizable: false,
     },
     tag: 'dialog',
@@ -193,7 +195,7 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     const abilityBonus = this.actor.getAbilityMod(CONFIG.FALLOUTZERO.skills[this.selectedSkill].ability[0])
     const penaltyTotal = this.actor.system.penaltyTotal
     const luckModSkillBonus = this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
-    const roll = new Roll(`1d20 + ${skillBonus} + ${abilityBonus} + ${penaltyTotal} + ${luckModSkillBonus}`)
+    const roll = new Roll(`1d20 + ${skillBonus} + ${abilityBonus} - ${penaltyTotal} + ${luckModSkillBonus}`)
     const dice = await roll.evaluate()
 
     let result

@@ -8,7 +8,7 @@ export function registerSystemSettings() {
     type: String,
     default: '0.0.0',
   })
-  game.settings.register('core', 'Sheet-Color', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'Sheet-Color', {
     name: 'Your Sheet Theme Color',
     hint: 'An override for sheet color. Green = #1bff80 / Amber = #ffb641 or you can use custom hex or just say "red" or "green" Blank puts it back to User Color being used.',
     scope: 'client',
@@ -17,7 +17,7 @@ export function registerSystemSettings() {
     default: '',
     requiresReload: true,
   })
-  game.settings.register('core', 'VaultTec', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'VaultTec', {
     name: 'Use Vault-Tec Colors',
     hint: 'An Alternate Color Scheme Sponsored By Vault Tec!',
     scope: 'client',
@@ -26,7 +26,16 @@ export function registerSystemSettings() {
     default: false,
     requiresReload: true,
   })
-  game.settings.register('core', 'KeepZeroes', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'PipBoyEffects', {
+    name: 'Pipboy Effects',
+    hint: 'The flickering and scanline effects on the sheets',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: false,
+    requiresReload: false,
+  })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'KeepZeroes', {
     name: 'Keep Empty Items',
     hint: 'Do Not Delete Items When They Hit 0 Quantity. This affects all consumables other than ammo',
     scope: 'client',
@@ -35,7 +44,7 @@ export function registerSystemSettings() {
     default: false,
     requiresReload: false,
   })
-  game.settings.register('core', 'CarryLoad', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'CarryLoad', {
     name: 'Exact Carry Load Calculator',
     hint: 'Checked: 23 x 10mm ammo = 2.3 load | Unchecked: 23 x 10mm ammo = 2 load',
     scope: 'world',
@@ -44,7 +53,7 @@ export function registerSystemSettings() {
     default: false,
     requiresReload: true,
   })
-  game.settings.register('core', 'CapsLoad', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'CapsLoad', {
     name: 'Do Caps Have Load?',
     hint: 'Checked: 50 caps is 1 Load',
     scope: 'world',
@@ -53,7 +62,7 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: true,
   })
-  game.settings.register('core', 'AmmoLoad', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'AmmoLoad', {
     name: 'Does Ammo Have Load?',
     hint: 'Checked: 10 Ammo is 1 load',
     scope: 'world',
@@ -62,7 +71,7 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: true,
   })
-  game.settings.register('core', 'JunkLoad', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'JunkLoad', {
     name: 'Does Junk Have Load?',
     hint: 'If Checked: 5 Junk is 1 Load, 10 Material is 1 Load',
     scope: 'world',
@@ -71,7 +80,7 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: true,
   })
-  game.settings.register('core', 'GroupSneak', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'GroupSneak', {
     name: 'Override Group Sneak',
     hint: 'If the auto calculator seems incorrect, overwrite it here',
     scope: 'world',
@@ -80,7 +89,7 @@ export function registerSystemSettings() {
     default: 0,
     requiresReload: false,
   })
-  game.settings.register('core', 'PartyNerve', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'PartyNerve', {
     name: 'Override Party Nerve',
     hint: 'If the auto calculator seems incorrect, overwrite it here',
     scope: 'world',
@@ -89,7 +98,7 @@ export function registerSystemSettings() {
     default: 0,
     requiresReload: false,
   })
-  game.settings.register('core', 'DeductMovementAPInCombat', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'DeductMovementAPInCombat', {
     name: 'Auto deduct movement AP',
     hint: 'Automatically reduces AP based on character movement when in combat. [Requires Elevation Ruler]',
     scope: 'world',
@@ -98,7 +107,7 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: true,
   })
-  game.settings.register('core', 'AutoRecycleAP', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'AutoRecycleAP', {
     name: 'Auto recycle AP',
     hint: 'Automatically recycles AP when combat round advances',
     scope: 'world',
@@ -107,7 +116,7 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: true,
   })
-  game.settings.register('core', 'DamageChatCard', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'DamageChatCard', {
     name: 'Damage chat card',
     hint: 'Show chat card for GM and actor user when actor takes damage',
     scope: 'world',
@@ -116,7 +125,7 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: true,
   })
-  game.settings.register('core', 'PlaySounds', {
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'PlaySounds', {
     name: 'Play Pip Boy Sounds',
     hint: 'Enable/Disable Sounds on Actor Sheets',
     scope: 'client',
@@ -126,28 +135,33 @@ export function registerSystemSettings() {
     requiresReload: false,
   })
 }
-
 export function registerHbsHelpers() {
   Handlebars.registerHelper('isVaultTec', function (options) {
-    if (game.settings.get('core', 'VaultTec')) {
+    if (game.settings.get('arcane-arcade-fallout', 'VaultTec')) {
       return options.fn(this)
     }
     return options.inverse(this)
   })
-    Handlebars.registerHelper('PlaySounds', function (options) {
-      if (game.settings.get('core', 'PlaySounds')) {
-        return options.fn(this)
-      }
-      return options.inverse(this)
-    })
+  Handlebars.registerHelper('PlaySounds', function (options) {
+    if (game.settings.get('arcane-arcade-fallout', 'PlaySounds')) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  })
+  Handlebars.registerHelper('PipBoyEffects', function (options) {
+    if (game.settings.get('arcane-arcade-fallout', 'PipBoyEffects')) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  })
 
   Handlebars.registerHelper('toLowerCase', function (str) {
     return str.toLowerCase()
   })
 
   Handlebars.registerHelper('CheckLang', function (v1, options) {
-    const language = game.settings.get('core', 'language')
-    if (game.settings.get('core', 'language') === v1) {
+    const language = game.settings.get('arcane-arcade-fallout', 'language')
+    if (game.settings.get('arcane-arcade-fallout', 'language') === v1) {
       return options.fn(this)
     }
     return options.inverse(this)
@@ -201,7 +215,7 @@ export function registerHbsHelpers() {
   })
   // If Vault Tec Sheets
   Handlebars.registerHelper('isVaultTec', function (options) {
-    if (game.settings.get('core', 'VaultTec')) {
+    if (game.settings.get('arcane-arcade-fallout', 'VaultTec')) {
       return options.fn(this)
     }
     return options.inverse(this)

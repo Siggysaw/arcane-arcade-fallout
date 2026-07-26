@@ -13,8 +13,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ['falloutzero', 'sheet', 'actor'],
-      width: 800,
-      height: 750,
+      width: 850,
+      height: 950,
       tabs: [
         {
           navSelector: '.sheet-tabs',
@@ -121,16 +121,16 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       ).render(true)
     }
 
-    const carryLoadSetting = game.settings.get('core', 'CarryLoad')
-    const CapsLoad = game.settings.get('core', 'CapsLoad')
-    const AmmoLoad = game.settings.get('core', 'AmmoLoad')
-    const JunkLoad = game.settings.get('core', 'JunkLoad')
-    const VaultTec = game.settings.get('core', 'VaultTec')
+    const carryLoadSetting = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'CarryLoad')
+    const CapsLoad = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'CapsLoad')
+    const AmmoLoad = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AmmoLoad')
+    const JunkLoad = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'JunkLoad')
+    const VaultTec = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'VaultTec')
     const Language = game.settings.get('core', 'language')
-    const PlaySounds = game.settings.get('core', 'PlaySounds')
-    const ManualGroupSneak = game.settings.get('core', 'GroupSneak')
-    const ManualPartyNerve = game.settings.get('core', 'PartyNerve')
-    const KeepZeroes = game.settings.get('core', 'KeepZeroes')
+    const PlaySounds = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')
+    const ManualGroupSneak = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'GroupSneak')
+    const ManualPartyNerve = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PartyNerve')
+    const KeepZeroes = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'KeepZeroes')
 
     if (actorData.system.health.value < 1 && !actorData.system.downed) {
       this.actor.update({ 'system.actionPoints.value': 4 })
@@ -165,7 +165,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     // Calculate Carry Load
     const packrat = actorData.items.find((i) => i.name == 'Pack Rat')
     const capsLoad = CapsLoad ? Math.floor(actorData.system.caps / 50) : 0
-
     actorData.system.carryLoad.base =
       actorData.items.reduce((acc, item) => {
         let { load = 0, quantity = 1 } = item.system
@@ -190,6 +189,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     actorData.system.carryLoad.max =
       actorData.system.carryLoad.baseMax + actorData.system.carryLoad.modifiersMax + actorData.system.carryLoad.manualMax
 
+    // Fire-and-forget; don't block getData's synchronous return
+    this._syncOverloadedCondition(actorData)
 
     //Set Group Sneak and Party Nerve
     const characterList = game.actors.filter((entries) => entries.type === 'character')
@@ -232,6 +233,65 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     )
 
     return context
+  }
+
+  // Calculate Encumberance
+  async _syncOverloadedCondition(actorData) {
+    if (this._syncingLoadCondition) return
+    this._syncingLoadCondition = true
+
+    try {
+      const load = actorData.system.carryLoad.value
+      const max = actorData.system.carryLoad.max
+
+      const checkEncumberance = this.actor.items.filter((i) => i.name == 'Encumbered')
+      const checkHeavyEncumberance = this.actor.items.filter((i) => i.name == 'Heavily Encumbered')
+
+      const isEncumbered = load > max && load < (max * 2)
+      const isHeavilyEncumbered = load >= (max * 2)
+
+      // Encumbered
+      if (isEncumbered) {
+        if (checkEncumberance.length === 0) {
+          const conditionItem = await fromUuid("Compendium.arcane-arcade-fallout.conditions.Item.xpklIlYiHUKTwJsg")
+          if (conditionItem) {
+            await this.actor.createEmbeddedDocuments("Item", [conditionItem.toObject()])
+          }
+        }
+      } else {
+        if (checkEncumberance.length > 0) {
+          const idsToDelete = checkEncumberance
+            .map((i) => i.id)
+            .filter((id) => id && this.actor.items.get(id))
+          if (idsToDelete.length) {
+            await this.actor.deleteEmbeddedDocuments("Item", idsToDelete)
+          }
+        }
+      }
+
+      // Heavily Encumbered
+      if (isHeavilyEncumbered) {
+        if (checkHeavyEncumberance.length === 0) {
+          const conditionItem = await fromUuid("Compendium.arcane-arcade-fallout.conditions.Item.h6UQkBsBLIi7AvZ2")
+          if (conditionItem) {
+            await this.actor.createEmbeddedDocuments("Item", [conditionItem.toObject()])
+          }
+        }
+      } else {
+        if (checkHeavyEncumberance.length > 0) {
+          const idsToDelete = checkHeavyEncumberance
+            .map((i) => i.id)
+            .filter((id) => id && this.actor.items.get(id))
+          if (idsToDelete.length) {
+            await this.actor.deleteEmbeddedDocuments("Item", idsToDelete)
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to sync load condition:", err)
+    } finally {
+      this._syncingLoadCondition = false
+    }
   }
 
   /**
@@ -799,15 +859,15 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     //==============Audio Triggers
     //MUTE and UNMUTE
     html.on('click', '[data-audioToggle]', (ev) => {
-      const PlaySounds = game.settings.get('core', 'PlaySounds')
-      game.settings.set('core', 'PlaySounds', !PlaySounds)
+      const PlaySounds = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')
+      game.settings.set('arcane-arcade-fallout', 'PlaySounds', !PlaySounds)
       this.render(true)
     })
     //SPECIAL and SKILLS
     html.on('click', '[data-pipboyselect]', (ev) => {
       let randomNum = Math.floor(Math.random() * 2) + 1
       var audio = new Audio(`/systems/arcane-arcade-fallout/assets/sounds/ui/select_pipboy_${randomNum}.mp3`);
-      if (game.settings.get('core', 'PlaySounds')) {
+      if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')) {
         audio.play()
       }
     })
@@ -815,12 +875,19 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-tabs]', (ev) => {
       let randomNum = Math.floor(Math.random() * 3) + 1
       var audio = new Audio(`/systems/arcane-arcade-fallout/assets/sounds/ui/change-tab_pipboy_${randomNum}.mp3`);
-      if (game.settings.get('core', 'PlaySounds')) {
+      if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')) {
         audio.play()
       }
     })
 
     //===============END Audio Triggers
+
+    //===============Visual Toggle
+    html.on('click', '[data-pipboyEffectsToggle]', (ev) => {
+      const Effects = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PipBoyEffects')
+      game.settings.set('arcane-arcade-fallout', 'PipBoyEffects', !Effects)
+      this.render(true)
+    })
 
     // Add Blocking Condition
     html.on('click', '[data-block]', async (ev) => {
@@ -1396,7 +1463,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: label,
-        rollMode: game.settings.get('core', 'rollMode'),
+        rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
       })
       return roll
     }

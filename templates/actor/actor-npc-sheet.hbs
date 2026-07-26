@@ -1,4 +1,4 @@
-<form autocomplete="off">
+<form autocomplete="off" {{#PipBoyEffects}}class="pipboy-crt"{{/PipBoyEffects}}>
   <div class="character{{#isVaultTec}} vaulttec {{/isVaultTec}}{{ cssClass }} {{ actor.type }} flexcol">
       {{log cssClass}}
     {{!-- Sheet Header --}}
@@ -10,7 +10,10 @@
             </span>
             <span style="float:right;" data-tooltip="Toggle Audio Sounds Mode">
                 <i data-audioToggle
-                        class="fas fa-volume-{{#PlaySounds}}up{{else}}mute{{/PlaySounds}}"></i>
+                   class="fas fa-volume-{{#PlaySounds}}up{{else}}mute{{/PlaySounds}}"></i>
+                <i data-pipboyEffectsToggle
+                   data-tooltip="Toggle Pipboy Glitch Effects"
+                   class="fas fa-toggle-{{#PipBoyEffects}}on{{else}}off{{/PipBoyEffects}}"></i>
             </span>
             <table>
                 <tr>

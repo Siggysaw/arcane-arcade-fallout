@@ -6,97 +6,105 @@ import { getApCost, getLastWaypointGroup, sumWaypoints } from './helpers/movemen
 
 export function registerHooks() {
 
-    Hooks.once('ready', function () {
-        // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-        Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot))
+  Hooks.once('ready', function () {
+    // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
+    Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot))
 
-        /* --------------------------------------------  */
-        /*  Auto recycle AP on turn end                                */
-        /* --------------------------------------------  */
-        if (game.user.isGM && game.settings.get('core', 'AutoRecycleAP')) {
-            Hooks.on("updateCombat", async (combat, updates, update) => {
-                // if round did not change or direction is backwards, return
-                if (!updates.round || update.direction !== 1) return
+    /* --------------------------------------------  */
+    /*  Auto recycle AP on turn end                                */
+    /* --------------------------------------------  */
+    if (game.user.isGM && game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AutoRecycleAP')) {
+      Hooks.on("updateCombat", async (combat, updates, update) => {
+        // if round did not change or direction is backwards, return
+        if (!updates.round || update.direction !== 1) return
 
-                // else recycle ap for all combatants
-                game.combat.combatants.forEach((combatant) => {
-                    combatant.actor.recycleAp()
-                })
-            });
-        }
-    })
+        // else recycle ap for all combatants
+        game.combat.combatants.forEach((combatant) => {
+          combatant.actor.recycleAp()
+        })
+      });
+    }
+  })
 
   Hooks.on('renderActorSheet', (app, html) => {
     if (html?.[0].tagName === 'FORM') {
       return
     } else {
       var audio = new Audio(`/systems/arcane-arcade-fallout/assets/sounds/ui/open-sheet_pipboy.mp3`);
-      if (game.settings.get('core', 'PlaySounds')) {
+      if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')) {
         audio.play()
       }
     }
   })
 
-    /* --------------------------------------------  */
-    /*  Token movement                                 */
-    /* --------------------------------------------  */
-    Hooks.on('preMoveToken', (token, movement) => {
-        console.log('preMoveToken', movement)
-        // if flag not active or not in combat, skip AP deduction
-        if (!game.settings.get('core', 'DeductMovementAPInCombat') || !game.combats?.active?.started) return
+  /* --------------------------------------------  */
+  /*  Token movement                                 */
+  /* --------------------------------------------  */
+  Hooks.on('preMoveToken', (token, movement) => {
+    // if flag not active or not in combat, skip AP deduction
+    if (!game.settings.get(CONFIG.FALLOUTZERO.systemId, 'DeductMovementAPInCombat') || !game.combats?.active?.started) return
 
-      const isTurn = game.combats.active.combatant.tokenId === token.id
-        
-      if (!isTurn && game.user.role !== 4) {
-            ui.notifications.warn("Movement is based on combat turn, it's currently not your turn");
-            return false
-        }
+    const isTurn = game.combats.active.combatant.tokenId === token.id
 
-        // Get total cost
-        let passedApCost = getApCost(movement.passed.cost)
-        let pendingWaypoints = movement.pending.waypoints
-        let pendingApCost = 0
-        const rooted = token.actor.items.find((i) => i.name == "Rooted Condition")
+    if (!isTurn && game.user.role !== 4) {
+      ui.notifications.warn("Movement is based on combat turn, it's currently not your turn");
+      return false
+    }
 
-        while (pendingWaypoints.length) {
-            const waypointGroup = getLastWaypointGroup(pendingWaypoints)
-            pendingApCost += sumWaypoints(waypointGroup)
-            pendingWaypoints = pendingWaypoints.slice(waypointGroup.length)
-        }
+    // Get total cost
+    let passedApCost = getApCost(movement.passed.cost)
+    let pendingWaypoints = movement.pending.waypoints
+    let pendingApCost = 0
+    let multiplier = 1
+    const rooted = token.actor.items.find((i) => i.name == "Rooted Condition")
+    const encumbered = token.actor.items.find((i) => i.name == "Encumbered")
+    const heavilyEncumbered = token.actor.items.find((i) => i.name == "Heavily Encumbered")
+    const hoarder = token.actor.items.find((i) => i.name == "Hoarder")
+    const heavyWeight = token.actor.items.find((i) => i.name == "Heavyweight")
 
-        // Check if actor can afford movement
-        const apAfterCost = token.actor.getAPAfterCost(passedApCost + pendingApCost)
-      if (apAfterCost < 0 && game.user.role !== 4) {
-            ui.notifications.warn("Not enough AP for this movement");
-            return false
-        }
+    while (pendingWaypoints.length) {
+      const waypointGroup = getLastWaypointGroup(pendingWaypoints)
+      pendingApCost += sumWaypoints(waypointGroup)
+      pendingWaypoints = pendingWaypoints.slice(waypointGroup.length)
+    }
+
+    // Check if actor can afford movement
+    let apAfterCost = token.actor.getAPAfterCost(passedApCost + pendingApCost)
+    if (apAfterCost < 0 && game.user.role !== 4) {
+      ui.notifications.warn("Not enough AP for this movement");
+      return false
+    }
 
 
-        // Deduct AP
-      if (movement.method !== 'undo') {
-        rooted ? token.actor.applyApCost(getApCost(movement.passed.cost)*2): token.actor.applyApCost(getApCost(movement.passed.cost))
-        } else {
-            // If undo movement, restore AP
-            try {
-                const waypointGroup = getLastWaypointGroup(movement.history.recorded.waypoints)
-                const historyApCost = sumWaypoints(waypointGroup)
+    // Deduct AP
+    if (movement.method !== 'undo') {
+      rooted ? multiplier += 1 : ''
+      encumbered && !hoarder && !heavyWeight ? multiplier += 1 : ''
+      heavilyEncumbered ? multiplier += 2 : ''
 
-                const currentAp = token.actor.system.actionPoints.value
-                token.actor.update({
-                    'system.actionPoints.value': currentAp + historyApCost
-                })
-            } catch (error) {
-                console.error('Error restoring actors AP', error)
-                ui.notifications.warn("Error restoring actors AP", error);
-            }
-        }
+      token.actor.applyApCost(getApCost(movement.passed.cost) * multiplier)
+    } else {
+      // If undo movement, restore AP
+      try {
+        const waypointGroup = getLastWaypointGroup(movement.history.recorded.waypoints)
+        const historyApCost = sumWaypoints(waypointGroup)
 
-        return true
-    });
+        const currentAp = token.actor.system.actionPoints.value
+        token.actor.update({
+          'system.actionPoints.value': currentAp + historyApCost
+        })
+      } catch (error) {
+        console.error('Error restoring actors AP', error)
+        ui.notifications.warn("Error restoring actors AP", error);
+      }
+    }
 
-    /* --------------------------------------------  */
-    /*  Other Hooks                                  */
-    /* --------------------------------------------  */
+    return true
+  });
+
+  /* --------------------------------------------  */
+  /*  Other Hooks                                  */
+  /* --------------------------------------------  */
   Hooks.on('deleteCombat', (combat, options, userId) => {
     // Check if the user is the GM to prevent the code from running multiple times
     if (!game.user.isGM) return;
@@ -105,57 +113,57 @@ export function registerHooks() {
     })
   });
 
-    Hooks.on('renderPause', (app, [html]) => {
-        const img = html.querySelector('img')
-        img.src = 'systems/arcane-arcade-fallout/assets/vaultboy/vaultboy.webp'
-    })
+  Hooks.on('renderPause', (app, [html]) => {
+    const img = html.querySelector('img')
+    img.src = 'systems/arcane-arcade-fallout/assets/vaultboy/vaultboy.webp'
+  })
 
-    /* --------------------------------------------  */
-    /*  AAFO-HUD HOOKS                                */
-    /* --------------------------------------------  */
-    Hooks.on('aafohud.skillRoll', async (actorUuid, skill) => {
-        const actor = fromUuidSync(actorUuid)
-        const roll = await new SkillRoll(actor, skill, () => { })
-        roll.render(true)
-    })
+  /* --------------------------------------------  */
+  /*  AAFO-HUD HOOKS                                */
+  /* --------------------------------------------  */
+  Hooks.on('aafohud.skillRoll', async (actorUuid, skill) => {
+    const actor = fromUuidSync(actorUuid)
+    const roll = await new SkillRoll(actor, skill, () => { })
+    roll.render(true)
+  })
 
-    Hooks.on('aafohud.attackRoll', async (actorUuid, weaponId) => {
-        const actor = fromUuidSync(actorUuid)
-        const weapon = actor.items.get(weaponId)
-        weapon.rollAttack({ advantageMode: 1 })
-    })
+  Hooks.on('aafohud.attackRoll', async (actorUuid, weaponId) => {
+    const actor = fromUuidSync(actorUuid)
+    const weapon = actor.items.get(weaponId)
+    weapon.rollAttack({ advantageMode: 1 })
+  })
 
-    Hooks.on('aafohud.toggleEquipArmor', async (actorUuid, itemId) => {
-        const actor = fromUuidSync(actorUuid)
-        const item = actor.items.get(itemId)
-        const cost = item.type == "powerArmor" ? 6 : 3
-        const canAffordAP = actor.applyApCost(cost)
-        if (canAffordAP) {
-            item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-        }
-    })
+  Hooks.on('aafohud.toggleEquipArmor', async (actorUuid, itemId) => {
+    const actor = fromUuidSync(actorUuid)
+    const item = actor.items.get(itemId)
+    const cost = item.type == "powerArmor" ? 6 : 3
+    const canAffordAP = actor.applyApCost(cost)
+    if (canAffordAP) {
+      item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+    }
+  })
 
-    Hooks.on('aafohud.toggleEquipWeapon', async (actorUuid, itemId) => {
-        const actor = fromUuidSync(actorUuid)
-        const item = actor.items.get(itemId)
-        const cost = 3
-        const canAffordAP = actor.applyApCost(cost)
-        if (canAffordAP) {
-            item.update({ 'system.itemEquipped': !item.system.itemEquipped })
-        }
-    })
+  Hooks.on('aafohud.toggleEquipWeapon', async (actorUuid, itemId) => {
+    const actor = fromUuidSync(actorUuid)
+    const item = actor.items.get(itemId)
+    const cost = 3
+    const canAffordAP = actor.applyApCost(cost)
+    if (canAffordAP) {
+      item.update({ 'system.itemEquipped': !item.system.itemEquipped })
+    }
+  })
 
-    Hooks.on('aafohud.reloadWeapon', async (actorUuid, itemId) => {
-        const actor = fromUuidSync(actorUuid)
-        actor.reload(itemId)
-    })
+  Hooks.on('aafohud.reloadWeapon', async (actorUuid, itemId) => {
+    const actor = fromUuidSync(actorUuid)
+    actor.reload(itemId)
+  })
 
-    Hooks.on('aafohud.useConsumable', async (actorUuid, itemId) => {
-        const actor = fromUuidSync(actorUuid)
-        const cost = 4
-        const canAffordAP = actor.applyApCost(cost)
-        if (canAffordAP) {
-            actor.lowerInventory(itemId)
-        }
-    })
+  Hooks.on('aafohud.useConsumable', async (actorUuid, itemId) => {
+    const actor = fromUuidSync(actorUuid)
+    const cost = 4
+    const canAffordAP = actor.applyApCost(cost)
+    if (canAffordAP) {
+      actor.lowerInventory(itemId)
+    }
+  })
 }

@@ -1,5 +1,5 @@
 export const FALLOUTZERO = {
-  systemId: 'falloutzero',
+  systemId: 'arcane-arcade-fallout',
 }
 
 /**

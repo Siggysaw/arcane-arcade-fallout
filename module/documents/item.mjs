@@ -205,7 +205,7 @@ export default class FalloutZeroItem extends Item {
 
 
           //await this.addUpgrade(weapon,myUpgrade);
-          await weapon.createEmbeddedDocuments('ActiveEffect', myUpgrade.effects._source)
+          await weapon.createEmbeddedDocuments('ActiveEffect', myUpgrade.effects.map((e) => e.toObject()))
 
           //equip
           if (wasEquipped) {
@@ -303,9 +303,11 @@ export default class FalloutZeroItem extends Item {
   }
 
   //Checks char items before creating one, stops it and updates quantity if it exists and is not equipped.
-  _preCreate(data, options, user) {
-    super._preCreate(data, options, user)
-    if (nonStackableTypes.includes(data.type)) {
+  async _preCreate(data, options, user) {
+    const allowed = await super._preCreate(data, options, user)
+    if (allowed === false) return false
+
+    if (nonStackableTypes.includes(this.type)) {
       return
     }
     if (this.parent) {
@@ -330,12 +332,13 @@ export default class FalloutZeroItem extends Item {
       }
       let qty = 0
       if (myItem) {
-        qty = Number(myItem.system.quantity) + Number(data.system.quantity)
-        myItem.update({ 'system.quantity': qty })
+        qty = Number(myItem.system.quantity) + Number(this.system.quantity)
+        await myItem.update({ 'system.quantity': qty })
         return false
       } else {
         if (this.system.itemEquipped == true) {
-          data.system.itemEquipped = false
+          // Mutate pending source data via updateSource rather than the data argument directly
+          this.updateSource({ 'system.itemEquipped': false })
         }
       }
     }

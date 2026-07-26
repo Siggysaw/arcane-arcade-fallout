@@ -369,7 +369,7 @@ export default class FalloutZeroActor extends Actor {
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this }),
         flavor,
-        rollMode: game.settings.get('core', 'rollMode'),
+        rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
       })
     }
   }
@@ -422,7 +422,7 @@ export default class FalloutZeroActor extends Actor {
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this }),
         flavor: `${actor.name} rolled a Custom Roll!`,
-        rollMode: game.settings.get('core', 'rollMode'),
+        rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
       })
     }
   }
@@ -465,10 +465,10 @@ export default class FalloutZeroActor extends Actor {
   inspectCarryload() {
     const packrat = this.items.find((i) => i.name == 'Pack Rat')
     const myDialogOptions = { width: 500, height: 300, resizable: true }
-    const carryLoadSetting = game.settings.get('core', 'CarryLoad')
-    const CapsLoad = game.settings.get('core', 'CapsLoad')
-    const AmmoLoad = game.settings.get('core', 'AmmoLoad')
-    const JunkLoad = game.settings.get('core', 'JunkLoad')
+    const carryLoadSetting = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'CarryLoad')
+    const CapsLoad = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'CapsLoad')
+    const AmmoLoad = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AmmoLoad')
+    const JunkLoad = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'JunkLoad')
     let load = Math.floor(this.system.caps / 50)
     if (!CapsLoad) {
       load = 0
@@ -785,7 +785,7 @@ export default class FalloutZeroActor extends Actor {
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this }),
       flavor: `${this.name} rolls a ${abilityLabel} Check, DC ${dc} for ${ev.currentTarget.dataset.condition}. <p>${rollContent}</p>`,
-      rollMode: game.settings.get('core', 'rollMode'),
+      rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
     })
   }
 
@@ -874,6 +874,7 @@ export default class FalloutZeroActor extends Actor {
       for (const str of descSplit) {
         if (str.includes('uuid')) {
           const strSplit = str.replace(/"/g, '').split('.')
+          console.log("CONDITION",strSplit)
           const newCondition = await pack.getDocument(strSplit[strSplit.length - 1])
           if (!newCondition) continue
 
@@ -1361,7 +1362,7 @@ export default class FalloutZeroActor extends Actor {
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this }),
       flavor,
-      rollMode: game.settings.get('core', 'rollMode'),
+      rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
     })
 
     if (type === 'radiation' && !success) {
@@ -2323,7 +2324,7 @@ export default class FalloutZeroActor extends Actor {
       'system.health.value': hp.value - deltaHP,
     }
 
-    if (game.settings.get('core', 'DamageChatCard')) {
+    if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'DamageChatCard')) {
       this.createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP })
     }
 
