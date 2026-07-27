@@ -160,8 +160,8 @@ export function registerHbsHelpers() {
   })
 
   Handlebars.registerHelper('CheckLang', function (v1, options) {
-    const language = game.settings.get('arcane-arcade-fallout', 'language')
-    if (game.settings.get('arcane-arcade-fallout', 'language') === v1) {
+    const language = game.settings.get('core', 'language')
+    if (game.settings.get('core', 'language') === v1) {
       return options.fn(this)
     }
     return options.inverse(this)
