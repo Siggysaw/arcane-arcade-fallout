@@ -58,6 +58,16 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this._prepareItems(context)
     }
 
+    context.rangedWeapons = context.rangedWeapons.map((item) => {
+      item.visible = context.system.showEquipped || item.system.itemEquipped;
+      return item;
+    });
+
+    context.meleeWeapons = context.meleeWeapons.map((item) => {
+      item.visible = context.system.showEquipped || item.system.itemEquipped;
+      return item;
+    });
+
     //Temporary Notes Parsing
 
     if (actorData.name == "ImportNPCs") {

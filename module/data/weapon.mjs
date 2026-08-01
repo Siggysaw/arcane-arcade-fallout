@@ -21,6 +21,7 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     schema.slots = new fields.NumberField({ initial: 6, min: 0 })
     schema.energyWeapon = new fields.BooleanField()
     schema.properties = new fields.HTMLField()
+    schema.bonusProperties = new fields.HTMLField()
     schema.strengthRequirement = new fields.NumberField({ initial: 0 })
     schema.damage = new fields.SchemaField({
       type: new fields.StringField({ initial: 'piercing' }),
@@ -42,7 +43,9 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     schema.critical = new fields.SchemaField({
       dice: new fields.NumberField({ initial: 20, blank: true }),
       multiplier: new fields.NumberField({ initial: 1, nullable: false }),
+      multiplierBonus: new fields.NumberField({ initial: 0, min: 0 }),
       formula: new fields.StringField({ initial: null, nullable: true }),
+      formulaBonus : new fields.NumberField({ initial: 0, blank: true }),
       condition: new fields.StringField({ initial: null, nullable: true }),
     })
     schema.ammo = new fields.SchemaField({
@@ -168,8 +171,34 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
 
   prepareDerivedData() {
     super.prepareDerivedData()
+
+    const upgradeList = Object.values(this.upgrades)
+    const hasUpgrade = (search) => upgradeList.some((i) => i.name === search)
+
+    this.critical.formulaBonus = 0
+    this.critical.multiplierBonus = 0
+
+    if (hasUpgrade('Ergonomic Grip')) {
+      if (this.critical.formula) {
+        this.critical.formulaBonus += 1
+      }
+      if (this.critical.multiplier > 1) {
+        this.critical.multiplierBonus += 1
+      }
+    }
+    //hasUpgrade('Hardened Receiver') ? this.ystem.load += 2 : ''
   }
 
+  get totalCriticalFormula() {
+    const base = this.critical.formula
+    if (!base) return base
+    const [diceCount, diceSize] = base.split('d')
+    return `${Number(diceCount) + this.critical.formulaBonus}d${diceSize}`
+  }
+
+  get totalCriticalMultiplier() {
+    return this.critical.multiplier + this.critical.multiplierBonus
+  }
   get capacityAtMax() {
     return this.ammo.capacity.value === this.ammo.capacity.max
   }

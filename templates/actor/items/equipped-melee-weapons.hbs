@@ -1,17 +1,17 @@
 {{#each meleeWeapons as |item id|}}
-{{#if ../system.showEquipped}}
+{{#if item.visible}}
 <div class="grid grid-20col combat-tab" data-item-id="{{ item._id }}" draggable="true">
     <div class="equip-toggle"
          style="cursor:pointer;"
          data-equipToggle
-         data-item-id="{{ item._id}}">
-        <p class="weapon-equippable">{{#if system.itemEquipped}}EQUIPPED{{else}}{{/if}}</p>
+         data-item-id="{{ item._id }}">
+        <p class="weapon-equippable">{{#if item.system.itemEquipped}}EQUIPPED{{/if}}</p>
     </div>
     <div class="grid-span-4 weapon-identity context-menu" data-item-id="{{ item._id }}">
         <div data-tooltip="{{item.name}}" class="weapon-name">{{item.name}}</div>
         <div class="weapon-image">
             <img src="{{item.img}}" />
-            {{#each system.upgrades as |key|}}
+            {{#each item.system.upgrades as |key|}}
             {{#if key.id}}
             <p class="upgrade-name"
                data-tooltip="{{key.description}}">{{key.name}}</p>
@@ -43,7 +43,7 @@
             {{#GreaterThan ammo.system.quantity 0}}({{ammo.system.quantity}}){{/GreaterThan}}
             {{/each}}
             <i style="float:right;"
-               data-tooltip="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
+               data-tooltip="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ item.system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
                data-reload
                data-weapon-id="{{ item._id }}"
                class="fa fa-refresh"></i>
@@ -63,8 +63,8 @@
         </div>
     </div>
     <div class="grid-span-2 weapon-stats">
-        <div>AP:{{#Subtract system.apCost system.APSubtraction}}{{/Subtract}}</div>
-        <div>Load:{{system.load}}</div>
+        <div>AP:{{#Subtract item.system.apCost item.system.APSubtraction}}{{/Subtract}}</div>
+        <div>Load:{{item.system.load}}</div>
         <div>STR:{{item.system.strengthRequirement}}</div>
         <div class="weapon-condition">
             CND
@@ -96,129 +96,16 @@
             5ft.
         </div>
         <div data-tooltip="Bonus {{item.system.critical.formula}}{{#GreaterThan item.system.critical.multiplier 2}}x{{item.system.critical.multiplier}}{{/GreaterThan}} Damage {{item.system.critical.condition}}">
-            Crit:{{#Subtract system.critMeleeBonus ../actor.system.critMod}}{{/Subtract}}
+            Crit:{{#Subtract item.system.critMeleeBonus ../actor.system.critMod}}{{/Subtract}}
         </div>
         {{#each item.system.damages as |damage|}}
         <div class="weapon-damage">{{damage.formula}} {{damage.type}}</div>
         {{/each}}
     </div>
     <div class="grid-span-5" style="font-size:9pt;">
-        {{{system.description}}}
+        {{{item.system.description}}}{{{item.system.bonusProperties}}}
     </div>
 </div>
 <br />
-{{else}}
-{{#if system.itemEquipped}}
-<div class="grid grid-20col combat-tab" data-item-id="{{ item._id }}" draggable="true">
-    <div class="equip-toggle"
-         style="cursor:pointer;"
-         data-equipToggle
-         data-item-id="{{ item._id}}">
-        <p class="weapon-equippable">{{#if system.itemEquipped}}EQUIPPED{{else}}{{/if}}</p>
-    </div>
-    <div class="grid-span-4 weapon-identity context-menu" data-item-id="{{ item._id }}">
-        <div data-tooltip="{{item.name}}" class="weapon-name">{{item.name}}</div>
-        <div class="weapon-image">
-            <img src="{{item.img}}" />
-            {{#each system.upgrades as |key|}}
-            {{#if key.id}}
-            <p class="upgrade-name"
-               data-tooltip="{{key.description}}">{{key.name}}</p>
-            {{/if}}
-            {{/each}}
-        </div>
-    </div>
-    <div class="grid-span-4 combat-ammo {{#unless item.system.ammo.assigned}}melee-attack{{/unless}}">
-        {{#if item.system.ammo.assigned}}
-        <div class="weapon-buttons">
-            {{#GreaterThan item.system.ammo.capacity.value 1}}
-            <div class="weapon-attack rollable resource-label"
-                 data-weapon-roll
-                 data-weapon-id="{{ item._id }}">
-                FIRE!
-            </div>
-            {{else}}
-            <div class="weapon-attack">
-                OUT!
-            </div>
-            {{/GreaterThan}}
-        </div>
-
-        <div data-tooltip="{{item.system.ammo.assigned}}"
-             class="ammo-name">{{ item.system.ammo.assigned }}</div>
-        <div class="weapon-capacity">
-            {{ item.system.ammo.capacity.value }} / {{ item.system.ammo.capacity.max }}
-            {{#each item.ammos as |ammo|}}
-            {{#GreaterThan ammo.system.quantity 0}}({{ammo.system.quantity}}){{/GreaterThan}}
-            {{/each}}
-            <i style="float:right;"
-               data-tooltip="AP: {{#Reload item.system.description}}{{/Reload}} | Reloaded {{ system.reloadDecay }} Times | 10 Reloads = 1 Level of Decay"
-               data-reload
-               data-weapon-id="{{ item._id }}"
-               class="fa fa-refresh"></i>
-        </div>
-        {{else}}
-        <div class="weapon-attack rollable resource-label"
-             data-weapon-roll
-             data-weapon-id="{{ item._id }}">
-            SWING!
-        </div>
-        {{/if}}
-        <div class="weapon-attack rollable resource-label"
-             data-block
-             data-weapon-id="{{ item._id }}"
-             data-tooltip="3AP to block using this weapon. <br>Blocking adds 2 DT against other Melee Attacks until your next attack ">
-            BLOCK!
-        </div>
-    </div>
-    <div class="grid-span-2 weapon-stats">
-        <div>AP:{{#Subtract system.apCost system.APSubtraction}}{{/Subtract}}</div>
-        <div>Load:{{system.load}}</div>
-        <div>STR:{{item.system.strengthRequirement}}</div>
-        <div class="weapon-condition">
-            CND
-            <div>
-                <i data-reduce-decay
-                   data-field="item.system.decay"
-                   data-fieldvalue="{{item.system.decay}}"
-                   data-weapon-id="{{ item._id }}"
-                   class="fas fa-minus-square  nobackground">
-                </i>
-                <span data-tooltip="CND">{{ item.system.decay }}</span>
-                <i data-add-decay
-                   data-field="item.system.decay"
-                   data-fieldvalue="{{item.system.decay}}"
-                   data-weapon-id="{{ item._id }}"
-                   class="fas fa-plus-square  nobackground">
-                </i>
-            </div>
-            <progress data-tooltip="{{item.system.decay}} out of 10"
-                      class="statusbar"
-                      value="{{ item.system.decay }}"
-                      max=10>
-                {{ item.system.decay }}
-            </progress>
-        </div>
-    </div>
-    <div class="grid-span-4 weapon-usage">
-        <div>
-            5ft.
-        </div>
-        <div data-tooltip="Bonus {{item.system.critical.formula}}{{#GreaterThan item.system.critical.multiplier 2}}x{{item.system.critical.multiplier}}{{/GreaterThan}} Damage {{item.system.critical.condition}}">
-            Crit:{{#Subtract system.critMeleeBonus ../actor.system.critMod}}{{/Subtract}}
-        </div>
-        {{#each item.system.damages as |damage|}}
-        <div class="weapon-damage">{{damage.formula}} {{damage.type}}</div>
-        {{/each}}
-    </div>
-    <div class="grid-span-5" style="font-size:9pt;">
-        {{{system.description}}}
-    </div>
-</div>
-<br />
-{{/if}}
-
 {{/if}}
 {{/each}}
-
-

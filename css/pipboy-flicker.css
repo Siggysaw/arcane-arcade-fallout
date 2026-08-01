@@ -67,7 +67,7 @@
   background: var(--sheetcolor, #3ce03c);
   opacity: 0;
   mix-blend-mode: overlay;
-  animation: pipboy-glitch 20s infinite;
+  animation: pipboy-glitch 10s infinite;
 }
 
 @keyframes pipboy-glitch {

@@ -608,6 +608,11 @@ td,
   letter-spacing: 0rem;
 }
 
+.sheet .skillbutton{
+    font-family:fixedsys;
+    font-size: 13px !important;
+} 
+
 .sheet .status-info-value {
   font-size: 10pt;
 }
@@ -1489,6 +1494,10 @@ body.game .app .tabs > [data-tab] {
 .sheet .vaulttec {
   background-color: #0066b1;
   color: #FFF;
+}
+.sheet .status .skillvalue {
+  font-family: fixedsys;
+  font-size: 16pt;
 }
 
 .window-app .window-content .vaulttec input,

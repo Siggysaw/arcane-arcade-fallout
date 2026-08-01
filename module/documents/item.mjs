@@ -205,7 +205,15 @@ export default class FalloutZeroItem extends Item {
 
 
           //await this.addUpgrade(weapon,myUpgrade);
-          await weapon.createEmbeddedDocuments('ActiveEffect', myUpgrade.effects.map((e) => e.toObject()))
+
+          // Tag each effect with the source upgrade's id so it can be
+          // found and removed later if this specific upgrade is deleted
+          const effectsData = myUpgrade.effects.map((e) => {
+            const obj = e.toObject()
+            foundry.utils.setProperty(obj, `flags.${game.system.id}.sourceUpgradeId`, myUpgrade._id)
+            return obj
+          })
+          await weapon.createEmbeddedDocuments('ActiveEffect', effectsData)
 
           //equip
           if (wasEquipped) {
@@ -245,14 +253,11 @@ export default class FalloutZeroItem extends Item {
   }
 
   async toggleEffects(myItem, equipStatus) {
-    let myEffect
-    let i = 0
     if (myItem.collections.effects.contents) {
-      let myEffects = myItem.collections.effects.contents
-      while (i < myEffects.length) {
-        myEffect = myItem.effects.get(myEffects[i]._id)
-        myEffect.update({ disabled: equipStatus })
-        i++
+      const myEffects = myItem.collections.effects.contents
+      for (const eff of myEffects) {
+        const myEffect = myItem.effects.get(eff._id)
+        await myEffect.update({ disabled: equipStatus })
       }
     }
   }
@@ -270,6 +275,17 @@ export default class FalloutZeroItem extends Item {
           break
         }
       }
+
+      // Delete the upgrade's effects FIRST, before any disable/enable toggling,
+      // so there's no race between disabling and removing the same effect
+      const effectsToRemove = weapon.effects.filter(
+        (e) => e.getFlag(game.system.id, 'sourceUpgradeId') === myId,
+      )
+      console.log('deleteWholeUpgrade: matching effects for', myId, effectsToRemove)
+      if (effectsToRemove.length) {
+        await weapon.deleteEmbeddedDocuments('ActiveEffect', effectsToRemove.map((e) => e.id))
+      }
+
       let myData = {}
       let myPath = 'system.upgrades.' + key + '.id'
       let myValue = ''
@@ -280,20 +296,20 @@ export default class FalloutZeroItem extends Item {
       myPath = 'system.slots'
       let newSlots = weapon.system.slots - myUpgrade.system.slots
       Object.assign(myData, { [myPath]: newSlots })
-      myPath = 'system.updates.' + key + '.name'
+      myPath = 'system.upgrades.' + key + '.name'
       Object.assign(myData, { [myPath]: myValue })
-      myPath = 'system.updates.' + key + '.img'
+      myPath = 'system.upgrades.' + key + '.img'
       Object.assign(myData, { [myPath]: myValue })
-      myPath = 'system.updates.' + key + '.rank'
+      myPath = 'system.upgrades.' + key + '.rank'
       Object.assign(myData, { [myPath]: 0 })
-      myPath = 'system.updates.' + key + '.description'
+      myPath = 'system.upgrades.' + key + '.description'
       Object.assign(myData, { [myPath]: myValue })
-      //Add update stats <-- Needs automation
+
+      // Remaining toggle is now only for OTHER effects still on the weapon
       if (wasEquipped) {
         await this.toggleEffects(weapon, true)
       }
       await weapon.update(myData)
-      //Remove update stats <-- Needs automation
       if (wasEquipped) {
         await this.toggleEffects(weapon, false)
       }

@@ -32,7 +32,14 @@ export default class AttackRoll extends FormApplication {
       apCost: this.weapon.system.apCost,
       totalApCost: this.weapon.system.apCost - this.weapon.system.APSubtraction,
       adjustedApCost: 0,
-      critical: this.weapon.system.critical,
+      // Reflects the derived totals (base + upgrade bonuses), not raw base values,
+      // so the dialog preview matches what will actually be rolled
+      critical: {
+        dice: this.weapon.system.critical.dice,
+        condition: this.weapon.system.critical.condition,
+        formula: this.weapon.system.totalCriticalFormula,
+        multiplier: this.weapon.system.totalCriticalMultiplier,
+      },
       repeat: 1,
       fullAuto: false,
       damages: this.weapon.system.damages.map((damage) => {
@@ -258,6 +265,37 @@ export default class AttackRoll extends FormApplication {
     }, '')
   }
 
+  /**
+   * Compute the final critical formula/multiplier for this specific roll.
+   * Starts from the weapon's derived totals (base + upgrade bonuses like
+   * Ergonomic Grip) and layers the actor's Finesse bonus on top, entirely
+   * in local variables. Never mutates this.weapon.system.critical, so the
+   * weapon's stored data can never accumulate bonuses across rolls.
+   */
+  getFinalCritical() {
+    const baseCritFormula = this.weapon.system.totalCriticalFormula
+    const baseCritMultiplier = this.weapon.system.totalCriticalMultiplier
+
+    let finalCritFormula = baseCritFormula
+    let finalCritMultiplier = baseCritMultiplier
+
+    if (this.actor.type != "npc") {
+      const finesse = this.actor.items.find((i) => i.name == 'Finesse')
+      if (finesse) {
+        const critBonus = finesse.system.wildWasteland ? 2 : 1
+        if (baseCritFormula) {
+          const [diceCount, diceSize] = baseCritFormula.split('d')
+          finalCritFormula = `${Number(diceCount) + critBonus}d${diceSize}`
+        }
+        if (baseCritMultiplier > 1) {
+          finalCritMultiplier = baseCritMultiplier + critBonus
+        }
+      }
+    }
+
+    return { formula: finalCritFormula, multiplier: finalCritMultiplier }
+  }
+
   async performRoll() {
     /**
      * Apply AP consumption
@@ -341,17 +379,13 @@ export default class AttackRoll extends FormApplication {
       }
 
     })
-    if (this.actor.type != "npc") {
-      let finesse = this.actor.items.find((i) => i.name == 'Finesse')
-      let critBonus = 1
-      if (finesse) {
-        finesse.system.wildWasteland ? critBonus = 2 : ''
-        const startCrit = this.weapon.system.critical.formula
-        const startMult = this.weapon.system.critical.multiplier
-        startCrit ? this.weapon.system.critical.formula = Number(startCrit.split("d")[0]) + critBonus + "d" + startCrit[2] : ''
-        startMult > 1 ? this.weapon.system.critical.multiplier = this.weapon.system.critical.multiplier + critBonus : ''
-      }
-    }
+
+    /**
+     * Determine this roll's final critical formula/multiplier
+     * (weapon totals + Finesse), without mutating the weapon
+     */
+    const finalCritical = this.getFinalCritical()
+
     /**
      * Display roll to hit chat message
      */
@@ -369,7 +403,7 @@ export default class AttackRoll extends FormApplication {
           rolls: damageRolls,
           isCritical: roll.dice[0].total >= this.weapon.system.critical.dice,
           criticalCondition: this.weapon.system.critical.condition,
-          critical: `(${this.getCombinedDamageFormula()} + ${this.weapon.system.critical.formula || ''} + ${abilityBonus}) * ${this.weapon.system.critical.multiplier || ''}`,
+          critical: `(${this.getCombinedDamageFormula()} + ${finalCritical.formula || ''} + ${abilityBonus}) * ${finalCritical.multiplier || ''}`,
         },
       },
     })
