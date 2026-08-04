@@ -430,27 +430,37 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         ])
       }
       weapon.ammos = ammos.filter((ammo) => ammo.name === weapon.system.ammo.assigned)
+
       if (this.actor.type != 'npc') {
         weapon.system.range.short =
           this.actor.system.abilities['per'].value * weapon.system.range.short
         weapon.system.range.long =
           this.actor.system.abilities['per'].value * weapon.system.range.long
       }
-      return weapon
-    })
-    context.meleeWeapons = meleeWeapons.map((weapon) => {
-      if (!weapon.system.ammo.assigned) {
-        this.actor.updateEmbeddedDocuments('Item', [
-          { _id: weapon._id, 'system.ammo.assigned': weapon.system.ammo.type },
-        ])
+
+      // Normalize weapon.system.upgrades to an array regardless of whether
+      // it's stored as an ArrayField or a keyed/TypedObjectField
+      const weaponUpgrades = Array.isArray(weapon.system.upgrades)
+        ? weapon.system.upgrades
+        : Object.values(weapon.system.upgrades ?? {})
+
+      const hasUpgrade = (id, name) =>
+        weaponUpgrades.some((u) => u._id === id || u.name === name)
+
+      // Improved Rifling: +50% range, rounded down
+      if (hasUpgrade('xhcMsfGAUDODb21A', 'Improved Rifling')) {
+        weapon.system.range.short = Math.floor(weapon.system.range.short * 1.5)
+        weapon.system.range.long = Math.floor(weapon.system.range.long * 1.5)
       }
-      weapon.ammos = ammos.filter((ammo) => ammo.name === weapon.system.ammo.assigned)
-      if (this.actor.type != 'npc') {
-        weapon.system.range.short =
-          this.actor.system.abilities['str'].value * weapon.system.range.short
-        weapon.system.range.long =
-          this.actor.system.abilities['str'].value * weapon.system.range.long
+      if (hasUpgrade("HvUWkZc98gVrrcD0",'Infrared Scope')) {
+        weapon.system.range.long = Math.floor(weapon.system.range.long * 3)
       }
+
+      // Improved Clip Size: +3 max ammo capacity modifier
+      if (hasUpgrade("xhcMsfGAUDODb21A", 'Increased Clip Size')) {
+        weapon.system.ammo.capacity.maxModifier += 3
+      }
+
       return weapon
     })
     context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps

@@ -92,10 +92,15 @@ export default class AttackRoll extends FormApplication {
   }
 
   async getData() {
-    return {
+    const data = {
       ...(await super.getData()),
       ...this.formDataCache,
     }
+    data.damages = this.formDataCache.damages.map((damage) => ({
+      ...damage,
+      formula: this.getModifiedFormula(damage.formula),
+    }))
+    return data
   }
 
   getDice() {
@@ -218,6 +223,58 @@ export default class AttackRoll extends FormApplication {
     }
   }
 
+  /**
+   * True if this weapon grants a damage die upgrade.
+   */
+  hasDiceUpgrade() {
+    const bonusProperties = this.weapon.system.bonusProperties
+    return typeof bonusProperties === 'string' && bonusProperties.includes('DMG Dice +1')
+  }
+
+  /**
+   * Steps every die in a formula up one size (d4->d6->d8->d10->d12),
+   * capped at d12. No-op if the weapon doesn't have the upgrade.
+   */
+  upgradeFormula(formula) {
+    if (!this.hasDiceUpgrade() || !formula) return formula
+    const dieSteps = [4, 6, 8, 10, 12]
+    return formula.replace(/(\d+)d(\d+)/gi, (match, diceCount, dieSize) => {
+      const currentIndex = dieSteps.indexOf(Number(dieSize))
+      if (currentIndex === -1) return match // unrecognized die size, leave as-is
+      const nextIndex = Math.min(currentIndex + 1, dieSteps.length - 1)
+      return `${diceCount}d${dieSteps[nextIndex]}`
+    })
+  }
+
+  /**
+   * True if this weapon has the Destructive property (checked in
+   * both description and bonusProperties, since it may appear in either).
+   */
+  hasDestructive() {
+    const description = this.weapon.system.description
+    const bonusProperties = this.weapon.system.bonusProperties
+    const inDescription = typeof description === 'string' && description.includes('Destructive')
+    const inBonusProperties = typeof bonusProperties === 'string' && bonusProperties.includes('Destructive')
+    return inDescription || inBonusProperties
+  }
+
+  /**
+   * Appends a min2 modifier to every die term in a formula, so any
+   * natural 1 is treated as a 2. No-op if the weapon isn't Destructive.
+   */
+  applyDestructive(formula) {
+    if (!this.hasDestructive() || !formula) return formula
+    return formula.replace(/(\d+)d(\d+)(?!min)/gi, (match, diceCount, dieSize) => `${diceCount}d${dieSize}min2`)
+  }
+
+  /**
+   * Runs a damage formula through all applicable weapon-property
+   * modifiers (dice upgrade, then destructive minimum).
+   */
+  getModifiedFormula(formula) {
+    return this.applyDestructive(this.upgradeFormula(formula))
+  }
+
   getFlavor(target) {
     let flavor = ''
     if (this.weapon.type === 'explosive') {
@@ -256,25 +313,20 @@ export default class AttackRoll extends FormApplication {
    */
   getCombinedDamageFormula() {
     return this.weapon.system.damages.reduce((total, damage, index) => {
+      const formula = this.getModifiedFormula(damage.formula)
       if (index === 0) {
-        total += this.getTargetedDamage(damage.formula)
+        total += this.getTargetedDamage(formula)
       } else {
-        total += `+ ${this.getTargetedDamage(damage.formula)}`
+        total += `+ ${this.getTargetedDamage(formula)}`
       }
       return total
     }, '')
   }
 
-  /**
-   * Compute the final critical formula/multiplier for this specific roll.
-   * Starts from the weapon's derived totals (base + upgrade bonuses like
-   * Ergonomic Grip) and layers the actor's Finesse bonus on top, entirely
-   * in local variables. Never mutates this.weapon.system.critical, so the
-   * weapon's stored data can never accumulate bonuses across rolls.
-   */
   getFinalCritical() {
     const baseCritFormula = this.weapon.system.totalCriticalFormula
     const baseCritMultiplier = this.weapon.system.totalCriticalMultiplier
+    const bonusProperties = this.weapon.system.bonusProperties
 
     let finalCritFormula = baseCritFormula
     let finalCritMultiplier = baseCritMultiplier
@@ -291,7 +343,12 @@ export default class AttackRoll extends FormApplication {
           finalCritMultiplier = baseCritMultiplier + critBonus
         }
       }
+      if (bonusProperties.includes("Double Crit DMG")) {
+        finalCritMultiplier *= 2
+      }
     }
+
+    finalCritFormula = this.applyDestructive(finalCritFormula)
 
     return { formula: finalCritFormula, multiplier: finalCritMultiplier }
   }
@@ -370,12 +427,13 @@ export default class AttackRoll extends FormApplication {
      */
     automaticAttack ? abilityBonus = 0 : ''
     const damageRolls = this.formDataCache.damages.map((damage) => {
+      const baseFormula = this.getModifiedFormula(damage.formula)
       return {
         type: damage.selectedDamageType,
         weapon: this.weaponType,
         formula: this.formDataCache.targeted
-          ? this.getTargetedDamage(damage.formula + ` + ${damageBonus} + ${bonusdamage || ''}`)
-          : damage.formula + `+ ${damageBonus || ''} + ${bonusdamage || ''}`,
+          ? this.getTargetedDamage(baseFormula + ` + ${damageBonus} + ${bonusdamage || ''}`)
+          : baseFormula + `+ ${damageBonus || ''} + ${bonusdamage || ''}`,
       }
 
     })

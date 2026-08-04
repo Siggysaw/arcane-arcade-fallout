@@ -1295,10 +1295,21 @@ export default class FalloutZeroActor extends Actor {
     }
     const ammoID = ammoFound._id
 
-    // Collect Required Weapon Information
-    const currentMag = weapon.system.ammo.capacity.value
-    let capacity = weapon.system.ammo.capacity.max
+    // Collect Required Weapon Information starting with upgrades
+    const weaponUpgrades = Array.isArray(weapon.system.upgrades)
+      ? weapon.system.upgrades
+      : Object.values(weapon.system.upgrades ?? {})
 
+
+    const hasUpgrade = (id, name) =>
+      weaponUpgrades.some((u) => u._id === id || u.name === name)
+    if (hasUpgrade("xhcMsfGAUDODb21A", 'Increased Clip Size')) {
+      weapon.system.ammo.capacity.maxModifier += 3
+    }
+
+    const currentMag = weapon.system.ammo.capacity.value
+
+    let capacity = weapon.system.ammo.capacity.max + weapon.system.ammo.capacity.maxModifier
     // Already Reloaded?
     if (currentMag == capacity) {
       ui.notifications.warn(`Weapon capacity is already at max`)
@@ -1336,7 +1347,9 @@ export default class FalloutZeroActor extends Actor {
 
     // After 10 Reloads, Gain 1 Level of Decay to the Weapon
     const newReloaddecay = weapon.system.reloadDecay + 1
-    if (newReloaddecay == 10) {
+    const unstable = weapon.system.description.includes("MiRJUzdAjfjyKq4x")
+
+    if (newReloaddecay == 10 || unstable && newReloaddecay == 5) {
       const newDecay = weapon.system.decay - 1
       this.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.decay': newDecay }])
       this.updateEmbeddedDocuments('Item', [{ _id: weaponId, 'system.reloadDecay': 0 }])

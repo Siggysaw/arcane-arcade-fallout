@@ -37,7 +37,7 @@
         <div data-tooltip="{{item.system.ammo.assigned}}{{#if item.system.ammo.description}}<hr />{{item.system.ammo.description}}{{/if}}"
              class="ammo-name">{{ item.system.ammo.assigned }}</div>
         <div class="weapon-capacity">
-            {{ item.system.ammo.capacity.value }} / {{ item.system.ammo.capacity.max }}
+            {{ item.system.ammo.capacity.value }} / {{#Sum item.system.ammo.capacity.max item.system.ammo.capacity.maxModifier}}{{/Sum}}
             {{#each item.ammos as |ammo|}}
             {{#GreaterThan ammo.system.quantity 0}}({{ammo.system.quantity}}){{/GreaterThan}}
             {{/each}}
@@ -58,7 +58,7 @@
     <div class="grid-span-2 weapon-stats">
         <div>AP:{{item.system.apCost}}</div>
         <div>Load:{{item.system.load}}</div>
-        <div>STR:{{item.system.strengthRequirement}}</div>
+        <div>STR:{{#Sum item.system.strengthRequirement item.system.strengthModifier}}{{/Sum}}</div>
         <div class="weapon-condition">
             CND
             <div>
@@ -92,11 +92,11 @@
             Crit:{{#Subtract item.system.critical.dice ../actor.system.critMod}}{{/Subtract}}
         </div>
         {{#each item.system.damages as |damage|}}
-        <div class="weapon-damage">{{damage.formula}} {{damage.type}}</div>
+        <div class="weapon-damage">{{UpgradeFormula damage.formula item.system.bonusProperties}} {{damage.type}}</div>
         {{/each}}
     </div>
     <div class="grid-span-5" style="font-size:9pt;">
-        {{{item.system.description}}}{{{item.system.bonusProperties}}}
+        {{{item.system.description}}}<p>{{{item.system.bonusProperties}}}</p>
     </div>
 </div>
 <br />

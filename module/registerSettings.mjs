@@ -10,11 +10,11 @@ export function registerSystemSettings() {
   })
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'Sheet-Color', {
     name: 'Your Sheet Theme Color',
-    hint: 'An override for sheet color. Green = #1bff80 / Amber = #ffb641 or you can use custom hex or just say "red" or "green" Blank puts it back to User Color being used.',
+    hint: 'An override for sheet color. Green = #1bff80 / Amber = #ffb641 or you can use custom hex or just say "red" or "green". Leave blank to revert to User Color.',
     scope: 'client',
     config: true,
-    type: String,
-    default: '',
+    type: new foundry.data.fields.ColorField({ nullable: true, initial: null }),
+    default: null,
     requiresReload: true,
   })
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'VaultTec', {
@@ -167,6 +167,19 @@ export function registerHbsHelpers() {
     return options.inverse(this)
   })
 
+  Handlebars.registerHelper('UpgradeFormula', function (formula, bonusProperties) {
+    if (!formula) return formula
+    const hasUpgrade = typeof bonusProperties === 'string' && bonusProperties.includes('DMG Dice +1')
+    if (!hasUpgrade) return formula
+
+    const dieSteps = [4, 6, 8, 10, 12]
+    return formula.replace(/(\d+)d(\d+)/gi, (match, diceCount, dieSize) => {
+      const currentIndex = dieSteps.indexOf(Number(dieSize))
+      if (currentIndex === -1) return match
+      const nextIndex = Math.min(currentIndex + 1, dieSteps.length - 1)
+      return `${diceCount}d${dieSteps[nextIndex]}`
+    })
+  })
 
   Handlebars.registerHelper('Reload', function (v1, v2, v3) {
     let apCost = 6

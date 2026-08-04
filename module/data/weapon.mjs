@@ -23,6 +23,7 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     schema.properties = new fields.HTMLField()
     schema.bonusProperties = new fields.HTMLField()
     schema.strengthRequirement = new fields.NumberField({ initial: 0 })
+    schema.strengthModifier = new fields.NumberField({ initial: 0 })
     schema.damage = new fields.SchemaField({
       type: new fields.StringField({ initial: 'piercing' }),
       formula: new fields.StringField({ initial: '2d4' }),
@@ -65,6 +66,9 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
         max: new fields.NumberField({
           ...requiredInteger,
           initial: 6,
+        }),
+        maxModifier: new fields.NumberField({
+          initial: 0,
         }),
       }),
       consumes: new fields.SchemaField({
@@ -175,6 +179,22 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     const upgradeList = Object.values(this.upgrades)
     const hasUpgrade = (search) => upgradeList.some((i) => i.name === search)
 
+    const generateProperty = (propertyName, UUID, pack) => {
+      const ID = UUID.split(".");
+      pack == null || pack == undefined ? pack = "properties": pack
+      const newLink = `<a class="content-link" 
+                draggable="true" data-link="" 
+                data-uuid="Compendium.arcane-arcade-fallout.${pack}.Item.${UUID}"
+                data-id="${ID[ID.length - 1]}" 
+                data-type="Item" 
+                data-pack="arcane-arcade-fallout.${pack}"
+                data-tooltip="Click for details."
+                >
+                ${propertyName}
+                </a>`
+      return newLink
+    }
+
     this.critical.formulaBonus = 0
     this.critical.multiplierBonus = 0
 
@@ -186,7 +206,28 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
         this.critical.multiplierBonus += 1
       }
     }
-    //hasUpgrade('Hardened Receiver') ? this.ystem.load += 2 : ''
+
+    if (hasUpgrade('Hardened Receiver')) {
+      this.description.includes("Destructive") ?
+        this.bonusProperties += generateProperty("DMG Dice +1", "WmPmTZjUNE8K4Xs7","upgrades") :
+        this.bonusProperties += generateProperty("Destructive", "VS5Qupltlip5f4fM")
+
+      !this.description.includes("Powerful") ?
+        this.bonusProperties += generateProperty("Powerful", "UeqnxXvKP9r7fIW8") : bonusProperties
+
+    }
+
+
+    if (hasUpgrade('Laser Sight')) {
+      this.description.includes("Accurate") ?
+        this.bonusProperties += generateProperty("Double Crit DMG", "Ctfj04LE1XMn1fyI","upgrades") :
+        this.bonusProperties += generateProperty("Accurate", "R3px8IQgzrBwuwvp")
+    }
+    if (hasUpgrade('Light Build (Ranged)')) {
+      this.parent.actor.system.carryLoad.modifiers -= Number(Math.floor(this.load / 2))
+      this.bonusProperties += generateProperty("Breakable", "aZu6vMCsdRPyLGd6")
+      this.strengthModifier += -1
+    }
   }
 
   get totalCriticalFormula() {

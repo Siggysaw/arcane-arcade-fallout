@@ -359,8 +359,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       } else {
         equippedArmor.system.broken = false
       }
-    } else {
-      console.log("Armor Was Not Found")
     }
 
     // Base Character Stat Creation
