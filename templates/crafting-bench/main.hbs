@@ -38,7 +38,7 @@
                     {{requirement.key}}
                 </div>
                 <div>
-                        <div data-tooltip="INT + SKILL + LUCK - PENALTIES">{{../abilityBonus}} + {{lookup ../skills requirement.key}} - {{lookup ../penaltyTotal}}</div>
+                        <div data-tooltip="INT + SKILL + LUCK - PENALTIES">{{../abilityBonus}} + {{lookup ../skills requirement.key}} - {{../penaltyTotal}}</div>
                 </div>
                 <div style="padding:10px;">{{ requirement.dc }}</div>
                 <div style="padding:10px;">

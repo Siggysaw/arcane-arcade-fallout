@@ -18,7 +18,6 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/arcane-arcade-fallout/templates/actor/parts/actor-npc-notes.hbs',
     'systems/arcane-arcade-fallout/templates/actor/parts/npc-status.hbs',
     'systems/arcane-arcade-fallout/templates/actor/dialog/leveledup.hbs',
-    'systems/arcane-arcade-fallout/templates/actor/dialog/crafting.hbs',
 
     // Actor Items
     'systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs',
