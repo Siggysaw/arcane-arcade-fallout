@@ -184,6 +184,9 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
             ...requiredInteger,
             initial: 0,
           }),
+          defaultAbility: new fields.StringField({
+            initial: "",
+          }),
         })
         return obj
       }, {}),

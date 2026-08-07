@@ -362,8 +362,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     }
 
     // Base Character Stat Creation
-    this.critMod = Math.floor(this.abilities['lck'].mod / 2)
-    this.critMod < 0 ? this.critMod = 0 : ''
+    this.critMod = Math.max(0, Math.floor((this.abilities?.['lck']?.mod ?? 0) / 2))
 
     blocking ? this.damageThreshold.modifiers += (2 + this.abilities.end.mod) + dtBoost : ''
     this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)

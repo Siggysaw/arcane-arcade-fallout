@@ -89,7 +89,7 @@
             {{ item.system.range.short }}ft - {{item.system.range.long}}ft
         </div>
         <div data-tooltip="Bonus {{item.system.critical.formula}}{{#GreaterThan item.system.critical.multiplier 2}}x{{item.system.critical.multiplier}}{{/GreaterThan}} Damage {{item.system.critical.condition}}">
-            Crit:{{#Subtract item.system.critical.dice ../actor.system.critMod}}{{/Subtract}}
+            Crit:{{#Subtract item.system.critical.diceFinal ../actor.system.critMod}}{{/Subtract}}
         </div>
         {{#each item.system.damages as |damage|}}
         <div class="weapon-damage">{{UpgradeFormula damage.formula item.system.bonusProperties}} {{damage.type}}</div>

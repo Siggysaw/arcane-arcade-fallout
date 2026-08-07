@@ -31,6 +31,7 @@ export default class FalloutZeroPerk extends FalloutZeroItemBase {
       times: new fields.NumberField({ initial: 2 }),
       requirement: new fields.StringField({ initial: ''})
     })
+    schema.efficientMunitions = new fields.BooleanField({ initial: true })
 
     return schema
   }

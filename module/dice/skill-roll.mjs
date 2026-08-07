@@ -3,6 +3,7 @@ export default class SkillRoll extends FormApplication {
     super(actor, options)
 
     this.actor = actor
+    this.skillKey = skillKey
     const gifted = this.actor.items.find((i) => i.name == "Gifted")
     let skillsLost = 0
     gifted ? skillsLost = 3 : ''
@@ -10,11 +11,17 @@ export default class SkillRoll extends FormApplication {
     this.skill = actor.system.skills[skillKey]
     const abilities = this.skill.ability.map((key) => this.actor.system.abilities[key])
 
+    // Validate against ALL selectable abilities (matches what the dropdown actually offers),
+    // not just the skill's default-relevant ability array
+    const allAbilityKeys = Object.keys(CONFIG.FALLOUTZERO.abilities)
+    const savedAbility = this.skill.defaultAbility
+    const initialAbility = allAbilityKeys.includes(savedAbility) ? savedAbility : this.skill.ability[0]
+
     this.formDataCache = {
       abilities,
       actorBoost: this.actor.system.boostDice,
-      selectedAbility: abilities[0].abbr,
-      selectedAbilityBonus: this.actor.getAbilityMod(abilities[0].abbr),
+      selectedAbility: initialAbility,
+      selectedAbilityBonus: this.actor.getAbilityMod(initialAbility),
       skillBonus: this.actor.getSkillBonus(skillKey) - skillsLost,
       actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
       actorPenalties: this.actor.system.penaltyTotal,
@@ -116,6 +123,16 @@ export default class SkillRoll extends FormApplication {
      */
     const { skillBonus, selectedAbility, actorLuck, actorPenalties, bonus } = this.formDataCache
     const abilityBonus = this.actor.getAbilityMod(selectedAbility)
+
+    /**
+     * Persist the chosen ability so this skill defaults to it next time
+     */
+    if (this.skill.defaultAbility !== selectedAbility) {
+      await this.actor.update({
+        [`system.skills.${this.skillKey}.defaultAbility`]: selectedAbility,
+      })
+    }
+
     /**
      * Roll to hit
      */

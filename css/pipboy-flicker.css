@@ -97,28 +97,6 @@
   }
 }
 
-/* ---- Green phosphor glow on all sheet text ---- */
-.pipboy-crt,
-.pipboy-crt input,
-.pipboy-crt h1,
-.pipboy-crt h2,
-.pipboy-crt h3,
-.pipboy-crt a,
-.pipboy-crt li,
-.pipboy-crt label,
-.pipboy-crt span {
-  text-shadow: 0 0 1px var(--sheetcolor, #3ce03c), 0 0 6px rgba(60, 224, 60, 0.35);
-}
-
-@keyframes pipboy-glow-pulse {
-  0%, 100% {
-    text-shadow: 0 0 2px var(--sheetcolor, #3ce03c), 0 0 6px rgba(60, 224, 60, 0.35);
-  }
-
-  50% {
-    text-shadow: 0 0 3px var(--sheetcolor, #3ce03c), 0 0 9px rgba(60, 224, 60, 0.5);
-  }
-}
 
 /* ---- Profile image / border accents: static, no pulse or flicker ---- */
 .pipboy-crt .profile-img,

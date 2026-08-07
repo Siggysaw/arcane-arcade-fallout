@@ -42,6 +42,12 @@
                         <h3>{{ item.name }}</h3>
                         <div class="perk-div" style="text-align:left;">
                             <i class="fas fa-ellipsis-v context-menu context-icon perk-context" data-item-id="{{ item._id }}"></i>
+                            {{#if (eq item.name "Efficient Munitions")}}
+                                <select style="float:right;margin-top:-5px" data-efficient-munitions-mode data-item-id="{{ item._id }}">
+                                    <option value="true" {{#if item.system.efficientMunitions}} selected{{/if}}>Crafting Doubled</option>
+                                    <option value="false" {{#unless item.system.efficientMunitions}} selected{{/unless}}>Efficient Rounds</option>
+                                </select>
+                            {{/if}}
                         </div>
                         <a class="item-control"
                            data-edit

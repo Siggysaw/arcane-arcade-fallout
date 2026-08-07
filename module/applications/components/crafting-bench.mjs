@@ -7,28 +7,47 @@ const ATTEMPT_RESULT = {
   CRITICAL_SUCCESS: 'critical success',
 }
 
-async function updateCreateCraftedItem({ actor, selectedCraftable, selectedBaseItemId }) {
-  const existingItem = selectedCraftable.type !== 'armorUpgrade' && actor.getItemByCompendiumId(selectedCraftable.uuid)
-  let newQty = existingItem?.system?.quantity ?? 0
-
-  // Update or create crafted item
-  if (existingItem) {
-    newQty += 1
-    actor.updateItemById(existingItem.id, {
-      quantity: newQty
-    })
-  } else {
-    const compendiumItem = await fromUuid(selectedCraftable.uuid)
-    const craftedItem = compendiumItem.toObject()
-    craftedItem._stats.compendiumSource = selectedCraftable.uuid
-    if (selectedBaseItemId) {
-      craftedItem.system.type = selectedBaseItemId
-    }
-    await Item.create(craftedItem, { parent: actor })
-    newQty = 1
+async function updateActorMaterials({ actor, craftable, materials, attemptResult = ATTEMPT_RESULT.SUCCESS, materialChange = { index: -1, value: 0 } }) {
+  let materialDiscount = 0
+  if (craftable?.type === 'chem' && actor.hasPerk('Adroit Alchemist')) {
+    materialDiscount += 1
+  }
+  if (actor.hasPerk('Expert Engineer')) {
+    materialDiscount += 2
+  }
+  const applyMaterialDiscount = (qty) => {
+    if (materialDiscount === 0) return qty
+    return Math.max(1, qty - materialDiscount)
   }
 
-  return newQty
+  return await Promise.all(
+    materials.map(async (mat, matIndex) => {
+      const item = actor.getItemByCompendiumId(mat.uuid)
+
+      if (attemptResult === ATTEMPT_RESULT.CRITICAL_SUCCESS) {
+        if (materialChange.index === matIndex) {
+          const baseQty = Math.max(1, (mat.quantity - materialChange.value))
+          return await actor.updateItemById(item.id, {
+            quantity: Math.max(0, item.system.quantity - applyMaterialDiscount(baseQty))
+          })
+        } else {
+          return await actor.updateItemById(item.id, {
+            quantity: Math.max(0, item.system.quantity - applyMaterialDiscount(mat.quantity))
+          })
+        }
+      }
+
+      if ([ATTEMPT_RESULT.FAIL, ATTEMPT_RESULT.CRITICAL_FAIL].includes(attemptResult)) {
+        return await actor.updateItemById(item.id, {
+          quantity: Math.max(0, item.system.quantity - materialChange.value)
+        })
+      }
+
+      return await actor.updateItemById(item.id, {
+        quantity: Math.max(0, item.system.quantity - applyMaterialDiscount(mat.quantity + materialChange.value))
+      })
+    })
+  )
 }
 
 function attemptToMessage(actor, craftable, { attemptType, attemptDice, critSuccessDice, materialChange }) {
@@ -65,22 +84,27 @@ function attemptToMessage(actor, craftable, { attemptType, attemptDice, critSucc
   }
 }
 
-async function updateActorMaterials({ actor, materials, attemptResult = ATTEMPT_RESULT.SUCCESS, materialChange = { index: -1, value: 0 } }) {
+async function updateActorMaterials({ actor, craftable, materials, attemptResult = ATTEMPT_RESULT.SUCCESS, materialChange = { index: -1, value: 0 } }) {
+  const hasAdroitAlchemist = craftable?.type === 'chem' && !!actor.hasPerk('Adroit Alchemist')
+
+  const applyAdroitAlchemist = (qty) => {
+    if (!hasAdroitAlchemist) return qty
+    return Math.max(1, qty - 1)
+  }
+
   return await Promise.all(
     materials.map(async (mat, matIndex) => {
       const item = actor.getItemByCompendiumId(mat.uuid)
 
-      // on critical success, add the materialChange value to specific material quantity
       if (attemptResult === ATTEMPT_RESULT.CRITICAL_SUCCESS) {
         if (materialChange.index === matIndex) {
-          // reduce one material by less based on the materialChange value
+          const baseQty = Math.max(1, (mat.quantity - materialChange.value))
           return await actor.updateItemById(item.id, {
-            quantity: Math.max(0, item.system.quantity - Math.max(1, (mat.quantity - materialChange.value)))
+            quantity: Math.max(0, item.system.quantity - applyAdroitAlchemist(baseQty))
           })
         } else {
-          // other items get normal reduction
           return await actor.updateItemById(item.id, {
-            quantity: Math.max(0, item.system.quantity - mat.quantity)
+            quantity: Math.max(0, item.system.quantity - applyAdroitAlchemist(mat.quantity))
           })
         }
       }
@@ -91,9 +115,8 @@ async function updateActorMaterials({ actor, materials, attemptResult = ATTEMPT_
         })
       }
 
-      // on all other cases, subtract the material quantity from the actor
       return await actor.updateItemById(item.id, {
-        quantity: Math.max(0, item.system.quantity - (mat.quantity + materialChange.value))
+        quantity: Math.max(0, item.system.quantity - applyAdroitAlchemist(mat.quantity + materialChange.value))
       })
     })
   )
@@ -226,6 +249,7 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     const critSuccessDice = await new Roll(`1d${Math.max(0, this.craftable.system.crafting.materials.length - 1)} `).evaluate()
     await updateActorMaterials({
       actor: this.actor,
+      craftable: this.craftable,
       materials: [...this.craftable.system.crafting.materials, ...this.selectedBaseItemMaterials],
       attemptResult: result,
       materialChange: {
@@ -348,7 +372,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         name: mat.name,
         quantity: mat.system.quantity
       }
-      console.log("ACC: ",acc)
+      console.log("ACC: ", acc)
       return acc
     }, {})
   }
@@ -441,11 +465,11 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
   async init() {
     try {
       const packsWithCraftables = game.packs.filter((p) => CONFIG.FALLOUTZERO.packsWithCraftables.includes(p.collection))
-      const gameItems = game.items.filter((item) => item.system.crafting.craftable)
+      const gameItems = game.items.filter((item) => item.system.crafting?.craftable)
       const packCraftables = await Promise.all(
         packsWithCraftables.map(async (pack) => {
           const items = await pack.getDocuments()
-          return items.filter((item) => item.system.crafting.craftable)
+          return items.filter((item) => item.system.crafting?.craftable)
         })
       )
 
@@ -453,7 +477,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       for (const craftable of packCraftables.flat()) {
         const type = this.craftingTree[craftable.system.crafting.type]
         type.items.push(craftable)
-      }    
+      }
       for (const gameItem of gameItems.flat()) {
         const type = this.craftingTree[gameItem.system.crafting.type]
         type.items.push(gameItem)
@@ -496,8 +520,11 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       return this._missingMaterialsWarning()
     }
     this.owned = await updateCreateCraftedItem({ actor: this.actor, selectedCraftable: this.selectedCraftable, selectedBaseItemId: this.selectedBaseItemId })
-    await updateActorMaterials({ actor: this.actor, materials: [...this.selectedCraftable.system.crafting.materials, ...this.selectedBaseItemMaterials] })
-
+    await updateActorMaterials({
+      actor: this.actor,
+      craftable: this.selectedCraftable,
+      materials: [...this.selectedCraftable.system.crafting.materials, ...this.selectedBaseItemMaterials]
+    })
     attemptToMessage(
       this.actor,
       this.selectedCraftable,
@@ -525,7 +552,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
   hasMaterials(craftableItem) {
     if (!craftableItem) return false
-
     return [...craftableItem.system.crafting.materials, ...this.selectedBaseItemMaterials].every((mat) => {
       return (this.materials?.[mat.uuid]?.quantity ?? 0) >= mat.quantity
     })

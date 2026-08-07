@@ -36,17 +36,14 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
       }),
       { initial: [{ type: 'piercing', formula: '1d4' }] },
     )
-    schema.range = new fields.SchemaField({
-      short: new fields.NumberField({ initial: 1, min: 0 }),
-      long: new fields.NumberField({ initial: 10, blank: true }),
-      thrown: new fields.NumberField({ initial: 0 }),
-    })
     schema.critical = new fields.SchemaField({
       dice: new fields.NumberField({ initial: 20, blank: true }),
+      diceModifier: new fields.NumberField({ initial: 0, blank: true }),
+      diceFinal: new fields.NumberField({ initial: 0, blank: true }),
       multiplier: new fields.NumberField({ initial: 1, nullable: false }),
       multiplierBonus: new fields.NumberField({ initial: 0, min: 0 }),
       formula: new fields.StringField({ initial: null, nullable: true }),
-      formulaBonus : new fields.NumberField({ initial: 0, blank: true }),
+      formulaBonus: new fields.NumberField({ initial: 0, blank: true }),
       condition: new fields.StringField({ initial: null, nullable: true }),
     })
     schema.ammo = new fields.SchemaField({
@@ -79,7 +76,9 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     })
     schema.range = new fields.SchemaField({
       short: new fields.NumberField({ initial: 1, min: 0, nullable: false }),
+      shortModifiers: new fields.NumberField({ initial: 0 }),
       long: new fields.NumberField({ initial: 1, min: 0, nullable: false }),
+      longModifiers: new fields.NumberField({ initial: 0 }),
       // flat: new fields.NumberField({ initial: null, min: 1})
     })
 
@@ -177,11 +176,12 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     super.prepareDerivedData()
 
     const upgradeList = Object.values(this.upgrades)
+    const actorData = this.parent?.actor?.system
     const hasUpgrade = (search) => upgradeList.some((i) => i.name === search)
 
     const generateProperty = (propertyName, UUID, pack) => {
       const ID = UUID.split(".");
-      pack == null || pack == undefined ? pack = "properties": pack
+      pack == null || pack == undefined ? pack = "properties" : pack
       const newLink = `<a class="content-link" 
                 draggable="true" data-link="" 
                 data-uuid="Compendium.arcane-arcade-fallout.${pack}.Item.${UUID}"
@@ -206,30 +206,41 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
         this.critical.multiplierBonus += 1
       }
     }
-
     if (hasUpgrade('Hardened Receiver')) {
       this.description.includes("Destructive") ?
-        this.bonusProperties += generateProperty("DMG Dice +1", "WmPmTZjUNE8K4Xs7","upgrades") :
+        this.bonusProperties += generateProperty("DMG Dice +1", "WmPmTZjUNE8K4Xs7", "upgrades") :
         this.bonusProperties += generateProperty("Destructive", "VS5Qupltlip5f4fM")
 
       !this.description.includes("Powerful") ?
         this.bonusProperties += generateProperty("Powerful", "UeqnxXvKP9r7fIW8") : bonusProperties
 
     }
-
-
     if (hasUpgrade('Laser Sight')) {
       this.description.includes("Accurate") ?
-        this.bonusProperties += generateProperty("Double Crit DMG", "Ctfj04LE1XMn1fyI","upgrades") :
+        this.bonusProperties += generateProperty("Double Crit DMG", "Ctfj04LE1XMn1fyI", "upgrades") :
         this.bonusProperties += generateProperty("Accurate", "R3px8IQgzrBwuwvp")
     }
     if (hasUpgrade('Light Build (Ranged)')) {
-      this.parent.actor.system.carryLoad.modifiers -= Number(Math.floor(this.load / 2))
+      if (this.parent?.actor) {
+        this.parent.actor.system.carryLoad.modifiers -= Number(Math.floor(this.load / 2))
+      }
       this.bonusProperties += generateProperty("Breakable", "aZu6vMCsdRPyLGd6")
       this.strengthModifier += -1
     }
-  }
+    if (hasUpgrade('Longer Barrel')) {
+      this.range.shortModifiers -= 2
+      this.range.longModifiers += 10
+    }
+    if (hasUpgrade('Lucky Charm')) {
+      this.critical.diceModifier -= 1
+    }
+    if (hasUpgrade('Muzzle Brake')) {
+      this.bonusProperties += generateProperty("+1 to Hit", "756DSaka24uWUIIy", "upgrades")
+      this.strengthModifier += -1
+    }
 
+    this.critical.diceFinal = Number(this.critical.dice ?? 0) + Number(this.critical.diceModifier ?? 0)
+  }
   get totalCriticalFormula() {
     const base = this.critical.formula
     if (!base) return base

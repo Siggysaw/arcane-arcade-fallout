@@ -125,6 +125,9 @@ export default class FalloutZeroActor extends Actor {
   hasDumbLuck() {
     return this.perks.find((p) => p.name === 'Dumb Luck')
   }
+  hasPerk(name) {
+    return this.perks.find((p) => p.name === name)
+  }
 
   async openDialog(filename, title) {
     const myDialogOptions = { width: 700, height: 700, resizable: true }
@@ -259,39 +262,36 @@ export default class FalloutZeroActor extends Actor {
     }
   }
 
-
   // Death Save Roll
   async deathSave() {
-    const myDialogOptions = { width: 300, height: 300, resizable: true }
-    const myContent = await renderTemplate(
+    const content = await foundry.applications.handlebars.renderTemplate(
       'systems/arcane-arcade-fallout/templates/actor/dialog/death-save-roll.hbs',
     )
     const actor = this
 
-    new Dialog(
-      {
-        title: 'Death Save Roll',
-        content: myContent,
-        buttons: {
-          button1: {
-            label: 'Roll It!',
-            callback: (html) => rollDice(html, actor),
-          },
+    new foundry.applications.api.DialogV2({
+      window: { title: 'Death Save Roll' },
+      content,
+      position: { width: 300 },
+      buttons: [
+        {
+          action: 'roll',
+          label: 'Roll It!',
+          callback: (event, button) => rollDice(button.form, actor),
         },
-      },
-      myDialogOptions,
-    ).render(true)
+      ],
+    }).render(true)
 
-    async function rollDice(html, actor) {
-      const withModifiers = html.find('select#modified').val()
-      const withAdvantage = html.find('select#advantage').val()
-      let rollAbility = html.find('select#rollAbility').val()
+    async function rollDice(form, actor) {
+      const withModifiers = form.elements.modified?.value
+      const withAdvantage = form.elements.advantage?.value
+      let rollAbility = form.elements.rollAbility?.value
       let partyNerve = actor.system.partyNerve.value
       let abilityMod = '@' + rollAbility + '.mod'
       const endure = actor.items.find((i) => i.name == "Endure the Battle")
       endure ? abilityMod = 0 : ''
       endure ? partyNerve = 0 : ''
-      let rollBonus = html.find('input#bonus').val()
+      let rollBonus = form.elements.bonus?.value ?? ''
       let rollInput
       let critSuccess
       let critFailure
@@ -367,9 +367,9 @@ export default class FalloutZeroActor extends Actor {
         }
       }
       roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this }),
+        speaker: ChatMessage.getSpeaker({ actor: actor }),
         flavor,
-        rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
+        rollMode: game.settings.get("core", 'rollMode'),
       })
     }
   }
@@ -2132,19 +2132,25 @@ export default class FalloutZeroActor extends Actor {
     const oneHander = this.items.find((i) => i.name == 'One Hander')
     const deadeye = this.items.find((i) => i.name == 'Deadeye')
     const gunslinger = this.items.find((i) => i.name == 'Gunslinger')
+    const efficient = this.weapon.ammo.assigned.includes("Efficient ")
 
     let penalty = 0
     let totalBonus = 0
     let twoHandedWeapon = false
     let handgun = false
+    let plusOne
     weapon ? twoHandedWeapon = weapon.system.description.includes("Two Handed") : ''
     weapon ? handgun = weapon.system.description.includes("Handgun") : ''
+    weapon ? plusOne = weapon.system.bonusProperties.includes("+1 to Hit") : ''
 
     oneHander && !twoHandedWeapon ? this.system.attackBonus.modifiers += 2 : ''
     oneHander && twoHandedWeapon ? this.system.attackBonus.modifiers -= 2 : ''
     finesse ? finesse.system.wildWasteland ? penalty = 2 : penalty = 1 : ''
     deadeye ? this.system.attackBonus.modifiers += 2 * deadeye.system.quantity : ''
     gunslinger && handgun ? this.system.attackBonus.modifiers += 2 : ''
+    plusOne ? this.system.attackBonus.modifiers += 1 : ''
+    efficient ? this.system.attackBonus.modifiers += 2 : ''
+    efficient ? this.system.damageBonus.modifiers += 2 : ''
 
     totalBonus = this.system.attackBonus.base + this.system.attackBonus.modifiers - penalty
     this.system.attackBonus.modifiers = 0

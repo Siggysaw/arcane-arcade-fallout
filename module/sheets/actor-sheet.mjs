@@ -433,9 +433,9 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
       if (this.actor.type != 'npc') {
         weapon.system.range.short =
-          this.actor.system.abilities['per'].value * weapon.system.range.short
+          Number(this.actor.system.abilities['per'].value * (weapon.system.range.short + weapon.system.range.shortModifiers))
         weapon.system.range.long =
-          this.actor.system.abilities['per'].value * weapon.system.range.long
+          Number(this.actor.system.abilities['per'].value * (weapon.system.range.long + weapon.system.range.longModifiers))
       }
 
       // Normalize weapon.system.upgrades to an array regardless of whether
@@ -914,6 +914,13 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const weaponId = ev.currentTarget.dataset.weaponId
       const weapon = this.actor.items.get(weaponId)
       this.actor.blockingMelee(weaponId)
+    })
+
+    // Efficient Munitions mode toggle (true = Crafting Doubled, false = Efficient Rounds)
+    html.on('change', '[data-efficient-munitions-mode]', (ev) => {
+      const itemId = ev.currentTarget.dataset.itemId
+      const item = this.actor.items.get(itemId)
+      item.update({ 'system.efficientMunitions': ev.target.value === 'true' })
     })
 
     //show rule information
