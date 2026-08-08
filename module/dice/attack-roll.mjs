@@ -7,6 +7,7 @@ export default class AttackRoll extends FormApplication {
     const properMaintenance = this.actor.items.find((i) => i.name == 'Proper Maintenance')
     let decayValue = this.weapon.getDecayValue()
     let gunCondition = this.weapon.system.decay
+    let apModifiers = 0
 
     gunCondition == 0 ||
       properMaintenance && gunCondition <= 2 ||
@@ -22,8 +23,12 @@ export default class AttackRoll extends FormApplication {
       ? weapon.system.upgrades
       : Object.values(weapon.system.upgrades ?? {})
     const hasOverclockedCapacitor = weaponUpgrades.some((u) => u.name === 'Overclocked Capacitor')
+    const hasBoostedCapacitor = weaponUpgrades.some((u) => u.name === 'Boosted Capacitor')
     const hasAutomatic = typeof weapon.system.description === 'string' && weapon.system.description.includes('Automatic')
+    const hasDoubleAction = weaponUpgrades.some((u) => u.name === 'Double Action')
 
+
+    hasDoubleAction ? apModifiers += 1 : apModifiers 
 
     this.formDataCache = {
       weaponType: weapon.type,
@@ -41,7 +46,7 @@ export default class AttackRoll extends FormApplication {
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
       apCost: this.weapon.system.apCost,
-      totalApCost: this.weapon.system.apCost - this.weapon.system.APSubtraction,
+      totalApCost: this.weapon.system.apCost - this.weapon.system.APSubtraction - apModifiers,
       adjustedApCost: 0,
       ammoCost: 1,
       totalAmmoCost: 1,
@@ -56,8 +61,10 @@ export default class AttackRoll extends FormApplication {
       repeat: 1,
       fullAuto: false,
       hasOverclockedCapacitor,
+      hasBoostedCapacitor,
       hasAutomatic,
       overClocked: false,
+      boosted: false,
       damages: this.weapon.system.damages.map((damage) => {
         return {
           ...damage,
@@ -345,6 +352,7 @@ export default class AttackRoll extends FormApplication {
     if (this.formDataCache.overrideAp) {
       return this.formDataCache.adjustedApCost
     }
+     
     return this.formDataCache.totalApCost
   }
 
@@ -352,7 +360,7 @@ export default class AttackRoll extends FormApplication {
     if (this.formDataCache.overrideAmmo) {
       return this.formDataCache.adjustedAmmoCost
     }
-    return this.formDataCache.overClocked ? 3 : 1
+    return this.formDataCache.overClocked ? 3 : this.formDataCache.boosted ? 2 : 1
   }
 
   /**
@@ -431,10 +439,14 @@ export default class AttackRoll extends FormApplication {
       bonusdamage,
       fullAuto,
       overClocked,
+      boosted,
     } = this.formDataCache
 
     if (overClocked) {
       damageBonus += 4
+    }
+    if (boosted) {
+      damageBonus += 2
     }
 
     const rollBonusTotal = Number(skillBonus + attackBonus + abilityBonus + actorLuck + Number(bonus) - actorPenalties - decayPenalty)
@@ -465,7 +477,7 @@ export default class AttackRoll extends FormApplication {
     const damageTooltip = `
       <div>
         <div>Ability bonus: ${abilityBonus}</div>
-       <div>Traits/Perks bonus: ${damageBonus}</div>`
+       <div>Perks/Equipment bonus: ${damageBonus}</div>`
 
     /**
      * Generate damage rolls

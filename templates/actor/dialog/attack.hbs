@@ -118,9 +118,6 @@
                 <button type="button" class="{{#if overrideAmmo}}active{{/if}}" data-toggle-override="ammo">Override</button>
             </div>
 
-            {{#if (or hasAutomatic hasOverclockedCapacitor)}}
-            <hr />
-
             <!-- Attack Modifiers -->
             {{#if hasAutomatic}}
             <div class="flex space-between">
@@ -134,6 +131,11 @@
                 <input type="checkbox" name="overClocked" {{checked overClocked}} />
             </div>
             {{/if}}
+            {{#if hasBoostedCapacitor}}
+            <div class="flex space-between">
+                <label data-tooltip="Boosted Attack! Spend 2 bullets for 2 extra damage">Boosted Capacitor</label>
+                <input type="checkbox" name="boosted" {{checked boosted}} />
+            </div>
             {{/if}}
         </fieldset>
     </div>
