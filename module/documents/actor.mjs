@@ -1253,16 +1253,32 @@ export default class FalloutZeroActor extends Actor {
       return
     }
 
+    const upgradeList = Object.values(weapon.system.upgrades)
+    const hasUpgrade = (search) => upgradeList.some((i) => i.name === search)
+
+    // Collect Required Weapon Information starting with upgrades
+    const weaponUpgrades = Array.isArray(weapon.system.upgrades)
+      ? weapon.system.upgrades
+      : Object.values(weapon.system.upgrades ?? {})
+
+    const hasWeaponUpgrade = (id, name) =>
+      weaponUpgrades.some((u) => u._id === id || u.name === name)
+
     // Manually Reloaded?
-    const manualReload = weapon.system.description.includes('Manual Reload')
+    const manualReloadProperty = weapon.system.description.includes('Manual Reload')
     const quickReload = weapon.system.description.includes('Quick Reload')
     const rapid = weapon.parent.items.find((i) => i.name == 'Rapid Reload')
+    const hasSpeedloader = hasWeaponUpgrade('qtDHjDWoRtn2Reiw', 'Speedloader')
+
+    // Speedloader overwrites Manual Reload entirely: full reload, not one bullet at a time
+    const manualReload = manualReloadProperty && !hasSpeedloader
 
     // Do you have the AP?
     let apCost = 6
-    quickReload ? apCost = 4 : apCost = 6
+    quickReload || hasSpeedloader ? apCost = 4 : apCost = 6
     rapid ? apCost = apCost - 3 : apCost = apCost
     manualReload ? apCost = 1 : ''
+
     // If You are not in combat, you don't spend AP
     !this.inCombat ? apCost = 0 : ''
 
@@ -1295,15 +1311,7 @@ export default class FalloutZeroActor extends Actor {
     }
     const ammoID = ammoFound._id
 
-    // Collect Required Weapon Information starting with upgrades
-    const weaponUpgrades = Array.isArray(weapon.system.upgrades)
-      ? weapon.system.upgrades
-      : Object.values(weapon.system.upgrades ?? {})
-
-
-    const hasUpgrade = (id, name) =>
-      weaponUpgrades.some((u) => u._id === id || u.name === name)
-    if (hasUpgrade("xhcMsfGAUDODb21A", 'Increased Clip Size')) {
+    if (hasWeaponUpgrade("xhcMsfGAUDODb21A", 'Increased Clip Size')) {
       weapon.system.ammo.capacity.maxModifier += 3
     }
 
@@ -1338,7 +1346,7 @@ export default class FalloutZeroActor extends Actor {
       updatedAmmo = ammoOwned - 1
       this.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     } else {
-      rapid && ammoReloaded > 3 && manualReload ? updatedAmmo = ammoOwned - 3 :''
+      rapid && ammoReloaded > 3 && manualReload ? updatedAmmo = ammoOwned - 3 : ''
       this.updateEmbeddedDocuments('Item', [{ _id: ammoID, 'system.quantity': updatedAmmo }])
     }
 
@@ -1359,7 +1367,6 @@ export default class FalloutZeroActor extends Actor {
       ])
     }
   }
-
   async rollSave({ formula, saveDC, type }) {
     console.log(`Formula: ${formula} SaveDC:${saveDC},Type:${type}`)
     let roll = new Roll(`${formula} - ${this.system.penaltyTotal}`, this.getRollData())
@@ -2132,27 +2139,28 @@ export default class FalloutZeroActor extends Actor {
     const oneHander = this.items.find((i) => i.name == 'One Hander')
     const deadeye = this.items.find((i) => i.name == 'Deadeye')
     const gunslinger = this.items.find((i) => i.name == 'Gunslinger')
-    const efficient = this.weapon.ammo.assigned.includes("Efficient ")
+    const efficient = weapon?.system?.ammo?.assigned?.includes("Efficient ") ?? false
 
     let penalty = 0
     let totalBonus = 0
     let twoHandedWeapon = false
     let handgun = false
     let plusOne
+    let attackBonus = this.system.attackBonus.modifiers
+
     weapon ? twoHandedWeapon = weapon.system.description.includes("Two Handed") : ''
     weapon ? handgun = weapon.system.description.includes("Handgun") : ''
     weapon ? plusOne = weapon.system.bonusProperties.includes("+1 to Hit") : ''
 
-    oneHander && !twoHandedWeapon ? this.system.attackBonus.modifiers += 2 : ''
-    oneHander && twoHandedWeapon ? this.system.attackBonus.modifiers -= 2 : ''
-    finesse ? finesse.system.wildWasteland ? penalty = 2 : penalty = 1 : ''
-    deadeye ? this.system.attackBonus.modifiers += 2 * deadeye.system.quantity : ''
-    gunslinger && handgun ? this.system.attackBonus.modifiers += 2 : ''
-    plusOne ? this.system.attackBonus.modifiers += 1 : ''
-    efficient ? this.system.attackBonus.modifiers += 2 : ''
-    efficient ? this.system.damageBonus.modifiers += 2 : ''
+    oneHander && !twoHandedWeapon ? attackBonus += 2 : attackBonus
+    oneHander && twoHandedWeapon ? attackBonus -= 2 : attackBonus
+    finesse ? finesse.system.wildWasteland ? penalty = 2 : penalty = 1 : attackBonus
+    deadeye ? attackBonus += 2 * deadeye.system.quantity : attackBonus
+    gunslinger && handgun ? attackBonus += 2 : attackBonus
+    plusOne ? attackBonus += 1 : attackBonus
+    efficient ? attackBonus += 2 : attackBonus
 
-    totalBonus = this.system.attackBonus.base + this.system.attackBonus.modifiers - penalty
+    totalBonus = this.system.attackBonus.base + attackBonus - penalty
     this.system.attackBonus.modifiers = 0
     return totalBonus
   }
@@ -2161,19 +2169,21 @@ export default class FalloutZeroActor extends Actor {
     const oneHander = this.items.find((i) => i.name == 'One Hander')
     const rooted = this.items.find((i) => i.name == 'Rooted Condition')
     const deadeye = this.items.find((i) => i.name == 'Deadeye')
+    const efficient = weapon?.system?.ammo?.assigned?.includes("Efficient ") ?? false
 
     let penalty = 0
     let totalBonus = 0
     totalBonus = 0 
-    const twoHandedWeapon = false 
+    const twoHandedWeapon = false
+    let damageBonus = this.system.damageBonus.modifiers
 
-    oneHander && oneHander.system.wildWasteland && !twoHandedWeapon ? this.system.damageBonus += 2 : ''
-    oneHander && oneHander.system.wildWasteland && twoHandedWeapon ? this.system.damageBonus -= 2 : ''
-    rooted && weapon.type == 'meleeWeapon' ? this.system.damageBonus.modifiers += 2 : ''
-    deadeye ? this.system.damageBonus.modifiers += 2 * deadeye.system.quantity: ''
+    oneHander && oneHander.system.wildWasteland && !twoHandedWeapon ? damageBonus += 2 : damageBonus
+    oneHander && oneHander.system.wildWasteland && twoHandedWeapon ? damageBonus -= 2 : damageBonus
+    rooted && weapon.type == 'meleeWeapon' ? damageBonus += 2 : damageBonus
+    deadeye ? damageBonus += 2 * deadeye.system.quantity: damageBonus
+    efficient ? damageBonus += 2 : damageBonus
 
-
-    totalBonus = this.system.damageBonus.base + this.system.damageBonus.modifiers - penalty
+    totalBonus = this.system.damageBonus.base + damageBonus - penalty
     this.system.damageBonus.modifiers = 0
     return totalBonus
   }

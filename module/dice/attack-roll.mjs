@@ -8,11 +8,22 @@ export default class AttackRoll extends FormApplication {
     let decayValue = this.weapon.getDecayValue()
     let gunCondition = this.weapon.system.decay
 
-    //Alert if Weapon is Broken
     gunCondition == 0 ||
       properMaintenance && gunCondition <= 2 ||
       properMaintenance && properMaintenance.system.wildWasteland && gunCondition <= 5
       ? ui.notifications.warn(`${this.weapon.name} has decayed too much and is broken`) : ''
+
+    // Sturdy ignores the first two levels of decay penalty
+    if (this.hasSturdy()) {
+      decayValue = Math.max(0, decayValue - 2)
+    }
+
+    const weaponUpgrades = Array.isArray(weapon.system.upgrades)
+      ? weapon.system.upgrades
+      : Object.values(weapon.system.upgrades ?? {})
+    const hasOverclockedCapacitor = weaponUpgrades.some((u) => u.name === 'Overclocked Capacitor')
+    const hasAutomatic = typeof weapon.system.description === 'string' && weapon.system.description.includes('Automatic')
+
 
     this.formDataCache = {
       weaponType: weapon.type,
@@ -32,8 +43,10 @@ export default class AttackRoll extends FormApplication {
       apCost: this.weapon.system.apCost,
       totalApCost: this.weapon.system.apCost - this.weapon.system.APSubtraction,
       adjustedApCost: 0,
-      // Reflects the derived totals (base + upgrade bonuses), not raw base values,
-      // so the dialog preview matches what will actually be rolled
+      ammoCost: 1,
+      totalAmmoCost: 1,
+      adjustedAmmoCost: 0,
+
       critical: {
         dice: this.weapon.system.critical.dice,
         condition: this.weapon.system.critical.condition,
@@ -42,6 +55,9 @@ export default class AttackRoll extends FormApplication {
       },
       repeat: 1,
       fullAuto: false,
+      hasOverclockedCapacitor,
+      hasAutomatic,
+      overClocked: false,
       damages: this.weapon.system.damages.map((damage) => {
         return {
           ...damage,
@@ -163,6 +179,23 @@ export default class AttackRoll extends FormApplication {
       this.render()
     })
 
+    form.querySelectorAll('[data-toggle-override]').forEach((toggleButton) => {
+      toggleButton.addEventListener('click', (e) => {
+        const { toggleOverride } = e.currentTarget.dataset
+        if (toggleOverride === 'ap') {
+          this.formDataCache.overrideAp = !this.formDataCache.overrideAp
+        } else if (toggleOverride === 'ammo') {
+          this.formDataCache.overrideAmmo = !this.formDataCache.overrideAmmo
+        }
+        this.render()
+      })
+    })
+
+    form.addEventListener('change', (e) => {
+      Object.assign(this.formDataCache, this._getSubmitData())
+      this.render()
+    })
+
     form.querySelectorAll('[data-override-ap]').forEach((overrideButton) => {
       overrideButton.addEventListener('click', (e) => {
         const { overrideAp } = e.currentTarget.dataset
@@ -170,6 +203,17 @@ export default class AttackRoll extends FormApplication {
           this.formDataCache.adjustedApCost++
         } else if (overrideAp === 'dec' && this.formDataCache.adjustedApCost > 0) {
           this.formDataCache.adjustedApCost--
+        }
+        this.render()
+      })
+    })
+    form.querySelectorAll('[data-override-ammo]').forEach((overrideButton) => {
+      overrideButton.addEventListener('click', (e) => {
+        const { overrideAmmo } = e.currentTarget.dataset
+        if (overrideAmmo === 'inc') {
+          this.formDataCache.adjustedAmmoCost++
+        } else if (overrideAmmo === 'dec' && this.formDataCache.adjustedAmmoCost > 0) {
+          this.formDataCache.adjustedAmmoCost--
         }
         this.render()
       })
@@ -223,33 +267,24 @@ export default class AttackRoll extends FormApplication {
     }
   }
 
-  /**
-   * True if this weapon grants a damage die upgrade.
-   */
-  hasDiceUpgrade() {
+
+
+  hasBonusProperty(text) {
     const bonusProperties = this.weapon.system.bonusProperties
-    return typeof bonusProperties === 'string' && bonusProperties.includes('DMG Dice +1')
+    return typeof bonusProperties === 'string' && bonusProperties.includes(text)
   }
 
-  /**
-   * Steps every die in a formula up one size (d4->d6->d8->d10->d12),
-   * capped at d12. No-op if the weapon doesn't have the upgrade.
-   */
-  upgradeFormula(formula) {
-    if (!this.hasDiceUpgrade() || !formula) return formula
+  stepFormula(formula, steps) {
+    if (!formula) return formula
     const dieSteps = [4, 6, 8, 10, 12]
     return formula.replace(/(\d+)d(\d+)/gi, (match, diceCount, dieSize) => {
       const currentIndex = dieSteps.indexOf(Number(dieSize))
       if (currentIndex === -1) return match // unrecognized die size, leave as-is
-      const nextIndex = Math.min(currentIndex + 1, dieSteps.length - 1)
+      const nextIndex = Math.min(Math.max(currentIndex + steps, 0), dieSteps.length - 1)
       return `${diceCount}d${dieSteps[nextIndex]}`
     })
   }
 
-  /**
-   * True if this weapon has the Destructive property (checked in
-   * both description and bonusProperties, since it may appear in either).
-   */
   hasDestructive() {
     const description = this.weapon.system.description
     const bonusProperties = this.weapon.system.bonusProperties
@@ -258,22 +293,27 @@ export default class AttackRoll extends FormApplication {
     return inDescription || inBonusProperties
   }
 
-  /**
-   * Appends a min2 modifier to every die term in a formula, so any
-   * natural 1 is treated as a 2. No-op if the weapon isn't Destructive.
-   */
+  hasSturdy() {
+    const description = this.weapon.system.description
+    const bonusProperties = this.weapon.system.bonusProperties
+    const inDescription = typeof description === 'string' && description.includes('Sturdy')
+    const inBonusProperties = typeof bonusProperties === 'string' && bonusProperties.includes('Sturdy')
+    return inDescription || inBonusProperties
+  }
+
+
   applyDestructive(formula) {
     if (!this.hasDestructive() || !formula) return formula
     return formula.replace(/(\d+)d(\d+)(?!min)/gi, (match, diceCount, dieSize) => `${diceCount}d${dieSize}min2`)
   }
 
-  /**
-   * Runs a damage formula through all applicable weapon-property
-   * modifiers (dice upgrade, then destructive minimum).
-   */
   getModifiedFormula(formula) {
-    return this.applyDestructive(this.upgradeFormula(formula))
+    let result = formula
+    if (this.hasBonusProperty('DMG Dice Up')) result = this.stepFormula(result, 1)
+    if (this.hasBonusProperty('DMG Die Down')) result = this.stepFormula(result, -1)
+    return this.applyDestructive(result)
   }
+
 
   getFlavor(target) {
     let flavor = ''
@@ -306,6 +346,13 @@ export default class AttackRoll extends FormApplication {
       return this.formDataCache.adjustedApCost
     }
     return this.formDataCache.totalApCost
+  }
+
+  getFinalAmmoCost() {
+    if (this.formDataCache.overrideAmmo) {
+      return this.formDataCache.adjustedAmmoCost
+    }
+    return this.formDataCache.overClocked ? 3 : 1
   }
 
   /**
@@ -354,29 +401,23 @@ export default class AttackRoll extends FormApplication {
   }
 
   async performRoll() {
-    /**
-     * Apply AP consumption
-     */
     if (this.formDataCache.consumesAp) {
       const canAfford = await this.actor.applyApCost(this.getFinalApCost())
       if (!canAfford) return
     }
 
-    /**
-     * Apply ammo consumption
-     */
     if (this.weapon.system.ammo.assigned) {
-      const canAfford = this.weapon.applyAmmoCost()
+      const canAfford = this.weapon.applyAmmoCost(this.getFinalAmmoCost())
       if (!canAfford) return
     }
+
     if (this.weapon.type == "explosive") {
       let Qty = this.weapon.system.quantity
       Qty = Qty - 1
       await this.weapon.update({ 'system.quantity': Qty })
     }
-    /**
-     * Deconstruct dialog form
-     */
+
+
     let {
       automaticAttack,
       skillBonus,
@@ -388,11 +429,15 @@ export default class AttackRoll extends FormApplication {
       actorPenalties,
       bonus,
       bonusdamage,
-      fullAuto
+      fullAuto,
+      overClocked,
     } = this.formDataCache
 
+    if (overClocked) {
+      damageBonus += 4
+    }
+
     const rollBonusTotal = Number(skillBonus + attackBonus + abilityBonus + actorLuck + Number(bonus) - actorPenalties - decayPenalty)
-    //console.log(`${rollBonusTotal} = ${skillBonus} + ${attackBonus} + ${abilityBonus} + ${actorLuck} + ${bonus} - ${actorPenalties} - ${decayPenalty}`)
 
     /**
      * Roll to hit

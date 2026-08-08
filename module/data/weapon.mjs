@@ -208,7 +208,7 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     }
     if (hasUpgrade('Hardened Receiver')) {
       this.description.includes("Destructive") ?
-        this.bonusProperties += generateProperty("DMG Dice +1", "WmPmTZjUNE8K4Xs7", "upgrades") :
+        this.bonusProperties += generateProperty("DMG Dice Up", "WmPmTZjUNE8K4Xs7", "upgrades") :
         this.bonusProperties += generateProperty("Destructive", "VS5Qupltlip5f4fM")
 
       !this.description.includes("Powerful") ?
@@ -237,6 +237,18 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     if (hasUpgrade('Muzzle Brake')) {
       this.bonusProperties += generateProperty("+1 to Hit", "756DSaka24uWUIIy", "upgrades")
       this.strengthModifier += -1
+    }
+    if (hasUpgrade('Semi-Automatic')) {
+      this.bonusProperties += generateProperty("Semi-Automatic", "uQDlAFMmZXtuC8wt")
+    }
+    if (hasUpgrade('Silencer')) {
+      this.bonusProperties += generateProperty("DMG Die Down", "ZhmtAwX2JbA7uymH", "upgrades")
+    }
+    if (hasUpgrade('Stock')) {
+      this.bonusProperties += generateProperty("+1 to Hit", "MXOPfP5qpmWOYKLL", "upgrades")
+    }
+    if (hasUpgrade('Strengthen (Ranged)')) {
+      this.bonusProperties += generateProperty("Sturdy", "nsBOdZwmwSwRxGjo")
     }
 
     this.critical.diceFinal = Number(this.critical.dice ?? 0) + Number(this.critical.diceModifier ?? 0)

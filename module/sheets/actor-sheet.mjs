@@ -452,15 +452,19 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         weapon.system.range.short = Math.floor(weapon.system.range.short * 1.5)
         weapon.system.range.long = Math.floor(weapon.system.range.long * 1.5)
       }
-      if (hasUpgrade("HvUWkZc98gVrrcD0",'Infrared Scope')) {
+      if (hasUpgrade("HvUWkZc98gVrrcD0", 'Infrared Scope')) {
         weapon.system.range.long = Math.floor(weapon.system.range.long * 3)
+      }
+      if (hasUpgrade("93x1B0s4pS2DYddd", 'Scope')) {
+        weapon.system.range.short = Math.floor(weapon.system.range.short * 2)
+        weapon.system.range.long = Math.floor(weapon.system.range.long * 4)
       }
 
       // Improved Clip Size: +3 max ammo capacity modifier
       if (hasUpgrade("xhcMsfGAUDODb21A", 'Increased Clip Size')) {
         weapon.system.ammo.capacity.maxModifier += 3
       }
-
+      weapon.hasScope = hasUpgrade("93x1B0s4pS2DYddd", 'Scope')
       return weapon
     })
     context.canAddCaps = this.actor.system.karmaCaps.length < FALLOUTZERO.maxKarmaCaps

@@ -85,8 +85,11 @@
         </div>
     </div>
     <div class="grid-span-4 weapon-usage">
-        <div data-tooltip="NORMAL < DISADVANTAGED > NAT 20 REQUIRED">
+        <div data-tooltip="NORMAL < DISADVANTAGED > NAT 20">
             {{ item.system.range.short }}ft - {{item.system.range.long}}ft
+            {{#if item.hasScope}}
+            <hr /><span style="font-size:9pt;" data-tooltip="Scope: attacks within 50ft are made at disadvantage"> Up To 50ft Disadvantaged</span>
+            {{/if}}
         </div>
         <div data-tooltip="Bonus {{item.system.critical.formula}}{{#GreaterThan item.system.critical.multiplier 2}}x{{item.system.critical.multiplier}}{{/GreaterThan}} Damage {{item.system.critical.condition}}">
             Crit:{{#Subtract item.system.critical.diceFinal ../actor.system.critMod}}{{/Subtract}}

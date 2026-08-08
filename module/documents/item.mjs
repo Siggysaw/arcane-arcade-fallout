@@ -393,14 +393,14 @@ export default class FalloutZeroItem extends Item {
     return (this.system.decay - 10) * -1
   }
 
-  applyAmmoCost() {
-    if (this.system.ammo.capacity.value < 1) {
+  applyAmmoCost(cost = 1) {
+    if (this.system.ammo.capacity.value < cost) {
       ui.notifications.warn(`Weapon ammo is empty, need to reload`)
       return false
     }
 
     // Update ammo quantity
-    const newWeaponAmmoCapacity = Number(this.system.ammo.capacity.value - 1)
+    const newWeaponAmmoCapacity = Number(this.system.ammo.capacity.value - cost)
     this.actor.updateEmbeddedDocuments('Item', [
       {
         _id: this._id,
