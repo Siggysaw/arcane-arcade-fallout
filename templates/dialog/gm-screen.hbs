@@ -1,4 +1,4 @@
-<div class="gm-screen grid grid-20col">
+<div class="gm-screen grid grid-20col {{#PipBoyEffects}}pipboy-crt{{/PipBoyEffects}}">
     <div class="grid-span-4 group-rewards" style="padding:5px;">
         <div>
             <div title="Use this to give out bulk rewards"><h6>Group Rewards</h6></div>
@@ -101,22 +101,22 @@
             <div>Perks/Traits</div>
             <div>Notes</div>
             <div style="background-image:url('{{actor.img}}')"
-                 class="character-stats">
-                <div style="border:none;"
-                     class="conditions">
-                    {{#each actor.items as |item condition|}}
-                    {{#Check item.type "condition"}}
-                    {{#GreaterThan system.quantity 1}}
-                    {{#GreaterThan system.quantity 2}}{{system.quantity}}x{{/GreaterThan}}
-                    <span data-tooltip="{{item.name}}:<br/ >{{ item.system.description }}">
-                        <img style="width:20px;height:auto;" src="{{item.img}}" />
+                 class="character-stats actor-drop-target"
+                 data-actor-drop="{{actor.id}}">
+                <div style="border:none;" class="conditions">
+                    {{#each (lookup ../conditionsByActor actor.id) as |condition|}}
+                    <span class="condition-badge" data-tooltip="{{name}}:<br/ >{{ description }}">
+                        <img src="{{img}}" />
+                        {{#GreaterThan quantity 1}}<span class="condition-count">{{quantity}}x</span>{{/GreaterThan}}
                     </span>
-                    {{/GreaterThan}}
-                    {{/Check}}
                     {{/each}}
                 </div>
                 <div class="actor-name stat-block">
-                    {{actor.name}}<br />
+                    {{actor.name}}
+                    <button type="button" class="open-sheet-btn" data-action="openSheet" data-actor-id="{{actor.id}}" data-tooltip="Open Character Sheet">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </button>
+                    <br />
                     <span class="character-bg">
                         Lvl {{actor.system.level}}
                         {{#each actor.items as |item id|}}
@@ -159,7 +159,10 @@
                     {{#each actor.system.karmaCaps as |flipped key|}}
                     <input type="checkbox"
                            name="system.karmaCaps.{{ key }}"
-                           {{checked flipped}} disabled />
+                           data-action="toggleKarmaCap"
+                           data-actor-id="{{actor.id}}"
+                           data-cap-index="{{ key }}"
+                           {{checked flipped}} />
                     {{/each}}
                 </div>
                 <div>Caps: {{actor.system.caps}}</div>

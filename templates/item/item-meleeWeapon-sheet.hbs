@@ -84,36 +84,41 @@
       </div>
       {{else}}
       <ol>
-          {{#each system.upgrades as |key|}}
-          {{#if key.id}}
-          <div class="box-perks box-upgrades">
-          <li class="item flexrow" data-item-id="{{ key.id }}">
-              <table class="perk-table" style="border: solid 1px">
-                  <tr>
-                      <td>
-                          <div class="perk-div">
-                              <h3>{{ key.name }}</h3>
-                              <a class="item-control" seeUpgrade id="{{ key.id }}" title="View Item Details">
-                                  <img title="{{ key.description }}" class="perk-image" src="{{ key.img }}" />
-                              </a>
-                          </div>
-          <li class="item flexrow" data-item-id="{{ item._id }}">
-              <div class="item-controls" style="background: black">
-                  <a class="item-control upgrade-delete"
-                     deleteUpgrade
-                     title="Delete Upgrade"
-                     id="delete{{ key.id }}">
-                      <i class="fas fa-trash"></i>
-                  </a>
-              </div>
-          </li>
-          </td>
-          </tr>
-          </table>
-          </li>
-  </div>
-        {{/if}}
-        {{/each}}
+        {{#each system.upgrades as |key|}}
+        {{#if key.id}}
+        <div class="box-perks box-upgrades">
+        <li class="item flexrow" data-item-id="{{ key.id }}">
+            <table class="perk-table" style="border: solid 1px">
+                <tr>
+                    <td>
+                        <div class="perk-div weapon-div">
+                            <h3><a data-link="" 
+                                   data-uuid="Compendium.arcane-arcade-fallout.upgrades.Item.{{key.id}}">
+                                {{key.name}}</a></h3>
+                            <a class="item-control" seeUpgrade id="{{ key.id }}" title="View Item Details">
+                                <img data-tooltip="{{ key.description }}" class="perk-image" src="{{ key.img }}" />
+                            </a>
+                        </div>
+                        <div class="perk-div">
+                            {{ key.rank }}
+                        </div>
+        <li class="item flexrow" data-item-id="{{ item._id }}">
+            <div class="item-controls" style="background: black">
+                <a class="item-control upgrade-delete"
+                   deleteUpgrade
+                   title="Delete Upgrade"
+                   id="delete{{ key.id }}">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </li>
+        </td>
+        </tr>
+        </table>
+        </li>
+</div>
+      {{/if}}
+      {{/each}}
       </ol>
       {{/LesserThan}}
     </div>

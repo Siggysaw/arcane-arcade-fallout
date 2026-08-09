@@ -63,9 +63,9 @@
         </div>
     </div>
     <div class="grid-span-2 weapon-stats">
-        <div>AP:{{#Subtract item.system.apCost item.system.APSubtraction}}{{/Subtract}}</div>
+        <div>AP:{{item.system.totalApCost}}</div>
         <div>Load:{{item.system.load}}</div>
-        <div>STR:{{item.system.strengthRequirement}}</div>
+        <div>STR:{{#Sum item.system.strengthRequirement item.system.strengthModifier}}{{/Sum}}</div>
         <div class="weapon-condition">
             CND
             <div>
@@ -96,7 +96,7 @@
             5ft.
         </div>
         <div data-tooltip="Bonus {{item.system.critical.formula}}{{#GreaterThan item.system.critical.multiplier 2}}x{{item.system.critical.multiplier}}{{/GreaterThan}} Damage {{item.system.critical.condition}}">
-            Crit:{{#Subtract item.system.critMeleeBonus ../actor.system.critMod}}{{/Subtract}}
+            Crit:{{#Subtract item.system.critical.diceFinal ../actor.system.critMod}}{{/Subtract}}
         </div>
         {{#each item.system.damages as |damage|}}
         <div class="weapon-damage">{{damage.formula}} {{damage.type}}</div>

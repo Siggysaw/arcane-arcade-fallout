@@ -1488,7 +1488,84 @@ body.game .app .tabs > [data-tab] {
     text-transform:uppercase;
     color:#eee;
 }
+.override-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 0;
+}
 
+.override-label {
+  flex: 1;
+}
+
+.override-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stepper-btn {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  padding: 0;
+  line-height: 1;
+  font-size: 0.75em;
+  border: 1px solid #999;
+  border-radius: 3px;
+  background: transparent;
+}
+
+  .stepper-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+.stepper-value {
+  min-width: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+  .stepper-value.static {
+    font-weight: normal;
+    opacity: 0.85;
+  }
+
+.override-toggle {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  padding: 0;
+  line-height: 1;
+  font-size: 0.75em;
+  border-radius: 3px;
+  border: 1px solid #999;
+  background: transparent;
+  opacity: 0.6;
+}
+
+  .override-toggle.active {
+    opacity: 1;
+    background: rgba(120, 20, 20, 0.25);
+    border-color: rgb(150, 30, 30);
+  }
+.falloutzero-overseer-icon {
+  background-image: url('/systems/arcane-arcade-fallout/assets/vaultboy/thumb-1920-639657.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+}
+.actor-drop-target {
+  position: relative;
+  transition: outline 0.1s ease;
+}
+
+ .actor-drop-target.drag-hover {
+    outline: 2px dashed var(--color-warm-2, orange);
+    outline-offset: -2px;
+  }
 
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {
@@ -1651,6 +1728,55 @@ body.game .app .vaulttec .tabs > [data-tab] {
 .sheet .item {
   text-transform: uppercase;
 }
+
+.condition-badge img {
+  width: var(--condition-icon-size);
+  height: auto;
+}
+.conditions {
+  --condition-icon-size: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5px;
+}
+
+.condition-badge {
+  position: relative;
+  display: inline-block;
+}
+
+.condition-count {
+  position: absolute;
+  bottom: -2.5px;
+  right: -2.5px;
+  font-size: 0.8125em;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  border-radius: 3px;
+  padding: 0 2.5px;
+  line-height: 1.2;
+}
+.open-sheet-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  padding: 0;
+  margin-left: 4px;
+  font-size: 0.75em;
+  border: 1px solid #999;
+  border-radius: 3px;
+  background: transparent;
+  vertical-align: middle;
+}
+
+  .open-sheet-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
 
 /*Resistance and Weakness Icons*/
 

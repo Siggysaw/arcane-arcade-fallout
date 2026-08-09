@@ -75,47 +75,42 @@
         <fieldset>
             <legend>Overrides</legend>
 
-            <!-- Action Points -->
-            <div class="flex space-between">
-                <div>AP Cost:</div>
-                {{#if overrideAp}}
-                <div class="flex">
-                    <button type="button" class="flex no-border px-0 mr-2" data-override-ap="dec"><i class="fas fa-minus-square"></i></button>
-                    <div>{{ adjustedApCost }}</div>
-                    <button type="button" class="flex no-border px-0 ml-2" data-override-ap="inc"><i class="fas fa-plus-square"></i></button>
+            <div class="override-row">
+                <div class="override-label">AP Cost</div>
+                <div class="override-control">
+                    {{#if overrideAp}}
+                    <button type="button" class="stepper-btn" data-override-ap="dec"><i class="fas fa-minus"></i></button>
+                    <span class="stepper-value">{{ adjustedApCost }}</span>
+                    <button type="button" class="stepper-btn" data-override-ap="inc"><i class="fas fa-plus"></i></button>
+                    {{else}}
+                    <span class="stepper-value static">{{ totalApCost }}</span>
+                    {{/if}}
+                    <button type="button" class="override-toggle {{#if overrideAp}}active{{/if}}" data-toggle-override="ap">
+                        <i class="fas fa-sliders-h"></i>
+                    </button>
                 </div>
-                {{else}}
-                <div>{{ totalApCost }}</div>
-                {{/if}}
             </div>
-            <div class="flex space-between fakebutton">
-                <button type="button" class="{{#if overrideAp}}active{{/if}}" data-toggle-override="ap">Override</button>
-            </div>
+
             {{#if targeted}}
-            <div class="flex space-between">
-                <div>Targeted ({{ targeted.target }}):</div>
-                <div>{{ targeted.cost }}</div>
+            <div class="override-row">
+                <div class="override-label">Targeted ({{ targeted.target }})</div>
+                <div class="override-control"><span class="stepper-value static">{{ targeted.cost }}</span></div>
             </div>
             {{/if}}
-
-
-            <hr />
-
-            <!-- Ammo -->
-            <div class="flex space-between">
-                <div>Ammo Cost:</div>
-                {{#if overrideAmmo}}
-                <div class="flex">
-                    <button type="button" class="flex no-border px-0 mr-2" data-override-ammo="dec"><i class="fas fa-minus-square"></i></button>
-                    <div>{{ adjustedAmmoCost }}</div>
-                    <button type="button" class="flex no-border px-0 ml-2" data-override-ammo="inc"><i class="fas fa-plus-square"></i></button>
+            <div class="override-row">
+                <div class="override-label">Ammo Cost</div>
+                <div class="override-control">
+                    {{#if overrideAmmo}}
+                    <button type="button" class="stepper-btn" data-override-ammo="dec"><i class="fas fa-minus"></i></button>
+                    <span class="stepper-value">{{ adjustedAmmoCost }}</span>
+                    <button type="button" class="stepper-btn" data-override-ammo="inc"><i class="fas fa-plus"></i></button>
+                    {{else}}
+                    <span class="stepper-value static">{{ totalAmmoCost }}</span>
+                    {{/if}}
+                    <button type="button" class="override-toggle {{#if overrideAmmo}}active{{/if}}" data-toggle-override="ammo">
+                        <i class="fas fa-sliders-h"></i>
+                    </button>
                 </div>
-                {{else}}
-                <div>{{ totalAmmoCost }}</div>
-                {{/if}}
-            </div>
-            <div class="flex space-between">
-                <button type="button" class="{{#if overrideAmmo}}active{{/if}}" data-toggle-override="ammo">Override</button>
             </div>
 
             <!-- Attack Modifiers -->
@@ -135,6 +130,12 @@
             <div class="flex space-between">
                 <label data-tooltip="Boosted Attack! Spend 2 bullets for 2 extra damage">Boosted Capacitor</label>
                 <input type="checkbox" name="boosted" {{checked boosted}} />
+            </div>
+            {{/if}}
+            {{#if hasFanTheHammer}}
+            <div class="flex space-between">
+                <label data-tooltip="Spend 1 Karma Cap and 10 AP to Fan The Hammer and use all your ammo!{{#unless hasKarmaCapAvailable}} (No Karma Caps available!){{/unless}}">Fan The Hammer</label>
+                <input type="checkbox" name="fanTheHammer" {{checked fanTheHammer}} {{#unless hasKarmaCapAvailable}} disabled{{/unless}} />
             </div>
             {{/if}}
         </fieldset>

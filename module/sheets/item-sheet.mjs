@@ -240,42 +240,50 @@ export default class FalloutZeroItemSheet extends ItemSheet {
       }
     })
     //Drag and drop items into description box creates a link to it, whether it's a compendium or someone else's inventory.
-    html.on('click', '[item-description]', () => {
-      if (this.object.system.description.includes("@UUID")) {
-        let UUID = ""
-        let ID = ""
-        let descStr = this.object.system.description
-        let itemName = descStr.match(/\{(.*?)\}/);
-        let item_name = itemName[1].split(" ").join("_")
-        let found =''
-        let matches = []
-        //This catches errors where there is a space within ONE item name
-        if (itemName) {
-          descStr = descStr.split(itemName[1]).join(item_name)
-        }
-        let desc = descStr.split(" ")
-        for (var str of desc) {
-          if (str.includes("@UUID")) {
-            matches = str.match(/\[(.*?)\]/);
-            if (matches) {
-              UUID = matches[1];
-              ID = UUID.split(".");
-              let newLink = `<a class="content-link" 
-                draggable="true" data-link="" 
-                data-uuid="${UUID}" 
-                data-id="${ID[ID.length - 1]}" 
-                data-type="Item" 
-                data-pack="arcane-arcade-fallout.conditions"
-                data-tooltip="Click for details."
-                >
-                ${itemName[1]}
-                </a>`;
-              descStr = this.object.system.description.split(`@UUID[${UUID}]{${itemName[1]}}`).join(newLink);
-              this.object.update({ 'system.description': descStr });
-              return;
-            }
-          }
-        }
+    html.on('click', '[item-description]', async () => {
+      const description = this.object.system.description
+      if (!description.includes('@UUID')) return
+
+      // Match every @UUID[uuid]{label} occurrence, regardless of spaces in the label
+      const uuidPattern = /@UUID\[([^\]]+)\]\{([^}]+)\}/g
+      const matches = [...description.matchAll(uuidPattern)]
+      if (!matches.length) return
+
+      let updatedDescription = description
+
+      for (const [fullMatch, uuid, label] of matches) {
+        const item = await fromUuid(uuid)
+        if (!item) continue // broken/stale link, skip it
+
+        const idParts = uuid.split('.')
+        const id = idParts[idParts.length - 1]
+
+        // item.pack is set when the doc lives in a compendium; undefined for
+        // world items or items embedded on an actor
+        const pack = item.pack ?? ''
+
+        // Build a plain-text tooltip from the item's description (it's an
+        // HTMLField, so strip tags and escape quotes for the attribute)
+        const rawDesc = item.system?.description ?? ''
+        const plainDesc = rawDesc.replace(/<[^>]*>/g, '').trim()
+        const tooltip = (plainDesc || 'Click for details.').replace(/"/g, '&quot;')
+
+        const newLink = `<a class="content-link" 
+      draggable="true" data-link="" 
+      data-uuid="${uuid}" 
+      data-id="${id}" 
+      data-type="${item.documentName}" 
+      data-pack="${pack}"
+      data-tooltip="${tooltip}"
+      >
+      ${label}
+      </a>`
+
+        updatedDescription = updatedDescription.split(fullMatch).join(newLink)
+      }
+
+      if (updatedDescription !== description) {
+        await this.object.update({ 'system.description': updatedDescription })
       }
     })
 

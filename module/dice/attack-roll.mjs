@@ -4,10 +4,13 @@ export default class AttackRoll extends FormApplication {
 
     this.weapon = weapon
     this.actor = actor
+    const hasKarmaCapAvailable = this.actor.hasKarmaCapAvailable()
     const properMaintenance = this.actor.items.find((i) => i.name == 'Proper Maintenance')
+    const hasFanTheHammer = this.actor.items.find((i) => i.name == 'Fan the Hammer')
+      && typeof weapon.system.description === 'string'
+      && weapon.system.description.includes("Revolver")
     let decayValue = this.weapon.getDecayValue()
     let gunCondition = this.weapon.system.decay
-    let apModifiers = 0
 
     gunCondition == 0 ||
       properMaintenance && gunCondition <= 2 ||
@@ -24,11 +27,8 @@ export default class AttackRoll extends FormApplication {
       : Object.values(weapon.system.upgrades ?? {})
     const hasOverclockedCapacitor = weaponUpgrades.some((u) => u.name === 'Overclocked Capacitor')
     const hasBoostedCapacitor = weaponUpgrades.some((u) => u.name === 'Boosted Capacitor')
+
     const hasAutomatic = typeof weapon.system.description === 'string' && weapon.system.description.includes('Automatic')
-    const hasDoubleAction = weaponUpgrades.some((u) => u.name === 'Double Action')
-
-
-    hasDoubleAction ? apModifiers += 1 : apModifiers 
 
     this.formDataCache = {
       weaponType: weapon.type,
@@ -46,7 +46,7 @@ export default class AttackRoll extends FormApplication {
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
       apCost: this.weapon.system.apCost,
-      totalApCost: this.weapon.system.apCost - this.weapon.system.APSubtraction - apModifiers,
+totalApCost: this.weapon.system.totalApCost,
       adjustedApCost: 0,
       ammoCost: 1,
       totalAmmoCost: 1,
@@ -62,8 +62,11 @@ export default class AttackRoll extends FormApplication {
       fullAuto: false,
       hasOverclockedCapacitor,
       hasBoostedCapacitor,
+      hasFanTheHammer,
+      hasKarmaCapAvailable,
       hasAutomatic,
       overClocked: false,
+      fanTheHammer: false,
       boosted: false,
       damages: this.weapon.system.damages.map((damage) => {
         return {
@@ -163,7 +166,7 @@ export default class AttackRoll extends FormApplication {
                 target: e.target.name,
                 cost: targetedAp,
               }
-              this.formDataCache.totalApCost = this.formDataCache.apCost + targetedAp
+              this.formDataCache.totalApCost = this.weapon.system.totalApCost + targetedAp
               this.render()
               dlg.close()
             })
@@ -232,7 +235,7 @@ export default class AttackRoll extends FormApplication {
     const removeTarget = form.querySelector('[data-remove-target]')
     removeTarget?.addEventListener('click', () => {
       this.formDataCache.targeted = null
-      this.formDataCache.totalApCost = this.formDataCache.apCost
+      this.formDataCache.totalApCost = this.weapon.system.totalApCost
       this.render()
     })
 
@@ -276,41 +279,40 @@ export default class AttackRoll extends FormApplication {
 
 
 
+ 
+ //Returns true if `text` appears in either the weapon's description or its bonusProperties field.
+   hasProperty(text) {
+    const { description, bonusProperties } = this.weapon.system
+    const inDescription = typeof description === 'string' && description.includes(text)
+    const inBonusProperties = typeof bonusProperties === 'string' && bonusProperties.includes(text)
+    return inDescription || inBonusProperties
+  }
+
   hasBonusProperty(text) {
-    const bonusProperties = this.weapon.system.bonusProperties
+    const { bonusProperties } = this.weapon.system
     return typeof bonusProperties === 'string' && bonusProperties.includes(text)
   }
 
-  stepFormula(formula, steps) {
-    if (!formula) return formula
-    const dieSteps = [4, 6, 8, 10, 12]
-    return formula.replace(/(\d+)d(\d+)/gi, (match, diceCount, dieSize) => {
-      const currentIndex = dieSteps.indexOf(Number(dieSize))
-      if (currentIndex === -1) return match // unrecognized die size, leave as-is
-      const nextIndex = Math.min(Math.max(currentIndex + steps, 0), dieSteps.length - 1)
-      return `${diceCount}d${dieSteps[nextIndex]}`
-    })
+  hasDestructive() {
+    return this.hasProperty('Destructive')
   }
 
-  hasDestructive() {
-    const description = this.weapon.system.description
-    const bonusProperties = this.weapon.system.bonusProperties
-    const inDescription = typeof description === 'string' && description.includes('Destructive')
-    const inBonusProperties = typeof bonusProperties === 'string' && bonusProperties.includes('Destructive')
-    return inDescription || inBonusProperties
+  hasWeighted() {
+    return this.hasProperty('Weighted')
   }
 
   hasSturdy() {
-    const description = this.weapon.system.description
-    const bonusProperties = this.weapon.system.bonusProperties
-    const inDescription = typeof description === 'string' && description.includes('Sturdy')
-    const inBonusProperties = typeof bonusProperties === 'string' && bonusProperties.includes('Sturdy')
-    return inDescription || inBonusProperties
+    return this.hasProperty('Sturdy')
+  }
+
+  hasUpgraded() {
+    return this.hasProperty('Upgraded')
   }
 
 
   applyDestructive(formula) {
-    if (!this.hasDestructive() || !formula) return formula
+    const qualifies = this.hasDestructive() || this.hasWeighted()
+    if (!qualifies || !formula) return formula
     return formula.replace(/(\d+)d(\d+)(?!min)/gi, (match, diceCount, dieSize) => `${diceCount}d${dieSize}min2`)
   }
 
@@ -467,17 +469,13 @@ export default class AttackRoll extends FormApplication {
         <div>Perks bonus: ${attackBonus}</div>
         <div>Ability bonus: ${abilityBonus}</div>
         <div>Luck bonus: ${actorLuck}</div>
-        ${bonus && `<div>Other bonus: ${bonus || 0}</div>`}
+        ${bonus ? `<div>Other bonus: ${bonus}</div>` : ''}
         <div>Penalties total: ${actorPenalties}</div>
         <div>Weapon decay: ${decayPenalty}</div>
         <hr />
         <div>Bonus Total: ${rollBonusTotal}</div>
       </div>
     `
-    const damageTooltip = `
-      <div>
-        <div>Ability bonus: ${abilityBonus}</div>
-       <div>Perks/Equipment bonus: ${damageBonus}</div>`
 
     /**
      * Generate damage rolls
@@ -516,6 +514,7 @@ export default class AttackRoll extends FormApplication {
         targeted: this.formDataCache.targeted,
         damage: {
           rolls: damageRolls,
+          damageBonus,
           isCritical: roll.dice[0].total >= this.weapon.system.critical.dice,
           criticalCondition: this.weapon.system.critical.condition,
           critical: `(${this.getCombinedDamageFormula()} + ${finalCritical.formula || ''} + ${abilityBonus}) * ${finalCritical.multiplier || ''}`,
@@ -527,12 +526,29 @@ export default class AttackRoll extends FormApplication {
 
   async _updateObject(event, formData) {
     Object.assign(this.formDataCache, formData)
-    /**
-     * Rerender form if update and not submitted
-     */
+
     if (event.type !== 'submit') {
       this.render()
       return
+    }
+
+    if (this.formDataCache.fanTheHammer) {
+      if (!this.actor.hasKarmaCapAvailable()) {
+        ui.notifications.warn('No Karma Caps available to Fan The Hammer!')
+        this.formDataCache.fanTheHammer = false
+        this.render()
+        return
+      }
+      if (this.actor.system.actionPoints.value < 10) {
+        ui.notifications.warn('Not enough AP to Fan The Hammer!')
+        this.formDataCache.fanTheHammer = false
+        this.render()
+        return
+      }
+      this.actor.flipLastKarmaCap()
+      this.formDataCache.fullAuto = true
+      this.formDataCache.overrideAp = true
+      this.formDataCache.adjustedApCost = 10
     }
 
     let repeat = this.formDataCache.repeat || 1
@@ -545,7 +561,6 @@ export default class AttackRoll extends FormApplication {
       let fireStatus = true
 
       if (actionPoints < APCost) {
-
         ui.notifications.notify("AP Depleted")
         fireStatus = false
         i = 999
@@ -557,6 +572,10 @@ export default class AttackRoll extends FormApplication {
       }
       if (fireStatus == true) {
         await this.performRoll()
+      }
+
+      if (this.formDataCache.fanTheHammer && i === 0) {
+        this.formDataCache.adjustedApCost = 0
       }
     }
 

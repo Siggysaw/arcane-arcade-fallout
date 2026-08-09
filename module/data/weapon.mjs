@@ -15,6 +15,8 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
       min: 0,
     })
     schema.apCost = new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
+    schema.apModifiers = new fields.NumberField({ initial: 0 })
+    schema.totalApCost = new fields.NumberField({ initial: 0 })
     schema.decay = new fields.NumberField({ initial: 10, min: 0, max: 10 })
     schema.reloadDecay = new fields.NumberField({ initial: 0, min: 0, max: 10 })
     schema.itemOpen = new fields.BooleanField()
@@ -180,23 +182,51 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     const hasUpgrade = (search) => upgradeList.some((i) => i.name === search)
 
     const generateProperty = (propertyName, UUID, pack) => {
-      const ID = UUID.split(".");
+      const ID = UUID.split(".")
       pack == null || pack == undefined ? pack = "properties" : pack
+      const fullUuid = `Compendium.arcane-arcade-fallout.${pack}.Item.${UUID}`
+
+      const linkedItem = fromUuidSync?.(fullUuid) ?? null
+      const rawDesc = linkedItem?.system?.description ?? ''
+      const plainDesc = rawDesc.replace(/<[^>]*>/g, '').trim()
+      const tooltip = (plainDesc || 'Click for details.').replace(/"/g, '&quot;')
+
       const newLink = `<a class="content-link" 
-                draggable="true" data-link="" 
-                data-uuid="Compendium.arcane-arcade-fallout.${pack}.Item.${UUID}"
-                data-id="${ID[ID.length - 1]}" 
-                data-type="Item" 
-                data-pack="arcane-arcade-fallout.${pack}"
-                data-tooltip="Click for details."
-                >
-                ${propertyName}
-                </a>`
+            draggable="true" data-link="" 
+            data-uuid="${fullUuid}"
+            data-id="${ID[ID.length - 1]}" 
+            data-type="Item" 
+            data-pack="arcane-arcade-fallout.${pack}"
+            data-tooltip="${tooltip}"
+            >
+            ${propertyName}
+            </a>`
       return newLink
     }
 
     this.critical.formulaBonus = 0
     this.critical.multiplierBonus = 0
+
+    // Ranged Weapon Upgrades
+
+    // AP Cost Modifiers
+    const apCost = this.apCost
+    let apModifiers = 0
+
+    if (hasUpgrade('Double Action') && apCost - 1 > 0) {
+      apModifiers -= 1
+    }
+    if (hasUpgrade('Heavy') && apCost + apModifiers < 6) {
+      apModifiers += 1
+    }
+    if (hasUpgrade('Light Build (Melee)') && apCost + apModifiers > 3) {
+      apModifiers -= 1
+    }
+
+    this.apModifiers = apModifiers
+    this.totalApCost = apCost - (this.APSubtraction ?? 0) + apModifiers
+
+    this.critical.diceFinal = Number(this.critical.dice ?? 0) + Number(this.critical.diceModifier ?? 0)
 
     if (hasUpgrade('Ergonomic Grip')) {
       if (this.critical.formula) {
@@ -220,9 +250,9 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
         this.bonusProperties += generateProperty("Double Crit DMG", "Ctfj04LE1XMn1fyI", "upgrades") :
         this.bonusProperties += generateProperty("Accurate", "R3px8IQgzrBwuwvp")
     }
-    if (hasUpgrade('Light Build (Ranged)')) {
+    if (hasUpgrade('Light Build (Ranged)') || hasUpgrade('Light Build (Melee)')) {
       if (this.parent?.actor) {
-        this.parent.actor.system.carryLoad.modifiers -= Number(Math.floor(this.load / 2))
+        actorData.modifiers -= Number(Math.floor(this.load / 2))
       }
       this.bonusProperties += generateProperty("Breakable", "aZu6vMCsdRPyLGd6")
       this.strengthModifier += -1
@@ -250,6 +280,32 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     if (hasUpgrade('Strengthen (Ranged)')) {
       this.bonusProperties += generateProperty("Sturdy", "nsBOdZwmwSwRxGjo")
     }
+
+    // Melee Weapon Upgrades
+    if (hasUpgrade('Double Sided')) {
+      this.bonusProperties += generateProperty("Defensive", "AZLp9sBiapzsqIBV",)
+      this.bonusProperties += generateProperty("Two Handed", "2VByRivQCzqtj5af")
+      this.strengthModifier += 1
+      actorData.carryLoad.modifiers += this.load
+    }
+    if (hasUpgrade('Ergonomic')) {
+      this.bonusProperties += generateProperty("Defensive", "AZLp9sBiapzsqIBV",)
+      this.critical.diceModifier -= 1
+    }
+    if (hasUpgrade('Heavy')) {
+      this.bonusProperties += generateProperty("Weighted", "pWdqTFu2HQntRMBW",)
+      this.critical.formula ? this.critical.formulaBonus += 1 : this.critical.formula
+      this.critical.multiplier > 1 ? this.critical.multiplierBonus += 1 : this.critical.multiplierBonus
+      this.strengthModifier += 1
+      actorData.carryLoad.modifiers += Math.floor(this.load/2)
+    }
+    if (hasUpgrade('Sharpened')) {
+      this.bonusProperties += generateProperty("Mangle", "zr8O7JwRX63efKzC",)
+    }
+    if (hasUpgrade('Strengthen (Melee)')) {
+      this.bonusProperties += generateProperty("Durable", "UnKVhbAQoVPFYOfP",)
+    }
+
 
     this.critical.diceFinal = Number(this.critical.dice ?? 0) + Number(this.critical.diceModifier ?? 0)
   }

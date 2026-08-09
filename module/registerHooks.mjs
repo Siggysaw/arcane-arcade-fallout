@@ -5,6 +5,22 @@ import FalloutZeroItem from './documents/item.mjs'
 import { getApCost, getLastWaypointGroup, sumWaypoints } from './helpers/movement.mjs'
 
 export function registerHooks() {
+  Hooks.on('getSceneControlButtons', (controls) => {
+    if (!game.user.isGM) return // GM-only — this button never renders for players
+
+    controls.tokens.tools.overseerScreen = {
+      name: 'overseerScreen',
+      title: 'Overseer Screen',
+      icon: 'falloutzero-overseer-icon',
+      button: true,
+      order: 99, // keeps it grouped at the end of the token toolbar
+      onChange: () => {
+        new game.falloutzero.applications.components.GMApplication(
+          game.actors.filter((actor) => actor.type === 'character')
+        ).render(true)
+      },
+    }
+  })
 
   Hooks.once('ready', function () {
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to

@@ -56,6 +56,9 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   get undoDamage() {
     return this.flags?.falloutzero?.undoDamage ?? null
   }
+  get damageBonus() {
+    return this.damage?.damageBonus ?? 0
+  }
 
   /* -------------------------------------------- */
   /*  Rendering                                   */
@@ -448,6 +451,38 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       this.actor.getRollData(),
     )
 
+    await roll.evaluate()
+
+    // Upgraded: +2 damage for every individual damage die that shows a 1 or 2
+    const weapon = this.actor?.items?.get(this.flags?.falloutzero?.itemId)
+    const hasUpgraded =
+      typeof weapon?.system?.bonusProperties === 'string' && weapon.system.bonusProperties.includes('Upgraded')
+
+    let upgradedBonus = 0
+    let upgradedDieCount = 0
+    if (hasUpgraded) {
+      for (const die of roll.dice) {
+        for (const result of die.results) {
+          if (result.active && (result.result === 1 || result.result === 2)) {
+            upgradedBonus += 2
+            upgradedDieCount += 1
+          }
+        }
+      }
+      if (upgradedBonus > 0) {
+        roll._total += upgradedBonus
+        flavor += ` (+${upgradedBonus} from Upgraded)`
+      }
+    }
+
+    const tooltip = `
+      <div>
+        <div>Ability bonus: ${this.abilityBonus || 0}</div>
+        <div>Perks/Equipment bonus: ${this.damageBonus || 0}</div>
+        ${upgradedBonus ? `<div>Upgraded bonus: +${upgradedBonus} (${upgradedDieCount} die${upgradedDieCount === 1 ? '' : 's'} rolled 1 or 2)</div>` : ''}
+      </div>
+    `
+
     return roll.toMessage({
       flavor,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -455,6 +490,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       'flags.falloutzero': {
         type: 'damage',
         damageTypes: types,
+        tooltip,
       },
     })
   }
