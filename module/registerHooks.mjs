@@ -5,21 +5,29 @@ import FalloutZeroItem from './documents/item.mjs'
 import { getApCost, getLastWaypointGroup, sumWaypoints } from './helpers/movement.mjs'
 
 export function registerHooks() {
-  Hooks.on('getSceneControlButtons', (controls) => {
-    if (!game.user.isGM) return // GM-only — this button never renders for players
+  Hooks.on('renderSidebar', (app, element) => {
+    if (!game.user.isGM) return
 
-    controls.tokens.tools.overseerScreen = {
-      name: 'overseerScreen',
-      title: 'Overseer Screen',
-      icon: 'falloutzero-overseer-icon',
-      button: true,
-      order: 99, // keeps it grouped at the end of the token toolbar
-      onChange: () => {
-        new game.falloutzero.applications.components.GMApplication(
-          game.actors.filter((actor) => actor.type === 'character')
-        ).render(true)
-      },
-    }
+    const menu = element.querySelector('#sidebar-tabs menu.flexcol')
+    if (!menu || menu.querySelector('.overseer-screen-btn')) return
+
+    const li = document.createElement('li')
+    li.innerHTML = `
+    <button type="button" class="ui-control plain icon falloutzero-overseer-icon overseer-screen-btn" data-tooltip="Overseer Screen" aria-label="Overseer Screen"></button>
+    <div class="notification-pip"></div>
+  `
+
+    li.querySelector('button').addEventListener('click', (ev) => {
+      ev.preventDefault()
+      ev.stopPropagation()
+      new game.falloutzero.applications.components.GMApplication(
+        game.actors.filter((actor) => actor.type === 'character')
+      ).render(true)
+    })
+
+    // Insert before the collapse toggle so it stays grouped with the other tabs
+    const collapseLi = menu.querySelector('.collapse')?.closest('li')
+    collapseLi ? menu.insertBefore(li, collapseLi) : menu.appendChild(li)
   })
 
   Hooks.once('ready', function () {

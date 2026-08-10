@@ -5,8 +5,8 @@
             <tr>
                 <td>
                     <div class="perk-div">
-                        <h3>{{ item.name }}</h3>
-                        <div class="perk-div" style="text-align:left;">
+                        <h3>{{ item.name }} {{#if item.system.wildWasteland}}[WW]{{/if}}</h3>
+                        <div class="perk-div {{#if item.system.wildWasteland}}wildwasteland{{/if}}" style="text-align:left;">
                             <i class="fas fa-ellipsis-v context-menu context-icon perk-context" data-item-id="{{ item._id }}"></i>
                         </div>
                         <a class="item-control"

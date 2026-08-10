@@ -3,6 +3,11 @@
   src: url('/systems/arcane-arcade-fallout/assets/fonts/monofonto.otf');
 }
 
+@font-face {
+  font-family: 'fixedsys';
+  src: url('/systems/arcane-arcade-fallout/assets/fonts/fixedsys.ttf');
+}
+
 .gm-screen {
   max-height: 1000px;
   overflow-y: scroll;

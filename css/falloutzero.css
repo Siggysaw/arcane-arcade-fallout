@@ -1557,6 +1557,12 @@ body.game .app .tabs > [data-tab] {
   background-position: center;
   display: inline-block;
 }
+
+.overseer-screen-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .actor-drop-target {
   position: relative;
   transition: outline 0.1s ease;
@@ -1566,6 +1572,57 @@ body.game .app .tabs > [data-tab] {
     outline: 2px dashed var(--color-warm-2, orange);
     outline-offset: -2px;
   }
+.equipped-icon {
+  font-size: 0.6em;
+  padding-left: 4px;
+  vertical-align: middle;
+}
+.item-type-label{
+    font-size:12pt;
+    color:white;
+    text-align:center;
+    margin:5px;
+    border-bottom:dotted 1px;
+
+}
+
+.gm-screen-backpack-item{
+    margin-left:20px;
+    text-transform:capitalize;
+}
+.gm-backpack-items-all{
+    font-size:10pt;
+}
+.valuable-items{
+    text-align:left;
+}
+.gm-screen-perk-container,.valuable-items {
+  max-height: 250px;
+  overflow-y: scroll;
+  background-color:black;
+  text-transform: capitalize;
+}
+.gm-screen-perk-container .content-link{
+    margin:0px;
+    padding:0px;
+}
+.gm-screen-perk {
+  width: 50%;
+  float: left;
+}
+.gm-screen-perk-label{
+    font-size:9pt;
+    margin:0px;
+    padding:0px;
+    padding-top:5px;
+    height:30px;
+}
+.sheet .wildwasteland {
+  background-image: url("/systems/arcane-arcade-fallout/assets/vaultboy/wildwasteland.webp");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right center;
+}
 
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {

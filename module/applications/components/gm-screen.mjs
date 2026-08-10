@@ -26,7 +26,7 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
     form: {
       handler: GMApplication.myFormHandler,
       submitOnChange: false,
-      closeOnSubmit: true,
+      closeOnSubmit: false,
     },
     actions: {
       divideGroup: GMApplication.onDivideGroup,
@@ -89,17 +89,6 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
     actor?.sheet.render(true)
   }
 
-  async _prepareContext() {
-    return {
-      activeOnly: this.activeOnly,
-      actors: this.actors,
-      newActorData: this.newActorData,
-      groupXp: this.groupXp,
-      groupCaps: this.groupCaps,
-      groupXpmodifier: this.groupXpmodifier
-    }
-  }
-
   static async myFormHandler() {
     const awards = this.actors.map((actor) => {
       const newXP = actor.system.xp + this.newActorData[actor.id].xp
@@ -112,7 +101,17 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
 
     try {
       await Promise.all(awards)
-      this.close()
+
+      this.newActorData = this.actors.reduce((acc, actor) => {
+        acc[actor.id] = { xp: 0, caps: 0 }
+        return acc
+      }, {})
+      this.groupXp = 0
+      this.groupXpmodifier = 0
+      this.groupCaps = 0
+
+      ui.notifications.info('Rewards awarded!')
+      this.render(true)
     } catch (error) {
       console.log('Error awarding caps and xp')
     }
@@ -142,6 +141,38 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
         this.newActorData[actor.id].caps = parseInt(event.target.value)
       })
     })
+    this.element.querySelectorAll('.condition-badge').forEach((badge) => {
+      badge.addEventListener('click', (event) => {
+        //event.preventDefault()
+        //this._adjustCondition(badge.dataset.actorId, badge.dataset.conditionName, 1)
+      })
+      badge.addEventListener('contextmenu', (event) => {
+        event.preventDefault() // suppress the browser's right-click menu
+        this._adjustCondition(badge.dataset.actorId, badge.dataset.conditionName, -1)
+      })
+    })
+  }
+
+  async _adjustCondition(actorId, conditionName, delta) {
+    const actor = this.actors.find((a) => a.id === actorId)
+    if (!actor) return
+
+    const items = actor.items.filter((i) => i.type === 'condition' && i.name === conditionName)
+    if (!items.length) return
+
+    if (delta > 0) {
+      const item = items[0]
+      const currentQty = item.system.quantity ?? 1
+      await item.update({ 'system.quantity': currentQty + 1 })
+    } else {
+      const item = items[items.length - 1]
+      const currentQty = item.system.quantity ?? 1
+      if (currentQty <= 1) {
+        await item.delete()
+      } else {
+        await item.update({ 'system.quantity': currentQty - 1 })
+      }
+    }
   }
 
   async _prepareContext() {
@@ -152,6 +183,8 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
           const key = item.name
           if (!group[key]) {
             group[key] = {
+              id: item.id,
+              uuid: item.uuid,
               name: item.name,
               img: item.img,
               description: item.system.description,
@@ -165,11 +198,40 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
       return acc
     }, {})
 
+    const TYPE_ORDER = ['rangedWeapon', 'meleeWeapon', 'ammo', 'foodAnddrink','medicine', 'chem']
+
+    const valuableItemsByActor = this.actors.reduce((acc, actor) => {
+      const byType = actor.items
+        .filter((i) => TYPE_ORDER.includes(i.type) && (i.system?.cost ?? 0) > 0)
+        .reduce((groups, item) => {
+          if (!groups[item.type]) groups[item.type] = []
+          groups[item.type].push({
+            id: item.id,
+            uuid: item.uuid,
+            name: item.name,
+            img: item.img,
+            quantity: item.system.quantity ?? 1,
+            equipped: item.system.itemEquipped ?? false,
+          })
+          return groups
+        }, {})
+
+      acc[actor.id] = Object.keys(byType)
+        .map((type) => ({
+          type,
+          label: game.i18n.localize(CONFIG.Item.typeLabels[type] ?? `TYPES.Item.${type}`),
+          items: byType[type].sort((a, b) => a.name.localeCompare(b.name)),
+        }))
+        .sort((a, b) => TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type))
+
+      return acc
+    }, {})
     return {
       activeOnly: this.activeOnly,
       actors: this.actors,
       newActorData: this.newActorData,
       conditionsByActor,
+      valuableItemsByActor,
       groupXp: this.groupXp,
       groupCaps: this.groupCaps,
       groupXpmodifier: this.groupXpmodifier

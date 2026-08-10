@@ -96,27 +96,31 @@
 
             {{#each actors as |actor id|}}
             {{#if actor.system.activePartymember}}
-            <div>Name</div>
+            <div>
+                {{actor.name}}
+                <button type="button" class="open-sheet-btn" data-action="openSheet" data-actor-id="{{actor.id}}" data-tooltip="Open Character Sheet">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+            </div>
             <div>Status</div>
             <div>Perks/Traits</div>
-            <div>Notes</div>
+            <div>Equipment</div>
             <div style="background-image:url('{{actor.img}}')"
                  class="character-stats actor-drop-target"
                  data-actor-drop="{{actor.id}}">
                 <div style="border:none;" class="conditions">
-                    {{#each (lookup ../conditionsByActor actor.id) as |condition|}}
-                    <span class="condition-badge" data-tooltip="{{name}}:<br/ >{{ description }}">
-                        <img src="{{img}}" />
+                    {{#each (lookup ../conditionsByActor actor.id) as |item|}}
+                    <span class="condition-badge"
+                          data-actor-id="{{actor.id}}"
+                          data-condition-name="{{name}}"
+                          data-tooltip="{{name}}<br><br>Left-Click for Details<br>Right-Click for removal/downgrade"
+                         >
+                        <a class="content-link" data-link="" draggable="true" data-uuid="{{item.uuid}}" data-id="{{item.id}}" data-type="Item"><img src="{{img}}" /></a>
                         {{#GreaterThan quantity 1}}<span class="condition-count">{{quantity}}x</span>{{/GreaterThan}}
                     </span>
                     {{/each}}
                 </div>
                 <div class="actor-name stat-block">
-                    {{actor.name}}
-                    <button type="button" class="open-sheet-btn" data-action="openSheet" data-actor-id="{{actor.id}}" data-tooltip="Open Character Sheet">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </button>
-                    <br />
                     <span class="character-bg">
                         Lvl {{actor.system.level}}
                         {{#each actor.items as |item id|}}
@@ -186,29 +190,37 @@
                     <div class="stat-value">{{actor.system.actionPoints.value}}/{{actor.system.actionPoints.max}}</div>
                 </div>
             </div>
-            <div style="max-height:200px;overflow-y:scroll">
+            <div class="gm-screen-perk-container">
                 {{#each actor.items as |item id|}}
                 {{#Check item.type "trait"}}
-                <div>
-                    <li class="item flexrow" data-item-id="{{ item._id }}" draggable="true">
-                        <a class="item-control"
-                           data-tooltip="TRAIT:<br> {{item.system.description}}">
-                            {{item.name}}
-                        </a>
-                    </li>
+                <div class="gm-screen-perk" data-tooltip="{{item.system.description}}">
+                    <h3 class="gm-screen-perk-label">{{item.name}}{{#if item.system.wildWasteland}}<br />[WW]{{/if}}</h3>
+                    <a class="content-link gm-screen-perk-img" data-link="" draggable="true" data-uuid="{{item.uuid}}" data-id="{{item.id}}" data-type="Item"><img data-tooltip="{{ item.description }}" class="gm-screen-perk-image" src="{{ item.img }}" /></a>
                 </div>
                 {{/Check}}
                 {{#Check item.type "perk"}}
-                <div data-tooltip="{{item.system.description}}">
-                    {{item.name}}
+                <div class="gm-screen-perk" data-tooltip="{{item.system.description}}">
+                    <h3 class="gm-screen-perk-label">{{item.name}}</h3>
+                    <a class="content-link gm-screen-perk-img" data-link="" draggable="true" data-uuid="{{item.uuid}}" data-id="{{item.id}}" data-type="Item"><img data-tooltip="{{ item.description }}" class="gm-screen-perk-image" src="{{ item.img }}" /></a>
                 </div>
                 {{/Check}}
                 {{/each}}
             </div>
-            <div style="max-height:200px;overflow-y:scroll;text-align:initial">
-                {{#if actor.system.properties}}
-                <i class="fas fa-address-card" data-tooltip='{{actor.system.properties}}'></i>
-                {{/if}}
+            <div class="valuable-items">
+                {{#each (lookup ../valuableItemsByActor actor.id) as |group|}}
+                <div class="item-type-group">
+                    <p class="item-type-label">{{group.label}}s</p>
+                    <ul class="unlist">
+                        {{#each group.items as |item|}}
+                        <li class="gm-backpack-items-all" data-tooltip="{{item.name}}">
+                            {{#if item.equipped}}<i class="fa-solid fa-square equipped-icon" data-tooltip="Equipped"></i>{{/if}}
+                            <a class="content-link {{#unless item.equipped}}gm-screen-backpack-item{{/unless}}" data-link="" draggable="true" data-uuid="{{item.uuid}}" data-id="{{item.id}}" data-type="Item">{{item.name}}</a>
+                            ({{item.quantity}})
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/each}}
             </div>
             <div class="grid-span-4" style="border:none;"><br /></div>
             {{/if}}

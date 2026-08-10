@@ -6,6 +6,7 @@ export default class AttackRoll extends FormApplication {
     this.actor = actor
     const hasKarmaCapAvailable = this.actor.hasKarmaCapAvailable()
     const properMaintenance = this.actor.items.find((i) => i.name == 'Proper Maintenance')
+    const properMaintenanceWW = properMaintenance?.system?.wildWasteland
     const hasFanTheHammer = this.actor.items.find((i) => i.name == 'Fan the Hammer')
       && typeof weapon.system.description === 'string'
       && weapon.system.description.includes("Revolver")
@@ -14,11 +15,14 @@ export default class AttackRoll extends FormApplication {
 
     gunCondition == 0 ||
       properMaintenance && gunCondition <= 2 ||
-      properMaintenance && properMaintenance.system.wildWasteland && gunCondition <= 5
+      properMaintenance && properMaintenanceWW && gunCondition <= 5
       ? ui.notifications.warn(`${this.weapon.name} has decayed too much and is broken`) : ''
 
-    // Sturdy ignores the first two levels of decay penalty
-    if (this.hasSturdy()) {
+    // Sturdy and Proper Maintenance ignores the first levels of decay penalty
+    if (properMaintenance && !properMaintenanceWW) {
+      decayValue = Math.max(0, decayValue - 1)
+    }
+    if (this.hasSturdy() || properMaintenanceWW) {
       decayValue = Math.max(0, decayValue - 2)
     }
 
@@ -46,7 +50,7 @@ export default class AttackRoll extends FormApplication {
       targeted: null,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
       apCost: this.weapon.system.apCost,
-totalApCost: this.weapon.system.totalApCost,
+      totalApCost: this.weapon.system.totalApCost,
       adjustedApCost: 0,
       ammoCost: 1,
       totalAmmoCost: 1,
@@ -427,7 +431,6 @@ totalApCost: this.weapon.system.totalApCost,
       await this.weapon.update({ 'system.quantity': Qty })
     }
 
-
     let {
       automaticAttack,
       skillBonus,
@@ -444,38 +447,8 @@ totalApCost: this.weapon.system.totalApCost,
       boosted,
     } = this.formDataCache
 
-    if (overClocked) {
-      damageBonus += 4
-    }
-    if (boosted) {
-      damageBonus += 2
-    }
-
-    const rollBonusTotal = Number(skillBonus + attackBonus + abilityBonus + actorLuck + Number(bonus) - actorPenalties - decayPenalty)
-
-    /**
-     * Roll to hit
-     */
-    const roll = new Roll(
-      `${this.getDice()} + ${rollBonusTotal}`,
-      this.actor.getRollData(),
-    )
-
-    await roll.evaluate()
-
-    const attackTooltip = `
-      <div>
-        <div>Skill bonus: ${skillBonus}</div>
-        <div>Perks bonus: ${attackBonus}</div>
-        <div>Ability bonus: ${abilityBonus}</div>
-        <div>Luck bonus: ${actorLuck}</div>
-        ${bonus ? `<div>Other bonus: ${bonus}</div>` : ''}
-        <div>Penalties total: ${actorPenalties}</div>
-        <div>Weapon decay: ${decayPenalty}</div>
-        <hr />
-        <div>Bonus Total: ${rollBonusTotal}</div>
-      </div>
-    `
+    if (overClocked) damageBonus += 4
+    if (boosted) damageBonus += 2
 
     /**
      * Generate damage rolls
@@ -490,7 +463,6 @@ totalApCost: this.weapon.system.totalApCost,
           ? this.getTargetedDamage(baseFormula + ` + ${damageBonus} + ${bonusdamage || ''}`)
           : baseFormula + `+ ${damageBonus || ''} + ${bonusdamage || ''}`,
       }
-
     })
 
     /**
@@ -498,6 +470,60 @@ totalApCost: this.weapon.system.totalApCost,
      * (weapon totals + Finesse), without mutating the weapon
      */
     const finalCritical = this.getFinalCritical()
+
+    /**
+     * Weapons that always hit skip the d20 roll entirely — post a
+     * flavor-only card carrying the damage flags, then immediately
+     * fire the same damage-roll path the "Roll damage" button uses.
+     */
+    if (this.weapon.system.autoHit) {
+      const message = await getDocumentClass('ChatMessage').create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: `${this.weapon.name} hits automatically!`,
+        rollMode: game.settings.get('core', 'rollMode'),
+        'flags.falloutzero': {
+          type: 'attack',
+          itemId: this.weapon.id,
+          targeted: this.formDataCache.targeted,
+          damage: {
+            rolls: damageRolls,
+            damageBonus,
+            isCritical: false,
+            criticalCondition: this.weapon.system.critical.condition,
+            critical: `(${this.getCombinedDamageFormula()} + ${finalCritical.formula || ''} + ${abilityBonus}) * ${finalCritical.multiplier || ''}`,
+          },
+        },
+      })
+
+      await message._onRollDamage()
+      return message
+    }
+
+    /**
+     * Roll to hit
+     */
+    const rollBonusTotal = Number(skillBonus + attackBonus + abilityBonus + actorLuck + Number(bonus) - actorPenalties - decayPenalty)
+
+    const roll = new Roll(
+      `${this.getDice()} + ${rollBonusTotal}`,
+      this.actor.getRollData(),
+    )
+
+    await roll.evaluate()
+
+    const attackTooltip = `
+    <div>
+      <div>Skill bonus: ${skillBonus}</div>
+      <div>Perks bonus: ${attackBonus}</div>
+      <div>Ability bonus: ${abilityBonus}</div>
+      <div>Luck bonus: ${actorLuck}</div>
+      ${bonus ? `<div>Other bonus: ${bonus}</div>` : ''}
+      <div>Penalties total: ${actorPenalties}</div>
+      <div>Weapon decay: ${decayPenalty}</div>
+      <hr />
+      <div>Bonus Total: ${rollBonusTotal}</div>
+    </div>
+  `
 
     /**
      * Display roll to hit chat message

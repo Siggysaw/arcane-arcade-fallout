@@ -26,6 +26,7 @@ export default class FalloutZeroItemWeapon extends FalloutZeroItemBase {
     schema.bonusProperties = new fields.HTMLField()
     schema.strengthRequirement = new fields.NumberField({ initial: 0 })
     schema.strengthModifier = new fields.NumberField({ initial: 0 })
+    schema.autoHit = new fields.BooleanField({ initial: false })
     schema.damage = new fields.SchemaField({
       type: new fields.StringField({ initial: 'piercing' }),
       formula: new fields.StringField({ initial: '2d4' }),
