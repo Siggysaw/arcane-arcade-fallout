@@ -32,7 +32,10 @@
     "module/falloutzero.mjs"
   ],
   "styles": [
-    "css/falloutzero.css"
+    "css/falloutzero.css",
+    "css/fnv-chat.css",
+    "css/fnv-chat-system.css",
+    "css/fnv-chat-dice.css"
   ],
   "languages": [
     {

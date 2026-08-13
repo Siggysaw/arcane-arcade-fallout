@@ -1,0 +1,640 @@
+/* ==========================================================================
+   Chat panel — Fallout: New Vegas interface, same grammar as the group-roll
+   overlay and the fallout-ui-redux reference module.
+
+   One see-through black plate holds the whole tab, rounded, with fading
+   corner brackets. Chat entries carry no fill of their own: each is
+   delineated purely by line work, and the speaker's name IS its top border —
+   a short bar, the name, then a bar running out to the far corner, so the
+   line genuinely breaks around the text instead of being masked by a box.
+   Every entry's line work takes the colour of the message's AUTHOR (stamped
+   per message by chat-panel.mjs, since the <li> carries no author id and
+   --user-color on the document element is the local user's).
+
+   No scanlines, no vignette, no grain, no glow — flat and hard-edged like
+   the game. The only curve is the plate's own radius.
+
+   Gated behind body.aafo-vats-chat-fnv, toggled live by the module's chat
+   panel setting (id still `chatTerminal`, so existing clients keep theirs).
+
+   Covers both chat states: the #chat sidebar tab (and #chat-popout) via
+   .chat-sidebar, and the minimized #chat-notifications overlay. The composer
+   (#chat-message) and controls (#chat-controls) are the same elements core
+   re-parents between the two, so their ids cover both states at once — never
+   scope them under a container.
+
+   Layout is untouched on purpose: nothing here sets heights or paddings on
+   the containers that could fight the system's composer geometry.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Fixedsys';
+  src: url('../assets/fonts/fixedsys.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Monofonto';
+  src: url('../assets/fonts/monofonto.otf') format('opentype');
+  font-display: swap;
+}
+
+body.aafo-vats-chat-fnv .chat-sidebar,
+body.aafo-vats-chat-fnv #chat-notifications,
+body.aafo-vats-chat-fnv #chat-message,
+body.aafo-vats-chat-fnv #chat-controls {
+  --av-amber: #ffb641;
+  /* The panel chrome follows the VIEWING user (--av-user is stamped on the
+     body, same value the HUD tints itself with); entries follow their
+     author. */
+  --av-panel: var(--av-user, var(--av-amber));
+  --av-back: rgba(8, 8, 6, 0.55);
+  --av-radius: 6px;
+  --fnv-line: 2px;
+  --av-corner: 34px;
+  /* Fixedsys is a bitmap-grid face designed around a 16px cell; rendering it
+     smaller downscales the bitmap look (smaller AND blurrier). Core chat is
+     14px, so this is a deliberate step up, not just parity. One knob for
+     messages, composer and prompt together. */
+  --av-chat-font-size: 16px;
+  --av-chat-line-height: 1.35;
+}
+
+/* --------------------------------------------------------------------------
+   The plate: expanded sidebar + popout
+
+   Core already ships .chat-sidebar:not(.sidebar-popout) { background:
+   transparent } and #sidebar-content.active-chat { pointer-events: none },
+   so the tab genuinely floats over the canvas — the translucent fill below
+   really is see-through to the scene.
+   -------------------------------------------------------------------------- */
+
+body.aafo-vats-chat-fnv .chat-sidebar {
+  position: relative;
+  isolation: isolate;
+  background: var(--av-back);
+  border: none;
+  border-radius: var(--av-radius);
+}
+
+  /* Corner brackets: eight fading arms, two per corner, each running away from
+   its corner and fading out — the vertical_fade_line.xml grammar applied to
+   a box that has no continuous border. Shorthand order is position / size:
+   `left top / 34px 2px` means position left-top, size 34 wide by 2 tall.
+   Reversed, the arm is invisible. */
+  body.aafo-vats-chat-fnv .chat-sidebar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    border-radius: var(--av-radius);
+    background: linear-gradient(to right, var(--av-panel), transparent) left top / var(--av-corner) var(--fnv-line) no-repeat, linear-gradient(to bottom, var(--av-panel), transparent) left top / var(--fnv-line) var(--av-corner) no-repeat, linear-gradient(to left, var(--av-panel), transparent) right top / var(--av-corner) var(--fnv-line) no-repeat, linear-gradient(to bottom, var(--av-panel), transparent) right top / var(--fnv-line) var(--av-corner) no-repeat, linear-gradient(to right, var(--av-panel), transparent) left bottom / var(--av-corner) var(--fnv-line) no-repeat, linear-gradient(to top, var(--av-panel), transparent) left bottom / var(--fnv-line) var(--av-corner) no-repeat, linear-gradient(to left, var(--av-panel), transparent) right bottom / var(--av-corner) var(--fnv-line) no-repeat, linear-gradient(to top, var(--av-panel), transparent) right bottom / var(--fnv-line) var(--av-corner) no-repeat;
+  }
+
+  /* Popped-out chat tab: the plate fills a square application frame, so it
+   squares off too. Note the class is on the SAME element — core pushes
+   `sidebar-popout` onto the tab's own class list; `.chat-popout` is a
+   different application entirely (the single-message popout). */
+  body.aafo-vats-chat-fnv .chat-sidebar.sidebar-popout,
+  body.aafo-vats-chat-fnv .chat-sidebar.sidebar-popout::before {
+    border-radius: 0;
+  }
+
+/* Messages are entries on one plate, not stacked cards */
+body.aafo-vats-chat-fnv ol.chat-log {
+  background: none;
+  border: none;
+  gap: 0;
+}
+
+  /* --------------------------------------------------------------------------
+   Chat entries
+
+   Bracket line work only: the name's bars are the top line, fading stubs
+   descend from the top corners and rise from the bottom ones, and the bottom
+   line is solid. No fill — the plate behind is the background.
+
+   The line work lives on a pseudo-element rather than a real border because
+   `border: none` is also what neutralises core's inline
+   style="border-color:…" on OOC messages (it zeroes the width the inline
+   colour would tint) without an !important fight.
+   -------------------------------------------------------------------------- */
+
+  body.aafo-vats-chat-fnv ol.chat-log li.chat-message {
+    --fnv-main: var(--av-msg, var(--av-amber));
+    --fnv-dim: color-mix(in srgb, var(--fnv-main) 62%, transparent);
+    --fnv-faint: color-mix(in srgb, var(--fnv-main) 28%, transparent);
+    --fnv-fill: color-mix(in srgb, var(--fnv-main) 16%, transparent);
+    --fnv-stub-top: 16px;
+    --fnv-stub-bottom: 38px;
+    /* Where the frame's top line sits INSIDE the entry. The name row is
+     centred on that line, so half of it hangs above — keeping the lift at
+     least half the row's height is what stops the name escaping the entry's
+     box. That containment is load-bearing for the content-visibility below:
+     it implies contain:paint, which would clip anything overhanging. */
+    --av-name-lift: 10px;
+    position: relative;
+    isolation: isolate;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 6px 6px 2px;
+    padding: calc(var(--av-name-lift) + 6px) 10px 7px;
+    color: var(--fnv-main);
+    font-family: 'Fixedsys', 'Monofonto', monospace;
+    font-size: var(--av-chat-font-size);
+    line-height: var(--av-chat-line-height);
+    /* The chat log runs an order of magnitude taller than its viewport (60
+     messages measured at 8046px in an 848px scroller), and every entry
+     carries a translucent plate, four gradient stubs and two more for the
+     name bar. Rendering all of that for content nobody can see is what makes
+     collapsing the sidebar hitch — the collapse animates margin-right, so
+     the whole log restyles and relayouts every frame.
+
+     content-visibility lets the browser skip style, layout and paint for the
+     ~89% of entries that are outside the scroller. `auto` on
+     contain-intrinsic-size means it remembers each entry's real measured
+     height once it has been rendered, so the scrollbar does not jump and the
+     fallback is only ever used for entries never yet seen. */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 92px;
+  }
+
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message::before {
+      content: '';
+      position: absolute;
+      inset: var(--av-name-lift) 0 0 0;
+      pointer-events: none;
+      border-bottom: var(--fnv-line) solid var(--fnv-main);
+      background: linear-gradient(to bottom, var(--fnv-main), transparent) left top / var(--fnv-line) var(--fnv-stub-top) no-repeat, linear-gradient(to bottom, var(--fnv-main), transparent) right top / var(--fnv-line) var(--fnv-stub-top) no-repeat, linear-gradient(to top, var(--fnv-main), transparent) left bottom / var(--fnv-line) var(--fnv-stub-bottom) no-repeat, linear-gradient(to top, var(--fnv-main), transparent) right bottom / var(--fnv-line) var(--fnv-stub-bottom) no-repeat;
+    }
+
+    /* The header keeps only the metadata row; the name is lifted onto the border */
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-header {
+      position: static;
+      color: var(--fnv-dim);
+      font-size: calc(var(--av-chat-font-size) - 4px);
+      line-height: 1.2;
+    }
+
+    /* --- The name AS the border ------------------------------------------------
+   A flex row straddling the entry's top edge: short bar, name, then a bar
+   flexing out to the far corner. Same treatment as the group-roll card
+   title, and it meets the corner stubs at both ends because the row spans
+   the full width. */
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender {
+      position: absolute;
+      top: calc(var(--av-name-lift) + var(--fnv-line) / 2);
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      z-index: 2;
+      /* The row is line work lying across the top of the entry, and it paints
+     above everything: without this it hit-tests first and eats the clicks on
+     the delete and dismiss controls underneath it (ApplicationV2 dispatches
+     on event.target.closest("[data-action]"), which finds nothing on the
+     bar). Only the pieces that are genuinely interactive take it back. */
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      font-family: 'Monofonto', 'Fixedsys', monospace;
+      font-size: 17px;
+      font-weight: normal;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      white-space: nowrap;
+      color: var(--fnv-main);
+      background: none;
+      text-shadow: none;
+    }
+
+      body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender::before {
+        content: '';
+        flex: none;
+        width: 18px;
+        height: var(--fnv-line);
+        background: var(--fnv-main);
+      }
+
+      body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender::after {
+        content: '';
+        flex: 1;
+        /* never let a long name starve the line: the bar still has to reach the
+     corner stub on the right */
+        min-width: 14px;
+        height: var(--fnv-line);
+        background: var(--fnv-main);
+      }
+
+      /* The system dresses .message-sender with an avatar thumbnail and a stacked
+   character-name / player-name block. A border line has room for one row, so
+   the stack is laid out inline — character name at size, player dim and
+   small beside it — and the portrait is dropped: at line height it is too
+   small to identify anyone. Written to degrade to core's bare {{alias}}
+   text, which simply has none of these children. */
+      body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender .avatar {
+        display: none;
+      }
+
+      body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender .name-stacked {
+        pointer-events: auto;
+      }
+
+      body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender .name-stacked {
+        display: flex;
+        flex-direction: row;
+        /* The system ships `.chat-sidebar .message-header .name-stacked { flex:1;
+     min-height:32px; justify-content:center; font-family:fixedsys }`
+     (systems/fallout-redux/css/chat.css). Every one of those has to be
+     unwound by hand: flex:1 would make the name split the row 50/50 with
+     the ::after bar so the rule never starts beside the text, centring
+     would open a gap on both sides of it, the 32px floor would make the row
+     three times a line tall, and the direct font-family would beat the
+     Monofonto inherited from .message-sender. */
+        flex: 0 1 auto;
+        min-height: 0;
+        justify-content: flex-start;
+        font-family: inherit;
+        /* centre, not baseline: baseline alignment sizes the row from the font's
+     own baseline metrics, which for the two different sizes here can leave
+     the row taller than its tallest child and push the name off the rule it
+     is supposed to be sitting on. Centring makes it exactly one line high
+     whatever face ends up loading. */
+        align-items: center;
+        gap: 7px;
+        min-width: 0;
+        overflow: hidden;
+        line-height: 1;
+      }
+
+        body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender .name-stacked .title,
+        body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender .name-stacked .subtitle {
+          line-height: 1;
+          margin: 0;
+        }
+        /* The system colours .title and <time> with --user-color, which is the
+   VIEWING user's colour, not the author's — the name would disagree with
+   the bars either side of it on every message but your own. */
+        body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender .name-stacked .title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: var(--fnv-main);
+          font-weight: normal;
+        }
+
+        body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-sender .name-stacked .subtitle {
+          flex: none;
+          font-size: 12px;
+          letter-spacing: 0.04em;
+          color: var(--fnv-dim);
+        }
+
+    /* Timestamp + delete/dismiss: the header's only in-flow content once the
+   name has been lifted onto the border, so it settles top-right under it. */
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-header {
+      justify-content: flex-end;
+      /* clears the name row, which straddles the entry's top edge */
+      padding-top: 7px;
+    }
+
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-metadata {
+      flex: none;
+      /* the system nudges this up into what is now the border line */
+      transform: none;
+      color: var(--fnv-dim);
+      opacity: 0.8;
+      text-shadow: none;
+    }
+
+      body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-metadata time {
+        color: var(--fnv-dim);
+      }
+
+      body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-metadata a {
+        color: var(--fnv-dim);
+        transition: color 0.1s;
+      }
+
+        body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-metadata a:hover {
+          color: var(--fnv-main);
+          text-shadow: none;
+        }
+
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .flavor-text,
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .whisper-to {
+      color: var(--fnv-dim);
+      font-family: 'Fixedsys', 'Monofonto', monospace;
+      font-size: calc(var(--av-chat-font-size) - 2px);
+      text-shadow: none;
+    }
+
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-content {
+      color: var(--fnv-main);
+      text-shadow: none;
+    }
+
+    /* Message-style variants: line work only, so the entry stays on the plate.
+   Whispers dim, emotes lean, blind rolls read as unresolved. */
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message.whisper {
+      --fnv-stub-top: 34px;
+    }
+
+      body.aafo-vats-chat-fnv ol.chat-log li.chat-message.whisper .message-content {
+        color: var(--fnv-dim);
+      }
+
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message.emote .message-content {
+      font-style: italic;
+      color: var(--fnv-dim);
+    }
+
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message.blind .message-content {
+      color: var(--fnv-faint);
+    }
+
+    /* --------------------------------------------------------------------------
+   Roll cards inside an entry
+   Restyled, never restructured: the tooltip's expand/collapse is a
+   grid-template-rows 0fr -> 1fr on .dice-tooltip with overflow:hidden on its
+   wrapper, so nothing here touches display or overflow. .dice-result also
+   keeps its order, since chat-dice.mjs matches sprites to it positionally.
+   -------------------------------------------------------------------------- */
+
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .dice-roll .dice-total {
+      background: color-mix(in srgb, var(--fnv-main) 10%, transparent);
+      border: 1px solid var(--fnv-faint);
+      border-radius: 0;
+      color: var(--fnv-main);
+      font-family: 'Fixedsys', 'Monofonto', monospace;
+      text-shadow: none;
+      box-shadow: none;
+    }
+
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .dice-roll .dice-formula,
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .dice-roll .part-formula {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--fnv-faint);
+      border-radius: 0;
+      color: var(--fnv-dim);
+      font-family: 'Fixedsys', 'Monofonto', monospace;
+      text-shadow: none;
+    }
+
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .dice-roll .part-header,
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .dice-roll .part-total {
+      color: var(--fnv-main);
+    }
+
+    /* Buttons inside message content: text_box.xml — reserved transparent
+   border, box and fill appear on hover.
+
+   The group-roll card is excluded: it dresses its own controls, and this
+   rule outranks group-roll.css on specificity alone (four classes to one),
+   which would repaint END ROLL from warning red to plain amber and strip
+   the backing plate off the card's reset button. */
+    body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-content button:not(.av-gr-card *):not([class*="fa-"]) {
+      font-family: 'Monofonto', 'Fixedsys', monospace;
+      background: none;
+      border: var(--fnv-line) solid transparent;
+      border-radius: 0;
+      color: var(--fnv-main);
+      transition: background 0.08s, border-color 0.08s;
+    }
+
+      body.aafo-vats-chat-fnv ol.chat-log li.chat-message .message-content button:not(.av-gr-card *):not([class*="fa-"]):hover {
+        border-color: var(--fnv-main);
+        background: var(--fnv-fill);
+        box-shadow: none;
+        color: var(--fnv-main);
+      }
+
+/* --------------------------------------------------------------------------
+   Message crawl — the block-level half of the module's text system: a
+   staggered left-to-right clip-path wipe, which works on plain text, dice
+   cards and buttons alike without reflow. Delays are set per element by
+   scripts/text-reveal.mjs (45ms step, 900ms cap). The per-character variant
+   used by the token bubbles lives in chat-bubbles.css.
+   -------------------------------------------------------------------------- */
+
+/* fill-mode is `backwards`, and the resting state carries NO clip-path.
+   Backwards holds the `from` keyframe through the stagger delay so a block
+   cannot flash in before its turn, but once the wipe finishes the element
+   goes back to being unclipped. A forwards/both fill would leave
+   `inset(0 0 0 0)` on the element permanently — a clip to the border box,
+   not "no clip" — which slices anything a block deliberately overhangs
+   with, the group-roll card's title riding its top border being the exact
+   case. It also fails open: if the animation never runs at all the content
+   is simply visible rather than permanently clipped away. */
+body.aafo-vats-chat-fnv .av-reveal {
+  animation: av-wipe 0.18s linear backwards;
+}
+
+@keyframes av-wipe {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Minimized: notification toasts over the canvas
+
+   There is no plate here — the toasts float free — so each entry carries its
+   own translucent fill and rounds its own corners.
+   -------------------------------------------------------------------------- */
+
+body.aafo-vats-chat-fnv #chat-notifications ol.chat-log li.chat-message {
+  background: var(--av-back, rgba(8, 8, 6, 0.55));
+  border-radius: var(--av-radius, 6px);
+  padding: calc(var(--av-name-lift) + 4px) 10px 8px;
+  margin: 6px 4px 2px;
+  /* Toasts are few and always on screen; skipping them buys nothing and the
+     rounded fill would need its own intrinsic sizing. */
+  content-visibility: visible;
+}
+
+/* --------------------------------------------------------------------------
+   Composer + controls — the same elements in both states, because core
+   re-parents them between #chat-notifications and .chat-form. Scoped by id
+   alone for exactly that reason.
+   -------------------------------------------------------------------------- */
+
+/* One box, not three. Core puts the composer's chrome on the middle
+   element (#chat-message > .editor-container gets a 2px cool-grey border
+   and an opaque cool fill), so that is the element the amber frame goes on;
+   the prose-mirror host outside it and the ProseMirror content inside it
+   are both stripped bare. Bordering the outer and inner ones instead leaves
+   core's grey ring and its opaque fill sandwiched between them, which also
+   defeats the translucency. */
+body.aafo-vats-chat-fnv #chat-message.chat-input,
+body.aafo-vats-chat-fnv #chat-message .editor-content.ProseMirror {
+  font-family: 'Fixedsys', 'Monofonto', monospace;
+  color: var(--av-panel);
+  text-shadow: none;
+  background: none;
+  border: none;
+  border-radius: 0;
+}
+
+body.aafo-vats-chat-fnv #chat-message .editor-container {
+  position: relative;
+  background: rgba(8, 8, 6, 0.6);
+  border: var(--fnv-line) solid color-mix(in srgb, var(--av-panel) 28%, transparent);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+  body.aafo-vats-chat-fnv #chat-message .editor-container:focus-within {
+    border-color: var(--av-panel);
+    box-shadow: none;
+    outline: none;
+  }
+
+  /* Fallout terminal command prompt: a fixed `>` at the head of the input,
+   with the native caret standing in for the cursor. Chrome, not FX. */
+  body.aafo-vats-chat-fnv #chat-message .editor-container::before {
+    content: '>';
+    position: absolute;
+    left: 6px;
+    top: 10px; /* matches the content's first text line at 16px */
+    z-index: 1;
+    pointer-events: none;
+    font-family: 'Fixedsys', 'Monofonto', monospace;
+    font-size: var(--av-chat-font-size);
+    line-height: var(--av-chat-line-height);
+    color: var(--av-panel);
+  }
+
+body.aafo-vats-chat-fnv #chat-message .editor-content.ProseMirror {
+  padding-left: 22px;
+  caret-color: var(--av-panel);
+  font-size: var(--av-chat-font-size);
+  line-height: var(--av-chat-line-height);
+}
+
+  body.aafo-vats-chat-fnv #chat-message .editor-content.ProseMirror:focus,
+  body.aafo-vats-chat-fnv #chat-message .editor-content.ProseMirror:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+body.aafo-vats-chat-fnv #chat-message .menu-container .editor-menu {
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid color-mix(in srgb, var(--av-panel) 28%, transparent);
+}
+
+/* No font-family here, ever. Core puts the FontAwesome class on the BUTTON
+   itself (`ui-control icon fa-solid fa-globe`) and draws the glyph from a
+   ::before, which inherits font-family — so setting a face on the control
+   silently swaps the icon font out and every one of these renders blank. */
+body.aafo-vats-chat-fnv #chat-controls .ui-control {
+  color: color-mix(in srgb, var(--av-panel) 62%, transparent);
+  background: none;
+  border: var(--fnv-line) solid transparent;
+  border-radius: 0;
+  text-shadow: none;
+  transition: background 0.08s, border-color 0.08s, color 0.1s;
+}
+
+  body.aafo-vats-chat-fnv #chat-controls .ui-control:hover,
+  body.aafo-vats-chat-fnv #chat-controls .ui-control[aria-pressed='true'] {
+    color: var(--av-panel);
+    border-color: var(--av-panel);
+    background: color-mix(in srgb, var(--av-panel) 16%, transparent);
+    box-shadow: none;
+  }
+
+/* --------------------------------------------------------------------------
+   Lean controls — players only (body.aafo-vats-chat-lean, set by
+   chat-panel.mjs for non-GMs). A player needs three ways to speak and three
+   ways to format; everything else is table management or markup they will
+   never want mid-scene. GMs keep the full set.
+   -------------------------------------------------------------------------- */
+
+body.aafo-vats-chat-lean #message-modes .ui-control[data-mode='self'],
+body.aafo-vats-chat-lean #message-modes .ui-control[data-mode='blind'] {
+  display: none;
+}
+
+/* The composer's toolbar keeps only the text-size dropdown; bold and italic
+   are separate controls next to the speaking modes (chat-panel.mjs).
+
+   Structural and hiding-only, both deliberately. Core rebuilds this entire
+   <menu> on every keystroke, so anything JS marked would be gone by the next
+   character — the selector has to describe the item, not tag it. And it must
+   never force-SHOW: ProseMirrorMenu hides its own overflowing items with the
+   `hidden` attribute, and a `display: list-item` here would pop them back
+   into a menu too narrow to hold them. */
+body.aafo-vats-chat-lean #chat-message .editor-menu > li:not(:has(> button.sizes)) {
+  display: none;
+}
+
+/* The injected emphasis toggles sit in the control row, styled as its own
+   ui-controls are. No font-family — these carry fa-* classes themselves. */
+body.aafo-vats-chat-fnv #chat-controls .av-pm-mark {
+  display: flex;
+  gap: 4px;
+}
+
+/* Icon-only, same reason as above: no font-family. */
+body.aafo-vats-chat-fnv .chat-sidebar .jump-to-bottom {
+  border-radius: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Scrollbar (fallout-ui-redux recipe: fading slider on a bare track)
+
+   Foundry sets scrollbar-color on an ancestor, and any non-auto value makes
+   Chromium ignore the -webkit rules below. Keep this reset first.
+   -------------------------------------------------------------------------- */
+
+body.aafo-vats-chat-fnv .chat-sidebar .chat-scroll,
+body.aafo-vats-chat-fnv .chat-sidebar .chat-scroll * {
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+  body.aafo-vats-chat-fnv .chat-sidebar .chat-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+    background-repeat: no-repeat, no-repeat;
+    background-position: center top, center bottom;
+    background-size: 100% 4px, 100% 4px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' preserveAspectRatio='none'><polygon points='5,0 10,10 0,10' fill='%23ffb641'/></svg>"), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' preserveAspectRatio='none'><polygon points='5,10 10,0 0,0' fill='%23ffb641'/></svg>");
+  }
+
+  body.aafo-vats-chat-fnv .chat-sidebar .chat-scroll::-webkit-scrollbar-track {
+    background: transparent;
+    border: none;
+  }
+
+  body.aafo-vats-chat-fnv .chat-sidebar .chat-scroll::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 0;
+    box-shadow: inset 0 0 0 1px var(--av-panel);
+  }
+
+    body.aafo-vats-chat-fnv .chat-sidebar .chat-scroll::-webkit-scrollbar-thumb:hover {
+      background: var(--av-panel);
+      box-shadow: none;
+    }
+
+  body.aafo-vats-chat-fnv .chat-sidebar .chat-scroll::-webkit-scrollbar-button {
+    display: block;
+    background: transparent;
+    height: 6px;
+    width: 6px;
+  }
+
+  body.aafo-vats-chat-fnv .chat-sidebar .chat-scroll::-webkit-scrollbar-corner {
+    display: none;
+  }

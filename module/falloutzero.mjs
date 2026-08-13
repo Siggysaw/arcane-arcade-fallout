@@ -9,6 +9,11 @@ import { registerSystemSettings, registerHbsHelpers } from './registerSettings.m
 import * as applications from '../module/applications/_module.mjs'
 import { registerHooks } from './registerHooks.mjs'
 
+// FNV chat skin — side-effect import, registers its own init/ready hooks.
+// Remove this line and the three css/fnv-chat*.css entries in system.json to
+// take the whole feature back out.
+import './chat-fnv/fnv-chat.mjs'
+
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */

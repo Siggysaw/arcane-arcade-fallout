@@ -1,0 +1,103 @@
+/* ==========================================================================
+   FNV Chat — chat dice sprites.
+
+   Requires module/chat-fnv/fnv-chat-dice.mjs. 48x48 cells from the grayscale
+   Kneeshaw sprite sheets in assets/dice/. Frame selection uses
+   background-position LONGHANDS only — the `background` shorthand resets
+   background-position and would lock every die at frame 0. The sheets are
+   pure grayscale with binary alpha, so sepia -> hue-rotate tints them with no
+   fringe.
+
+   NO url() appears in this file. The sheet paths arrive as inline custom
+   properties (--av-strip / --av-sheet) written by the script, which derives
+   them from import.meta.url — so they are absolute and carry any ROUTE_PREFIX
+   without the system id ever appearing in a string.
+
+   Ungated by the panel class on purpose: injection is controlled by the
+   script's own setting, and the --av-* vars below fall back so the sprites
+   still read correctly with the panel skin off.
+
+   ---- DO NOT REORDER THIS FILE -------------------------------------------
+   `.av-die.av-landed.av-static` ties on specificity with
+   `.av-die.av-landed.av-cols-N` and wins ONLY by coming later in source
+   order. Running this through a rule-sorting formatter makes every history
+   re-render replay the landing animation.
+   ========================================================================== */
+
+.av-dice-sprites {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  padding: 4px 0 2px;
+}
+
+.av-die {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  background-image: var(--av-strip);
+  background-repeat: no-repeat;
+  background-position-x: 0;
+  background-position-y: 0;
+  image-rendering: pixelated;
+}
+
+/* Gray tumble on the rolling strip. Frames 0-3 are the clean rotation
+   cycle (frames 4-6 are duplicates with ghost markings — never shown).
+   The 0.5s delay lets the message wipe in with the die at rest before the
+   tumble visibly starts; the script's landing timers account for it.
+   That delay is mirrored by ROLL_DELAY_MS in fnv-chat-dice.mjs — two
+   constants, one meaning. Change both or neither. */
+.av-die.av-rolling {
+  animation: fnv-die-roll 0.16s steps(4) infinite;
+  animation-delay: 0.5s;
+}
+@keyframes fnv-die-roll {
+  to { background-position-x: -192px; }
+}
+
+/* Landed: swap to the number sheet, row = rolled face, and wobble across
+   the columns once, holding the last column's rest pose. */
+.av-die.av-landed {
+  background-image: var(--av-sheet);
+  background-position-y: var(--av-rowy, 0px);
+}
+.av-die.av-landed.av-cols-6 {
+  animation: fnv-die-settle-6 0.36s steps(5) forwards;
+}
+.av-die.av-landed.av-cols-7 {
+  animation: fnv-die-settle-7 0.42s steps(6) forwards;
+}
+@keyframes fnv-die-settle-6 {
+  to { background-position-x: -240px; }
+}
+@keyframes fnv-die-settle-7 {
+  to { background-position-x: -288px; }
+}
+
+/* History re-renders: no animation, straight to the rest pose. Must match
+   .av-landed.av-cols-N specificity AND follow it to actually win. */
+.av-die.av-landed.av-static {
+  animation: none;
+}
+.av-die.av-static.av-cols-6 { background-position-x: -240px; }
+.av-die.av-static.av-cols-7 { background-position-x: -288px; }
+
+/* --av-glow-soft is intentionally left undefined; the fallback green is
+   chosen to match the hue-rotate(78deg) pass tint on the same declaration.
+   Defining it would change the glow away from the die it belongs to. */
+.av-die.av-pass {
+  filter: sepia(1) saturate(3.5) hue-rotate(78deg) brightness(1.05)
+    drop-shadow(0 0 4px var(--av-glow-soft, rgba(27, 255, 128, 0.28)));
+}
+.av-die.av-fail {
+  filter: sepia(1) saturate(4) hue-rotate(-45deg)
+    drop-shadow(0 0 4px rgba(255, 77, 61, 0.35));
+}
+
+/* Dice dropped by kh/kl stay untinted and fade back. */
+.av-die.av-discarded {
+  filter: none;
+  opacity: 0.45;
+}

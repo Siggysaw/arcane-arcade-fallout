@@ -1,0 +1,725 @@
+/* ==========================================================================
+   FNV Chat — Fallout: New Vegas terminal skin for the Foundry chat sidebar.
+
+   Ported from the AAFO V.A.T.S. module (styles/chat-panel.css, by way of the
+   standalone `fnv-chat` extraction). This file is self-contained: it works on
+   stock Foundry core chat with NO JavaScript. Everything that needs a script
+   lives in module/chat-fnv/fnv-chat.mjs, and everything that unwinds a rule
+   belonging to THIS system lives in css/fnv-chat-system.css.
+
+   ---- Where this sits in the cascade -------------------------------------
+   Foundry emits system stylesheets as `@import "<src>" layer(system)` inside
+   an inline <style>, in the order they are listed in system.json. The core
+   layer order is:
+
+     reset, variables, elements, blocks, applications, compatibility,
+     layouts, system, modules, exceptions
+
+   so this beats all of core on layer alone, ties with the rest of this
+   system's CSS (specificity and source order decide, which is why this entry
+   is listed LAST in system.json), and still loses to any module — a module
+   that wants to restyle chat on top of this can still do so, exactly as
+   before this was ported in.
+
+   ---- The gate -----------------------------------------------------------
+   Every rule is gated `body:not(.fnv-chat-off)` rather than on a positive
+   class. Same specificity as a class gate ((0,1,1): `body` + `.fnv-chat-off`
+   inside :not()), but it needs no JS to switch ON — the script only ever adds
+   that class to switch the skin OFF. It also fails open: if the script errors,
+   the user still gets the skin rather than a half-painted one.
+
+   ---- Fonts --------------------------------------------------------------
+   No @font-face here. The system already declares both faces it needs in
+   css/falloutzero.css — 'Monofonto' and 'fixedsys', from assets/fonts/ — and
+   those files are byte-identical to the ones the source module shipped, so
+   the type renders exactly as it did there for zero added bytes. CSS family
+   names match ASCII case-insensitively, which is why 'Fixedsys' below
+   resolves to the system's 'fixedsys'.
+
+   No url() appears anywhere in this file, or in either of its companions.
+
+   ---- Design -------------------------------------------------------------
+   One see-through black plate holds the whole tab, rounded, with fading
+   corner brackets. Chat entries carry no fill of their own: each is
+   delineated purely by line work, and the speaker's name IS its top border —
+   a short bar, the name, then a bar running out to the far corner, so the
+   line genuinely breaks around the text instead of being masked by a box.
+
+   No scanlines, no vignette, no grain, no glow — flat and hard-edged like
+   the game. The only curve is the plate's own radius.
+
+   Covers both chat states: the #chat sidebar tab (and its popped-out window,
+   #chat-popout) via .chat-sidebar, and the minimized #chat-notifications
+   overlay. The composer (#chat-message) and controls (#chat-controls) are the
+   same elements core re-parents between the two, so their ids cover both
+   states at once — never scope them under a container.
+
+   Layout is untouched on purpose: nothing here sets heights or paddings on
+   the containers that could fight the system's composer geometry.
+   ========================================================================== */
+
+body:not(.fnv-chat-off) .chat-sidebar,
+body:not(.fnv-chat-off) #chat-notifications,
+body:not(.fnv-chat-off) #chat-message,
+body:not(.fnv-chat-off) #chat-controls {
+  --av-amber: #ffb641;
+  /* The panel chrome follows the VIEWING user (--av-user is stamped on the
+     body by the script); entries follow their author. With no script both
+     fall back to amber, which is the correct default. */
+  --av-panel: var(--av-user, var(--av-amber));
+  --av-back: rgba(8, 8, 6, 0.55);
+  --av-radius: 6px;
+  --fnv-line: 2px;
+  --av-corner: 34px;
+
+  /* Fixedsys is a bitmap-grid face designed around a 16px cell; rendering it
+     smaller downscales the bitmap look (smaller AND blurrier). Core chat is
+     14px, so this is a deliberate step up, not just parity. One knob for
+     messages, composer and prompt together. */
+  --av-chat-font-size: 16px;
+  --av-chat-line-height: 1.35;
+}
+
+/* --------------------------------------------------------------------------
+   The plate: expanded sidebar + popout
+
+   Core already ships .chat-sidebar:not(.sidebar-popout) { background:
+   transparent } and #sidebar-content.active-chat { pointer-events: none },
+   so the tab genuinely floats over the canvas — the translucent fill below
+   really is see-through to the scene.
+   -------------------------------------------------------------------------- */
+
+body:not(.fnv-chat-off) .chat-sidebar {
+  position: relative;
+  isolation: isolate;
+  background: var(--av-back);
+  border: none;
+  border-radius: var(--av-radius);
+}
+
+/* Corner brackets: eight fading arms, two per corner, each running away from
+   its corner and fading out — the vertical_fade_line.xml grammar applied to
+   a box that has no continuous border. Shorthand order is position / size:
+   `left top / 34px 2px` means position left-top, size 34 wide by 2 tall.
+   Reversed, the arm is invisible. */
+body:not(.fnv-chat-off) .chat-sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: var(--av-radius);
+  background:
+    linear-gradient(to right, var(--av-panel), transparent) left top / var(--av-corner) var(--fnv-line) no-repeat,
+    linear-gradient(to bottom, var(--av-panel), transparent) left top / var(--fnv-line) var(--av-corner) no-repeat,
+    linear-gradient(to left, var(--av-panel), transparent) right top / var(--av-corner) var(--fnv-line) no-repeat,
+    linear-gradient(to bottom, var(--av-panel), transparent) right top / var(--fnv-line) var(--av-corner) no-repeat,
+    linear-gradient(to right, var(--av-panel), transparent) left bottom / var(--av-corner) var(--fnv-line) no-repeat,
+    linear-gradient(to top, var(--av-panel), transparent) left bottom / var(--fnv-line) var(--av-corner) no-repeat,
+    linear-gradient(to left, var(--av-panel), transparent) right bottom / var(--av-corner) var(--fnv-line) no-repeat,
+    linear-gradient(to top, var(--av-panel), transparent) right bottom / var(--fnv-line) var(--av-corner) no-repeat;
+}
+
+/* Popped-out chat tab: the plate fills a square application frame, so it
+   squares off too. Note the class is on the SAME element — core pushes
+   `sidebar-popout` onto the tab's own class list; `.chat-popout` is a
+   different application entirely (the single-message popout, which this skin
+   does not reach). */
+body:not(.fnv-chat-off) .chat-sidebar.sidebar-popout,
+body:not(.fnv-chat-off) .chat-sidebar.sidebar-popout::before {
+  border-radius: 0;
+}
+
+/* Messages are entries on one plate, not stacked cards */
+body:not(.fnv-chat-off) ol.chat-log {
+  background: none;
+  border: none;
+  gap: 0;
+}
+
+/* Core hard-codes `themed theme-light` on ol.chat-log (both the sidebar log
+   and the notification overlay), so every colour token inside a message
+   resolves to LIGHT-theme values while this skin paints a near-black plate
+   under them. Anything the rules below do not explicitly colour — content
+   links, enriched tables, <hr>, inputs, secret blocks — would render
+   dark-on-light on black. Re-pointing the tokens once here is far cheaper
+   than chasing each element, and it catches markup this file has never seen. */
+body:not(.fnv-chat-off) ol.chat-log {
+  --color-text-primary: var(--fnv-main, var(--av-amber));
+  --color-text-secondary: var(--fnv-dim, var(--av-amber));
+  --color-text-emphatic: var(--fnv-main, var(--av-amber));
+  --color-text-subtle: var(--fnv-dim, var(--av-amber));
+  --content-link-background: color-mix(in srgb, var(--fnv-main, var(--av-amber)) 14%, transparent);
+  --content-link-border-color: color-mix(in srgb, var(--fnv-main, var(--av-amber)) 40%, transparent);
+  --content-link-text-color: var(--fnv-main, var(--av-amber));
+  --content-link-icon-color: var(--fnv-dim, var(--av-amber));
+  --table-border-color: color-mix(in srgb, var(--fnv-main, var(--av-amber)) 30%, transparent);
+  --hr-border: color-mix(in srgb, var(--fnv-main, var(--av-amber)) 30%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   Chat entries
+
+   Bracket line work only: the name's bars are the top line, fading stubs
+   descend from the top corners and rise from the bottom ones, and the bottom
+   line is solid. No fill — the plate behind is the background.
+
+   The line work lives on a pseudo-element rather than a real border because
+   `border: none` is also what neutralises core's inline
+   style="border-color:…" on OOC messages (it zeroes the width the inline
+   colour would tint) without an !important fight.
+   -------------------------------------------------------------------------- */
+
+body:not(.fnv-chat-off) ol.chat-log li.chat-message {
+  --fnv-main: var(--av-msg, var(--av-amber));
+  --fnv-dim: color-mix(in srgb, var(--fnv-main) 62%, transparent);
+  --fnv-faint: color-mix(in srgb, var(--fnv-main) 28%, transparent);
+  --fnv-fill: color-mix(in srgb, var(--fnv-main) 16%, transparent);
+  --fnv-stub-top: 16px;
+  --fnv-stub-bottom: 38px;
+  /* Where the frame's top line sits INSIDE the entry. The name row is
+     centred on that line, so half of it hangs above — keeping the lift at
+     least half the row's height is what stops the name escaping the entry's
+     box. That containment is load-bearing for the content-visibility below:
+     it implies contain:paint, which would clip anything overhanging. */
+  --av-name-lift: 10px;
+
+  position: relative;
+  isolation: isolate;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 6px 6px 2px;
+  padding: calc(var(--av-name-lift) + 6px) 10px 7px;
+  color: var(--fnv-main);
+  font-family: 'Fixedsys', 'Monofonto', ui-monospace, monospace;
+  font-size: var(--av-chat-font-size);
+  line-height: var(--av-chat-line-height);
+
+  /* The chat log runs an order of magnitude taller than its viewport (60
+     messages measured at 8046px in an 848px scroller), and every entry
+     carries four gradient stubs plus two more for the name bar. Rendering
+     all of that for content nobody can see is what makes collapsing the
+     sidebar hitch — the collapse animates margin-right, so the whole log
+     restyles and relayouts every frame. Measured 2.2x faster on a full-log
+     restyle (13.8ms -> 6.2ms, 61 messages).
+
+     content-visibility lets the browser skip style, layout and paint for the
+     ~89% of entries that are outside the scroller. `auto` on
+     contain-intrinsic-size means it remembers each entry's real measured
+     height once it has been rendered, so the scrollbar does not jump and the
+     fallback is only ever used for entries never yet seen. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 92px;
+}
+
+body:not(.fnv-chat-off) ol.chat-log li.chat-message::before {
+  content: '';
+  position: absolute;
+  inset: var(--av-name-lift) 0 0 0;
+  pointer-events: none;
+  border-bottom: var(--fnv-line) solid var(--fnv-main);
+  background:
+    linear-gradient(to bottom, var(--fnv-main), transparent) left top / var(--fnv-line) var(--fnv-stub-top) no-repeat,
+    linear-gradient(to bottom, var(--fnv-main), transparent) right top / var(--fnv-line) var(--fnv-stub-top) no-repeat,
+    linear-gradient(to top, var(--fnv-main), transparent) left bottom / var(--fnv-line) var(--fnv-stub-bottom) no-repeat,
+    linear-gradient(to top, var(--fnv-main), transparent) right bottom / var(--fnv-line) var(--fnv-stub-bottom) no-repeat;
+}
+
+/* An entry with no .message-sender at all (a card-style message, or a
+   third-party module rendering its own chat template) would otherwise have an
+   OPEN top edge, because the top line is drawn entirely by the name row. Draw
+   it on the entry and remove it again wherever a name exists to break it. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message::before {
+  border-top: var(--fnv-line) solid var(--fnv-main);
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message:has(.message-sender)::before {
+  border-top: none;
+}
+
+/* The header keeps only the metadata row; the name is lifted onto the border */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-header {
+  position: static;
+  color: var(--fnv-dim);
+  font-size: calc(var(--av-chat-font-size) - 4px);
+  line-height: 1.2;
+}
+
+/* --- The name AS the border ------------------------------------------------
+   A flex row straddling the entry's top edge: short bar, name, then a bar
+   flexing out to the far corner. It meets the corner stubs at both ends
+   because the row spans the full width. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender {
+  position: absolute;
+  top: calc(var(--av-name-lift) + var(--fnv-line) / 2);
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 2;
+  /* The row is line work lying across the top of the entry, and it paints
+     above everything: without this it hit-tests first and eats the clicks on
+     the delete and dismiss controls underneath it (ApplicationV2 dispatches
+     on event.target.closest("[data-action]"), which finds nothing on the
+     bar). Only the pieces that are genuinely interactive take it back — see
+     the rule below, which covers this system's .name-stacked as well as
+     core's bare alias. */
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  /* The name row is one line of line work. Anything taller than the lift can
+     clear would be guillotined by the paint containment content-visibility
+     implies, so clamp children rather than trusting them. */
+  overflow: hidden;
+  font-family: 'Monofonto', 'Fixedsys', ui-monospace, monospace;
+  font-size: 17px;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  white-space: nowrap;
+  color: var(--fnv-main);
+  background: none;
+  text-shadow: none;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender > * {
+  max-height: calc(var(--av-name-lift) * 2);
+}
+/* Give hit-testing back to everything that could plausibly be interactive or
+   selectable. Written as a shape, not as one class name, so it covers core's
+   bare alias (wrapped by the script), this system's .name-stacked, and
+   anything a module puts here. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender > span,
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender > a,
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender .fnv-name,
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender .name-stacked {
+  pointer-events: auto;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender::before {
+  content: '';
+  flex: none;
+  width: 18px;
+  height: var(--fnv-line);
+  background: var(--fnv-main);
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender::after {
+  content: '';
+  flex: 1;
+  /* never let a long name starve the line: the bar still has to reach the
+     corner stub on the right */
+  min-width: 14px;
+  height: var(--fnv-line);
+  background: var(--fnv-main);
+}
+
+/* A portrait in the header is fatal to a one-line rule: a 32px avatar makes
+   the row 32px tall and pushes its top ~5px ABOVE the entry, where the paint
+   containment slices it flat. This system injects one in
+   FalloutZeroChatMessage#_enrichChatCard, so it has to go — and at the line
+   height the row runs at, it is too small to identify anyone anyway. Ungated
+   on purpose: this is a prerequisite of the layout, not a per-system fix. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender > img,
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender .avatar,
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender > a > img {
+  display: none;
+}
+
+/* Core ships the speaker as a BARE TEXT NODE inside .message-sender
+   (templates/sidebar/chat-message.hbs). Under `display:flex` a bare text run
+   becomes an anonymous flex item, and anonymous items cannot take
+   `min-width:0` or `text-overflow` — so their automatic minimum size is the
+   full string width, a long alias shoves the ::after bar out of the box
+   (killing the right-hand half of the entry's top line) and is then chopped
+   mid-glyph by the paint containment. `overflow:hidden` on the container
+   above stops the overflow; this rule gives real ellipsis to the wrapper the
+   script adds. This system replaces those children with .name-stacked, so
+   this branch only ever fires for messages it did not enrich. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender .fnv-name {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Timestamp + delete/dismiss: the header's only in-flow content once the
+   name has been lifted onto the border, so it settles top-right under it. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-header {
+  justify-content: flex-end;
+  /* clears the name row, which straddles the entry's top edge */
+  padding-top: 7px;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-metadata {
+  /* core gives this flex:2, which would stretch it across the entry */
+  flex: none;
+  transform: none;
+  color: var(--fnv-dim);
+  opacity: 0.8;
+  text-shadow: none;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-metadata time {
+  color: var(--fnv-dim);
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-metadata a {
+  color: var(--fnv-dim);
+  transition: color 0.1s;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-metadata a:hover {
+  color: var(--fnv-main);
+  text-shadow: none;
+}
+
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .flavor-text,
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .whisper-to {
+  color: var(--fnv-dim);
+  font-family: 'Fixedsys', 'Monofonto', ui-monospace, monospace;
+  font-size: calc(var(--av-chat-font-size) - 2px);
+  text-shadow: none;
+}
+
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-content {
+  color: var(--fnv-main);
+  text-shadow: none;
+}
+
+/* Message-style variants: line work only, so the entry stays on the plate.
+   Whispers dim, emotes lean, blind rolls read as unresolved. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message.whisper {
+  --fnv-stub-top: 34px;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message.whisper .message-content {
+  color: var(--fnv-dim);
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message.emote .message-content {
+  font-style: italic;
+  color: var(--fnv-dim);
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message.blind .message-content {
+  color: var(--fnv-faint);
+}
+
+/* --------------------------------------------------------------------------
+   Roll cards inside an entry
+   Restyled, never restructured: the tooltip's expand/collapse is a
+   grid-template-rows 0fr -> 1fr on .dice-tooltip with overflow:hidden on its
+   wrapper, so nothing here touches display or overflow. .dice-result also
+   keeps its order, since the dice-sprite layer matches sprites to it
+   positionally.
+   -------------------------------------------------------------------------- */
+
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .dice-roll .dice-total {
+  background: color-mix(in srgb, var(--fnv-main) 10%, transparent);
+  border: 1px solid var(--fnv-faint);
+  border-radius: 0;
+  color: var(--fnv-main);
+  font-family: 'Fixedsys', 'Monofonto', ui-monospace, monospace;
+  text-shadow: none;
+  box-shadow: none;
+}
+
+/* Core colours a natural max green and a natural 1 red on .dice-total. The
+   rule above outranks it on both specificity AND cascade layer, so without
+   these two lines a crit and a fumble both read as a plain amber number —
+   silent information loss. Re-toned to the palette rather than restored to
+   core's colours. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .dice-roll .dice-total.success {
+  color: #7dd87d;
+  border-color: color-mix(in srgb, #7dd87d 45%, transparent);
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .dice-roll .dice-total.failure {
+  color: #ff6a5e;
+  border-color: color-mix(in srgb, #ff6a5e 45%, transparent);
+}
+
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .dice-roll .dice-formula,
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .dice-roll .part-formula {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--fnv-faint);
+  border-radius: 0;
+  color: var(--fnv-dim);
+  font-family: 'Fixedsys', 'Monofonto', ui-monospace, monospace;
+  text-shadow: none;
+  /* core gives the formula box a white inset glow the total box does not get;
+     without this it halos against the plate */
+  box-shadow: none;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .dice-roll .part-header,
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .dice-roll .part-total {
+  color: var(--fnv-main);
+  /* grey rounded chrome core leaves on these reads as leftovers in the card */
+  background: none;
+  border-radius: 0;
+  border-color: var(--fnv-faint);
+}
+/* .part-flavor carries its own dark colour ON THE ELEMENT, so a rule on any
+   ancestor never reaches it — per-term flavour ("fire", "sneak attack")
+   renders near-black on the plate unless it is named directly. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .dice-roll .part-flavor {
+  color: var(--fnv-dim);
+}
+
+/* Buttons inside message content: text_box.xml — reserved transparent
+   border, box and fill appear on hover.
+
+   Split in two on purpose. Core draws icon-only buttons by putting the
+   FontAwesome class ON THE BUTTON and rendering the glyph from a ::before,
+   which INHERITS font-family — so a face set on such a button blanks the
+   icon. `button.icon` does the same via `font-family: var(--font-awesome)`
+   directly on the element. Only the font rule may exclude them; the
+   appearance rule must not, or icon buttons stay core's light-grey pills on
+   the black plate.
+
+   `:not(.av-gr-card *)` is a specificity firebreak for the group-roll card in
+   the source module. It costs nothing here (the class never matches) and
+   keeps the rule at the exact weight it was authored at, so a table also
+   running AAFO V.A.T.S. needs no manual edit. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-content button:not(.av-gr-card *) {
+  background: none;
+  border: var(--fnv-line) solid transparent;
+  border-radius: 0;
+  color: var(--fnv-main);
+  transition: background 0.08s, border-color 0.08s;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-content
+  button:not(.av-gr-card *):not([class*="fa-"]):not(.icon):not([class*="icon"]) {
+  font-family: 'Monofonto', 'Fixedsys', ui-monospace, monospace;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-content button:not(.av-gr-card *):hover {
+  border-color: var(--fnv-main);
+  background: var(--fnv-fill);
+  box-shadow: none;
+  color: var(--fnv-main);
+}
+
+/* --------------------------------------------------------------------------
+   Message crawl — a staggered left-to-right clip-path wipe, which works on
+   plain text, dice cards and buttons alike without reflow. Delays are set
+   per element by module/chat-fnv/fnv-chat.mjs (45ms step, 900ms cap). Inert,
+   and harmless, if the script never runs.
+   -------------------------------------------------------------------------- */
+
+/* fill-mode is `backwards`, and the resting state carries NO clip-path.
+   Backwards holds the `from` keyframe through the stagger delay so a block
+   cannot flash in before its turn, but once the wipe finishes the element
+   goes back to being unclipped. A forwards/both fill would leave
+   `clip-path: inset(0 0 0 0)` on the element permanently — a clip to the
+   border box, not "no clip" — which slices anything a block deliberately
+   overhangs with. It also fails open: if the animation never runs at all the
+   content is simply visible rather than permanently clipped away.
+   DO NOT "fix" this to forwards. */
+body:not(.fnv-chat-off) .av-reveal {
+  animation: fnv-wipe 0.18s linear backwards;
+}
+@keyframes fnv-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* --------------------------------------------------------------------------
+   Minimized: notification toasts over the canvas
+
+   There is no plate here — the toasts float free — so each entry carries its
+   own translucent fill and rounds its own corners.
+   -------------------------------------------------------------------------- */
+
+body:not(.fnv-chat-off) #chat-notifications ol.chat-log li.chat-message {
+  background: var(--av-back, rgba(8, 8, 6, 0.55));
+  border-radius: var(--av-radius, 6px);
+  padding: calc(var(--av-name-lift) + 4px) 10px 8px;
+  margin: 6px 4px 2px;
+  /* Toasts are few and always on screen; skipping them buys nothing and the
+     rounded fill would need its own intrinsic sizing. */
+  content-visibility: visible;
+}
+
+/* --------------------------------------------------------------------------
+   Composer + controls — the same elements in both states, because core
+   re-parents them between #chat-notifications and .chat-form. Scoped by id
+   alone for exactly that reason.
+
+   Note these four elements (.editor-container, .menu-container,
+   .editor-menu, .editor-content) are built at runtime by core's ProseMirror
+   custom element, not by a template — they exist only once the editor
+   activates, and they are core's private DOM shape. Restyling them is safe;
+   injecting into them is not.
+   -------------------------------------------------------------------------- */
+
+/* One box, not three. Core puts the composer's chrome on the middle
+   element (#chat-message > .editor-container gets a 2px cool-grey border
+   and an opaque cool fill), so that is the element the amber frame goes on;
+   the prose-mirror host outside it and the ProseMirror content inside it
+   are both stripped bare. Bordering the outer and inner ones instead leaves
+   core's grey ring and its opaque fill sandwiched between them, which also
+   defeats the translucency. */
+body:not(.fnv-chat-off) #chat-message.chat-input,
+body:not(.fnv-chat-off) #chat-message .editor-content.ProseMirror {
+  font-family: 'Fixedsys', 'Monofonto', ui-monospace, monospace;
+  color: var(--av-panel);
+  text-shadow: none;
+  background: none;
+  border: none;
+  border-radius: 0;
+}
+
+body:not(.fnv-chat-off) #chat-message .editor-container {
+  position: relative;
+  background: rgba(8, 8, 6, 0.6);
+  border: var(--fnv-line) solid color-mix(in srgb, var(--av-panel) 28%, transparent);
+  border-radius: 0;
+  box-shadow: none;
+}
+body:not(.fnv-chat-off) #chat-message .editor-container:focus-within {
+  border-color: var(--av-panel);
+  box-shadow: none;
+  outline: none;
+}
+
+/* Fallout terminal command prompt: a fixed `>` at the head of the input,
+   with the native caret standing in for the cursor. Chrome, not FX. */
+body:not(.fnv-chat-off) #chat-message .editor-container::before {
+  content: '>';
+  position: absolute;
+  left: 6px;
+  top: 10px; /* matches the content's first text line at 16px */
+  z-index: 1;
+  pointer-events: none;
+  font-family: 'Fixedsys', 'Monofonto', ui-monospace, monospace;
+  font-size: var(--av-chat-font-size);
+  line-height: var(--av-chat-line-height);
+  color: var(--av-panel);
+}
+
+/* Core draws its "Enter message" placeholder from a ::after on the same
+   element — grey, centred, italic, in the body font. Left alone it sits
+   beside the terminal prompt looking like a different application. */
+body:not(.fnv-chat-off) #chat-message > .editor-container::after {
+  font-family: 'Fixedsys', 'Monofonto', ui-monospace, monospace;
+  font-size: var(--av-chat-font-size);
+  font-style: normal;
+  place-content: center start;
+  padding-left: 22px;
+  color: color-mix(in srgb, var(--av-panel) 40%, transparent);
+}
+
+body:not(.fnv-chat-off) #chat-message .editor-content.ProseMirror {
+  padding-left: 22px;
+  caret-color: var(--av-panel);
+  font-size: var(--av-chat-font-size);
+  line-height: var(--av-chat-line-height);
+}
+
+body:not(.fnv-chat-off) #chat-message .editor-content.ProseMirror:focus,
+body:not(.fnv-chat-off) #chat-message .editor-content.ProseMirror:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+body:not(.fnv-chat-off) #chat-message .menu-container .editor-menu {
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid color-mix(in srgb, var(--av-panel) 28%, transparent);
+}
+/* The toolbar keeps core's light-theme text colour otherwise, which is
+   near-invisible on the dark fill above. Colour only — NO font-family, these
+   buttons carry fa-* classes. */
+body:not(.fnv-chat-off) #chat-message .menu-container .editor-menu button {
+  color: var(--av-panel);
+}
+
+/* No font-family here, ever. Core puts the FontAwesome class on the BUTTON
+   itself (`ui-control icon fa-solid fa-globe`) and draws the glyph from a
+   ::before, which inherits font-family — so setting a face on the control
+   silently swaps the icon font out and every one of these renders blank.
+   (The reason an inner <i class="fa-solid"> survives is that a directly
+   applied declaration beats an inherited one — not that FontAwesome outranks
+   this sheet. It does not.) */
+body:not(.fnv-chat-off) #chat-controls .ui-control {
+  color: color-mix(in srgb, var(--av-panel) 62%, transparent);
+  background: none;
+  border: var(--fnv-line) solid transparent;
+  border-radius: 0;
+  text-shadow: none;
+  transition: background 0.08s, border-color 0.08s, color 0.1s;
+}
+
+body:not(.fnv-chat-off) #chat-controls .ui-control:hover,
+body:not(.fnv-chat-off) #chat-controls .ui-control[aria-pressed='true'] {
+  color: var(--av-panel);
+  border-color: var(--av-panel);
+  background: color-mix(in srgb, var(--av-panel) 16%, transparent);
+  box-shadow: none;
+}
+
+/* Icon-only, same reason as above: no font-family. */
+body:not(.fnv-chat-off) .chat-sidebar .jump-to-bottom {
+  border-radius: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Scrollbar (fading slider on a bare track)
+
+   Foundry sets scrollbar-color on an ancestor, and any non-auto value makes
+   Chromium ignore the -webkit rules. The reset below must therefore come
+   first — but it must ALSO be fenced behind @supports, because on Firefox
+   (which has no ::-webkit-scrollbar) an unfenced reset would clobber core's
+   slim themed scrollbar and hand the user a fat OS one: strictly worse than
+   shipping nothing. Firefox gets the standard properties instead.
+   -------------------------------------------------------------------------- */
+
+@supports selector(::-webkit-scrollbar) {
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll,
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll * {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+  }
+
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll::-webkit-scrollbar-track {
+    background: transparent;
+    border: none;
+  }
+
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 0;
+    box-shadow: inset 0 0 0 1px var(--av-panel);
+  }
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--av-panel);
+    box-shadow: none;
+  }
+
+  /* End caps: triangles pointing away from the track. Drawn with clip-path
+     on a solid fill rather than as an inline SVG data: URI, because a colour
+     baked into a data: URI cannot read var(--av-panel) — the original had
+     amber arrows above a player-tinted thumb for exactly that reason. */
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll::-webkit-scrollbar-button:single-button {
+    display: block;
+    height: 6px;
+    width: 6px;
+    background: var(--av-panel);
+  }
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll::-webkit-scrollbar-button:single-button:vertical:decrement {
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll::-webkit-scrollbar-button:single-button:vertical:increment {
+    clip-path: polygon(50% 100%, 100% 0, 0 0);
+  }
+
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll::-webkit-scrollbar-corner {
+    display: none;
+  }
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body:not(.fnv-chat-off) .chat-sidebar .chat-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--av-panel) transparent;
+  }
+}

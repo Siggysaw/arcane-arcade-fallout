@@ -1,0 +1,170 @@
+/* ==========================================================================
+   FNV Chat — compatibility layer for this system's own chat CSS.
+
+   fnv-chat.css is written against stock core chat and knows nothing about
+   this system. Every rule in THIS file exists to unwind one specific
+   declaration in css/chat.css or css/falloutzero.css. If either of those is
+   ever rewritten upstream, this is the file to revisit; fnv-chat.css should
+   not need to change.
+
+   Two distinct problems are handled here.
+
+   ---- 1. Markup this system injects ---------------------------------------
+   FalloutZeroChatMessage#_enrichChatCard replaces the contents of
+   `.message-sender` with an avatar thumbnail and a stacked character-name /
+   player-name block, then dresses them from css/chat.css. A border line has
+   room for one row, so the stack is laid back out inline — character name at
+   size, player dim and small beside it. (The portrait itself is dropped in
+   fnv-chat.css, ungated: at line height it is too small to identify anyone
+   and it breaks the row height.)
+
+   ---- 2. Cascade: the system's ID-scoped chat rules ------------------------
+   This skin used to ship as a MODULE, where `layer(modules)` beat everything
+   in `layer(system)` on layer alone — specificity never entered it. Ported
+   into the system it now sits in `layer(system)` alongside falloutzero.css,
+   so the handful of system rules that lead with `#chat` / `#chat-popout`
+   outrank it and have to be answered with an ID of our own. There are
+   exactly three of them; they are named individually below rather than
+   blanket-raising the specificity of the whole skin, so that anything the
+   system adds later fails loudly in one place instead of quietly everywhere.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Name row
+   -------------------------------------------------------------------------- */
+
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender .name-stacked {
+  display: flex;
+  flex-direction: row;
+  /* css/chat.css ships `.chat-sidebar .message-header .name-stacked { flex:1;
+     min-height:32px; justify-content:center; font-family:fixedsys;
+     line-height:normal }`. Every one of those has to be unwound by hand:
+     flex:1 would make the name split the row 50/50 with the ::after bar so
+     the rule never starts beside the text, centring would open a gap on both
+     sides of it, the 32px floor would make the row three times a line tall,
+     and the direct font-family would beat the face inherited from
+     .message-sender. */
+  flex: 0 1 auto;
+  min-height: 0;
+  justify-content: flex-start;
+  font-family: inherit;
+  /* centre, not baseline: baseline alignment sizes the row from the font's
+     own baseline metrics, which for the two different sizes here can leave
+     the row taller than its tallest child and push the name off the rule it
+     is supposed to be sitting on. Centring makes it exactly one line high
+     whatever face ends up loading. */
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  overflow: hidden;
+  line-height: 1;
+}
+
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender .name-stacked .title,
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender .name-stacked .subtitle {
+  line-height: 1;
+  margin: 0;
+}
+
+/* The system colours .title and <time> with --user-color, which is the
+   VIEWING user's colour, not the author's — the name would disagree with the
+   bars either side of it on every message but your own. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender .name-stacked .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--fnv-main);
+  font-weight: normal;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-sender .name-stacked .subtitle {
+  flex: none;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--fnv-dim);
+}
+
+/* The system nudges the metadata row up into what is now the border line.
+   Both of these are already answered on specificity by fnv-chat.css; they are
+   restated here so the two system declarations they cancel are visible at the
+   point of contact rather than having to be re-derived. */
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-metadata {
+  transform: none;
+}
+body:not(.fnv-chat-off) ol.chat-log li.chat-message .message-metadata time {
+  color: var(--fnv-dim);
+}
+
+/* The system's .flavor-text rule also carries font-style: italic and
+   text-transform: capitalize, which fnv-chat.css does not override. Left
+   alone deliberately — they read fine in the skin, and they are what the
+   source module rendered too. Colour is already corrected in fnv-chat.css. */
+
+/* --------------------------------------------------------------------------
+   2. ID-scoped system rules
+
+   Each block below cancels exactly one rule. The system rule is quoted so the
+   pairing survives an upstream edit.
+   -------------------------------------------------------------------------- */
+
+/* falloutzero.css:414 —
+     `#chat .chat-message, #chat-popout .chat-message {
+        background: #222; color: var(--sheetcolor); font-family: Monofonto; }`
+   at (1,1,0). Left standing it puts an opaque grey box behind every entry,
+   which is the one thing this skin is built not to have: entries are line
+   work on a single translucent plate. Also re-points the body face away from
+   the Fixedsys/Monofonto stack. */
+body:not(.fnv-chat-off) #chat ol.chat-log li.chat-message,
+body:not(.fnv-chat-off) #chat-popout ol.chat-log li.chat-message {
+  background: none;
+  color: var(--fnv-main);
+  font-family: 'Fixedsys', 'Monofonto', ui-monospace, monospace;
+}
+
+/* #chat-notifications is a DESCENDANT of #chat, so the rule immediately above
+   also matches the minimized toasts — at the same (1,4,3) as fnv-chat.css's
+   toast rule, and later in source order, which would strip the fill those
+   need (they float free over the canvas with no plate behind them). Put it
+   back at (2,4,3). */
+body:not(.fnv-chat-off) #chat #chat-notifications ol.chat-log li.chat-message {
+  background: var(--av-back, rgba(8, 8, 6, 0.55));
+}
+
+/* falloutzero.css:375 —
+     `#chat .chat-message .message-header { color: var(--sheetcolor);
+        letter-spacing: 0rem; }`
+   at (1,2,0). Only the colour is contested: the header is the dim metadata
+   line in this skin, not sheet-coloured body text. letter-spacing: 0rem is
+   deliberately left in place — it applied under the source module too. */
+body:not(.fnv-chat-off) #chat ol.chat-log li.chat-message .message-header {
+  color: var(--fnv-dim);
+}
+
+/* falloutzero.css:423 — `#chat-popout .flavor-text { color: var(--sheetcolor) }`
+   at (1,1,0), which beats fnv-chat.css's .flavor-text rule inside the
+   popped-out chat tab only. Without this, flavour text is the one thing that
+   changes colour when you pop the tab out. */
+body:not(.fnv-chat-off) #chat-popout ol.chat-log li.chat-message .flavor-text {
+  color: var(--fnv-dim);
+}
+
+/* falloutzero.css:1474 —
+     `.sheet .prosemirror .editor-container, prose-mirror .editor-container {
+        min-height: 360px; }`
+   The second half of that selector is unscoped, and the chat composer IS a
+   <prose-mirror> — so the chat input claims 360px of the sidebar as a mostly
+   empty box. This is a pre-existing bug in the system, not something the skin
+   introduces (measured at 360px against 178px on stock core), and it is the
+   only thing that stopped the ported sidebar from being pixel-identical to
+   the module it came from.
+
+   `revert-layer` hands the property back to the layer below `system`, which
+   is core's own sizing — content height when the sidebar is expanded, the
+   60px min in the minimized overlay. That is more robust than naming a
+   pixel value here, which would have to be re-checked every core release.
+
+   Fixing it at source instead is a six-character edit — scope the second
+   selector to `.sheet prose-mirror .editor-container`, which is exactly what
+   fallout-redux did — but that means touching falloutzero.css, so it is
+   answered from here rather than assumed. */
+body:not(.fnv-chat-off) #chat-message .editor-container {
+  min-height: revert-layer;
+}
