@@ -261,7 +261,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const isHeavilyEncumbered = load >= (max * 2)
 
       // Encumbered
-      if (isEncumbered) {
+      if (isEncumbered && this.actor.type=="character") {
         if (checkEncumberance.length === 0) {
           const conditionItem = await fromUuid("Compendium.arcane-arcade-fallout.conditions.Item.xpklIlYiHUKTwJsg")
           if (conditionItem) {
@@ -280,7 +280,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       }
 
       // Heavily Encumbered
-      if (isHeavilyEncumbered) {
+      if (isHeavilyEncumbered && this.actor.type=="character") {
         if (checkHeavyEncumberance.length === 0) {
           const conditionItem = await fromUuid("Compendium.arcane-arcade-fallout.conditions.Item.h6UQkBsBLIi7AvZ2")
           if (conditionItem) {

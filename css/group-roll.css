@@ -1,0 +1,924 @@
+/* ---- Cinematic group roll overlay — Fallout: New Vegas UI ----------------
+   Styled to the fallout-ui-redux framework, layer for layer: Monofonto,
+   amber (#ffb641) line work, panes with a solid bottom border and fading
+   side stubs (vertical_fade_line.xml), flat solid_black.webp backdrops
+   stretched past their nominal area (background.xml), hover = amber border
+   + fill (text_box.xml), item art in amber monochrome. No scanlines, no
+   grain, no blur — flat and hard-edged like the game.
+
+   Panels derive their line color from --gr-color (the owning player's
+   color, set inline) through the same variable system, falling back to
+   FNV amber. z-index 90: above static UI (30), below windows (100+). */
+
+/* ---- Ported from the AAFO V.A.T.S. module -------------------------------
+   No @font-face here: css/falloutzero.css already declares 'Monofonto' from
+   assets/fonts/monofonto.otf, and that file is md5-identical to the copy the
+   module shipped. The only url() left in this sheet is the FNV plate art
+   further down, which — like every module stylesheet — resolves against this
+   sheet's OWN location, so this file must stay exactly one directory deep
+   under the package root.
+
+   Cascade note: unlike the chat skin, almost nothing here needs defending.
+   The overlay is `#av-group-roll` (an id, so (1,x,x)) mounted straight on
+   <body> outside any application, and the rest is `.av-gr-*` / `.av-grr-*`
+   classes the system has never heard of. Only the pieces that live inside
+   the system's own furniture — the chat-card rows and the request dialog's
+   inputs — meet system rules at all, and they win on source order because
+   this sheet is imported last. */
+
+#av-group-roll {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  font-family: "Monofonto", monospace;
+
+  --fnv-main: #ffb641;
+  --fnv-dim: rgba(255, 182, 65, 0.62);
+  --fnv-faint: rgba(255, 182, 65, 0.28);
+  --fnv-back: rgba(8, 8, 6, 0.86);
+  --fnv-line: 2px;
+  --fnv-fill: rgba(255, 182, 65, 0.16);
+  color: var(--fnv-main);
+}
+
+/* Plain darkening only — the windows carry the style. */
+.av-gr-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 120% at 50% 45%, rgba(4, 6, 4, 0.72) 40%, rgba(2, 3, 2, 0.88) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+#av-group-roll.av-gr-open .av-gr-backdrop { opacity: 1; }
+
+.av-gr-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 44px;
+}
+
+/* ---- FNV pane structure --------------------------------------------------
+   Each window: a .av-gr-bg child stretches the solid_black texture past the
+   box (fuzzy edges land outside); the element carries the solid bottom
+   border; ::before/::after are the side stubs — top stub fades downward,
+   bottom stub fades upward, nothing between. */
+
+.av-gr-header, .av-gr-panel {
+  position: relative;
+  isolation: isolate;
+  --fnv-stub-top: 42px;
+  --fnv-stub-bottom: 42px;
+  border: none;
+  /* Bottom line is a plain border; the TOP line is drawn by the window's
+     title element as two bar segments with the text between them, so the
+     line genuinely breaks around the text (pane_header) instead of being
+     masked by a backing box. Side stubs span the full height and meet
+     both lines at the corners. */
+  border-bottom: var(--fnv-line) solid var(--fnv-main);
+  background: none;
+  box-shadow: none;
+}
+
+/* Shared line-title: a flex row straddling the window's top edge —
+   short bar, text, long bar running out to the far corner. */
+.av-gr-title, .av-gr-pname {
+  position: absolute;
+  top: calc(var(--fnv-line) / 2);
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--fnv-main);
+  text-shadow: none;
+  background: none;
+}
+.av-gr-title::before, .av-gr-pname::before {
+  content: "";
+  flex: none;
+  width: 26px;
+  height: var(--fnv-line);
+  background: var(--fnv-main);
+}
+.av-gr-title::after, .av-gr-pname::after {
+  content: "";
+  flex: 1;
+  height: var(--fnv-line);
+  background: var(--fnv-main);
+}
+.av-gr-header, .av-gr-panel {
+  --fnv-main: var(--gr-color, #ffb641);
+  --fnv-dim: color-mix(in srgb, var(--fnv-main) 62%, transparent);
+  --fnv-faint: color-mix(in srgb, var(--fnv-main) 28%, transparent);
+  --fnv-fill: color-mix(in srgb, var(--fnv-main) 16%, transparent);
+}
+.av-gr-header::before, .av-gr-header::after,
+.av-gr-panel::before, .av-gr-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--fnv-line);
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, var(--fnv-main), transparent) top / 100% var(--fnv-stub-top) no-repeat,
+    linear-gradient(to top, var(--fnv-main), transparent) bottom / 100% var(--fnv-stub-bottom) no-repeat;
+}
+.av-gr-header::before, .av-gr-panel::before { left: 0; }
+.av-gr-header::after, .av-gr-panel::after { right: 0; }
+
+.av-gr-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.av-gr-bg::before {
+  content: "";
+  position: absolute;
+  inset: -4% -3%;
+  background: url("../assets/11-fnv-ui/solid_black.webp") center / 100% 100% no-repeat;
+  opacity: 0.92;
+}
+
+/* ---- Center card ---------------------------------------------------------- */
+
+.av-gr-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 400px;
+  min-height: 210px;
+  padding: 14px 34px 14px;
+  /* NO overflow:hidden here — the title straddles the top border and would
+     get its upper half clipped; the perk art clips in its own container. */
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.45s ease-out, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#av-group-roll.av-gr-open .av-gr-header { opacity: 1; transform: none; }
+
+/* The two base rules the perk art needs. In the module these came from
+   styles/chat-perks.css, which is NOT ported (its enricher and /perk command
+   are a separate chat feature). Carried here so the art is self-sufficient.
+
+   Deliberately WITHOUT chat-perks.css's `filter: drop-shadow(...)` on the
+   img: that rule is (0,1,1) and so is `.av-gr-perk-bg img` three rules below,
+   which would make the tint depend on source order. Omitting it removes the
+   tie instead of relying on winning it. */
+.av-perk-anim { display: block; }
+.av-perk-anim img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated; /* nearest-neighbour downscale — crunchy, not blurred */
+}
+
+/* Perk clip: large translucent backdrop art in amber monochrome, hard-
+   cropped by the pane (no fade masks). */
+.av-gr-perk-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.2;
+  pointer-events: none;
+  overflow: hidden; /* crops the oversized art instead of the header doing it */
+}
+.av-gr-perk-bg .av-perk-anim { width: 90%; margin: 0; }
+/* Recolored to the viewing user's own color (computed in JS from their
+   hue); falls back to FNV amber. */
+.av-gr-perk-bg img { filter: var(--gr-perk-filter, sepia(1) saturate(50) hue-rotate(-40deg)); }
+
+.av-gr-header > .av-gr-rollname,
+.av-gr-header > .av-gr-dc-label,
+.av-gr-header > .av-gr-dc { position: relative; z-index: 1; }
+
+/* Check name rides the top line (sizing only — geometry is shared above) */
+.av-gr-title { font-size: 22px; }
+/* The roll's name: big, slightly transparent, center of the window. */
+.av-gr-rollname {
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--fnv-main);
+  opacity: 0.55;
+}
+.av-gr-dc-label { margin-top: 6px; font-size: 13px; letter-spacing: 0.3em; color: var(--fnv-dim); }
+.av-gr-dc { font-size: 28px; color: var(--fnv-main); text-shadow: none; }
+
+/* ---- Participant panels --------------------------------------------------- */
+
+.av-gr-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  max-width: 90vw;
+}
+
+.av-gr-panel {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 300px;
+  /* top padding clears the name now riding the top line */
+  padding: 18px 12px 14px;
+  opacity: 0;
+  transform: translateY(50px);
+}
+#av-group-roll.av-gr-open .av-gr-panel {
+  animation: av-gr-panel-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes av-gr-panel-in {
+  to { opacity: 1; transform: none; }
+}
+
+/* Player name rides the panel's top line (geometry shared above) */
+.av-gr-pname { font-size: 21px; }
+
+/* Spent/marked item widgets above the dice */
+/* ---- The marked/spent row above the dice --------------------------------
+   Each entry is the icon plus a caption naming WHAT IT GRANTS — the status
+   effect where there is one, the item itself otherwise (see grantLabel() in
+   group-roll.mjs). Grape Mentats therefore reads "ANXIOLYTIC" here: the
+   consumable is gone, the condition is what is now riding the roll.
+
+   This is also where the effect labels launch from during the reveal, which
+   is why the icon has its own box — the drop measures from the icon, not from
+   the captioned tile, so the label falls from the art rather than from under
+   the text. */
+.av-gr-spent { display: flex; gap: 8px; min-height: 52px; align-items: flex-start; }
+.av-gr-spent-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  max-width: 84px;
+}
+.av-gr-spent-icon {
+  display: block;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--fnv-dim);
+  /* No fill: the art blends to the plate, same as the tiles below. */
+  background: none;
+}
+.av-gr-spent-item.consumed .av-gr-spent-icon { border-color: var(--fnv-main); }
+.av-gr-spent-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  border: none;
+  mix-blend-mode: screen; /* see .av-gr-item img — the art is white on solid black */
+}
+.av-gr-spent-label {
+  max-width: 84px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Monofonto", monospace;
+  font-size: 10px;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--fnv-dim);
+}
+.av-gr-spent-item.consumed .av-gr-spent-label { color: var(--fnv-main); }
+
+/* Dice area: sprites scaled up, pixel-crisp */
+.av-gr-dice {
+  display: flex;
+  justify-content: center;
+  min-height: 140px;
+  align-items: center;
+}
+.av-gr-dice .av-die {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  transform: scale(2.6);
+  transform-origin: center;
+  margin: 0 44px;
+  transition: opacity 0.6s ease-out;
+}
+
+/* BG3 absorb: the modifier floats up from under the die into its center,
+   then the die's face morphs to the new number. Sized in unscaled px —
+   the die's 2.6x transform scales it visually. */
+.av-gr-float {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  font-family: "Monofonto", monospace;
+  font-size: 10px;
+  line-height: 1;
+  pointer-events: none;
+  animation: av-gr-float-up 0.65s ease-out forwards;
+}
+.av-gr-float.bonus { color: #2ecc5f; }
+.av-gr-float.malus { color: #ff4d3d; }
+@keyframes av-gr-float-up {
+  from { transform: translate(-50%, 26px); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  to { transform: translate(-50%, -6px); opacity: 0; }
+}
+
+/* ---- Effect labels falling from a spent item onto the die ---------------
+   The mirror of the absorb chips above: those are numbers rising INTO the
+   die from below, these are the named conditions a consumable granted,
+   dropping onto it from the icon that granted them. Green for advantage,
+   red for disadvantage — the same two colours the details tab uses.
+
+   Positioned by JS against the panel (which is `position: relative`) at the
+   source icon's centre; the travel distance is measured at fire time and
+   handed over as --av-drop-dy, because the gap between the spent row and the
+   die depends on how many items were marked. Unlike .av-gr-float this is NOT
+   inside the die, so it is not subject to the die's 2.6x transform and is
+   sized in real px. */
+.av-gr-drop {
+  position: absolute;
+  z-index: 4;
+  transform: translate(-50%, 0);
+  font-family: "Monofonto", monospace;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.9);
+  animation: av-gr-drop-down var(--av-drop-ms, 900ms) cubic-bezier(0.33, 0, 0.2, 1) forwards;
+}
+.av-gr-drop.bonus { color: #2ecc5f; }
+.av-gr-drop.malus { color: #ff4d3d; }
+/* Fades in on the icon, falls, then dissolves as it reaches the die — the
+   die's own face/verdict change is what "receives" it. */
+@keyframes av-gr-drop-down {
+  from { transform: translate(-50%, 0) scale(0.82); opacity: 0; }
+  18% { opacity: 1; transform: translate(-50%, calc(var(--av-drop-dy, 80px) * 0.18)) scale(1); }
+  72% { opacity: 1; }
+  to { transform: translate(-50%, var(--av-drop-dy, 80px)) scale(1.04); opacity: 0; }
+}
+/* The icon that is sending a label pulses once as it lets go. Scoped to the
+   icon box, not the captioned tile — dropEffectLabel marks the same element
+   it measures from. */
+.av-gr-spent-icon.av-gr-sending {
+  animation: av-gr-send-pulse 0.5s ease-out;
+}
+@keyframes av-gr-send-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 182, 65, 0); }
+  35% { box-shadow: 0 0 10px 2px rgba(255, 182, 65, 0.55); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 182, 65, 0); }
+}
+.av-gr-dice .av-die.av-dropped.av-static { opacity: 0.15; }
+/* The losing die fades, then collapses its footprint so the surviving die
+   slides to the middle of the panel. */
+.av-gr-dice .av-die.av-fade-out {
+  opacity: 0;
+  width: 0;
+  /* the base .av-die sets flex: 0 0 48px — the basis, not width, decides a
+     flex item's size, so it has to collapse too */
+  flex-basis: 0;
+  margin: 0;
+  transition:
+    opacity 0.5s ease-out,
+    flex-basis 0.45s ease-out 0.45s,
+    width 0.45s ease-out 0.45s,
+    margin 0.45s ease-out 0.45s;
+}
+
+/* Undecided dice render amber like every other FNV asset. Advantage /
+   disadvantage previews and landed verdicts override with green / red. */
+.av-die.av-waiting { background-position-x: -144px; filter: sepia(1) saturate(6) hue-rotate(-15deg) brightness(1.05); }
+.av-die.av-waiting.av-pass { filter: sepia(1) saturate(3.5) hue-rotate(78deg) brightness(1.05); }
+.av-die.av-waiting.av-fail { filter: sepia(1) saturate(4) hue-rotate(-45deg); }
+
+/* Count-up chips */
+.av-gr-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  min-height: 0;
+}
+.av-gr-step {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  padding: 0 6px;
+  border: 1px solid var(--fnv-faint);
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--fnv-main);
+  animation: av-gr-step-in 0.25s ease-out;
+}
+.av-gr-step.bonus { color: #2ecc5f; border-color: rgba(46, 204, 95, 0.4); }
+.av-gr-step.malus { color: #ff4d3d; border-color: rgba(255, 77, 61, 0.4); }
+@keyframes av-gr-step-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+.av-gr-total {
+  min-height: 46px;
+  font-size: 40px;
+  line-height: 1.1;
+  color: var(--fnv-main);
+  text-shadow: none;
+}
+.av-gr-panel.av-gr-passed .av-gr-total { color: #2ecc5f; }
+.av-gr-panel.av-gr-failed .av-gr-total { color: #ff4d3d; }
+
+/* ---- Controls (text_box.xml: transparent border, amber border+fill on
+        hover; selected state keeps them) ---------------------------------- */
+
+.av-gr-controls { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+.av-gr-adv { display: flex; gap: 4px; justify-content: center; }
+.av-gr-adv button, .av-gr-roll {
+  font-family: "Monofonto", monospace;
+  background: none;
+  border: var(--fnv-line) solid transparent;
+  border-radius: 0;
+  color: var(--fnv-main);
+  padding: 2px 10px;
+  cursor: pointer;
+  transition: background 0.08s, border-color 0.08s;
+}
+.av-gr-adv button:hover, .av-gr-roll:hover:not(:disabled) {
+  border-color: var(--fnv-main);
+  background: var(--fnv-fill);
+  box-shadow: none;
+}
+.av-gr-adv button.active {
+  border-color: var(--fnv-main);
+  background: var(--fnv-fill);
+}
+.av-gr-ability, .av-gr-bonus {
+  font-family: "Monofonto", monospace;
+  font-size: 14px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--fnv-faint);
+  border-radius: 0;
+  color: var(--fnv-main);
+  padding: 2px 6px;
+  width: 100%;
+}
+.av-gr-bonus::placeholder { color: var(--fnv-dim); }
+.av-gr-roll {
+  font-size: 19px;
+  padding: 5px 0;
+  letter-spacing: 0.15em;
+}
+.av-gr-roll:disabled { opacity: 0.4; cursor: default; }
+.av-gr-waiting { font-size: 14px; color: var(--fnv-dim); text-align: center; padding: 6px 0; }
+
+/* ---- Inventory shelf: bordered stat cells, amber monochrome art ---------- */
+
+.av-gr-items {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--fnv-faint);
+}
+.av-gr-items.av-gr-empty { display: none; }
+/* ---- Item tiles ----------------------------------------------------------
+   A square selection box, big enough to read the label art at a glance.
+   Height is fixed alongside width so the tile is a true square whatever the
+   name wraps to; `justify-content: center` keeps the art optically centred
+   when a short name leaves slack. */
+.av-gr-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 96px;
+  height: 96px;
+  padding: 5px 2px 3px;
+  background: none;
+  border: var(--fnv-line) solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: "Monofonto", monospace;
+  color: var(--fnv-main);
+  transition: background 0.08s, border-color 0.08s;
+}
+/* ---- Item art: natural colour, black knocked out ------------------------
+   Two deliberate departures from the module here.
+
+   1. No amber `filter`. The module ran every item through
+      `sepia(1) saturate(50) hue-rotate(-40deg)` to force it into the FNV
+      palette; at tile size that turned distinct labels into identical orange
+      smudges. Left alone, the art reads as itself.
+
+   2. `mix-blend-mode: screen`. The system's item art in assets/items/ is
+      white line work painted on a SOLID BLACK square — the PNGs carry an
+      alpha channel but do not use it. Screen blending maps black to the
+      backdrop and leaves white at full strength, so the plate shows through
+      and the linework survives, with no asset edits. It is the reason the
+      tile below must not paint its own opaque fill.
+
+   Blend containment: `.av-gr-panel` sets `isolation: isolate`, so the blend
+   resolves inside the panel — against the `.av-gr-bg` plate painted beneath
+   it, never against the fullscreen backdrop or the canvas. That is what makes
+   the art look cut out rather than boxed in, and it is also why the tile must
+   not paint an opaque fill of its own: `background: none` on `.av-gr-item` is
+   load-bearing, and the amber `--fnv-fill` it takes on hover/marked is
+   translucent on purpose. */
+.av-gr-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  border: none;
+  mix-blend-mode: screen;
+}
+.av-gr-item .av-gr-item-name {
+  font-size: 11px;
+  line-height: 1.1;
+  max-width: 88px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.av-gr-item .av-gr-qty {
+  position: absolute;
+  right: 3px;
+  top: 1px;
+  font-size: 12px;
+  color: var(--fnv-main);
+  text-shadow: none;
+}
+.av-gr-item:hover {
+  border-color: var(--fnv-main);
+  background: var(--fnv-fill);
+}
+.av-gr-item.marked {
+  border-color: var(--fnv-main);
+  background: var(--fnv-fill);
+  box-shadow: none;
+}
+
+/* GM's pre-set modifier, pinned to the bottom of the panel */
+.av-gr-modline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid var(--fnv-faint);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+.av-gr-modline:empty { display: none; }
+.av-gr-modline .pos { color: #2ecc5f; }
+.av-gr-modline .neg { color: #ff4d3d; }
+.av-gr-modlabel { color: var(--fnv-dim); font-size: 14px; }
+
+/* GM reset buttons — tucked inside the top-right corner of a panel or the
+   chat card. Same text_box treatment as every other control: no fill at rest,
+   amber border and wash on hover.
+
+   No backing plate. This once carried `background: rgba(8, 8, 6, 0.8)` so the
+   glyph would read against the perk art, but the art is a 0.2-opacity backdrop
+   confined to the header — it never reaches a panel's top-right corner, so the
+   plate was only ever a dark blob on the panel's own fill. The colour still
+   comes from --fnv-dim / --fnv-main, which each panel re-points at its owner's
+   --gr-color, so the glyph stays that player's colour rather than going amber. */
+.av-gr-reset {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  z-index: 3;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  line-height: 1;
+  font-size: 12px;
+  font-family: "Monofonto", monospace;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 0;
+  color: var(--fnv-dim);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 0.1s, border-color 0.08s, background 0.08s;
+}
+.av-gr-reset:hover {
+  color: var(--fnv-main);
+  border-color: var(--fnv-main);
+  background: var(--fnv-fill);
+}
+/* The chat card's copy: a touch smaller and tighter into the corner. Both
+   variants are now fill-free, so this only adjusts geometry — the appearance
+   is entirely inherited from .av-gr-reset above. */
+.av-gr-card-reset { top: 5px; right: 5px; width: 20px; height: 20px; font-size: 11px; }
+
+.av-gr-hint { font-size: 14px; color: var(--fnv-dim); letter-spacing: 0.08em; }
+
+.av-gr-close {
+  pointer-events: auto;
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 34px;
+  height: 34px;
+  font-family: "Monofonto", monospace;
+  font-size: 18px;
+  background: none;
+  border: var(--fnv-line) solid transparent;
+  border-radius: 0;
+  color: var(--fnv-dim);
+  cursor: pointer;
+  transition: color 0.1s, border-color 0.08s, background 0.08s;
+}
+.av-gr-close:hover {
+  color: var(--fnv-main);
+  border-color: var(--fnv-main);
+  background: var(--fnv-fill);
+}
+
+/* ---- Chat card: bottom bracket (bottom_bracket.xml — no top line, solid
+        bottom, side stubs rising from the corners) ------------------------ */
+
+.av-gr-card {
+  --fnv-main: #ffb641;
+  --fnv-dim: rgba(255, 182, 65, 0.62);
+  --fnv-faint: rgba(255, 182, 65, 0.28);
+  --fnv-line: 2px;
+  --fnv-fill: rgba(255, 182, 65, 0.16);
+  position: relative;
+  isolation: isolate;
+  --fnv-stub-top: 18px;
+  --fnv-stub-bottom: 44px;
+  font-family: "Monofonto", monospace;
+  color: var(--fnv-main);
+  border: none;
+  /* Light touch. The readability problem this once tried to solve is handled
+     at the sidebar plate instead (css/fnv-chat.css), which sits at 90% — so
+     all this fill has to do is mark the card out as its own surface. At the
+     old 0.55 it stacked with the plate to ~0.96 and read as a stark black
+     block; 0.3 lands at ~0.93, visibly a panel without going flat. */
+  background: rgba(8, 8, 6, 0.3);
+  /* top padding clears the title riding the top line; the margin keeps it
+     from crowding the message above it in the log */
+  padding: 16px 10px 8px;
+  margin-top: 12px;
+}
+/* Bracket lines: bottom border plus corner pieces — short stubs descending
+   from the top corners, longer ones rising from the bottom. The top line
+   itself is the title's bar segments, so it breaks around the text. */
+.av-gr-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-bottom: var(--fnv-line) solid var(--fnv-main);
+  background:
+    linear-gradient(to bottom, var(--fnv-main), transparent) left top / var(--fnv-line) var(--fnv-stub-top) no-repeat,
+    linear-gradient(to bottom, var(--fnv-main), transparent) right top / var(--fnv-line) var(--fnv-stub-top) no-repeat,
+    linear-gradient(to top, var(--fnv-main), transparent) left bottom / var(--fnv-line) var(--fnv-stub-bottom) no-repeat,
+    linear-gradient(to top, var(--fnv-main), transparent) right bottom / var(--fnv-line) var(--fnv-stub-bottom) no-repeat;
+}
+.av-gr-card.av-gr-joinable { cursor: pointer; }
+.av-gr-card.av-gr-joinable:hover { background: rgba(8, 8, 6, 0.45); box-shadow: none; }
+.av-gr-card-head { display: flex; flex-direction: column; padding-right: 24px; }
+/* Card title rides the card's top line, same broken-line treatment */
+.av-gr-card-title {
+  position: absolute;
+  top: calc(var(--fnv-line) / 2);
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  line-height: 1.1;
+  color: var(--fnv-main);
+}
+.av-gr-card-title::before {
+  content: "";
+  flex: none;
+  width: 18px;
+  height: var(--fnv-line);
+  background: var(--fnv-main);
+}
+.av-gr-card-title::after {
+  content: "";
+  flex: 1;
+  height: var(--fnv-line);
+  background: var(--fnv-main);
+}
+.av-gr-card-sub { font-size: 14px; color: var(--fnv-dim); }
+.av-gr-card-tally { font-size: 16px; letter-spacing: 0.15em; margin: 4px 0; color: var(--fnv-main); }
+.av-gr-card-tally.pass { color: #2ecc5f; }
+.av-gr-card-tally.fail { color: #ff4d3d; }
+.av-gr-card-rows { list-style: none; margin: 0; padding: 0; }
+.av-gr-card-rows li {
+  padding: 2px 4px;
+  border-top: 1px solid var(--fnv-faint);
+}
+.av-gr-card-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+}
+.av-gr-card-row:hover { background: var(--fnv-fill); }
+.av-gr-card-rows li.pass .av-gr-card-total { color: #2ecc5f; }
+.av-gr-card-rows li.fail .av-gr-card-total { color: #ff4d3d; }
+.av-gr-card-name { flex: 1; cursor: pointer; transition: color 0.12s ease-out; }
+/* !important: the name's resting color is the player's, set inline. */
+.av-gr-card-name:hover {
+  color: #fff !important;
+  font-weight: 700;
+  text-shadow: none;
+}
+
+/* Inline dice */
+.av-gr-card-dice {
+  display: flex;
+  align-items: center;
+  width: 92px;
+  justify-content: flex-end;
+}
+.av-gr-card-dice .av-die {
+  transform: scale(0.87);
+  transform-origin: center;
+  margin: -3px;
+}
+
+.av-gr-card-spent { display: flex; gap: 2px; }
+.av-gr-card-spent img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  border: none;
+  mix-blend-mode: screen; /* see .av-gr-item img — the art is white on solid black */
+}
+.av-gr-card-total { font-size: 17px; min-width: 28px; text-align: right; }
+.av-gr-card-hint { font-size: 12px; color: var(--fnv-dim); margin-top: 3px; }
+.av-gr-card-end {
+  font-family: "Monofonto", monospace;
+  font-size: 13px;
+  margin: 6px 0 4px;
+  padding: 2px 10px;
+  background: none;
+  border: var(--fnv-line) solid transparent;
+  border-radius: 0;
+  color: #ff4d3d;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: background 0.08s, border-color 0.08s;
+}
+.av-gr-card-end:hover { border-color: #ff4d3d; background: rgba(255, 77, 61, 0.15); }
+
+/* ---- Chat-card buttons vs the system's own chat CSS ----------------------
+   css/chat.css:101 ships
+
+     .chat-message button {
+       width: 100%; text-transform: uppercase; font-family: 'fixedsys';
+       color: white; background: #333; text-shadow: 2px 2px 2px black; }
+
+   at (0,1,1), which outranks the (0,1,0) rules above. As a MODULE this sheet
+   sat in layer(modules) and beat it on layer alone; in layer(system) it does
+   not, so every button this feature puts inside a chat message came out as an
+   opaque grey full-width bar — the reset glyph stretched across the card's
+   top border instead of sitting in its corner.
+
+   Restated here at (0,5,2), and restated EXACTLY — no more and no less than
+   the module declares. A cascade layer only wins a property that both sides
+   declare, so under the module the system rule still supplied
+   `text-transform: uppercase` and `text-shadow`, and still stretched END ROLL
+   to the card width, because group-roll.css never spoke to those. Those are
+   left alone here so the card matches what the module renders today; only the
+   declarations the module actually made are restored.
+
+   Scoped to the card rather than raising the whole sheet, so a system rule
+   that starts reaching somewhere new fails in one visible place. Same shape
+   as the unwinds in css/fnv-chat-system.css. */
+ol.chat-log li.chat-message .message-content .av-gr-card .av-gr-reset,
+ol.chat-log li.chat-message .message-content .av-gr-card .av-gr-card-end {
+  font-family: "Monofonto", monospace;
+  background: none;
+}
+/* The glyph button: a fixed square pinned to the corner. `background` above
+   stops the opaque grey plate; these restore the size the full-width stretch
+   was destroying. */
+ol.chat-log li.chat-message .message-content .av-gr-card .av-gr-card-reset {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: 11px;
+  color: var(--fnv-dim);
+}
+ol.chat-log li.chat-message .message-content .av-gr-card .av-gr-card-reset:hover {
+  color: var(--fnv-main);
+  border-color: var(--fnv-main);
+  background: var(--fnv-fill);
+}
+ol.chat-log li.chat-message .message-content .av-gr-card .av-gr-card-end {
+  color: #ff4d3d;
+  padding: 2px 10px;
+}
+ol.chat-log li.chat-message .message-content .av-gr-card .av-gr-card-end:hover {
+  border-color: #ff4d3d;
+  background: rgba(255, 77, 61, 0.15);
+}
+
+/* Expandable math tab */
+.av-gr-card-details {
+  padding: 3px 8px 5px 14px;
+  border-left: var(--fnv-line) solid var(--fnv-faint);
+  margin: 0 0 3px 4px;
+  font-size: 13px;
+  color: var(--fnv-main);
+}
+.av-gr-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 1px 0;
+}
+.av-gr-detail-row.die { color: var(--fnv-main); letter-spacing: 0.08em; }
+.av-gr-detail-row.adv span:first-child { color: #2ecc5f; letter-spacing: 0.08em; }
+.av-gr-detail-row.dis span:first-child { color: #ff4d3d; letter-spacing: 0.08em; }
+.av-gr-detail-row.adv span:last-child, .av-gr-detail-row.dis span:last-child { color: var(--fnv-dim); }
+.av-gr-detail-row.item span:first-child { color: var(--fnv-dim); letter-spacing: 0.08em; }
+.av-gr-detail-row.bonus span:last-child { color: #2ecc5f; }
+.av-gr-detail-row.malus span:last-child { color: #ff4d3d; }
+.av-gr-detail-row.total {
+  border-top: 1px solid var(--fnv-faint);
+  margin-top: 2px;
+  font-size: 15px;
+  color: var(--fnv-main);
+}
+
+/* Entry roll messages are data carriers; the master card displays them. */
+li.chat-message.av-gr-hidden-entry { display: none !important; }
+
+/* Launch button above the chat input (GM only) */
+.chat-form .av-gr-launch {
+  width: 100%;
+  margin-bottom: 4px;
+  padding: 4px 0;
+  font-family: "Monofonto", monospace;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 0;
+  color: #ffb641;
+  cursor: pointer;
+  transition: background 0.08s, border-color 0.08s;
+}
+.chat-form .av-gr-launch:hover {
+  border-color: #ffb641;
+  background: rgba(255, 182, 65, 0.16);
+  box-shadow: none;
+}
+.chat-form .av-gr-launch i { margin-right: 6px; }
+
+/* Request dialog */
+.av-grr-participants { display: flex; flex-wrap: wrap; gap: 4px; }
+.av-grr-actor {
+  padding: 1px 8px;
+  border: 1px solid var(--color-border-light-2, #999);
+  border-radius: 2px;
+  font-size: 12px;
+}
+.av-grr-none { font-size: 12px; opacity: 0.7; }
+.av-grr-modrow { display: flex; gap: 6px; margin-bottom: 4px; }
+.av-grr-modrow input[type="number"] { flex: 0 0 90px; }
+.av-grr-modrow select { flex: 1; }

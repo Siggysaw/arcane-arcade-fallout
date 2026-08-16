@@ -22,7 +22,7 @@
                 </div>
                 <div>
                     <input data-tooltip="Base Amount of XP to give the party" type="number" data-group-xp value="{{ groupXp }}">+
-                    <input data-tooltip="Total Percentage Bonus"type="number" data-group-xp-modifier value="{{ groupXpmodifier }}">%
+                    <input data-tooltip="Total Percentage Bonus" type="number" data-group-xp-modifier value="{{ groupXpmodifier }}">%
                 </div>
                 <div>
                     <input placeholder="Caps" type="number" data-group-caps value="{{ groupCaps }}">
@@ -86,23 +86,48 @@
             <p><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.CcBnnoYRjG7In3lu">Travel / Terrain</a></p>
             <p><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.jzbAUoWYLRMgCAyL">Damage Application</a></p>
         </div>
+        <div class="quick-inserts-search">
+            <input type="text"
+                   data-quick-insert-search
+                   placeholder="Search Items To Add"
+                   autocomplete="off"
+                   data-tooltip-="Search any item from the compendium. Drag to Character Image to add to their sheet">
+        </div>
+        <div class="quick-inserts">
+            {{#each packItems as |item|}}
+            <div class="quick-buttons" data-item-name="{{item.name}}" data-item-type="{{item.packType}}">
+                <a class="content-link"
+                   data-link=""
+                   draggable="true"
+                   data-uuid="{{item.uuid}}"
+                   data-id="{{item.id}}"
+                   data-type="Item"
+                   data-tooltip="{{item.name}} ({{item.packLabel}})">
+                    {{item.name}}
+                </a>
+            </div>
+            {{/each}}
+        </div>
     </div>
     <div class="grid-span-16"
          style="border:none;">
         <h6>Character Details</h6>
-        <div 
-             class="grid grid-4col character-details"
+        <div class="grid grid-4col character-details"
              style="border:none;">
 
-            {{#each actors as |actor id|}}
-            {{#if actor.system.activePartymember}}
-            <div>
-                {{actor.name}}
-                <button type="button" class="open-sheet-btn" data-action="openSheet" data-actor-id="{{actor.id}}" data-tooltip="Open Character Sheet">
+            {{#each detailActors as |actor id|}}
+            <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;">
+                <input type="checkbox"
+                       data-action="toggleActivePartymember"
+                       data-actor-id="{{actor.id}}"
+                       data-tooltip="Active Party Member"
+                       {{checked actor.system.activePartymember}}
+                       style="justify-self:start;">
+                <span style="justify-self:center;">{{actor.name}}</span>
+                <button type="button" class="open-sheet-btn" data-action="openSheet" data-actor-id="{{actor.id}}" data-tooltip="Open Character Sheet" style="justify-self:end;">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </button>
-            </div>
-            <div>Status</div>
+            </div>            <div>Status</div>
             <div>Perks/Traits</div>
             <div>Equipment</div>
             <div style="background-image:url('{{actor.img}}')"
@@ -113,8 +138,7 @@
                     <span class="condition-badge"
                           data-actor-id="{{actor.id}}"
                           data-condition-name="{{name}}"
-                          data-tooltip="{{name}}<br><br>Left-Click for Details<br>Right-Click for removal/downgrade"
-                         >
+                          data-tooltip="{{name}}<br><br>Left-Click for Details<br>Right-Click for removal/downgrade">
                         <a class="content-link" data-link="" draggable="true" data-uuid="{{item.uuid}}" data-id="{{item.id}}" data-type="Item"><img src="{{img}}" /></a>
                         {{#GreaterThan quantity 1}}<span class="condition-count">{{quantity}}x</span>{{/GreaterThan}}
                     </span>
@@ -169,7 +193,6 @@
                            {{checked flipped}} />
                     {{/each}}
                 </div>
-                <div>Caps: {{actor.system.caps}}</div>
                 <div class="grid grid-4col stat-block">
                     <div data-tooltip="Armor Class" class="stat-icon"><i class="fa-solid fa-shield"></i></div>
                     <div class="stat-value">{{actor.system.armorClass.value}}</div>
@@ -188,6 +211,7 @@
                     <div class="stat-value">-{{actor.system.penaltyTotal}}</div>
                     <div data-tooltip="Action Points" class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
                     <div class="stat-value">{{actor.system.actionPoints.value}}/{{actor.system.actionPoints.max}}</div>
+                    <div class="grid-span-4">Caps: {{actor.system.caps}}</div>
                 </div>
             </div>
             <div class="gm-screen-perk-container">
@@ -223,7 +247,6 @@
                 {{/each}}
             </div>
             <div class="grid-span-4" style="border:none;"><br /></div>
-            {{/if}}
             {{/each}}
 
         </div>

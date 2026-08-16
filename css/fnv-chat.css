@@ -67,7 +67,42 @@ body:not(.fnv-chat-off) #chat-controls {
      body by the script); entries follow their author. With no script both
      fall back to amber, which is the correct default. */
   --av-panel: var(--av-user, var(--av-amber));
+  /* Translucent fill, still used by the free-floating notification toasts
+     and by the group-roll chat card — things that sit ON the plate rather
+     than being it. */
   --av-back: rgba(8, 8, 6, 0.55);
+  /* The plate proper: near-opaque. See the ::after rule below for why it is a
+     separate token and not just --av-back with a different alpha. 0.9 keeps
+     text solidly readable while letting a hint of the scene through, which
+     0.55 did not and a flat 1.0 read as too heavy. */
+  --av-plate: rgba(8, 8, 6, 0.9);
+  /* How far the plate's fill fades at its edges. Tune these two rather than
+     editing the gradients below.
+
+     The ceilings are set by the content, and were measured rather than
+     guessed: a chat entry carries `margin: 6px 6px 2px` and `padding: … 10px`,
+     so its TEXT starts 16px in from the plate's left and right edges — and the
+     entry's own line work starts at 6px. Vertically the log begins 6px down,
+     the first entry's frame 12px, its text about 28px.
+
+     10/18 was then checked by measuring real GLYPH extents (Range rects, not
+     element boxes — most of these elements span the full width and inset
+     their text, so box edges badly over-report). At these values every glyph
+     in the log, the roll cards, the timestamps, the controls and the composer
+     sits on completely solid fill.
+
+     The one deliberate exception is the TOP band: the topmost entry's speaker
+     name rides its own top edge, so it always falls inside a top fade of any
+     size. That band overlaps the scroll area, where content is transient and
+     half-clipped anyway — it is the part of the effect that reads best. The
+     bottom band, which holds the static composer and controls, is completely
+     clear. Raising fade-y pushes further into the newest entries; raising
+     fade-x first catches the composer's frame, then the control icons. */
+  --av-plate-fade-x: 10px;
+  --av-plate-fade-y: 18px;
+  /* One number for the scrollbar's width AND for the gutter that balances it
+     — see the .chat-log rule below. They must not drift apart. */
+  --av-scrollbar: 6px;
   --av-radius: 6px;
   --fnv-line: 2px;
   --av-corner: 34px;
@@ -92,9 +127,58 @@ body:not(.fnv-chat-off) #chat-controls {
 body:not(.fnv-chat-off) .chat-sidebar {
   position: relative;
   isolation: isolate;
-  background: var(--av-back);
+  /* No fill here — it lives on ::after so it can fade at the edges without
+     taking the chat log's text with it. */
+  background: none;
   border: none;
   border-radius: var(--av-radius);
+}
+
+/* ---- The plate ------------------------------------------------------------
+   Opaque under everything readable, dissolving on all four edges so it has no
+   hard rectangle against the scene.
+
+   It has to be a LAYER BEHIND THE CONTENT, not the element's own background:
+   masking `.chat-sidebar` itself would fade the messages, the composer and the
+   controls along with the fill. `z-index: -1` puts it behind the content, and
+   the `isolation: isolate` above stops it dropping behind the sidebar
+   entirely — that isolate is now load-bearing, not decorative.
+
+   The vignette is an INTERSECTION of two fades, which is the whole trick:
+   `mask-composite` is the obvious tool and its browser history is messy, so
+   this does it with one gradient in each channel instead. The background
+   carries the left/right fade in its own alpha; the mask carries the
+   top/bottom fade. A mask multiplies alpha, so the two combine to exactly the
+   intersection — solid in the middle, falling away at every edge, corners
+   softest of all — using only `mask-image`, which is universally supported. */
+body:not(.fnv-chat-off) .chat-sidebar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: var(--av-radius);
+  background: linear-gradient(
+    to right,
+    transparent 0,
+    var(--av-plate) var(--av-plate-fade-x),
+    var(--av-plate) calc(100% - var(--av-plate-fade-x)),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--av-plate-fade-y),
+    #000 calc(100% - var(--av-plate-fade-y)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--av-plate-fade-y),
+    #000 calc(100% - var(--av-plate-fade-y)),
+    transparent 100%
+  );
 }
 
 /* Corner brackets: eight fading arms, two per corner, each running away from
@@ -126,8 +210,19 @@ body:not(.fnv-chat-off) .chat-sidebar::before {
    different application entirely (the single-message popout, which this skin
    does not reach). */
 body:not(.fnv-chat-off) .chat-sidebar.sidebar-popout,
-body:not(.fnv-chat-off) .chat-sidebar.sidebar-popout::before {
+body:not(.fnv-chat-off) .chat-sidebar.sidebar-popout::before,
+body:not(.fnv-chat-off) .chat-sidebar.sidebar-popout::after {
   border-radius: 0;
+}
+
+/* Popped out, the plate fills a real application window with its own frame
+   and its own opaque backing — the fade would only reveal that frame through
+   its own edges, which reads as a rendering fault rather than a vignette.
+   Squared off and solid to the edge instead. */
+body:not(.fnv-chat-off) .chat-sidebar.sidebar-popout::after {
+  background: var(--av-plate);
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 /* Messages are entries on one plate, not stacked cards */
@@ -135,6 +230,19 @@ body:not(.fnv-chat-off) ol.chat-log {
   background: none;
   border: none;
   gap: 0;
+  /* Core puts the chat scrollbar on the LEFT: it sets `direction: rtl` on
+     .chat-scroll and flips .chat-log back to ltr (foundry2.css:9785). The
+     scrollbar therefore eats its width off the left edge only, and the
+     entries sit that far off-centre on the plate — measured 12px of plate to
+     the left of an entry against 6px to its right, which is visible as soon
+     as the plate is solid enough to see its own edges.
+     Reserving the same width on the right re-centres them. */
+  padding-inline-end: var(--av-scrollbar);
+}
+/* ...and the gutter is reserved whether or not the log currently overflows,
+   so the entries do not shift sideways the moment it starts scrolling. */
+body:not(.fnv-chat-off) .chat-sidebar .chat-scroll {
+  scrollbar-gutter: stable;
 }
 
 /* Core hard-codes `themed theme-light` on ol.chat-log (both the sidebar log
@@ -598,8 +706,17 @@ body:not(.fnv-chat-off) #chat-message > .editor-container::after {
   font-family: 'Fixedsys', 'Monofonto', ui-monospace, monospace;
   font-size: var(--av-chat-font-size);
   font-style: normal;
-  place-content: center start;
+  /* Sits ON the prompt's line, not centred in the box. Core lays this out as
+     `display: grid; inset: 0; place-content: center`, which vertically centres
+     the placeholder in whatever height the container happens to be — so it
+     floated below the `>` as soon as the box was taller than one line.
+     Aligning to the start and matching the prompt's own offsets puts the two
+     on the same baseline: same 10px top as the ::before, same 22px indent as
+     the editor content, same line-height. Change one, change all three. */
+  place-content: start start;
+  padding-top: 10px;
   padding-left: 22px;
+  line-height: var(--av-chat-line-height);
   color: color-mix(in srgb, var(--av-panel) 40%, transparent);
 }
 
@@ -656,6 +773,23 @@ body:not(.fnv-chat-off) .chat-sidebar .jump-to-bottom {
   border-radius: 0;
 }
 
+/* Lift the whole input cluster off the plate's bottom fade.
+
+   With the sidebar expanded, core moves the composer AND the controls into
+   `.chat-form` inside the tab (chat.mjs:1507) — they only live out in the
+   floating #chat-notifications overlay while the sidebar is collapsed. So in
+   the embedded state the composer's own box sits over the bottom of the
+   plate, and its border and fill painted straight across the vignette,
+   hiding it.
+
+   `#sidebar-content #chat` already contributes 4px of bottom padding, so this
+   margin puts the cluster's bottom 4px clear of where the fade starts. Scoped
+   to `.chat-form` so the collapsed overlay, which has no plate under it, is
+   left alone. */
+body:not(.fnv-chat-off) .chat-sidebar .chat-form {
+  margin-bottom: var(--av-plate-fade-y);
+}
+
 /* --------------------------------------------------------------------------
    Scrollbar (fading slider on a bare track)
 
@@ -675,8 +809,10 @@ body:not(.fnv-chat-off) .chat-sidebar .jump-to-bottom {
   }
 
   body:not(.fnv-chat-off) .chat-sidebar .chat-scroll::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    /* Same token as the balancing gutter on ol.chat-log — change one and the
+       entries go off-centre on the plate. */
+    width: var(--av-scrollbar);
+    height: var(--av-scrollbar);
     background-color: transparent;
   }
 

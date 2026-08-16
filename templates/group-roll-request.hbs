@@ -1,0 +1,60 @@
+{{!-- Group roll request dialog. Ported from the AAFO V.A.T.S. module.
+
+      Strings are the module's own English, inlined rather than left as
+      {{localize}} keys — matching the convention registerSettings.mjs already
+      uses for every system setting. Adding a FALLOUTZERO.GroupRoll block to
+      lang/en.json later is a drop-in change; doing it now would mean editing a
+      file three translations share, for strings that exist in one language. --}}
+<div class="av-grr-form">
+  <div class="form-group">
+    <label>Title</label>
+    <input type="text" name="title" placeholder="e.g. Cross the Collapsed Overpass">
+  </div>
+  <div class="form-group">
+    <label>Check</label>
+    <select name="check">
+      <optgroup label="Skills">
+        {{#each skills}}<option value="{{key}}">{{label}}</option>{{/each}}
+      </optgroup>
+      <optgroup label="SPECIAL">
+        {{#each abilities}}<option value="{{key}}">{{label}}</option>{{/each}}
+      </optgroup>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>DC (blank for no target)</label>
+    <input type="number" name="dc" min="0" step="1" placeholder="—">
+  </div>
+  <div class="form-group">
+    <label>Hide DC from players</label>
+    <input type="checkbox" name="hideDc">
+    <p class="hint">Players see &quot;DC ███&quot; — pass/fail still shows once they roll.</p>
+  </div>
+  <div class="form-group">
+    <label>Situational Modifier</label>
+    <div class="av-grr-modrow">
+      <input type="number" name="mod" step="1" placeholder="0">
+      <select name="modAdv">
+        <option value="">No advantage</option>
+        <option value="advantage">Advantage</option>
+        <option value="disadvantage">Disadvantage</option>
+      </select>
+    </div>
+    <input type="text" name="modLabel" placeholder="Reason (e.g. High Ground)">
+    <p class="hint">Applied to every participant's roll and shown at the bottom of their panel.</p>
+  </div>
+  <div class="form-group">
+    <label>Participants</label>
+    <div class="av-grr-participants">
+      {{#if actors.length}}
+        {{#each actors}}<span class="av-grr-actor">{{name}}</span>{{/each}}
+      {{else}}
+        <span class="av-grr-none">No tokens selected.</span>
+      {{/if}}
+    </div>
+    <p class="hint">Select tokens on the canvas before opening this dialog.</p>
+  </div>
+  <footer class="form-footer">
+    <button type="submit"><i class="fa-solid fa-dice-d20"></i> Launch Roll</button>
+  </footer>
+</div>
