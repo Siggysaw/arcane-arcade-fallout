@@ -431,7 +431,7 @@
       "npc": "NPC"
     },
     "Item": {
-      "item": "Item",
+      "item": "Key Item",
       "race": "Race",
       "background": "Background",
       "ammo": "Ammo",

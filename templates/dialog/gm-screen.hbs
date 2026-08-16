@@ -1,14 +1,12 @@
 <div class="gm-screen grid grid-20col {{#PipBoyEffects}}pipboy-crt{{/PipBoyEffects}}">
-    <div class="grid-span-4 group-rewards" style="padding:5px;">
-        <div>
-            <div title="Use this to give out bulk rewards"><h6>Group Rewards</h6></div>
-            <div>Only Active Players <input data-activeOnly type="checkbox" name="activeOnly" {{checked activeOnly}}></div>
+    <div class="grid-span-4 gm-sidebar" style="padding:5px;">
 
-            <hr />
+        <details class="sidebar-section" open>
+            <summary><h6>Group Rewards</h6></summary>
             <div class="grid grid-2col group">
                 <div class="label" data-tooltip='<h2 style="margin-top:0in;margin-right:0in;margin-bottom:.15pt;margin-left:
                 -.25pt"><span style="font-family: Calibri, sans-serif"><strong ">Gaining XP</strong></span></h2>
-                <p>The GM may award the players with XP at any time, but is typically awarded when the player characters spend any amount of time resting after completing a quest, encounter, or discovering something new. Whenever you gain XP, if your XP total is lower than any other player character’s total XP, you gain XP equal to the difference between your total and theirs. (Simply put: everyone shares the same amount of XP, defaulting to whoever has the highest). Additionally, the following modifiers are added to the total.</p>
+                <p>The GM may award the players with XP at any time, but is typically awarded when the player characters spend any amount of time resting after completing a quest, encounter, or discovering something new. Whenever you gain XP, if your XP total is lower than any other player character&rsquo;s total XP, you gain XP equal to the difference between your total and theirs. (Simply put: everyone shares the same amount of XP, defaulting to whoever has the highest). Additionally, the following modifiers are added to the total.</p>
                 <p><em ><strong>Reaching 0 Hit Points.</strong></em> A 10% bonus of XP is awarded for each player character that fell to 0 hit points.</p>
                 <p><em ><strong>Death.</strong></em> 1000 XP is awarded to each player character if another player character permanently dies.</p>
                 <p><em ><strong>Creature Discovery.</strong></em> A 20% bonus of XP is awarded if the player characters roll combat sequence with a creature they have never rolled combat sequence with before.</p>
@@ -28,90 +26,102 @@
                     <input placeholder="Caps" type="number" data-group-caps value="{{ groupCaps }}">
                 </div>
             </div>
-            <div class="my-2">
-                <button type="button" data-action="divideGroup">Prepare Rewards</button>
+            <div class="grid-span-4">
+                <button class="prepare-rewards-button" type="button" data-action="divideGroup">Prepare Rewards</button>
             </div>
-        </div>
-        <hr />
-        <div class="grid grid-5col characters">
-            <div class="grid-span-3 label">
+        </details>
 
+        <div class="sidebar-section roster-section">
+            <div class="sidebar-section-title">
+                <h6>Party</h6>
+                <label class="active-toggle">
+                    <input data-activeOnly type="checkbox" name="activeOnly" {{checked activeOnly}}>
+                    Active only
+                </label>
             </div>
-            <div class="label">XP</div>
-            <div class="label">
-                Caps
+            <div class="grid grid-5col characters">
+                <div class="grid-span-3 label"></div>
+                <div class="label">XP</div>
+                <div class="label">Caps</div>
+                {{#if activeOnly}}
+                {{#each actors as |actor|}}
+                {{#if actor.system.activePartymember}}
+                <div class="grid-span-3 name-label">
+                    {{ actor.name }}
+                </div>
+                {{#with (lookup ../newActorData [id])~}}
+                <div>
+                    <input style="border:none;" placeholder="0" type="number" data-actor-xp="{{actor.id}}" value="{{ xp }}" disabled>
+                </div>
+                <div>
+                    <input placeholder="0" type="number" data-actor-caps="{{actor.id}}" value="{{ caps }}">
+                </div>
+                {{/with}}
+                {{/if}}
+                {{/each}}
+                {{else}}
+                {{#each actors as |actor|}}
+                <div class="grid-span-3 name-label">
+                    {{ actor.name }}
+                </div>
+                {{#with (lookup ../newActorData [id])~}}
+                <div>
+                    <input style="border:none;" placeholder="0" type="number" data-actor-xp="{{actor.id}}" value="{{ xp }}" disabled>
+                </div>
+                <div>
+                    <input placeholder="0" type="number" data-actor-caps="{{actor.id}}" value="{{ caps }}">
+                </div>
+                {{/with}}
+                {{/each}}
+                {{/if}}
             </div>
-            {{#if activeOnly}}
-            {{#each actors as |actor|}}
-            {{#if actor.system.activePartymember}}
-            <div class="grid-span-3 name-label">
-                {{ actor.name }}
+            <div class="dialog-buttons flexrow">
+                <button class="dialog-button">Send Rewards</button>
+                <button class="dialog-button" data-action="cancel">Cancel</button>
             </div>
-            {{#with (lookup ../newActorData [id])~}}
-            <div>
-                <input style="border:none;" placeholder="0" type="number" data-actor-xp="{{actor.id}}" value="{{ xp }}" disabled>
-            </div>
-            <div>
-                <input placeholder="0" type="number" data-actor-caps="{{actor.id}}" value="{{ caps }}">
-            </div>
-            {{/with}}
-            {{/if}}
-            {{/each}}
-            {{else}}
-            {{#each actors as |actor|}}
-            <div class="grid-span-3 name-label">
-                {{ actor.name }}
-            </div>
-            {{#with (lookup ../newActorData [id])~}}
-            <div>
-                <input style="border:none;" placeholder="0" type="number" data-actor-xp="{{actor.id}}" value="{{ xp }}" disabled>
-            </div>
-            <div>
-                <input placeholder="0" type="number" data-actor-caps="{{actor.id}}" value="{{ caps }}">
-            </div>
-            {{/with}}
-            {{/each}}
-            {{/if}}
         </div>
 
-        <div class="dialog-buttons flexrow">
-            <button class="dialog-button">Send Rewards</button>
-            <button class="dialog-button" data-action="cancel">Cancel</button>
-        </div>
-        <div>
-            <br /><h6>Cheat Sheets</h6>
-            <p></p>
-            <p><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.31qCwzre2jXqsj8Y">Targeted Attacks</a></p>
-            <p><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.iVqR9MjAM473tFOq">Fall Damage</a></p>
-            <p><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.CcBnnoYRjG7In3lu">Travel / Terrain</a></p>
-            <p><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.jzbAUoWYLRMgCAyL">Damage Application</a></p>
-        </div>
-        <div class="quick-inserts-search">
-            <input type="text"
-                   data-quick-insert-search
-                   placeholder="Search Items To Add"
-                   autocomplete="off"
-                   data-tooltip-="Search any item from the compendium. Drag to Character Image to add to their sheet">
-        </div>
-        <div class="quick-inserts">
-            {{#each packItems as |item|}}
-            <div class="quick-buttons" data-item-name="{{item.name}}" data-item-type="{{item.packType}}">
-                <a class="content-link"
-                   data-link=""
-                   draggable="true"
-                   data-uuid="{{item.uuid}}"
-                   data-id="{{item.id}}"
-                   data-type="Item"
-                   data-tooltip="{{item.name}} ({{item.packLabel}})">
-                    {{item.name}}
-                </a>
+        <div class="sidebar-section quick-insert-section">
+            <div class="sidebar-section-title">
+                <h6>Add to Backpack</h6>
             </div>
-            {{/each}}
+            <div class="quick-inserts-search">
+                <input type="text"
+                       data-quick-insert-search
+                       placeholder="Search Items To Add"
+                       autocomplete="off"
+                       data-tooltip-="Search any item from the compendium. Drag to Character Image to add to their sheet">
+            </div>
+            <div class="quick-inserts">
+                {{#each packItems as |item|}}
+                <div class="quick-buttons" data-item-name="{{item.name}}" data-item-type="{{item.packType}}">
+                    <a class="content-link"
+                       data-link=""
+                       draggable="true"
+                       data-uuid="{{item.uuid}}"
+                       data-id="{{item.id}}"
+                       data-type="Item"
+                       data-tooltip="{{item.name}} ({{item.packLabel}})">
+                        {{item.name}}
+                    </a>
+                </div>
+                {{/each}}
+            </div>
         </div>
+
+        <details class="sidebar-section">
+            <summary><h6>Cheat Sheets</h6></summary>
+            <ul class="cheat-sheet-list unlist">
+                <li><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.31qCwzre2jXqsj8Y">Targeted Attacks</a></li>
+                <li><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.iVqR9MjAM473tFOq">Fall Damage</a></li>
+                <li><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.CcBnnoYRjG7In3lu">Travel / Terrain</a></li>
+                <li><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.jzbAUoWYLRMgCAyL">Damage Application</a></li>
+            </ul>
+        </details>
+
     </div>
     <div class="grid-span-16"
          style="border:none;">
-        <h6>Character Details</h6>
         <div class="grid grid-4col character-details"
              style="border:none;">
 
@@ -133,15 +143,14 @@
             <div style="background-image:url('{{actor.img}}')"
                  class="character-stats actor-drop-target"
                  data-actor-drop="{{actor.id}}">
-                <div style="border:none;" class="conditions">
-                    {{#each (lookup ../conditionsByActor actor.id) as |item|}}
-                    <span class="condition-badge"
-                          data-actor-id="{{actor.id}}"
-                          data-condition-name="{{name}}"
-                          data-tooltip="{{name}}<br><br>Left-Click for Details<br>Right-Click for removal/downgrade">
-                        <a class="content-link" data-link="" draggable="true" data-uuid="{{item.uuid}}" data-id="{{item.id}}" data-type="Item"><img src="{{img}}" /></a>
-                        {{#GreaterThan quantity 1}}<span class="condition-count">{{quantity}}x</span>{{/GreaterThan}}
-                    </span>
+                <div class="karmaCaps" style="border:none;">
+                    {{#each actor.system.karmaCaps as |flipped key|}}
+                    <input type="checkbox"
+                           name="system.karmaCaps.{{ key }}"
+                           data-action="toggleKarmaCap"
+                           data-actor-id="{{actor.id}}"
+                           data-cap-index="{{ key }}"
+                           {{checked flipped}} />
                     {{/each}}
                 </div>
                 <div class="actor-name stat-block">
@@ -154,15 +163,16 @@
                         {{/each}}
                     </span>
                     <progress class="statusbar"
-                              value="{{ system.xp }}"
+                              value="{{ actor.system.xp }}"
                               max="1000"
                               style="width:100%;height:5px;background:white;"
-                              data-tooltip="{{system.xp}} out of 1000xp">
-                        {{ system.xp }}
+                              data-tooltip="{{actor.system.xp}} out of 1000xp">
+                        {{ actor.system.xp }}
                     </progress>
                 </div>
             </div>
             <div class="character-stats">
+                <p class="card-section-title">S.P.E.C.I.A.L.</p>
                 <div class="grid grid-7col">
                     <div>S</div>
                     <div>P</div>
@@ -178,40 +188,53 @@
                     <div data-tooltip="{{#GreaterThan actor.system.abilities.int.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.int.mod}}">{{actor.system.abilities.int.value}}</div>
                     <div data-tooltip="{{#GreaterThan actor.system.abilities.agi.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.agi.mod}}">{{actor.system.abilities.agi.value}}</div>
                     <div data-tooltip="{{#GreaterThan actor.system.abilities.lck.mod 1}}+{{/GreaterThan}}{{actor.system.abilities.lck.mod}}">{{actor.system.abilities.lck.value}}</div>
-
-
-
-
                 </div>
-                <div class="karmaCaps">
-                    {{#each actor.system.karmaCaps as |flipped key|}}
-                    <input type="checkbox"
-                           name="system.karmaCaps.{{ key }}"
-                           data-action="toggleKarmaCap"
-                           data-actor-id="{{actor.id}}"
-                           data-cap-index="{{ key }}"
-                           {{checked flipped}} />
+                <div style="border:none;" class="conditions">
+                    {{#each (lookup ../conditionsByActor actor.id) as |item|}}
+                    <span class="condition-badge"
+                          data-actor-id="{{actor.id}}"
+                          data-condition-name="{{name}}"
+                          data-tooltip="{{name}}<br><br>Left-Click for Details<br>Right-Click for removal/downgrade">
+                        <a class="content-link" data-link="" draggable="true" data-uuid="{{item.uuid}}" data-id="{{item.id}}" data-type="Item"><img src="{{img}}" /></a>
+                        {{#GreaterThan quantity 1}}<span class="condition-count">{{quantity}}x</span>{{/GreaterThan}}
+                    </span>
                     {{/each}}
                 </div>
-                <div class="grid grid-4col stat-block">
-                    <div data-tooltip="Armor Class" class="stat-icon"><i class="fa-solid fa-shield"></i></div>
-                    <div class="stat-value">{{actor.system.armorClass.value}}</div>
-                    <div data-tooltip="Damage Threshold" class="stat-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                    <div class="stat-value">{{actor.system.damageThreshold.value}}</div>
-                    <div data-tooltip="Health" class="stat-icon"><i class="fa-solid fa-heart"></i></div>
-                    <div class="stat-value">{{actor.system.health.value}}/{{actor.system.health.max}}</div>
-                    <div data-tooltip="Stamina" class="stat-icon"><i class="fa-solid fa-droplet"></i></div>
-                    <div class="stat-value">{{actor.system.stamina.value}}/{{actor.system.stamina.max}}</div>
-                    <div data-tooltip="Penalties<hr />
+                <p class="card-section-title">Vitals</p>
+                <div class="vitals-row">
+                    <div class="vital-chip vital-primary" data-tooltip="Health">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>{{actor.system.health.value}}/{{actor.system.health.max}}</span>
+                    </div>
+                    <div class="vital-chip vital-primary" data-tooltip="Stamina">
+                        <i class="fa-solid fa-droplet"></i>
+                        <span>{{actor.system.stamina.value}}/{{actor.system.stamina.max}}</span>
+                    </div>
+                    <div class="vital-chip vital-primary" data-tooltip="Action Points">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>{{actor.system.actionPoints.value}}/{{actor.system.actionPoints.max}}</span>
+                    </div>
+                    <div class="vital-chip" data-tooltip="Armor Class">
+                        <i class="fa-solid fa-shield"></i>
+                        <span>{{actor.system.armorClass.value}}</span>
+                    </div>
+                    <div class="vital-chip" data-tooltip="Damage Threshold">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>{{actor.system.damageThreshold.value}}</span>
+                    </div>
+                    <div class="vital-chip" data-tooltip="Penalties<hr />
                      Hunger: {{actor.system.penalties.hunger.value}}<br />
                      Dehydration: {{actor.system.penalties.dehydration.value}}<br />
                      Radiation: {{actor.system.penalties.radiation.value}}<br />
                      Fatigue: {{actor.system.penalties.fatigue.value}}<br />
-                     Exhaustion: {{actor.system.penalties.exhaustion.value}}<br />" class="stat-icon"><i class="fa-solid fa-skull"></i></div>
-                    <div class="stat-value">-{{actor.system.penaltyTotal}}</div>
-                    <div data-tooltip="Action Points" class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
-                    <div class="stat-value">{{actor.system.actionPoints.value}}/{{actor.system.actionPoints.max}}</div>
-                    <div class="grid-span-4">Caps: {{actor.system.caps}}</div>
+                     Exhaustion: {{actor.system.penalties.exhaustion.value}}<br />">
+                        <i class="fa-solid fa-skull"></i>
+                        <span>-{{actor.system.penaltyTotal}}</span>
+                    </div>
+                    <div class="vital-chip" data-tooltip="Caps">
+                        <i class="fa-solid fa-coins"></i>
+                        <span>{{actor.system.caps}}</span>
+                    </div>
                 </div>
             </div>
             <div class="gm-screen-perk-container">
@@ -252,4 +275,3 @@
         </div>
     </div>
 </div>
-

@@ -136,8 +136,8 @@
 
     .application .quick-inserts.active {
       display: flex;
-      max-height:200px;
-      overflow-y:scroll;
+      max-height: 200px;
+      overflow-y: scroll;
     }
 
   .application .quick-buttons {
@@ -149,8 +149,8 @@
     flex: 0 0 auto;
   }
 
-.quick-inserts-search{
-    border:dotted 1px;
+.quick-inserts-search {
+  border: dotted 1px;
 }
 /* Character Stats and Penalties */
 .gm-screen .character-details .actor-name {
@@ -177,3 +177,95 @@
   border: none;
   margin-top: auto;
 }
+
+.gm-screen .prepare-rewards-button {
+  margin: auto;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ================= SIDEBAR ================= */
+
+.gm-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-section {
+  border: dotted 1px var(--sheetcolor);
+  padding: 6px;
+}
+
+  .sidebar-section summary {
+    cursor: pointer;
+  }
+
+    .sidebar-section summary h6 {
+      display: inline;
+    }
+
+.sidebar-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+  .sidebar-section-title h6 {
+    margin: 0;
+  }
+
+.active-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 8pt;
+  white-space: nowrap;
+}
+
+.cheat-sheet-list {
+  text-align: left;
+  padding: 0;
+  margin: 5px 0 0 0;
+}
+
+  .cheat-sheet-list li {
+    padding: 2px 0;
+  }
+
+/* ================= STATUS COLUMN ================= */
+
+.card-section-title {
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  margin: 6px 0 4px 0;
+  border-bottom: dotted 1px var(--sheetcolor);
+  text-align: center;
+  color: var(--sheetcolor);
+}
+
+.vitals-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.vital-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: solid 1px var(--sheetcolor);
+  padding: 2px 6px;
+  font-size: 8pt;
+  color: var(--sheetcolor);
+}
+
+  .vital-chip.vital-primary {
+    font-size: 10pt;
+    font-weight: bold;
+    padding: 3px 8px;
+  }
