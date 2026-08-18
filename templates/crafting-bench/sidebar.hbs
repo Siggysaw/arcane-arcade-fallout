@@ -1,27 +1,57 @@
-<aside>
-    <div>
-        Only Craftable:
-        <i data-action="onlyCraftables" data-tooltip="Toggle only show craftables" class="fas fa-toggle-{{#if onlyCraftables}}on{{else}}off{{/if}}"></i>
+<aside class="pipboy-sidebar pipboy-frame">
+    <header class="sidebar-header" data-header="browse" {{#if searchQuery}}hidden{{/if}}>
+        <button type="button" class="pager-arrow" data-action="prevBranch" aria-label="Previous category" data-tooltip="Previous category">&lsaquo;</button>
+        <select name="selectedBranch" data-select-branch class="branch-select" aria-label="Item category" data-tooltip="Choose a crafting category">
+            {{#each craftingTree as |branch branchKey|}}
+            <option value="{{branchKey}}" {{#if (IsIn branchKey ../openBranches)}}selected{{/if}}>{{ branch.label }}</option>
+            {{/each}}
+        </select>
+        <button type="button" class="pager-arrow" data-action="nextBranch" aria-label="Next category" data-tooltip="Next category">&rsaquo;</button>
+    </header>
+    <header class="sidebar-header" data-header="search" {{#unless searchQuery}}hidden{{/unless}}>
+        <span class="branch-select is-static">Search Results</span>
+    </header>
+
+    <div class="sidebar-utility-row">
+        <button type="button"
+                class="filter-toggle{{#if onlyCraftables}} active{{/if}}"
+                data-action="onlyCraftables"
+                data-tooltip="Currently Craftable">
+            <i class="fas fa-toggle-{{#if onlyCraftables}}on{{else}}off{{/if}}"></i>
+            <span>Craftable Only</span>
+        </button>
+        <div class="search-row">
+            <i class="fas fa-search"></i>
+            <input type="search"
+                   placeholder="Search For Items"
+                   data-search
+                   value="{{searchQuery}}"
+                   autocomplete="off"
+                   data-tooltip="">
+        </div>
     </div>
-    <div>
-        <input type="search" placeholder="Search" data-search value="{{searchQuery}}">
-    </div>
-    {{#each craftingTree as |branch branchKey|}}
-    <details data-action="toggleBranch"
-             data-branch-key="{{branchKey}}"
-             {{#if (IsIn branchKey ../openBranches)}} open{{/if}}>
-        <summary><span class="craftables-type">{{ branch.label }}</span></summary>
-        <div class="craftables-list">
+
+    <div class="craftables-panel">
+        {{!-- Every craftable, across every category, is always rendered
+              here — nothing gets added/removed from the DOM as you type
+              or switch category. _applySidebarFilter() just toggles the
+              `is-hidden` class on rows that don't match the active
+              category (browse mode) or the search text (search mode). --}}
+        <div class="craftables-list" data-craftables-list>
+            {{#each craftingTree as |branch branchKey|}}
             {{#each branch.items as |leaf|}}
-            <button {{#if (Equals ../../selectedCraftable.uuid leaf.uuid) }} class="selected" {{/if}}
+            <button type="button"
+                    class="crafting-option{{#if (Equals @root.selectedCraftable.uuid leaf.uuid)}} selected{{/if}}"
                     data-action="select"
-                    data-branch="{{ branchKey }}"
+                    data-branch="{{branchKey}}"
                     data-index="{{ @index }}"
-                    class="crafting-option">
-                {{ leaf.name }}
+                    data-item-name="{{leaf.name}}">
+                <span class="option-name">{{ leaf.name }}</span>
+                <span class="option-branch">{{ branch.label }}</span>
             </button>
             {{/each}}
+            {{/each}}
+            <div class="empty-branch" data-empty-message hidden>Nothing found</div>
         </div>
-    </details>
-    {{/each}}
+    </div>
 </aside>

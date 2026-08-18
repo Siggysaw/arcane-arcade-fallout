@@ -251,6 +251,7 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
         event.dataTransfer.effectAllowed = 'copy'
       })
     })
+
     this.element.querySelector('[data-quick-insert-search]')?.addEventListener('input', (event) => {
       const query = event.target.value.trim().toLowerCase()
       const quickInserts = this.element.querySelector('.quick-inserts')
@@ -262,23 +263,29 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
         el.style.display = name.includes(query) ? '' : 'none'
       })
     })
+
     this.element.querySelector('[data-activeOnly]')?.addEventListener('click', (event) => {
       this.activeOnly = !this.activeOnly
       this.render(true)
     })
+
     this.element.querySelector('[data-group-xp]')?.addEventListener('input', (event) => {
       this.groupXp = parseInt(event.target.value)
     })
+
     this.element.querySelector('[data-group-xp-modifier]')?.addEventListener('input', (event) => {
       this.groupXpmodifier = parseInt(event.target.value)
     })
+
     this.element.querySelector('[data-group-caps]')?.addEventListener('input', (event) => {
       this.groupCaps = parseInt(event.target.value)
     })
+
     this.actors.forEach((actor) => {
       this.element.querySelector(`[data-actor-xp="${actor.id}"]`)?.addEventListener('input', (event) => {
         this.newActorData[actor.id].xp = parseInt(event.target.value)
       })
+
       this.element.querySelector(`[data-actor-caps="${actor.id}"]`)?.addEventListener('input', (event) => {
         this.newActorData[actor.id].caps = parseInt(event.target.value)
       })

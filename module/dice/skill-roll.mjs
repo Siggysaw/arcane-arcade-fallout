@@ -27,9 +27,9 @@ export default class SkillRoll extends FormApplication {
       actorPenalties: this.actor.system.penaltyTotal,
       bonus: '',
       advantageMode:
-        this.skill.advantage === 0
+        this.skill.advantage === 0 && this.selectedAbility.advantage === 0
           ? SkillRoll.ADV_MODE.NORMAL
-          : this.skill.advantage > 0
+          : this.skill.advantage + this.selectedAbility.advantage > 0
             ? SkillRoll.ADV_MODE.ADVANTAGE
             : SkillRoll.ADV_MODE.DISADVANTAGE,
     }

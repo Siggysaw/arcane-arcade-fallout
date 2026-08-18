@@ -1,106 +1,691 @@
-.application h1 {
-  font-size: 16pt;
-  text-align: center;
-}
+/* =========================================================
+   Crafting Bench — Fallout: New Vegas Pip-Boy styling
+   All accent color driven by var(--sheetcolor); backgrounds
+   sit on var(--dark) so the sheet color reads the way it
+   does on an actual Pip-Boy screen (glowing lines on black),
+   not a solid color fill.
 
-.application .crafting-content,
-.crafting-content h5 {
-  font-family: Monofonto;
-  text-transform: capitalize;
-  font-size: 12pt;
-  color: white;
-}
-
-.crafting-bench section {
-  margin-top: 20px;
-}
-
-.crafting-content h5 {
-  font-size: 15pt;
-  text-transform: uppercase;
-  color: var(--sheetcolor);
-}
+   Layout is three framed boxes arranged like the in-game
+   workbench: category list (top-left), recipe readout
+   (top-right), and a full-width console strip along the
+   bottom with the item render, Val/Wg/Owned stats, and the
+   Accept / Attempt / Exit actions.
+   ========================================================= */
 
 .crafting-bench {
-  background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+  --pb-glow: color-mix(in srgb, var(--sheetcolor) 55%, transparent);
+  --pb-dim: color-mix(in srgb, var(--sheetcolor) 35%, transparent);
+  --pb-faint: color-mix(in srgb, var(--sheetcolor) 12%, transparent);
+  --pb-hairline: color-mix(in srgb, var(--sheetcolor) 45%, transparent);
+
+  background-color: var(--dark);
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.15) 0px,
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
+  background-repeat: repeat, no-repeat;
+  background-size: auto, 100% 100%;
   color: var(--sheetcolor);
-  background-color: var(--sheetcolor);
+  text-transform:capitalize;
 }
+  .crafting-bench option, .crafting-bench select{
+      text-transform:capitalize;
+  }
 
   .crafting-bench .window-content {
-    padding: 0;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "sidebar main"
+      "console console";
+    gap: 6px;
+    padding: 6px;
     height: 100%;
-    min-height: 600px;
+    min-height: 0;
+    max-width: 100%;
+    overflow: hidden;
   }
 
-  .crafting-bench aside {
-    flex: 0 0 300px;
-    overflow-y:scroll;
-  }
-
-  .crafting-bench .main {
-    width: 900px;
-    padding: 20px;
-    border: solid 1px;
-    overflow-y:scroll;
-  }
-
-  .crafting-bench button {
-    width: 100%;
-    font-size: 14pt;
-    text-transform: capitalize;
-    background: none;
-  }
-
-    .crafting-bench button .main {
-      padding: 20px;
-    }
-
-    .crafting-bench button section {
-      padding: 10px;
-    }
-
-    .crafting-bench button .main .grid {
-      border: solid 1px var(--sheetcolor);
-    }
-
-  .crafting-bench .main .grid > div {
-    text-align: center;
-    padding: 5px;
-    border: solid 1px var(--sheetcolor);
-  }
-
-.craftables-img {
-  background: black;
-}
-
-  .craftables-img img {
-    width: 200px;
-    height: auto;
-    display: block;
-    margin: auto;
-  }
-
-.attempt-crafting {
-  padding: 0;
+.crafting-bench h1,
+.crafting-bench h2,
+.crafting-bench h5 {
+  font-family: 'Monofonto', monospace;
+  letter-spacing: 0.04em;
+  color: var(--sheetcolor);
+  text-shadow: 0 0 6px var(--pb-glow);
   margin: 0;
 }
 
-.craftables-list {
-  max-height: 200px;
-  overflow-y: scroll;
+.crafting-bench h1 {
+  font-size: 15pt;
 }
 
-.craftables-type {
+.crafting-bench h5 {
+  font-size: 11pt;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--pb-hairline);
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.crafting-bench .crafting-content,
+.crafting-content {
+  font-family: 'Monofonto', monospace;
+  font-size: 11pt;
+  color: var(--sheetcolor);
+}
+
+.crafting-bench section {
+  margin-top: 18px;
+}
+
+/* ---------------------------------------------------------
+   Shared framed-box look for the three panels
+   --------------------------------------------------------- */
+
+.pipboy-frame {
+  position: relative;
+  border: 1px solid var(--pb-hairline);
+}
+
+/* corner brackets, like a Pip-Boy targeting/selection frame */
+.pipboy-frame::before,
+.pipboy-frame::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--sheetcolor);
+  pointer-events: none;
+}
+
+.pipboy-frame::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.pipboy-frame::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+/* ---------------------------------------------------------
+   Sidebar / category navigation ("‹ Ammo ›")
+   --------------------------------------------------------- */
+
+.crafting-bench aside {
+  grid-area: sidebar;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 10px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 4px 12px 4px;
+  border-bottom: 1px solid var(--pb-hairline);
+  margin-bottom: 10px;
+}
+
+/* The browse/search headers are toggled via the `hidden` attribute (see
+   _applySidebarFilter). An author-origin `display` rule always beats the
+   UA stylesheet's `[hidden] { display: none }`, specificity aside — so
+   without this, `.sidebar-header`'s own `display: flex` above would win
+   and the "hidden" header would stay visible. */
+.sidebar-header[hidden] {
+  display: none;
+}
+
+/* Overrides the generic `.crafting-bench button` block styling (width,
+   border, padding, hover-invert) — the pager arrows are inline glyphs,
+   not full buttons. */
+.crafting-bench .sidebar-header .pager-arrow {
+  width: auto;
+  flex: 0 0 auto;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 4px 6px;
+  color: var(--sheetcolor);
+  font-family: 'Monofonto', monospace;
   font-size: 14pt;
-  padding: 5px;
+  line-height: 1;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.crafting-bench .sidebar-header .pager-arrow:hover,
+.crafting-bench .sidebar-header .pager-arrow:focus-visible {
+  background: none;
+  color: var(--sheetcolor);
+  opacity: 1;
+  text-shadow: 0 0 6px var(--pb-glow);
+  outline: none;
+}
+
+.branch-select {
+  flex: 1 1 auto;
+  background: none;
+  border: none;
+  color: var(--sheetcolor);
+  font-family: 'Monofonto', monospace;
+  letter-spacing: 0.04em;
+  font-size: 13pt;
+  text-align: center;
+  text-align-last: center;
+  text-shadow: 0 0 6px var(--pb-glow);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.branch-select.is-static {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.branch-select:focus {
+  outline: none;
+}
+
+.branch-select option {
+  background: var(--dark);
+  color: var(--sheetcolor);
+  text-align: left;
+}
+
+.sidebar-utility-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+/* Extra-scoped selector so this wins over the generic `.crafting-bench
+   button` rule (width:100%, padding:8px, bordered) — without it the
+   toggle stretches to fill the whole utility row and squeezes the search
+   box down to a sliver. */
+.crafting-bench .sidebar-utility-row .filter-toggle {
+  width: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--pb-hairline);
+  color: var(--sheetcolor);
+  font-family: 'Monofonto', monospace;
+  font-size: 9pt;
+  padding: 5px 7px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.filter-toggle span {
+  display: none;
+}
+
+.crafting-bench .sidebar-utility-row .filter-toggle.active,
+.crafting-bench .sidebar-utility-row .filter-toggle:hover {
+  background: var(--pb-faint);
+  border-color: var(--sheetcolor);
+  color: var(--sheetcolor);
+}
+
+.search-row {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--pb-hairline);
+  padding: 4px 8px;
+  min-width: 0;
+}
+
+.search-row i {
+  opacity: 0.7;
+  font-size: 9pt;
+}
+
+.search-row input[type="search"] {
+  background: none;
+  border: none;
+  color: var(--sheetcolor);
+  font-family: 'Monofonto', monospace;
+  letter-spacing: 0.03em;
+  width: 100%;
+  min-width: 0;
+}
+
+.search-row input[type="search"]:focus {
+  outline: none;
+}
+
+.craftables-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.craftables-list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 2px 0 8px 0;
 }
 
 .crafting-option {
-  font-size: 14pt;
-  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  font-size: 10.5pt;
+  letter-spacing: 0.02em;
   background: none;
+  border: 1px solid transparent;
+  color: var(--sheetcolor);
+  padding: 6px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.crafting-option:hover {
+  border-color: var(--pb-hairline);
+  background: var(--pb-faint);
+}
+
+.crafting-option.selected {
+  border-color: var(--sheetcolor);
+  background: var(--pb-faint);
+}
+
+/* Every item across every category is always in the DOM (see
+   _applySidebarFilter in the JS) — this is what's toggled to show only
+   the active category, or only search matches, without ever touching
+   Foundry's render(). */
+.crafting-option.is-hidden {
+  display: none;
+}
+
+.option-branch {
+  margin-left: auto;
+  flex: 0 0 auto;
+  font-size: 8.5pt;
+  opacity: 0.55;
+  letter-spacing: 0.02em;
+  /* Only meaningful once results are flattened across categories in
+     search mode — hidden the rest of the time. */
+  display: none;
+}
+
+.craftables-list.is-searching .option-branch {
+  display: inline;
+}
+
+.empty-branch {
+  padding: 10px;
+  font-size: 9.5pt;
+  opacity: 0.6;
+  font-style: italic;
+}
+
+/* ---------------------------------------------------------
+   Main readout panel ("Workbench")
+   --------------------------------------------------------- */
+
+.crafting-bench .main {
+  grid-area: main;
+  min-width: 0;
+  min-height: 0;
+  padding: 16px 20px;
+  overflow-y: auto;
+}
+
+.item-header {
+  padding-bottom: 8px;
+}
+
+.requirement-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.requirement-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 2px;
+  font-size: 10.5pt;
+  border-bottom: 1px dotted var(--pb-hairline);
+}
+
+.requirement-line:last-child {
+  border-bottom: none;
+}
+
+.req-name {
+  text-transform: capitalize;
+  opacity: 0.9;
+}
+
+.req-value {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.crafting-bench select[data-base-item] {
+  width: 100%;
+  background: color-mix(in srgb, var(--dark) 70%, black);
+  border: 1px solid var(--sheetcolor);
+  color: var(--sheetcolor);
+  font-family: 'Monofonto', monospace;
+  font-size: 11pt;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.crafting-bench select[data-base-item] option {
+  background: var(--dark);
+  color: var(--sheetcolor);
+}
+
+.empty-state {
+  text-align: center;
+  margin-top: 60px;
+  opacity: 0.85;
+}
+
+.empty-state h1 {
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  font-size: 10pt;
+  opacity: 0.7;
+}
+
+.crafting-footer {
+  margin-top: 24px;
+  padding-top: 10px;
+  border-top: 1px solid var(--pb-hairline);
+  text-align: center;
+  font-size: 9pt;
+  opacity: 0.8;
+}
+
+.crafting-footer a {
+  color: var(--sheetcolor);
+}
+
+/* ---------------------------------------------------------
+   Bottom console — item render, Val/Wg/Owned, actions
+   --------------------------------------------------------- */
+
+.crafting-bench .console {
+  grid-area: console;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.console-body {
+  display: grid;
+  grid-template-columns: 150px 1fr 160px;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.console-art .craftables-img {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--pb-hairline);
+  background: color-mix(in srgb, var(--dark) 70%, black);
+}
+
+.console-art img {
+  max-width: 85%;
+  max-height: 85%;
+  display: block;
+  opacity: 0.9;
+}
+
+.console-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.console-item-name {
+  font-size: 12pt;
+}
+
+.console-info .item-description {
+  font-size: 9.5pt;
+  line-height: 1.4;
+  opacity: 0.85;
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+.console-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Scoped with `.crafting-bench` so this reliably wins over the generic
+   `.crafting-bench button` rule below regardless of source order (they'd
+   otherwise tie on specificity and silently drop padding-left). */
+.crafting-bench .console-actions button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+  padding-left: 12px;
+}
+
+.console-stat-bar {
+  display: flex;
+  border-top: 1px solid var(--pb-hairline);
+  padding-top: 8px;
+}
+
+.console-stat {
+  flex: 1 1 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 16px;
+  border-right: 1px solid var(--pb-hairline);
+  font-size: 10pt;
+}
+
+.console-stat:last-child {
+  border-right: none;
+}
+
+.console-stat-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.console-stat-value {
+  font-weight: bold;
+}
+
+.console-empty {
+  margin: 20px 0;
+}
+
+/* ---------------------------------------------------------
+   Shared stat block (Time Required / Quantity Crafted)
+   --------------------------------------------------------- */
+
+.stat-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10pt;
+}
+
+.stat-label {
+  opacity: 0.75;
+}
+
+.stat-value {
+  font-weight: bold;
+}
+
+/* ---------------------------------------------------------
+   Actions
+   --------------------------------------------------------- */
+
+.crafting-bench button {
+  width: 100%;
+  font-size: 10.5pt;
+  background: none;
+  border: 1px solid var(--sheetcolor);
+  color: var(--sheetcolor);
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.crafting-bench button:hover:not(:disabled) {
+  background: var(--sheetcolor);
+  color: var(--dark);
+}
+
+.crafting-bench button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ---------------------------------------------------------
+   Attempt-roll popup (dialog element)
+   --------------------------------------------------------- */
+
+.attempt-crafting {
+  background-color: var(--dark);
+  border: 1px solid var(--sheetcolor);
+  color: var(--sheetcolor);
+  font-family: 'Monofonto', monospace;
+  padding: 0;
+}
+
+.pipboy-modal {
+  position: relative;
+  padding: 20px;
+  min-width: 360px;
+}
+
+.pipboy-modal .modal-header {
+  border-bottom: 1px solid var(--pb-hairline);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+
+.pipboy-modal .modal-header h2 {
+  font-family: 'Monofonto', monospace;
+  font-size: 13pt;
+  text-shadow: 0 0 6px var(--pb-glow);
+  margin: 0;
+}
+
+.modal-prompt {
+  font-size: 10.5pt;
+  margin: 0 0 14px 0;
+}
+
+.modal-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.modal-row label {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 9.5pt;
+  opacity: 0.8;
+}
+
+.dc-readout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--pb-hairline);
+  padding: 8px 12px;
+  margin-bottom: 16px;
+}
+
+.dc-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10pt;
+  opacity: 0.8;
+}
+
+.dc-value {
+  font-size: 16pt;
+  font-weight: bold;
+  text-shadow: 0 0 6px var(--pb-glow);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-actions button {
+  flex: 1 1 0;
+}
+
+.modal-actions .primary:hover {
+  background: var(--sheetcolor);
+  color: var(--dark);
+}
+
+/* ---------------------------------------------------------
+   Scrollbars — themed for webkit
+   --------------------------------------------------------- */
+
+.crafting-bench aside::-webkit-scrollbar,
+.crafting-bench .main::-webkit-scrollbar,
+.craftables-list::-webkit-scrollbar,
+.console-info .item-description::-webkit-scrollbar {
+  width: 8px;
+}
+
+.crafting-bench aside::-webkit-scrollbar-thumb,
+.crafting-bench .main::-webkit-scrollbar-thumb,
+.craftables-list::-webkit-scrollbar-thumb,
+.console-info .item-description::-webkit-scrollbar-thumb {
+  background: var(--pb-dim);
+}
+
+.crafting-bench aside::-webkit-scrollbar-track,
+.crafting-bench .main::-webkit-scrollbar-track,
+.craftables-list::-webkit-scrollbar-track,
+.console-info .item-description::-webkit-scrollbar-track {
+  background: transparent;
 }

@@ -154,10 +154,12 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
       cancel: CraftingAttempt.cancel,
     },
     classes: ['attempt-crafting'],
+    position: {
+      width: 480,
+      height: 'auto',
+    },
     window: {
       title: 'Crafting Check',
-      width: 700,
-      height: 700,
       resizable: true,
       minimizable: false,
     },
@@ -306,17 +308,28 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       }
       return acc
     }, {})
+
+    // Default to the first category tab being active rather than opening
+    // with no category selected.
+    const firstBranchKey = Object.keys(this.fullCraftingTree)[0]
+    this.openBranches = firstBranchKey ? [firstBranchKey] : []
   }
 
   static DEFAULT_OPTIONS = {
     actions: {
       select: CraftingBench.selectCraftable,
-      toggleBranch: CraftingBench.toggleBranch,
       craft: CraftingBench.craft,
       attemptCraft: CraftingBench.attemptCraft,
       onlyCraftables: CraftingBench.toggleOnlyCraftables,
+      close: CraftingBench.closeBench,
+      prevBranch: CraftingBench.prevBranch,
+      nextBranch: CraftingBench.nextBranch,
     },
     classes: ['crafting-bench'],
+    position: {
+      width: 1100,
+      height: 700,
+    },
     window: {
       title: 'Crafting Bench',
       resizable: true
@@ -330,15 +343,90 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     main: {
       template: 'systems/arcane-arcade-fallout/templates/crafting-bench/main.hbs',
     },
+    console: {
+      template: 'systems/arcane-arcade-fallout/templates/crafting-bench/console.hbs',
+    },
   }
 
   _onRender() {
-    this.element.querySelector('[data-search]')?.addEventListener('search', (e) => this.search(e))
-    this.element.querySelector('[data-base-item]')?.addEventListener('change', (e) => {
-      this.selectedBaseItemId = e.currentTarget.value
-      this.render()
-    })
+    // Guard every manually-attached listener against double-binding: a
+    // render scoped to just ['main', 'console'] (see search()) leaves the
+    // sidebar's DOM untouched, so without this check we'd stack a second
+    // listener onto the same still-alive elements each time.
+    const searchInput = this.element.querySelector('[data-search]')
+    if (searchInput && !searchInput.dataset.bound) {
+      searchInput.dataset.bound = 'true'
+      searchInput.addEventListener('input', (e) => this.search(e))
+      searchInput.addEventListener('blur', () => { this._searchFocused = false })
+    }
+    // A render that touches the sidebar (e.g. switching category) replaces
+    // the search input itself, so without this the field would lose focus.
+    if (this._searchFocused && searchInput) {
+      searchInput.focus()
+      const pos = this._searchCursorPos ?? searchInput.value.length
+      searchInput.setSelectionRange(pos, pos)
+    }
+
+    const baseItemSelect = this.element.querySelector('[data-base-item]')
+    if (baseItemSelect && !baseItemSelect.dataset.bound) {
+      baseItemSelect.dataset.bound = 'true'
+      baseItemSelect.addEventListener('change', (e) => {
+        this.selectedBaseItemId = e.currentTarget.value
+        this.render()
+      })
+    }
+
+    const branchSelect = this.element.querySelector('[data-select-branch]')
+    if (branchSelect && !branchSelect.dataset.bound) {
+      branchSelect.dataset.bound = 'true'
+      branchSelect.addEventListener('change', (e) => {
+        this.openBranches = [e.currentTarget.value]
+        this.render()
+      })
+    }
+
+    // Sync the sidebar's visible rows with the current search/category
+    // state. Cheap and idempotent, so it's safe to just always run this
+    // after every render (full or partial) rather than track exactly what
+    // changed.
+    this._applySidebarFilter()
   };
+
+  // Pure DOM show/hide over the *already-rendered* sidebar list — same
+  // technique GMApplication's quick-insert search uses. Every craftable
+  // across every category is in the DOM at all times; this just toggles
+  // which rows are visible. Critically, this never touches Foundry's
+  // render() and never recreates the search <input>, so it can run on
+  // every keystroke without disturbing focus or dropping characters —
+  // which is what re-rendering the whole window on every keystroke was
+  // doing before.
+  _applySidebarFilter() {
+    const list = this.element.querySelector('[data-craftables-list]')
+    if (!list) return
+
+    const query = (this.searchQuery ?? '').trim()
+    const isSearching = query.length > 0
+    const activeBranch = this.openBranches[0]
+
+    this.element.querySelector('[data-header="browse"]')?.toggleAttribute('hidden', isSearching)
+    this.element.querySelector('[data-header="search"]')?.toggleAttribute('hidden', !isSearching)
+    list.classList.toggle('is-searching', isSearching)
+
+    let visibleCount = 0
+    list.querySelectorAll('.crafting-option').forEach((row) => {
+      const matches = isSearching
+        ? row.dataset.itemName?.toLowerCase().includes(query)
+        : row.dataset.branch === activeBranch
+      row.classList.toggle('is-hidden', !matches)
+      if (matches) visibleCount++
+    })
+
+    const emptyMessage = list.querySelector('[data-empty-message]')
+    if (emptyMessage) {
+      emptyMessage.hidden = visibleCount > 0
+      emptyMessage.textContent = isSearching ? 'No matches found' : 'Nothing found'
+    }
+  }
 
   async _prepareContext() {
     return {
@@ -353,11 +441,14 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       owned: this.owned,
       hasRequirements: this.hasRequirements,
       searchQuery: this.searchQuery,
+      searchResultsCount: this.searchQuery
+        ? Object.values(this.craftingTree).reduce((sum, branch) => sum + branch.items.length, 0)
+        : null,
       onlyCraftables: this.onlyCraftables,
       baseMaterialOptions: this.baseMaterialOptions,
       selectedBaseItemMaterials: this.selectedBaseItemMaterials,
       selectedBaseItemId: this.selectedBaseItemId,
-      isArmorUpgrade: this.selectedCraftable?.type === 'armorUpgrade'
+      isArmorUpgrade: this.selectedCraftable?.type === 'armorUpgrade',
     }
   }
 
@@ -440,7 +531,12 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     // if searchQuery is set, filter the crafting tree
     if (this.searchQuery) {
       tree = Object.keys(tree).reduce((acc, branchKey) => {
-        const branch = this.fullCraftingTree[branchKey]
+        // Read from `tree`, not `fullCraftingTree` — when onlyCraftables is
+        // also active, `tree` above has already been narrowed to items the
+        // actor can afford. Reading from fullCraftingTree here would undo
+        // that filtering and let uncraftable items reappear in search
+        // results whenever both filters are active at once.
+        const branch = tree[branchKey]
         // if branch label is a match, return branch and all leafs
         if (branch.label.toLowerCase().includes(this.searchQuery)) {
           acc[branchKey] = branch
@@ -513,21 +609,19 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     e.stopPropagation()
     e.preventDefault()
     const { branch, index } = target.dataset
-    this.selectedCraftable = this.craftingTree[branch].items[index] ?? null
-    this.selectedBaseItemId = this.baseMaterialOptions?.[this.selectedCraftable.system.type]?.id ?? null
-    const itemOwned = this.actor.items.find((i) => i.name == this.selectedCraftable.name)
-    itemOwned !== undefined ? this.owned = itemOwned.system.quantity : this.owned = 0
-    this.selectedSkill = this.selectedCraftable.system.crafting.mainRequirements[0]
+    this._applySelectedCraftable(this.craftingTree[branch].items[index])
     this.render()
   }
 
-  static toggleBranch(e, target) {
-    const { branchKey } = target.dataset
-    if (this.openBranches.includes(branchKey)) {
-      this.openBranches.splice(this.openBranches.indexOf(branchKey), 1)
-    } else {
-      this.openBranches.push(branchKey)
-    }
+  // Shared by the sidebar click handler and the search box's exact-match
+  // selection (see _autoSelectExactMatch) so both stay in sync.
+  _applySelectedCraftable(craftable) {
+    this.selectedCraftable = craftable ?? null
+    if (!this.selectedCraftable) return
+    this.selectedBaseItemId = this.baseMaterialOptions?.[this.selectedCraftable.system.type]?.id ?? null
+    const itemOwned = this.actor.items.find((i) => i.name == this.selectedCraftable.name)
+    this.owned = itemOwned !== undefined ? itemOwned.system.quantity : 0
+    this.selectedSkill = this.selectedCraftable.system.crafting.mainRequirements[0]
   }
 
   static async craft() {
@@ -576,11 +670,72 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
   search(event) {
     this.searchQuery = event.currentTarget.value.toLowerCase()
-    this.render()
+    this._searchFocused = true
+    this._searchCursorPos = event.currentTarget.selectionStart
+
+    // Filter the already-rendered list purely via the DOM (see
+    // _applySidebarFilter) — no Foundry render() here at all, so the
+    // search input is never torn down and focus/cursor position are never
+    // disturbed while typing. This is what re-rendering the whole window
+    // on every keystroke was breaking.
+    this._applySidebarFilter()
+
+    // An exact name match still needs the recipe readout (main + console)
+    // to update with the newly-selected item's details. Debounce that and
+    // scope the render to just those two parts — the sidebar (and the
+    // focused search input inside it) is never touched by it either way.
+    clearTimeout(this._searchDebounceTimer)
+    this._searchDebounceTimer = setTimeout(() => {
+      // Bail if the window has since closed (element detached) so a
+      // trailing debounced render doesn't fire against a dead app.
+      if (!this.element?.isConnected) return
+      if (this._autoSelectExactMatch()) {
+        this.render({ parts: ['main', 'console'] })
+      }
+    }, 200)
+  }
+
+  // If the search box's value exactly matches one visible item's full
+  // name, jump straight to selecting that item. Returns true if the
+  // selection actually changed (so the caller knows whether a render is
+  // even needed).
+  _autoSelectExactMatch() {
+    if (!this.searchQuery) return false
+    for (const branch of Object.values(this.craftingTree)) {
+      const match = branch.items.find((item) => item.name.toLowerCase() === this.searchQuery)
+      if (match) {
+        if (this.selectedCraftable?.uuid === match.uuid) return false
+        this._applySelectedCraftable(match)
+        return true
+      }
+    }
+    return false
   }
 
   static toggleOnlyCraftables() {
     this.onlyCraftables = !this.onlyCraftables
+    this.render()
+  }
+
+  static closeBench() {
+    this.close()
+  }
+
+  static prevBranch() {
+    const keys = Object.keys(this.craftingTree)
+    if (!keys.length) return
+    const currentIndex = keys.indexOf(this.openBranches[0])
+    const prevIndex = currentIndex <= 0 ? keys.length - 1 : currentIndex - 1
+    this.openBranches = [keys[prevIndex]]
+    this.render()
+  }
+
+  static nextBranch() {
+    const keys = Object.keys(this.craftingTree)
+    if (!keys.length) return
+    const currentIndex = keys.indexOf(this.openBranches[0])
+    const nextIndex = currentIndex === -1 || currentIndex >= keys.length - 1 ? 0 : currentIndex + 1
+    this.openBranches = [keys[nextIndex]]
     this.render()
   }
 

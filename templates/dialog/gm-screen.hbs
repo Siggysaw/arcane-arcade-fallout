@@ -83,7 +83,7 @@
 
         <div class="sidebar-section quick-insert-section">
             <div class="sidebar-section-title">
-                <h6>Add to Backpack</h6>
+                <h6>Add to Character</h6>
             </div>
             <div class="quick-inserts-search">
                 <input type="text"
@@ -171,8 +171,7 @@
                     </progress>
                 </div>
             </div>
-            <div class="character-stats">
-                <p class="card-section-title">S.P.E.C.I.A.L.</p>
+            <div data-actor-drop="{{actor.id}}" class="character-stats actor-drop-target">
                 <div class="grid grid-7col">
                     <div>S</div>
                     <div>P</div>
@@ -196,11 +195,11 @@
                           data-condition-name="{{name}}"
                           data-tooltip="{{name}}<br><br>Left-Click for Details<br>Right-Click for removal/downgrade">
                         <a class="content-link" data-link="" draggable="true" data-uuid="{{item.uuid}}" data-id="{{item.id}}" data-type="Item"><img src="{{img}}" /></a>
-                        {{#GreaterThan quantity 1}}<span class="condition-count">{{quantity}}x</span>{{/GreaterThan}}
+                        {{#GreaterThan quantity 1}}<span class="condition-count">x{{quantity}}</span>{{/GreaterThan}}
                     </span>
                     {{/each}}
                 </div>
-                <p class="card-section-title">Vitals</p>
+
                 <div class="vitals-row">
                     <div class="vital-chip vital-primary" data-tooltip="Health">
                         <i class="fa-solid fa-heart"></i>
@@ -237,7 +236,7 @@
                     </div>
                 </div>
             </div>
-            <div class="gm-screen-perk-container">
+            <div data-actor-drop="{{actor.id}}" class="gm-screen-perk-container actor-drop-target">
                 {{#each actor.items as |item id|}}
                 {{#Check item.type "trait"}}
                 <div class="gm-screen-perk" data-tooltip="{{item.system.description}}">
@@ -253,7 +252,7 @@
                 {{/Check}}
                 {{/each}}
             </div>
-            <div class="valuable-items">
+            <div data-actor-drop="{{actor.id}}" class="valuable-items actor-drop-target">
                 {{#each (lookup ../valuableItemsByActor actor.id) as |group|}}
                 <div class="item-type-group">
                     <p class="item-type-label">{{group.label}}s</p>

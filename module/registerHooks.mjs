@@ -3,6 +3,7 @@ import SkillRoll from './dice/skill-roll.mjs'
 import FalloutZeroArmor from './data/armor.mjs'
 import FalloutZeroItem from './documents/item.mjs'
 import { getApCost, getLastWaypointGroup, sumWaypoints } from './helpers/movement.mjs'
+import { attachAttributeKeyAutocomplete } from './helpers/effects.mjs'
 
 export function registerHooks() {
   Hooks.on('renderSidebar', (app, element) => {
@@ -49,6 +50,14 @@ export function registerHooks() {
       });
     }
   })
+
+  /* --------------------------------------------  */
+  /*  Active Effect config                         */
+  /* --------------------------------------------  */
+  // Turns the "Attribute Key" field on each Change row into a dropdown with
+  // autocomplete, populated from whatever the effect's owning Actor/Item
+  // actually has under `system` — see helpers/effects.mjs.
+  Hooks.on('renderActiveEffectConfig', attachAttributeKeyAutocomplete)
 
   Hooks.on('renderActorSheet', (app, html) => {
     if (html?.[0].tagName === 'FORM') {

@@ -422,7 +422,7 @@ export default class FalloutZeroActor extends Actor {
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this }),
         flavor: `${actor.name} rolled a Custom Roll!`,
-        rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
+        rollMode: game.settings.get("core", 'rollMode'),
       })
     }
   }
@@ -785,7 +785,7 @@ export default class FalloutZeroActor extends Actor {
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this }),
       flavor: `${this.name} rolls a ${abilityLabel} Check, DC ${dc} for ${ev.currentTarget.dataset.condition}. <p>${rollContent}</p>`,
-      rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
+      rollMode: game.settings.get("core", 'rollMode'),
     })
   }
 
@@ -1382,7 +1382,7 @@ export default class FalloutZeroActor extends Actor {
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this }),
       flavor,
-      rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
+      rollMode: game.settings.get("core", 'rollMode'),
     })
 
     if (type === 'radiation' && !success) {

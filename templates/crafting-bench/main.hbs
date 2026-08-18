@@ -1,160 +1,73 @@
-<section class="main">
+<section class="main pipboy-frame">
+    <header class="item-header">
+        <h1>Workbench</h1>
+    </header>
     {{#if selectedCraftable}}
-    <h1>Crafting {{ selectedCraftable.name }}</h1>
     <div class="crafting-content">
         <section>
-            <div class="craftables-img grid grid-2col">
-                <div><img src="{{selectedCraftable.img}}" /></div>
-                <div>{{{selectedCraftable.system.description}}}</div>
-            </div>
-            <br />
-            <div class="grid grid-2col">
-                <div>
-                    Owned
-                </div>
-                <div>
-                    {{ owned }}
-                </div>
-            </div>
-
-        </section>
-        <section>
-            <div>
-                TIME REQ: {{ selectedCraftable.system.crafting.time.value }} {{ selectedCraftable.system.crafting.time.unit }}
-            </div>
-            <div>
-                QUANTITY CRAFTED: {{ selectedCraftable.system.crafting.quantity }}
-            </div>
-        </section>
-        <section>
-            <h5>Skill requirements</h5>
-            <div class="grid grid-4col">
-                <div>Skill</div>
-                <div>Current Bonuses</div>
-                <div>Auto Craft Req.</div>
-                <div>Roll DC</div>
+            <h5>Skill Requirement</h5>
+            <ul class="requirement-list">
                 {{#each selectedCraftable.system.crafting.mainRequirements as |requirement|}}
-                <div style="padding:10px;">
-                    {{requirement.key}}
-                </div>
-                <div>
-                    <div data-tooltip="INT + SKILL + LUCK - PENALTIES">{{../abilityBonus}} + {{lookup ../skills requirement.key}} + {{../luck}} - {{../penaltyTotal}}</div>
-                </div>
-                <div style="padding:10px;">{{ requirement.dc }}</div>
-                <div style="padding:10px;">
-                    {{#Sum requirement.dc 10}}{{/Sum}}
-                </div>
+                <li class="requirement-line"
+                    data-tooltip="{{../abilityBonus}} (Ability) + {{lookup ../skills requirement.key}} (Skill) + {{../luck}} (Luck) - {{../penaltyTotal}} (Penalties) | Attempt DC {{Sum requirement.dc 10}}">
+                    <span class="req-name">{{requirement.key}}</span>
+                    <span class="req-value">({{Subtract (Sum (Sum ../abilityBonus (lookup ../skills requirement.key)) ../luck) ../penaltyTotal}}/{{requirement.dc}})</span>
+                </li>
                 {{/each}}
-            </div>
+            </ul>
         </section>
 
         {{#if selectedCraftable.system.crafting.additionalRequirements}}
         <section>
-            <h5> Additional Requirements</h5>
-            <div class="grid grid-4col">
-                <div>Skill</div>
-                <div>Current Bonus</div>
-                <div>Auto Craft Req.</div>
-                <div>Crafting Attempt DC</div>
+            <h5>Additional Requirement</h5>
+            <ul class="requirement-list">
                 {{#each selectedCraftable.system.crafting.additionalRequirements as |requirement|}}
-                <div>
-                    {{requirement.key}}
-                </div>
-                <div>{{ requirement.dc }}</div>
-                <div>
-                    {{lookup ../skills requirement.key}}
-                </div>
-                <div>
-                    {{#Sum requirement.dc 10}}{{/Sum}}
-                </div>
+                <li class="requirement-line" data-tooltip="Attempt DC {{Sum requirement.dc 10}}">
+                    <span class="req-name">{{requirement.key}}</span>
+                    <span class="req-value">({{lookup ../skills requirement.key}}/{{requirement.dc}})</span>
+                </li>
                 {{/each}}
-            </div>
+            </ul>
         </section>
         {{/if}}
+
         {{#if isArmorUpgrade}}
         <section>
-            Select a base item to craft upgrade for
+            <h5>Base Item</h5>
             <select name="selectedBaseItemId" data-base-item>
                 {{selectOptions baseMaterialOptions selected=selectedBaseItemId valueAttr="id" labelAttr="name"}}
             </select>
         </section>
         {{/if}}
+
         <section>
-            <h5>Material Requirements</h5>
-            <div class="grid grid-3col">
-                <div>
-                    Material
-                </div>
-                <div>
-                    Quantity
-                </div>
-                <div>
-                    Owned
-                </div>
+            <h5>Ingredients</h5>
+            <ul class="requirement-list ingredients-list">
                 {{!-- Craftable requirements --}}
                 {{#each selectedCraftable.system.crafting.materials as |material|}}
-                <div>
-                    {{material.name}}
-                </div>
-                <div>
-                    {{material.quantity}}
-                </div>
-                <div>
-                    {{!-- #TODO BETTER WAY TO LOOKUP? --}}
-                    {{#if (lookup ../materials material.uuid)}}
-                    {{#with (lookup ../materials material.uuid)~}}
-                    {{ this.quantity }}
-                    {{/with}}
-                    {{else}}
-                    0
-                    {{/if}}
-                </div>
+                <li class="requirement-line">
+                    <span class="req-name">{{material.name}}</span>
+                    <span class="req-value">({{~#if (lookup ../materials material.uuid)~}}{{~#with (lookup ../materials material.uuid)~}}{{this.quantity}}{{~/with~}}{{~else~}}0{{~/if~}}/{{material.quantity}})</span>
+                </li>
                 {{/each}}
 
                 {{!-- Craftable selected base item requirements --}}
                 {{#each selectedBaseItemMaterials as |material|}}
-                <div>
-                    {{material.name}}
-                </div>
-                <div>
-                    {{material.quantity}}
-                </div>
-                <div>
-                    {{!-- #TODO BETTER WAY TO LOOKUP? --}}
-                    {{#if (lookup ../materials material.uuid)}}
-                    {{#with (lookup ../materials material.uuid)~}}
-                    {{ this.quantity }}
-                    {{/with}}
-                    {{else}}
-                    0
-                    {{/if}}
-                </div>
+                <li class="requirement-line">
+                    <span class="req-name">{{material.name}}</span>
+                    <span class="req-value">({{~#if (lookup ../materials material.uuid)~}}{{~#with (lookup ../materials material.uuid)~}}{{this.quantity}}{{~/with~}}{{~else~}}0{{~/if~}}/{{material.quantity}})</span>
+                </li>
                 {{/each}}
-            </div>
-        </section>
-        <section>
-            <div class="flex gap-3">
-                <button data-action="craft"
-                        {{#unless hasRequirements}}
-                        disabled
-                        data-tooltip="You do not have the required skills to craft this item."
-                        style="opacity:50%"
-                        {{/unless}}>
-                    Craft item
-                </button>
-                <button data-action="attemptCraft"
-                        data-tooltip="Roll an attempt to see if you can craft item?">
-                    Attempt Craft Roll
-                </button>
-            </div>
+            </ul>
         </section>
     </div>
     {{else}}
-    <h1>Select Your Recipe!</h1>
-    {{/if}}
-    <div>
-        <p><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.YK0Wfx0cfORrDzsg">Crafting Rules</a></p>
+    <div class="empty-state">
+        <h1>Select Your Recipe</h1>
+        <p>Choose an item from the category list to view crafting details.</p>
     </div>
+    {{/if}}
+    <footer class="crafting-footer">
+        <p><a data-link="" data-uuid="Compendium.arcane-arcade-fallout.properties.Item.YK0Wfx0cfORrDzsg">Crafting Rules</a></p>
+    </footer>
 </section>
-
-{{ log this }}

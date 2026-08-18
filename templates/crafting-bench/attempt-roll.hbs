@@ -1,35 +1,28 @@
-<div>
-    <div>
-        Attempt to craft {{ craftable.name }}?
-    </div>
-    {{#if hasSkillChoice}}
-        <div>
-            <div>
-                Select a skill to roll against
-                <select name="selectedSkill" data-select-skill>
-                    {{selectOptions craftable.system.crafting.mainRequirements selected=selectedSkill valueAttr="key" labelAttr="key"}}
-                </select>
-            </div>
+<div class="pipboy-modal">
+    <header class="modal-header">
+        <h2>Crafting Attempt</h2>
+    </header>
+
+    <div class="modal-body">
+        <p class="modal-prompt">Attempt to craft <strong>{{ craftable.name }}</strong>?</p>
+
+        {{#if hasSkillChoice}}
+        <div class="modal-row">
+            <label>Select a skill to roll against</label>
+            <select name="selectedSkill" data-select-skill>
+                {{selectOptions craftable.system.crafting.mainRequirements selected=selectedSkill valueAttr="key" labelAttr="key"}}
+            </select>
         </div>
-    {{else}}
-        <div>
-            {{log this}}
-        </div>
-    {{/if}}
-    <div>
-        <div>
-            DC to beat is {{ dc }}
+        {{/if}}
+
+        <div class="dc-readout">
+            <span class="dc-label">DC To Beat</span>
+            <span class="dc-value">{{ dc }}</span>
         </div>
     </div>
 
-    <div class="flex gap-3">
-        <button data-action="cancel">
-            Cancel
-        </button>
-        <button data-action="roll">
-            Roll dice
-        </button>
+    <div class="modal-actions flex gap-3">
+        <button data-action="cancel" class="secondary">Cancel</button>
+        <button data-action="roll" class="primary">Roll Dice</button>
     </div>
 </div>
-
-{{log this}}

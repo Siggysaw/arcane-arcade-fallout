@@ -1,0 +1,64 @@
+<section class="console pipboy-frame">
+    {{#if selectedCraftable}}
+    <div class="console-body">
+        <div class="console-art">
+            <div class="craftables-img">
+                <img src="{{selectedCraftable.img}}" alt="{{selectedCraftable.name}}" />
+            </div>
+        </div>
+
+        <div class="console-info">
+            <h2 class="console-item-name">{{selectedCraftable.name}}</h2>
+            {{#if selectedCraftable.system.description}}
+            <div class="item-description">{{{selectedCraftable.system.description}}}</div>
+            {{/if}}
+            <div class="stat-block">
+                <div class="stat-row">
+                    <span class="stat-label">Time Required</span>
+                    <span class="stat-value">{{ selectedCraftable.system.crafting.time.value }} {{ selectedCraftable.system.crafting.time.unit }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Quantity Crafted</span>
+                    <span class="stat-value">{{ selectedCraftable.system.crafting.quantity }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="console-actions">
+            <button data-action="craft"
+                    {{#unless hasRequirements}}
+                    disabled
+                    data-tooltip="You do not have the required skills to craft this item."
+                    {{/unless}}>
+                <i class="fas fa-check"></i> Accept
+            </button>
+            <button data-action="attemptCraft"
+                    data-tooltip="Roll an attempt to see if you can craft this item">
+                <i class="fas fa-dice-d20"></i> Attempt
+            </button>
+            <button type="button" data-action="close" data-tooltip="Close the Workbench">
+                <i class="fas fa-times"></i> Exit
+            </button>
+        </div>
+    </div>
+
+    <div class="console-stat-bar">
+        <div class="console-stat">
+            <span class="console-stat-label">Val</span>
+            <span class="console-stat-value">{{ selectedCraftable.system.cost }}</span>
+        </div>
+        <div class="console-stat">
+            <span class="console-stat-label">Wg</span>
+            <span class="console-stat-value">{{ selectedCraftable.system.load }}</span>
+        </div>
+        <div class="console-stat">
+            <span class="console-stat-label">Owned</span>
+            <span class="console-stat-value">{{ owned }}</span>
+        </div>
+    </div>
+    {{else}}
+    <div class="empty-state console-empty">
+        <p>Select a recipe to see it on the workbench.</p>
+    </div>
+    {{/if}}
+</section>

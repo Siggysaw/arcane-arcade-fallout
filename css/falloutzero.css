@@ -1789,6 +1789,7 @@ body.game .app .vaulttec .tabs > [data-tab] {
 .condition-badge img {
   width: var(--condition-icon-size);
   height: auto;
+  margin:2px;
 }
 .conditions {
   --condition-icon-size: 25px;
@@ -1803,9 +1804,6 @@ body.game .app .vaulttec .tabs > [data-tab] {
 }
 
 .condition-count {
-  position: absolute;
-  bottom: -2.5px;
-  right: -2.5px;
   font-size: 0.8125em;
   font-weight: bold;
   background: rgba(0, 0, 0, 0.75);
@@ -1896,3 +1894,20 @@ body.game .app .vaulttec .tabs > [data-tab] {
   content: url('/icons/svg/falling.svg');
 }
 
+
+.application .window-content {
+  overflow-y: auto !important;
+}
+  .application .window-content form {
+    overflow: visible;
+    min-height: min-content;
+  }
+
+
+    .application .window-content form footer,
+    .application .window-content .form-footer {
+      position: sticky;
+      bottom: 0;
+      background: inherit;
+      padding-top: 6px;
+    }
