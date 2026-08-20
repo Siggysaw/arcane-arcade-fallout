@@ -1,0 +1,395 @@
+.robco-terminal {
+  --robco-green: var(--sheetcolor, #33ff33);
+  --robco-green-dim: color-mix(in srgb, var(--sheetcolor, #33ff33) 55%, black);
+  --robco-green-glow: color-mix(in srgb, var(--sheetcolor, #33ff33) 55%, transparent);
+  --robco-black: #010c02;
+  isolation: isolate;
+  background: var(--robco-black) !important;
+  color: var(--robco-green);
+  border-color: var(--robco-green) !important;
+  font-family: 'fixedsys', 'Monofonto', 'Courier New', monospace;
+}
+
+.robco-terminal.vaulttec {
+  --robco-green: #dbd45a;
+  --robco-green-dim: color-mix(in srgb, #dbd45a 55%, black);
+  --robco-green-glow: color-mix(in srgb, #dbd45a 55%, transparent);
+  --robco-black: #001423;
+}
+
+/* ---- Corner brackets (pure CSS, no image assets) ---- */
+.robco-terminal::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  z-index: 1000;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-image:
+    linear-gradient(to right, var(--robco-green) 3px, transparent 3px),
+    linear-gradient(to bottom, var(--robco-green) 3px, transparent 3px),
+    linear-gradient(to left, var(--robco-green) 3px, transparent 3px),
+    linear-gradient(to bottom, var(--robco-green) 3px, transparent 3px),
+    linear-gradient(to right, var(--robco-green) 3px, transparent 3px),
+    linear-gradient(to top, var(--robco-green) 3px, transparent 3px),
+    linear-gradient(to left, var(--robco-green) 3px, transparent 3px),
+    linear-gradient(to top, var(--robco-green) 3px, transparent 3px);
+  background-position:
+    top left, top left,
+    top right, top right,
+    bottom right, bottom right,
+    bottom left, bottom left;
+  background-size:
+    20px 3px, 3px 20px,
+    20px 3px, 3px 20px,
+    20px 3px, 3px 20px,
+    20px 3px, 3px 20px;
+  opacity: 0.9;
+  animation: robco-flicker 9s infinite;
+}
+
+/* ---- Scanlines + boot sweep overlay ---- */
+.robco-terminal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0px,
+    rgba(0, 0, 0, 0.3) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+  animation: robco-scan-drift 45s linear infinite, robco-bootup 0.9s ease-out 1;
+}
+
+@keyframes robco-scan-drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 120px; }
+}
+
+@keyframes robco-flicker {
+  0%, 96%, 100% { opacity: 0.9; }
+  97% { opacity: 0.55; }
+  98% { opacity: 0.9; }
+}
+
+@keyframes robco-bootup {
+  0% { opacity: 0; transform: scaleY(0.4); }
+  40% { opacity: 1; }
+  100% { opacity: 0; transform: scaleY(1); }
+}
+
+@keyframes robco-cursor-blink {
+  0%, 45% { opacity: 1; }
+  50%, 95% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ---- Window chrome ---- */
+.robco-terminal .window-header {
+  background: #000 !important;
+  border-bottom: 2px solid var(--robco-green);
+  color: var(--robco-green) !important;
+}
+
+.robco-terminal .window-header .window-title {
+  font-family: 'fixedsys', 'Monofonto', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.12rem;
+  color: var(--robco-green) !important;
+  text-shadow: 0 0 6px var(--robco-green-glow);
+}
+
+.robco-terminal .window-header .window-title::before {
+  content: 'ROBCO TERMLINK > ';
+  color: var(--robco-green-dim);
+}
+
+.robco-terminal .window-header a,
+.robco-terminal .window-header button,
+.robco-terminal .window-header i,
+.robco-terminal .window-header .header-control {
+  color: var(--robco-green) !important;
+}
+
+.robco-terminal .window-header a:hover,
+.robco-terminal .window-header button:hover,
+.robco-terminal .window-header .header-control:hover {
+  color: #fff !important;
+  text-shadow: 0 0 8px var(--robco-green-glow);
+}
+
+.robco-terminal .window-content {
+  background: var(--robco-black) !important;
+  color: var(--robco-green);
+  scrollbar-color: var(--robco-green) #000;
+}
+
+.robco-terminal .window-content::-webkit-scrollbar {
+  width: 10px;
+}
+.robco-terminal .window-content::-webkit-scrollbar-track {
+  background: #000;
+}
+.robco-terminal .window-content::-webkit-scrollbar-thumb {
+  background: var(--robco-green-dim);
+  border: 1px solid var(--robco-green);
+}
+
+/* ---- Page navigation sidebar ---- */
+.robco-terminal .journal-sidebar,
+.robco-terminal .journal-entry-pages,
+.robco-terminal aside {
+  background: transparent !important;
+  border-right: 1px dashed var(--robco-green-dim) !important;
+}
+
+.robco-terminal .directory-list,
+.robco-terminal ol.pages-list {
+  list-style: none;
+}
+
+.robco-terminal .directory-item,
+.robco-terminal .page-list .page,
+.robco-terminal li.page {
+  color: var(--robco-green);
+  border-bottom: 1px dotted var(--robco-green-dim) !important;
+  transition: none;
+}
+
+.robco-terminal .directory-item::before,
+.robco-terminal li.page::before {
+  content: '> ';
+  color: var(--robco-green-dim);
+}
+
+.robco-terminal .directory-item:hover,
+.robco-terminal li.page:hover {
+  background: color-mix(in srgb, var(--robco-green) 12%, transparent) !important;
+  color: #fff;
+}
+
+.robco-terminal .directory-item.active,
+.robco-terminal li.page.active,
+.robco-terminal .directory-item[class*='selected'] {
+  background: var(--robco-green) !important;
+  color: #000 !important;
+  font-weight: bold;
+}
+
+.robco-terminal .directory-item.active::before,
+.robco-terminal li.page.active::before {
+  color: #000;
+}
+
+.robco-terminal .toc,
+.robco-terminal .toc *:not([class*="fa-"]):not(.icon) {
+  color: var(--robco-green) !important;
+  font-family: 'fixedsys', 'Monofonto', monospace !important;
+  background: transparent !important;
+  border: none !important;
+  text-decoration: none !important;
+  padding: 0px;
+  margin: 0px;
+}
+  .robco-terminal .toc *:not([class*="fa-"]):not(.icon) li a:hover,
+  .robco-terminal .toc *:not([class*="fa-"]):not(.icon) li a:active {
+    color: #000 !important;
+    text-shadow: 1px 1px 1px var(--robco-green);
+    font-family: 'fixedsys', 'Monofonto', monospace !important;
+    background: var(--robco-green) !important;
+    border: none !important;
+    text-decoration: none !important;
+    margin-left: 10px;
+  }
+
+.robco-terminal .toc .page-heading,
+.robco-terminal .toc a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 6px;
+  cursor: pointer;
+}
+
+.robco-terminal .toc .page-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: var(--robco-green-dim) !important;
+}
+
+.robco-terminal .toc .page-title {
+  color: var(--robco-green) !important;
+}
+
+.robco-terminal .toc li {
+  border-bottom: 1px dotted var(--robco-green-dim) !important;
+}
+
+.robco-terminal .toc .headings {
+  background: var(--robco-black) !important;
+}
+
+.robco-terminal .toc .headings li {
+  border-bottom: none !important;
+  padding-left: 16px;
+  opacity: 0.85;
+  font-size: 0.92em;
+}
+
+.robco-terminal .toc li a:hover {
+  background: red;
+}
+
+.robco-terminal .toc li:hover * {
+  color: #fff !important;
+}
+
+.robco-terminal .toc li.active,
+.robco-terminal .toc li[class*="active"] {
+  background: var(--robco-green) !important;
+}
+
+.robco-terminal .toc li.active *,
+.robco-terminal .toc li[class*="active"] * {
+  color: #000 !important;
+}
+
+/* ---- Inputs, search boxes ---- */
+.robco-terminal input,
+.robco-terminal select,
+.robco-terminal textarea {
+  background: #000 !important;
+  color: var(--robco-green) !important;
+  border: 1px solid var(--robco-green-dim) !important;
+  border-radius: 0 !important;
+  font-family: 'fixedsys', monospace;
+}
+
+.robco-terminal input:focus,
+.robco-terminal select:focus,
+.robco-terminal textarea:focus {
+  border-color: var(--robco-green) !important;
+  box-shadow: 0 0 6px var(--robco-green-glow);
+  outline: none;
+}
+
+/* ---- Buttons ---- */
+.robco-terminal button,
+.robco-terminal .button {
+  background: transparent !important;
+  color: var(--robco-green) !important;
+  border: 1px solid var(--robco-green) !important;
+  border-radius: 0 !important;
+}
+
+.robco-terminal button:not([class*="fa-"]):not(.icon),
+.robco-terminal .button:not([class*="fa-"]):not(.icon) {
+  font-family: 'fixedsys', monospace;
+  text-transform: uppercase;
+}
+
+.robco-terminal button:hover,
+.robco-terminal .button:hover {
+  background: var(--robco-green) !important;
+  color: #000 !important;
+}
+
+/* ---- Page content typography ---- */
+.robco-terminal .journal-page-content,
+.robco-terminal .journal-entry-content,
+.robco-terminal .editor-content,
+.robco-terminal .page-content {
+  color: var(--robco-green);
+  line-height: 1.5;
+}
+
+.robco-terminal h1,
+.robco-terminal h2,
+.robco-terminal h3,
+.robco-terminal h4,
+.robco-terminal h5,
+.robco-terminal h6,
+.robco-terminal .journal-page-header {
+  font-family: 'fixedsys', 'Monofonto', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08rem;
+  color: var(--robco-green) !important;
+  text-shadow: 0 0 5px var(--robco-green-glow);
+  border-bottom: 1px solid var(--robco-green-dim);
+}
+
+.robco-terminal a,
+.robco-terminal .content-link {
+  color: var(--robco-green) !important;
+  background: color-mix(in srgb, var(--robco-green) 8%, transparent) !important;
+  border: 1px solid var(--robco-green-dim) !important;
+  text-decoration: none;
+}
+
+.robco-terminal a:hover,
+.robco-terminal .content-link:hover {
+  background: var(--robco-green) !important;
+  color: #000 !important;
+}
+
+.robco-terminal blockquote {
+  border-left: 3px solid var(--robco-green);
+  color: var(--robco-green-dim);
+  background: color-mix(in srgb, var(--robco-green) 5%, transparent);
+}
+
+.robco-terminal hr {
+  border: none;
+  border-top: 1px dashed var(--robco-green-dim);
+}
+
+.robco-terminal table {
+  border: 1px solid var(--robco-green-dim);
+}
+.robco-terminal table th {
+  background: var(--robco-green-dim);
+  color: #000;
+}
+.robco-terminal table td,
+.robco-terminal table th {
+  border: 1px solid var(--robco-green-dim);
+}
+
+.robco-terminal code,
+.robco-terminal pre {
+  background: #000;
+  color: var(--robco-green);
+  border: 1px solid var(--robco-green-dim);
+}
+
+/* Give embedded images a monochrome-phosphor look, like the picture feeds
+   on in-game Robco terminals */
+.robco-terminal .journal-page-content img,
+.robco-terminal figure img {
+  filter: grayscale(1) sepia(1) hue-rotate(70deg) saturate(4) brightness(0.85) contrast(1.1);
+  border: 1px solid var(--robco-green-dim);
+}
+
+.robco-terminal ::selection {
+  background: var(--robco-green);
+  color: #000;
+}
+
+/* ---- ProseMirror editing toolbar ---- */
+.robco-terminal .editor-menu,
+.robco-terminal menu.pm-menu,
+.robco-terminal .pm-menu {
+  background: #000 !important;
+  border: 1px solid var(--robco-green-dim) !important;
+}
+.robco-terminal .editor-menu button,
+.robco-terminal .pm-menu button {
+  color: var(--robco-green) !important;
+}

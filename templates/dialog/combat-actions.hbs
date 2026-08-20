@@ -7,6 +7,7 @@ text-transform: capitalize;
 margin-bottom: 20px;
 }
 </style>
+<div class="combat-actions-body{{#isVaultTec}} vaulttec {{/isVaultTec}}">
 <table class="equipped-stats combat-actions">
 <tr>
 <td class="condition" data-condition="Move_5_Feet">Move 5 Feet</td>
@@ -80,7 +81,7 @@ data-roll="d20+{{ actor.system.abilities.per.mod }}-@penaltyTotal">
 an attack or explosion. Until the start of your next turn, any
 attack roll made against you has disadvantage if you can
 see the attacker. Additionally, you can move up to 15 feet in
-reaction to any other creature’s action one time before the
+reaction to any other creatureï¿½s action one time before the
 start of your next turn. You lose this benefit if you are dying
 or you cannot spend AP to move.
 </td>
@@ -105,12 +106,12 @@ stowed it, you drop it on the ground.
 <td>
 <strong>5 AP </strong>You attempt to free yourself from a grapple,
 restrain, or chokehold. You must succeed a Unarmed skill
-check with the DC equal to 10 + the creature’s Unarmed
+check with the DC equal to 10 + the creatureï¿½s Unarmed
 skill. If you succeed or roll a 20, you escape.
 Grapple. You use your appendages to hold someone in
 place. When you attempt to grapple another creature you
 make an Unarmed skill check with the DC equal to 10 + the
-creature’s Unarmed skill. If you succeed or roll a 20, the
+creatureï¿½s Unarmed skill. If you succeed or roll a 20, the
 creature is grappled.
 </td>
 </tr>
@@ -126,7 +127,7 @@ creature you aid gains a bonus to their next ability check
 equal to half your bonus (rounded down) in the related skill.
 Alternatively, you can aid a friendly creature in attacking a
 creature within 5 feet of you. You feint, distract the target,
-or in some other way team up to make your ally’s attack
+or in some other way team up to make your allyï¿½s attack
 more effective. If your ally attacks the target before your
 next turn, the first attack roll is made with advantage.
 </td>
@@ -143,7 +144,7 @@ sense scores. In order to hide you must be heavily obscured
 or within full cover. You are hidden from any enemies that
 have a lower passive sense compared to your sneak roll. If
 you succeed, you gain certain benefits, as described in the
-“Unseen Attackers and Targets” section. While hiding, you
+ï¿½Unseen Attackers and Targetsï¿½ section. While hiding, you
 are acting unpredictably to confuse your enemy. Enemies
 still know your general location and can move to try and
 make line of sight again to notice you. If you are no longer
@@ -203,7 +204,7 @@ things you can do.
 <tr>
 <td>
 <strong>1 AP </strong>You move 5 feet in any direction so long
-as your movement isn’t impeded or the area isn’t difficult
+as your movement isnï¿½t impeded or the area isnï¿½t difficult
 terrain. An enemy space is considered difficult terrain.
 </td>
 </tr>
@@ -243,7 +244,7 @@ someone or something hidden.
 you. The target must be no more than one size larger than
 you and must be within your reach. Instead of making an
 attack roll, you make an Unarmed check contested by the
-target’s Unarmed check or Agility check (the target chooses
+targetï¿½s Unarmed check or Agility check (the target chooses
 the ability to use). If you win the contest, you either knock
 the target prone or push it 5 feet away from you.
 </td>
@@ -300,8 +301,9 @@ any kind of attack to another creature within 5 feet of you.
 <tr>
 <td>
 <strong>4 AP </strong>When you take this action, you take the
-chem out of your inventory and use it. You don’t need to
+chem out of your inventory and use it. You donï¿½t need to
 interact with the object or equip the chem in order to use it.
 </td>
 </tr>
 </table>
+</div>

@@ -16,6 +16,7 @@
 @import 'crafting-bench.css';
 @import 'v2-override.css';
 @import 'pipboy-flicker.css';
+@import 'robco-terminal.css';
 
 /* Global styles */
 @font-face {
@@ -1781,6 +1782,87 @@ body.game .app .vaulttec .tabs > [data-tab] {
     background-color: #dbd45a;
     text-shadow: none;
   }
+
+/* ---------------------------------------------------------------------
+   VAULT TEC — generic window coverage (added Aug 19, 2026)
+   The rules above all assume a `.sheet` ancestor (actor/item/perk sheets),
+   which is where Foundry's core `Application`/`ItemSheet` machinery puts
+   the `defaultOptions.classes` array. The system's own popup dialogs and
+   ApplicationV2 components (Award, Chem Application, GM Screen, Level Up,
+   Perk List, Select Upgrade, the Combat Actions reference table) don't
+   carry a `.sheet` class, so none of the rules above would ever match
+   there. These bare `.vaulttec` rules give those windows the same
+   high-contrast navy/yellow accessibility treatment without depending on
+   `.sheet` or `.window-app`/`.window-content` ancestor classes, since
+   ApplicationV2's root element naming isn't consistent enough across
+   Foundry versions to rely on (see the Journal reskin notes for the same
+   problem with hook names). Deliberately low specificity (bare `.vaulttec`
+   / one-descendant selectors) so the more detailed `.sheet .vaulttec`
+   rules above continue to win on actor/item sheets — this block only
+   fills in the gap for windows that have nothing else targeting them. */
+.vaulttec {
+  background-color: #001423;
+  color: #dbd45a;
+}
+
+/* Journal windows (see registerHooks.mjs's applyVaultTecTheme) get the
+   `.vaulttec` class on the outer window element itself, same placement as
+   the Robco Terminal skin — the bare rule above sets background/color on
+   that outer div, but Foundry's own `.window-header`/`.window-content`
+   children paint their own opaque backgrounds on top of it (the same
+   bleed-through issue documented in the Robco Terminal reskin notes), so
+   they need their own explicit override to actually show the theme. */
+.vaulttec .window-header,
+.vaulttec .window-content {
+  background: #001423;
+  color: #dbd45a;
+}
+
+.vaulttec h1,
+.vaulttec h2,
+.vaulttec h3,
+.vaulttec h4,
+.vaulttec legend {
+  color: #dbd45a;
+  text-shadow: 0 0 2px #000;
+}
+
+.vaulttec table,
+.vaulttec fieldset,
+.vaulttec hr {
+  border-color: #dbd45a;
+}
+
+.vaulttec table td,
+.vaulttec table th {
+  border-color: rgba(219, 212, 90, 0.35);
+}
+
+.vaulttec input,
+.vaulttec select,
+.vaulttec textarea,
+.vaulttec label,
+.vaulttec .fakebutton,
+.vaulttec li,
+.vaulttec a {
+  color: #dbd45a;
+  text-shadow: 0 0 2px #000;
+}
+
+.vaulttec button,
+.vaulttec .dialog-button {
+  color: #dbd45a;
+  background: #333;
+  border: 1px solid #dbd45a;
+}
+
+.vaulttec button:hover,
+.vaulttec .dialog-button:hover,
+.vaulttec .fakebutton:hover {
+  color: #333;
+  background: #dbd45a;
+  text-shadow: none;
+}
 
 .sheet .item {
   text-transform: uppercase;

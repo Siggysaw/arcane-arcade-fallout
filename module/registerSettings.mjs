@@ -134,6 +134,15 @@ export function registerSystemSettings() {
     default: false,
     requiresReload: false,
   })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'RobcoTerminals', {
+    name: 'Robco Terminal Journals',
+    hint: 'Reskins Journal Entries to look like a Robco Industries terminal from Fallout: New Vegas (green phosphor text, scanlines, terminal chrome).',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: false,
+    requiresReload: false,
+  })
 }
 export function registerHbsHelpers() {
   Handlebars.registerHelper('isVaultTec', function (options) {

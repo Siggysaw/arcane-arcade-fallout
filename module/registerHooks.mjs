@@ -5,7 +5,69 @@ import FalloutZeroItem from './documents/item.mjs'
 import { getApCost, getLastWaypointGroup, sumWaypoints } from './helpers/movement.mjs'
 import { attachAttributeKeyAutocomplete } from './helpers/effects.mjs'
 
+/* --------------------------------------------  */
+/*  Robco Terminal Journal skin                  */
+/* --------------------------------------------  */
+// Applies the Robco Terminal reskin (css/robco-terminal.css) to Journal
+// Entry windows when the client has the 'RobcoTerminals' setting on. Kept
+// entirely defensive (try/catch, tolerant of both jQuery and raw-element
+// render hook signatures) since it targets core Foundry's own Journal sheet
+// rather than a template this system owns, and the exact class name for
+// that sheet has changed across Foundry versions (JournalSheet in v12,
+// JournalEntrySheet in newer ApplicationV2-based versions) — hooking both
+// names is harmless since Hooks.on for a hook that never fires is a no-op.
+function applyRobcoTerminalSkin(app, html) {
+  try {
+    if (!game.settings.get(CONFIG.FALLOUTZERO.systemId, 'RobcoTerminals')) return
+
+    const el = html instanceof HTMLElement ? html : html?.[0] ?? app.element?.[0] ?? app.element
+    if (!el) return
+
+    el.classList.add('robco-terminal')
+
+    if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')) {
+      const audio = new Audio(
+        `/systems/${CONFIG.FALLOUTZERO.systemId}/assets/10-sfx/terminal/single/ui_hacking_charsingle_01.wav`
+      )
+      audio.volume = 0.5
+      audio.play().catch(() => {})
+    }
+  } catch (error) {
+    console.error('falloutzero | Robco Terminal skin failed to apply', error)
+  }
+}
+
+/* --------------------------------------------  */
+/*  Vault-Tec accessibility theme (Journal)      */
+/* --------------------------------------------  */
+// Journal sheets have no Handlebars template of their own to attach the
+// existing `{{#isVaultTec}} vaulttec {{/isVaultTec}}` conditional to (same
+// core-Journal-sheet situation as the Robco Terminal skin above), so it's
+// applied the same way: toggle the class straight onto the rendered window
+// element. Deliberately independent of the 'RobcoTerminals' setting/class —
+// Vault-Tec should reskin a plain journal window on its own, and when both
+// are on, `.robco-terminal.vaulttec` in robco-terminal.css overrides the
+// terminal's phosphor color to the same high-contrast navy/yellow instead
+// of the sheetcolor-derived green.
+function applyVaultTecTheme(app, html) {
+  try {
+    if (!game.settings.get(CONFIG.FALLOUTZERO.systemId, 'VaultTec')) return
+
+    const el = html instanceof HTMLElement ? html : html?.[0] ?? app.element?.[0] ?? app.element
+    if (!el) return
+
+    el.classList.add('vaulttec')
+  } catch (error) {
+    console.error('falloutzero | Vault-Tec journal skin failed to apply', error)
+  }
+}
+
 export function registerHooks() {
+  Hooks.on('renderJournalSheet', applyRobcoTerminalSkin)
+  Hooks.on('renderJournalEntrySheet', applyRobcoTerminalSkin)
+  Hooks.on('renderJournalSheet', applyVaultTecTheme)
+  Hooks.on('renderJournalEntrySheet', applyVaultTecTheme)
+
   Hooks.on('renderSidebar', (app, element) => {
     if (!game.user.isGM) return
 
@@ -54,9 +116,6 @@ export function registerHooks() {
   /* --------------------------------------------  */
   /*  Active Effect config                         */
   /* --------------------------------------------  */
-  // Turns the "Attribute Key" field on each Change row into a dropdown with
-  // autocomplete, populated from whatever the effect's owning Actor/Item
-  // actually has under `system` — see helpers/effects.mjs.
   Hooks.on('renderActiveEffectConfig', attachAttributeKeyAutocomplete)
 
   Hooks.on('renderActorSheet', (app, html) => {
