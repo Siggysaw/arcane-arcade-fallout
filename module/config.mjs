@@ -1278,6 +1278,14 @@ FALLOUTZERO.damageTypes = {
     id: 'cryo',
     label: 'Cryo',
   },
+  sonic: {
+    id: 'sonic',
+    label: 'Sonic',
+  },
+  psychic: {
+    id: 'psychic',
+    label: 'Psychic',
+  },
 }
 
 FALLOUTZERO.specialammo = {
