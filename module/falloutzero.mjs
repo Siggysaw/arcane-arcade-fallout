@@ -25,6 +25,14 @@ import './group-roll/group-roll.mjs'
 // it owns no stylesheet.
 import './nv-pause/nv-pause.mjs'
 
+// Auto-apply damage socket relay — side-effect import, registers the ready
+// hook that lets a player's attack roll apply damage to a target only the
+// GM owns (see dice/attack-roll.mjs#autoApplyDamage and
+// helpers/damage-relay.mjs). Remove this line to take the relay half out;
+// direct application (GM attacking, or a target the attacker already owns)
+// keeps working either way since that path never touches the socket.
+import './helpers/damage-relay.mjs'
+
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */

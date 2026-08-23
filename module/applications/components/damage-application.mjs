@@ -47,13 +47,16 @@ export default class DamageApplicationElement extends ChatTrayElement {
   /* -------------------------------------------- */
 
   /**
-   * Currently registered hook for monitoring for changes to selected tokens.
+   * Currently registered hook for monitoring for changes to selected tokens (selected mode).
    * @type {number|null}
    */
-  selectedTokensHook = Hooks.on(
-    'controlToken',
-    foundry.utils.debounce(() => this.buildTargetsList(), 50),
-  )
+  selectedTokensHook = null
+
+  /**
+   * Currently registered hook for monitoring for changes to targeted tokens (targeted mode).
+   * @type {number|null}
+   */
+  targetedTokensHook = null
 
   /* -------------------------------------------- */
 
@@ -61,28 +64,47 @@ export default class DamageApplicationElement extends ChatTrayElement {
    * Currently target selection mode.
    * @type {"targeted"|"selected"}
    */
+  #targetingMode = 'selected'
+
   get targetingMode() {
-    return 'selected'
+    return this.#targetingMode
   }
 
-  // set targetingMode(mode) {
-  //   if (this.targetSourceControl.hidden) mode = 'selected'
-  //   const toPress = this.targetSourceControl.querySelector(`[data-mode="${mode}"]`)
-  //   const currentlyPressed = this.targetSourceControl.querySelector('[aria-pressed="true"]')
-  //   if (currentlyPressed) currentlyPressed.ariaPressed = false
-  //   toPress.ariaPressed = true
+  set targetingMode(mode) {
+    this.#targetingMode = mode
+    if (this.targetSourceControl) {
+      const toPress = this.targetSourceControl.querySelector(`[data-mode="${mode}"]`)
+      const currentlyPressed = this.targetSourceControl.querySelector('[aria-pressed="true"]')
+      if (currentlyPressed) currentlyPressed.ariaPressed = false
+      if (toPress) toPress.ariaPressed = true
+    }
 
-  //   this.buildTargetsList()
-  //   if (mode === 'targeted' && this.selectedTokensHook !== null) {
-  //     Hooks.off('controlToken', this.selectedTokensHook)
-  //     this.selectedTokensHook = null
-  //   } else if (mode === 'selected' && this.selectedTokensHook === null) {
-  //     this.selectedTokensHook = Hooks.on(
-  //       'controlToken',
-  //       foundry.utils.debounce(() => this.buildTargetsList(), 50),
-  //     )
-  //   }
-  // }
+    if (mode === 'targeted') {
+      if (this.selectedTokensHook !== null) {
+        Hooks.off('controlToken', this.selectedTokensHook)
+        this.selectedTokensHook = null
+      }
+      if (this.targetedTokensHook === null) {
+        this.targetedTokensHook = Hooks.on(
+          'targetToken',
+          foundry.utils.debounce(() => this.buildTargetsList(), 50),
+        )
+      }
+    } else {
+      if (this.targetedTokensHook !== null) {
+        Hooks.off('targetToken', this.targetedTokensHook)
+        this.targetedTokensHook = null
+      }
+      if (this.selectedTokensHook === null) {
+        this.selectedTokensHook = Hooks.on(
+          'controlToken',
+          foundry.utils.debounce(() => this.buildTargetsList(), 50),
+        )
+      }
+    }
+
+    this.buildTargetsList()
+  }
 
   /* -------------------------------------------- */
 
@@ -140,6 +162,20 @@ export default class DamageApplicationElement extends ChatTrayElement {
         </label>
         <div class="collapsible-content">
           <div class="wrapper">
+            <menu class="target-source unlist" role="radiogroup" aria-label="Target source">
+              <li>
+                <button type="button" class="target-source-control unbutton" data-mode="targeted"
+                        data-tooltip="Use targeted tokens" aria-label="Use targeted tokens" aria-pressed="false">
+                  <i class="fa-solid fa-crosshairs" inert></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="target-source-control unbutton" data-mode="selected"
+                        data-tooltip="Use selected tokens" aria-label="Use selected tokens" aria-pressed="false">
+                  <i class="fa-solid fa-arrow-pointer" inert></i>
+                </button>
+              </li>
+            </menu>
             <ul class="targets unlist"></ul>
             <button class="apply-damage" type="button" data-action="applyDamage">
               <i class="fa-solid fa-reply-all fa-flip-horizontal" inert></i>
@@ -152,9 +188,18 @@ export default class DamageApplicationElement extends ChatTrayElement {
       this.applyButton = div.querySelector('.apply-damage')
       this.applyButton.addEventListener('click', this._onApplyDamage.bind(this))
       this.targetList = div.querySelector('.targets')
+      this.targetSourceControl = div.querySelector('.target-source')
+      this.targetSourceControl.addEventListener('click', this._onChangeTargetingMode.bind(this))
       div.addEventListener('click', this._handleClickHeader.bind(this))
+
+      // Default mode comes from the world setting; the GM can still flip the
+      // toggle per-card. The setter wires up the right selection hook and
+      // does the initial buildTargetsList().
+      const defaultMode = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'DamageApplicationTargetSource')
+      this.targetingMode = defaultMode === 'selected' ? 'selected' : 'targeted'
+    } else {
+      this.buildTargetsList()
     }
-    this.buildTargetsList()
   }
 
   /* -------------------------------------------- */
@@ -163,9 +208,12 @@ export default class DamageApplicationElement extends ChatTrayElement {
    * Build a list of targeted tokens based on current mode & replace any existing targets.
    */
   buildTargetsList() {
-    let targetedTokens = canvas.tokens?.controlled?.map((t) => t.actor?.uuid) ?? []
-    targetedTokens = Array.from(new Set(targetedTokens))
-    const targets = targetedTokens.map((t) => this.buildTargetListEntry(t)).filter((t) => t)
+    let sourceTokens =
+      this.targetingMode === 'targeted'
+        ? Array.from(game.user.targets).map((t) => t.actor?.uuid)
+        : (canvas.tokens?.controlled?.map((t) => t.actor?.uuid) ?? [])
+    sourceTokens = Array.from(new Set(sourceTokens)).filter((uuid) => uuid)
+    const targets = sourceTokens.map((t) => this.buildTargetListEntry(t)).filter((t) => t)
     if (targets.length) this.targetList?.replaceChildren(...targets)
     else {
       const li = document.createElement('li')
@@ -230,7 +278,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
       <menu class="damage-multipliers unlist"></menu>
     `
 
-    const menu = li.querySelector('menu')
+    const menu = li.querySelector('.damage-multipliers')
     for (const [value, display] of MULTIPLIERS) {
       const entry = document.createElement('li')
       entry.innerHTML = `
@@ -340,7 +388,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
     const pressedMultiplier = entry.querySelector('.multiplier-button[aria-pressed="true"]')
     if (Number(pressedMultiplier?.dataset.multiplier) !== options.multiplier) {
       if (pressedMultiplier) pressedMultiplier.ariaPressed = false
-      const toPress = entry.querySelector(`[value="${options.multiplier}"]`)
+      const toPress = entry.querySelector(`.multiplier-button[value="${options.multiplier}"]`)
       if (toPress) toPress.ariaPressed = true
     }
 
@@ -369,6 +417,19 @@ export default class DamageApplicationElement extends ChatTrayElement {
       await token?.applyDamage(this.damages, options)
     }
     this.open = false
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Handle clicking the targeted/selected toggle.
+   * @param {PointerEvent} event  Triggering click event.
+   */
+  _onChangeTargetingMode(event) {
+    event.preventDefault()
+    const button = event.target.closest('[data-mode]')
+    if (!button) return
+    this.targetingMode = button.dataset.mode
   }
 
   /* -------------------------------------------- */

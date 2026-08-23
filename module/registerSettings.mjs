@@ -125,6 +125,28 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: true,
   })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'AutoApplyDamage', {
+    name: 'Auto-apply damage on attack rolls',
+    hint: 'When an attack roll hits a targeted token (roll total meets/beats their AC, or the raw d20 meets the weapon\'s crit chance), automatically roll damage and apply it to that token. A miss rolls no damage. You can always Undo (and, on the damage card\'s Apply tray, adjust cover/resistances and re-apply) afterward.',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: false,
+  })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'DamageApplicationTargetSource', {
+    name: 'Default damage application target source',
+    hint: 'Which tokens the "Apply" tray on damage chat cards picks up by default. The GM can still switch per-card using the crosshair/pointer toggle.',
+    scope: 'world',
+    config: true,
+    type: String,
+    choices: {
+      targeted: 'Targeted tokens (crosshair tool)',
+      selected: 'Selected tokens',
+    },
+    default: 'targeted',
+    requiresReload: false,
+  })
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'PlaySounds', {
     name: 'Play Pip Boy Sounds',
     hint: 'Enable/Disable Sounds on Actor Sheets',

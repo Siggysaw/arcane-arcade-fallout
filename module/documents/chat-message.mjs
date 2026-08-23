@@ -60,6 +60,30 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     return this.damage?.damageBonus ?? 0
   }
 
+  /**
+   * This (damage-type) message's rolls, in the DamageDescription[] shape
+   * FalloutZeroActor#applyDamage expects. Shared by the manual apply tray
+   * (_addApplyDamageButtons) and AttackRoll#applyDamageToHitTokens so both
+   * always build identical damage descriptions from the same damage
+   * message.
+   * @type {DamageDescription[]|null}
+   */
+  get applicationDamages() {
+    if (this.cardType !== 'damage') return null
+    const damageTypes = this.flags?.falloutzero.damageTypes
+    const isAreaEffect = this.flags?.falloutzero.isAreaEffect
+    const isCritical = this.flags?.falloutzero.isCritical
+    return this.rolls.map((roll, index) => ({
+      value: roll.total,
+      type: damageTypes[index],
+      properties: new Set([
+        ...(roll.options.properties ?? []),
+        ...(isAreaEffect ? ['areaOfEffect'] : []),
+        ...(isCritical ? ['criticalHit'] : []),
+      ]),
+    }))
+  }
+
   /* -------------------------------------------- */
   /*  Rendering                                   */
   /* -------------------------------------------- */
@@ -295,32 +319,36 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     if (this.cardType !== 'damage') return
     if (!game.user.isGM) return
 
-    const damageTypes = this.flags?.falloutzero.damageTypes
-    const isAreaEffect = this.flags?.falloutzero.isAreaEffect
-    const isCritical = this.flags?.falloutzero.isCritical
     const damageApplication = document.createElement('damage-application')
     damageApplication.classList.add('falloutzero')
-    damageApplication.damages = this.rolls.map((roll, index) => ({
-      value: roll.total,
-      type: damageTypes[index],
-      properties: new Set([
-        ...(roll.options.properties ?? []),
-        ...(isAreaEffect ? ['areaOfEffect'] : []),
-        ...(isCritical ? ['criticalHit'] : []),
-      ]),
-    }))
+    damageApplication.damages = this.applicationDamages
     html.querySelector('.message-content').appendChild(damageApplication)
   }
 
-  _undoApplyDamage(cardHtml) {
+  async _undoApplyDamage(cardHtml) {
     const actor = fromUuidSync(this.undoDamage.actorUuid)
-    const { deltaTempSp, deltaSP, deltaTempHp, deltaHP } = this.undoDamage.changes
-    actor.update({
+    const { deltaTempSp, deltaSP, deltaTempHp, deltaHP, powerArmor } = this.undoDamage.changes
+    await actor.update({
       'system.stamina.temp': actor.system.stamina.temp + deltaTempSp,
       'system.stamina.value': actor.system.stamina.value + deltaSP,
       'system.health.temp': actor.system.health.temp + deltaTempHp,
       'system.health.value': actor.system.health.value + deltaHP,
     })
+
+    // Restore any Power Armor HP/decay this application consumed - without
+    // this, undoing damage that broke through armor would heal the wearer
+    // back but leave their Power Armor's HP/decay at whatever the damage
+    // left it at.
+    if (powerArmor) {
+      const armorItem = fromUuidSync(powerArmor.itemUuid)
+      if (armorItem) {
+        await armorItem.update({
+          'system.armorHP.value': armorItem.system.armorHP.value + powerArmor.deltaArmorHP,
+          'system.decay': armorItem.system.decay + powerArmor.deltaDecay,
+        })
+      }
+    }
+
     cardHtml.remove()
     this.delete()
   }

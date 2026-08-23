@@ -281,6 +281,28 @@ width: calc(100% - 6px);
 margin-block-start: 6px;
 }
 
+.falloutzero .card-tray .target-source {
+display: flex;
+justify-content: center;
+gap: 4px;
+margin-block-end: 4px;
+}
+
+.falloutzero .card-tray .target-source-control {
+width: 22px;
+height: 22px;
+padding: 0;
+border-radius: 4px;
+display: grid;
+place-content: center;
+cursor: pointer;
+}
+
+.falloutzero .card-tray .target-source-control[aria-pressed='true'] {
+border: 1px solid var(--sheetcolor);
+color: var(--sheetcolor);
+}
+
 .falloutzero .hidden-dc {
 display: contents;
 }

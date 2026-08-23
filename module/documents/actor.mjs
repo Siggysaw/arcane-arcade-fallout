@@ -2345,19 +2345,36 @@ export default class FalloutZeroActor extends Actor {
     // Get SP damage
     let totalDamage = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
     const PowerArmor = this.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
+    // Undo/modify support (see FalloutZeroChatMessage#_undoApplyDamage): if
+    // this application consumes Power Armor HP and/or decay, remember what
+    // it looked like beforehand so the chat card's undo button can restore
+    // it exactly, not just the wearer's own SP/HP.
+    let powerArmorUndo = null
     if (PowerArmor.length > 0) {
       const ArmorID = PowerArmor[0]._id
       const armorStat = PowerArmor[0].system
       let armorMax
       let armorHP = armorStat.armorHP.value
+      const prevArmorHP = armorHP
+      const prevDecay = armorStat.decay
       armorMax = Math.floor(armorStat.defensePoint.value * armorStat.decay)
       if (totalDamage >= armorHP) {
         totalDamage = totalDamage - armorHP
         this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.decay': 0 },])
         this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': 0 },])
+        powerArmorUndo = {
+          itemUuid: PowerArmor[0].uuid,
+          deltaArmorHP: prevArmorHP,
+          deltaDecay: prevDecay,
+        }
       } else {
         const armorDamage = Math.floor(armorHP - totalDamage)
         this.updateEmbeddedDocuments('Item', [{ _id: ArmorID, 'system.armorHP.value': armorDamage },])
+        powerArmorUndo = {
+          itemUuid: PowerArmor[0].uuid,
+          deltaArmorHP: prevArmorHP - armorDamage,
+          deltaDecay: 0,
+        }
         totalDamage = 0
       }
     }
@@ -2412,14 +2429,14 @@ export default class FalloutZeroActor extends Actor {
     }
 
     if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'DamageChatCard')) {
-      this.createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP })
+      this.createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP, powerArmor: powerArmorUndo })
     }
 
     await this.update(updates)
     return this
   }
 
-  createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP }) {
+  createDamageChatCard({ deltaTempSp, deltaSP, deltaTempHp, deltaHP, powerArmor = null }) {
     let flavor = `Damage applied to ${this.name}`
     if (deltaTempSp) {
       flavor += `, ${deltaTempSp} damage to temp SP`
@@ -2432,6 +2449,9 @@ export default class FalloutZeroActor extends Actor {
     }
     if (deltaHP) {
       flavor += `, ${deltaHP} damage to HP`
+    }
+    if (powerArmor?.deltaArmorHP) {
+      flavor += `, ${powerArmor.deltaArmorHP} damage to Power Armor HP`
     }
 
     const gm = game.users.find((u) => u.isGM)
@@ -2452,6 +2472,10 @@ export default class FalloutZeroActor extends Actor {
             deltaSP,
             deltaTempHp,
             deltaHP,
+            // Power Armor HP/decay consumed by this application (if any),
+            // so the chat card's undo button can restore it too - see
+            // FalloutZeroChatMessage#_undoApplyDamage.
+            powerArmor,
           }
         }
       },

@@ -1,3 +1,5 @@
+import { applyDamageToActor } from '../helpers/damage-relay.mjs'
+
 export default class AttackRoll extends FormApplication {
   constructor(actor, weapon, options = {}, callback = () => { }) {
     super(actor, options)
@@ -57,7 +59,7 @@ export default class AttackRoll extends FormApplication {
       adjustedAmmoCost: 0,
 
       critical: {
-        dice: this.weapon.system.critical.dice,
+        dice: this.getCriticalThreshold(),
         condition: this.weapon.system.critical.condition,
         formula: this.weapon.system.totalCriticalFormula,
         multiplier: this.weapon.system.totalCriticalMultiplier,
@@ -361,6 +363,56 @@ export default class AttackRoll extends FormApplication {
     }
   }
 
+  /**
+   * The raw d20 result needed to critically hit with the current weapon:
+   * the weapon's listed crit chance (`critical.dice`, adjusted by any
+   * weapon upgrades into `critical.diceFinal`), lowered by half the
+   * attacker's Luck modifier (`actor.system.critMod`, already halved and
+   * floored at 0 by the actor data model). Matches the PDF's Critical Hit
+   * Chance rule (pg. 39/128): "All weapons you attack with (besides
+   * shotguns) have their critical hit chance lowered by a number equal to
+   * half your Luck modifier."
+   * @returns {number}
+   */
+  getCriticalThreshold() {
+    return this.weapon.system.critical.diceFinal - (this.actor.system.critMod ?? 0)
+  }
+
+  /**
+   * Compare this roll to each currently-targeted token's Armor Class to
+   * determine hits/misses, per the core rule (PDF pg. 56): "If an attack
+   * roll's total is equal to or greater than your AC, you take damage." A
+   * raw d20 result meeting the weapon's critical hit chance always hits
+   * too, regardless of AC (PDF: "the result of the d20, without adding any
+   * modifiers, is equal to or higher than the critical hit chance; the
+   * attack automatically hits") - the same definition of "critical" this
+   * class already uses for the Strengthened/Upgraded bonuses elsewhere.
+   * @param {Roll} roll            The evaluated attack roll.
+   * @param {boolean} isCritical   Whether this roll met the weapon's crit chance.
+   * @returns {{token: Token, ac: number, hit: boolean}[]}
+   */
+  getTargetHitResults(roll, isCritical) {
+    return Array.from(game.user.targets).map((token) => {
+      const ac = token.actor?.system?.armorClass?.value ?? 10
+      return { token, ac, hit: isCritical || roll.total >= ac }
+    })
+  }
+
+  /**
+   * Apply an already-rolled damage message's damage to each given token.
+   * @param {ChatMessage} damageMessage   A 'damage'-type chat message.
+   * @param {Token[]} hitTokens           Tokens to apply it to.
+   */
+  async applyDamageToHitTokens(damageMessage, hitTokens) {
+    const damages = damageMessage?.applicationDamages
+    if (!damages) return
+
+    for (const token of hitTokens) {
+      if (!token.actor) continue
+      await applyDamageToActor(token.actor, damages, { multiplier: 1 })
+    }
+  }
+
   getFinalApCost() {
     this.formDataCache.automaticAttack ? this.formDataCache.totalApCost = 0 : ''
     if (this.formDataCache.overrideAp) {
@@ -503,7 +555,13 @@ export default class AttackRoll extends FormApplication {
         },
       })
 
-      await message._onRollDamage()
+      const autoHitDamageMessage = await message._onRollDamage()
+
+      // autoHit weapons always connect, so every currently-targeted token
+      // counts as hit - there's no roll to compare against AC.
+      if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AutoApplyDamage')) {
+        await this.applyDamageToHitTokens(autoHitDamageMessage, Array.from(game.user.targets))
+      }
       return message
     }
 
@@ -518,6 +576,17 @@ export default class AttackRoll extends FormApplication {
     )
 
     await roll.evaluate()
+
+    const isCritical = roll.dice[0].total >= this.getCriticalThreshold()
+    const hitResults = this.getTargetHitResults(roll, isCritical)
+    const hitSummary = hitResults.length
+      ? `<div class="hit-results">${hitResults
+          .map(
+            (r) =>
+              `<div>${r.hit ? 'Hits' : 'Misses'} ${r.token.name} (AC ${r.ac})</div>`,
+          )
+          .join('')}</div>`
+      : ''
 
     const attackTooltip = `
     <div>
@@ -536,9 +605,12 @@ export default class AttackRoll extends FormApplication {
     /**
      * Display roll to hit chat message
      */
-    await roll.toMessage({
+    const attackMessage = await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: this.getFlavor(this.formDataCache.targeted?.target),
+      // getFlavor() has no explicit return in its "called shot" branch, so
+      // it can come back undefined - guard so that doesn't literally
+      // concatenate the text "undefined" onto the hit-summary block below.
+      flavor: (this.getFlavor(this.formDataCache.targeted?.target) || '') + hitSummary,
       rollMode: game.settings.get('core', 'rollMode'),
       'flags.falloutzero': {
         type: 'attack',
@@ -549,12 +621,30 @@ export default class AttackRoll extends FormApplication {
         damage: {
           rolls: damageRolls,
           damageBonus,
-          isCritical: roll.dice[0].total >= this.weapon.system.critical.dice,
+          isCritical,
           criticalCondition: this.weapon.system.critical.condition,
           critical: `(${this.getCombinedDamageFormula()} + ${finalCritical.formula || ''} + ${abilityBonus}) * ${finalCritical.multiplier || ''}`,
         },
       },
     })
+
+    // Auto-roll and apply damage to whichever targeted tokens were hit (see
+    // getTargetHitResults for the hit rule). A miss for a given token just
+    // means it's excluded here - the "Roll damage"/"Roll critical damage"
+    // buttons on the card still work manually regardless, same as before
+    // this existed. A critical hit rolls the critical formula (extra
+    // damage/multiplier), same as clicking "Roll critical damage" by hand -
+    // matches the manual buttons added in _addDamageButtons, which show
+    // "Roll damage" or "Roll critical damage" as separate buttons rather
+    // than one button that silently upgrades.
+    const hitTokens = hitResults.filter((r) => r.hit).map((r) => r.token)
+    if (hitTokens.length && game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AutoApplyDamage')) {
+      const damageMessage = isCritical
+        ? await attackMessage._onRollCriticalDamage()
+        : await attackMessage._onRollDamage()
+      await this.applyDamageToHitTokens(damageMessage, hitTokens)
+    }
+
     return roll
   }
 
