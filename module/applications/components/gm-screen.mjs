@@ -114,7 +114,7 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
       return acc
     }, {})
 
-    const TYPE_ORDER = ['rangedWeapon', 'meleeWeapon', 'ammo','item','foodAnddrink', 'medicine', 'chem']
+    const TYPE_ORDER = ['armor','rangedWeapon', 'meleeWeapon', 'ammo','item','foodAnddrink', 'medicine', 'chem']
 
     const valuableItemsByActor = this.actors.reduce((acc, actor) => {
       const byType = actor.items

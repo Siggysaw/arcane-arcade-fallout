@@ -200,6 +200,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
     this.damageThreshold.value = this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
 
+    this.finalizeCombatSequence()
+    this.finalizeArmorUpgrades()
   }
 }
 

@@ -296,12 +296,18 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     if (!game.user.isGM) return
 
     const damageTypes = this.flags?.falloutzero.damageTypes
+    const isAreaEffect = this.flags?.falloutzero.isAreaEffect
+    const isCritical = this.flags?.falloutzero.isCritical
     const damageApplication = document.createElement('damage-application')
     damageApplication.classList.add('falloutzero')
     damageApplication.damages = this.rolls.map((roll, index) => ({
       value: roll.total,
       type: damageTypes[index],
-      properties: new Set(roll.options.properties ?? []),
+      properties: new Set([
+        ...(roll.options.properties ?? []),
+        ...(isAreaEffect ? ['areaOfEffect'] : []),
+        ...(isCritical ? ['criticalHit'] : []),
+      ]),
     }))
     html.querySelector('.message-content').appendChild(damageApplication)
   }
@@ -458,6 +464,16 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     const hasUpgraded =
       typeof weapon?.system?.bonusProperties === 'string' && weapon.system.bonusProperties.includes('Upgraded')
 
+    // Fitted 1 (armor upgrade): DT is doubled against area-of-effect damage.
+    // A weapon/explosive counts as an area-of-effect source if "Area of
+    // Effect" appears in its properties (ranged/melee weapons only),
+    // description, or bonusProperties text.
+    const isAreaEffect = [
+      weapon?.system?.properties,
+      weapon?.system?.description,
+      weapon?.system?.bonusProperties,
+    ].some((text) => typeof text === 'string' && text.includes('Area of Effect'))
+
     let upgradedBonus = 0
     let upgradedDieCount = 0
     if (hasUpgraded) {
@@ -491,6 +507,10 @@ export default class FalloutZeroChatMessage extends ChatMessage {
         type: 'damage',
         damageTypes: types,
         tooltip,
+        isAreaEffect,
+        // Strengthened (armor upgrade): bonus DT specifically against
+        // critical-hit damage, applied in FalloutZeroActor#applyDamage.
+        isCritical,
       },
     })
   }

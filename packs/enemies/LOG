@@ -1,3 +1,5 @@
-2026/08/20-17:22:45.900 7dd8 Recovering log #2562
-2026/08/20-17:22:45.908 7dd8 Delete type=0 #2562
-2026/08/20-17:22:45.908 7dd8 Delete type=3 #2560
+2026/08/22-17:55:46.471 bd6c Recovering log #2565
+2026/08/22-17:55:46.474 bd6c Level-0 table #2567: started
+2026/08/22-17:55:46.485 bd6c Level-0 table #2567: 361684 bytes OK
+2026/08/22-17:55:46.493 bd6c Delete type=0 #2565
+2026/08/22-17:55:46.494 bd6c Delete type=3 #2564

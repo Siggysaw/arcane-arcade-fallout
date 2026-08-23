@@ -340,19 +340,11 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       equippedArmor ? this.armorClass.armor = equippedArmor.system.armorClass.value : this.armorClass.armor = 10
       equippedArmor ? this.damageThreshold.armor = equippedArmor.system.damageThreshold.value : this.damageThreshold.armor = 0
 
-      // Armor Upgrades
-
-      const upgradeList = Object.values(equippedArmor.system.upgrade)
-      const actorData = this.parent?.actor?.system
-      const hasUpgrade = (search) => upgradeList.some((i) => i.name === search)
-
-      hasUpgrade("Fitted 3") ? this.system.combatSequence.advantage += 1 : ''
-      hasUpgrade("Fitted 3") ? console.log("YEAH THIS SHOULD BE HAPPENING") : console.log("Fitted was not found")
-
       // Armor AC and DT decrease by armor decay halved rounded down
       let armorDecaybase = (equippedArmor.system.decay - 10) * -1
       properMaintenance && properMaintenance.system.wildWasteland ? armorDecaybase -= 2 :
         properMaintenance ? armorDecaybase -= 1 : ''
+      armorDecaybase -= this.sturdyIgnoredDecayLevels ?? 0
       let armorDecay = Math.floor(armorDecaybase / 2)
       armorDecay < 0 ? armorDecay = 0 : ''
       this.armorClass.modifiers -= armorDecay
@@ -411,8 +403,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       powerArmor.system.load=0
     }
 
-    this.combatSequence.advantage > 0 ? this.combatSequence.formula = "2d20kh" :
-      this.combatSequence.advantage < 0 ? this.combatSequence.formula = "2d20kl" : ''
+    this.finalizeCombatSequence()
+    this.finalizeArmorUpgrades()
   }
 }
 

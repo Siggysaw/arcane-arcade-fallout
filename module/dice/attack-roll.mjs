@@ -260,6 +260,14 @@ export default class AttackRoll extends FormApplication {
     if (isMelee) {
       apCost -= 2
     }
+    // VATS Matrix Overlay (Power Armor upgrade): reduces the extra AP cost
+    // of a targeted (called shot) attack by 1/2/2 per tier (rank 3 adds no
+    // further reduction). Tier is recorded on the actor by
+    // data/actorBase.mjs#applyPowerArmorUpgrades.
+    const vatsMatrixOverlayTier = this.actor.system.vatsMatrixOverlayTier ?? 0
+    if (vatsMatrixOverlayTier >= 1) {
+      apCost -= [0, 1, 2, 2][vatsMatrixOverlayTier]
+    }
     return apCost > 0 ? apCost : 1
   }
 
@@ -472,7 +480,7 @@ export default class AttackRoll extends FormApplication {
     const finalCritical = this.getFinalCritical()
 
     /**
-     * Weapons that always hit skip the d20 roll entirely — post a
+     * Weapons that always hit skip the d20 roll entirely ï¿½ post a
      * flavor-only card carrying the damage flags, then immediately
      * fire the same damage-roll path the "Roll damage" button uses.
      */

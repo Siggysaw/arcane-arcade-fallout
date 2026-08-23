@@ -40,15 +40,7 @@ function applyRobcoTerminalSkin(app, html) {
 /* --------------------------------------------  */
 /*  Vault-Tec accessibility theme (Journal)      */
 /* --------------------------------------------  */
-// Journal sheets have no Handlebars template of their own to attach the
-// existing `{{#isVaultTec}} vaulttec {{/isVaultTec}}` conditional to (same
-// core-Journal-sheet situation as the Robco Terminal skin above), so it's
-// applied the same way: toggle the class straight onto the rendered window
-// element. Deliberately independent of the 'RobcoTerminals' setting/class —
-// Vault-Tec should reskin a plain journal window on its own, and when both
-// are on, `.robco-terminal.vaulttec` in robco-terminal.css overrides the
-// terminal's phosphor color to the same high-contrast navy/yellow instead
-// of the sheetcolor-derived green.
+
 function applyVaultTecTheme(app, html) {
   try {
     if (!game.settings.get(CONFIG.FALLOUTZERO.systemId, 'VaultTec')) return

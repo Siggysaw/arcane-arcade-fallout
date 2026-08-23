@@ -2278,6 +2278,64 @@ export default class FalloutZeroActor extends Actor {
     damages = this.calculateDamage(damages, options)
     if (!damages) return this
 
+    // Fitted 1 (armor upgrade): DT is doubled against area-of-effect damage.
+    // Damage is flagged as area-of-effect upstream in FalloutZeroChatMessage
+    // (see documents/chat-message.mjs#_rollDamage) based on the attacking
+    // weapon's properties/description/bonusProperties text.
+    const isAreaEffectDamage = damages.some((d) => d.properties?.has?.('areaOfEffect'))
+    const fittedDtMultiplier = isAreaEffectDamage && (this.system.fittedTier ?? 0) >= 1 ? 2 : 1
+
+    // Strengthened (armor upgrade): flat DT bonus against critical-hit
+    // damage specifically. Damage is flagged as a critical hit upstream in
+    // FalloutZeroChatMessage#_rollDamage the same way area-of-effect is.
+    const isCriticalDamage = damages.some((d) => d.properties?.has?.('criticalHit'))
+    const strengthenedTier = this.system.strengthenedTier ?? 0
+    const strengthenedDtBonus =
+      isCriticalDamage && strengthenedTier >= 1 ? [0, 3, 8, 8][strengthenedTier] : 0
+
+    // Emergency Protocols rank 2 (Power Armor upgrade): +5 DT against HP
+    // damage while below half HP. Checked against current HP right here
+    // (there's no "start of turn" tracking in this codebase, so "currently
+    // below half HP" is the closest available proxy). Like Strengthened,
+    // this only ever gates HP damage since DT never touches SP damage in
+    // this method.
+    const emergencyProtocolsTier = this.system.emergencyProtocolsTier ?? 0
+    const emergencyProtocolsDtBonus =
+      emergencyProtocolsTier >= 2 && hp.value < hp.max / 2 ? 5 : 0
+
+    // Strengthened's and Emergency Protocols' flat bonuses (if any) are
+    // added first, then Fitted's doubling (if any) is applied to the total
+    // - "your DT is doubled" reads most naturally as doubling whatever your
+    // DT currently is, after other conditional bonuses. dt.value can still
+    // change below (the "Blocking" condition boosts it further), so this is
+    // computed fresh at each point DT actually gates damage, not cached
+    // once here.
+    const effectiveDt = () =>
+      (dt.value + strengthenedDtBonus + emergencyProtocolsDtBonus) * fittedDtMultiplier
+
+    // Prism Shielding / Explosive Shielding (Power Armor upgrades): flat
+    // reduction to laser/plasma/explosive damage taken, applied per damage
+    // entry before it's summed into the total below. Only nonzero while
+    // wearing Power Armor with the matching upgrade attached (see
+    // data/actorBase.mjs#applyPowerArmorUpgrades).
+    const prismShieldingTier = this.system.prismShieldingTier ?? 0
+    const prismShieldReduction = prismShieldingTier >= 1 ? [0, 5, 10, 20][prismShieldingTier] : 0
+    const explosiveShieldingTier = this.system.explosiveShieldingTier ?? 0
+    const explosiveShieldReduction =
+      explosiveShieldingTier >= 1 ? [0, 5, 15, 30][explosiveShieldingTier] : 0
+    if (prismShieldReduction > 0 || explosiveShieldReduction > 0) {
+      damages = damages.map((d) => {
+        const reduction =
+          d.type === 'laser' || d.type === 'plasma'
+            ? prismShieldReduction
+            : d.type === 'explosive'
+              ? explosiveShieldReduction
+              : 0
+        if (reduction <= 0 || !(d.value > 0)) return d
+        return { ...d, value: Math.max(0, d.value - reduction) }
+      })
+    }
+
     // Round damage towards zero
     let amount = damages.reduce((acc, d) => {
       acc += d.value
@@ -2311,7 +2369,7 @@ export default class FalloutZeroActor extends Actor {
     // Get HP damage modified by dr/dv
     let hpDamage
 
-    if (dt.value >= leftOverDamage) {
+    if (effectiveDt() >= leftOverDamage) {
       hpDamage = 0
     } else {
       hpDamage = damages.reduce((acc, d) => {
@@ -2330,7 +2388,7 @@ export default class FalloutZeroActor extends Actor {
       hpDamage -= spDamageDealt
       console.log(hpDamage)
 
-      if (dt.value >= hpDamage) {
+      if (effectiveDt() >= hpDamage) {
         // dt > hp damage
         hpDamage = 0
       } else {
@@ -2339,7 +2397,7 @@ export default class FalloutZeroActor extends Actor {
         let dtBoost = 0
         blocking && blocking.system.quantity > 1 ? dtBoost = 2 : ''
         blocking ? dt.value += (2 * this.system.abilities.end.mod) + dtBoost: ''
-        hpDamage -= dt.value
+        hpDamage -= effectiveDt()
       }
     }
 
