@@ -15,3 +15,31 @@
 .attack-dialog div{
     border-bottom:dotted 1px;
 }
+.attack-roll .target-select-row {
+    display: flex;
+    justify-content: center;
+}
+.attack-roll .target-select-row button {
+    width: auto;
+    padding: 2px 10px;
+}
+.attack-roll .target-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    font-size: 10pt;
+}
+.attack-roll .target-summary-label {
+    font-weight: bold;
+}
+.attack-roll .target-summary.none {
+    font-style: italic;
+    opacity: 0.75;
+}
+.attack-roll .target-chip {
+    border: 1px solid var(--sheetcolor, currentColor);
+    border-radius: 4px;
+    padding: 1px 6px;
+}

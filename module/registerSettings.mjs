@@ -134,19 +134,6 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: false,
   })
-  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'DamageApplicationTargetSource', {
-    name: 'Default damage application target source',
-    hint: 'Which tokens the "Apply" tray on damage chat cards picks up by default. The GM can still switch per-card using the crosshair/pointer toggle.',
-    scope: 'world',
-    config: true,
-    type: String,
-    choices: {
-      targeted: 'Targeted tokens (crosshair tool)',
-      selected: 'Selected tokens',
-    },
-    default: 'targeted',
-    requiresReload: false,
-  })
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'PlaySounds', {
     name: 'Play Pip Boy Sounds',
     hint: 'Enable/Disable Sounds on Actor Sheets',

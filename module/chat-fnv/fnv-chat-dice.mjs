@@ -58,8 +58,21 @@ const LAND_STAGGER_MS = 90 // extra tumble per additional die
    The patterns below are this system's flavor-text formats. Where the DC is
    recoverable, total-vs-DC is recomputed here rather than trusting the
    flavor words: FalloutZeroChatMessage#_reRoll copies the original flavor
-   verbatim, so its Success/Failure text can be stale while the dice are new. */
+   verbatim, so its Success/Failure text can be stale while the dice are new.
+
+   Attack rolls are the one exception to "recompute from flavor": they carry
+   an explicit `flags.falloutzero.hit` verdict already (set in
+   AttackRoll#performRoll from getTargetHitResults - the real AC comparison/
+   natural-crit rule, not something regex-recoverable from the flavor text),
+   so that's checked directly rather than trying to pattern-match "BOOM!
+   Attack hits with X". */
 function classifyOutcome(message) {
+  if (message.flags?.falloutzero?.type === 'attack') {
+    const hit = message.flags.falloutzero.hit
+    if (hit === true) return 'pass'
+    if (hit === false) return 'fail'
+    return null // no target selected - nothing to compare against, stays neutral/green
+  }
   if (message.flags?.falloutzero?.type) return null
   if (message.flags?.core?.initiativeRoll) return null
   const flavor = (message.flavor ?? '').replace(/<[^>]*>/g, ' ')

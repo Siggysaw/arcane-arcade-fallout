@@ -340,3 +340,21 @@ transition: grid-template-rows 250ms ease;
 .falloutzero .collapsible .collapsible-content > .wrapper {
 overflow: hidden;
 }
+
+/* Attack roll beat AC (see FalloutZeroChatMessage#_addHitStyling) - color
+   the dice red rather than relying on Foundry's default die-face sprites,
+   since those are plain background images we can't safely recolor by
+   assuming their exact fill/CSS-variable structure across versions.
+   Deliberately NOT scoped under .falloutzero: that class only shows up on
+   item-use "chat-card" messages (see _displayChatActionButtons), while an
+   attack roll is a plain roll.toMessage() card with no such wrapper - same
+   as the unscoped .flavor-text rule above it applies to. */
+.dice-roll.attack-hit .dice-tooltip .dice-rolls .roll {
+background-color: rgba(200, 30, 30, 0.65);
+border-radius: 50%;
+color: #fff;
+}
+
+.dice-roll.attack-hit .dice-total {
+color: #c81e1e;
+}

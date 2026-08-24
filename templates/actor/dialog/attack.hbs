@@ -73,6 +73,27 @@
 
     <div class="form-group">
         <fieldset>
+            <legend>Targeting</legend>
+            <div class="target-select-row">
+                <button type="button" data-select-targets data-tooltip="Switches your canvas tool to Target - click token(s) to target them, then come back and roll">
+                    <i class="fas fa-crosshairs"></i> Select Target(s)
+                </button>
+            </div>
+            {{#if attackTargetNames.length}}
+            <div class="target-summary">
+                <span class="target-summary-label">Targeting:</span>
+                {{#each attackTargetNames}}
+                <span class="target-chip">{{ this }}</span>
+                {{/each}}
+            </div>
+            {{else}}
+            <div class="target-summary none">No Target Selected.</div>
+            {{/if}}
+        </fieldset>
+    </div>
+
+    <div class="form-group">
+        <fieldset>
             <legend>Overrides</legend>
 
             <div class="override-row">
@@ -138,6 +159,10 @@
                 <input type="checkbox" name="fanTheHammer" {{checked fanTheHammer}} {{#unless hasKarmaCapAvailable}} disabled{{/unless}} />
             </div>
             {{/if}}
+            <div class="flex space-between">
+                <label data-tooltip="Sneak Attack, or a perk that grants free crit damage in this situation. You still have to roll to hit normally - if it hits, it deals critical damage instead of regular damage. This does not bypass the to-hit roll (that's what a weapon's own auto-hit property is for).">Force Critical Hit</label>
+                <input type="checkbox" name="forceCritical" {{checked forceCritical}} />
+            </div>
         </fieldset>
     </div>
 

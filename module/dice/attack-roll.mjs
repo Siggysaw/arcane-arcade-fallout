@@ -50,6 +50,12 @@ export default class AttackRoll extends FormApplication {
       totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - decayValue - this.actor.system.penaltyTotal + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
       bonus: 0,
       targeted: null,
+      // Force this attack to count as a critical hit regardless of the d20
+      // result - for Sneak Attack, a perk that grants free crit damage in a
+      // specific scenario, etc. Auto-hits (bypasses AC) and rolls the
+      // critical damage formula, same as a roll that met the crit threshold
+      // naturally.
+      forceCritical: false,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
       apCost: this.weapon.system.apCost,
       totalApCost: this.weapon.system.totalApCost,
@@ -83,6 +89,32 @@ export default class AttackRoll extends FormApplication {
     }
 
     this.onSubmitCallback = callback
+
+    // Keep the dialog's target summary live while the player is off
+    // clicking tokens on the canvas (see _onSelectTargets()). Cleaned up in
+    // close() so these don't pile up across repeated attack dialogs.
+    this._targetHooks = [
+      { hook: 'targetToken', id: Hooks.on('targetToken', () => this._refreshTargetSummary()) },
+      { hook: 'controlToken', id: Hooks.on('controlToken', () => this._refreshTargetSummary()) },
+    ]
+  }
+
+  /** @override */
+  async close(options) {
+    this._targetHooks?.forEach(({ hook, id }) => Hooks.off(hook, id))
+    this._targetHooks = []
+    this._restoreCanvasTool()
+    return super.close(options)
+  }
+
+  /**
+   * Re-render just enough to refresh the live target-summary readout in the
+   * template. Called whenever targeting/selection changes on the canvas, so
+   * the dialog (never minimized - see _onSelectTargets) shows an up-to-date
+   * target list the whole time the player is clicking tokens.
+   */
+  _refreshTargetSummary() {
+    if (this.rendered) this.render(false)
   }
 
   static get defaultOptions() {
@@ -132,7 +164,28 @@ export default class AttackRoll extends FormApplication {
       ...damage,
       formula: this.getModifiedFormula(damage.formula),
     }))
+    data.attackTargetNames = this.getAttackTargets().map((t) => t.name)
     return data
+  }
+
+  /**
+   * Tokens this attack will resolve against: whatever's currently targeted
+   * with the crosshair tool (game.user.targets).
+   *
+   * Deliberately does NOT fall back to canvas.tokens.controlled/selected
+   * tokens - a player attacking almost always still has their OWN token
+   * selected/controlled on the canvas, so that fallback was silently
+   * auto-applying the attack's damage back onto the attacker whenever
+   * nobody had explicitly targeted anything ("they're going to accidentally
+   * shoot themselves"). With no explicit target, this returns an empty
+   * list; getTargetHitResults then has nothing to resolve against, so
+   * auto-apply does nothing, and a GM handles the hit manually via the
+   * damage card's own Apply tray - exactly how it worked before any of
+   * this session's targeting automation existed.
+   * @returns {Token[]}
+   */
+  getAttackTargets() {
+    return Array.from(game.user.targets)
   }
 
   getDice() {
@@ -245,8 +298,66 @@ export default class AttackRoll extends FormApplication {
       this.render()
     })
 
+    const selectTargets = form.querySelector('[data-select-targets]')
+    selectTargets?.addEventListener('click', () => this._onSelectTargets())
+
     const closeButton = form.querySelector('[data-close]')
     closeButton?.addEventListener('click', this.close())
+  }
+
+  /**
+   * Handle clicking the "Select Target(s)" button: switch the player's
+   * active canvas tool to the Token layer's Target tool, so left-clicking a
+   * token targets it directly instead of controlling/selecting it - no need
+   * to know the T keybind. The dialog itself is never minimized (a
+   * minimized Application in Foundry doesn't reliably restore to its
+   * original size, which made the earlier minimize-based flow annoying to
+   * use) - it just stays open and visible while the player clicks tokens on
+   * the canvas around/behind it, and its target summary keeps itself live
+   * via the hooks registered in the constructor.
+   */
+  _onSelectTargets() {
+    this._activateTargetTool()
+    ui.notifications.info(`Target tool active - click token(s) on the canvas to target them, then roll here.`)
+  }
+
+  /**
+   * Switch to the Token layer's "target" tool, remembering whatever tool
+   * was active before so close() can restore it. Best-effort: Foundry's
+   * scene-controls API has changed across versions (this system supports
+   * Foundry 12-14), so every step here is guarded - if something doesn't
+   * exist or throws, targeting still works the old way (T, or a token's
+   * HUD), it just isn't pre-selected as the active tool.
+   */
+  _activateTargetTool() {
+    try {
+      const activeControl = ui.controls?.control?.name ?? ui.controls?.activeControl ?? null
+      const activeTool = ui.controls?.tool?.name ?? ui.controls?.activeTool ?? null
+      this._previousTool = activeControl === 'token' ? activeTool : null
+    } catch (err) {
+      this._previousTool = null
+    }
+    try {
+      canvas.tokens?.activate({ tool: 'target' })
+    } catch (err) {
+      console.warn('AttackRoll: could not switch the canvas to the target tool automatically.', err)
+    }
+  }
+
+  /**
+   * Restore whatever Token-layer tool was active before _activateTargetTool
+   * switched it, if any. Called from close() so the player isn't left
+   * stuck on the target tool (where a plain click targets instead of
+   * selects) after the attack dialog goes away.
+   */
+  _restoreCanvasTool() {
+    if (!this._previousTool) return
+    try {
+      canvas.tokens?.activate({ tool: this._previousTool })
+    } catch (err) {
+      // Best-effort only - nothing to do if this fails.
+    }
+    this._previousTool = null
   }
 
   getTargetedApCost(target) {
@@ -338,7 +449,14 @@ export default class AttackRoll extends FormApplication {
   }
 
 
-  getFlavor(target) {
+  /**
+   * @param {string|null|undefined} target   Called-shot body part, if any.
+   * @param {boolean|null} [hit]              Whether this roll hit at least
+   *   one of getAttackTargets()'s tokens (see getTargetHitResults) - null/
+   *   undefined when there's nothing targeted to compare against, in which
+   *   case the wording stays neutral since hit/miss can't be determined.
+   */
+  getFlavor(target, hit) {
     let flavor = ''
     if (this.weapon.type === 'explosive') {
       return `
@@ -349,7 +467,7 @@ export default class AttackRoll extends FormApplication {
         15+: End of your turn.
       `
     } else {
-      flavor = `BOOM! Attack with ${this.weapon.name}`
+      flavor = hit ? `BOOM! Attack hits with ${this.weapon.name}` : `BOOM! Attack with ${this.weapon.name}`
     }
 
     if (!target) {
@@ -361,6 +479,14 @@ export default class AttackRoll extends FormApplication {
     } else {
       flavor += ` aiming for the ${target}`
     }
+
+    // NB: this used to fall off the end of the function without a return
+    // here, so getFlavor() came back undefined for every called-shot attack
+    // (only the untargeted branch above ever returned anything) - callers
+    // guarded against that with `getFlavor(...) || ''`. Fixed while touching
+    // this function for the hit-wording change, since a called-shot attack
+    // is exactly the kind of attack that should still show "hits" wording.
+    return flavor
   }
 
   /**
@@ -379,7 +505,7 @@ export default class AttackRoll extends FormApplication {
   }
 
   /**
-   * Compare this roll to each currently-targeted token's Armor Class to
+   * Compare this roll to each of getAttackTargets()'s tokens' Armor Class to
    * determine hits/misses, per the core rule (PDF pg. 56): "If an attack
    * roll's total is equal to or greater than your AC, you take damage." A
    * raw d20 result meeting the weapon's critical hit chance always hits
@@ -392,7 +518,7 @@ export default class AttackRoll extends FormApplication {
    * @returns {{token: Token, ac: number, hit: boolean}[]}
    */
   getTargetHitResults(roll, isCritical) {
-    return Array.from(game.user.targets).map((token) => {
+    return this.getAttackTargets().map((token) => {
       const ac = token.actor?.system?.armorClass?.value ?? 10
       return { token, ac, hit: isCritical || roll.total >= ac }
     })
@@ -537,6 +663,10 @@ export default class AttackRoll extends FormApplication {
      * fire the same damage-roll path the "Roll damage" button uses.
      */
     if (this.weapon.system.autoHit) {
+      // No d20 is rolled for an autoHit weapon, so there's no threshold to
+      // compare against - it's only ever a crit here if forceCritical says so.
+      const isCritical = this.formDataCache.forceCritical === true
+
       const message = await getDocumentClass('ChatMessage').create({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: `${this.weapon.name} hits automatically!`,
@@ -548,19 +678,23 @@ export default class AttackRoll extends FormApplication {
           damage: {
             rolls: damageRolls,
             damageBonus,
-            isCritical: false,
+            isCritical,
             criticalCondition: this.weapon.system.critical.condition,
             critical: `(${this.getCombinedDamageFormula()} + ${finalCritical.formula || ''} + ${abilityBonus}) * ${finalCritical.multiplier || ''}`,
           },
         },
       })
 
-      const autoHitDamageMessage = await message._onRollDamage()
+      const autoHitDamageMessage = isCritical
+        ? await message._onRollCriticalDamage()
+        : await message._onRollDamage()
 
-      // autoHit weapons always connect, so every currently-targeted token
-      // counts as hit - there's no roll to compare against AC.
+      // autoHit weapons always connect, so every explicitly-targeted token
+      // (see getAttackTargets) counts as hit - there's no roll to compare
+      // against AC. No target selected means nothing auto-applies here
+      // either - a GM handles it manually via the damage card's Apply tray.
       if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AutoApplyDamage')) {
-        await this.applyDamageToHitTokens(autoHitDamageMessage, Array.from(game.user.targets))
+        await this.applyDamageToHitTokens(autoHitDamageMessage, this.getAttackTargets())
       }
       return message
     }
@@ -577,16 +711,36 @@ export default class AttackRoll extends FormApplication {
 
     await roll.evaluate()
 
-    const isCritical = roll.dice[0].total >= this.getCriticalThreshold()
-    const hitResults = this.getTargetHitResults(roll, isCritical)
+    // Whether the d20 itself met the weapon's crit threshold - this is the
+    // ONLY thing that bypasses AC (per the PDF's crit-chance auto-hit rule).
+    // forceCritical (Sneak Attack, a crit-granting perk, etc.) deliberately
+    // does NOT feed into this: the attack still has to actually hit first,
+    // it just deals critical damage once it does. Auto-hit and auto-crit
+    // are separate flags - see rollsCriticalDamage below.
+    const naturalCritical = roll.dice[0].total >= this.getCriticalThreshold()
+    const hitResults = this.getTargetHitResults(roll, naturalCritical)
+    // AC is deliberately NOT included here - players can see whether an
+    // attack hit or missed, but not the enemy's actual AC value. The
+    // message's stored flavor text is broadcast to every connected client
+    // as-is (Foundry has no per-user field redaction), so keeping AC out of
+    // this string entirely is the only way to keep it out of a player's
+    // client altogether - not just visually hidden by CSS, which a player
+    // could still inspect around. See flags.falloutzero.hitResults below
+    // for where the AC values actually go, and
+    // FalloutZeroChatMessage#_addGmOnlyAc for how a GM's client (and only a
+    // GM's client) adds them back to these lines at render time.
     const hitSummary = hitResults.length
       ? `<div class="hit-results">${hitResults
-          .map(
-            (r) =>
-              `<div>${r.hit ? 'Hits' : 'Misses'} ${r.token.name} (AC ${r.ac})</div>`,
-          )
+          .map((r) => `<div class="hit-result-line">${r.hit ? 'Hits' : 'Misses'} ${r.token.name}</div>`)
           .join('')}</div>`
       : ''
+    // Whether this roll beat at least one targeted token's AC (or scored a
+    // natural crit, which auto-hits) - drives the "Attack hits with" flavor
+    // wording and the red dice styling below. null with nothing targeted:
+    // there's no AC to compare against, so hit/miss can't be determined and
+    // both stay in their neutral/default state (matches getAttackTargets -
+    // no target means a GM resolves the hit manually).
+    const anyHit = hitResults.length ? hitResults.some((r) => r.hit) : null
 
     const attackTooltip = `
     <div>
@@ -607,10 +761,7 @@ export default class AttackRoll extends FormApplication {
      */
     const attackMessage = await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      // getFlavor() has no explicit return in its "called shot" branch, so
-      // it can come back undefined - guard so that doesn't literally
-      // concatenate the text "undefined" onto the hit-summary block below.
-      flavor: (this.getFlavor(this.formDataCache.targeted?.target) || '') + hitSummary,
+      flavor: (this.getFlavor(this.formDataCache.targeted?.target, anyHit) || '') + hitSummary,
       rollMode: game.settings.get('core', 'rollMode'),
       'flags.falloutzero': {
         type: 'attack',
@@ -618,10 +769,19 @@ export default class AttackRoll extends FormApplication {
         tooltip: attackTooltip,
         abilityBonus,
         targeted: this.formDataCache.targeted,
+        // Read by FalloutZeroChatMessage#_addHitStyling to color this roll's
+        // dice red in the chat card when it beat AC - see getFlavor above
+        // for the wording half of the same request.
+        hit: anyHit,
+        // GM-only AC values, one entry per hitResults/hit-result-line, same
+        // order. Not shown to players - see the comment on hitSummary above
+        // and FalloutZeroChatMessage#_addGmOnlyAc.
+        hitResults: hitResults.map((r) => ({ ac: r.ac })),
         damage: {
           rolls: damageRolls,
           damageBonus,
-          isCritical,
+          isCritical: naturalCritical,
+          forceCritical: this.formDataCache.forceCritical === true,
           criticalCondition: this.weapon.system.critical.condition,
           critical: `(${this.getCombinedDamageFormula()} + ${finalCritical.formula || ''} + ${abilityBonus}) * ${finalCritical.multiplier || ''}`,
         },
@@ -629,17 +789,23 @@ export default class AttackRoll extends FormApplication {
     })
 
     // Auto-roll and apply damage to whichever targeted tokens were hit (see
-    // getTargetHitResults for the hit rule). A miss for a given token just
-    // means it's excluded here - the "Roll damage"/"Roll critical damage"
-    // buttons on the card still work manually regardless, same as before
-    // this existed. A critical hit rolls the critical formula (extra
-    // damage/multiplier), same as clicking "Roll critical damage" by hand -
-    // matches the manual buttons added in _addDamageButtons, which show
-    // "Roll damage" or "Roll critical damage" as separate buttons rather
-    // than one button that silently upgrades.
+    // getTargetHitResults for the hit rule - unaffected by forceCritical,
+    // only a natural crit bypasses AC). A miss for a given token just means
+    // it's excluded here - the "Roll damage"/"Roll critical damage" buttons
+    // on the card still work manually regardless, same as before this
+    // existed.
+    //
+    // Whether to roll critical damage is a separate question from whether
+    // it hit: a natural crit always rolls critical damage, and forceCritical
+    // (Sneak Attack, a crit perk, etc.) ALSO rolls critical damage but only
+    // once an actual hit already happened - it never bypasses the to-hit
+    // roll itself. Matches the manual buttons in _addDamageButtons, which
+    // show "Roll damage" or "Roll critical damage" as separate buttons
+    // rather than one button that silently upgrades.
     const hitTokens = hitResults.filter((r) => r.hit).map((r) => r.token)
+    const rollsCriticalDamage = naturalCritical || this.formDataCache.forceCritical === true
     if (hitTokens.length && game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AutoApplyDamage')) {
-      const damageMessage = isCritical
+      const damageMessage = rollsCriticalDamage
         ? await attackMessage._onRollCriticalDamage()
         : await attackMessage._onRollDamage()
       await this.applyDamageToHitTokens(damageMessage, hitTokens)

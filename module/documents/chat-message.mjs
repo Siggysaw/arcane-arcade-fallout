@@ -49,6 +49,27 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     return this.flags?.falloutzero?.tooltip ?? null
   }
 
+  /**
+   * Whether this attack roll beat at least one targeted token's AC (or
+   * scored a natural crit). null when nothing was targeted, so there's
+   * nothing to compare against - see AttackRoll#performRoll.
+   * @type {boolean|null}
+   */
+  get hit() {
+    return this.flags?.falloutzero?.hit ?? null
+  }
+
+  /**
+   * GM-only AC values for this attack's targets, one entry per hit-result
+   * line in the same order (see AttackRoll#performRoll - AC is deliberately
+   * kept out of the flavor text itself). null on anything that isn't an
+   * attack roll with targets.
+   * @type {{ac: number}[]|null}
+   */
+  get hitResults() {
+    return this.flags?.falloutzero?.hitResults ?? null
+  }
+
   get cardType() {
     return this.flags?.falloutzero?.type ?? null
   }
@@ -225,6 +246,12 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     // add formula tooltip
     this._addTooltip(html)
 
+    // Color the to-hit roll's dice red when it beat AC
+    this._addHitStyling(html)
+
+    // Show enemy AC to the GM only - never to players
+    this._addGmOnlyAc(html)
+
     // Add damage buttons
     this._addDamageButtons(html)
 
@@ -313,6 +340,40 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     if (!this.tooltip) return
     const formula = html.querySelector('.dice-roll .dice-result .dice-formula')
     formula.dataset.tooltip = this.tooltip
+  }
+
+  /**
+   * Mark this message's dice-roll block as a hit so css/chat.css can color
+   * the dice red - only applies to the to-hit ('attack' type) roll, and
+   * only once a hit is actually known (this.hit is null with no target
+   * selected, since there's no AC to compare against).
+   * @param {HTMLElement} html
+   */
+  _addHitStyling(html) {
+    if (this.cardType !== 'attack') return
+    if (this.hit !== true) return
+    html.querySelector('.dice-roll')?.classList.add('attack-hit')
+  }
+
+  /**
+   * GM-only: append each targeted token's AC to its "Hits X"/"Misses X"
+   * line. Players never see this - the message's flavor text (broadcast to
+   * every connected client as-is, since Foundry has no per-user field
+   * redaction) never contains the AC value at all; only a GM's own client
+   * fetches it from flags.falloutzero.hitResults and injects it here, purely
+   * client-side, at render time.
+   * @param {HTMLElement} html
+   */
+  _addGmOnlyAc(html) {
+    if (this.cardType !== 'attack') return
+    if (!game.user.isGM) return
+    if (!this.hitResults?.length) return
+    const lines = html.querySelectorAll('.hit-results .hit-result-line')
+    lines.forEach((line, i) => {
+      const ac = this.hitResults[i]?.ac
+      if (ac == null) return
+      line.append(` (AC ${ac})`)
+    })
   }
 
   _addApplyDamageButtons(html) {
