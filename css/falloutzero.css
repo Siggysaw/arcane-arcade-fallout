@@ -6,6 +6,7 @@
 @import 'grant.css';
 @import 'attack-roll.css';
 @import 'targeted-attack.css';
+@import 'give-ammo.css';
 @import 'chat.css';
 @import 'sheet-status.css';
 @import 'award.css';
@@ -17,6 +18,7 @@
 @import 'v2-override.css';
 @import 'pipboy-flicker.css';
 @import 'robco-terminal.css';
+@import 'actor-header.css';
 
 /* Global styles */
 @font-face {
@@ -545,7 +547,6 @@ table .bio-label {
   width: 35px;
 }
 
-.sheet header.sheet-header img,
 .sheet profile-pic {
   flex: 0 0 64px;
   height: 175px;
@@ -979,14 +980,9 @@ form td .status-notes li:hover {
   margin: 2px;
   padding: 0px;
   text-align: center;
-  width: 25px;
+
   position: relative;
   z-index: 3;
-}
-
-.sheet header.sheet-header .condition-icon {
-  width: 100%;
-  height: auto;
 }
 
 .sheet .content-link {
@@ -1029,10 +1025,6 @@ a.inline-roll,
   padding: 3px;
   width: 100%;
   background: var(--dark);
-}
-
-.sheet .character-status {
-  width: 200px;
 }
 
   .sheet .character-status input {
@@ -1350,6 +1342,12 @@ body.game .app .tabs > [data-tab] {
 .sheet .combat-tab .melee-attack {
   background-image: url("/systems/arcane-arcade-fallout/assets/vaultboy/MeleeWeapons.webp");
   background-size: cover;
+}
+.sheet .combat-tab .explosives-attack {
+  background-image: url("/systems/arcane-arcade-fallout/assets/vaultboy/explosives.png");
+  background-repeat:no-repeat;
+  background-size: cover;
+  background-position: right 10px bottom -75px;
 }
 
 .sheet .combat-tab .upgrade-name {
@@ -1975,6 +1973,145 @@ body.game .app .vaulttec .tabs > [data-tab] {
 .sheet .impact input[type='checkbox'] {
   content: url('/icons/svg/falling.svg');
 }
+
+/* ============================================================
+   DR/DV click-to-cycle strip (Aug 30, 2026). Combat Actions is
+   back to the original combat-menu popup (see the CSS above this
+   block, e.g. .sheet .combat-actions / .fakebutton) - unchanged.
+   Each damage type is a single chip cycling through four states:
+   left-click steps Vulnerable -> Neutral -> Resist -> Immune
+   (wrapping); right-click steps the same loop backward. Tracks
+   --sheetcolor like the rest of the sheet (Vault-Tec/Robco
+   included) rather than a fixed color. See
+   claude/combat-tab-redesign.md for the full writeup.
+   ============================================================ */
+
+/* ---- shared damage-type icon assets, reused verbatim from the per-type
+   checkbox rules above (this now targets <div> chips, not checkboxes) ---- */
+.sheet .dv-chip {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border: 2px solid color-mix(in srgb, var(--sheetcolor) 35%, black);
+  background-color: rgba(255, 255, 255, .03);
+}
+.sheet .dv-chip i { font-size: 13px; opacity: .9; }
+
+  .sheet .dv-chip.slashing {
+    background-image: url('/icons/svg/sword.svg');
+  }
+
+  .sheet .dv-chip.piercing {
+    background-image: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/Bite.png');
+  }
+
+  .sheet .dv-chip.ballistic {
+    background-image: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/gunshot.png');
+  }
+
+  .sheet .dv-chip.bludgeoning {
+    background-image: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/falling-boulder.png');
+  }
+
+  .sheet .dv-chip.electricity {
+    background-image: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/battery-pack.png');
+  }
+
+  .sheet .dv-chip.plasma {
+    background-image: url('/icons/svg/acid.svg');
+  }
+
+  .sheet .dv-chip.poison {
+    background-image: url('/icons/svg/poison.svg');
+  }
+
+  .sheet .dv-chip.fire {
+    background-image: url('/icons/svg/fire.svg');
+  }
+
+  .sheet .dv-chip.acid {
+    background-image: url('/icons/svg/biohazard.svg');
+  }
+
+  .sheet .dv-chip.explosive {
+    background-image: url('/icons/svg/explosion.svg');
+  }
+
+  .sheet .dv-chip.laser {
+    background-image: url('/systems/arcane-arcade-fallout/assets/NPC-Attacks/laser-beam.png');
+  }
+
+  .sheet .dv-chip.radiation {
+    background-image: url('/icons/svg/radiation.svg');
+  }
+
+  .sheet .dv-chip.cryo {
+    background-image: url('/icons/svg/frozen.svg');
+  }
+  .sheet .dv-chip.impact {
+    background-image: url('/icons/svg/falling.svg');
+  }
+  .sheet .dv-chip.sonic {
+    background-image: url('/icons/svg/sound.svg');
+  }
+  .sheet .dv-chip.psychic {
+    background-image: url('/icons/svg/aura.svg');
+  }
+
+
+.sheet .dv-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 2px 0 4px;
+}
+
+/* four states, each its own border/glow color; state-neutral is the default
+   dim/grayscale look so an untouched chip still reads as "nothing set" */
+.sheet .dv-chip.state-neutral {
+  opacity: .45;
+  filter: grayscale(70%);
+}
+.sheet .dv-chip.state-resist {
+  border-color: var(--sheetcolor);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--sheetcolor) 60%, transparent) inset;
+}
+.sheet .dv-chip.state-vulnerable {
+  border-color: #c81e1e;
+  box-shadow: 0 0 6px rgba(200, 30, 30, .55) inset;
+}
+.sheet .dv-chip.state-immune {
+  border-color: #4fc3f7;
+  box-shadow: 0 0 6px rgba(79, 195, 247, .55) inset;
+  border-style: double;
+}
+
+.sheet .dv-legend {
+  display: flex;
+  gap: 12px;
+  font-size: 8.5px;
+  opacity: .8;
+  flex-wrap: wrap;
+}
+.sheet .dv-legend-item { display: flex; align-items: center; gap: 3px; }
+.sheet .dv-legend-item::before {
+  content: '';
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 2px solid;
+  border-radius: 2px;
+}
+.sheet .dv-legend-item.state-neutral::before { border-color: color-mix(in srgb, var(--sheetcolor) 35%, black); opacity: .6; }
+.sheet .dv-legend-item.state-resist::before { border-color: var(--sheetcolor); }
+.sheet .dv-legend-item.state-vulnerable::before { border-color: #c81e1e; }
+.sheet .dv-legend-item.state-immune::before { border-color: #4fc3f7; border-style: double; }
 
 
 .application .window-content {

@@ -1,11 +1,11 @@
 <div style="margin-bottom:5px;" class="grid grid-20col">
     {{#Character actor}}
-    <div class="grid-span-10">
+    <div class="grid-span-13">
         {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-drdv.hbs"}}
     </div>
     {{/Character}}
     <div style="border:solid 1px;"
-         class="fakebutton combat-actions combat-menu grid-span-9">
+         class="fakebutton combat-actions combat-menu grid-span-6">
         Combat Actions
     </div>
     <div class="help-icon" data-combatActions>
@@ -37,6 +37,7 @@
     </div>
 
 </div>
+
 {{#each powerArmors as |item id|}}
 {{#if item.system.itemEquipped}}
 <div class="grid grid-20col combat-tab" data-item-id="{{ item._id }}" draggable="true">

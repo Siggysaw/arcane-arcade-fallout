@@ -1,14 +1,16 @@
-<div class="dr-dv grid grid-14col">
-    {{#each this.dr as |dr|}}
-    <div class="{{dr.id}}" data-tooltip="Half Damage From {{dr.label}}">
-    <input data-dr="{{dr.id}}" type="checkbox" name="system.dr" value="{{ dr.id }}" {{checked dr.selected}} />
+<div class="dv-strip">
+    {{#each this.drdv as |t|}}
+    <div class="dv-chip {{t.id}} state-{{t.state}}"
+         data-drdv-chip
+         data-type-id="{{t.id}}"
+         data-tooltip="{{t.label}} — {{t.stateLabel}} (left-click: cycle forward, right-click: cycle back)">
+        {{#if t.faIcon}}<i class="fas {{t.faIcon}}"></i>{{/if}}
     </div>
     {{/each}}
 </div>
-<div class="dr-dv grid grid-14col">
-    {{#each this.dv as |dv|}}
-    <div class="{{dv.id}}" data-tooltip="Double Damage From {{dv.label}}">
-    <input data-dv="{{dv.id}}" type="checkbox" name="system.dv" value="{{ dv.id }}" {{checked dv.selected}} />
-    </div>
-    {{/each}}
+<div class="dv-legend">
+    <span class="dv-legend-item state-neutral">Neutral</span>
+    <span class="dv-legend-item state-resist">Resist (½)</span>
+    <span class="dv-legend-item state-immune">Immune</span>
+    <span class="dv-legend-item state-vulnerable">Vulnerable (2×)</span>
 </div>

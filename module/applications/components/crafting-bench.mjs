@@ -7,6 +7,13 @@ const ATTEMPT_RESULT = {
   CRITICAL_SUCCESS: 'critical success',
 }
 
+// Synthetic category, always shown first in the sidebar pager/select and
+// containing every craftable regardless of its real category. Not one of
+// CONFIG.FALLOUTZERO.craftingTypes's keys (an item's own `system.crafting.type`
+// can never be this), so it's built and populated separately — see the
+// CraftingBench constructor and init().
+const ALL_BRANCH_KEY = 'all'
+
 async function updateCreateCraftedItem({ actor, selectedCraftable, selectedBaseItemId }) {
   const efficientMunitionsPerk = selectedCraftable.type === 'ammo' && actor.hasPerk('Efficient Munitions')
   const doubleQuantity = !!efficientMunitionsPerk && efficientMunitionsPerk.system.efficientMunitions === true
@@ -293,9 +300,9 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 }
 export default class CraftingBench extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(actorId, options = {}) {
+  constructor(actor, options = {}) {
     super(options);
-    this.actorId = actorId
+    this.actor = actor
     this.selectedCraftable = null
     this.selectedBaseItemId = null
     this.openBranches = []
@@ -308,6 +315,15 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       }
       return acc
     }, {})
+
+    // Prepend the synthetic "All" category so it's the first tab. Its
+    // items are populated in init() once every per-type branch is filled
+    // in (it just aggregates them, rather than being fed from the
+    // compendium/game-item scan itself).
+    this.fullCraftingTree = {
+      [ALL_BRANCH_KEY]: { id: ALL_BRANCH_KEY, label: 'All', items: [] },
+      ...this.fullCraftingTree,
+    }
 
     // Default to the first category tab being active rather than opening
     // with no category selected.
@@ -414,8 +430,15 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
     let visibleCount = 0
     list.querySelectorAll('.crafting-option').forEach((row) => {
+      // Every craftable is rendered once per branch it belongs to,
+      // including a duplicate copy under the synthetic "All" branch (see
+      // ALL_BRANCH_KEY) — that's fine in browse mode, since matching by
+      // exact branch tag naturally shows only one copy at a time. But
+      // search mode matches by name only, so without this exclusion the
+      // "All" copy of an item would show up a second time alongside its
+      // real-category copy any time both matched the query.
       const matches = isSearching
-        ? row.dataset.itemName?.toLowerCase().includes(query)
+        ? row.dataset.branch !== ALL_BRANCH_KEY && row.dataset.itemName?.toLowerCase().includes(query)
         : row.dataset.branch === activeBranch
       row.classList.toggle('is-hidden', !matches)
       if (matches) visibleCount++
@@ -441,8 +464,13 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       owned: this.owned,
       hasRequirements: this.hasRequirements,
       searchQuery: this.searchQuery,
+      // Excludes the synthetic "All" branch — it's a duplicate aggregation
+      // of every other branch's items, so counting it in too would double
+      // (in fact, over-double) every result.
       searchResultsCount: this.searchQuery
-        ? Object.values(this.craftingTree).reduce((sum, branch) => sum + branch.items.length, 0)
+        ? Object.entries(this.craftingTree).reduce((sum, [branchKey, branch]) => {
+          return branchKey === ALL_BRANCH_KEY ? sum : sum + branch.items.length
+        }, 0)
         : null,
       onlyCraftables: this.onlyCraftables,
       baseMaterialOptions: this.baseMaterialOptions,
@@ -450,12 +478,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       selectedBaseItemId: this.selectedBaseItemId,
       isArmorUpgrade: this.selectedCraftable?.type === 'armorUpgrade',
     }
-  }
-
-  get actor() {
-    return game.actors.find((actor) => {
-      return actor.id === this.actorId
-    })
   }
 
   get selectedBaseItemUuid() {
@@ -593,6 +615,15 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         const type = this.craftingTree[gameItem.system.crafting.type]
         type.items.push(gameItem)
       }
+
+      // Populate the synthetic "All" branch by aggregating everything just
+      // gathered into the real per-type branches above. Must happen after
+      // that population and before the sort below (so "All" gets sorted
+      // too) — and explicitly excludes itself so re-running init() doesn't
+      // double up.
+      this.craftingTree[ALL_BRANCH_KEY].items = Object.entries(this.craftingTree)
+        .filter(([branchKey]) => branchKey !== ALL_BRANCH_KEY)
+        .flatMap(([, branch]) => branch.items)
 
       // sort items in each branch
       Object.keys(this.craftingTree).forEach((branchKey) => {

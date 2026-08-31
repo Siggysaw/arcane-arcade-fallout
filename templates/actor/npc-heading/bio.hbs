@@ -1,56 +1,51 @@
-<table class="bio">
-    <tr>
-        <td colspan="3" class="character-name" style="text-align: left">
-            <input style="background:none;" type="text" name="name" value="{{ name }}" />
-        </td>
-    </tr>
-    <tr>
-        <td colspan="999" style="text-align:left;font-size:10pt;">
-            <div>
-                <span>Lvl {{#GM}}<input style="width:35px;text-align:center" type="number" name="system.level" value="{{/GM}}{{system.level}}{{#GM}}" />{{/GM}}</span>
-                {{#each races as |item id|}}
-                <span class="context-menu"
-                      data-item-id="{{ item._id }}"
-                      data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
-                    {{item.name}}
-                </span>
-                {{/each}}
-                {{#each backgrounds as |item id|}}
-                <span class="context-menu"
-                      data-item-id="{{ item._id }}"
-                      data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
-                    {{item.name}}
-                </span>
-                {{/each}}
-                <span><input style="width:200px;" type="text" name="system.race" value="{{system.race}}" placeholder ="Custom Background" /></span>
-</td>
-    </tr>
-    <tr>
-        <td colspan="999">
-            <fieldset><legend>Conditions</legend>
-            <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll;overflow-x:hidden;">
-                {{#each conditions as |item condition|}}
-                {{#GreaterThan system.quantity 1}}
-                <div class="active-conditions">
-                    <li class="item flexrow" data-item-id="{{ item._id }}">
-                        <div class="item-controls individual-condition" style="padding:0px;">
-                            {{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}<br />
-                            <a class="item-control"
-                               data-edit
-                               data-item-id="{{ item._id }}"
-                               data-tooltip="{{item.name}}">
-                                <img class="condition-icon" src="{{ item.img }}" data-tooltip="{{ item.name }}" />
-                            </a><br />
-                            <a class="item-control item-delete">
-                                <i class="fa fa-close"></i>
-                            </a>
-                        </div>
-                    </li>
+<div class="pipboy-panel pipboy-bio bio">
+    <div class="pb-eyebrow">Creature</div>
+    <div class="pb-name-row character-name">
+        <input style="background:none;" class="pb-name-input" type="text" name="name" value="{{ name }}" />
+    </div>
+    <div class="pb-tags-row">
+        <span class="pb-tag pb-tag-level">
+            Lvl {{#GM}}<input class="pb-level-input" style="width:35px;text-align:center" type="number" name="system.level" value="{{system.level}}"/>{{else}}{{system.level}}{{/GM}}
+        </span>
+        {{#each races as |item id|}}
+        <span class="pb-tag context-menu"
+              data-item-id="{{ item._id }}"
+              data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
+            {{item.name}}
+        </span>
+        {{/each}}
+        {{#each backgrounds as |item id|}}
+        <span class="pb-tag context-menu"
+              data-item-id="{{ item._id }}"
+              data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
+            {{item.name}}
+        </span>
+        {{/each}}
+    </div>
+    <div class="pb-npc-custom-row">
+        <input class="pb-npc-custom-input" type="text" name="system.race" value="{{system.race}}" placeholder="Custom Background" />
+    </div>
+    <fieldset class="pb-conditions">
+        <legend>Conditions</legend>
+        <div class="condition-box pb-condition-box">
+            {{#each conditions as |item condition|}}
+            {{#GreaterThan system.quantity 1}}
+            <div class="item pb-condition-chip" data-item-id="{{ item._id }}">
+                <div class="pb-condition-controls">
+                    {{#GreaterThan system.quantity 2}}<span class="pb-condition-qty">{{system.quantity}}</span>{{/GreaterThan}}
+                    <a class="item-control"
+                       data-edit
+                       data-item-id="{{ item._id }}"
+                       data-tooltip="{{item.name}}">
+                        <img class="condition-icon" src="{{ item.img }}" data-tooltip="{{ item.name }}" />
+                    </a>
+                    <a class="item-control item-delete">
+                        <i class="fa fa-close"></i>
+                    </a>
                 </div>
-                {{/GreaterThan}}
-                {{/each}}
             </div>
-            </fieldset>
-        </td>
-    </tr>
-</table>
+            {{/GreaterThan}}
+            {{/each}}
+        </div>
+    </fieldset>
+</div>

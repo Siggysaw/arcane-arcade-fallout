@@ -1,88 +1,64 @@
-<table class="bio" style="max-width:300px;">
-    <tr>
-        <td colspan="3" class="character-name" style="text-align: left">
-            <input style="background:none;" type="text" name="name" value="{{ name }}" />
-        </td>
-    </tr>
-    <tr>
-        <td colspan="999" style="text-align:left;font-size:10pt;">
-            <div>
-                <span>
-                    Lvl {{#GM}}<input style="width:35px;text-align:center"type="number" name="system.level" value="{{system.level}}"/>{{else}}{{system.level}}{{/GM}}
-                </span>
-                {{#each races as |item id|}}
-                <span class="context-menu"
-                      data-item-id="{{ item._id }}"
-                      data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
-                    {{item.name}}
-                </span>
-                {{/each}}
-                {{#each backgrounds as |item id|}}
-                <span class="context-menu"
-                      data-item-id="{{ item._id }}"
-                      data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
-                    {{item.name}}
-                </span>
-                {{/each}}
-        </td>
-    </tr>
-    <tr>
-        <td colspan="999" id="xpbar">
-            <progress class="statusbar"
-                      value="{{ system.xp }}"
-                      max="1000"
-                      style="width:100%;height:5px;background:white;">
-                {{ system.xp }}
-            </progress>
-        </td>
-    </tr>
-    <tr>
-        <td class="bio-label"><span class="label">XP:</span></td>
-        <td>
-            <input style="width:50%" id="xp" type="number" name="system.xp" value="{{ xp }}" {{#unless system.editToggle}} disabled {{/unless}} />
-            <div class="fakebutton leveledUp"
-                 {{#GreaterThan xp 1000}} data-leveledup {{/GreaterThan}}
-                 style="width:50%;float:right;{{#LesserThan xp 1000}}opacity:25%;{{/LesserThan}}">
-                Level Up!
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="999">
-            <fieldset>
-                <legend>{{localize 'FALLOUTZERO.Common.Conditions'}}</legend>
-                <div class="condition-box" style="min-height:50px;max-height:100px;overflow:scroll;overflow-x:hidden;">
-                    {{#each conditions as |item condition|}}
-                    {{#GreaterThan system.quantity 1}}
-                    <div class="active-conditions">
-                        <li class="item flexrow" data-item-id="{{ item._id }}">
-                            <div class="item-controls individual-condition" style="padding:0px;">
-                                {{#GreaterThan system.quantity 2}} {{system.quantity}}{{/GreaterThan}}<br />
-                                <a class="item-control"
-                                   data-edit
-                                   data-item-id="{{ item._id }}"
-                                   data-tooltip="{{item.name}}">
-                                    <img class="condition-icon" src="{{ item.img }}" data-tooltip="{{ item.name }}" />
-                                </a><br />
-                                <a class="item-control item-delete">
-                                    <i class="fa fa-close"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </div>
-                    {{/GreaterThan}}
-                    {{/each}}
+<div class="pipboy-panel pipboy-bio bio">
+    <div class="pb-eyebrow">Vault Dweller</div>
+    <div class="pb-name-row character-name">
+        <input class="pb-name-input" style="background:none;" type="text" name="name" value="{{ name }}" />
+    </div>
+    <div class="pb-tags-row">
+        <span class="pb-tag pb-tag-level">
+            Lvl {{#unless system.editToggle}}{{#GM}}<input class="pb-level-input" style="width:35px;text-align:center" type="number" name="system.level" value="{{system.level}}" />{{else}}{{system.level}}{{/GM}}{{else}}{{system.level}}{{/unless}}
+        </span>
+        {{#each races as |item id|}}
+        <span class="pb-tag context-menu"
+              data-item-id="{{ item._id }}"
+              data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
+            {{item.name}}
+        </span>
+        {{/each}}
+        {{#each backgrounds as |item id|}}
+        <span class="pb-tag context-menu"
+              data-item-id="{{ item._id }}"
+              data-tooltip="{{localize 'DOCUMENT.Update' type='item'}}">
+            {{item.name}}
+        </span>
+        {{/each}}
+    </div>
+    <div class="pb-xp-row" id="xpbar">
+        <progress class="statusbar pb-xp-bar"
+                  value="{{ system.xp }}"
+                  max="1000">
+            {{ system.xp }}
+        </progress>
+    </div>
+    <div class="pb-xp-controls">
+        <span class="label pb-xp-label">XP:</span>
+        <input class="pb-xp-input" id="xp" type="number" name="system.xp" value="{{ xp }}" {{#unless system.editToggle}} disabled {{/unless}} />
+        <div class="fakebutton leveledUp pb-levelup-button"
+             {{#GreaterThan xp 1000}} data-leveledup {{/GreaterThan}}
+             {{#LesserThan xp 1000}} style="opacity:25%;" {{/LesserThan}}>
+            Level Up!
+        </div>
+    </div>
+    <fieldset class="pb-conditions">
+        <legend>{{localize 'FALLOUTZERO.Common.Conditions'}}</legend>
+        <div class="condition-box pb-condition-box">
+            {{#each conditions as |item condition|}}
+            {{#GreaterThan system.quantity 1}}
+            <div class="item pb-condition-chip" data-item-id="{{ item._id }}">
+                <div class="pb-condition-controls">
+                    {{#GreaterThan system.quantity 2}}<span class="pb-condition-qty">{{system.quantity}}</span>{{/GreaterThan}}
+                    <a class="item-control"
+                       data-edit
+                       data-item-id="{{ item._id }}"
+                       data-tooltip="{{item.name}}">
+                        <img class="condition-icon" src="{{ item.img }}" data-tooltip="{{ item.name }}" />
+                    </a>
+                    <a class="item-control item-delete">
+                        <i class="fa fa-close"></i>
+                    </a>
                 </div>
-            </fieldset>
-        </td>
-    </tr>
-    <tr>
-        <td data-inspect-carryload>
-            <img data-tooltip="Carry Load"
-                 style="width: 60px; height: 60px; border: none; margin: 0px; padding: 0px"
-                 src="/systems/arcane-arcade-fallout/assets/vaultboy/load-icon.png" />
-        </td>
-        <td style="vertical-align: middle;text-align:left;" class="statusnum" data-tooltip="Current = {{carryLoad.base}} + {{carryLoad.modifiers}} / Max = {{carryLoad.baseMax}} + {{carryLoad.modifiersMax}} + {{carryLoad.manualMax}}">
-            {{ carryLoad.value }} / {{carryLoad.max}}
-        </td>
-</table>
+            </div>
+            {{/GreaterThan}}
+            {{/each}}
+        </div>
+    </fieldset>
+</div>

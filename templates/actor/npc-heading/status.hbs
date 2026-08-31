@@ -1,127 +1,95 @@
-<table class="character-status">
-    <tr>
-        <td style="width:25px;">
-            HP
-        <td class="vertical-buttons">
+<div class="pipboy-panel pipboy-status character-status">
+    <div class="pb-eyebrow">Vitals</div>
+    <div class="pb-stat-row pb-stat-hp">
+        <span class="pb-stat-label">HP</span>
+        <div class="vertical-buttons pb-stat-buttons">
             <i data-health="plus" class="fas fa-plus-square"></i>
             <i data-health="minus" class="fas fa-minus-square"></i>
-        </td>
-        <td>
-            <table>
-                <tr>
-                    <input style="height:30px;"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.health.value"
-                           value="{{ health.value }}" />
-                    /
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.health.max"
-                           data-tooltip="Base Max = {{ health.tooltip }}"
-                           value="{{ health.max }}" />
-                </tr>
-                <tr>
-                    <td>Bonus:</td>
-                <td>
-                    <input style="height:20px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.health.temp"
-                           value="{{ health.temp }}"
-                           placeholder="Temp HP" />
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td style="width:25px;">
-            SP
-        <td class="vertical-buttons">
+        </div>
+        <div class="pb-stat-values">
+            <div class="pb-stat-main">
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.health.value"
+                       value="{{ health.value }}" />
+                <span class="pb-stat-slash">/</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.health.max"
+                       data-tooltip="Base Max = {{ health.tooltip }}"
+                       value="{{ health.max }}" />
+            </div>
+            <div class="pb-stat-bonus">
+                <span class="pb-bonus-label">Bonus:</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.health.temp"
+                       value="{{ health.temp }}"
+                       placeholder="Temp HP" />
+            </div>
+        </div>
+    </div>
+    <div class="pb-stat-row pb-stat-sp">
+        <span class="pb-stat-label">SP</span>
+        <div class="vertical-buttons pb-stat-buttons">
             <i data-stamina="plus" class="fas fa-plus-square"></i>
             <i data-stamina="minus" class="fas fa-minus-square"></i>
-        </td>
-        <td>
-            <table>
-                <tr>
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.stamina.value"
-                           value="{{ stamina.value }}" />
-                    /
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.stamina.max"
-                           data-tooltip="Base Max = {{ stamina.tooltip }}"
-                           value="{{ stamina.max }}" />
-                </tr>
-                <tr>
-                    <td>Bonus:</td>
-                    <td>
-                        <input style="height:20px"
-                               type="number"
-                               class="numberwithbuttons"
-                               name="system.stamina.temp"
-                               value="{{ stamina.temp }}"
-                               placeholder="Temp Stamina" />
-                    </td>
-                </tr>
-            </table>
-
-        </td>
-    </tr>
-    <tr>
-        <td style="width:25px;">
-            AP
-        <td class="vertical-buttons">
+        </div>
+        <div class="pb-stat-values">
+            <div class="pb-stat-main">
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.stamina.value"
+                       value="{{ stamina.value }}" />
+                <span class="pb-stat-slash">/</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.stamina.max"
+                       data-tooltip="Base Max = {{ stamina.tooltip }}"
+                       value="{{ stamina.max }}" />
+            </div>
+            <div class="pb-stat-bonus">
+                <span class="pb-bonus-label">Bonus:</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.stamina.temp"
+                       value="{{ stamina.temp }}"
+                       placeholder="Temp Stamina" />
+            </div>
+        </div>
+    </div>
+    <div class="pb-stat-row pb-stat-ap">
+        <span class="pb-stat-label">AP</span>
+        <div class="vertical-buttons pb-stat-buttons">
             <i data-action="plus" class="fas fa-plus-square"></i>
             <i data-action="minus" class="fas fa-minus-square"></i>
-        </td>
-        <td>
-            <table>
-                <tr>
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.actionPoints.value"
-                           value="{{ system.actionPoints.value }}" />
-                    /
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.actionPoints.max"
-                           data-tooltip="Base Max = {{ system.actionPoints.tooltip }}"
-                           value="{{ system.actionPoints.max }}" />
-                </tr>
-                <tr>
-                    <td>Bonus:</td>
-                    <td>
-                        <input style="height:20px"
-                               type="number"
-                               class="numberwithbuttons"
-                               name="system.actionPoints.temp"
-                               value="{{ system.actionPoints.temp }}"
-                               placeholder="Temp HP" />
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
-{{#if actor.inCombat}}
-<table style="width:200px;">
-    <tr>
-        <td>
-            <div class="fakebutton" data-recycle-ap data-tooltip="Recycle AP At Beginning of Turn">
-                <i class="fa-solid fa-recycle"></i>
+        </div>
+        <div class="pb-stat-values">
+            <div class="pb-stat-main">
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.actionPoints.value"
+                       value="{{ system.actionPoints.value }}" />
+                <span class="pb-stat-slash">/</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.actionPoints.max"
+                       data-tooltip="Base Max = {{ system.actionPoints.tooltip }}"
+                       value="{{ system.actionPoints.max }}" />
             </div>
-        </td>
-    </tr>
-</table>
-{{/if}}
-
-
+            <div class="pb-stat-bonus">
+                <span class="pb-bonus-label">Bonus:</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.actionPoints.temp"
+                       value="{{ system.actionPoints.temp }}"
+                       placeholder="Temp HP" />
+            </div>
+        </div>
+    </div>
+    {{#if actor.inCombat}}
+    <div class="pb-recycle-ap fakebutton" data-recycle-ap data-tooltip="Recycle AP At Beginning of Turn">
+        <i class="fa-solid fa-recycle"></i>
+    </div>
+    {{/if}}
+</div>

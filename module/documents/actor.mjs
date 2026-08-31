@@ -1073,8 +1073,14 @@ export default class FalloutZeroActor extends Actor {
   async applyApCost(cost) {
     if (!this.inCombat) return true
     !this.inCombat ? cost = 0 : ''
+    // A caller passing undefined/NaN (e.g. a weapon whose data model doesn't
+    // expose the field a cost calculation expected) used to flow straight
+    // into the update below and fail actionPoints' "must be a number"
+    // validation instead of deducting anything - treat anything that isn't
+    // a finite number as no cost rather than corrupting the update.
+    const safeCost = Number.isFinite(Number(cost)) ? Number(cost) : 0
     const currentAP = this.system.actionPoints.value
-    const newAP = Number(currentAP) - Number(cost)
+    const newAP = Number(currentAP) - safeCost
     if (newAP < 0) {
       ui.notifications.warn(`You don't have enough AP to perform this action!`)
       return false
@@ -2139,6 +2145,7 @@ export default class FalloutZeroActor extends Actor {
     const oneHander = this.items.find((i) => i.name == 'One Hander')
     const deadeye = this.items.find((i) => i.name == 'Deadeye')
     const gunslinger = this.items.find((i) => i.name == 'Gunslinger')
+    const duelist = this.items.find((i) => i.name == 'Duelist')
     const efficient = weapon?.system?.ammo?.assigned?.includes("Efficient ") ?? false
 
     let penalty = 0
@@ -2156,6 +2163,7 @@ export default class FalloutZeroActor extends Actor {
     oneHander && twoHandedWeapon ? attackBonus -= 2 : attackBonus
     finesse ? finesse.system.wildWasteland ? penalty = 2 : penalty = 1 : attackBonus
     deadeye ? attackBonus += 2 * deadeye.system.quantity : attackBonus
+    duelist && weapon.type=='meleeWeapon' ? attackBonus += 2 : attackBonus
     gunslinger && handgun ? attackBonus += 2 : attackBonus
     plusOne ? attackBonus += 1 : attackBonus
     efficient ? attackBonus += 2 : attackBonus
@@ -2169,6 +2177,7 @@ export default class FalloutZeroActor extends Actor {
     const oneHander = this.items.find((i) => i.name == 'One Hander')
     const rooted = this.items.find((i) => i.name == 'Rooted Condition')
     const deadeye = this.items.find((i) => i.name == 'Deadeye')
+    const duelist = this.items.find((i) => i.name == 'Duelist')
     const efficient = weapon?.system?.ammo?.assigned?.includes("Efficient ") ?? false
 
     let penalty = 0
@@ -2180,6 +2189,7 @@ export default class FalloutZeroActor extends Actor {
     oneHander && oneHander.system.wildWasteland && !twoHandedWeapon ? damageBonus += 2 : damageBonus
     oneHander && oneHander.system.wildWasteland && twoHandedWeapon ? damageBonus -= 2 : damageBonus
     rooted && weapon.type == 'meleeWeapon' ? damageBonus += 2 : damageBonus
+    duelist && weapon.type == 'meleeWeapon' ? damageBonus += 2 : damageBonus
     deadeye ? damageBonus += 2 * deadeye.system.quantity: damageBonus
     efficient ? damageBonus += 2 : damageBonus
 
@@ -2277,6 +2287,12 @@ export default class FalloutZeroActor extends Actor {
 
     damages = this.calculateDamage(damages, options)
     if (!damages) return this
+
+    // Damage Immune (di): zero out any damage entry whose type the actor is
+    // immune to, before anything below (SP, Power Armor absorption, DT, and
+    // the dr/dv HP step) ever sees it - so it contributes nothing anywhere,
+    // not just to the dr/dv-aware HP calculation further down.
+    damages = damages.map((d) => (this.system.di.includes(d.type) ? { ...d, value: 0 } : d))
 
     // Fitted 1 (armor upgrade): DT is doubled against area-of-effect damage.
     // Damage is flagged as area-of-effect upstream in FalloutZeroChatMessage

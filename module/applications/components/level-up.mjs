@@ -144,8 +144,7 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
         })
 
         if (this.newPerk) {
-            const perk = fromUuidSync(this.newPerk.uuid)
-            this.actor.createEmbeddedDocuments("Item", [perk]);
+            this.actor.createEmbeddedDocuments("Item", [this.newPerk.toObject()]);
         }
 
         this.close()

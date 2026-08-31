@@ -1,9 +1,9 @@
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
 export default class SelectUpgrade extends HandlebarsApplicationMixin(ApplicationV2) {
-    constructor(actorId, itemId, options = {}) {
+    constructor(actor, itemId, options = {}) {
         super(options);
-        this.actorId = actorId
+        this.actor = actor
         this.itemId = itemId
     }
 
@@ -55,12 +55,6 @@ export default class SelectUpgrade extends HandlebarsApplicationMixin(Applicatio
             detachedUpgrades: this.detachedUpgrades,
             attachedUpgrades: this.attachedUpgrades,
         }
-    }
-
-    get actor() {
-        return game.actors.find((actor) => {
-            return actor.id === this.actorId
-        })
     }
 
     // Attach upgrade to item

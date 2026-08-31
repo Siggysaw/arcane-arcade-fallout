@@ -192,13 +192,6 @@ export default class DamageApplicationElement extends ChatTrayElement {
       this.targetSourceControl.addEventListener('click', this._onChangeTargetingMode.bind(this))
       div.addEventListener('click', this._handleClickHeader.bind(this))
 
-      // Default mode auto-detects: use targeted tokens if the GM currently
-      // has any (the crosshair tool), otherwise fall back to whatever's
-      // selected on the canvas - the original "just select the enemy"
-      // behavior, restored as the no-target fallback rather than a
-      // separate world setting. The GM can still flip the toggle per-card.
-      // The setter wires up the right selection hook and does the initial
-      // buildTargetsList().
       this.targetingMode = game.user.targets.size > 0 ? 'targeted' : 'selected'
     } else {
       this.buildTargetsList()

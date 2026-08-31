@@ -9,29 +9,16 @@ import { registerSystemSettings, registerHbsHelpers } from './registerSettings.m
 import * as applications from '../module/applications/_module.mjs'
 import { registerHooks } from './registerHooks.mjs'
 
-// FNV chat skin — side-effect import, registers its own init/ready hooks.
-// Remove this line and the three css/fnv-chat*.css entries in system.json to
-// take the whole feature back out.
+
 import './chat-fnv/fnv-chat.mjs'
 
-// Cinematic group rolls — side-effect import, registers its own init/setup/
-// ready hooks and hangs its API off game.falloutzero.groupRoll. Remove this
-// line, the css/group-roll.css entry and "socket": true in system.json to take
-// the whole feature back out.
 import './group-roll/group-roll.mjs'
 
-// New Vegas roulette pause graphic — side-effect import, off by default and
-// toggled per client by the NVPause setting. Remove this line to take it out;
-// it owns no stylesheet.
 import './nv-pause/nv-pause.mjs'
 
-// Auto-apply damage socket relay — side-effect import, registers the ready
-// hook that lets a player's attack roll apply damage to a target only the
-// GM owns (see dice/attack-roll.mjs#autoApplyDamage and
-// helpers/damage-relay.mjs). Remove this line to take the relay half out;
-// direct application (GM attacking, or a target the attacker already owns)
-// keeps working either way since that path never touches the socket.
 import './helpers/damage-relay.mjs'
+
+import './helpers/unarmed-strike.mjs'
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */

@@ -2,77 +2,68 @@
   <div class="character{{#isVaultTec}} vaulttec {{/isVaultTec}}{{log game.settings}}{{ cssClass }} {{ actor.type }} flexcol">
       {{log cssClass}}
     {{!-- Sheet Header --}}
-    <header class="sheet-header">
+    <header class="pipboy-header sheet-header">
       <div class="header-fields">
-        {{#GM}}
-        <span data-tooltip="Toggle if a Character is Active For Party Bonuses"
-          >Active:<i
-            data-activeCheck
-            class="fas fa-toggle-{{#if system.activePartymember}}on{{else}}off{{/if}}"
-          ></i
-        ></span>
-        {{/GM}}
-        <span data-tooltip="Toggle Edit Mode"
-          >Edit:<i
-            data-editToggle
-            class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"
-          ></i
-        ></span>
-          {{#unless system.editToggle}}
-            <style>
-            .edit-icon{
-                display:none;
-            }
-            </style>
-            {{/unless}}
-      <span style="float:right;">
-          <i data-audioToggle
-             data-tooltip="Toggle Audio Sounds Mode"
-             class="fas fa-volume-{{#PlaySounds}}up{{else}}mute{{/PlaySounds}}"></i>
-          <i data-pipboyEffectsToggle
-             data-tooltip="Toggle Pipboy Glitch Effects"
-             class="fas fa-toggle-{{#PipBoyEffects}}on{{else}}off{{/PipBoyEffects}}"></i>
-      </span>
-        <table>
-          <tr>
-            <td>
-              {{> 
-                "systems/arcane-arcade-fallout/templates/actor/heading/bio.hbs"
-                name=actor.name
-                races=races
-                backgrounds=backgrounds
-                level=system.level
-                xp=system.xp
-                carryLoad=system.carryLoad
-              }}
-            </td>
-            <td>
-              {{> 
-                "systems/arcane-arcade-fallout/templates/actor/heading/status.hbs"
-                health=system.health
-                stamina=system.stamina
-                actionPoints=system.actionPoints
-                armorClass=system.armorClass
-                damageThreshold=system.damageThreshold
-              }}
-            </td>
-            <td>
-              {{> 
-                "systems/arcane-arcade-fallout/templates/actor/heading/image.hbs"
-                actor=actor
-                caps=system.caps
-              }}
-            </td>
-          </tr>
-        </table>
+        <div class="pipboy-util-row">
+          <div class="pipboy-util-group">
+            {{#GM}}
+            <span class="pipboy-util-item" data-tooltip="Toggle if a Character is Active For Party Bonuses"
+              >Active<i
+                data-activeCheck
+                class="fas fa-toggle-{{#if system.activePartymember}}on{{else}}off{{/if}}"
+              ></i
+            ></span>
+            {{/GM}}
+            <span class="pipboy-util-item" data-tooltip="Toggle Edit Mode"
+              >Edit<i
+                data-editToggle
+                class="fas fa-toggle-{{#if system.editToggle}}on{{else}}off{{/if}}"
+              ></i
+            ></span>
+          </div>
+          <div class="pipboy-util-group">
+            <i data-audioToggle
+               data-tooltip="Toggle Audio Sounds Mode"
+               class="fas fa-volume-{{#PlaySounds}}up{{else}}mute{{/PlaySounds}}"></i>
+            <i data-pipboyEffectsToggle
+               data-tooltip="Toggle Pipboy Glitch Effects"
+               class="fas fa-toggle-{{#PipBoyEffects}}on{{else}}off{{/PipBoyEffects}}"></i>
+          </div>
+        </div>
+        {{#unless system.editToggle}}
+          <style>
+          .edit-icon{
+              display:none;
+          }
+          </style>
+          {{/unless}}
+
+        <div class="pipboy-header-grid">
+          {{>
+            "systems/arcane-arcade-fallout/templates/actor/heading/bio.hbs"
+            name=actor.name
+            races=races
+            backgrounds=backgrounds
+            level=system.level
+            xp=system.xp
+            carryLoad=system.carryLoad
+          }}
+          {{>
+            "systems/arcane-arcade-fallout/templates/actor/heading/status.hbs"
+            health=system.health
+            stamina=system.stamina
+            actionPoints=system.actionPoints
+            armorClass=system.armorClass
+            damageThreshold=system.damageThreshold
+          }}
+          {{>
+            "systems/arcane-arcade-fallout/templates/actor/heading/image.hbs"
+            actor=actor
+            caps=system.caps
+          }}
+        </div>
       </div>
     </header>
-    <div class="karmaCaps">
-      {{>
-        "systems/arcane-arcade-fallout/templates/actor/heading/karmaCaps.hbs"
-        karmaCaps=system.karmaCaps
-      }}
-    </div>
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
       {{!-- Default tab is specified in actor-sheet.mjs --}}

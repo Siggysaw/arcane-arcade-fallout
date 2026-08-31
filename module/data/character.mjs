@@ -227,6 +227,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const finesse = searchItems(this, 'Finesse')
     const hazmatSuit = searchItems(this, 'Hazmat Suit')
     const back2back = searchItems(this, 'Back to Back Condition')
+    const toughness = searchItems(this, 'Toughness')
 
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
@@ -246,7 +247,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     vigilantWatch ? this.combatSequence.modifiers -= 1 : ''
     hazmatSuit && hazmatSuit.system.worn ? this.radiationDC.modifiers -= hazmatSuit.system.decay : ''
     back2back ? this.damageThreshold.modifiers += 2 : ''
-    back2back ? this.armorClass.modifiers += 1 :''
+    back2back ? this.armorClass.modifiers += 1 : ''
+    toughness?.system?.quantity > 1 ? this.damageThreshold.modifiers += 1 : ''
 
     if (vigilantWatch && vigilantWatch.system.wildWasteland) {
       this.combatSequence.modifiers -= 1

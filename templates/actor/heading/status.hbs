@@ -1,122 +1,114 @@
-<table class="character-status" style="margin:auto;">
-    <tr>
-        <td style="width:25px;">
-            HP
-        <td class="vertical-buttons">
+<div class="pipboy-panel pipboy-status character-status">
+    <div class="pb-eyebrow">Vitals</div>
+    <div class="pb-stat-row pb-stat-hp">
+        <span class="pb-stat-label">HP</span>
+        <div class="vertical-buttons pb-stat-buttons">
             <i data-health="plus" class="fas fa-plus-square"></i>
             <i data-health="minus" class="fas fa-minus-square"></i>
-        </td>
-        <td>
-            <table>
-                <tr>
-                    <input style="height:30px;"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.health.value"
-                           value="{{ health.value }}" 
-                            />
-                    /
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.health.max"
-                           value="{{ health.max }}"
-                           disabled />
-                </tr>
-                <tr>
-                    <td>Bonus:</td>
-                <td>
-                    <input style="height:20px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.health.temp"
-                           value="{{ health.temp }}"
-                           placeholder="Temp HP" />
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td style="width:25px;">
-            SP
-        <td class="vertical-buttons">
+        </div>
+        <div class="pb-stat-values">
+            <div class="pb-stat-main">
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.health.value"
+                       value="{{ health.value }}" />
+                <span class="pb-stat-slash">/</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.health.max"
+                       value="{{ health.max }}"
+                       disabled />
+            </div>
+            <div class="pb-stat-bonus">
+                <span class="pb-bonus-label">Bonus:</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.health.temp"
+                       value="{{ health.temp }}"
+                       placeholder="Temp HP" />
+            </div>
+        </div>
+    </div>
+    <div class="pb-stat-row pb-stat-sp">
+        <span class="pb-stat-label">SP</span>
+        <div class="vertical-buttons pb-stat-buttons">
             <i data-stamina="plus" class="fas fa-plus-square"></i>
             <i data-stamina="minus" class="fas fa-minus-square"></i>
-        </td>
-        <td>
-            <table>
-                <tr>
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.stamina.value"
-                           value="{{ stamina.value }}" />
-                    /
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.stamina.max"
-                           value="{{ stamina.max }}"
-                           disabled/>
-                </tr>
-                <tr>
-                    <td>Bonus:</td>
-                    <td>
-                        <input style="height:20px"
-                               type="number"
-                               class="numberwithbuttons"
-                               name="system.stamina.temp"
-                               value="{{ stamina.temp }}"
-                               placeholder="Temp Stamina" />
-                    </td>
-                </tr>
-            </table>
-
-        </td>
-    </tr>
-    <tr>
-        <td style="width:25px;">
-            AP
-        <td class="vertical-buttons">
+        </div>
+        <div class="pb-stat-values">
+            <div class="pb-stat-main">
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.stamina.value"
+                       value="{{ stamina.value }}" />
+                <span class="pb-stat-slash">/</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.stamina.max"
+                       value="{{ stamina.max }}"
+                       disabled />
+            </div>
+            <div class="pb-stat-bonus">
+                <span class="pb-bonus-label">Bonus:</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.stamina.temp"
+                       value="{{ stamina.temp }}"
+                       placeholder="Temp Stamina" />
+            </div>
+        </div>
+    </div>
+    <div class="pb-stat-row pb-stat-ap">
+        <span class="pb-stat-label">AP</span>
+        <div class="vertical-buttons pb-stat-buttons">
             <i data-action="plus" class="fas fa-plus-square"></i>
             <i data-action="minus" class="fas fa-minus-square"></i>
-        </td>
-        <td>
-            <table>
-                <tr>
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.actionPoints.value"
-                           value="{{ system.actionPoints.value }}" />
-                    /
-                    <input style="height:30px"
-                           type="number"
-                           class="numberwithbuttons"
-                           name="system.actionPoints.max"
-                           value="{{ system.actionPoints.max }}" 
-                           disabled/>
-                </tr>
-                <tr>
-                    <td>Bonus:</td>
-                    <td>
-                        <input style="height:20px"
-                               type="number"
-                               class="numberwithbuttons"
-                               name="system.actionPoints.temp"
-                               value="{{ system.actionPoints.temp }}"
-                               placeholder="Temp HP" />
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
-    <i data-tooltip="{{localize 'FALLOUTZERO.Passives.short_rest.label'}}" data-rest="short" class="header-icon fas fa-campground fakebutton"></i>
-    <i data-tooltip="{{localize 'FALLOUTZERO.Passives.long_rest.label'}}" data-rest="long" class="header-icon fas fa-bed fakebutton"></i>
-    <i data-tooltip="{{localize 'FALLOUTZERO.Passives.custom_dice.label'}}" data-custom-roll class="header-icon fas fa-dice fakebutton"></i>
-    <i data-tooltip="{{localize 'FALLOUTZERO.Passives.perk_list.label'}}" data-view-perks class=" header-icon fas fa-radiation-alt fakebutton"></i>
-
-
-
+        </div>
+        <div class="pb-stat-values">
+            <div class="pb-stat-main">
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.actionPoints.value"
+                       value="{{ system.actionPoints.value }}" />
+                <span class="pb-stat-slash">/</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.actionPoints.max"
+                       value="{{ system.actionPoints.max }}"
+                       disabled />
+            </div>
+            <div class="pb-stat-bonus">
+                <span class="pb-bonus-label">Bonus:</span>
+                <input type="number"
+                       class="numberwithbuttons"
+                       name="system.actionPoints.temp"
+                       value="{{ system.actionPoints.temp }}"
+                       placeholder="Temp HP" />
+            </div>
+        </div>
+    </div>
+    <div class="karmaCaps pipboy-karma-row">
+        {{>
+            "systems/arcane-arcade-fallout/templates/actor/heading/karmaCaps.hbs"
+            karmaCaps=system.karmaCaps
+        }}
+    </div>
+    <div class="pb-action-icons">
+        <div class="pb-action-btn">
+            <i data-tooltip="{{localize 'FALLOUTZERO.Passives.short_rest.label'}}" data-rest="short" class="header-icon fas fa-campground fakebutton"></i>
+            <span class="pb-action-cap">Short</span>
+        </div>
+        <div class="pb-action-btn">
+            <i data-tooltip="{{localize 'FALLOUTZERO.Passives.long_rest.label'}}" data-rest="long" class="header-icon fas fa-bed fakebutton"></i>
+            <span class="pb-action-cap">Long</span>
+        </div>
+        <div class="pb-action-btn">
+            <i data-tooltip="{{localize 'FALLOUTZERO.Passives.custom_dice.label'}}" data-custom-roll class="header-icon fas fa-dice fakebutton"></i>
+            <span class="pb-action-cap">Roll</span>
+        </div>
+        <div class="pb-action-btn">
+            <i data-tooltip="{{localize 'FALLOUTZERO.Passives.perk_list.label'}}" data-view-perks class="header-icon fas fa-radiation-alt fakebutton"></i>
+            <span class="pb-action-cap">Perks</span>
+        </div>
+    </div>
+</div>

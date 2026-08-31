@@ -1,0 +1,91 @@
+/* ============================================================
+   Give Ammo dialog - shown when an ammo-type item is dropped onto
+   an actor sheet, so the GM/player can pick how many to give
+   instead of it always landing as whatever quantity the source
+   item happened to carry (usually 1). Root class is not scoped
+   under .sheet since Dialog apps render outside the actor sheet's
+   own markup - see targeted-attack.css for the same convention.
+   ============================================================ */
+
+.give-ammo-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 2px 2px;
+}
+
+.give-ammo-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px dotted var(--sheetcolor, currentColor);
+  padding-bottom: 8px;
+}
+
+.give-ammo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border: 1px solid var(--sheetcolor, currentColor);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.give-ammo-name {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.give-ammo-controls label {
+  display: block;
+  font-size: 10pt;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+
+.give-ammo-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.give-ammo-inputs input[type='number'] {
+  width: 60px;
+  text-align: center;
+  border: 1px solid var(--sheetcolor, currentColor);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.give-ammo-inputs input[type='range'] {
+  flex: 1;
+  accent-color: var(--sheetcolor);
+}
+
+/* Firefox range styling */
+.give-ammo-inputs input[type='range']::-moz-range-thumb {
+  background: var(--sheetcolor);
+  border: none;
+  width: 14px;
+  height: 14px;
+}
+.give-ammo-inputs input[type='range']::-moz-range-track {
+  background: color-mix(in srgb, var(--sheetcolor) 35%, black);
+  height: 4px;
+}
+
+/* Chrome/Edge/Safari range styling */
+.give-ammo-inputs input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--sheetcolor);
+  cursor: pointer;
+  margin-top: -5px;
+}
+.give-ammo-inputs input[type='range']::-webkit-slider-runnable-track {
+  height: 4px;
+  background: color-mix(in srgb, var(--sheetcolor) 35%, black);
+  border-radius: 2px;
+}

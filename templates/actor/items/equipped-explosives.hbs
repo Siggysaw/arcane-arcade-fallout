@@ -1,0 +1,42 @@
+{{#each explosives as |item id|}}
+<div class="grid grid-20col combat-tab" data-item-id="{{ item._id }}" draggable="true">
+    <div class="equip-toggle">
+        <p class="weapon-equippable">Qty:{{ item.system.quantity }}</p>
+    </div>
+    <div class="grid-span-4 weapon-identity context-menu" data-item-id="{{ item._id }}">
+        <div data-tooltip="{{item.name}}" class="weapon-name">{{item.name}}</div>
+        <div class="weapon-image">
+            <img src="{{item.img}}" />
+        </div>
+    </div>
+    <div class="grid-span-4 combat-ammo melee-attack">
+        {{#GreaterThan item.system.quantity 0}}
+        <div class="weapon-attack resource-label">
+            THROWABLE
+        </div>
+        {{else}}
+        <div class="weapon-attack">
+            OUT!
+        </div>
+        {{/GreaterThan}}
+    </div>
+    <div class="grid-span-2 weapon-stats">
+        <div>AP:{{item.system.apCost}}</div>
+        <div>Load:{{item.system.load}}</div>
+        <div data-tooltip="DC to arm this explosive before it can be thrown/placed">ArmDC:{{item.system.armDC}}</div>
+    </div>
+    <div class="grid-span-4 weapon-usage">
+        <div data-tooltip="Throw distance">
+            {{#GreaterThan item.system.thrown 0}}{{item.system.thrown}}ft.{{else}}NA{{/GreaterThan}}
+        </div>
+        <div data-tooltip="Area of Effect">AOE: {{ item.system.aoeRadius }}</div>
+        {{#each item.system.damages as |damage|}}
+        <div class="weapon-damage">{{damage.formula}} {{damage.type}}</div>
+        {{/each}}
+    </div>
+    <div class="grid-span-5" style="font-size:9pt;">
+        {{{item.system.description}}}
+    </div>
+</div>
+<br />
+{{/each}}

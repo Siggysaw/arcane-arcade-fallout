@@ -1,0 +1,684 @@
+/* ================================================================
+   Pip-Boy style character sheet header
+   Scoped entirely under .pipboy-header / .pipboy-karma-row so it
+   layers on top of the legacy header rules earlier in this file
+   without having to touch them. Uses the system's real theme
+   tokens (--sheetcolor / --dark) and real fonts (fixedsys /
+   Monofonto) so VaultTec mode and per-user sheet colors keep
+   working untouched.
+   ================================================================ */
+
+.sheet .pipboy-header {
+  --ph-accent: var(--sheetcolor);
+  --ph-panel-bg: color-mix(in srgb, var(--dark) 55%, #222);
+  --ph-panel-bg-2: color-mix(in srgb, var(--dark) 70%, #222);
+  --ph-text: color-mix(in srgb, var(--ph-accent) 70%, white);
+  --ph-text-dim: color-mix(in srgb, var(--ph-accent) 40%, #888);
+
+  display: block;
+  background:
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.18) 0px, rgba(0, 0, 0, 0.18) 1px, transparent 1px, transparent 3px),
+    var(--ph-bg);
+  border: 1px solid var(--ph-accent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--ph-accent) 25%, transparent) inset;
+  padding: 8px;
+  font-family: 'fixedsys', 'Monofonto', monospace;
+  color: var(--ph-text);
+}
+
+.sheet .pipboy-header .header-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---- Utility toggle row (Active / Edit / Audio / Effects) ---- */
+.sheet .pipboy-header .pipboy-util-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ph-text-dim);
+  border-bottom: 1px solid color-mix(in srgb, var(--ph-accent) 30%, transparent);
+  padding-bottom: 4px;
+}
+
+.sheet .pipboy-header .pipboy-util-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sheet .pipboy-header .pipboy-util-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sheet .pipboy-header .pipboy-util-row i {
+  color: var(--ph-accent);
+  cursor: pointer;
+}
+
+/* ---- Three-column layout: Bio | Status | Portrait ---- */
+.sheet .pipboy-header .pipboy-header-grid {
+  display: grid;
+  grid-template-columns: 1fr 190px 180px;
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* ---- Shared panel chrome with corner-bracket accents ---- */
+.sheet .pipboy-header .pipboy-panel {
+  position: relative;
+  background: var(--ph-panel-bg);
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent);
+  padding: 8px;
+  font-size: 9pt;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sheet .pipboy-header .pipboy-panel::before,
+.sheet .pipboy-header .pipboy-panel::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--ph-accent);
+  border-style: solid;
+  pointer-events: none;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--ph-accent) 60%, transparent));
+}
+
+.sheet .pipboy-header .pipboy-panel::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.sheet .pipboy-header .pipboy-panel::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+/* ---- Shared small uppercase section label with a trailing rule ---- */
+.sheet .pipboy-header .pb-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 7pt;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ph-text-dim);
+}
+
+.sheet .pipboy-header .pb-eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: color-mix(in srgb, var(--ph-accent) 35%, transparent);
+}
+
+/* =========================== Bio panel =========================== */
+.sheet .pipboy-header .pb-name-row input.pb-name-input {
+  width: 100%;
+  height: 30px;
+  border: none;
+  border-bottom: 1px solid var(--ph-accent);
+  color: var(--ph-text);
+  font-family: inherit;
+  font-size: 16pt;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sheet .pipboy-header .pb-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 8pt;
+}
+
+.sheet .pipboy-header .pb-tags-row .pb-tag {
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 50%, transparent);
+  padding: 1px 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.sheet .pipboy-header .pb-tags-row .pb-tag.context-menu {
+  cursor: pointer;
+}
+
+.sheet .pipboy-header .pb-tags-row .pb-tag.pb-tag-level {
+  color: var(--ph-accent);
+  border-color: var(--ph-accent);
+}
+
+.sheet .pipboy-header .pb-tag-level input.pb-level-input {
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--ph-accent);
+  color: var(--ph-text);
+  font-family: inherit;
+}
+
+.sheet .pipboy-header #xpbar.pb-xp-row {
+  padding: 0;
+}
+
+.sheet .pipboy-header .pb-xp-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--ph-panel-bg-2);
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 50%, transparent);
+}
+
+.sheet .pipboy-header .pb-xp-bar::-webkit-progress-bar {
+  background: var(--ph-panel-bg-2);
+}
+
+.sheet .pipboy-header .pb-xp-bar::-webkit-progress-value {
+  background: repeating-linear-gradient(
+    to right,
+    var(--ph-accent) 0px,
+    var(--ph-accent) 4px,
+    transparent 4px,
+    transparent 6px
+  );
+}
+
+.sheet .pipboy-header .pb-xp-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 8pt;
+  text-transform: uppercase;
+}
+
+.sheet .pipboy-header .pb-xp-controls .pb-xp-input {
+  width: 60px;
+  height: 20px;
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 50%, transparent);
+  color: var(--ph-text);
+  font-family: inherit;
+}
+
+.sheet .pipboy-header .pb-xp-controls .pb-levelup-button {
+  margin-left: auto;
+  border: 1px solid var(--ph-accent);
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.sheet .pipboy-header .pb-conditions {
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 40%, transparent);
+  padding: 4px 6px;
+  margin: 0;
+}
+
+.sheet .pipboy-header .pb-conditions legend {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ph-text-dim);
+  padding: 0 4px;
+}
+
+.sheet .character .pipboy-header .pb-condition-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  height: 115px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sheet .pipboy-header .pb-condition-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 34px;
+  max-height: 70px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sheet .pipboy-header .pb-condition-chip {
+  float: none;
+  width: auto;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 50%, transparent);
+  padding: 1px;
+}
+
+.sheet .pipboy-header .pb-condition-controls {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 0;
+  vertical-align: unset;
+}
+
+.sheet .pipboy-header .pb-condition-controls .item-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  margin: 0;
+}
+
+.sheet .pipboy-header .pb-condition-controls img.condition-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+body.game .sheet.app header.sheet-header .pb-condition-controls img.condition-icon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  margin-right: 5px;
+  display: block;
+}
+
+.sheet .pipboy-header .pb-condition-controls .item-delete i {
+  display: inline-block;
+  width: auto;
+  font-size: 7pt;
+}
+
+.sheet .pipboy-header .pb-condition-qty {
+  font-size: 12pt;
+  color: var(--ph-text-dim);
+}
+
+.sheet .pipboy-header .pb-carryload-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  cursor: pointer;
+}
+
+.sheet .pipboy-header .pb-carryload-icon {
+  width: 22px;
+  height: 22px;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sheet .pipboy-header .pb-carryload-value {
+  font-size: 13pt;
+  display:block;
+  margin:auto;
+}
+.sheet .pipboy-header .fa-regular{
+    width:inherit;
+}
+/* ========================= Status panel ========================= */
+.sheet .pipboy-header .pipboy-status .pb-stat-row {
+  display: grid;
+  grid-template-columns: 20px 16px 1fr;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid color-mix(in srgb, var(--ph-accent) 25%, transparent);
+  padding-bottom: 4px;
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-row:last-of-type {
+  border-bottom: none;
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-label {
+  font-size: 9pt;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-buttons i {
+  display: inline-block;
+  width: auto;
+  color: var(--ph-accent);
+  font-size: 8pt;
+  cursor: pointer;
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-values {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-main {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-values input {
+  width: 34px;
+  height: 18px;
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 45%, transparent);
+  color: var(--ph-text);
+  font-family: 'Monofonto', monospace;
+  text-align: center;
+  padding: 0;
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-main input {
+  width: 42px;
+  height: 24px;
+  font-size: 13pt;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--ph-accent) 45%, transparent);
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-main input:disabled {
+  color: var(--ph-text-dim);
+  border-bottom-color: color-mix(in srgb, var(--ph-accent) 20%, transparent);
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-slash {
+  color: var(--ph-text-dim);
+  font-size: 11pt;
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-bonus {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10pt;
+  font-weight:bold;
+  color: var(--ph-text-dim);
+}
+
+.sheet .pipboy-header .pipboy-status .pb-stat-bonus input {
+  width: 34px;
+  height: 16px;
+}
+
+.sheet .pipboy-header .pb-action-icons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: auto;
+  padding-top: 4px;
+  border-top: 1px solid color-mix(in srgb, var(--ph-accent) 30%, transparent);
+}
+
+.sheet .pipboy-header .pb-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.sheet .pipboy-header .pb-action-icons i.header-icon {
+  display: inline-block;
+  width: auto;
+  color: var(--ph-accent);
+  font-size: 12pt;
+  cursor: pointer;
+}
+
+.sheet .pipboy-header .pb-action-cap {
+  font-size: 6pt;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ph-text-dim);
+}
+
+/* ======================== Portrait panel ========================= */
+.sheet .pipboy-header .pipboy-portrait {
+  align-items: stretch;
+}
+
+.sheet .pipboy-header .pb-portrait-frame {
+  position: relative;
+  border: 1px solid var(--ph-accent);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.sheet .pipboy-header .pb-portrait-frame img.profile-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: none;
+  filter: grayscale(0.15) contrast(1.05);
+}
+
+.sheet .pipboy-header .pb-badge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 7pt;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 0;
+}
+
+.sheet .pipboy-header .pb-badge-combat {
+  top: 0;
+  background: color-mix(in srgb, var(--ph-accent) 75%, #222);
+  color: #222;
+}
+
+.sheet .pipboy-header .pb-badge-dead {
+  bottom: 0;
+  background: color-mix(in srgb, #ff2a2a 75%, #222);
+  color: white;
+}
+
+.sheet .pipboy-header .pb-caps-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  margin: 0;
+}
+
+.sheet .pipboy-header .pb-caps-icon.custom-icon {
+  width: 20px;
+  max-width: 20px;
+  height: 20px;
+}
+
+.sheet .pipboy-header .pb-caps-row input {
+  width: 100%;
+  height: 18px;
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 45%, transparent);
+  color: var(--ph-text);
+  font-family: 'Monofonto', monospace;
+  text-align: center;
+}
+
+.sheet .pipboy-header .pb-room-loot {
+  text-align: center;
+  border: 1px solid var(--ph-accent);
+  padding: 3px;
+  font-size: 7pt;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.sheet .pipboy-header .pb-deathsaves {
+  border: 1px solid color-mix(in srgb, #ff2a2a 55%, transparent);
+  padding: 4px;
+  font-size: 7pt;
+  text-align: center;
+}
+
+.sheet .pipboy-header .pb-deathsaves-title {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, #ff2a2a 70%, white);
+  margin-bottom: 2px;
+}
+
+.sheet .pipboy-header .pb-deathsaves-row {
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.sheet .pipboy-header .pb-deathsaves-row i {
+  font-size: 10pt;
+}
+
+.sheet .pipboy-header .pb-rolldeathsave {
+  margin-top: 2px;
+  border: 1px solid color-mix(in srgb, #ff2a2a 70%, transparent);
+  padding: 2px;
+  cursor: pointer;
+}
+
+/* ============================ Karma row =========================== */
+.sheet .pipboy-karma-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--sheetcolor) 45%, transparent);
+  padding: 4px 0 0;
+}
+
+.sheet .pipboy-header .karmaCaps input[type='checkbox'] {
+  width: 22px;
+  height: 22px;
+}
+
+.sheet .pipboy-header .karmaCaps .addRemoveCaps {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sheet .pipboy-header .karmaCaps .addRemoveCaps button {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.sheet .pipboy-header .karmaCaps .addRemoveCaps button i {
+  display: inline-block;
+  width: auto;
+  color: var(--ph-accent);
+  font-size: 8pt;
+  cursor: pointer;
+}
+/* ========================= NPC header extras ======================= */
+.sheet .pipboy-header .pb-bio-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sheet .pipboy-header .pb-npc-custom-row {
+  margin-top: -2px;
+}
+
+.sheet .pipboy-header .pb-npc-custom-input {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--ph-accent) 40%, transparent);
+  color: var(--ph-text-dim);
+  font-family: inherit;
+  font-size: 8pt;
+  font-style: italic;
+  padding: 1px 0;
+}
+
+.sheet .pipboy-header .pb-npc-custom-input::placeholder {
+  color: var(--ph-text-dim);
+  opacity: 0.7;
+}
+
+.sheet .pipboy-header .pb-passive-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 40%, transparent);
+  padding: 4px;
+}
+
+.sheet .pipboy-header .pb-passive-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.sheet .pipboy-header .pb-passive-stat.rollable {
+  cursor: pointer;
+}
+
+.sheet .pipboy-header .pb-passive-stat.rollable:hover {
+  color: var(--ph-accent);
+  background: color-mix(in srgb, var(--ph-accent) 12%, transparent);
+}
+
+.sheet .pipboy-header .pb-passive-stat > i {
+  display: inline-block;
+  width: auto;
+  color: var(--ph-accent);
+  font-size: 10pt;
+}
+
+.sheet .pipboy-header .pb-passive-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 16pt;
+  font-variant-numeric: tabular-nums;
+  min-height: 12px;
+}
+
+.sheet .pipboy-header .pb-passive-value i.pb-passive-step {
+  display: inline-block;
+  width: auto;
+  font-size: 9pt;
+  color: var(--ph-text-dim);
+  cursor: pointer;
+}
+
+.sheet .pipboy-header .pb-passive-value i.pb-passive-step:hover {
+  color: var(--ph-accent);
+}
+
+.sheet .pipboy-header .pb-recycle-ap {
+  text-align: center;
+  border: 1px solid var(--ph-accent);
+  padding: 3px;
+  font-size: 9pt;
+  cursor: pointer;
+  margin-top: auto;
+}

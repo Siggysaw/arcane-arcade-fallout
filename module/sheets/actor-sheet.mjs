@@ -68,69 +68,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       return item;
     });
 
-    //Temporary Notes Parsing
-
-    if (actorData.name == "ImportNPCs") {
-      let content = "<textarea style='height:1000px;'>name,race,level,background,health,stamina,actionPoints,str,per,end,cha,int,agi,lck,barter,breach,crafting,energyWeapons,explosives,guns,intimidation,medicine,meleeWeapons,science,sneak,speech,survival,unarmed,armorClass,damageThreshold,healingRate,passiveSense,properties<br>"
-      let rawData = actorData.system.properties
-      let paragraphs = rawData.split(/<h2>/)
-      for (let creature of paragraphs) {
-        creature = new String(creature)
-        let name = creature.split(/<\/h2>/)[0]
-        name = name.replaceAll(",", "-")
-        let level = creature.split(/((?<=LVL\s)[^d+<]*)/)[1] || 0
-        let hitPoints = creature.split(/((?<=Hit Points\s)[^d+<]*)/)[1] || 0
-        let staminaPoints = creature.split(/((?<=Stamina Points\s)[^d+<]*)/)[1] || 0
-        let actionPoints = creature.split(/((?<=Action Points\s)[^d+<]*)/)[1] || 0
-        let armorClass = creature.split(/((?<=Armor Class\s)[^d+<]*)/)[1] || 0
-        let damageThreshold = creature.split(/((?<=Damage Threshold\s)[^<]*)/)[1] || 0
-        let healingRate = creature.split(/((?<=Healing Rate\s)[^<]*)/)[1] || 0
-        let passiveSense = creature.split(/((?<=passive sense\s)[^<]*)/)[1] || 0
-
-
-        let abilities = creature.split(/(?<=<\/tr>)(.*?)(?=<\/tr>)/)[1]
-        let abilityString = new String(abilities)
-        abilityString = abilityString.replaceAll("<tr>", "")
-        abilityString = abilityString.replaceAll("</tr>", "")
-        abilityString = abilityString.replaceAll("<td>", "")
-        abilityString = abilityString.replaceAll("</td>", "")
-        abilityString = abilityString.replaceAll("<p>", "")
-        abilityString = abilityString.replaceAll("</p>", "")
-        abilityString = abilityString.replaceAll(/ \(\+\d*\)/g, ",")
-        abilityString = abilityString.replaceAll(/ \(\-\d*\)/g, ",")
-        abilities = abilityString.replace(/,\s*$/, "");
-
-        let barter = creature.split(/((?<=Barter\s\+)[^,|<]*)/)[1] || 0
-        let breach = creature.split(/((?<=Breach\s\+)[^,|<]*)/)[1] || 0
-        let crafting = creature.split(/((?<=Crafting\s\+)[^,|<]*)/)[1] || 0
-        let energyWeapons = creature.split(/((?<=Energy Weapons\s\+)[^,|<]*)/)[1] || 0
-        let explosives = creature.split(/((?<=Explosives\s\+)[^,|<]*)/)[1] || 0
-        let guns = creature.split(/((?<=Guns\s\+)[^,|<]*)/)[1] || 0
-        let intimidation = creature.split(/((?<=Intimidation\s\+)[^,|<]*)/)[1] || 0
-        let medicine = creature.split(/((?<=Medicine\s\+)[^,|<]*)/)[1] || 0
-        let meleeWeapons = creature.split(/((?<=Melee\sWeapons\s\+)[^,|<]*)/)[1] || 0
-        let science = creature.split(/((?<=Science\s\+)[^,|<]*)/)[1] || 0
-        let sneak = creature.split(/((?<=Sneak\s\+)[^,|<]*)/)[1] || 0
-        let speech = creature.split(/((?<=Speech\s\+)[^,|<]*)/)[1] || 0
-        let survival = creature.split(/((?<=Survival\s\+)[^,|<]*)/)[1] || 0
-        let unarmed = creature.split(/((?<=Unarmed\s\+)[^,|<]*)/)[1] || 0
-        let properties = creature.replaceAll(",", " Comma ")
-
-
-
-        content = content + `${name},Human,${level},,${hitPoints},${staminaPoints},${actionPoints},${abilities},${barter},${breach},${crafting},${energyWeapons},${explosives},${guns},${intimidation},${medicine},${meleeWeapons},${science},${sneak},${speech},${survival},${unarmed},${armorClass},${damageThreshold},${healingRate},${passiveSense},<h2>${properties} \r`
-      }
-      content = content + '</textarea>'
-      const myDialogOptions = { width: 500, height: 1000, resizable: true }
-      new Dialog({
-          title: `Output`,
-          content: content,
-          buttons: {},
-        },
-        myDialogOptions,
-      ).render(true)
-    }
-
     const carryLoadSetting = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'CarryLoad')
     const CapsLoad = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'CapsLoad')
     const AmmoLoad = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AmmoLoad')
@@ -474,22 +411,31 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this.actor.update({ 'prototypeToken.actorLink': true })
     }
 
-    const drdv = Object.values(FALLOUTZERO.damageTypes).reduce(
-      (acc, type) => {
-        acc.dr.push({
-          ...type,
-          selected: this.actor.system.dr.includes(type.id),
-        })
-        acc.dv.push({
-          ...type,
-          selected: this.actor.system.dv.includes(type.id),
-        })
-        return acc
-      },
-      { dr: [], dv: [] },
-    )
-    context.dr = drdv.dr
-    context.dv = drdv.dv
+    // DR/DV single-row cycling widget: each damage type is in exactly one of four
+    // states (vulnerable / neutral / resist / immune), backed by which of the three
+    // system.dv/dr/di arrays (if any) contains its id - see activateListeners'
+    // [data-drdv-chip] handlers for the actual state transitions. All 16 damage
+    // types now have a dedicated icon asset (see the .dv-chip.<type> rules in
+    // falloutzero.css - sonic/psychic use sound.svg/aura.svg), so this fallback
+    // map is only for a type that somehow ships without a matching CSS rule.
+    const DR_DV_FA_ICON_FALLBACK = {}
+    const DR_DV_STATE_LABELS = { vulnerable: 'Vulnerable', neutral: 'Neutral', resist: 'Resist', immune: 'Immune' }
+    context.drdv = Object.values(FALLOUTZERO.damageTypes).map((type) => {
+      const state = this.actor.system.dv.includes(type.id)
+        ? 'vulnerable'
+        : this.actor.system.di.includes(type.id)
+          ? 'immune'
+          : this.actor.system.dr.includes(type.id)
+            ? 'resist'
+            : 'neutral'
+      return {
+        id: type.id,
+        label: type.label,
+        faIcon: DR_DV_FA_ICON_FALLBACK[type.id] ?? null,
+        state,
+        stateLabel: DR_DV_STATE_LABELS[state],
+      }
+    })
   }
 
   /* -------------------------------------------- */
@@ -586,7 +532,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         },
         callback: (element) => {
           const itemId = element.closest('.context-menu').data('item-id')
-          new game.falloutzero.applications.components.SelectUpgrade(this.actor.id, itemId).render(true)
+          new game.falloutzero.applications.components.SelectUpgrade(this.actor, itemId).render(true)
         },
       },
       {
@@ -935,6 +881,32 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     //show Combat Action Information
     html.on('click', '[data-combatActions]', (ev) => {
       this.actor.openDialog("/templates/dialog/combat-actions.hbs", "Combat Actions")
+    })
+
+    const DRDV_STATE_ORDER = ['vulnerable', 'neutral', 'resist', 'immune']
+    const DRDV_STATE_FIELD = { vulnerable: 'dv', resist: 'dr', immune: 'di' } // neutral -> none
+    const cycleDrDv = (typeId, direction) => {
+      const dr = this.actor.system.dr ?? []
+      const dv = this.actor.system.dv ?? []
+      const di = this.actor.system.di ?? []
+      const currentState = dv.includes(typeId) ? 'vulnerable' : di.includes(typeId) ? 'immune' : dr.includes(typeId) ? 'resist' : 'neutral'
+      const nextIndex = (DRDV_STATE_ORDER.indexOf(currentState) + direction + DRDV_STATE_ORDER.length) % DRDV_STATE_ORDER.length
+      const nextState = DRDV_STATE_ORDER[nextIndex]
+      const newDr = dr.filter((id) => id !== typeId)
+      const newDv = dv.filter((id) => id !== typeId)
+      const newDi = di.filter((id) => id !== typeId)
+      const targetField = DRDV_STATE_FIELD[nextState]
+      if (targetField === 'dr') newDr.push(typeId)
+      if (targetField === 'dv') newDv.push(typeId)
+      if (targetField === 'di') newDi.push(typeId)
+      this.actor.update({ 'system.dr': newDr, 'system.dv': newDv, 'system.di': newDi })
+    }
+    html.on('click', '[data-drdv-chip]', (ev) => {
+      cycleDrDv(ev.currentTarget.dataset.typeId, 1)
+    })
+    html.on('contextmenu', '[data-drdv-chip]', (ev) => {
+      ev.preventDefault()
+      cycleDrDv(ev.currentTarget.dataset.typeId, -1)
     })
 
     // Actor Rest Buttons
@@ -1326,7 +1298,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     html.on('click', '[data-roll-save]', this._onRollSave.bind(this))
 
     html.on('click', '[data-crafting-bench]', async () => {
-      const bench = new game.falloutzero.applications.components.CraftingBench(this.actor.id)
+      const bench = new game.falloutzero.applications.components.CraftingBench(this.actor)
       await bench.init()
       bench.render(true)
     })
@@ -1377,12 +1349,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     return await Item.create(itemData, { parent: this.actor })
   }
 
-  /**
-   * Handle the final creation of dropped Item data on the Actor.
-   * @param {Item} itemData     The item or items requested for creation
-   * @protected
-   */
+  static QUANTITY_DIALOG_EXCLUDED_TYPES = ['race','background','perk','trait','weaponUpgrade','armorUpgrade','condition','property']
+
   async _onDropItemCreate(itemData) {
+    if (!game.user.isGM) {
+      return ui.notifications.warn(`Only the GM can add items to a sheet this way - ask them to give you ${itemData.name}.`)
+    }
     switch (itemData.type) {
       case 'trait':
         this._onDropItemCreateTrait(itemData)
@@ -1394,12 +1366,78 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         this._onDropItemCreateBackgroundGrants(itemData)
         return
       default:
-        if (itemData.system.itemEquipped) {
-          itemData.system.itemEquipped = false
+        if (FalloutZeroActorSheet.QUANTITY_DIALOG_EXCLUDED_TYPES.includes(itemData.type)) {
+          this._onDropItemCreateImmediate(itemData)
+        } else {
+          this._onDropItemCreateWithQuantity(itemData)
         }
-        super._onDropItemCreate(itemData)
         return
     }
+  }
+
+
+  _onDropItemCreateImmediate(itemData) {
+    if (itemData.system.itemEquipped) {
+      itemData.system.itemEquipped = false
+    }
+    super._onDropItemCreate(itemData)
+  }
+
+  async _onDropItemCreateWithQuantity(itemData) {
+    const startingQuantity = Number(itemData.system?.quantity) > 0 ? Math.floor(Number(itemData.system.quantity)) : 1
+    const sliderMax = Math.max(startingQuantity, 100)
+
+    const content = await renderTemplate('systems/arcane-arcade-fallout/templates/actor/dialog/give-ammo.hbs', {
+      name: itemData.name,
+      img: itemData.img,
+      quantity: startingQuantity,
+      max: sliderMax,
+    })
+
+    new Dialog(
+      {
+        title: `Give ${itemData.name}`,
+        content,
+        buttons: {
+          give: {
+            icon: '<i class="fas fa-check"></i>',
+            label: 'Give',
+            callback: (html) => {
+              const rawValue = Number(html[0].querySelector('[name="quantity"]')?.value)
+              const finalQuantity = Number.isFinite(rawValue) && rawValue > 0 ? Math.floor(rawValue) : 1
+              if (itemData.system.itemEquipped) {
+                itemData.system.itemEquipped = false
+              }
+              itemData.system.quantity = finalQuantity
+              super._onDropItemCreate(itemData)
+            },
+          },
+          cancel: {
+            icon: '<i class="fas fa-times"></i>',
+            label: 'Cancel',
+          },
+        },
+        default: 'give',
+        render: (html) => {
+          const numberInput = html[0].querySelector('[name="quantity"]')
+          const rangeInput = html[0].querySelector('[name="quantitySlider"]')
+          const clampToNumberInput = () => {
+            const value = Math.max(0, Math.floor(Number(numberInput.value) || 0))
+            rangeInput.value = Math.min(Number(rangeInput.max), value)
+          }
+          numberInput.addEventListener('input', clampToNumberInput)
+          rangeInput.addEventListener('input', () => {
+            numberInput.value = rangeInput.value
+          })
+          numberInput.focus()
+          numberInput.select()
+        },
+      },
+      {
+        classes: ['dialog', 'give-ammo-dialog-app'],
+        width: 450,
+      },
+    ).render(true)
   }
 
   /**
