@@ -235,7 +235,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  height: 115px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -481,12 +480,14 @@ body.game .sheet.app header.sheet-header .pb-condition-controls img.condition-ic
   top: 0;
   background: color-mix(in srgb, var(--ph-accent) 75%, #222);
   color: #222;
+  font-size:12pt;
 }
 
 .sheet .pipboy-header .pb-badge-dead {
   bottom: 0;
   background: color-mix(in srgb, #ff2a2a 75%, #222);
   color: white;
+  font-size:12pt;
 }
 
 .sheet .pipboy-header .pb-caps-row {
@@ -522,6 +523,15 @@ body.game .sheet.app header.sheet-header .pb-condition-controls img.condition-ic
   cursor: pointer;
 }
 
+.sheet .pipboy-header .pb-room-loot:hover {
+  text-align: center;
+  border: 1px solid var(--ph-accent);
+  padding: 3px;
+  font-size: 7pt;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
 .sheet .pipboy-header .pb-deathsaves {
   border: 1px solid color-mix(in srgb, #ff2a2a 55%, transparent);
   padding: 4px;
@@ -546,6 +556,13 @@ body.game .sheet.app header.sheet-header .pb-condition-controls img.condition-ic
 }
 
 .sheet .pipboy-header .pb-rolldeathsave {
+  margin-top: 2px;
+  border: 1px solid color-mix(in srgb, #ff2a2a 70%, transparent);
+  padding: 2px;
+  cursor: pointer;
+  font-size:10pt;
+}
+.sheet .pipboy-header .pb-rolldeathsave:hover {
   margin-top: 2px;
   border: 1px solid color-mix(in srgb, #ff2a2a 70%, transparent);
   padding: 2px;

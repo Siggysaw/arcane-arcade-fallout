@@ -237,9 +237,10 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     actionHero ? this.actionPoints.boostMax += 2 : ''
     actionHero && this.actionPoints.max > 15 ? this.actionPoints.max = 15 : ''
     activatedActinides && activatedActinides.system.wildWasteland ? this.healingRate.modifiers += 2 : ''
-    builttoDestroy && builttoDestroy.system.wildWasteland ? this.damageBonus.modifiers += 1 : ''
-    hotBlooded ? this.attackBonus.modifiers += -2 : ''
-    hotBlooded && hotBlooded.system.wildWasteland && this.stamina.value == 0 ? this.damageBonus.modfiers += 5 : ''
+    builttoDestroy && builttoDestroy.system.wildWasteland ? this.damageBonus.modifiers += 2 :
+      builttoDestroy ? this.damageBonus.modifiers += 1 : ''
+    hotBlooded && this.stamina.value == 0 ? this.attackBonus.modifiers += -2 : ''
+    hotBlooded && hotBlooded.system.wildWasteland && this.stamina.value == 0 ? this.damageBonus.modifiers += 5 : ''
     longDays ? this.stamina.boostMax += Math.floor(this.level / 2) : ''
     longDays && longDays.system.wildWasteland ? this.stamina.boostMax += Math.floor(this.level / 2) : ''
     triggerDiscipline ? this.combatSequence.modifiers -= 2 : ''
@@ -275,8 +276,14 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       }
     }
     if (onerousRegeneration) {
-      this.healingRate.modifiers += 2
-      onerousRegeneration.system.wildWasteland ? this.healingRate.modifiers += Number(this.level) : ''
+      // Wild Wasteland reads "Instead" - it replaces the base Healing Rate bonus
+      // (and its stamina-max penalty) rather than stacking on top of it.
+      if (onerousRegeneration.system.wildWasteland) {
+        this.healingRate.modifiers += Number(this.level)
+      } else {
+        this.healingRate.modifiers += 2
+        this.stamina.boostMax -= this.level
+      }
     }
     if (denseCircuitry) {
       this.healingRate.modifiers += 2
@@ -284,6 +291,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       if (denseCircuitry.system.wildWasteland) {
         this.healingRate.modifiers += this.level
         this.combatSequence.modifiers += -2
+        // WW: "Combat Sequence rolls have disadvantage" - roll 2, keep the lower
+        this.combatSequence.formula = "2d20kl"
       }
     }
 
@@ -292,7 +301,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.radiationDC.modifiers += 3
       if (fastMetabolism.system.wildWasteland) {
         this.healingRate.modifiers += this.level
-        this.radiationDC.modifiers += 3
       }
     }
     if (implantY7) {

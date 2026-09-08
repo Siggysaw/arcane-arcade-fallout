@@ -285,34 +285,35 @@ export default class FalloutZeroActor extends Actor {
     async function rollDice(form, actor) {
       const withModifiers = form.elements.modified?.value
       const withAdvantage = form.elements.advantage?.value
-      let rollAbility = form.elements.rollAbility?.value
-      let partyNerve = actor.system.partyNerve.value
-      let abilityMod = '@' + rollAbility + '.mod'
-      const endure = actor.items.find((i) => i.name == "Endure the Battle")
-      endure ? abilityMod = 0 : ''
-      endure ? partyNerve = 0 : ''
-      let rollBonus = form.elements.bonus?.value ?? ''
-      let rollInput
-      let critSuccess
-      let critFailure
-      let flavor
-      const success1 = 'system.saveSuccesses.first'
-      const success2 = 'system.saveSuccesses.second'
-      const success3 = 'system.saveSuccesses.third'
-      const failure1 = 'system.saveFailures.first'
-      const failure2 = 'system.saveFailures.second'
-      const failure3 = 'system.saveFailures.third'
-      const Success1 = actor.system.saveSuccesses.first
-      const Success2 = actor.system.saveSuccesses.second
-      const Success3 = actor.system.saveSuccesses.third
-      const Failure1 = actor.system.saveFailures.first
-      const Failure2 = actor.system.saveFailures.second
-      const Failure3 = actor.system.saveFailures.third
+      const rollAbility = form.elements.rollAbility?.value
+      const rollBonus = form.elements.bonus?.value ?? ''
 
-      withAdvantage !== 'false' ? rollInput = `2d20${withAdvantage}` : rollInput = "1d20"
+      const endure = actor.items.find((i) => i.name == "Endure the Battle")
+      const endureWW = !!endure?.system.wildWasteland
+      // Base Endure the Battle drops Luck/Endurance from the roll entirely.
+      // Party Nerve is a Wild Wasteland-only loss ("you do not add your
+      // Luck, Endurance, or Party Nerve").
+      const abilityMod = endure ? 0 : '@' + rollAbility + '.mod'
+      const partyNerve = endureWW ? 0 : actor.system.partyNerve.value
+
+      const successPath = {
+        1: 'system.saveSuccesses.first',
+        2: 'system.saveSuccesses.second',
+        3: 'system.saveSuccesses.third',
+      }
+      const failurePath = {
+        1: 'system.saveFailures.first',
+        2: 'system.saveFailures.second',
+        3: 'system.saveFailures.third',
+      }
+      const hadSuccess1 = actor.system.saveSuccesses.first
+      const hadSuccess2 = actor.system.saveSuccesses.second
+      const hadFailure1 = actor.system.saveFailures.first
+      const hadFailure2 = actor.system.saveFailures.second
+
+      let rollInput = withAdvantage !== 'false' ? `2d20${withAdvantage}` : '1d20'
       if (withModifiers === 'true') {
-        const penaltyTotal = actor.system.penaltyTotal
-        rollInput += ` - ${penaltyTotal}`
+        rollInput += ` - ${actor.system.penaltyTotal}`
       }
       if (rollBonus.length > 0) {
         rollInput += `+ ${rollBonus}`
@@ -323,48 +324,62 @@ export default class FalloutZeroActor extends Actor {
       const saveDC = 10
       const success = roll.total >= saveDC
 
-      roll.terms[0].values[0] == 20 ? critSuccess = true : critSuccess = false
-      roll.terms[0].values[0] == 1 ? critFailure = true : critFailure = false
-      critSuccess || critFailure ? flavor = "Critical " : flavor = ''
+      // Read the die(s) actually kept for the total, not just the first one
+      // physically rolled - matters with advantage/disadvantage (2d20kh/2d20kl),
+      // where the kept die can be the second one in roll order.
+      const keptDice = roll.terms[0].results.filter((r) => r.active).map((r) => r.result)
+      const critSuccess = keptDice.includes(20)
+      const critFailure = keptDice.includes(1)
+
+      // Endure the Battle: a 19 or 20 (18+ with Wild Wasteland) returns you to 1 HP
+      const endureThreshold = endureWW ? 18 : 19
+      const endureTriggered = !!endure && keptDice.some((v) => v >= endureThreshold)
+
+      let flavor = critSuccess || critFailure ? 'Critical ' : ''
+      const updateData = {}
+
+      const revive = () => {
+        updateData[successPath[1]] = false
+        updateData[successPath[2]] = false
+        updateData[successPath[3]] = false
+        updateData[failurePath[1]] = false
+        updateData[failurePath[2]] = false
+        updateData[failurePath[3]] = false
+        updateData['system.health.value'] = 1
+        updateData['system.actionPoints.value'] = actor.system.actionPoints.max
+      }
 
       if (success) {
         flavor += `Success! ${actor.name} rolled equal to or greater than ${saveDC}`
 
-        // On Nat 20, gain 2 Successes
-        if (critSuccess) {
-          !Success1 ? actor.update({ [success1]: true, [success2]: true }) :
-            actor.update({
-              [success1]: false,
-              [success2]: false,
-              [success3]: false,
-              [failure1]: false,
-              [failure2]: false,
-              [failure3]: false,
-              'system.health.value': 1,
-              'system.actionPoints.value': actor.system.actionPoints.max
-            })
+        if (endureTriggered) {
+          flavor += ` - Endure the Battle triggers, returning to 1 hit point!`
+          revive()
+        } else {
+          // A natural 20 is worth 2 successes; reaching a 3rd success (from
+          // any combination of normal successes and crits) fully revives.
+          const successCount = hadSuccess1 ? (hadSuccess2 ? 2 : 1) : 0
+          const newSuccessCount = successCount + (critSuccess ? 2 : 1)
+          if (newSuccessCount >= 3) {
+            revive()
+          } else {
+            if (newSuccessCount >= 1) updateData[successPath[1]] = true
+            if (newSuccessCount >= 2) updateData[successPath[2]] = true
+          }
         }
-        !Success1 ? actor.update({ [success1]: true }) : actor.update({ [success2]: true })
-        Success1 && Success2 ? actor.update({
-          [success1]: false,
-          [success2]: false,
-          [success3]: false,
-          [failure1]: false,
-          [failure2]: false,
-          [failure3]: false,
-          'system.health.value': 1,
-          'system.actionPoints.value': actor.system.actionPoints.max
-        }) : ''
-      }
-      if (!success) {
+      } else {
         flavor += `Failure! ${actor.name} rolled lower than ${saveDC}`
-        Failure1 ? actor.update({ [failure2]: true }) : actor.update({ [failure1]: true })
-        Failure2 ? actor.update({ [failure3]: true }) : ''
 
-        // On Nat 1, gain 2 Failures
-        if (critFailure) {
-          !Failure1 ? actor.update({ [failure1]: true, [failure2]: true }) : actor.update({ [failure2]: true, [failure3]: true })
-        }
+        // A natural 1 is worth 2 failures; a 3rd failure marks the character dead.
+        const failureCount = hadFailure1 ? (hadFailure2 ? 2 : 1) : 0
+        const newFailureCount = Math.min(failureCount + (critFailure ? 2 : 1), 3)
+        if (newFailureCount >= 1) updateData[failurePath[1]] = true
+        if (newFailureCount >= 2) updateData[failurePath[2]] = true
+        if (newFailureCount >= 3) updateData[failurePath[3]] = true
+      }
+
+      if (Object.keys(updateData).length) {
+        await actor.update(updateData)
       }
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: actor }),
@@ -445,8 +460,6 @@ export default class FalloutZeroActor extends Actor {
         ? (newSP = Math.floor(maxSP / 2))
         : (newSP = currentSP)
       newSP > maxSP ? (newSP = maxSP) : (newSP = newSP)
-      const onerousRegeneration = this.items.find((i) => i.name == 'Onerous Regeneration')
-      onerousRegeneration ? newSP = newSP/2 : ''
       this.update({ 'system.stamina.value': newSP })
     }
     // Long Rest
@@ -456,8 +469,14 @@ export default class FalloutZeroActor extends Actor {
         ? (newHP = currentHP + endurance / 2 + this.system.level)
         : (newHP = currentHP + robotHeal / 2 + this.system.level)
       newHP > maxHP ? (newHP = maxHP) : (newHP = newHP)
+      // Onerous Regeneration (Wild Wasteland): "whenever you regain stamina points
+      // from sleep, you regain half as much" - a long rest is the trait's "sleep".
+      const onerousRegeneration = this.items.find((i) => i.name == 'Onerous Regeneration')
+      const newSP = (onerousRegeneration && onerousRegeneration.system.wildWasteland)
+        ? Math.floor(maxSP / 2)
+        : maxSP
       this.update({ 'system.health.value': newHP })
-      this.update({ 'system.stamina.value': maxSP })
+      this.update({ 'system.stamina.value': newSP })
       this.update({ 'system.actionPoints.value': maxAP })
     }
   }

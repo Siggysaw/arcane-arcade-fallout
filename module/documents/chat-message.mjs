@@ -410,7 +410,15 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     }
     let rollFormula = this.rolls[0]._formula
     const persistant = this.actor.items.find((i) => i.name == "Persistent")
-    if (persistant && consumeKarmaCap) {
+    const rollType = this.flags?.falloutzero?.type
+    // Base Persistent only grants advantage on a Skill check reroll; Wild Wasteland
+    // extends that to Ability checks and attack rolls too. Rolls with no tracked
+    // type (death saves, the custom-roll dialog) are outside the trait either way.
+    const persistentApplies = !!persistant && consumeKarmaCap && (
+      rollType === 'skill' ||
+      (rollType === 'attack' && persistant.system.wildWasteland)
+    )
+    if (persistentApplies) {
       ui.notifications.notify("Persistent Perk Activated! Advantage Gained!")
 
       let newRollFormula = rollFormula
