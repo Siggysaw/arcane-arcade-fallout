@@ -125,15 +125,6 @@ export function registerSystemSettings() {
     default: true,
     requiresReload: true,
   })
-  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'AutoApplyDamage', {
-    name: 'Auto-apply damage on attack rolls',
-    hint: 'When an attack roll hits a targeted token (roll total meets/beats their AC, or the raw d20 meets the weapon\'s crit chance), automatically roll damage and apply it to that token. A miss rolls no damage. You can always Undo (and, on the damage card\'s Apply tray, adjust cover/resistances and re-apply) afterward.',
-    scope: 'world',
-    config: true,
-    type: Boolean,
-    default: true,
-    requiresReload: false,
-  })
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'PlaySounds', {
     name: 'Play Pip Boy Sounds',
     hint: 'Enable/Disable Sounds on Actor Sheets',
@@ -150,6 +141,53 @@ export function registerSystemSettings() {
     config: true,
     type: Boolean,
     default: false,
+    requiresReload: false,
+  })
+  // The FNV chat skin's own settings, moved here from chat-fnv/fnv-chat.mjs
+  // and chat-fnv/fnv-chat-dice.mjs for ease of maintenance - they used to be
+  // registered inline in each of those files. The behavior that reads them
+  // (the skin toggle, the crawl animation, the dice sprites) still lives in
+  // those files; only the registration moved. See the comments at the top
+  // of chat-fnv/fnv-chat.mjs for why the skin is now *applied* at the
+  // `setup` hook rather than `init`.
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'ChatSkin', {
+    name: 'FNV Chat Skin',
+    hint: 'Restyle the chat sidebar, composer and roll cards as a Fallout terminal panel. Applies immediately.',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: (v) => document.body.classList.toggle('fnv-chat-off', !v),
+  })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'ChatCrawl', {
+    name: 'FNV Chat Message Crawl',
+    hint: 'New chat messages draw themselves in with a staggered left-to-right wipe. Messages already in the log are unaffected.',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: true,
+  })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'ChatDiceSprites', {
+    name: 'FNV Chat Dice Sprites',
+    hint: 'Roll messages show the dice as animated Fallout sprites: they tumble, land on the rolled face, and tint green or red against the DC when the roll has one.',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: true,
+  })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'DropItemMinimumRole', {
+    name: 'Drag & Drop Items: Minimum Role',
+    hint: 'Who is allowed to add a NEW item to an actor sheet by dragging it in (from a compendium, the sidebar, or another actor)? Below this role, the drop is refused with a warning instead. Defaults to Gamemaster only.',
+    scope: 'world',
+    config: true,
+    type: Number,
+    choices: {
+      1: 'Player',
+      2: 'Trusted Player',
+      3: 'Assistant GM',
+      4: 'Gamemaster Only',
+    },
+    default: 4,
     requiresReload: false,
   })
 }

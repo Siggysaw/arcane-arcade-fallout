@@ -2182,7 +2182,7 @@ export default class FalloutZeroActor extends Actor {
     oneHander && twoHandedWeapon ? attackBonus -= 2 : attackBonus
     finesse ? finesse.system.wildWasteland ? penalty = 2 : penalty = 1 : attackBonus
     deadeye ? attackBonus += 2 * deadeye.system.quantity : attackBonus
-    duelist && weapon.type=='meleeWeapon' ? attackBonus += 2 : attackBonus
+    duelist && weapon?.type =='meleeWeapon' ? attackBonus += 2 : attackBonus
     gunslinger && handgun ? attackBonus += 2 : attackBonus
     plusOne ? attackBonus += 1 : attackBonus
     efficient ? attackBonus += 2 : attackBonus
@@ -2207,8 +2207,8 @@ export default class FalloutZeroActor extends Actor {
 
     oneHander && oneHander.system.wildWasteland && !twoHandedWeapon ? damageBonus += 2 : damageBonus
     oneHander && oneHander.system.wildWasteland && twoHandedWeapon ? damageBonus -= 2 : damageBonus
-    rooted && weapon.type == 'meleeWeapon' ? damageBonus += 2 : damageBonus
-    duelist && weapon.type == 'meleeWeapon' ? damageBonus += 2 : damageBonus
+    rooted && weapon?.type == 'meleeWeapon' ? damageBonus += 2 : damageBonus
+    duelist && weapon?.type == 'meleeWeapon' ? damageBonus += 2 : damageBonus
     deadeye ? damageBonus += 2 * deadeye.system.quantity: damageBonus
     efficient ? damageBonus += 2 : damageBonus
 

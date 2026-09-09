@@ -331,6 +331,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     }
 
     //========= Condition Automation
+    const caffeinated = searchItems(this, "Caffeinated")
     const stimulant = searchItems(this, "Stimulant")
     const superstimulant = searchItems(this, "Superstimulant")
     const hyperstimulant = searchItems(this, "Hyperstimulant")
@@ -400,8 +401,19 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.explosivesMastery = this.abilities['per'].mod + this.skills['explosives'].value
     this.unflipped = this.karmaCaps.filter(Boolean).length;
     this.totalKarma = this.karmaCaps.length;
-    (superstimulant || hyperstimulant) && this.penalties.exhaustion.base == 0 ? this.boostDice += 2 : ''
-    stimulant && this.penalties.exhaustion.base == 0 ? this.boostDice += 1 : ''
+    if (this.penalties.exhaustion.base == 0) {
+      if (superstimulant || hyperstimulant) this.boostDice += 2
+      if (stimulant) this.boostDice += 1
+      if (caffeinated) this.boostDice += 1
+    }
+
+    const exhaustionRelief = (threshold) =>
+      this.penalties.exhaustion.value >= threshold ? 3 : this.penalties.exhaustion.value
+
+    if (stimulant || caffeinated) this.penaltyTotal -= exhaustionRelief(3)
+    if (superstimulant) this.penaltyTotal -= exhaustionRelief(5)
+    if (hyperstimulant) this.penaltyTotal -= exhaustionRelief(8)
+
     alertness ? this.passiveSense.value += this.abilities.per.value + this.passiveSense.modifiers : ''
     this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
     this.damageThreshold.value += this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers

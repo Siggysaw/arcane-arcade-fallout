@@ -1388,10 +1388,12 @@ body.game .app .tabs > [data-tab] {
 }
 /* Backpack */
 
-.sheet .backpack-tab .segment {
+.sheet .backpack-tab .segment,
+.sheet .combat-tab{
   border: solid 1px;
-  background: #333;
+  background: #111;
   padding: 3px;
+  text-transform:capitalize;
 }
 
 .sheet .backpack-row:hover a,

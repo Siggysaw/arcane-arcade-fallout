@@ -40,16 +40,19 @@ export default class FalloutZeroItem extends Item {
     }
   }
 
-  //Get addresses for a typical actor
-  flattenObject(obj) {
-    if (typeof obj !== 'object') {
+  flattenObject(obj, ancestors = []) {
+    if (typeof obj !== 'object' || obj === null) {
+      return []
+    }
+    if (ancestors.includes(obj)) {
       return []
     }
     let paths = []
     for (let key in obj) {
+      if (key === 'parent') continue
       let val = obj[key]
       if (typeof val === 'object' && val != null) {
-        let subPaths = this.flattenObject(val)
+        let subPaths = this.flattenObject(val, [...ancestors, obj])
         subPaths.forEach((e) => {
           paths.push({
             path: [key, e.path].join('.'),
@@ -96,13 +99,13 @@ export default class FalloutZeroItem extends Item {
     }
   }
 
-  //Get list of paths one has access to
   listModPaths(tag) {
     let opt
-    let pathList = this.flattenObject(game.actors.filter((a) => a.type == 'character')[0])
+    const actor = game.actors.filter((a) => a.type == 'character')[0]
+    let pathList = actor ? this.flattenObject(actor.system) : []
     if (pathList) {
       tag.removeChild(tag.lastElementChild)
-      let myPaths = pathList.map((p) => p.path)
+      let myPaths = pathList.map((p) => `system.${p.path}`)
       myPaths.push('')
       for (var pathValue of myPaths.sort()) {
         if (

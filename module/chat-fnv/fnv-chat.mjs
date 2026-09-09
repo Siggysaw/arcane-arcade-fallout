@@ -27,8 +27,12 @@
 
    3. The kill switch. The stylesheet is gated NEGATIVELY
       (body:not(.fnv-chat-off)), so the class is only ever added to turn the
-      skin OFF. Registered AND applied in `init`, not `ready`: settings are
-      readable synchronously the moment they are registered, and waiting
+      skin OFF. ChatSkin is registered in registerSettings.mjs at `init`,
+      alongside the rest of the system's settings; applied here at `setup` -
+      the earliest phase guaranteed to run after every `init` hook (that
+      registration included) has finished - rather than `init` itself
+      (which used to work only because this file registered AND read the
+      setting in the same breath). Still not `ready`: waiting that long
       would paint the skin for several seconds to a user who disabled it.
 
    4. The message crawl. Every block of a fresh message draws in with a
@@ -117,26 +121,12 @@ function onRenderMessage(message, html) {
   revealBlocks(items)
 }
 
-Hooks.once('init', () => {
-  game.settings.register(ID, 'ChatSkin', {
-    name: 'FNV Chat Skin',
-    hint: 'Restyle the chat sidebar, composer and roll cards as a Fallout terminal panel. Applies immediately.',
-    scope: 'client',
-    config: true,
-    type: Boolean,
-    default: true,
-    onChange: (v) => document.body.classList.toggle('fnv-chat-off', !v),
-  })
-
-  game.settings.register(ID, 'ChatCrawl', {
-    name: 'FNV Chat Message Crawl',
-    hint: 'New chat messages draw themselves in with a staggered left-to-right wipe. Messages already in the log are unaffected.',
-    scope: 'client',
-    config: true,
-    type: Boolean,
-    default: true,
-  })
-
+// ChatSkin/ChatCrawl (and ChatDiceSprites, read inside registerChatDice) are
+// registered in registerSettings.mjs at `init`. Applying them here waits
+// until `setup` - the first phase guaranteed to run after every system's
+// `init` hooks have finished registering their settings - so this can never
+// race the registration and silently read `undefined`.
+Hooks.once('setup', () => {
   document.body.classList.toggle('fnv-chat-off', !setting('ChatSkin'))
 
   // Dice registers its render hook FIRST, on purpose: hooks fire in

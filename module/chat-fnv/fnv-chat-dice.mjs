@@ -192,17 +192,11 @@ export function injectDiceSprites(message, html, fresh) {
 
 const FRESH_MS = 2000
 
-/** Call from an `init` hook. */
+/**
+ * Call from a `setup` hook (or later) - `ChatDiceSprites` itself is
+ * registered in registerSettings.mjs, at `init`.
+ */
 export function registerChatDice(systemId) {
-  game.settings.register(systemId, 'ChatDiceSprites', {
-    name: 'FNV Chat Dice Sprites',
-    hint: 'Roll messages show the dice as animated Fallout sprites: they tumble, land on the rolled face, and tint green or red against the DC when the roll has one.',
-    scope: 'client',
-    config: true,
-    type: Boolean,
-    default: true,
-  })
-
   // Runs before any reveal walk so the sprite row wipes in with its
   // .dice-roll rather than appearing after it. Stale renders land instantly.
   Hooks.on('renderChatMessageHTML', (message, html) => {

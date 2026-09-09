@@ -10,10 +10,10 @@
 
 .sheet .pipboy-header {
   --ph-accent: var(--sheetcolor);
-  --ph-panel-bg: color-mix(in srgb, var(--dark) 55%, #222);
-  --ph-panel-bg-2: color-mix(in srgb, var(--dark) 70%, #222);
+  --ph-panel-bg: color-mix(in srgb, var(--dark) 55%, black);
+  --ph-panel-bg-2: color-mix(in srgb, var(--dark) 70%, black);
   --ph-text: color-mix(in srgb, var(--ph-accent) 70%, white);
-  --ph-text-dim: color-mix(in srgb, var(--ph-accent) 40%, #888);
+  --ph-text-dim: color-mix(in srgb, var(--ph-accent) 40%, black);
 
   display: block;
   background:

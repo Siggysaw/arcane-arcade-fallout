@@ -1351,9 +1351,20 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
   static QUANTITY_DIALOG_EXCLUDED_TYPES = ['race','background','perk','trait','weaponUpgrade','armorUpgrade','condition','property']
 
+  // Labels matching the 'DropItemMinimumRole' setting's choices, for the
+  // warning shown to a user below the configured role.
+  static DROP_ITEM_ROLE_LABELS = {
+    1: 'Players',
+    2: 'Trusted Players',
+    3: 'Assistant GMs',
+    4: 'The Gamemaster',
+  }
+
   async _onDropItemCreate(itemData) {
-    if (!game.user.isGM) {
-      return ui.notifications.warn(`Only the GM can add items to a sheet this way - ask them to give you ${itemData.name}.`)
+    const minimumRole = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'DropItemMinimumRole')
+    if (game.user.role < minimumRole) {
+      const whoCan = FalloutZeroActorSheet.DROP_ITEM_ROLE_LABELS[minimumRole] ?? 'The Gamemaster'
+      return ui.notifications.warn(`${whoCan} can add items to a sheet this way - ask them to give you ${itemData.name}.`)
     }
     switch (itemData.type) {
       case 'trait':

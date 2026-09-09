@@ -35,7 +35,7 @@ export default class AttackRoll extends FormApplication {
     const hasBoostedCapacitor = weaponUpgrades.some((u) => u.name === 'Boosted Capacitor')
 
     const hasAutomatic = typeof weapon.system.description === 'string' && weapon.system.description.includes('Automatic')
-
+    console.log("ACTOR DATA",this.actor.system)
     this.formDataCache = {
       weaponType: weapon.type,
       isExplosive: weapon.type === 'explosive',
@@ -49,7 +49,7 @@ export default class AttackRoll extends FormApplication {
       actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
       actorPenalties: this.actor.system.penaltyTotal,
       totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - decayValue - this.actor.system.penaltyTotal + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
-      bonus: 0,
+      bonus: this.actor.system.boostDice,
       targeted: null,
       forceCritical: false,
       advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
@@ -141,6 +141,12 @@ export default class AttackRoll extends FormApplication {
     leg: 2,
     carried: 4,
   }
+
+  /**
+   * Ordered die ranks a damage die can step through, low to high.
+   * @enum {number}
+   */
+  static DICE_RANKS = [4, 6, 8, 10, 12, 20, 100]
 
   async getData() {
     const data = {
@@ -306,18 +312,6 @@ export default class AttackRoll extends FormApplication {
     this._previousTool = null
   }
 
-  /**
-   * The weapon's base AP cost before any per-attack targeting adjustment.
-   * Ranged/melee weapons (backed by FalloutZeroItemWeapon) compute a real
-   * `system.totalApCost` in prepareDerivedData (apCost plus upgrade
-   * modifiers). Explosives are backed by FalloutZeroCondition instead,
-   * which has no `totalApCost` field at all - reading it there is always
-   * `undefined`, which used to flow straight into `applyApCost(undefined)`
-   * and fail actor.mjs's actionPoints validation (`must be a number`)
-   * instead of deducting AP. Fall back to the item's own `apCost` (present
-   * on both data models) so every weapon type always gets a real number.
-   * @returns {number}
-   */
   getBaseApCost() {
     return this.weapon.system.totalApCost ?? this.weapon.system.apCost ?? 0
   }
@@ -393,6 +387,16 @@ export default class AttackRoll extends FormApplication {
     return this.hasProperty('Upgraded')
   }
 
+  stepFormula(formula, steps) {
+    if (!formula) return formula
+    const ranks = AttackRoll.DICE_RANKS
+    return formula.replace(/(\d+)d(\d+)/gi, (match, diceCount, dieSize) => {
+      const currentIndex = ranks.indexOf(Number(dieSize))
+      const baseIndex = currentIndex === -1 ? 0 : currentIndex
+      const newIndex = Math.min(Math.max(baseIndex + steps, 0), ranks.length - 1)
+      return `${diceCount}d${ranks[newIndex]}`
+    })
+  }
 
   applyDestructive(formula) {
     const qualifies = this.hasDestructive() || this.hasWeighted()
@@ -605,9 +609,10 @@ export default class AttackRoll extends FormApplication {
         ? await message._onRollCriticalDamage()
         : await message._onRollDamage()
 
-      if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AutoApplyDamage')) {
-        await this.applyDamageToHitTokens(autoHitDamageMessage, this.getAttackTargets())
-      }
+      // Auto-applies to whatever is currently targeted - no separate on/off
+      // setting. Not targeting anything is the escape hatch: an empty
+      // target set makes this a no-op, same as the normal-roll branch below.
+      await this.applyDamageToHitTokens(autoHitDamageMessage, this.getAttackTargets())
       return message
     }
 
@@ -672,7 +677,9 @@ export default class AttackRoll extends FormApplication {
 
     const hitTokens = hitResults.filter((r) => r.hit).map((r) => r.token)
     const rollsCriticalDamage = naturalCritical || this.formDataCache.forceCritical === true
-    if (hitTokens.length && game.settings.get(CONFIG.FALLOUTZERO.systemId, 'AutoApplyDamage')) {
+    // No separate on/off setting - not targeting anything means hitTokens is
+    // empty and this is simply a no-op, which is the intended escape hatch.
+    if (hitTokens.length) {
       const damageMessage = rollsCriticalDamage
         ? await attackMessage._onRollCriticalDamage()
         : await attackMessage._onRollDamage()
