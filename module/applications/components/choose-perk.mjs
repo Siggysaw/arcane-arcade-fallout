@@ -7,6 +7,7 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
         this.perks = perks
         this.filteredPerks = this.filterPerks()
         this.app = null
+        this.searchQuery = ''
     }
 
     #choice = null
@@ -24,6 +25,7 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
         perk: ChoosePerk.onPerkChoice,
         cancel: ChoosePerk.onCancel,
       },
+      classes: ['pipboy-dialog'],
       position: { width: 800 },
       window: {
         title: 'Choose a perk!',
@@ -84,7 +86,85 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
         return {
             perks: this.filteredPerks,
             onlyAvailablePerks: this.onlyAvailablePerks,
+            searchQuery: this.searchQuery,
         }
+    }
+
+    // Bind the search box once per DOM element (guarded by dataset.bound so
+    // a full re-render, e.g. from toggling "Only available perks", doesn't
+    // stack duplicate listeners) and re-apply the current filter after
+    // every render. Mirrors the Crafting Bench's render-once/DOM-filter
+    // search architecture — see claude/crafting-bench-reskin.md — so typing
+    // never triggers a Foundry render and never drops keystrokes/focus.
+    _onRender() {
+        const searchInput = this.element.querySelector('[data-search]')
+        if (searchInput && !searchInput.dataset.bound) {
+            searchInput.dataset.bound = 'true'
+            searchInput.addEventListener('input', (e) => this.onSearchInput(e))
+            searchInput.addEventListener('keydown', (e) => this.onSearchKeydown(e))
+            searchInput.addEventListener('blur', () => { this._searchFocused = false })
+        }
+        // A render that touches the grid (e.g. toggling "Only available
+        // perks") replaces the search input itself, so restore focus/cursor
+        // if the user was mid-search when it happened.
+        if (this._searchFocused && searchInput) {
+            searchInput.focus()
+            const pos = this._searchCursorPos ?? searchInput.value.length
+            searchInput.setSelectionRange(pos, pos)
+        }
+
+        this._applyPerkFilter()
+    }
+
+    // Pure DOM show/hide over the already-rendered perk grid — every perk
+    // card stays in the DOM at all times, this just toggles which ones are
+    // visible. Never touches render(), so it's safe to run on every
+    // keystroke.
+    _applyPerkFilter() {
+        const grid = this.element.querySelector('[data-perk-grid]')
+        if (!grid) return
+
+        const query = (this.searchQuery ?? '').trim().toLowerCase()
+        const cards = grid.querySelectorAll('.perk')
+        const visible = []
+
+        cards.forEach((card) => {
+            const name = (card.dataset.itemName ?? '').toLowerCase()
+            const matches = !query || name.includes(query)
+            card.classList.toggle('is-hidden', !matches)
+            card.classList.remove('perk-match')
+            if (matches) visible.push(card)
+        })
+
+        // Autocomplete cue: once typing has narrowed the grid to exactly
+        // one perk, highlight it so it's clear what Enter will choose.
+        if (query && visible.length === 1) {
+            visible[0].classList.add('perk-match')
+        }
+
+        const emptyMessage = grid.querySelector('[data-empty-message]')
+        if (emptyMessage) emptyMessage.hidden = visible.length > 0
+    }
+
+    onSearchInput(e) {
+        this.searchQuery = e.currentTarget.value
+        this._searchFocused = true
+        this._searchCursorPos = e.currentTarget.selectionStart
+        this._applyPerkFilter()
+    }
+
+    // Enter selects the single remaining visible perk, the same way
+    // clicking its "choose" button would — a lightweight autocomplete
+    // confirm that only fires once the search has actually narrowed things
+    // down to one match, so it never fires just from typing.
+    onSearchKeydown(e) {
+        if (e.key !== 'Enter') return
+        e.preventDefault()
+        const grid = this.element.querySelector('[data-perk-grid]')
+        if (!grid) return
+        const visible = [...grid.querySelectorAll('.perk:not(.is-hidden)')]
+        if (visible.length !== 1) return
+        visible[0].querySelector('[data-action="perk"]')?.click()
     }
 
     filterPerks() {

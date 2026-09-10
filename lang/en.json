@@ -148,6 +148,12 @@
       "irradiation": {
         "label": "Irradiation"
       },
+      "hypothermia": {
+        "label": "Hypothermia"
+      },
+      "overheating": {
+        "label": "Overheating"
+      },
       "healing_rate": {
         "label": "Healing Rate"
       },

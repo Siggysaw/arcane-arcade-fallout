@@ -1,29 +1,25 @@
-<div class="grid bordered skill-divs">
-    {{#each skills as |skill key|}}
-    <div>
-        <button class="skillbutton"
-                type="button"
-                data-skill-roll="{{ skill.id }}"
-                data-tooltip="Base: {{ skill.base }} Modifier: {{ skill.modifiers }}"
-                data-pipboyselect>
-            {{localize (concat 'FALLOUTZERO.Skills.' key '.label')}}
-        </button>
-    </div>
-    <div>
-        <div class="flex justify-center gap-5" style="vertical-align:middle">
-            {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
-                <i class="fas fa-minus-square nobackground"></i>
+<div class="ps-panel ps-panel-skills">
+    <div class="pb-eyebrow">Skills</div>
+    <div class="ps-skill-list skill-divs">
+        {{#each skills as |skill key|}}
+        <div class="ps-skill-row">
+            <button class="ps-skill-name skillbutton"
+                    type="button"
+                    data-skill-roll="{{ skill.id }}"
+                    data-tooltip="Base: {{ skill.base }} Modifier: {{ skill.modifiers }}"
+                    data-pipboyselect>
+                <i class="fas fa-dice-d20"></i>{{localize (concat 'FALLOUTZERO.Skills.' key '.label')}}
             </button>
-            {{/if}}
-            <span class="skillvalue" {{#unless ../system.editToggle}} 
-                  style="margin-top:10px;" {{/unless}}>{{skill.value}}</span>
-            {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
-                <i class="fas fa-plus-square nobackground"></i>
-            </button>
-            {{/if}}
+            <div class="ps-skill-editrow">
+                {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statSubtraction data-stat="{{ skill.id }}" data-type="skills">
+                    <i class="fas fa-minus-square nobackground"></i>
+                </button>{{/if}}
+                <span class="ps-skill-value skillvalue">{{skill.value}}</span>
+                {{#if ../system.editToggle}}<button type="button" class="w-auto no-background" data-statAddition data-stat="{{ skill.id }}" data-type="skills">
+                    <i class="fas fa-plus-square nobackground"></i>
+                </button>{{/if}}
+            </div>
         </div>
+        {{/each}}
     </div>
-    {{/each}}
 </div>
-
-

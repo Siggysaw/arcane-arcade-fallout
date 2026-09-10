@@ -403,6 +403,8 @@ FALLOUTZERO.penalties = {
   exhaustion: 'Exhaustion',
   radiation: 'Radiation',
   fatigue: 'Fatigue',
+  hypothermia: 'Hypothermia',
+  overheating: 'Overheating',
 }
 
 FALLOUTZERO.maxKarmaCaps = 7

@@ -5,7 +5,7 @@
     </div>
     <div class="pb-tags-row">
         <span class="pb-tag pb-tag-level">
-            Lvl {{#unless system.editToggle}}{{#GM}}<input class="pb-level-input" style="width:35px;text-align:center" type="number" name="system.level" value="{{system.level}}" />{{else}}{{system.level}}{{/GM}}{{else}}{{system.level}}{{/unless}}
+            Lvl {{#if system.editToggle}}{{#GM}}<input class="pb-level-input" style="width:35px;text-align:center" type="number" name="system.level" value="{{system.level}}" />{{else}}{{system.level}}{{/GM}}{{else}}{{system.level}}{{/if}}
         </span>
         {{#each races as |item id|}}
         <span class="pb-tag context-menu"

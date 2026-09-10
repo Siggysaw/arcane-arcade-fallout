@@ -1,13 +1,3 @@
-/* ================================================================
-   Pip-Boy style character sheet header
-   Scoped entirely under .pipboy-header / .pipboy-karma-row so it
-   layers on top of the legacy header rules earlier in this file
-   without having to touch them. Uses the system's real theme
-   tokens (--sheetcolor / --dark) and real fonts (fixedsys /
-   Monofonto) so VaultTec mode and per-user sheet colors keep
-   working untouched.
-   ================================================================ */
-
 .sheet .pipboy-header {
   --ph-accent: var(--sheetcolor);
   --ph-panel-bg: color-mix(in srgb, var(--dark) 55%, black);

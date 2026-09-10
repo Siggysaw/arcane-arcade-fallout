@@ -5,6 +5,16 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     const fields = foundry.data.fields
     const requiredInteger = { required: true, nullable: false, integer: true }
     const schema = {}
+    schema.attackBonus = new fields.SchemaField({
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 }),
+    })
+    schema.damageBonus = new fields.SchemaField({
+      base: new fields.NumberField({ initial: 0 }),
+      value: new fields.NumberField({ initial: 0 }),
+      modifiers: new fields.NumberField({ initial: 0 }),
+    })
     schema.biography = new fields.HTMLField()
     schema.skillPool = new fields.NumberField({ initial: 0 })
     schema.showEquipped = new fields.BooleanField({ initial: false })

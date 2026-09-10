@@ -35,20 +35,25 @@ export default class AttackRoll extends FormApplication {
     const hasBoostedCapacitor = weaponUpgrades.some((u) => u.name === 'Boosted Capacitor')
 
     const hasAutomatic = typeof weapon.system.description === 'string' && weapon.system.description.includes('Automatic')
-    console.log("ACTOR DATA",this.actor.system)
+    const skillBonus = this.actor.getSkillBonus(this.weapon.system.skillBonus)
+    const attackBonus = this.actor.getAttackBonus(weapon)
+    const damageBonus = this.actor.getDamageBonus(weapon)
+    const abilityBonus = this.weapon.getAbilityBonus()
+    const actorLuck = this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
+
     this.formDataCache = {
       weaponType: weapon.type,
       isExplosive: weapon.type === 'explosive',
       automaticAttack: false,
       consumesAp: true,
-      skillBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus),
-      attackBonus: this.actor.getAttackBonus(weapon),
-      damageBonus: this.actor.getDamageBonus(weapon),
-      abilityBonus: this.weapon.getAbilityBonus(),
+      skillBonus,
+      attackBonus,
+      damageBonus,
+      abilityBonus,
       decayPenalty: weapon.type == "explosive" ? 0 : decayValue,
-      actorLuck: this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
+      actorLuck,
       actorPenalties: this.actor.system.penaltyTotal,
-      totalBonus: this.actor.getSkillBonus(this.weapon.system.skillBonus) + this.actor.getAttackBonus() + this.weapon.getAbilityBonus() - decayValue - this.actor.system.penaltyTotal + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id),
+      totalBonus: skillBonus + attackBonus + abilityBonus - decayValue - this.actor.system.penaltyTotal + actorLuck,
       bonus: this.actor.system.boostDice,
       targeted: null,
       forceCritical: false,

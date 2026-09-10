@@ -1,28 +1,218 @@
+.pipboy-dialog {
+  --pb-glow: color-mix(in srgb, var(--sheetcolor) 55%, transparent);
+  --pb-dim: color-mix(in srgb, var(--sheetcolor) 35%, transparent);
+  --pb-faint: color-mix(in srgb, var(--sheetcolor) 12%, transparent);
+  --pb-hairline: color-mix(in srgb, var(--sheetcolor) 45%, transparent);
+
+  background-color: var(--dark);
+  background-image:
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0px, rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 3px),
+    url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
+  background-repeat: repeat, no-repeat;
+  background-size: auto, 100% 100%;
+  color: var(--sheetcolor);
+}
+
+.window-app.pipboy-dialog .window-content {
+  font-family: 'Monofonto', monospace;
+  padding: 14px;
+  color: var(--sheetcolor);
+  background-color: transparent;
+  background-image: none;
+  border-width: 0;
+  border-style: none;
+  border-image: none;
+}
+
+.pipboy-dialog h1,
+.pipboy-dialog h2,
+.pipboy-dialog h3,
+.pipboy-dialog h5,
+.pipboy-dialog legend {
+  font-family: 'Monofonto', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--sheetcolor);
+  text-shadow: 0 0 6px var(--pb-glow);
+  margin: 0 0 10px;
+  padding: 0;
+  border: none;
+}
+
+.pipboy-dialog fieldset {
+  border: 1px solid var(--pb-hairline);
+  padding: 10px 12px;
+}
+
+
+.pipboy-dialog button:not(.header-control) {
+  width: 100%;
+  font-size: 11pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: none;
+  border: 1px solid var(--sheetcolor);
+  color: var(--sheetcolor);
+  font-family: 'Monofonto', monospace;
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.pipboy-dialog button:not(.header-control):hover:not(:disabled) {
+  background: var(--sheetcolor);
+  color: var(--dark);
+}
+
+.pipboy-dialog button:not(.header-control):disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pipboy-dialog.pipboy-frame,
+.pipboy-dialog .pipboy-frame {
+  position: relative;
+  padding: 16px;
+}
+
+/* ================= Main Level Up dialog ================= */
+.level-up .rewards > div:first-child {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 9pt;
+  opacity: 0.75;
+  margin-bottom: 6px;
+}
+
 .level-up .rewards .skills button {
-    width: auto;
-    margin: 0;
-    padding: 0;
-    line-height: normal;
-    border: 0;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  line-height: normal;
+  border: 0;
+  background: none;
+}
+
+.level-up fieldset i {
+  color: color-mix(in srgb, var(--sheetcolor) 55%, transparent);
+  cursor: pointer;
+}
+
+.level-up fieldset i:hover {
+  color: var(--sheetcolor);
+}
+
+.level-up .dialog-buttons,
+.level-up > .flex.my-2 {
+  margin-top: 16px;
+}
+
+/* ================= Choose Perk dialog ================= */
+.choose-perk {
+  min-height: 0;
+}
+
+.choose-perk .perk-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--pb-hairline);
+}
+
+.choose-perk .perk-filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.choose-perk .perk-filter-toggle input[type="checkbox"] {
+  accent-color: var(--sheetcolor);
+  cursor: pointer;
+}
+
+.choose-perk .perk-picker-header .search-row {
+  flex: 0 1 260px;
+}
+
+.choose-perk .perk-picker-header button[data-action="cancel"] {
+  width: auto;
+  padding: 6px 14px;
 }
 
 .choose-perk .perk-grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 3px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
 }
 
 .choose-perk .perk-grid .perk {
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
-    height: 100%;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 6px;
+  background: color-mix(in srgb, var(--dark) 70%, black);
+  border: 1px solid var(--pb-hairline);
+  transition: border-color 0.1s ease, background 0.1s ease;
+}
+
+.choose-perk .perk-grid .perk:hover {
+  border-color: var(--sheetcolor);
+  background: var(--pb-faint);
+}
+
+
+.choose-perk .perk-grid .perk.perk-match {
+  border-color: var(--sheetcolor);
+  box-shadow: 0 0 8px var(--pb-glow);
+}
+
+.choose-perk .perk-grid .perk img {
+  filter: sepia(1) hue-rotate(70deg) saturate(3);
+  opacity: 0.9;
+}
+
+.choose-perk .perk-grid .perk .perk-req-ability {
+  font-size: 9pt;
+}
+
+.choose-perk .perk-grid .perk .underline {
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 8pt;
+  opacity: 0.7;
+  border-bottom: 1px solid var(--pb-hairline);
+  padding-bottom: 2px;
+  margin-bottom: 2px;
+}
+
+.choose-perk .perk-grid .empty-branch {
+  grid-column: 1 / -1;
 }
 
 .choose-perk .perk-grid .perk button {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+}
+
+/* ================= Choose SPECIAL dialog ================= */
+.choose-special {
+  padding: 4px;
+}
+
+.choose-special .special-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
 }

@@ -82,51 +82,42 @@
         <div class="ability flexrow flex-group-center"></div>
       </div>
       {{!-- Owned status Tab --}}
-      <div class="tab status" data-group="primary" data-tab="status">
-        <section>
+      <div class="tab status pipboy-statpage" data-group="primary" data-tab="status">
+        <div class="ps-grid">
           {{>
             "systems/arcane-arcade-fallout/templates/actor/status/special.hbs"
             abilities=system.abilities
           }}
-          <table class="status-block">
-            <tr>
-              <td class="skill-table">
-                {{>
-                    "systems/arcane-arcade-fallout/templates/actor/status/skills.hbs"
-                    startingSkillpoints=system.startingSkillpoints
-                    skillPool=system.skillPool
-                    skills=system.skills
-                    abilities=system.abilities
-                    penaltyTotal=system.penaltyTotal
-                }}
-              </td>
-
-              <td class="status-table">
-                {{>
-                    "systems/arcane-arcade-fallout/templates/actor/status/penalties.hbs"
-                    penalties=system.penalties
-                    penaltyTotal=system.penaltyTotal
-                    radDC=system.radDC
-                    irradiated=system.irradiated
-                }}
-                <br />
-                {{>
-                    "systems/arcane-arcade-fallout/templates/actor/status/passives.hbs"
-                    healingRate=system.healingRate
-                    combatSequence=system.combatSequence.value
-                    fatigue=system.penalties.fatigue
-                    passiveSense=system.passiveSense
-                    partyNerve=system.partyNerve
-                    groupSneak=system.groupSneak
-                    properties=system.properties
-                    penaltyTotal=system.penaltyTotal
-                }}
-
-                 
-              </td>
-            </tr>
-          </table>
-        </section>
+          {{>
+              "systems/arcane-arcade-fallout/templates/actor/status/skills.hbs"
+              startingSkillpoints=system.startingSkillpoints
+              skillPool=system.skillPool
+              skills=system.skills
+              abilities=system.abilities
+              penaltyTotal=system.penaltyTotal
+          }}
+          <div class="ps-side">
+            {{>
+                "systems/arcane-arcade-fallout/templates/actor/status/penalties.hbs"
+                penalties=system.penalties
+                penaltyTotal=system.penaltyTotal
+                radDC=system.radDC
+                irradiated=system.irradiated
+            }}
+            {{>
+                "systems/arcane-arcade-fallout/templates/actor/status/passives.hbs"
+                healingRate=system.healingRate
+                combatSequence=system.combatSequence.value
+                fatigue=system.penalties.fatigue
+                passiveSense=system.passiveSense
+                partyNerve=system.partyNerve
+                groupSneak=system.groupSneak
+                properties=system.properties
+                penaltyTotal=system.penaltyTotal
+            }}
+          </div>
+          {{> "systems/arcane-arcade-fallout/templates/actor/parts/actor-notes.hbs"}}
+        </div>
       </div>
 
       {{!-- Owned Items Tab --}}

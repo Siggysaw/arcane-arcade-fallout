@@ -108,6 +108,13 @@ button > i:hover {
   border: 0;
 }
 
+/* Generic "hide this element" utility toggled purely via JS classList (no
+   Foundry render involved) — used by any render-once/DOM-filter search UI,
+   e.g. the Crafting Bench's craftables list and the Level Up perk search. */
+.is-hidden {
+  display: none !important;
+}
+
 .unlist {
   list-style: none;
   padding: 0;

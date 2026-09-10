@@ -33,6 +33,7 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
             chooseSpecial: LevelUp.onChooseSpecial,
             cancel: LevelUp.onCancel,
         },
+        classes: ['pipboy-dialog'],
         position: { width: 400 },
         window: {
             title: 'You leveled up!',

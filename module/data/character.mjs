@@ -78,16 +78,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.critMod = new fields.NumberField({ initial: 0, min : 0 })
     schema.totalKarma = new fields.NumberField({ initial: 0 })
     schema.luckmod = new fields.NumberField({ initial: 0 })
-    schema.attackBonus = new fields.SchemaField({
-      base: new fields.NumberField({ initial: 0 }),
-      value: new fields.NumberField({ initial: 0 }),
-      modifiers: new fields.NumberField({ initial: 0 }),
-    })
-    schema.damageBonus = new fields.SchemaField({
-      base: new fields.NumberField({ initial: 0 }),
-      value: new fields.NumberField({ initial: 0 }),
-      modifiers: new fields.NumberField({ initial: 0 }),
-    })
     schema.downed = new fields.BooleanField({ initial: false })
     schema.xp = new fields.NumberField({ initial: 0 })
     schema.healingRate = new fields.SchemaField({
@@ -379,13 +369,17 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers, 0)
     this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers, 0)
     this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers, 0)
+    this.penalties.hypothermia.value = Math.max(this.penalties.hypothermia.base + this.penalties.hypothermia.modifiers, 0)
+    this.penalties.overheating.value = Math.max(this.penalties.overheating.base + this.penalties.overheating.modifiers, 0)
     this.radiationDC.value = (12 - this.abilities['end'].mod) + this.radiationDC.base + this.radiationDC.modifiers
     this.penaltyTotal =
       this.penalties.hunger.value +
       this.penalties.dehydration.value +
       this.penalties.exhaustion.value +
       this.penalties.radiation.value +
-      this.penalties.fatigue.value
+      this.penalties.fatigue.value +
+      this.penalties.hypothermia.value +
+      this.penalties.overheating.value
     this.carryLoad.baseMax = this.abilities['str'].value * 10
     this.combatSequence.value = this.combatSequence.base + this.abilities.per.mod + this.combatSequence.modifiers
     this.healingRate.value = this.healingRate.base + Math.floor((this.level + this.abilities['end'].value) / 2) + this.healingRate.modifiers + this.healingRate.manualMax

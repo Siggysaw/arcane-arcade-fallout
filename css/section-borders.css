@@ -1,0 +1,45 @@
+/* ================================================================
+   Shared accent-colored bordered-panel treatment, extended from the
+   Status tab's corner-bracket panels (css/status-tab.css) to
+   individual item rows/cards and section containers across the
+   Perks, Combat, Aid, Backpack, and Effects tabs.
+
+   Uses var(--sheetcolor) directly rather than the --ph-accent token
+   scoping those files use, so it can be dropped onto any container
+   in the sheet without needing a wrapping theme scope. This is a
+   border-only treatment - no background/font changes - so it layers
+   cleanly onto the existing table/list layouts in these tabs.
+   ================================================================ */
+
+.sheet .pb-accent-border {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--sheetcolor) 45%, transparent);
+}
+
+.sheet .pb-accent-border::before,
+.sheet .pb-accent-border::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--sheetcolor);
+  border-style: solid;
+  pointer-events: none;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--sheetcolor) 60%, transparent));
+}
+
+.sheet .pb-accent-border::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.sheet .pb-accent-border::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+/* .combat-tab and .backpack-tab .segment already carry a plain 1px border from
+   falloutzero.css (`.sheet .backpack-tab .segment, .sheet .combat-tab { border:
+   solid 1px; ... }`). Those selectors out-specify the generic .pb-accent-border
+   rule above, so these compound overrides (one extra class each) win outright
+   and swap in the accent color without touching the existing background/padding. */
+.sheet .combat-tab.pb-accent-border {
+  border: 1px solid color-mix(in srgb, var(--sheetcolor) 45%, transparent);
+}
+
+.sheet .backpack-tab .segment.pb-accent-border {
+  border: 1px solid color-mix(in srgb, var(--sheetcolor) 45%, transparent);
+}

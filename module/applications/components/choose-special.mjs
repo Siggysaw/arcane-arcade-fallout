@@ -20,6 +20,7 @@ export default class ChooseSpecial extends HandlebarsApplicationMixin(Applicatio
         special: ChooseSpecial.onSpecialChoice,
         cancel: ChooseSpecial.onCancel,
       },
+      classes: ['pipboy-dialog'],
       window: {
         title: 'Choose a special!',
         resizable: true

@@ -19,6 +19,8 @@
 @import 'pipboy-flicker.css';
 @import 'robco-terminal.css';
 @import 'actor-header.css';
+@import 'status-tab.css';
+@import 'section-borders.css';
 
 /* Global styles */
 @font-face {
@@ -55,6 +57,11 @@
 .window-app {
   font-family: 'Monofonto', sans-serif;
   letter-spacing: 0.1rem;
+  --ph-accent: var(--sheetcolor);
+  --ph-panel-bg: color-mix(in srgb, var(--dark) 55%, black);
+  --ph-panel-bg-2: color-mix(in srgb, var(--dark) 70%, black);
+  --ph-text: color-mix(in srgb, var(--ph-accent) 70%, white);
+  --ph-text-dim: color-mix(in srgb, var(--ph-accent) 40%, black);
 }
 
 :root {
@@ -71,7 +78,7 @@ details > summary {
   align-items: center;
   background: none;
   cursor: pointer;
-  border: solid 1px #ccc;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent) #ccc;
 }
 
 .sheet form h3 {
@@ -80,7 +87,7 @@ details > summary {
   align-items: center;
   color: #ccc;
   background: #222;
-  border: solid 1px #ccc;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent) #ccc;
   text-transform: uppercase;
   padding: 5px;
 }
@@ -487,7 +494,7 @@ form div label {
 .journal-entry-content table td,
 .sheet .prosemirror table td,
 .sheet .editor-content table td {
-  border: solid 1px var(--sheetcolor);
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent) var(--sheetcolor);
 }
 
 .sheet .character-name input {
@@ -498,7 +505,7 @@ form div label {
 
 .sheet input {
   color: var(--sheetcolor);
-  border: solid 1px var(--dark);
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent) var(--dark);
   font-size: 10pt;
 }
 
@@ -552,7 +559,7 @@ table .bio-label {
   height: 175px;
   width: 200px;
   object-fit: cover;
-  border: solid 1px var(--sheetcolor);
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent) var(--sheetcolor);
 }
 
 .sheet header.sheet-header .custom-icon {
@@ -588,7 +595,7 @@ td,
 
 .status .skill-table td,
 .status .status-table td {
-  border: solid 1px;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent);
 }
 
 .status .skill-table {
@@ -672,7 +679,7 @@ td,
 }
 
   .sheet .equipped-stats td {
-    border: solid 1px;
+    border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent);
     vertical-align: middle;
     padding: 2px;
     letter-spacing: 0rem;
@@ -968,7 +975,7 @@ form td .status-notes li:hover {
 }
 
 .roll-table-config table.table-results .table-result {
-  border: solid 1px var(--dark);
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent) var(--dark);
 }
 
 .roll-table-config .stacked {
@@ -993,7 +1000,7 @@ form td .status-notes li:hover {
 
 .item .content-link {
   text-decoration: underline;
-  border: solid 1px var(--sheetcolordarker);
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent) var(--sheetcolordarker);
 }
 
 a.content-link,
@@ -1001,7 +1008,7 @@ a.inline-roll,
 .chat-message .table-draw .table-results .table-result .result-text a {
   background: none;
   color: inherit;
-  border: solid 1px var(--sheetcolordarker);
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent) var(--sheetcolordarker);
 }
 
 .window-content .item-piles-even-color:nth-child(even),
@@ -1009,7 +1016,7 @@ a.inline-roll,
 .window-content .item-piles-child-even-color > *,
 .window-content .item-piles-child-odd-color > * {
   background-color: var(--dark) !important;
-  border: solid 1px;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent);
 }
 
 .item-piles-clickable-link {
@@ -1179,7 +1186,7 @@ body.game .app .tabs > [data-tab] {
 }
 
 .sheet #context-menu li.context-item {
-  border: solid 1px;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent);
 }
 
 .sheet .combat-actions #context-menu {
@@ -1219,7 +1226,7 @@ body.game .app .tabs > [data-tab] {
 }
 
 .item .weapon-description, .item .weapon-details .prosemirror {
-  border: solid 1px;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent);
   padding: 5px;
 }
 
@@ -1230,7 +1237,7 @@ body.game .app .tabs > [data-tab] {
 }
 /*Combat Tab*/
 .sheet .combat-tab div {
-  border: solid 1px;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent);
   text-align: center;
 }
 
@@ -1390,7 +1397,7 @@ body.game .app .tabs > [data-tab] {
 
 .sheet .backpack-tab .segment,
 .sheet .combat-tab{
-  border: solid 1px;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent);
   background: #111;
   padding: 3px;
   text-transform:capitalize;
@@ -1625,6 +1632,13 @@ body.game .app .tabs > [data-tab] {
   background-position: right center;
 }
 
+.sheet .pipboy-statpage label.ps-special-abbr:hover {
+  color: black;
+}
+
+.sheet .header-control .icon .fa-solid .fa-ellipsis-vertical{
+    font-family:arial;
+}
 /* ================= VAULT TEC OVERRIDES==========================*/
 .sheet .vaulttec {
   background-color: #0066b1;
@@ -1680,7 +1694,7 @@ body.game .app .tabs > [data-tab] {
 .sheet .vaulttec input {
   color: #FEF265;
   background-color: #333;
-  border: solid 1px;
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent);
 }
 
 .sheet .vaulttec .item-label input {
@@ -1783,35 +1797,12 @@ body.game .app .vaulttec .tabs > [data-tab] {
     text-shadow: none;
   }
 
-/* ---------------------------------------------------------------------
-   VAULT TEC — generic window coverage (added Aug 19, 2026)
-   The rules above all assume a `.sheet` ancestor (actor/item/perk sheets),
-   which is where Foundry's core `Application`/`ItemSheet` machinery puts
-   the `defaultOptions.classes` array. The system's own popup dialogs and
-   ApplicationV2 components (Award, Chem Application, GM Screen, Level Up,
-   Perk List, Select Upgrade, the Combat Actions reference table) don't
-   carry a `.sheet` class, so none of the rules above would ever match
-   there. These bare `.vaulttec` rules give those windows the same
-   high-contrast navy/yellow accessibility treatment without depending on
-   `.sheet` or `.window-app`/`.window-content` ancestor classes, since
-   ApplicationV2's root element naming isn't consistent enough across
-   Foundry versions to rely on (see the Journal reskin notes for the same
-   problem with hook names). Deliberately low specificity (bare `.vaulttec`
-   / one-descendant selectors) so the more detailed `.sheet .vaulttec`
-   rules above continue to win on actor/item sheets — this block only
-   fills in the gap for windows that have nothing else targeting them. */
+
 .vaulttec {
   background-color: #001423;
   color: #dbd45a;
 }
 
-/* Journal windows (see registerHooks.mjs's applyVaultTecTheme) get the
-   `.vaulttec` class on the outer window element itself, same placement as
-   the Robco Terminal skin — the bare rule above sets background/color on
-   that outer div, but Foundry's own `.window-header`/`.window-content`
-   children paint their own opaque backgrounds on top of it (the same
-   bleed-through issue documented in the Robco Terminal reskin notes), so
-   they need their own explicit override to actually show the theme. */
 .vaulttec .window-header,
 .vaulttec .window-content {
   background: #001423;

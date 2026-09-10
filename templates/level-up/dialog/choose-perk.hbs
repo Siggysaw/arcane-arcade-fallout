@@ -1,16 +1,23 @@
-<div class="choose-perk scrollable">
-    <div class="filters">
-        <label data-tooltip="Only display perks of which you meet the requirements">
+<div class="choose-perk pipboy-frame scrollable">
+    <div class="perk-picker-header">
+        <label class="perk-filter-toggle" data-tooltip="Only display perks of which you meet the requirements">
             <input data-action="filter" type="checkbox" name="onlyAvailablePerks" {{#if onlyAvailablePerks}} checked{{/if}} />
             Only available perks
         </label>
-    </div>
-    <div class="my-2">
+        <div class="search-row">
+            <i class="fas fa-search"></i>
+            <input type="search"
+                   placeholder="Search Perks"
+                   data-search
+                   value="{{searchQuery}}"
+                   autocomplete="off"
+                   data-tooltip="Type to filter — Enter selects the only remaining match">
+        </div>
         <button data-action="cancel">Cancel</button>
     </div>
-    <div class="perk-grid">
+    <div class="perk-grid" data-perk-grid>
         {{#each perks as |perk|}}
-            <div class="perk">
+            <div class="perk" data-item-name="{{perk.name}}">
                 <img
                     class="mx-auto"
                     src="{{perk.img}}"
@@ -30,7 +37,7 @@
                     {{/GreaterThan}}
                     {{#if (NotEqual perk.system.specialReq.special '' ) }}
                     {{#if (NotEqual perk.system.specialReq.special 'None' ) }}
-                    <div>
+                    <div class="perk-req-ability">
                         {{SpecialKeyToLabel perk.system.specialReq.special }}: {{ perk.system.specialReq.value }}
                     </div>
                     {{/if}}
@@ -52,5 +59,6 @@
                 </button>
             </div>
         {{/each}}
+        <div class="empty-branch" data-empty-message hidden>No perks match your search</div>
     </div>
 </div>
