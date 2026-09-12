@@ -30,9 +30,7 @@ export default class FalloutZeroActor extends Actor {
   getItemByCompendiumId(id) {
     if (!id) return false
 
-    console.log('search for', id)
     const found = this.items.find((item) => {
-      console.log(item._stats.compendiumSource)
       return item._stats.compendiumSource === id
     })
     return found
@@ -2246,7 +2244,6 @@ export default class FalloutZeroActor extends Actor {
       this.updateEmbeddedDocuments('Item', [{ _id: armorID, 'system.armorHP.max': armorMax },])
       this.updateEmbeddedDocuments('Item', [{ _id: armorID, 'system.armorHP.value': armorMax },])
     }
-    console.log(armor)
   }
 
   sortTable(tableID) {

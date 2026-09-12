@@ -443,6 +443,33 @@ export default class AttackRoll extends FormApplication {
   }
 
   /**
+   * Feed this attack into Automated Animations. That module ships built-in
+   * "system handlers" for only a fixed list of systems (dnd5e, pf2e, sw5e,
+   * swade, wfrp4e, twodsix, alienrpg as of v7.0.20) - this Fallout system
+   * isn't one of them, so Automated Animations never learns an attack
+   * happened no matter how many animations are configured for a weapon in
+   * its Autorec menu.
+   *
+   * `aa.workflow` is a plain Foundry hook Automated Animations always
+   * listens for internally (`Hooks.on("aa.workflow", (token, item, options)
+   * => playAnimation(token, item, options))`), independent of system
+   * support. Calling it here is a safe no-op if the module isn't installed
+   * or active - `Hooks.callAll` with no listeners does nothing.
+   *
+   * @param {boolean|null} hit    Whether the attack hit (null = no target selected).
+   * @param {Token[]} hitTargets  Tokens that were actually hit, if any.
+   */
+  triggerAutomatedAnimation(hit, hitTargets) {
+    const sourceToken = this.actor.getActiveTokens()[0]
+    if (!sourceToken) return
+    Hooks.callAll('aa.workflow', sourceToken, this.weapon, {
+      targets: this.getAttackTargets(),
+      hitTargets: hitTargets ?? [],
+      hit: hit === true,
+    })
+  }
+
+  /**
    * @returns {number}
    */
   getCriticalThreshold() {
@@ -610,6 +637,8 @@ export default class AttackRoll extends FormApplication {
         },
       })
 
+      this.triggerAutomatedAnimation(true, this.getAttackTargets())
+
       const autoHitDamageMessage = isCritical
         ? await message._onRollCriticalDamage()
         : await message._onRollDamage()
@@ -681,6 +710,7 @@ export default class AttackRoll extends FormApplication {
     })
 
     const hitTokens = hitResults.filter((r) => r.hit).map((r) => r.token)
+    this.triggerAutomatedAnimation(anyHit, hitTokens)
     const rollsCriticalDamage = naturalCritical || this.formDataCache.forceCritical === true
     // No separate on/off setting - not targeting anything means hitTokens is
     // empty and this is simply a no-op, which is the intended escape hatch.

@@ -7,12 +7,23 @@ const ATTEMPT_RESULT = {
   CRITICAL_SUCCESS: 'critical success',
 }
 
-// Synthetic category, always shown first in the sidebar pager/select and
-// containing every craftable regardless of its real category. Not one of
-// CONFIG.FALLOUTZERO.craftingTypes's keys (an item's own `system.crafting.type`
-// can never be this), so it's built and populated separately — see the
-// CraftingBench constructor and init().
 const ALL_BRANCH_KEY = 'all'
+
+function getMaterialDiscount(actor, craftable) {
+  let materialDiscount = 0
+  if (craftable?.type === 'chem' && actor.hasPerk('Adroit Alchemist')) {
+    materialDiscount += 1
+  }
+  if (actor.hasPerk('Expert Engineer')) {
+    materialDiscount += 2
+  }
+  return materialDiscount
+}
+
+function applyMaterialDiscount(qty, materialDiscount) {
+  if (!materialDiscount) return qty
+  return Math.max(1, qty - materialDiscount)
+}
 
 async function updateCreateCraftedItem({ actor, selectedCraftable, selectedBaseItemId }) {
   const efficientMunitionsPerk = selectedCraftable.type === 'ammo' && actor.hasPerk('Efficient Munitions')
@@ -26,15 +37,13 @@ async function updateCreateCraftedItem({ actor, selectedCraftable, selectedBaseI
 
   const craftedName = renameEfficient ? `Efficient ${selectedCraftable.name}` : selectedCraftable.name
 
-  // Match on compendium source AND name, so "Efficient X" and "X" are
-  // tracked as separate stacks rather than colliding on the same source item
   const existingItem = selectedCraftable.type !== 'armorUpgrade' && actor.items.find((item) => {
     return item._stats.compendiumSource === selectedCraftable.uuid && item.name === craftedName
   })
 
   let newQty = existingItem?.system?.quantity ?? 0
 
-  // Update or create crafted item
+
   if (existingItem) {
     newQty += craftedQty
     actor.updateItemById(existingItem.id, {
@@ -59,12 +68,14 @@ async function updateCreateCraftedItem({ actor, selectedCraftable, selectedBaseI
 }
 
 function attemptToMessage(actor, craftable, { attemptType, attemptDice, critSuccessDice, materialChange }) {
+  const materialDiscount = getMaterialDiscount(actor, craftable)
   const materialsUsedMessage = craftable.system.crafting.materials.reduce((acc, mat, index) => {
     if (attemptType === ATTEMPT_RESULT.CRITICAL_SUCCESS && critSuccessDice.total === index) {
-      acc += `${Math.max(1, mat.quantity - materialChange)} ${mat.name} consumed <br>`
+      const qty = applyMaterialDiscount(Math.max(1, mat.quantity - materialChange), materialDiscount)
+      acc += `${qty} ${mat.name} consumed <br>`
       return acc
     }
-    acc += `${mat.quantity} ${mat.name} consumed <br>`
+    acc += `${applyMaterialDiscount(mat.quantity, materialDiscount)} ${mat.name} consumed <br>`
     return acc
   }, '')
 
@@ -93,21 +104,7 @@ function attemptToMessage(actor, craftable, { attemptType, attemptDice, critSucc
 }
 
 async function updateActorMaterials({ actor, craftable, materials, attemptResult = ATTEMPT_RESULT.SUCCESS, materialChange = { index: -1, value: 0 } }) {
-  let materialDiscount = 0
-  if (craftable?.type === 'chem' && actor.hasPerk('Adroit Alchemist')) {
-    materialDiscount += 1
-  }
-  if (actor.hasPerk('Expert Engineer')) {
-    materialDiscount += 2
-  }
-
-  // Reduces a consumption amount by the combined discount, down to a
-  // minimum of 1. Only applies to material *usage*, not to fail-state
-  // material loss.
-  const applyMaterialDiscount = (qty) => {
-    if (materialDiscount === 0) return qty
-    return Math.max(1, qty - materialDiscount)
-  }
+  const materialDiscount = getMaterialDiscount(actor, craftable)
 
   return await Promise.all(
     materials.map(async (mat, matIndex) => {
@@ -119,12 +116,12 @@ async function updateActorMaterials({ actor, craftable, materials, attemptResult
           // reduce one material by less based on the materialChange value
           const baseQty = Math.max(1, (mat.quantity - materialChange.value))
           return await actor.updateItemById(item.id, {
-            quantity: Math.max(0, item.system.quantity - applyMaterialDiscount(baseQty))
+            quantity: Math.max(0, item.system.quantity - applyMaterialDiscount(baseQty, materialDiscount))
           })
         } else {
           // other items get normal reduction
           return await actor.updateItemById(item.id, {
-            quantity: Math.max(0, item.system.quantity - applyMaterialDiscount(mat.quantity))
+            quantity: Math.max(0, item.system.quantity - applyMaterialDiscount(mat.quantity, materialDiscount))
           })
         }
       }
@@ -137,7 +134,7 @@ async function updateActorMaterials({ actor, craftable, materials, attemptResult
 
       // on all other cases, subtract the material quantity from the actor
       return await actor.updateItemById(item.id, {
-        quantity: Math.max(0, item.system.quantity - applyMaterialDiscount(mat.quantity + materialChange.value))
+        quantity: Math.max(0, item.system.quantity - applyMaterialDiscount(mat.quantity + materialChange.value, materialDiscount))
       })
     })
   )
@@ -316,17 +313,12 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       return acc
     }, {})
 
-    // Prepend the synthetic "All" category so it's the first tab. Its
-    // items are populated in init() once every per-type branch is filled
-    // in (it just aggregates them, rather than being fed from the
-    // compendium/game-item scan itself).
     this.fullCraftingTree = {
       [ALL_BRANCH_KEY]: { id: ALL_BRANCH_KEY, label: 'All', items: [] },
       ...this.fullCraftingTree,
     }
 
-    // Default to the first category tab being active rather than opening
-    // with no category selected.
+
     const firstBranchKey = Object.keys(this.fullCraftingTree)[0]
     this.openBranches = firstBranchKey ? [firstBranchKey] : []
   }
@@ -365,18 +357,12 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
   }
 
   _onRender() {
-    // Guard every manually-attached listener against double-binding: a
-    // render scoped to just ['main', 'console'] (see search()) leaves the
-    // sidebar's DOM untouched, so without this check we'd stack a second
-    // listener onto the same still-alive elements each time.
     const searchInput = this.element.querySelector('[data-search]')
     if (searchInput && !searchInput.dataset.bound) {
       searchInput.dataset.bound = 'true'
       searchInput.addEventListener('input', (e) => this.search(e))
       searchInput.addEventListener('blur', () => { this._searchFocused = false })
     }
-    // A render that touches the sidebar (e.g. switching category) replaces
-    // the search input itself, so without this the field would lose focus.
     if (this._searchFocused && searchInput) {
       searchInput.focus()
       const pos = this._searchCursorPos ?? searchInput.value.length
@@ -401,21 +387,9 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       })
     }
 
-    // Sync the sidebar's visible rows with the current search/category
-    // state. Cheap and idempotent, so it's safe to just always run this
-    // after every render (full or partial) rather than track exactly what
-    // changed.
     this._applySidebarFilter()
   };
 
-  // Pure DOM show/hide over the *already-rendered* sidebar list — same
-  // technique GMApplication's quick-insert search uses. Every craftable
-  // across every category is in the DOM at all times; this just toggles
-  // which rows are visible. Critically, this never touches Foundry's
-  // render() and never recreates the search <input>, so it can run on
-  // every keystroke without disturbing focus or dropping characters —
-  // which is what re-rendering the whole window on every keystroke was
-  // doing before.
   _applySidebarFilter() {
     const list = this.element.querySelector('[data-craftables-list]')
     if (!list) return
@@ -430,13 +404,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
     let visibleCount = 0
     list.querySelectorAll('.crafting-option').forEach((row) => {
-      // Every craftable is rendered once per branch it belongs to,
-      // including a duplicate copy under the synthetic "All" branch (see
-      // ALL_BRANCH_KEY) — that's fine in browse mode, since matching by
-      // exact branch tag naturally shows only one copy at a time. But
-      // search mode matches by name only, so without this exclusion the
-      // "All" copy of an item would show up a second time alongside its
-      // real-category copy any time both matched the query.
+
       const matches = isSearching
         ? row.dataset.branch !== ALL_BRANCH_KEY && row.dataset.itemName?.toLowerCase().includes(query)
         : row.dataset.branch === activeBranch
@@ -464,9 +432,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       owned: this.owned,
       hasRequirements: this.hasRequirements,
       searchQuery: this.searchQuery,
-      // Excludes the synthetic "All" branch — it's a duplicate aggregation
-      // of every other branch's items, so counting it in too would double
-      // (in fact, over-double) every result.
       searchResultsCount: this.searchQuery
         ? Object.entries(this.craftingTree).reduce((sum, [branchKey, branch]) => {
           return branchKey === ALL_BRANCH_KEY ? sum : sum + branch.items.length
@@ -474,6 +439,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         : null,
       onlyCraftables: this.onlyCraftables,
       baseMaterialOptions: this.baseMaterialOptions,
+      materialRequirements: this.materialRequirements,
       selectedBaseItemMaterials: this.selectedBaseItemMaterials,
       selectedBaseItemId: this.selectedBaseItemId,
       isArmorUpgrade: this.selectedCraftable?.type === 'armorUpgrade',
@@ -493,14 +459,11 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
   }
 
   get materials() {
-    const actorMaterials = this.actor.craftingMaterials
-    console.log("Actor Materials: ", actorMaterials)
     return this.actor.craftingMaterials.reduce((acc, mat) => {
       acc[mat._stats.compendiumSource] = {
         name: mat.name,
         quantity: mat.system.quantity
       }
-      console.log("ACC: ", acc)
       return acc
     }, {})
   }
@@ -553,11 +516,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     // if searchQuery is set, filter the crafting tree
     if (this.searchQuery) {
       tree = Object.keys(tree).reduce((acc, branchKey) => {
-        // Read from `tree`, not `fullCraftingTree` — when onlyCraftables is
-        // also active, `tree` above has already been narrowed to items the
-        // actor can afford. Reading from fullCraftingTree here would undo
-        // that filtering and let uncraftable items reappear in search
-        // results whenever both filters are active at once.
         const branch = tree[branchKey]
         // if branch label is a match, return branch and all leafs
         if (branch.label.toLowerCase().includes(this.searchQuery)) {
@@ -584,15 +542,37 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     return CONFIG.FALLOUTZERO.armorTypes
   }
 
+  get materialDiscount() {
+    if (!this.selectedCraftable) return 0
+    return getMaterialDiscount(this.actor, this.selectedCraftable)
+  }
+  _withDiscountDisplay(materials) {
+    const discount = this.materialDiscount
+    return materials.map((mat) => {
+      const requiredQuantity = applyMaterialDiscount(mat.quantity, discount)
+      return {
+        ...mat,
+        requiredQuantity,
+        discountAmount: mat.quantity - requiredQuantity,
+      }
+    })
+  }
+
+  get materialRequirements() {
+    if (!this.selectedCraftable) return []
+    return this._withDiscountDisplay(this.selectedCraftable.system.crafting.materials)
+  }
+
   get selectedBaseItemMaterials() {
     if (!this.selectedBaseItemUuid || !this.selectedCraftable.system.crafting.materialBase.required) return []
     const selectedBaseItem = fromUuidSync(this.selectedBaseItemUuid)
-    return selectedBaseItem.system.crafting.materials.map((mat) => {
+    const materials = selectedBaseItem.system.crafting.materials.map((mat) => {
       return {
         ...mat,
         quantity: this.selectedCraftable.system.crafting.materialBase.multiplier
       }
     })
+    return this._withDiscountDisplay(materials)
   }
 
   async init() {
@@ -616,11 +596,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         type.items.push(gameItem)
       }
 
-      // Populate the synthetic "All" branch by aggregating everything just
-      // gathered into the real per-type branches above. Must happen after
-      // that population and before the sort below (so "All" gets sorted
-      // too) — and explicitly excludes itself so re-running init() doesn't
-      // double up.
       this.craftingTree[ALL_BRANCH_KEY].items = Object.entries(this.craftingTree)
         .filter(([branchKey]) => branchKey !== ALL_BRANCH_KEY)
         .flatMap(([, branch]) => branch.items)
@@ -644,8 +619,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     this.render()
   }
 
-  // Shared by the sidebar click handler and the search box's exact-match
-  // selection (see _autoSelectExactMatch) so both stay in sync.
   _applySelectedCraftable(craftable) {
     this.selectedCraftable = craftable ?? null
     if (!this.selectedCraftable) return
@@ -694,8 +667,9 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
   hasMaterials(craftableItem) {
     if (!craftableItem) return false
 
+    const materialDiscount = getMaterialDiscount(this.actor, craftableItem)
     return [...craftableItem.system.crafting.materials, ...this.selectedBaseItemMaterials].every((mat) => {
-      return (this.materials?.[mat.uuid]?.quantity ?? 0) >= mat.quantity
+      return (this.materials?.[mat.uuid]?.quantity ?? 0) >= applyMaterialDiscount(mat.quantity, materialDiscount)
     })
   }
 
@@ -704,21 +678,11 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     this._searchFocused = true
     this._searchCursorPos = event.currentTarget.selectionStart
 
-    // Filter the already-rendered list purely via the DOM (see
-    // _applySidebarFilter) — no Foundry render() here at all, so the
-    // search input is never torn down and focus/cursor position are never
-    // disturbed while typing. This is what re-rendering the whole window
-    // on every keystroke was breaking.
     this._applySidebarFilter()
 
-    // An exact name match still needs the recipe readout (main + console)
-    // to update with the newly-selected item's details. Debounce that and
-    // scope the render to just those two parts — the sidebar (and the
-    // focused search input inside it) is never touched by it either way.
     clearTimeout(this._searchDebounceTimer)
     this._searchDebounceTimer = setTimeout(() => {
-      // Bail if the window has since closed (element detached) so a
-      // trailing debounced render doesn't fire against a dead app.
+
       if (!this.element?.isConnected) return
       if (this._autoSelectExactMatch()) {
         this.render({ parts: ['main', 'console'] })
@@ -726,10 +690,6 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     }, 200)
   }
 
-  // If the search box's value exactly matches one visible item's full
-  // name, jump straight to selecting that item. Returns true if the
-  // selection actually changed (so the caller knows whether a render is
-  // even needed).
   _autoSelectExactMatch() {
     if (!this.searchQuery) return false
     for (const branch of Object.values(this.craftingTree)) {

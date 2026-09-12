@@ -163,6 +163,12 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
             ...requiredInteger,
             initial: 0,
           }),
+          description: new fields.HTMLField({
+            initial: '',
+          }),
+          img: new fields.StringField({
+            initial: '',
+          }),
         })
         return obj
       }, {}),
@@ -285,6 +291,13 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
    */
   prepareDerivedData() {
     super.prepareDerivedData()
+    this.abilities.str.img = '/systems/arcane-arcade-fallout/assets/perk-clips/strength.webp'
+    this.abilities.per.img = '/systems/arcane-arcade-fallout/assets/perk-clips/perception.webp'
+    this.abilities.end.img = '/systems/arcane-arcade-fallout/assets/perk-clips/endurance.webp'
+    this.abilities.cha.img = '/systems/arcane-arcade-fallout/assets/perk-clips/charisma.webp'
+    this.abilities.int.img = '/systems/arcane-arcade-fallout/assets/perk-clips/intelligence.webp'
+    this.abilities.agi.img = '/systems/arcane-arcade-fallout/assets/perk-clips/agility.webp'
+    this.abilities.lck.img = '/systems/arcane-arcade-fallout/assets/perk-clips/luck.webp'
 
     if (this.type == "npc") {
       this.health.effectiveMax = this.health.max + (this.health.temp ?? 0)

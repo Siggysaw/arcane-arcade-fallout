@@ -380,6 +380,22 @@
   white-space: nowrap;
 }
 
+.req-value-group {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* Perk-driven material discount (Adroit Alchemist / Expert Engineer) shown
+   next to the (owned/required) count in the Ingredients list. */
+.req-discount {
+  font-size: 8.5pt;
+  font-weight: normal;
+  opacity: 0.7;
+  color: var(--pb-glow);
+}
+
 .crafting-bench select[data-base-item] {
   width: 100%;
   background: color-mix(in srgb, var(--dark) 70%, black);

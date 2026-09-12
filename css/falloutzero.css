@@ -107,7 +107,7 @@ details > summary {
 .rollable:focus,
 .sheet .backpack-row:hover {
   cursor: pointer;
-  background-color: var(--sheetcolor);
+  background-color: var(--ph-text);
   color: var(--dark);
   text-decoration: none;
   text-shadow: none;
@@ -361,8 +361,8 @@ details > summary {
   background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  color: var(--sheetcolor);
-  background-color: var(--sheetcolor);
+  color: var(--ph-text);
+  background-color: var(--ph-text);
 }
 
 .dialog option,
@@ -389,7 +389,7 @@ details > summary {
 .sheet .item-piles-config-container p,
 .item-piles-clickable-link,
 .chat-message{
-  color: var(--sheetcolor);
+  color: var(--ph-text);
   letter-spacing: 0rem;
 }
 
@@ -416,8 +416,8 @@ details > summary {
   background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  color: var(--sheetcolor);
-  background-color: var(--sheetcolor);
+  color: var(--ph-text);
+  background-color: var(--ph-text);
   padding-top: 20px;
 }
 
@@ -426,12 +426,12 @@ details > summary {
 #keybindings .binding .key,
 #keybindings .binding .key.uneditable {
   background: #222;
-  color: var(--sheetcolor);
+  color: var(--ph-text);
   font-family: Monofonto;
 }
 
 #chat-popout .flavor-text {
-  color: var(--sheetcolor)
+  color: var(--ph-text)
 }
 
 .journal-entry-page.pdf iframe {
@@ -442,7 +442,7 @@ details > summary {
   background-image: url('/systems/arcane-arcade-fallout/assets/pipboy_75.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  background-color: var(--sheetcolor);
+  background-color: var(--ph-text);
 }
 
 .sheet.journal-entry .title {
@@ -479,7 +479,7 @@ form .title,
 .falloutzero .items-list .item .item-name,
 form .form-group span.units,
 form div label {
-  color: var(--sheetcolor);
+  color: var(--ph-text);
   list-style-type: none;
 }
 
@@ -487,7 +487,7 @@ form div label {
 .editor-content li,
 .prosemirror li {
   letter-spacing: 0rem;
-  color: var(--sheetcolor);
+  color: var(--ph-text);
   list-style-type: inherit;
 }
 
@@ -504,7 +504,7 @@ form div label {
 }
 
 .sheet input {
-  color: var(--sheetcolor);
+  color: var(--ph-text);
   border: 1px solid color-mix(in srgb, var(--ph-accent) 55%, transparent) var(--dark);
   font-size: 10pt;
 }
@@ -641,7 +641,7 @@ td,
 }
 
 .sheet form .perk-div h3 {
-  color: var(--sheetcolor);
+  color: var(--ph-text);
 }
 
 .sheet .perk-div .perk-image {
@@ -808,7 +808,7 @@ td,
       cursor: not-allowed;
       border: initial;
       background: #222;
-      color: var(--sheetcolor);
+      color: var(--ph-text);
     }
 
     .sheet .addRemoveCaps button:disabled i {
@@ -864,7 +864,7 @@ form td .status-notes li:hover {
   flex: 1;
   margin: 0 3px;
   background: #222;
-  color: var(--sheetcolor);
+  color: var(--ph-text);
 }
 
 .ammoitem,
@@ -1050,7 +1050,7 @@ a.inline-roll,
   float: left;
   height: 11px;
   margin: 0px -10px 0 0;
-  background: var(--sheetcolor);
+  background: var(--ph-text);
   border-radius: 15px;
   box-shadow: 0px 0px 6px #777 inset;
 }
@@ -1059,7 +1059,26 @@ a.inline-roll,
   display: inline-block;
   float: left;
   margin: 0px -10px 0 0;
-  background: var(--sheetcolor);
+  background: var(--ph-text);
+}
+
+.sheet .statusbar.decay-bar {
+  width: 160px;
+  height: 11px;
+  vertical-align: middle;
+  background: var(--ph-panel-bg-2);
+  border: 1px solid color-mix(in srgb, var(--ph-accent) 50%, transparent);
+}
+
+.sheet .statusbar.decay-bar::-webkit-progress-bar {
+  background: var(--ph-panel-bg-2);
+}
+
+.sheet .statusbar.decay-bar::-webkit-progress-value {
+  display: inline-block;
+  background: var(--ph-accent);
+  border-radius: 15px;
+  box-shadow: 0px 0px 6px #777 inset;
 }
 
 .sheet .bio td {
@@ -1145,7 +1164,7 @@ a.inline-roll,
 
 body.game .app .tabs.sheet-tabs a:hover,
 body.game .app .tabs > [data-tab].active {
-  background-color: var(--sheetcolor);
+  background-color: var(--ph-text);
   color: #333;
   text-decoration: none;
   text-shadow: none;
@@ -1157,7 +1176,7 @@ body.game .app .tabs > [data-tab].active {
   }
 
 body.game .app .tabs > [data-tab] {
-  color: var(--sheetcolor)
+  color: var(--ph-text)
 }
 
 .sheet label.specials{
@@ -1170,7 +1189,7 @@ body.game .app .tabs > [data-tab] {
 }
 
 .window-app .window-content label:active {
-  color: var(--sheetcolor);
+  color: var(--ph-text);
   background-color: white;
 }
 
@@ -1200,7 +1219,7 @@ body.game .app .tabs > [data-tab] {
 }
 
 .sheet .item-piles-config-container p {
-  color: var(--sheetcolor)
+  color: var(--ph-text)
 }
 .sheet .dr-dv label{
     font-size:8pt;
@@ -1462,7 +1481,7 @@ body.game .app .tabs > [data-tab] {
 
 .sheet.journal-entry.application .journal-sidebar .toc .page-heading {
   list-style: none;
-  color: var(--sheetcolor);
+  color: var(--ph-text);
   background: black;
   border: solid 2px;
   margin-bottom:10px;
@@ -1476,7 +1495,7 @@ body.game .app .tabs > [data-tab] {
 
 
 .item-piles-config-container p{
-    color: var(--sheetcolor) !important;
+    color: var(--ph-text) !important;
 }
 
 .sheet .prosemirror .editor-container, prose-mirror .editor-container{
@@ -1967,18 +1986,6 @@ body.game .app .vaulttec .tabs > [data-tab] {
   content: url('/icons/svg/falling.svg');
 }
 
-/* ============================================================
-   DR/DV click-to-cycle strip (Aug 30, 2026). Combat Actions is
-   back to the original combat-menu popup (see the CSS above this
-   block, e.g. .sheet .combat-actions / .fakebutton) - unchanged.
-   Each damage type is a single chip cycling through four states:
-   left-click steps Vulnerable -> Neutral -> Resist -> Immune
-   (wrapping); right-click steps the same loop backward. Tracks
-   --sheetcolor like the rest of the sheet (Vault-Tec/Robco
-   included) rather than a fixed color. See
-   claude/combat-tab-redesign.md for the full writeup.
-   ============================================================ */
-
 /* ---- shared damage-type icon assets, reused verbatim from the per-type
    checkbox rules above (this now targets <div> chips, not checkboxes) ---- */
 .sheet .dv-chip {
@@ -2072,7 +2079,7 @@ body.game .app .vaulttec .tabs > [data-tab] {
   filter: grayscale(70%);
 }
 .sheet .dv-chip.state-resist {
-  border-color: var(--sheetcolor);
+  border-color: var(--ph-text);
   box-shadow: 0 0 6px color-mix(in srgb, var(--sheetcolor) 60%, transparent) inset;
 }
 .sheet .dv-chip.state-vulnerable {
@@ -2102,7 +2109,7 @@ body.game .app .vaulttec .tabs > [data-tab] {
   border-radius: 2px;
 }
 .sheet .dv-legend-item.state-neutral::before { border-color: color-mix(in srgb, var(--sheetcolor) 35%, black); opacity: .6; }
-.sheet .dv-legend-item.state-resist::before { border-color: var(--sheetcolor); }
+.sheet .dv-legend-item.state-resist::before { border-color: var(--ph-text); }
 .sheet .dv-legend-item.state-vulnerable::before { border-color: #c81e1e; }
 .sheet .dv-legend-item.state-immune::before { border-color: #4fc3f7; border-style: double; }
 

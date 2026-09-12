@@ -4,12 +4,12 @@ export default class AbilityRoll extends FormApplication {
 
     this.actor = actor
     const abilities = ability
-    console.log(ability)
-
     this.formDataCache = {
       abilities,
       selectedAbility: abilities.abbr,
       selectedAbilityBonus: abilities.mod,
+      selectedAbilityDescription: abilities.description,
+      selectedAbilityImage: abilities.img,
       actorPenalties: this.actor.system.penaltyTotal,
       actorBoost: this.actor.system.boostDice,
       bonus: '',
@@ -28,10 +28,10 @@ export default class AbilityRoll extends FormApplication {
     const options = super.defaultOptions
 
     options.classes = ['falloutzero', 'dialog', 'ability-roll']
-    options.title = 'Ability roll'
+    options.title = "Ability Roll"
     options.template = 'systems/arcane-arcade-fallout/templates/actor/dialog/ability-roll.hbs'
     options.width = 'auto'
-    options.height = 'auto'
+    options.height = '550'
     options.submitOnChange = true
     options.closeOnSubmit = false
     options.resizable = true
@@ -40,6 +40,17 @@ export default class AbilityRoll extends FormApplication {
   }
 
   /* -------------------------------------------- */
+
+  /**
+   * Dynamic window title, e.g. "Strength Roll".
+   * The default options.title is static (set before an actor/ability
+   * exist), so it can't know which ability this instance is for -
+   * override the instance getter instead.
+   * @override
+   */
+  get title() {
+    return `${this.formDataCache.abilities.label} Roll`
+  }
 
   /**
    * Advantage mode of a d20 roll

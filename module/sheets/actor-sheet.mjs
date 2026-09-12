@@ -411,13 +411,6 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       this.actor.update({ 'prototypeToken.actorLink': true })
     }
 
-    // DR/DV single-row cycling widget: each damage type is in exactly one of four
-    // states (vulnerable / neutral / resist / immune), backed by which of the three
-    // system.dv/dr/di arrays (if any) contains its id - see activateListeners'
-    // [data-drdv-chip] handlers for the actual state transitions. All 16 damage
-    // types now have a dedicated icon asset (see the .dv-chip.<type> rules in
-    // falloutzero.css - sonic/psychic use sound.svg/aura.svg), so this fallback
-    // map is only for a type that somehow ships without a matching CSS rule.
     const DR_DV_FA_ICON_FALLBACK = {}
     const DR_DV_STATE_LABELS = { vulnerable: 'Vulnerable', neutral: 'Neutral', resist: 'Resist', immune: 'Immune' }
     context.drdv = Object.values(FALLOUTZERO.damageTypes).map((type) => {
@@ -827,6 +820,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
 
     //==============Audio Triggers
+    const pipboySFX = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')
+
     //MUTE and UNMUTE
     html.on('click', '[data-audioToggle]', (ev) => {
       const PlaySounds = game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')
@@ -848,6 +843,12 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')) {
         audio.play()
       }
+    })
+
+    html.on('mouseenter', '.rollable, .item', (ev) => {
+      if (!game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')) return
+      var audio = new Audio(`/systems/arcane-arcade-fallout/assets/10-sfx/ui_menu_focus.wav`);
+      audio.play()
     })
 
     //===============END Audio Triggers
@@ -1110,6 +1111,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const weaponId = ev.currentTarget.dataset.weaponId
       const advantageMode = ev.currentTarget.dataset.disadvantage ? '2' : '1'
       const weapon = this.actor.items.get(weaponId)
+      let audio = new Audio(`/systems/arcane-arcade-fallout/assets/10-sfx/ui_pipboy_select.wav`);
+      pipboySFX ? audio.play() : ''
 
       weapon.rollAttack({ advantageMode })
     })

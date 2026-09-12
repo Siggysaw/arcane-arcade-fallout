@@ -34,7 +34,9 @@ const PKG_ID = FALLOUTZERO.systemId
    and a bare "systems/…" would 404 under a route prefix) and rename-proof.
    Two levels up — this file sits in module/nv-pause/. */
 const ASSET_PATH = new URL('../../assets/nv-pause/', import.meta.url).pathname
-const DEFAULT_COLOR = '#ffb641'
+// Exported alongside refresh() so registerSettings.mjs can use it as the
+// NVPauseColorCustom field's initial value without duplicating the literal.
+export const DEFAULT_COLOR = '#ffb641'
 
 const COLOR_PRESETS = [
   { label: 'Amber', value: '#ffb641' },
@@ -226,7 +228,12 @@ function restoreBanner() {
   if (el) el.style.display = ''
 }
 
-function refresh() {
+/* Exported so registerSettings.mjs can wire it up as the onChange handler for
+   the four NVPause* settings, which now live there (registerSystemSettings)
+   alongside the rest of the system's user-facing settings for ease of
+   maintenance — this function still does all the actual work, only where the
+   settings are *registered* changed. */
+export function refresh() {
   const el = bannerElement()
   if (!setting('NVPause')) {
     removeOverlay()
@@ -237,64 +244,6 @@ function refresh() {
   if (game.paused) buildOverlay()
   else removeOverlay()
 }
-
-/* ---- Registration -------------------------------------------------------- */
-
-Hooks.once('init', () => {
-  game.settings.register(PKG_ID, 'NVPause', {
-    name: 'New Vegas Pause Graphic',
-    hint: 'Replace the system pause banner with the spinning roulette wheel from the New Vegas loading screen. Applies immediately.',
-    scope: 'client',
-    config: true,
-    type: Boolean,
-    default: false,
-    requiresReload: false,
-    onChange: () => refresh(),
-  })
-
-  game.settings.register(PKG_ID, 'NVPauseText', {
-    name: 'New Vegas Pause Text',
-    hint: 'Wording shown under the roulette wheel. Ignored unless the New Vegas pause graphic is on.',
-    scope: 'world',
-    config: true,
-    type: String,
-    default: 'Game Paused',
-    requiresReload: false,
-    onChange: () => {
-      if (game.paused) refresh()
-    },
-  })
-
-  game.settings.register(PKG_ID, 'NVPauseColorMode', {
-    name: 'New Vegas Pause Colour',
-    hint: 'Match Player Colour uses your Foundry colour for the wheel and text; Custom Colour uses the one chosen below.',
-    scope: 'client',
-    config: true,
-    type: String,
-    choices: { player: 'Match Player Colour', custom: 'Custom Colour' },
-    default: 'player',
-    requiresReload: false,
-    onChange: () => {
-      if (game.paused) refresh()
-    },
-  })
-
-  game.settings.register(PKG_ID, 'NVPauseColorCustom', {
-    name: 'New Vegas Pause Custom Colour',
-    hint: 'Used only when the setting above is on Custom Colour.',
-    scope: 'client',
-    config: true,
-    type: new foundry.data.fields.ColorField({
-      required: true,
-      blank: false,
-      initial: DEFAULT_COLOR,
-    }),
-    requiresReload: false,
-    onChange: () => {
-      if (game.paused) refresh()
-    },
-  })
-})
 
 /* In v13+ the pause banner is the ApplicationV2 `GamePause`, so the hook is
    renderGamePause and `html` is a plain HTMLElement. Capture it: once it is

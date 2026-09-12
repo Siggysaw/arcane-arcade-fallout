@@ -154,6 +154,9 @@
       "overheating": {
         "label": "Overheating"
       },
+      "other": {
+        "label": "Other"
+      },
       "healing_rate": {
         "label": "Healing Rate"
       },

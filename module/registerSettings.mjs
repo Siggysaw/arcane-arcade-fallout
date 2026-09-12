@@ -1,4 +1,5 @@
 import { FALLOUTZERO } from './config.mjs'
+import { refresh as refreshNVPause, DEFAULT_COLOR as NV_PAUSE_DEFAULT_COLOR } from './nv-pause/nv-pause.mjs'
 export function registerSystemSettings() {
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'MigrationVersion', {
     name: 'Migration Version',
@@ -189,6 +190,74 @@ export function registerSystemSettings() {
     },
     default: 4,
     requiresReload: false,
+  })
+  // The "Group Roll Sounds" setting, moved here from group-roll/group-roll.mjs
+  // for ease of maintenance - it used to be registered inline there. The
+  // behavior that reads it (gating the cinematic group roll overlay's sound
+  // effects) still lives in that file; only the registration moved.
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'groupRollSounds', {
+    name: 'Group Roll Sounds',
+    hint: 'Pip-Boy and V.A.T.S. sound effects for the cinematic group roll overlay.',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: true,
+  })
+  // The four New Vegas Pause settings, moved here from nv-pause/nv-pause.mjs
+  // for ease of maintenance - they used to be registered inline there, inside
+  // a Hooks.once('init', ...) block. The behavior that reads them (building
+  // and tearing down the roulette-wheel overlay) still lives in that file;
+  // only the registration moved, so their onChange handlers call the
+  // exported refresh() from there (aliased refreshNVPause) instead of a
+  // local function.
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'NVPause', {
+    name: 'New Vegas Pause Graphic',
+    hint: 'Replace the system pause banner with the spinning roulette wheel from the New Vegas loading screen. Applies immediately.',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: false,
+    requiresReload: false,
+    onChange: () => refreshNVPause(),
+  })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'NVPauseText', {
+    name: 'New Vegas Pause Text',
+    hint: 'Wording shown under the roulette wheel. Ignored unless the New Vegas pause graphic is on.',
+    scope: 'world',
+    config: true,
+    type: String,
+    default: 'Game Paused',
+    requiresReload: false,
+    onChange: () => {
+      if (game.paused) refreshNVPause()
+    },
+  })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'NVPauseColorMode', {
+    name: 'New Vegas Pause Colour',
+    hint: 'Match Player Colour uses your Foundry colour for the wheel and text; Custom Colour uses the one chosen below.',
+    scope: 'client',
+    config: true,
+    type: String,
+    choices: {
+      player: 'Match Player Colour',
+      custom: 'Custom Colour',
+    },
+    default: 'player',
+    requiresReload: false,
+    onChange: () => {
+      if (game.paused) refreshNVPause()
+    },
+  })
+  game.settings.register(CONFIG.FALLOUTZERO.systemId, 'NVPauseColorCustom', {
+    name: 'New Vegas Pause Custom Colour',
+    hint: 'Used only when the setting above is on Custom Colour.',
+    scope: 'client',
+    config: true,
+    type: new foundry.data.fields.ColorField({ required: true, blank: false, initial: NV_PAUSE_DEFAULT_COLOR }),
+    requiresReload: false,
+    onChange: () => {
+      if (game.paused) refreshNVPause()
+    },
   })
 }
 export function registerHbsHelpers() {

@@ -125,7 +125,7 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
         if (!grid) return
 
         const query = (this.searchQuery ?? '').trim().toLowerCase()
-        const cards = grid.querySelectorAll('.perk')
+        const cards = grid.querySelectorAll('.perk-card')
         const visible = []
 
         cards.forEach((card) => {
@@ -162,7 +162,7 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
         e.preventDefault()
         const grid = this.element.querySelector('[data-perk-grid]')
         if (!grid) return
-        const visible = [...grid.querySelectorAll('.perk:not(.is-hidden)')]
+        const visible = [...grid.querySelectorAll('.perk-card:not(.is-hidden)')]
         if (visible.length !== 1) return
         visible[0].querySelector('[data-action="perk"]')?.click()
     }

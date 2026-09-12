@@ -1,47 +1,65 @@
-<div class="perk-list{{#isVaultTec}} vaulttec {{/isVaultTec}}">
-    <h1>Perks</h1>
-    <hr />
+<div class="perk-list pipboy-frame{{#isVaultTec}} vaulttec {{/isVaultTec}}">
+    <div class="perk-list-header">
+        <h1>Perks</h1>
+        <div class="search-row">
+            <i class="fas fa-search"></i>
+            <input type="search"
+                   placeholder="Search Perks"
+                   data-search
+                   value="{{searchQuery}}"
+                   autocomplete="off"
+                   data-tooltip="Type to filter — Enter opens the only remaining match">
+        </div>
+    </div>
     <fieldset>
         <legend>Filters</legend>
         <div class="grid grid-3col">
             {{#each filters as |filter|}}
-            <label class="flex">
+            <label class="perk-filter-toggle">
                 <input data-filter="{{filter}}" type="checkbox" name="filters.{{filter}}" {{#if (IsIn filter ../selectedFilters)}} checked{{/if}} />
                 {{filter}}
             </label>
             {{/each}}
         </div>
     </fieldset>
-    <hr />
-    <div class="perk-grid">
+    <div class="perk-grid" data-perk-grid>
         {{#each perks as |perk|}}
-        <a data-edit
-           data-uuid="{{ perk.uuid }}">
-            <img class="perk-image" title="{{ perk.description }}" src="{{ perk.img }}" />
-            <div class="perk-div">
-                <h3>{{ perk.name }}</h3>
-            </div>
-            <div style="display:block;text-align:center;" class="grid grid-2col">
-                {{#GreaterThan perk.system.lvlReq 2 }}
-                <div>
-                    Lvl:{{ perk.system.lvlReq }}
+        <div class="perk-card"
+           data-edit
+           data-uuid="{{ perk.uuid }}"
+           data-item-name="{{ perk.name }}"
+           data-tooltip="{{ perk.name }}">
+            <img class="perk-image" alt="{{ perk.name }}" data-tooltip="{{ perk.system.description }}" src="{{ perk.img }}" />
+            {{#if perk.hasRequirements}}
+            <div class="text-center">
+                <div class="underline">
+                    requirements
                 </div>
-                {{/GreaterThan}}
+                <div class="perk-req-ability">
+                    {{#GreaterThan perk.system.lvlReq 2 }}
+                    <div>
+                        Lvl:{{ perk.system.lvlReq }}
+                    </div>
+                    {{/GreaterThan}}
 
-                {{#if (NotEqual perk.system.specialReq.special '' ) }}
-                {{#if (NotEqual perk.system.specialReq.special 'None' ) }}
-                <div>
-                    {{ perk.system.specialReq.special }} {{ perk.system.specialReq.value }}
+                    {{#if (NotEqual perk.system.specialReq.special '' ) }}
+                    {{#if (NotEqual perk.system.specialReq.special 'None' ) }}
+                    <div class="perk-req-ability">
+                        {{SpecialKeyToLabel perk.system.specialReq.special }}: {{ perk.system.specialReq.value }}
+                    </div>
+                    {{/if}}
+                    {{/if}}
+                    {{#if perk.system.raceReq }}
+                    <div>
+                        {{#each perk.system.raceReq as |raceReq|}} {{ raceReq.label }} {{/each}}
+                    </div>
+                    {{/if}}
                 </div>
-                {{/if}}
-                {{/if}}
-                {{#if perk.system.raceReq }}
-                <div>
-                    {{#each perk.system.raceReq as |raceReq|}} {{ raceReq.label }} {{/each}}
-                </div>
-                {{/if}}
             </div>
-        </a>
+            {{/if}}
+            <button type="button">{{ perk.name }}</button>
+        </div>
         {{/each}}
+        <div class="empty-branch" data-empty-message hidden>No perks match your search</div>
     </div>
 </div>

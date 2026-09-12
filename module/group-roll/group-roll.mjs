@@ -1246,11 +1246,10 @@ function refreshMasterCard(rollId) {
 /* ---- Registration --------------------------------------------------------- */
 
 export function registerGroupRolls(moduleId = PKG_ID) {
-  game.settings.register(moduleId, "groupRollSounds", {
-    name: "Group Roll Sounds",
-    hint: "Pip-Boy and V.A.T.S. sound effects for the cinematic group roll overlay.",
-    scope: "client", config: true, type: Boolean, default: true
-  });
+  // The "Group Roll Sounds" setting itself now lives in registerSettings.mjs
+  // (registerSystemSettings) alongside the rest of the system's user-facing
+  // settings, for ease of maintenance — read via setting("groupRollSounds")
+  // above just like before, only where it's registered changed.
   game.settings.register(moduleId, "groupRollPerkMap", {
     scope: "world", config: false, type: Object, default: {}
   });

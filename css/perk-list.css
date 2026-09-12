@@ -1,27 +1,44 @@
 .perk-list {
-  text-transform: capitalize;
-  margin: 20px;
+  padding: 4px;
 }
-.perk-list .perk-list-name {
-  font-size: 12pt;
-  font-weight: bold;
-  text-align: center;
+
+.perk-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
   padding-bottom: 10px;
+  border-bottom: 1px solid var(--pb-hairline);
 }
-.perk-list .perk-grid {
-    display: grid;
-    grid-template-columns: repeat(4 , 25%);
-    border-top: 1px solid;
-    border-left: 1px solid;
-  }
-.perk-list .perk-grid > a {
-    font-size: 12px;
-    border-bottom: 1px solid;
-    border-right: 1px solid;
-    padding: 10px;
-    text-align:center;
+
+.perk-list-header .search-row {
+  flex: 0 1 280px;
 }
-.perk-list-img{
-    width:200px;
-    height:200px;
+
+.perk-list .perk-filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.perk-list .perk-filter-toggle input[type="checkbox"] {
+  accent-color: var(--sheetcolor);
+  cursor: pointer;
+}
+
+.perk-list .perk-card {
+  cursor: pointer;
+}
+
+
+.perk-list .perk-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }

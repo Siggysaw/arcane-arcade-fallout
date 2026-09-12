@@ -44,7 +44,6 @@
   padding: 10px 12px;
 }
 
-
 .pipboy-dialog button:not(.header-control) {
   width: 100%;
   font-size: 11pt;
@@ -146,44 +145,40 @@
   padding: 6px 14px;
 }
 
-.choose-perk .perk-grid {
+.perk-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 6px;
 }
 
-.choose-perk .perk-grid .perk {
+.perk-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   height: 100%;
   padding: 6px;
   background: color-mix(in srgb, var(--dark) 70%, black);
   border: 1px solid var(--pb-hairline);
+  text-decoration: none;
+  color: var(--sheetcolor);
   transition: border-color 0.1s ease, background 0.1s ease;
 }
 
-.choose-perk .perk-grid .perk:hover {
+.perk-card:hover {
   border-color: var(--sheetcolor);
   background: var(--pb-faint);
 }
 
-
-.choose-perk .perk-grid .perk.perk-match {
+.perk-card.perk-match {
   border-color: var(--sheetcolor);
   box-shadow: 0 0 8px var(--pb-glow);
 }
 
-.choose-perk .perk-grid .perk img {
-  filter: sepia(1) hue-rotate(70deg) saturate(3);
-  opacity: 0.9;
-}
-
-.choose-perk .perk-grid .perk .perk-req-ability {
+.perk-card .perk-req-ability {
   font-size: 9pt;
 }
 
-.choose-perk .perk-grid .perk .underline {
+.perk-card .underline {
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -194,11 +189,12 @@
   margin-bottom: 2px;
 }
 
-.choose-perk .perk-grid .empty-branch {
+.perk-grid .empty-branch {
   grid-column: 1 / -1;
 }
 
-.choose-perk .perk-grid .perk button {
+.perk-card button {
+  margin-top: auto;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

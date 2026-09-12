@@ -405,6 +405,7 @@ FALLOUTZERO.penalties = {
   fatigue: 'Fatigue',
   hypothermia: 'Hypothermia',
   overheating: 'Overheating',
+  other: 'Other',
 }
 
 FALLOUTZERO.maxKarmaCaps = 7
@@ -1290,102 +1291,6 @@ FALLOUTZERO.damageTypes = {
   },
 }
 
-FALLOUTZERO.specialammo = {
-  'Grenade': {
-    available: ['Grenade', 'HE Grenade', 'AP Grenade', 'Incendiary Grenade', 'Cryo Grenade'],
-  },
-  '.308': {
-    available: ['.308', 'Explosive', 'FMJ', 'Hollow Point', 'JSP'],
-  },
-  '.50': {
-    available: ['.50', 'Explosive', 'Incendiary', 'Match'],
-  },
-  '.357': {
-    available: ['.357', 'FMJ', 'Hollow Point', 'JFP'],
-  },
-  '.44': {
-    available: ['.44', 'Hollow Point'],
-  },
-  '.45': {
-    available: ['.45', 'Hollow Point'],
-  },
-  '.45-70': {
-    available: ['.45-70', 'Hollow Point'],
-  },
-  '10mm': {
-    available: ['10mm', 'FMJ', 'Hollow Point', 'Rubber'],
-  },
-  '12 gauge': {
-    available: [
-      '12 gauge',
-      'Cap Shot',
-      'Dragons Breath',
-      'Flechette',
-      'Magnum',
-      'Slug',
-      'Pulse Slug',
-      'Bean Bag'
-    ],
-  },
-  '12.7mm': {
-    available: ['12.7mm', 'FMJ', 'Hollow Point'],
-  },
-  '20 gauge': {
-    available: ['20 gauge', 'Magnum', 'Slug', 'Pulse Slug'],
-  },
-  '5.56mm': {
-    available: ['5.56mm', 'Hollow Point', 'Match'],
-  },
-  '5mm': {
-    available: ['5mm', 'FMJ', 'Hollow Point', 'JSP', 'Rubber'],
-  },
-  '9mm': {
-    available: ['9mm', 'FMJ', 'Hollow Point', 'Rubber'],
-  },
-  'Energy Cell': {
-    available: ['Energy Cell', 'Bulk', 'Optimized', 'Overcharged', 'Max Charge'],
-  },
-  'Microfusion Cell': {
-    available: ['Microfusion Cell', 'Bulk', 'Optimized', 'Overcharged', 'Max Charge'],
-  },
-  Missile: {
-    available: ['Missile', 'Explosive', 'Incendiary'],
-  },
-  Syringer: {
-    available: [
-      'Stimpak Loader',
-      'ChemLoader',
-      'Radscorpion Venom',
-      'Endangerol',
-      'Yellow Belly',
-      'Berserk',
-      'Hemorrhage',
-      'Lock Joint',
-      'Sclerosis',
-      'Myopic Serum',
-      'Mind Cloud',
-      'Tranquilizer',
-    ],
-  },
-  'Cryo Cell': {
-    available: ['Cryo Cell'],
-  },
-  'Gamma Cell': {
-    available: ['Gamma Cell'],
-  },
-  Nails: {
-    available: ['Nails'],
-  },
-  Flares: {
-    available: ['Flares'],
-  },
-  Sunlight: {
-    available: ['Sunlight'],
-  },
-  'Junk Jet': {
-    available: ['Any item that is smaller than cubic foot'],
-  },
-}
 
 /**
  * Colors used to visualize temporary and temporary maximum HP in token health bars.
@@ -1515,16 +1420,25 @@ FALLOUTZERO.craftingTypes = {
 }
 
 
+// Must match the actual Item document `type` values (see template.json's
+// Item.types), not the crafting-category labels above or the compendium
+// pack name suffixes below (packsWithCraftables) — those use a different
+// naming convention (e.g. 'ammunition'/'food-and-drinks') and don't match
+// any real item.type, which silently excluded ammo, explosives, food and
+// drink, melee/ranged weapons, junk, and misc items from
+// actor.craftingMaterials (an item held by the actor whose type didn't
+// literally match one of these strings was never counted as an owned
+// crafting material, regardless of how many the actor had).
 FALLOUTZERO.craftingItemTypes = [
-  'junk',
+  'junkItem',
   'material',
   'armor',
-  'ammunition',
-  'explosives',
-  'food-and-drinks',
-  'melee-weapons',
-  'rangedweapons',
-  'miscellaneous',
+  'ammo',
+  'explosive',
+  'foodAnddrink',
+  'meleeWeapon',
+  'rangedWeapon',
+  'miscItem',
   'medicine',
   'armorUpgrade',
   'chem',

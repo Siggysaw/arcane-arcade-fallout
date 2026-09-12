@@ -147,16 +147,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       this.limbdamage[key].label = FALLOUTZERO.limbdamage[key].label
     }
   }
-
-  /**
-   * @override
-   * Augment the actor source data with additional dynamic data. Typically,
-   * you'll want to handle most of your calculated/derived data in this step.
-   * Data calculated in this step should generally not exist in template.json
-   * (such as ability modifiers rather than ability scores) and should be
-   * available both inside and outside of character sheets (such as if an actor
-   * is queried and has a roll executed directly from it).
-   */
   prepareDerivedData() {
     super.prepareDerivedData()
     function searchItems(actor, search) {
@@ -218,6 +208,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const hazmatSuit = searchItems(this, 'Hazmat Suit')
     const back2back = searchItems(this, 'Back to Back Condition')
     const toughness = searchItems(this, 'Toughness')
+    const radTastic = searchItems(this, 'Rad-Tastic!')
 
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
@@ -240,6 +231,8 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     back2back ? this.damageThreshold.modifiers += 2 : ''
     back2back ? this.armorClass.modifiers += 1 : ''
     toughness?.system?.quantity > 1 ? this.damageThreshold.modifiers += 1 : ''
+    radTastic ? this.radiationDC.modifiers -= 3 : ''
+    radTastic ? this.penalties.radiation.ignored += 3 : this.penalties.radiation.ignored
 
     if (vigilantWatch && vigilantWatch.system.wildWasteland) {
       this.combatSequence.modifiers -= 1
@@ -365,9 +358,9 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     blocking ? this.damageThreshold.modifiers += (2 + this.abilities.end.mod) + dtBoost : ''
     this.penalties.hunger.value = Math.max(this.penalties.hunger.base + this.penalties.hunger.modifiers, 0)
     this.passiveSense.value = 12 + this.passiveSense.base + this.abilities.per.mod + this.passiveSense.modifiers
-    this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base - this.penalties.exhaustion.ignored + this.penalties.exhaustion.modifiers, 0)
+    this.penalties.exhaustion.value = Math.max(this.penalties.exhaustion.base + this.penalties.exhaustion.modifiers - this.penalties.exhaustion.ignored , 0)
+    this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers - this.penalties.radiation.ignored, 0)
     this.penalties.dehydration.value = Math.max(this.penalties.dehydration.base + this.penalties.dehydration.modifiers, 0)
-    this.penalties.radiation.value = Math.max(this.penalties.radiation.base + this.penalties.radiation.modifiers, 0)
     this.penalties.fatigue.value = Math.max(this.penalties.fatigue.base + this.penalties.fatigue.modifiers, 0)
     this.penalties.hypothermia.value = Math.max(this.penalties.hypothermia.base + this.penalties.hypothermia.modifiers, 0)
     this.penalties.overheating.value = Math.max(this.penalties.overheating.base + this.penalties.overheating.modifiers, 0)
