@@ -136,8 +136,8 @@ export function registerSystemSettings() {
     requiresReload: false,
   })
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'RobcoTerminals', {
-    name: 'Robco Terminal Journals',
-    hint: 'Reskins Journal Entries to look like a Robco Industries terminal from Fallout: New Vegas (green phosphor text, scanlines, terminal chrome).',
+    name: 'Robco Terminal Scanlines & Flicker',
+    hint: 'Journal Entries always use the Robco Industries terminal look (green phosphor text, terminal chrome). This adds the animated scanline overlay and corner-bracket flicker on top of that look.',
     scope: 'client',
     config: true,
     type: Boolean,

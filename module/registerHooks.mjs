@@ -8,22 +8,26 @@ import { attachAttributeKeyAutocomplete } from './helpers/effects.mjs'
 /* --------------------------------------------  */
 /*  Robco Terminal Journal skin                  */
 /* --------------------------------------------  */
-// Applies the Robco Terminal reskin (css/robco-terminal.css) to Journal
-// Entry windows when the client has the 'RobcoTerminals' setting on. Kept
-// entirely defensive (try/catch, tolerant of both jQuery and raw-element
-// render hook signatures) since it targets core Foundry's own Journal sheet
-// rather than a template this system owns, and the exact class name for
-// that sheet has changed across Foundry versions (JournalSheet in v12,
-// JournalEntrySheet in newer ApplicationV2-based versions) — hooking both
-// names is harmless since Hooks.on for a hook that never fires is a no-op.
+// Applies the Robco Terminal reskin (css/robco-terminal.css) to every
+// Journal Entry window — the coloration, fonts, chrome, and typography are
+// now always-on rather than gated behind a setting. The 'RobcoTerminals'
+// client setting instead toggles a second, purely cosmetic class
+// ('robco-fx') that layers the scanline overlay and corner-bracket flicker
+// animation on top (see css/robco-terminal.css's `.robco-terminal.robco-fx`
+// rules) for players who find the moving effects distracting. Kept entirely
+// defensive (try/catch, tolerant of both jQuery and raw-element render hook
+// signatures) since it targets core Foundry's own Journal sheet rather than
+// a template this system owns, and the exact class name for that sheet has
+// changed across Foundry versions (JournalSheet in v12, JournalEntrySheet
+// in newer ApplicationV2-based versions) — hooking both names is harmless
+// since Hooks.on for a hook that never fires is a no-op.
 function applyRobcoTerminalSkin(app, html) {
   try {
-    if (!game.settings.get(CONFIG.FALLOUTZERO.systemId, 'RobcoTerminals')) return
-
     const el = html instanceof HTMLElement ? html : html?.[0] ?? app.element?.[0] ?? app.element
     if (!el) return
 
     el.classList.add('robco-terminal')
+    el.classList.toggle('robco-fx', !!game.settings.get(CONFIG.FALLOUTZERO.systemId, 'RobcoTerminals'))
 
     if (game.settings.get(CONFIG.FALLOUTZERO.systemId, 'PlaySounds')) {
       const audio = new Audio(

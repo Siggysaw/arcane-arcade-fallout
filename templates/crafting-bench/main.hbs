@@ -45,10 +45,10 @@
             <ul class="requirement-list ingredients-list">
                 {{!-- Craftable requirements --}}
                 {{#each materialRequirements as |material|}}
-                <li class="requirement-line">
+                <li class="requirement-line"{{#if material.discountAmount}} data-tooltip="Normally {{material.quantity}} — reduced by {{material.discountAmount}} from crafting perks"{{/if}}>
                     <span class="req-name">{{material.name}}</span>
                     <span class="req-value-group">
-                        <span class="req-value">({{~#if (lookup ../materials material.uuid)~}}{{~#with (lookup ../materials material.uuid)~}}{{this.quantity}}{{~/with~}}{{~else~}}0{{~/if~}}/{{material.requiredQuantity}})</span>
+                        <span class="req-value">({{material.ownedQuantity}}/{{material.requiredQuantity}})</span>
                         {{#if material.discountAmount}}<span class="req-discount">-{{material.discountAmount}}</span>{{/if}}
                     </span>
                 </li>
@@ -59,7 +59,7 @@
                 <li class="requirement-line"{{#if material.discountAmount}} data-tooltip="Normally {{material.quantity}} — reduced by {{material.discountAmount}} from crafting perks"{{/if}}>
                     <span class="req-name">{{material.name}}</span>
                     <span class="req-value-group">
-                        <span class="req-value">({{~#if (lookup ../materials material.uuid)~}}{{~#with (lookup ../materials material.uuid)~}}{{this.quantity}}{{~/with~}}{{~else~}}0{{~/if~}}/{{material.requiredQuantity}})</span>
+                        <span class="req-value">({{material.ownedQuantity}}/{{material.requiredQuantity}})</span>
                         {{#if material.discountAmount}}<span class="req-discount">-{{material.discountAmount}}</span>{{/if}}
                     </span>
                 </li>

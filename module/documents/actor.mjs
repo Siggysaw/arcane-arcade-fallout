@@ -36,6 +36,24 @@ export default class FalloutZeroActor extends Actor {
     return found
   }
 
+  // Resolves the actor's owned copy of a recipe ingredient/material. Tries
+  // an exact compendium-source match first (the normal case: the owned item
+  // was created from — e.g. dragged from — the same compendium document the
+  // recipe references, which stamps `_stats.compendiumSource` to that
+  // document's uuid automatically). Falls back to a case-insensitive name
+  // match against the actor's crafting materials so an item that ended up on
+  // the sheet some other way (typed in directly, duplicated, imported
+  // without preserving its compendium link, etc.) still counts as owned
+  // instead of silently reading as "0 owned" purely because
+  // `_stats.compendiumSource` was never stamped or doesn't match.
+  getCraftingMaterialItem(mat) {
+    if (!mat) return null
+    const byId = this.getItemByCompendiumId(mat.uuid)
+    if (byId) return byId
+    if (!mat.name) return null
+    return this.craftingMaterials.find((item) => item.name?.toLowerCase() === mat.name.toLowerCase()) ?? null
+  }
+
   get equippedArmor() {
     return this.items.filter((item) => item.type === 'armor' && item.system.itemEquipped)
   }

@@ -108,7 +108,10 @@ async function updateActorMaterials({ actor, craftable, materials, attemptResult
 
   return await Promise.all(
     materials.map(async (mat, matIndex) => {
-      const item = actor.getItemByCompendiumId(mat.uuid)
+      const item = actor.getCraftingMaterialItem(mat)
+      // Shouldn't happen if hasMaterials() gated this craft, but guard
+      // against it anyway rather than throwing on a missing item.
+      if (!item) return null
 
       // on critical success, add the materialChange value to specific material quantity
       if (attemptResult === ATTEMPT_RESULT.CRITICAL_SUCCESS) {
@@ -554,6 +557,10 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         ...mat,
         requiredQuantity,
         discountAmount: mat.quantity - requiredQuantity,
+        // Same resolution used by hasMaterials()/updateActorMaterials — see
+        // Actor#getCraftingMaterialItem — so the displayed owned count can
+        // never disagree with what crafting actually checks/consumes.
+        ownedQuantity: this.actor.getCraftingMaterialItem(mat)?.system.quantity ?? 0,
       }
     })
   }
@@ -669,7 +676,8 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
     const materialDiscount = getMaterialDiscount(this.actor, craftableItem)
     return [...craftableItem.system.crafting.materials, ...this.selectedBaseItemMaterials].every((mat) => {
-      return (this.materials?.[mat.uuid]?.quantity ?? 0) >= applyMaterialDiscount(mat.quantity, materialDiscount)
+      const owned = this.actor.getCraftingMaterialItem(mat)?.system.quantity ?? 0
+      return owned >= applyMaterialDiscount(mat.quantity, materialDiscount)
     })
   }
 

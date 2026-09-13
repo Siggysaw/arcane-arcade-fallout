@@ -2,7 +2,7 @@
   --robco-green: var(--sheetcolor, #33ff33);
   --robco-green-dim: color-mix(in srgb, var(--sheetcolor, #33ff33) 55%, black);
   --robco-green-glow: color-mix(in srgb, var(--sheetcolor, #33ff33) 55%, transparent);
-  --robco-black: #010c02;
+  --robco-black: color-mix(in srgb, var(--sheetcolor) 2%, black);
   isolation: isolate;
   background: var(--robco-black) !important;
   color: var(--robco-green);
@@ -18,6 +18,9 @@
 }
 
 /* ---- Corner brackets (pure CSS, no image assets) ---- */
+/* The bracket shape itself is part of the always-on terminal chrome; only
+   the flicker animation on top of it is gated by the 'RobcoTerminals'
+   effects setting (see .robco-terminal.robco-fx::before below). */
 .robco-terminal::before {
   content: '';
   position: absolute;
@@ -45,11 +48,19 @@
     20px 3px, 3px 20px,
     20px 3px, 3px 20px;
   opacity: 0.9;
+}
+
+/* ---- Effects: scanline overlay + corner-bracket flicker ---- */
+/* Gated behind the 'robco-fx' class, which registerHooks.mjs toggles based
+   on the 'RobcoTerminals' client setting. Everything else in this file
+   (colors, chrome, typography, etc.) stays on `.robco-terminal` alone and
+   is always active. */
+.robco-terminal.robco-fx::before {
   animation: robco-flicker 9s infinite;
 }
 
 /* ---- Scanlines + boot sweep overlay ---- */
-.robco-terminal::after {
+.robco-terminal.robco-fx::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -366,14 +377,6 @@
 .robco-terminal pre {
   background: #000;
   color: var(--robco-green);
-  border: 1px solid var(--robco-green-dim);
-}
-
-/* Give embedded images a monochrome-phosphor look, like the picture feeds
-   on in-game Robco terminals */
-.robco-terminal .journal-page-content img,
-.robco-terminal figure img {
-  filter: grayscale(1) sepia(1) hue-rotate(70deg) saturate(4) brightness(0.85) contrast(1.1);
   border: 1px solid var(--robco-green-dim);
 }
 
