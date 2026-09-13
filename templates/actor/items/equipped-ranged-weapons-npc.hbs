@@ -28,7 +28,7 @@
                                            style="max-width:35px"
                                            value="{{ item.system.range.short }}" />ft
                             </td>
-                            <td>{{ item.system.range.short }} ft - {{ system.range.long }}ft</td>
+                            <td>{{ item.system.range.short }} ft - {{ item.system.range.long }}ft</td>
                             <td>
                                 <input id="range-form"
                                        type="number"
@@ -38,8 +38,8 @@
                             </td>
                             {{else}}
                             <td data-tooltip="NORMAL">0 - {{ item.system.range.short }}ft</td>
-                            <td data-tooltip="DISADVANTAGED">{{#Sum item.system.range.short 1}}{{/Sum}} ft - {{ system.range.long }}ft</td>
-                            <td data-tooltip="NAT 20 ONLY">{{#Sum system.range.long 1}}{{/Sum}}ft+</td>
+                            <td data-tooltip="DISADVANTAGED">{{#Sum item.system.range.short 1}}{{/Sum}} ft - {{ item.system.range.long }}ft</td>
+                            <td data-tooltip="NAT 20 ONLY">{{#Sum item.system.range.long 1}}{{/Sum}}ft+</td>
                             {{/NPC}}
                         </tr>
                     </table>
