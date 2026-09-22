@@ -36,6 +36,15 @@
   text-transform: capitalize;
 }
 
+/* Used only by transfer-item.hbs (GM Screen character-to-character item
+   transfer) -- shares every other class on this stylesheet with the
+   give-ammo dialog it's modeled on. */
+.transfer-item-hint {
+  margin: 0;
+  opacity: 0.75;
+  font-size: 9pt;
+}
+
 .give-ammo-controls label {
   display: block;
   font-size: 10pt;

@@ -18,6 +18,7 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/arcane-arcade-fallout/templates/actor/parts/npc-status.hbs',
     'systems/arcane-arcade-fallout/templates/actor/dialog/leveledup.hbs',
     'systems/arcane-arcade-fallout/templates/actor/dialog/give-ammo.hbs',
+    'systems/arcane-arcade-fallout/templates/actor/dialog/transfer-item.hbs',
 
     // Actor Items
     'systems/arcane-arcade-fallout/templates/actor/items/equipped-armor.hbs',

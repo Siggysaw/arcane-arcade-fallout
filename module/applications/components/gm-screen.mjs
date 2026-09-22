@@ -329,14 +329,125 @@ export default class GMApplication extends HandlebarsApplicationMixin(Applicatio
     if (data.type !== 'Item') return
 
     const actorId = event.currentTarget.dataset.actorDrop
-    const actor = this.actors.find((a) => a.id === actorId)
-    if (!actor) return
+    const targetActor = this.actors.find((a) => a.id === actorId)
+    if (!targetActor) return
 
     const item = await Item.implementation.fromDropData(data)
     if (!item) return
 
-    await actor.createEmbeddedDocuments('Item', [item.toObject()])
-    ui.notifications.info(`${item.name} added to ${actor.name}`)
+    const sourceActor = item.parent instanceof Actor ? item.parent : null
+    if (sourceActor) {
+      if (sourceActor.id === targetActor.id) return
+      await this._transferItem(item, sourceActor, targetActor)
+      return
+    }
+
+    await targetActor.sheet._onDropItemCreate(item.toObject())
+  }
+
+  async _transferItem(item, sourceActor, targetActor) {
+    const available = Number(item.system?.quantity) > 0 ? item.system.quantity : 1
+
+    const amount = available > 1 ? await this._promptTransferQuantity(item, sourceActor, targetActor, available) : 1
+    if (!amount) return // cancelled, or dialog closed without a choice
+
+    await this._completeTransfer(item, sourceActor, targetActor, amount)
+  }
+
+  async _promptTransferQuantity(item, sourceActor, targetActor, available) {
+    const content = await renderTemplate('systems/arcane-arcade-fallout/templates/actor/dialog/transfer-item.hbs', {
+      name: item.name,
+      img: item.img,
+      quantity: available,
+      sourceName: sourceActor.name,
+      targetName: targetActor.name,
+    })
+
+    return new Promise((resolve) => {
+      new Dialog(
+        {
+          title: `Move ${item.name}`,
+          content,
+          buttons: {
+            move: {
+              icon: '<i class="fas fa-check"></i>',
+              label: 'Move',
+              callback: (html) => {
+                const rawValue = Number(html[0].querySelector('[name="quantity"]')?.value)
+                const clamped = Number.isFinite(rawValue) ? Math.min(available, Math.max(1, Math.floor(rawValue))) : available
+                resolve(clamped)
+              },
+            },
+            all: {
+              icon: '<i class="fas fa-layer-group"></i>',
+              label: 'All',
+              callback: () => resolve(available),
+            },
+            cancel: {
+              icon: '<i class="fas fa-times"></i>',
+              label: 'Cancel',
+              callback: () => resolve(null),
+            },
+          },
+          default: 'move',
+          close: () => resolve(null),
+          render: (html) => {
+            const numberInput = html[0].querySelector('[name="quantity"]')
+            const rangeInput = html[0].querySelector('[name="quantitySlider"]')
+            const clampToNumberInput = () => {
+              const value = Math.max(1, Math.min(available, Math.floor(Number(numberInput.value) || 1)))
+              rangeInput.value = value
+            }
+            numberInput.addEventListener('input', clampToNumberInput)
+            rangeInput.addEventListener('input', () => {
+              numberInput.value = rangeInput.value
+            })
+            numberInput.focus()
+            numberInput.select()
+          },
+        },
+        {
+          classes: ['dialog', 'give-ammo-dialog-app', 'transfer-item-dialog-app'],
+          width: 450,
+        },
+      ).render(true)
+    })
+  }
+
+  async _completeTransfer(item, sourceActor, targetActor, amount) {
+    const itemName = item.name
+    const sourceName = sourceActor.name
+    const targetName = targetActor.name
+    const sourceQuantity = Number(item.system?.quantity) > 0 ? item.system.quantity : 1
+    const movingWholeStack = amount >= sourceQuantity
+
+    const existing = targetActor.items.find(
+      (i) => i.type === item.type && i.name.toLowerCase() === item.name.toLowerCase(),
+    )
+
+    if (existing) {
+      const currentQuantity = Number(existing.system.quantity) > 0 ? existing.system.quantity : 1
+      await existing.update({ 'system.quantity': currentQuantity + amount })
+    } else {
+      const itemData = item.toObject()
+      if (itemData.system) {
+        itemData.system.itemEquipped = false
+        itemData.system.quantity = amount
+      }
+      await targetActor.createEmbeddedDocuments('Item', [itemData])
+    }
+
+    if (movingWholeStack) {
+      await item.delete()
+    } else {
+      await item.update({ 'system.quantity': sourceQuantity - amount })
+    }
+
+    ui.notifications.info(
+      existing
+        ? `${amount} × ${itemName} moved from ${sourceName} to ${targetName} (merged into existing stack).`
+        : `${amount} × ${itemName} moved from ${sourceName} to ${targetName}.`,
+    )
   }
 
   _onDragOver(event) {

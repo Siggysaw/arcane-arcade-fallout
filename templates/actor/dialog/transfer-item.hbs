@@ -1,0 +1,16 @@
+<div class="give-ammo-dialog transfer-item-dialog">
+    <div class="give-ammo-header">
+        <img class="give-ammo-img" src="{{img}}" alt="{{name}}">
+        <div class="give-ammo-name">{{name}}</div>
+    </div>
+    <p class="transfer-item-hint">Moving from {{sourceName}} to {{targetName}} -- {{quantity}} available.</p>
+    <form autocomplete="off">
+        <div class="form-group give-ammo-controls">
+            <label>Quantity To Move</label>
+            <div style="flex:10" class="give-ammo-inputs">
+                <input type="range" name="quantitySlider" min="1" max="{{quantity}}" step="1" value="{{quantity}}">
+                <input type="number" name="quantity" min="1" max="{{quantity}}" step="1" value="{{quantity}}">
+            </div>
+        </div>
+    </form>
+</div>

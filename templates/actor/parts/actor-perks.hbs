@@ -43,11 +43,28 @@
                         <div class="perk-div" style="text-align:left;">
                             <i class="fas fa-ellipsis-v context-menu context-icon perk-context" data-item-id="{{ item._id }}"></i>
                             {{#if (eq item.name "Efficient Munitions")}}
-                                <select style="float:right;margin-top:-5px" data-efficient-munitions-mode data-item-id="{{ item._id }}">
-                                    <option value="true" {{#if item.system.efficientMunitions}} selected{{/if}}>Crafting Doubled</option>
-                                    <option value="false" {{#unless item.system.efficientMunitions}} selected{{/unless}}>Efficient Rounds</option>
-                                </select>
+                            <select style="float:right;margin-top:-5px" data-efficient-munitions-mode data-item-id="{{ item._id }}">
+                                <option value="true" {{#if item.system.efficientMunitions}} selected{{/if}}>Crafting Doubled</option>
+                                <option value="false" {{#unless item.system.efficientMunitions}} selected{{/unless}}>Efficient Rounds</option>
+                            </select>
                             {{/if}}
+                            {{#if (eq item.name "Rooted")}}
+                            <button type="button"
+                                    class="perk-toggle-btn"
+                                    data-rooted-toggle
+                                    data-item-id="{{ item._id }}">
+                                {{#if item.rootedConditionActive}}Deactivate{{else}}Activate{{/if}}
+                            </button>
+                            {{/if}}
+                            {{#if (eq item.name "Made of Sterner Stuff")}}
+                            <button type="button"
+                                    class="perk-toggle-btn"
+                                    data-block-toggle
+                                    data-item-id="{{ item._id }}">
+                                {{#if item.blockingConditionActive}}Unblock{{else}}Block{{/if}}
+                            </button>
+                            {{/if}}
+
                         </div>
                         <a class="item-control"
                            data-edit
@@ -66,7 +83,9 @@
                            data-itemaddition
                            data-item="{{ item._id }}"
                            class="fas fa-plus-square"></i>
+
                     </div>
+
                 </td>
             </tr>
         </table>

@@ -36,16 +36,6 @@ export default class FalloutZeroActor extends Actor {
     return found
   }
 
-  // Resolves the actor's owned copy of a recipe ingredient/material. Tries
-  // an exact compendium-source match first (the normal case: the owned item
-  // was created from — e.g. dragged from — the same compendium document the
-  // recipe references, which stamps `_stats.compendiumSource` to that
-  // document's uuid automatically). Falls back to a case-insensitive name
-  // match against the actor's crafting materials so an item that ended up on
-  // the sheet some other way (typed in directly, duplicated, imported
-  // without preserving its compendium link, etc.) still counts as owned
-  // instead of silently reading as "0 owned" purely because
-  // `_stats.compendiumSource` was never stamped or doesn't match.
   getCraftingMaterialItem(mat) {
     if (!mat) return null
     const byId = this.getItemByCompendiumId(mat.uuid)
@@ -474,7 +464,7 @@ export default class FalloutZeroActor extends Actor {
       let newSP = 0
       race === ('Human' || 'Ghoul' || 'Super Mutant') & currentSP < Math.floor(maxSP / 2)
         ? (newSP = Math.floor(maxSP / 2))
-        : (newSP = currentSP)
+        : (newSP = maxSP)
       newSP > maxSP ? (newSP = maxSP) : (newSP = newSP)
       this.update({ 'system.stamina.value': newSP })
     }
@@ -485,16 +475,15 @@ export default class FalloutZeroActor extends Actor {
         ? (newHP = currentHP + endurance / 2 + this.system.level)
         : (newHP = currentHP + robotHeal / 2 + this.system.level)
       newHP > maxHP ? (newHP = maxHP) : (newHP = newHP)
-      // Onerous Regeneration (Wild Wasteland): "whenever you regain stamina points
-      // from sleep, you regain half as much" - a long rest is the trait's "sleep".
+
       const onerousRegeneration = this.items.find((i) => i.name == 'Onerous Regeneration')
       const newSP = (onerousRegeneration && onerousRegeneration.system.wildWasteland)
         ? Math.floor(maxSP / 2)
         : maxSP
       this.update({ 'system.health.value': newHP })
       this.update({ 'system.stamina.value': newSP })
-      this.update({ 'system.actionPoints.value': maxAP })
     }
+    this.update({ 'system.actionPoints.value': maxAP })
   }
 
   inspectCarryload() {
@@ -2322,52 +2311,29 @@ export default class FalloutZeroActor extends Actor {
     damages = this.calculateDamage(damages, options)
     if (!damages) return this
 
-    // Damage Immune (di): zero out any damage entry whose type the actor is
-    // immune to, before anything below (SP, Power Armor absorption, DT, and
-    // the dr/dv HP step) ever sees it - so it contributes nothing anywhere,
-    // not just to the dr/dv-aware HP calculation further down.
     damages = damages.map((d) => (this.system.di.includes(d.type) ? { ...d, value: 0 } : d))
 
-    // Fitted 1 (armor upgrade): DT is doubled against area-of-effect damage.
-    // Damage is flagged as area-of-effect upstream in FalloutZeroChatMessage
-    // (see documents/chat-message.mjs#_rollDamage) based on the attacking
-    // weapon's properties/description/bonusProperties text.
     const isAreaEffectDamage = damages.some((d) => d.properties?.has?.('areaOfEffect'))
     const fittedDtMultiplier = isAreaEffectDamage && (this.system.fittedTier ?? 0) >= 1 ? 2 : 1
 
-    // Strengthened (armor upgrade): flat DT bonus against critical-hit
-    // damage specifically. Damage is flagged as a critical hit upstream in
-    // FalloutZeroChatMessage#_rollDamage the same way area-of-effect is.
     const isCriticalDamage = damages.some((d) => d.properties?.has?.('criticalHit'))
     const strengthenedTier = this.system.strengthenedTier ?? 0
     const strengthenedDtBonus =
       isCriticalDamage && strengthenedTier >= 1 ? [0, 3, 8, 8][strengthenedTier] : 0
 
-    // Emergency Protocols rank 2 (Power Armor upgrade): +5 DT against HP
-    // damage while below half HP. Checked against current HP right here
-    // (there's no "start of turn" tracking in this codebase, so "currently
-    // below half HP" is the closest available proxy). Like Strengthened,
-    // this only ever gates HP damage since DT never touches SP damage in
-    // this method.
     const emergencyProtocolsTier = this.system.emergencyProtocolsTier ?? 0
     const emergencyProtocolsDtBonus =
       emergencyProtocolsTier >= 2 && hp.value < hp.max / 2 ? 5 : 0
 
-    // Strengthened's and Emergency Protocols' flat bonuses (if any) are
-    // added first, then Fitted's doubling (if any) is applied to the total
-    // - "your DT is doubled" reads most naturally as doubling whatever your
-    // DT currently is, after other conditional bonuses. dt.value can still
-    // change below (the "Blocking" condition boosts it further), so this is
-    // computed fresh at each point DT actually gates damage, not cached
-    // once here.
-    const effectiveDt = () =>
-      (dt.value + strengthenedDtBonus + emergencyProtocolsDtBonus) * fittedDtMultiplier
+    const isMeleeAttackDamage = damages.some((d) => d.properties?.has?.('meleeAttack'))
+    const madeOfSternerStuff = this.items.find((i) => i.name === 'Made of Sterner Stuff')
+    const wieldingMeleeWeapon = this.items.some((i) => i.type === 'meleeWeapon' && i.system.itemEquipped)
+    const madeOfSternerStuffDtBonus =
+      madeOfSternerStuff && wieldingMeleeWeapon && isMeleeAttackDamage ? 2 : 0
 
-    // Prism Shielding / Explosive Shielding (Power Armor upgrades): flat
-    // reduction to laser/plasma/explosive damage taken, applied per damage
-    // entry before it's summed into the total below. Only nonzero while
-    // wearing Power Armor with the matching upgrade attached (see
-    // data/actorBase.mjs#applyPowerArmorUpgrades).
+    const effectiveDt = () =>
+      (dt.value + strengthenedDtBonus + emergencyProtocolsDtBonus + madeOfSternerStuffDtBonus) * fittedDtMultiplier
+
     const prismShieldingTier = this.system.prismShieldingTier ?? 0
     const prismShieldReduction = prismShieldingTier >= 1 ? [0, 5, 10, 20][prismShieldingTier] : 0
     const explosiveShieldingTier = this.system.explosiveShieldingTier ?? 0
@@ -2395,10 +2361,7 @@ export default class FalloutZeroActor extends Actor {
     // Get SP damage
     let totalDamage = amount > 0 ? Math.floor(amount) : Math.ceil(amount)
     const PowerArmor = this.items.filter((i) => i.type == 'powerArmor').filter((i) => i.system.itemEquipped === true)
-    // Undo/modify support (see FalloutZeroChatMessage#_undoApplyDamage): if
-    // this application consumes Power Armor HP and/or decay, remember what
-    // it looked like beforehand so the chat card's undo button can restore
-    // it exactly, not just the wearer's own SP/HP.
+
     let powerArmorUndo = null
     if (PowerArmor.length > 0) {
       const ArmorID = PowerArmor[0]._id
@@ -2522,9 +2485,6 @@ export default class FalloutZeroActor extends Actor {
             deltaSP,
             deltaTempHp,
             deltaHP,
-            // Power Armor HP/decay consumed by this application (if any),
-            // so the chat card's undo button can restore it too - see
-            // FalloutZeroChatMessage#_undoApplyDamage.
             powerArmor,
           }
         }

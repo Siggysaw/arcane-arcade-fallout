@@ -1,4 +1,5 @@
 import { applyDamageToActor } from '../helpers/damage-relay.mjs'
+import { addDiceCount } from '../helpers/damage-formula.mjs'
 
 export default class AttackRoll extends FormApplication {
   constructor(actor, weapon, options = {}, callback = () => { }) {
@@ -413,7 +414,25 @@ export default class AttackRoll extends FormApplication {
     let result = formula
     if (this.hasBonusProperty('DMG Dice Up')) result = this.stepFormula(result, 1)
     if (this.hasBonusProperty('DMG Die Down')) result = this.stepFormula(result, -1)
+    result = addDiceCount(result, this.getEmpoweredEnergyRanks())
     return this.applyDestructive(result)
+  }
+
+  // Empowered Energy: "Whenever you roll damage from an attack from an
+  // energy weapon, you can roll an additional damage dice" - up to 3 ranks
+  // (system.quantity), each rank adding one more die of whatever size the
+  // damage component already rolls. Gated on the weapon itself being an
+  // energy weapon per the perk's own wording, checked the same way
+  // Gunslinger/Fan the Hammer/etc. check weapon text elsewhere in this file
+  // (hasProperty() - the weapon's description OR its bonusProperties).
+  // Deliberately NOT covered here: the perk's secondary crit clause ("make
+  // an additional attack... or double the critical hit damage") - that's a
+  // player choice made after a crit is confirmed, not a passive formula
+  // change, and wasn't asked for.
+  getEmpoweredEnergyRanks() {
+    if (!this.hasProperty('Energy Weapon')) return 0
+    const empoweredEnergy = this.actor.items.find((i) => i.name === 'Empowered Energy')
+    return empoweredEnergy?.system?.quantity ?? 0
   }
 
   getFlavor(target, hit, diceRoll) {

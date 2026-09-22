@@ -83,6 +83,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     const damageTypes = this.flags?.falloutzero.damageTypes
     const isAreaEffect = this.flags?.falloutzero.isAreaEffect
     const isCritical = this.flags?.falloutzero.isCritical
+    const isMeleeAttack = this.flags?.falloutzero.isMeleeAttack
     return this.rolls.map((roll, index) => ({
       value: roll.total,
       type: damageTypes[index],
@@ -90,6 +91,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
         ...(roll.options.properties ?? []),
         ...(isAreaEffect ? ['areaOfEffect'] : []),
         ...(isCritical ? ['criticalHit'] : []),
+        ...(isMeleeAttack ? ['meleeAttack'] : []),
       ]),
     }))
   }
@@ -536,6 +538,13 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       weapon?.system?.bonusProperties,
     ].some((text) => typeof text === 'string' && text.includes('Area of Effect'))
 
+    // Made of Sterner Stuff (perk): DT bonus specifically against Melee
+    // Attacks, applied in FalloutZeroActor#applyDamage. An attack counts as
+    // a melee attack if the attacking weapon's item type is 'meleeWeapon' -
+    // same check AttackRoll#getTargetedApCost already uses
+    // (`this.weapon.type === 'meleeWeapon'`).
+    const isMeleeAttack = weapon?.type === 'meleeWeapon'
+
     let upgradedBonus = 0
     let upgradedDieCount = 0
     if (hasUpgraded) {
@@ -573,6 +582,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
         // Strengthened (armor upgrade): bonus DT specifically against
         // critical-hit damage, applied in FalloutZeroActor#applyDamage.
         isCritical,
+        isMeleeAttack,
       },
     })
   }

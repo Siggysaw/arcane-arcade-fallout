@@ -408,8 +408,13 @@ details > summary {
   border-color: initial;
   border-image: url("/systems/arcane-arcade-fallout/assets/graphics/metal_door_2.webp") 45 / 1 / 0 round;
 }
-#file-picker.application{
+
+.active-effect-config{
     border-width:0px;
+}
+
+#file-picker.application {
+  border-width: 0px;
 }
 
 .prosemirror.menu-dialog form {
@@ -646,6 +651,11 @@ td,
 
 .sheet .perk-div .perk-image {
   height: 150px;
+}
+.sheet .perk-toggle-btn {
+  float: right;
+  width: 80%;
+  margin-top: -5px;
 }
 
 .sheet div .box-traits,
@@ -1593,6 +1603,22 @@ body.game .app .tabs > [data-tab] {
 .actor-drop-target {
   position: relative;
   transition: outline 0.1s ease;
+}
+
+/* GM Screen sidebar (Group Rewards / Party / Add to Character search) --
+   keep it pinned in view as the GM scrolls down through a long character
+   roster instead of it scrolling away with the character cards. `align-self:
+   start` stops the grid item from stretching to the full row height (which
+   would leave sticky nothing to stick within); `max-height`/`overflow-y`
+   are a safety net so the sidebar gets its own scrollbar rather than
+   running off-window if its own content (e.g. a long search result list)
+   is ever taller than the visible area. */
+.gm-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
  .actor-drop-target.drag-hover {

@@ -1,8 +1,28 @@
 import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
+import { addDiceCount } from '../helpers/damage-formula.mjs'
 import SkillRoll from '../dice/skill-roll.mjs'
 import PerkListApplication from '../applications/components/perk-list.mjs'
 import ChemApplication from '../applications/components/chem-application.mjs'
+
+// Empowered Energy: bumps a weapon's displayed damage dice count on the
+// Combat tab for every rank (system.quantity) of the perk the actor has,
+// gated on the weapon itself being an energy weapon (its description or
+// bonusProperties text includes "Energy Weapon" - same check
+// AttackRoll#hasProperty uses for the attack dialog/actual roll, see
+// AttackRoll#getEmpoweredEnergyRanks in dice/attack-roll.mjs). `item` here
+// is a plain toObject()'d item (same as the Rooted flag in _prepareItems
+// below), so its damages array is mutated in place before being pushed into
+// the rangedWeapons/meleeWeapons context arrays the Combat tab renders.
+function applyEmpoweredEnergy(item, ranks) {
+  if (!ranks) return
+  const { description, bonusProperties } = item.system
+  const isEnergyWeapon =
+    (typeof description === 'string' && description.includes('Energy Weapon')) ||
+    (typeof bonusProperties === 'string' && bonusProperties.includes('Energy Weapon'))
+  if (!isEnergyWeapon) return
+  item.system.damages = item.system.damages.map((d) => ({ ...d, formula: addDiceCount(d.formula, ranks) }))
+}
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -282,6 +302,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     const upgrades = []
     const armorUpgrades = []
 
+    // Empowered Energy: looked up once per render rather than per weapon -
+    // see applyEmpoweredEnergy() above for what this does with it.
+    const empoweredEnergyRanks = this.actor.items.find((it) => it.name === 'Empowered Energy')?.system?.quantity ?? 0
+
     // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || Item.DEFAULT_ICON
@@ -290,14 +314,30 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       } else if (i.type === 'feature') {
         features.push(i)
       } else if (i.type === 'perk') {
+        // Rooted's Activate/Deactivate button (actor-perks.hbs) needs to know
+        // whether the Rooted Condition item is currently on the actor, to
+        // decide which label to show. Computed here (same place i.img's
+        // fallback is patched in above) rather than via a template helper,
+        // since `i` is already a plain toObject()'d item by this point.
+        if (i.name === 'Rooted') {
+          i.rootedConditionActive = this.actor.items.some((it) => it.name === 'Rooted Condition')
+        }
+        // Made of Sterner Stuff's Block/Unblock button (actor-perks.hbs)
+        // needs to know whether the Blocking condition is currently on the
+        // actor, same pattern as Rooted's flag above.
+        if (i.name === 'Made of Sterner Stuff') {
+          i.blockingConditionActive = this.actor.items.some((it) => it.name === 'Blocking')
+        }
         perks.push(i)
       } else if (i.type === 'armor') {
         armors.push(i)
       } else if (i.type === 'powerArmor') {
         powerArmors.push(i)
       } else if (i.type === 'rangedWeapon') {
+        applyEmpoweredEnergy(i, empoweredEnergyRanks)
         rangedWeapons.push(i)
       } else if (i.type === 'meleeWeapon') {
+        applyEmpoweredEnergy(i, empoweredEnergyRanks)
         meleeWeapons.push(i)
       } else if (i.type === 'medicine') {
         medicines.push(i)
@@ -872,6 +912,55 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       const itemId = ev.currentTarget.dataset.itemId
       const item = this.actor.items.get(itemId)
       item.update({ 'system.efficientMunitions': ev.target.value === 'true' })
+    })
+
+    // Rooted perk: Activate/Deactivate button. Activating adds a copy of the
+    // Rooted Condition item from the conditions compendium (4 AP);
+    // deactivating removes it (3 AP). AP is checked/spent first via
+    // applyApCost (same order as aafohud.toggleEquipArmor/toggleEquipWeapon
+    // above) so a player short on AP is warned and nothing is added/removed;
+    // outside combat applyApCost is a free no-op success, same as every
+    // other AP-gated action in this file. Add/remove itself mirrors
+    // _syncOverloadedCondition's fromUuid -> toObject -> createEmbeddedDocuments
+    // / deleteEmbeddedDocuments pattern used for the Encumbered conditions.
+    html.on('click', '[data-rooted-toggle]', async (ev) => {
+      const existingCondition = this.actor.items.find((i) => i.name === 'Rooted Condition')
+
+      if (existingCondition) {
+        const canAfford = await this.actor.applyApCost(3)
+        if (canAfford) {
+          await this.actor.deleteEmbeddedDocuments('Item', [existingCondition.id])
+        }
+      } else {
+        const canAfford = await this.actor.applyApCost(4)
+        if (canAfford) {
+          const conditionItem = await fromUuid('Compendium.arcane-arcade-fallout.conditions.Item.M9C418Z2zSMk2bLT')
+          if (conditionItem) {
+            await this.actor.createEmbeddedDocuments('Item', [conditionItem.toObject()])
+          }
+        }
+      }
+    })
+
+    // Made of Sterner Stuff perk: Block/Unblock button. Unlike the melee
+    // weapon "BLOCK!" button ([data-block] above / Actor#blockingMelee),
+    // this toggle always uses quantity 1 (no Defensive-weapon check) and
+    // only costs AP to add the condition - removing it is free. Mirrors
+    // the Rooted toggle's structure/AP-gating above.
+    html.on('click', '[data-block-toggle]', async (ev) => {
+      const existingCondition = this.actor.items.find((i) => i.name === 'Blocking')
+
+      if (existingCondition) {
+        await this.actor.deleteEmbeddedDocuments('Item', [existingCondition.id])
+      } else {
+        const canAfford = await this.actor.applyApCost(3)
+        if (canAfford) {
+          const conditionItem = await fromUuid('Compendium.arcane-arcade-fallout.conditions.Item.hfCqus38oNRoSpVu')
+          if (conditionItem) {
+            await this.actor.createEmbeddedDocuments('Item', [conditionItem.toObject()])
+          }
+        }
+      }
     })
 
     //show rule information

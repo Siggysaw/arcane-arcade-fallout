@@ -209,6 +209,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const back2back = searchItems(this, 'Back to Back Condition')
     const toughness = searchItems(this, 'Toughness')
     const radTastic = searchItems(this, 'Rad-Tastic!')
+    const madeOfSternerStuff = searchItems(this, 'Made of Sterner Stuff')
 
     aliveandkickin ? this.penalties.exhaustion.ignored += 3 : this.penalties.exhaustion.ignored
     packrat ? this.carryLoad.modifiersMax += packrat.system.quantity * 10 : ''
@@ -233,6 +234,13 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     toughness?.system?.quantity > 1 ? this.damageThreshold.modifiers += 1 : ''
     radTastic ? this.radiationDC.modifiers -= 3 : ''
     radTastic ? this.penalties.radiation.ignored += 3 : this.penalties.radiation.ignored
+    // Made of Sterner Stuff: "Your AC increases by 1 regardless of if you
+    // are armored" - a flat, unconditional armorClass.modifiers bump, same
+    // pattern as Evolution/Back to Back Condition just above/below. The
+    // perk's other half ("if you are wielding a melee weapon, your DT
+    // increases by 2 against other Melee Attacks") isn't AC-related and
+    // isn't computed here - see documents/actor.mjs#applyDamage.
+    madeOfSternerStuff ? this.armorClass.modifiers += 1 : ''
 
     if (vigilantWatch && vigilantWatch.system.wildWasteland) {
       this.combatSequence.modifiers -= 1
