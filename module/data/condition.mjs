@@ -7,6 +7,10 @@ export default class FalloutZeroCondition extends FalloutZeroItemBase {
     const schema = super.defineSchema()
 
     schema.quantity = new fields.NumberField({ ...requiredInteger, initial: 1, min: 0 })
+    // If true, this Condition shows up in the token HUD's status-effect
+    // quick list (see helpers/status-effects.mjs). Off by default so adding
+    // new conditions doesn't silently clutter that list.
+    schema.statusEffect = new fields.BooleanField({ initial: false })
     schema.load = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
     schema.raceReq = new fields.StringField({initial: "Organics only"})
     schema.cost = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })

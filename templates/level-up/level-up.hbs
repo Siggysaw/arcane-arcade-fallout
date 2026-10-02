@@ -1,12 +1,54 @@
 <div class="level-up pipboy-frame{{#isVaultTec}} vaulttec {{/isVaultTec}}">
     <h3>
-        Congrats {{ actor.name }} you're going from level {{ actor.system.level }} to {{ nextLevel }}
+        {{#if isCharacterCreation}}
+            Welcome to the Wasteland, {{ actor.name }}! Let's finish building your character.
+        {{else}}
+            Congrats {{ actor.name }} you're going from level {{ actor.system.level }} to {{ nextLevel }}
+        {{/if}}
     </h3>
     <div class="rewards">
-        <div>Rewards:</div>
-        {{#if attributeBoost}}
-            <div>Your health will be updated to {{ newHPMax }}</div>
-            <div>Your stamina will be updated to {{ newSPMax }}</div>
+        {{#if needsRace}}
+            <fieldset class="race-picker mx-1 my-2">
+                <legend>Choose your Race</legend>
+                {{#if newRace}}
+                    <div class="creation-choice-name">{{ newRace.name }}</div>
+                    <button data-action="chooseRace">Change Race</button>
+                {{else}}
+                    <button data-action="chooseRace">Choose Race</button>
+                {{/if}}
+            </fieldset>
+        {{/if}}
+
+        {{#if needsBackground}}
+            <fieldset class="background-picker mx-1 my-2">
+                <legend>Choose your Background</legend>
+                {{#if newBackground}}
+                    <div class="creation-choice-name">{{ newBackground.name }}</div>
+                    <button data-action="chooseBackground">Change Background</button>
+                {{else}}
+                    <button data-action="chooseBackground">Choose Background</button>
+                {{/if}}
+            </fieldset>
+        {{/if}}
+
+        {{#if isCharacterCreation}}
+            <fieldset class="special-pool mx-1 my-2">
+                <legend>Assign your S.P.E.C.I.A.L. (points left: {{ specialPointPool }})</legend>
+                <div class="grid grid-col2">
+                    {{#each actor.system.abilities as |ability key|}}
+                        <div>{{ ability.label }}</div>
+                        <div class="flex space-evenly">
+                            <button data-action="decSpecial" data-special="{{key}}">
+                                <i class="fas fa-2x fa-minus-square"></i>
+                            </button>
+                            <div>{{ lookup ../specialChanges key }}</div>
+                            <button data-action="incSpecial" data-special="{{key}}" {{#if (Equals ../specialPointPool 0)}}disabled{{/if}}>
+                                <i class="fas fa-2x fa-plus-square"></i>
+                            </button>
+                        </div>
+                    {{/each}}
+                </div>
+            </fieldset>
         {{/if}}
 
         {{#if hasSkillPoints}}
@@ -34,17 +76,28 @@
 
         {{#if perkOrSpecial}}
             <fieldset class="perks mx-1 my-2">
-                <legend>You can take a Perk OR you can add +1 to a SPECIAL stat!</legend>
-                <div>
-                    {{#if specialBoost}}
-                        <button data-action="chooseSpecial">{{ specialBoost.label }}</button>
-                    {{else if newPerk }}
-                        <button data-action="choosePerk">{{ newPerk.name }}</button>
-                    {{else}}
-                        <button data-action="choosePerk">Choose perk</button>
-                        <button data-action="chooseSpecial">Choose SPECIAL</button>
-                    {{/if}}
-                </div>
+                {{#if perkOnly}}
+                    <legend>Choose a Perk</legend>
+                    <div>
+                        {{#if newPerk}}
+                            <button data-action="choosePerk">{{ newPerk.name }}</button>
+                        {{else}}
+                            <button data-action="choosePerk">Choose perk</button>
+                        {{/if}}
+                    </div>
+                {{else}}
+                    <legend>You can take a Perk OR you can add +1 to a SPECIAL stat!</legend>
+                    <div>
+                        {{#if specialBoost}}
+                            <button data-action="chooseSpecial">{{ specialBoost.label }}</button>
+                        {{else if newPerk }}
+                            <button data-action="choosePerk">{{ newPerk.name }}</button>
+                        {{else}}
+                            <button data-action="choosePerk">Choose perk</button>
+                            <button data-action="chooseSpecial">Choose SPECIAL</button>
+                        {{/if}}
+                    </div>
+                {{/if}}
             </fieldset>
         {{/if}}
     </div>

@@ -75,14 +75,6 @@
 }
 
 /* ================= Main Level Up dialog ================= */
-.level-up .rewards > div:first-child {
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 9pt;
-  opacity: 0.75;
-  margin-bottom: 6px;
-}
-
 .level-up .rewards .skills button {
   width: auto;
   margin: 0;
@@ -211,4 +203,152 @@
   flex-direction: column;
   gap: 6px;
   margin-bottom: 14px;
+}
+
+/* ================= Character creation (Level Up dialog) ================= */
+/* Race/Background/SPECIAL-pool fieldsets shown on a level-0 actor's first
+   Level Up - see needsRace/needsBackground/isCharacterCreation in
+   applications/components/level-up.mjs. */
+
+.level-up .creation-choice-name {
+  font-size: 11pt;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* Icon-only toggle buttons (SPECIAL pool +/-) - same "no box, just the
+   glyph" treatment the skill-point pool buttons already use
+   (.level-up .rewards .skills button, above). */
+.level-up .rewards .special-pool button {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  line-height: normal;
+  border: 0;
+  background: none;
+}
+
+/* ================= Choose Race dialog ================= */
+.choose-race {
+  min-height: 0;
+}
+
+.choose-race .race-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--pb-hairline);
+}
+
+.choose-race .race-picker-title {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10pt;
+}
+
+.choose-race .race-picker-header button[data-action="cancel"] {
+  width: auto;
+  padding: 6px 14px;
+}
+
+.race-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.race-card {
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.race-card-name {
+  font-weight: bold;
+}
+
+/* ================= Choose Background dialog ================= */
+.choose-background {
+  min-height: 0;
+}
+
+.choose-background .background-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--pb-hairline);
+}
+
+.choose-background .background-picker-title {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10pt;
+}
+
+.choose-background .background-picker-header .search-row {
+  flex: 0 1 260px;
+}
+
+.choose-background .background-picker-header button[data-action="cancel"] {
+  width: auto;
+  padding: 6px 14px;
+}
+
+.background-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.background-card {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  background: color-mix(in srgb, var(--dark) 70%, black);
+  border: 1px solid var(--pb-hairline);
+  color: var(--sheetcolor);
+  transition: border-color 0.1s ease, background 0.1s ease;
+}
+
+.background-card:hover {
+  border-color: var(--sheetcolor);
+  background: var(--pb-faint);
+}
+
+.background-card.background-match {
+  border-color: var(--sheetcolor);
+  box-shadow: 0 0 8px var(--pb-glow);
+}
+
+.background-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.background-card-name {
+  font-weight: bold;
+}
+
+.background-card-description {
+  font-size: 9pt;
+  opacity: 0.85;
+  max-height: 120px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+
+.background-card button {
+  margin-top: auto;
+}
+
+.background-grid .empty-branch {
+  grid-column: 1 / -1;
 }

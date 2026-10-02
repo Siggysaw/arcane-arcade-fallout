@@ -1,0 +1,27 @@
+<aside class="pipboy-sidebar pipboy-frame">
+    <header class="sidebar-header">
+        <span class="branch-select is-static">Repair Bench</span>
+    </header>
+
+    <div class="craftables-panel">
+        <div class="craftables-list" data-repairables-list>
+            {{#each groupedItems as |group groupKey|}}
+            {{#if group.items.length}}
+            <div class="repair-category-label">{{group.label}}</div>
+            {{#each group.items as |item|}}
+            <button type="button"
+                    class="crafting-option repair-option{{#if item.selected}} selected{{/if}}"
+                    data-action="select"
+                    data-item-id="{{item.id}}">
+                <span class="option-name">{{item.name}}</span>
+                <span class="repair-condition{{#if item.isBroken}} broken{{/if}}">{{item.conditionLabel}}</span>
+            </button>
+            {{/each}}
+            {{/if}}
+            {{/each}}
+            {{#unless hasAnyItems}}
+            <div class="empty-branch">Nothing needs repair right now.</div>
+            {{/unless}}
+        </div>
+    </div>
+</aside>

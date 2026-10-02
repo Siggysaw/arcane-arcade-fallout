@@ -1444,6 +1444,12 @@ FALLOUTZERO.craftingItemTypes = [
   'chem',
 ]
 
+// The item types that carry a decay bar today (see the equipped-* item
+// templates) and are therefore the ones the Repair Bench / item context
+// menu's "Repair" entry can act on. powerArmor is excluded — it has no
+// decay bar of its own in the current templates.
+FALLOUTZERO.repairableTypes = ['armor', 'meleeWeapon', 'rangedWeapon']
+
 FALLOUTZERO.packsWithCraftables = [
   'arcane-arcade-fallout.armor',
   'arcane-arcade-fallout.ammunition',
@@ -1493,4 +1499,141 @@ FALLOUTZERO.armorTypes = {
     label: 'Power',
     uuid: 'Compendium.arcane-arcade-fallout.armor.Item.GPl8d41kmcj411Le',
   },
+}
+
+// Repair DC bonus/materials/time straight from the Item Blueprint
+// Encyclopedia's Armor table (pg 94), keyed by the same armorType id every
+// armor item already carries in system.armorType — so every armor piece
+// gets book-accurate repair data with no per-item authoring needed.
+// "power" is intentionally excluded (power armor isn't a repairable type;
+// see FALLOUTZERO.repairableTypes). Multilayered's book entry ("any
+// combination of leather and cloth to equal 3 total junk items") is
+// approximated here as a fixed x2 leather + x1 cloth.
+FALLOUTZERO.armorRepairTable = {
+  cloth: { bonus: 0, materials: [{ name: 'Cloth', quantity: 2 }], time: { value: 5, unit: 'minutes' } },
+  leather: { bonus: 1, materials: [{ name: 'Leather', quantity: 2 }], time: { value: 10, unit: 'minutes' } },
+  metal: { bonus: 1, materials: [{ name: 'Steel', quantity: 2 }, { name: 'Screws', quantity: 1 }], time: { value: 10, unit: 'minutes' } },
+  multilayered: { bonus: 3, materials: [{ name: 'Leather', quantity: 2 }, { name: 'Cloth', quantity: 1 }], time: { value: 10, unit: 'minutes' } },
+  ballistic: { bonus: 10, materials: [{ name: 'Ballistic Fiber', quantity: 2 }], time: { value: 10, unit: 'minutes' } },
+  steel: { bonus: 5, materials: [{ name: 'Steel', quantity: 2 }, { name: 'Leather', quantity: 1 }], time: { value: 10, unit: 'minutes' } },
+}
+
+// Unlike armor, the book prices every melee/ranged weapon's repair cost as
+// "x1 crafting material" repeated N times — N *distinct* materials of the
+// player's choosing (from whatever that weapon's own crafting recipe
+// uses), not a fixed named list. So these tables (transcribed from the
+// Item Blueprint Encyclopedia's weapon tables, pg 97-108) only carry the
+// repair DC bonus and that slot count N ("slots") plus repair time; the
+// actual material *names* come from the item's own system.crafting.materials
+// at runtime (see FalloutZeroItem#getRepairRequirements/_repairMaterialPool).
+// Keyed by lowercased item name for a direct, case-insensitive lookup — a
+// name not found here (homebrew items, a naming mismatch) falls back to a
+// generic default rather than throwing.
+//
+// A few items have a unique alternate material that repairs extra levels
+// of decay (Sharpened Pole/wood, the Bumper Swords, Ski Sword) — that
+// bonus-levels mechanic isn't modeled yet; these are listed here using
+// just their ordinary "or x1 crafting material" fallback slot count.
+FALLOUTZERO.meleeWeaponRepairTable = {
+  'knife': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'switchblade': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'sharpened pole': { bonus: 1, slots: 1, time: { value: 15, unit: 'minutes' } },
+  'combat knife': { bonus: 3, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'throwing knife': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'spear': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'sword': { bonus: 3, slots: 2, time: { value: 10, unit: 'minutes' } },
+  'plastic bumper sword': { bonus: 3, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'steel bumper sword': { bonus: 3, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'cleaver': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'fire axe': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'hatchet': { bonus: 3, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'machete': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'assaultron blade': { bonus: 5, slots: 3, time: { value: 15, unit: 'minutes' } },
+  'guitar sword': { bonus: 5, slots: 3, time: { value: 10, unit: 'minutes' } },
+  'sickle': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'ski sword': { bonus: 3, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'pickaxe': { bonus: 3, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'pitchfork': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'police baton': { bonus: 3, slots: 2, time: { value: 10, unit: 'minutes' } },
+  'wrench': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'crowbar': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'sledgehammer': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'baseball bat': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'super sledge': { bonus: 3, slots: 3, time: { value: 10, unit: 'minutes' } },
+  '9 iron': { bonus: 1, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'dress cane': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'lead pipe': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'rolling pin': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'shovel': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'tire iron': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'pool cue': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'bone club': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'commie whacker': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'paddle ball': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'board': { bonus: 0, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'board with a nail': { bonus: 0, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'protest sign': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'stop sign': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'war drum': { bonus: 3, slots: 3, time: { value: 10, unit: 'minutes' } },
+  'cattle prod': { bonus: 3, slots: 4, time: { value: 10, unit: 'minutes' } },
+  'ripper': { bonus: 3, slots: 4, time: { value: 10, unit: 'minutes' } },
+  'mr. handy buzz blade': { bonus: 5, slots: 3, time: { value: 15, unit: 'minutes' } },
+  'chainsaw': { bonus: 3, slots: 3, time: { value: 10, unit: 'minutes' } },
+  'drill': { bonus: 3, slots: 2, time: { value: 10, unit: 'minutes' } },
+  'plasma cutter': { bonus: 5, slots: 3, time: { value: 10, unit: 'minutes' } },
+  'shishkebab': { bonus: 3, slots: 3, time: { value: 10, unit: 'minutes' } },
+  'brass knuckles': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'spiked knuckles': { bonus: 1, slots: 1, time: { value: 5, unit: 'minutes' } },
+  'boxing gloves': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'bear skull arm': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'deathclaw gauntlet': { bonus: 1, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'bear trap fist': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'power fist': { bonus: 1, slots: 4, time: { value: 5, unit: 'minutes' } },
+}
+
+FALLOUTZERO.rangedWeaponRepairTable = {
+  'flare gun': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'acid soaker': { bonus: 2, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'pipe pistol': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'bolt-action pipe pistol': { bonus: 2, slots: 2, time: { value: 5, unit: 'minutes' } },
+  '10mm pistol': { bonus: 3, slots: 3, time: { value: 10, unit: 'minutes' } },
+  '9mm pistol': { bonus: 1, slots: 3, time: { value: 5, unit: 'minutes' } },
+  '5.56mm pistol': { bonus: 6, slots: 3, time: { value: 10, unit: 'minutes' } },
+  'pipe revolver': { bonus: 3, slots: 2, time: { value: 5, unit: 'minutes' } },
+  '.357 magnum revolver': { bonus: 2, slots: 2, time: { value: 5, unit: 'minutes' } },
+  '.44 magnum revolver': { bonus: 2, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'walther ppk': { bonus: 6, slots: 3, time: { value: 5, unit: 'minutes' } },
+  '12.7mm pistol': { bonus: 8, slots: 3, time: { value: 10, unit: 'minutes' } },
+  '.45 auto pistol': { bonus: 4, slots: 2, time: { value: 2, unit: 'minutes' } },
+  'ranger sequoia': { bonus: 6, slots: 3, time: { value: 10, unit: 'minutes' } },
+  'h&h tools nail gun': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  '10mm smg': { bonus: 5, slots: 4, time: { value: 10, unit: 'minutes' } },
+  '9mm smg': { bonus: 5, slots: 4, time: { value: 10, unit: 'minutes' } },
+  'tommy gun': { bonus: 5, slots: 4, time: { value: 10, unit: 'minutes' } },
+  '12.7mm smg': { bonus: 8, slots: 4, time: { value: 10, unit: 'minutes' } },
+  'syringer': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
+  'lever action rifle': { bonus: 1, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'cowboy repeater': { bonus: 3, slots: 4, time: { value: 5, unit: 'minutes' } },
+  'varmint rifle': { bonus: 1, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'trail carbine': { bonus: 3, slots: 4, time: { value: 5, unit: 'minutes' } },
+  'railway rifle': { bonus: 3, slots: 4, time: { value: 10, unit: 'minutes' } },
+  'junk jet': { bonus: 4, slots: 4, time: { value: 10, unit: 'minutes' } },
+  'sniper rifle': { bonus: 3, slots: 4, time: { value: 5, unit: 'minutes' } },
+  'assault rifle': { bonus: 5, slots: 4, time: { value: 10, unit: 'minutes' } },
+  'anti-material rifle': { bonus: 6, slots: 4, time: { value: 15, unit: 'minutes' } },
+  'lever-action shotgun': { bonus: 3, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'single shotgun': { bonus: 3, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'sawed-off shotgun': { bonus: 3, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'double barrel shotgun': { bonus: 3, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'combat shotgun': { bonus: 6, slots: 4, time: { value: 5, unit: 'minutes' } },
+  'riot shotgun': { bonus: 6, slots: 4, time: { value: 10, unit: 'minutes' } },
+  'flamer': { bonus: 3, slots: 4, time: { value: 5, unit: 'minutes' } },
+  'missile launcher': { bonus: 5, slots: 4, time: { value: 15, unit: 'minutes' } },
+  'minigun': { bonus: 5, slots: 4, time: { value: 15, unit: 'minutes' } },
+  'fat-man': { bonus: 3, slots: 4, time: { value: 5, unit: 'minutes' } },
+  'solar scorcher': { bonus: 8, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'laser pistol': { bonus: 3, slots: 3, time: { value: 5, unit: 'minutes' } },
+  'laser rifle': { bonus: 3, slots: 4, time: { value: 5, unit: 'minutes' } },
+  'automatic laser rifle': { bonus: 5, slots: 4, time: { value: 15, unit: 'minutes' } },
+  'tri-beam laser rifle': { bonus: 5, slots: 4, time: { value: 15, unit: 'minutes' } },
 }

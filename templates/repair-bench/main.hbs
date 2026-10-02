@@ -1,0 +1,75 @@
+<section class="main pipboy-frame">
+    <header class="item-header">
+        <h1>Workbench</h1>
+    </header>
+    {{#if selectedItem}}
+    <div class="crafting-content">
+        {{#if requirements.broken}}
+        <section class="repair-broken-banner">
+            <p>This item is <strong>BROKEN</strong>. Repairing it costs 5&times; the normal materials and time, and a success only restores it to 5/10 condition &mdash; not full.</p>
+        </section>
+        {{/if}}
+
+        <section>
+            <h5>Repair Skill</h5>
+            <ul class="requirement-list">
+                <li class="requirement-line"
+                    data-tooltip="{{abilityBonus}} (Ability) + {{skillBonus}} (Skill) + {{luck}} (Luck) - {{penaltyTotal}} (Penalties) | Attempt DC {{requirements.dc}}">
+                    <span class="req-name">Crafting</span>
+                    <span class="req-value">({{skillBonus}}/{{requirements.bonus}}){{#if canAutoRepair}} <span class="repair-auto-chip">Auto</span>{{/if}}</span>
+                </li>
+            </ul>
+        </section>
+
+        {{#if (Equals requirements.mode "pool")}}
+        <section>
+            <h5>Materials</h5>
+            <p class="repair-pool-hint">Pick {{requirements.slotsRequired}} different materials to sacrifice ({{selectedMaterialCount}}/{{requirements.slotsRequired}} selected{{#if requirements.broken}}, x{{requirements.unitQuantity}} each{{/if}}):</p>
+            <ul class="requirement-list ingredients-list repair-pool-list">
+                {{#each materials as |material|}}
+                <li class="requirement-line repair-pool-item{{#if material.selected}} selected{{/if}}{{#if material.disabled}} disabled{{/if}}">
+                    <button type="button"
+                            class="repair-pool-toggle"
+                            data-action="toggleMaterial"
+                            data-material-name="{{material.name}}"
+                            {{#if material.disabled}}disabled{{/if}}
+                            data-tooltip="{{#if material.disabled}}Not enough owned{{else}}{{#if material.selected}}Deselect{{else}}Select{{/if}}{{/if}}">
+                        <i class="fas fa-{{#if material.selected}}minus{{else}}plus{{/if}}-square"></i>
+                    </button>
+                    <span class="req-name">{{material.name}}</span>
+                    <span class="req-value">(owned {{material.ownedQuantity}})</span>
+                </li>
+                {{/each}}
+            </ul>
+        </section>
+        {{else}}
+        <section>
+            <h5>Materials</h5>
+            <ul class="requirement-list ingredients-list">
+                {{#each materials as |material|}}
+                <li class="requirement-line">
+                    <span class="req-name">{{material.name}}</span>
+                    <span class="req-value">({{material.ownedQuantity}}/{{material.quantity}})</span>
+                </li>
+                {{/each}}
+            </ul>
+        </section>
+        {{/if}}
+
+        <section>
+            <div class="dc-readout">
+                <span class="dc-label">DC To Beat</span>
+                <span class="dc-value">{{requirements.dc}}</span>
+            </div>
+        </section>
+    </div>
+    {{else}}
+    <div class="empty-state">
+        <h1>Select An Item</h1>
+        <p>Choose a piece of worn gear from the list to see what it takes to fix it.</p>
+    </div>
+    {{/if}}
+    <footer class="crafting-footer">
+        <p>Fallout TTRPG v2.1, The Item Blueprint Encyclopedia (pg. 92&ndash;100)</p>
+    </footer>
+</section>

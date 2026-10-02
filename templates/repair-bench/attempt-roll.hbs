@@ -1,0 +1,35 @@
+<div class="pipboy-modal">
+    <header class="modal-header">
+        <h2>Repair Check</h2>
+    </header>
+
+    <div class="modal-body">
+        <p class="modal-prompt">Attempt to repair <strong>{{item.name}}</strong>?</p>
+
+        {{#if broken}}
+        <p class="modal-prompt">This item is broken — materials and time are already &times;5, and success only restores it to 5/10 condition.</p>
+        {{/if}}
+
+        <div class="modal-row">
+            <label>Materials to sacrifice</label>
+            <ul class="requirement-list">
+                {{#each materialsToConsume as |material|}}
+                <li class="requirement-line">
+                    <span class="req-name">{{material.name}}</span>
+                    <span class="req-value">x{{material.quantity}}</span>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+
+        <div class="dc-readout">
+            <span class="dc-label">DC To Beat</span>
+            <span class="dc-value">{{dc}}</span>
+        </div>
+    </div>
+
+    <div class="modal-actions flex gap-3">
+        <button data-action="cancel" class="secondary">Cancel</button>
+        <button data-action="roll" class="primary">Roll Dice</button>
+    </div>
+</div>

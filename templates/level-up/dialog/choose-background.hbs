@@ -1,0 +1,34 @@
+<div class="choose-background pipboy-frame scrollable">
+    <div class="background-picker-header">
+        <div class="background-picker-title">Choose your Background</div>
+        <div class="search-row">
+            <i class="fas fa-search"></i>
+            <input type="search"
+                   placeholder="Search Backgrounds"
+                   data-search
+                   value="{{searchQuery}}"
+                   autocomplete="off"
+                   data-tooltip="Type to filter — Enter selects the only remaining match">
+        </div>
+        <button data-action="cancel">Cancel</button>
+    </div>
+    <div class="background-grid" data-background-grid>
+        {{#each backgrounds as |background|}}
+            <div class="background-card" data-item-name="{{background.name}}">
+                <div class="background-card-header">
+                    <img src="{{background.img}}" width="48" alt="{{background.name}}">
+                    <div class="background-card-name">{{background.name}}</div>
+                </div>
+                <div class="background-card-description">{{{background.system.description}}}</div>
+                <button
+                    data-tooltip="{{background.name}}"
+                    data-action="background"
+                    data-item-id="{{ background.id }}"
+                >
+                    Choose {{background.name}}
+                </button>
+            </div>
+        {{/each}}
+        <div class="empty-branch" data-empty-message hidden>No backgrounds match your search</div>
+    </div>
+</div>

@@ -1,17 +1,3 @@
-/* =========================================================
-   Crafting Bench — Fallout: New Vegas Pip-Boy styling
-   All accent color driven by var(--sheetcolor); backgrounds
-   sit on var(--dark) so the sheet color reads the way it
-   does on an actual Pip-Boy screen (glowing lines on black),
-   not a solid color fill.
-
-   Layout is three framed boxes arranged like the in-game
-   workbench: category list (top-left), recipe readout
-   (top-right), and a full-width console strip along the
-   bottom with the item render, Val/Wg/Owned stats, and the
-   Accept / Attempt / Exit actions.
-   ========================================================= */
-
 .crafting-bench {
   --pb-glow: color-mix(in srgb, var(--sheetcolor) 55%, transparent);
   --pb-dim: color-mix(in srgb, var(--sheetcolor) 35%, transparent);
@@ -130,18 +116,10 @@
   margin-bottom: 10px;
 }
 
-/* The browse/search headers are toggled via the `hidden` attribute (see
-   _applySidebarFilter). An author-origin `display` rule always beats the
-   UA stylesheet's `[hidden] { display: none }`, specificity aside — so
-   without this, `.sidebar-header`'s own `display: flex` above would win
-   and the "hidden" header would stay visible. */
 .sidebar-header[hidden] {
   display: none;
 }
 
-/* Overrides the generic `.crafting-bench button` block styling (width,
-   border, padding, hover-invert) — the pager arrows are inline glyphs,
-   not full buttons. */
 .crafting-bench .sidebar-header .pager-arrow {
   width: auto;
   flex: 0 0 auto;
@@ -205,10 +183,6 @@
   margin-bottom: 12px;
 }
 
-/* Extra-scoped selector so this wins over the generic `.crafting-bench
-   button` rule (width:100%, padding:8px, bordered) — without it the
-   toggle stretches to fill the whole utility row and squeezes the search
-   box down to a sliver. */
 .crafting-bench .sidebar-utility-row .filter-toggle {
   width: auto;
   display: flex;
@@ -302,10 +276,7 @@
   background: var(--pb-faint);
 }
 
-/* Every item across every category is always in the DOM (see
-   _applySidebarFilter in the JS) — this is what's toggled to show only
-   the active category, or only search matches, without ever touching
-   Foundry's render(). */
+
 .crafting-option.is-hidden {
   display: none;
 }
@@ -316,8 +287,6 @@
   font-size: 8.5pt;
   opacity: 0.55;
   letter-spacing: 0.02em;
-  /* Only meaningful once results are flattened across categories in
-     search mode — hidden the rest of the time. */
   display: none;
 }
 
@@ -502,9 +471,7 @@
   gap: 8px;
 }
 
-/* Scoped with `.crafting-bench` so this reliably wins over the generic
-   `.crafting-bench button` rule below regardless of source order (they'd
-   otherwise tie on specificity and silently drop padding-left). */
+
 .crafting-bench .console-actions button {
   display: flex;
   align-items: center;

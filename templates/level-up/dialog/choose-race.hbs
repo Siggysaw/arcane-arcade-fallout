@@ -1,0 +1,26 @@
+<div class="choose-race pipboy-frame scrollable">
+    <div class="race-picker-header">
+        <div class="race-picker-title">Choose your Race</div>
+        <button data-action="cancel">Cancel</button>
+    </div>
+    <div class="race-grid" data-race-grid>
+        {{#each races as |race|}}
+            <div class="perk-card race-card" data-item-name="{{race.name}}">
+                <img
+                    class="mx-auto"
+                    src="{{race.img}}"
+                    width="80"
+                    alt="{{race.name}}"
+                >
+                <div class="race-card-name">{{race.name}}</div>
+                <button
+                    data-tooltip="{{race.name}}"
+                    data-action="race"
+                    data-item-id="{{ race.id }}"
+                >
+                    Choose
+                </button>
+            </div>
+        {{/each}}
+    </div>
+</div>

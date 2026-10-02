@@ -7,10 +7,18 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     const requiredInteger = { required: true, nullable: false, integer: true }
     const schema = super.defineSchema()
 
+    // Initial 0, not 1 - a freshly-created character hasn't gone through
+    // character creation yet (race, background, starting SPECIAL points,
+    // starter perk). Level 0 combined with the xp field's own initial value
+    // of 1000 (below) makes the sheet's "Level Up!" button live immediately,
+    // and LevelUp (applications/components/level-up.mjs) detects level === 0
+    // as "this is character creation" and walks the player through those
+    // steps before letting them finish leveling up to 1. See
+    // claude/character-creation-wizard.md.
     schema.level = new fields.NumberField({
       ...requiredInteger,
-      initial: 1,
-      min: 1,
+      initial: 0,
+      min: 0,
       max: 999,
     })
 
@@ -79,7 +87,14 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     schema.totalKarma = new fields.NumberField({ initial: 0 })
     schema.luckmod = new fields.NumberField({ initial: 0 })
     schema.downed = new fields.BooleanField({ initial: false })
-    schema.xp = new fields.NumberField({ initial: 0 })
+    // Initial 1000, not 0 - paired with level's initial 0 (above) so a brand
+    // new character shows "Level Up!" as available right away, since the
+    // bio.hbs button is gated on xp >= 1000 (the GreaterThan helper is
+    // inclusive). Completing that first level-up (via LevelUp's character
+    // creation walkthrough) spends the 1000 back down to 0 exactly like any
+    // other level-up, so this isn't free xp - it's the cost of character
+    // creation, front-loaded.
+    schema.xp = new fields.NumberField({ initial: 1000 })
     schema.healingRate = new fields.SchemaField({
       base: new fields.NumberField({ initial: 0 }),
       value: new fields.NumberField({ initial: 0 }),

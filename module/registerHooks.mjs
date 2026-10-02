@@ -4,6 +4,7 @@ import FalloutZeroArmor from './data/armor.mjs'
 import FalloutZeroItem from './documents/item.mjs'
 import { getApCost, getLastWaypointGroup, sumWaypoints } from './helpers/movement.mjs'
 import { attachAttributeKeyAutocomplete } from './helpers/effects.mjs'
+import { registerConditionStatusEffects } from './helpers/status-effects.mjs'
 
 /* --------------------------------------------  */
 /*  Robco Terminal Journal skin                  */
@@ -89,9 +90,23 @@ export function registerHooks() {
     collapseLi ? menu.insertBefore(li, collapseLi) : menu.appendChild(li)
   })
 
-  Hooks.once('ready', function () {
+  Hooks.once('ready', async function () {
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot))
+
+    /* --------------------------------------------  */
+    /*  Token HUD status effects -> Condition items  */
+    /* --------------------------------------------  */
+    await registerConditionStatusEffects()
+
+    // Rebuild the list whenever a condition's "Status Effect" checkbox (or
+    // any other field) changes, so it doesn't take a world reload to show
+    // up on the token HUD.
+    Hooks.on('updateItem', (item) => {
+      if (item.type === 'condition' && item.pack === 'arcane-arcade-fallout.conditions') {
+        registerConditionStatusEffects()
+      }
+    })
 
     /* --------------------------------------------  */
     /*  Auto recycle AP on turn end                                */

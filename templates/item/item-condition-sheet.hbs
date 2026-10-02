@@ -21,6 +21,8 @@
             {{else}}
             <td style="text-align:right;vertical-align:middle">Level </td>
             <td style="width:50px;"><input type="number" name="system.quantity" value="{{ system.quantity }}" /></td>
+            <td style="vertical-align:middle" data-tooltip="If checked, this condition appears in the token HUD's status-effect quick list.">Status Effect </td>
+            <td><input style="height:10px;" type="checkbox" name="system.statusEffect" {{checked system.statusEffect}} /></td>
             {{/DifferentFrom}}
         </tr>
     </table>

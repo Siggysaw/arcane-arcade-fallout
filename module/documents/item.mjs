@@ -396,6 +396,147 @@ export default class FalloutZeroItem extends Item {
     return (this.system.decay - 10) * -1
   }
 
+  /**
+   * Whether this item currently shows up in the Repair Bench / the item
+   * context menu's "Repair" entry: it's a type that carries a decay bar
+   * (see FALLOUTZERO.repairableTypes) and it isn't already at full
+   * condition. system.decay is stored inverted from the book (10 =
+   * pristine, 0 = broken — see getDecayValue()), so this checks it
+   * directly rather than going through that conversion.
+   */
+  get isRepairable() {
+    return CONFIG.FALLOUTZERO.repairableTypes.includes(this.type) && this.system.decay < 10
+  }
+
+  /**
+   * Computed rather than the separate hand-set system.broken boolean, so
+   * repair logic can't drift out of sync with a GM forgetting to toggle it.
+   */
+  get isBroken() {
+    return this.system.decay === 0
+  }
+
+  /**
+   * Resolves what it actually takes to repair this item one level right
+   * now: the repair "bonus" (added to 10 for the roll DC, same convention
+   * as system.crafting.mainRequirements[].dc), the time it takes, and the
+   * materials it costs — already adjusted for the broken-item case (bonus
+   * +5, materials/time x5, per the book).
+   *
+   * Returns one of two shapes, distinguished by `mode`:
+   *   - `'fixed'` — a concrete materials list (`materials: [{uuid,name,
+   *     quantity}]`), used for armor. The book gives armor real named
+   *     materials at real quantities (e.g. "x2 Leather"), so there's
+   *     nothing for the player to choose.
+   *   - `'pool'` — used for melee/ranged weapons. The book prices these as
+   *     "x1 crafting material" repeated N times: N *distinct* materials of
+   *     the player's choosing, not a fixed list. This returns
+   *     `materialPool` (the item's own candidate materials, deduped),
+   *     `slotsRequired` (N), and `unitQuantity` (1, or 5 if broken) —
+   *     the caller (RepairBench) is responsible for letting the player
+   *     pick `slotsRequired` distinct names out of `materialPool`.
+   *
+   * Resolution order:
+   *   1. system.repair, if a GM has hand-authored a materials list on this
+   *      item — the escape hatch for an exact override (fixed mode).
+   *   2. FALLOUTZERO.armorRepairTable[system.armorType], for armor — every
+   *      armor piece already carries a real armorType, so this gives
+   *      book-accurate data with no per-item authoring at all (fixed mode).
+   *   3. FALLOUTZERO.meleeWeaponRepairTable / rangedWeaponRepairTable,
+   *      keyed by this item's own name — book-accurate (bonus, slot count,
+   *      time) for every named weapon transcribed from the Item Blueprint
+   *      Encyclopedia's weapon tables (pool mode).
+   *   4. A generic pool-mode default (bonus +1, 2 slots, 5 minutes) for
+   *      anything not found above (homebrew items, a name mismatch).
+   */
+  getRepairRequirements() {
+    const authored = this.system.repair
+    const broken = this.isBroken
+
+    if (authored?.materials?.length) {
+      return this._fixedRepairRequirements({
+        bonus: authored.dc ?? 1,
+        materials: authored.materials.map((m) => ({ ...m })),
+        time: { value: authored.time?.value ?? 10, unit: authored.time?.unit ?? 'minutes' },
+      }, broken)
+    }
+
+    if (this.type === 'armor' && CONFIG.FALLOUTZERO.armorRepairTable[this.system.armorType]) {
+      const table = CONFIG.FALLOUTZERO.armorRepairTable[this.system.armorType]
+      return this._fixedRepairRequirements({
+        bonus: table.bonus,
+        materials: table.materials.map((m) => ({ ...m })),
+        time: { ...table.time },
+      }, broken)
+    }
+
+    const weaponTable = this.type === 'meleeWeapon'
+      ? CONFIG.FALLOUTZERO.meleeWeaponRepairTable[this.name?.toLowerCase()]
+      : this.type === 'rangedWeapon'
+        ? CONFIG.FALLOUTZERO.rangedWeaponRepairTable[this.name?.toLowerCase()]
+        : null
+
+    return this._poolRepairRequirements({
+      bonus: weaponTable?.bonus ?? 1,
+      slots: weaponTable?.slots ?? 2,
+      time: weaponTable ? { ...weaponTable.time } : { value: 5, unit: 'minutes' },
+    }, broken)
+  }
+
+  _fixedRepairRequirements({ bonus, materials, time }, broken) {
+    if (broken) {
+      bonus += 5
+      materials = materials.map((m) => ({ ...m, quantity: m.quantity * 5 }))
+      time = { ...time, value: time.value * 5 }
+    }
+    return { mode: 'fixed', bonus, dc: 10 + bonus, materials, time, broken }
+  }
+
+  _poolRepairRequirements({ bonus, slots, time }, broken) {
+    const materialPool = this._repairMaterialPool()
+    // Can't require more distinct materials than the pool actually has.
+    slots = Math.min(slots, materialPool.length)
+    let unitQuantity = 1
+    if (broken) {
+      bonus += 5
+      unitQuantity = 5
+      time = { ...time, value: time.value * 5 }
+    }
+    return { mode: 'pool', bonus, dc: 10 + bonus, time, broken, materialPool, slotsRequired: slots, unitQuantity }
+  }
+
+  /**
+   * The candidate materials a player can choose from for a pool-mode
+   * repair: the item's own crafting recipe (system.crafting.materials),
+   * deduplicated by name — matching the book's intent that repair
+   * materials come from what the item is actually made of. Falls back to
+   * whatever this item would itself break down into (system.junk) when it
+   * has no authored crafting recipe, so the pool isn't left empty.
+   */
+  _repairMaterialPool() {
+    const dedupe = (list) => {
+      const seen = new Set()
+      const out = []
+      for (const m of list) {
+        const key = m.name?.toLowerCase()
+        if (!key || seen.has(key)) continue
+        seen.add(key)
+        out.push({ uuid: m.uuid ?? '', name: m.name })
+      }
+      return out
+    }
+
+    const craftingMaterials = this.system.crafting?.materials ?? []
+    if (craftingMaterials.length) return dedupe(craftingMaterials)
+
+    const junk = this.system.junk
+    if (!junk) return []
+    const junkMaterials = [1, 2, 3]
+      .map((n) => ({ name: junk[`type${n}`] }))
+      .filter((m) => m.name)
+    return dedupe(junkMaterials)
+  }
+
   applyAmmoCost(cost = 1) {
     if (this.system.ammo.capacity.value < cost) {
       ui.notifications.warn(`Weapon ammo is empty, need to reload`)

@@ -1,0 +1,65 @@
+<section class="console pipboy-frame">
+    {{#if selectedItem}}
+    <div class="console-body">
+        <div class="console-art">
+            <div class="craftables-img">
+                <img src="{{selectedItem.img}}" alt="{{selectedItem.name}}" />
+            </div>
+        </div>
+
+        <div class="console-info">
+            <h2 class="console-item-name">{{selectedItem.name}}</h2>
+            {{#if selectedItem.description}}
+            <div class="item-description">{{{selectedItem.description}}}</div>
+            {{/if}}
+            <div class="stat-block">
+                <div class="stat-row">
+                    <span class="stat-label">Time Required</span>
+                    <span class="stat-value">{{requirements.time.value}} {{requirements.time.unit}}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Condition</span>
+                    <span class="stat-value repair-condition{{#if selectedItem.isBroken}} broken{{/if}}">{{selectedItem.conditionLabel}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="console-actions">
+            <button data-action="repair"
+                    {{#unless canRepairNow}}
+                    disabled
+                    data-tooltip="{{#unless canAutoRepair}}Your Crafting skill does not meet this item's repair bonus — use Attempt Repair instead.{{else}}Select the required materials first.{{/unless}}"
+                    {{/unless}}>
+                <i class="fas fa-check"></i> Repair
+            </button>
+            <button data-action="attemptRepair"
+                    {{#unless canAttemptRepair}}
+                    disabled
+                    data-tooltip="Select the required materials first."
+                    {{else}}
+                    data-tooltip="Roll an attempt to see if you can repair this item"
+                    {{/unless}}>
+                <i class="fas fa-dice-d20"></i> Attempt
+            </button>
+            <button type="button" data-action="close" data-tooltip="Close the Repair Bench">
+                <i class="fas fa-times"></i> Exit
+            </button>
+        </div>
+    </div>
+
+    <div class="console-stat-bar">
+        <div class="console-stat">
+            <span class="console-stat-label">Val</span>
+            <span class="console-stat-value">{{selectedItem.cost}}</span>
+        </div>
+        <div class="console-stat">
+            <span class="console-stat-label">Wg</span>
+            <span class="console-stat-value">{{selectedItem.load}}</span>
+        </div>
+    </div>
+    {{else}}
+    <div class="empty-state console-empty">
+        <p>Select a piece of gear to see it on the bench.</p>
+    </div>
+    {{/if}}
+</section>

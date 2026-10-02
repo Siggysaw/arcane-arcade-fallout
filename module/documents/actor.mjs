@@ -2,6 +2,7 @@ import { FALLOUTZERO } from '../config.mjs'
 import FalloutZeroItem from './item.mjs'
 import LevelUpApplication from '../applications/components/level-up.mjs'
 import ChemApplication from '../applications/components/chem-application.mjs'
+import { conditionIdFromStatusId } from '../helpers/status-effects.mjs'
 /**
 /**
  * Extend the base Actor class to implement additional system-specific logic.
@@ -9,6 +10,103 @@ import ChemApplication from '../applications/components/chem-application.mjs'
  */
 
 export default class FalloutZeroActor extends Actor {
+  /**
+   * Foundry's own status-icon highlighting (TokenHUD) and defeated/vision
+   * machinery read `actor.statuses` to know which status ids are currently
+   * "on". Condition items applied via `applyConditionStatus` aren't
+   * ActiveEffects, so they wouldn't normally show up there - merge in the
+   * status id recorded on each such item (flags.falloutzero.conditionStatusId)
+   * so a toggled-on condition still highlights its token HUD icon and toggles
+   * back off correctly on a second click.
+   * @override
+   */
+  get statuses() {
+    const statuses = super.statuses
+    for (const item of this.items) {
+      const statusId = item.getFlag('falloutzero', 'conditionStatusId')
+      if (statusId) statuses.add(statusId)
+    }
+    return statuses
+  }
+
+  /**
+   * Overrides core's token-HUD status effect toggle. `CONFIG.statusEffects`
+   * is replaced with this system's "conditions" compendium (see
+   * helpers/status-effects.mjs's `registerConditionStatusEffects`), so every
+   * id Foundry's TokenHUD can hand us here maps back to a real Condition
+   * item - apply/remove that item instead of core's generic ActiveEffect.
+   * Falls through to core behavior for any status id that isn't one of ours
+   * (e.g. another module calling this directly with a vanilla id).
+   * @override
+   */
+  async toggleStatusEffect(statusId, options = {}) {
+    const conditionId = conditionIdFromStatusId(statusId)
+    if (!conditionId) return super.toggleStatusEffect(statusId, options)
+
+    const active = options.active ?? !this.statuses.has(statusId)
+    if (!active) {
+      await this.removeConditionStatus(statusId)
+      return false
+    }
+    return this.applyConditionStatus(statusId, conditionId)
+  }
+
+  /**
+   * Add a Condition item from the compendium to this actor, tagged with the
+   * given token-HUD status id, exactly as if it had been dragged onto the
+   * token - same embedded-item creation and @-formula evaluation used
+   * elsewhere in this file for applied conditions (see `applyDrunkness` and
+   * `getConsequence` above).
+   * @param {string} statusId       The CONFIG.statusEffects id being toggled on.
+   * @param {string} conditionId    The document id of the source item in the "conditions" compendium.
+   * @returns {Promise<Item|null>}
+   */
+  async applyConditionStatus(statusId, conditionId) {
+    const pack = game.packs.get('arcane-arcade-fallout.conditions')
+      ?? game.packs.get('conditions')
+      ?? game.packs.find((p) => p.metadata.name === 'conditions')
+    const source = pack ? await pack.getDocument(conditionId) : null
+    if (!source) {
+      ui.notifications.warn('Could not find that condition in the compendium.')
+      return null
+    }
+
+    const data = source.toObject()
+    delete data._id
+    data.flags = foundry.utils.mergeObject(data.flags ?? {}, {
+      falloutzero: { conditionStatusId: statusId },
+    })
+    data._stats = foundry.utils.mergeObject(data._stats ?? {}, {
+      compendiumSource: source.uuid,
+    })
+
+    const [created] = await this.createEmbeddedDocuments('Item', [data])
+
+    for (const ef of created?.effects ?? []) {
+      const changes = await Promise.all(
+        ef.changes.map(async (change) =>
+          typeof change.value === 'string' && change.value.includes('@')
+            ? { ...change, value: await this.evaluateAtFormula(change.value) }
+            : change,
+        ),
+      )
+      await ef.update({ changes })
+    }
+
+    return created
+  }
+
+  /**
+   * Remove every Condition item on this actor that was applied via the
+   * given token-HUD status id (see `applyConditionStatus`).
+   * @param {string} statusId
+   */
+  async removeConditionStatus(statusId) {
+    const toRemove = this.items.filter((item) => item.getFlag('falloutzero', 'conditionStatusId') === statusId)
+    if (!toRemove.length) return
+    await this.deleteEmbeddedDocuments('Item', toRemove.map((item) => item.id))
+  }
+
   getRollData() {
     // Starts off by populating the roll data with a shallow copy of `this.system`
     const data = { ...this.system }
@@ -973,6 +1071,56 @@ export default class FalloutZeroActor extends Actor {
 
   getRaceType() {
     return this.items.contents.find((c) => c.type === 'race')?.system?.type
+  }
+
+  /**
+   * Creates a Background item on this actor and grants it its starting
+   * equipment, in one step. Used by the character-creation walkthrough in
+   * LevelUp (applications/components/level-up.mjs) when a level-0 actor
+   * picks a Background for the first time.
+   *
+   * This mirrors what FalloutZeroActorSheet#_onDropItemCreateBackgroundGrants
+   * already does for a manually-dragged Background item (same grant
+   * resolution: this actor's race-specific grants plus the background's
+   * "All Races" grants, each fetched by uuid, cloned, created, and given its
+   * authored quantity) - written as its own actor-level method rather than
+   * reusing the sheet's version so the character-creation flow doesn't
+   * depend on a rendered ActorSheet existing. Requires a Race item to
+   * already be on this actor (getRaceType() reads it) - the caller is
+   * responsible for creating the race first and awaiting it.
+   *
+   * @param {Item} backgroundItem  A Background Item document (e.g. from the
+   *   `background` compendium) that has not yet been added to this actor.
+   * @returns {Promise<Item>} the created Background item, embedded on this actor
+   */
+  async grantBackgroundEquipment(backgroundItem) {
+    const race = this.getRaceType()
+    const backgroundData = backgroundItem.toObject()
+    const itemsToGrant = [
+      ...backgroundData.system.races['allRaces'].grants,
+      ...(race ? backgroundData.system.races[race].grants : []),
+    ]
+
+    const createdIds = (
+      await Promise.all(
+        itemsToGrant.map(async (grant) => {
+          try {
+            const sourceItem = await fromUuid(grant.key)
+            const [created] = await this.createEmbeddedDocuments('Item', [sourceItem.toObject()])
+            await created.update({ 'system.quantity': grant.quantity })
+            return created.id
+          } catch (error) {
+            ui.notifications.warn(`Error creating item from ${grant.name}`)
+            console.error(`Error creating item from ${grant.name}`, error)
+            return false
+          }
+        }),
+      )
+    ).filter(Boolean)
+
+    backgroundData.system.grantedItems = createdIds
+    const [createdBackground] = await this.createEmbeddedDocuments('Item', [backgroundData])
+    return createdBackground
   }
 
   addCap() {
