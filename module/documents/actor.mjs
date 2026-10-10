@@ -18,15 +18,23 @@ export default class FalloutZeroActor extends Actor {
    * status id recorded on each such item (flags.falloutzero.conditionStatusId)
    * so a toggled-on condition still highlights its token HUD icon and toggles
    * back off correctly on a second click.
+   *
+   * NOTE: this must NOT be a `get statuses()` override. Core declares
+   * `statuses` as a plain instance field (`statuses = this.statuses ?? new
+   * Set()`), not a getter, so `super.statuses` is always undefined - a getter
+   * here threw during actor construction (`.add`/`.clear` on undefined),
+   * which aborted world loading and made Actors/Scenes/Items appear to vanish
+   * (v0.2.18). Core rebuilds the set in applyActiveEffects(), so add ours
+   * right after it does.
    * @override
    */
-  get statuses() {
-    const statuses = super.statuses
-    for (const item of this.items) {
+  applyActiveEffects() {
+    super.applyActiveEffects()
+    if (!this.statuses) return
+    for (const item of this.items ?? []) {
       const statusId = item.getFlag('falloutzero', 'conditionStatusId')
-      if (statusId) statuses.add(statusId)
+      if (statusId) this.statuses.add(statusId)
     }
-    return statuses
   }
 
   /**
