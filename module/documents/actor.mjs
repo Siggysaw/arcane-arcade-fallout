@@ -26,15 +26,30 @@ export default class FalloutZeroActor extends Actor {
    * which aborted world loading and made Actors/Scenes/Items appear to vanish
    * (v0.2.18). Core rebuilds the set in applyActiveEffects(), so add ours
    * right after it does.
+   *
+   * Arguments are passed straight through: v14 calls this once per change
+   * phase (`applyActiveEffects("initial")`, then `"final"`) and deprecates
+   * calling it without a phase, while v13 calls it with no arguments.
+   * Forwarding `...args` keeps both versions on core's own code path.
+   *
+   * The flag is read straight off `item.flags.falloutzero` instead of via
+   * `item.getFlag('falloutzero', ...)`: getFlag() only accepts the system's
+   * real id ("arcane-arcade-fallout"), "core", "world" or an active module
+   * as its scope, and throws for anything else. That throw happened inside
+   * data preparation for every actor with items, so sheets fell back to
+   * unprepared/default stats (v0.2.19) or failed to load (v0.2.18). Reading
+   * the raw path keeps every condition already tagged under "falloutzero"
+   * working without a data migration.
    * @override
    */
-  applyActiveEffects() {
-    super.applyActiveEffects()
-    if (!this.statuses) return
+  applyActiveEffects(...args) {
+    const result = super.applyActiveEffects(...args)
+    if (!this.statuses) return result
     for (const item of this.items ?? []) {
-      const statusId = item.getFlag('falloutzero', 'conditionStatusId')
+      const statusId = item.flags?.falloutzero?.conditionStatusId
       if (statusId) this.statuses.add(statusId)
     }
+    return result
   }
 
   /**
@@ -110,7 +125,7 @@ export default class FalloutZeroActor extends Actor {
    * @param {string} statusId
    */
   async removeConditionStatus(statusId) {
-    const toRemove = this.items.filter((item) => item.getFlag('falloutzero', 'conditionStatusId') === statusId)
+    const toRemove = this.items.filter((item) => item.flags?.falloutzero?.conditionStatusId === statusId)
     if (!toRemove.length) return
     await this.deleteEmbeddedDocuments('Item', toRemove.map((item) => item.id))
   }
