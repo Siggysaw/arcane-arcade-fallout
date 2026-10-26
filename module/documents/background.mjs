@@ -1,14 +1,8 @@
-/**
- * Extend the basic Item with some very simple modifications.
- * @extends {Item}
- */
+/** Extends the basic Item with some very simple modifications. */
 export default class FalloutZeroBackground extends Item {
-  /**
-   * Augment the basic Item data model with additional dynamic data.
-   */
+  /** Augments the basic Item data model with additional dynamic data. */
   prepareData() {
-    // As with the actor class, items are documents that can have their data
-    // preparation methods overridden (such as prepareBaseData()).
+    // Items can override data-preparation methods (e.g. prepareBaseData()) like actors.
     super.prepareData()
   }
 }

@@ -68,13 +68,7 @@ export default class FalloutZeroItemBase extends foundry.abstract.TypeDataModel 
       ),
     })
 
-    // Mirrors `crafting` above. `dc` here stores the item's "repair bonus"
-    // from the book (added to 10 at roll time, same convention as
-    // crafting.mainRequirements[].dc) — left blank/empty on most items
-    // today; FalloutZeroItem#getRepairRequirements() fills in a sensible
-    // default (or an accurate one for armor, keyed off system.armorType)
-    // when this is unauthored, so the Repair Bench works immediately
-    // without requiring every compendium item to be hand-edited first.
+    // Repair bonus/materials; falls back to a sensible default when unauthored.
     schema.repair = new fields.SchemaField({
       dc: new fields.NumberField({ initial: null, nullable: true }),
       materials: new fields.ArrayField(

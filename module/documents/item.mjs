@@ -1,8 +1,5 @@
 import AttackRoll from '../dice/attack-roll.mjs'
-/**
- * Extend the basic Item with some very simple modifications.
- * @extends {Item}
- */
+// Extends the basic Item with some very simple modifications.
 
 const nonStackableTypes = [
   'armorUpgrade',
@@ -12,12 +9,9 @@ const nonStackableTypes = [
   'powerArmor'
 ]
 export default class FalloutZeroItem extends Item {
-  /**
-   * Augment the basic Item data model with additional dynamic data.
-   */
+  /** Augments the basic Item data model with additional dynamic data. */
   prepareData() {
-    // As with the actor class, items are documents that can have their data
-    // preparation methods overridden (such as prepareBaseData()).
+    // Items can override data-preparation methods (e.g. prepareBaseData()) like actors.
     super.prepareData()
   }
   //Get list of upgrades for item type
@@ -169,8 +163,7 @@ export default class FalloutZeroItem extends Item {
     }
   }
 
-  //Get the modifiers path and value for given select or input tags
-  //Normal input data-item format gave way to unwanted refresh and instability
+  // Gets the modifiers path and value for given select or input tags.
   updateCustomEffects(tags, path) {
     let myData = {}
     let mod, myKey
@@ -209,8 +202,7 @@ export default class FalloutZeroItem extends Item {
 
           //await this.addUpgrade(weapon,myUpgrade);
 
-          // Tag each effect with the source upgrade's id so it can be
-          // found and removed later if this specific upgrade is deleted
+          // Tags each effect with the source upgrade's id, for later removal.
           const effectsData = myUpgrade.effects.map((e) => {
             const obj = e.toObject()
             foundry.utils.setProperty(obj, `flags.${game.system.id}.sourceUpgradeId`, myUpgrade._id)
@@ -279,8 +271,7 @@ export default class FalloutZeroItem extends Item {
         }
       }
 
-      // Delete the upgrade's effects FIRST, before any disable/enable toggling,
-      // so there's no race between disabling and removing the same effect
+      // Deletes the upgrade's effects first, so there's no race with disable/enable toggling.
       const effectsToRemove = weapon.effects.filter(
         (e) => e.getFlag(game.system.id, 'sourceUpgradeId') === myId,
       )
@@ -371,10 +362,7 @@ export default class FalloutZeroItem extends Item {
     }
   }
 
-  /**
-   * Prepare a data object which defines the data schema used by dice roll commands against this Item
-   * @override
-   */
+  /** @override Builds roll data for dice commands run against this Item. */
   getRollData() {
     // Starts off by populating the roll data with `this.system`
     const rollData = { ...super.getRollData() }
@@ -396,59 +384,17 @@ export default class FalloutZeroItem extends Item {
     return (this.system.decay - 10) * -1
   }
 
-  /**
-   * Whether this item currently shows up in the Repair Bench / the item
-   * context menu's "Repair" entry: it's a type that carries a decay bar
-   * (see FALLOUTZERO.repairableTypes) and it isn't already at full
-   * condition. system.decay is stored inverted from the book (10 =
-   * pristine, 0 = broken — see getDecayValue()), so this checks it
-   * directly rather than going through that conversion.
-   */
+  /** Whether this item has a decay bar and isn't already at full condition. */
   get isRepairable() {
     return CONFIG.FALLOUTZERO.repairableTypes.includes(this.type) && this.system.decay < 10
   }
 
-  /**
-   * Computed rather than the separate hand-set system.broken boolean, so
-   * repair logic can't drift out of sync with a GM forgetting to toggle it.
-   */
+  /** Computed from decay rather than a hand-set flag, so it can't drift out of sync. */
   get isBroken() {
     return this.system.decay === 0
   }
 
-  /**
-   * Resolves what it actually takes to repair this item one level right
-   * now: the repair "bonus" (added to 10 for the roll DC, same convention
-   * as system.crafting.mainRequirements[].dc), the time it takes, and the
-   * materials it costs — already adjusted for the broken-item case (bonus
-   * +5, materials/time x5, per the book).
-   *
-   * Returns one of two shapes, distinguished by `mode`:
-   *   - `'fixed'` — a concrete materials list (`materials: [{uuid,name,
-   *     quantity}]`), used for armor. The book gives armor real named
-   *     materials at real quantities (e.g. "x2 Leather"), so there's
-   *     nothing for the player to choose.
-   *   - `'pool'` — used for melee/ranged weapons. The book prices these as
-   *     "x1 crafting material" repeated N times: N *distinct* materials of
-   *     the player's choosing, not a fixed list. This returns
-   *     `materialPool` (the item's own candidate materials, deduped),
-   *     `slotsRequired` (N), and `unitQuantity` (1, or 5 if broken) —
-   *     the caller (RepairBench) is responsible for letting the player
-   *     pick `slotsRequired` distinct names out of `materialPool`.
-   *
-   * Resolution order:
-   *   1. system.repair, if a GM has hand-authored a materials list on this
-   *      item — the escape hatch for an exact override (fixed mode).
-   *   2. FALLOUTZERO.armorRepairTable[system.armorType], for armor — every
-   *      armor piece already carries a real armorType, so this gives
-   *      book-accurate data with no per-item authoring at all (fixed mode).
-   *   3. FALLOUTZERO.meleeWeaponRepairTable / rangedWeaponRepairTable,
-   *      keyed by this item's own name — book-accurate (bonus, slot count,
-   *      time) for every named weapon transcribed from the Item Blueprint
-   *      Encyclopedia's weapon tables (pool mode).
-   *   4. A generic pool-mode default (bonus +1, 2 slots, 5 minutes) for
-   *      anything not found above (homebrew items, a name mismatch).
-   */
+  /** Resolves this item's current repair cost: bonus, time, and materials (fixed or pool mode). */
   getRepairRequirements() {
     const authored = this.system.repair
     const broken = this.isBroken
@@ -505,14 +451,7 @@ export default class FalloutZeroItem extends Item {
     return { mode: 'pool', bonus, dc: 10 + bonus, time, broken, materialPool, slotsRequired: slots, unitQuantity }
   }
 
-  /**
-   * The candidate materials a player can choose from for a pool-mode
-   * repair: the item's own crafting recipe (system.crafting.materials),
-   * deduplicated by name — matching the book's intent that repair
-   * materials come from what the item is actually made of. Falls back to
-   * whatever this item would itself break down into (system.junk) when it
-   * has no authored crafting recipe, so the pool isn't left empty.
-   */
+  /** Candidate materials for a pool-mode repair, from this item's crafting recipe or junk. */
   _repairMaterialPool() {
     const dedupe = (list) => {
       const seen = new Set()

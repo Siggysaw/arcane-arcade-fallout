@@ -5,7 +5,7 @@ import SkillRoll from '../dice/skill-roll.mjs'
 import PerkListApplication from '../applications/components/perk-list.mjs'
 import ChemApplication from '../applications/components/chem-application.mjs'
 
-
+// Empowered Energy perk: bumps displayed weapon damage dice on the Combat tab per rank.
 function applyEmpoweredEnergy(item, ranks) {
   if (!ranks) return
   const { description, bonusProperties } = item.system
@@ -16,10 +16,7 @@ function applyEmpoweredEnergy(item, ranks) {
   item.system.damages = item.system.damages.map((d) => ({ ...d, formula: addDiceCount(d.formula, ranks) }))
 }
 
-/**
- * Extend the basic ActorSheet with some very simple modifications
- * @extends {ActorSheet}
- */
+/** Extends the basic ActorSheet with some very simple modifications. */
 export default class FalloutZeroActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
@@ -46,6 +43,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
 
   /** @override */
   getData() {
+    // Base sheet data: actor, items, effects, and whether the sheet is editable.
     const context = super.getData()
 
     // Use a safe clone of the actor data for further operations.
@@ -249,22 +247,10 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     }
   }
 
-  /**
-   * Organize and classify Items for Character sheets.
-   *
-   * @param {Object} actorData The actor to prepare.
-   *
-   * @return {undefined}
-   */
+  /** Organizes and classifies Items for Character sheets. */
   _prepareCharacterData() { }
 
-  /**
-   * Organize and classify Items for Character sheets.
-   *
-   * @param {Object} actorData The actor to prepare.
-   *
-   * @return {undefined}
-   */
+  /** Organizes and classifies Items for Character sheets. */
   _prepareItems(context) {
     // Initialize containers.
     const gear = []
@@ -302,9 +288,11 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       } else if (i.type === 'feature') {
         features.push(i)
       } else if (i.type === 'perk') {
+        // Flags whether the Rooted Condition is active, for actor-perks.hbs's toggle button.
         if (i.name === 'Rooted') {
           i.rootedConditionActive = this.actor.items.some((it) => it.name === 'Rooted Condition')
         }
+        // Flags whether the Blocking condition is active, same pattern as Rooted above.
         if (i.name === 'Made of Sterner Stuff') {
           i.blockingConditionActive = this.actor.items.some((it) => it.name === 'Blocking')
         }
@@ -907,6 +895,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       item.update({ 'system.efficientMunitions': ev.target.value === 'true' })
     })
 
+    // Rooted perk toggle: adds the Rooted Condition for 4 AP, removes it for 3 AP.
     html.on('click', '[data-rooted-toggle]', async (ev) => {
       const existingCondition = this.actor.items.find((i) => i.name === 'Rooted Condition')
 
@@ -925,6 +914,8 @@ export default class FalloutZeroActorSheet extends ActorSheet {
         }
       }
     })
+
+    // Made of Sterner Stuff toggle: adds the Blocking condition for AP, removes it free.
     html.on('click', '[data-block-toggle]', async (ev) => {
       const existingCondition = this.actor.items.find((i) => i.name === 'Blocking')
 
@@ -1392,11 +1383,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     })
   }
 
-  /**
-   * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-   * @param {Event} event   The originating click event
-   * @private
-   */
+  /** Creates a new owned Item using initial data defined in the HTML dataset. */
   async _onItemCreate(event) {
     event.preventDefault()
     const header = event.currentTarget
@@ -1521,11 +1508,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     ).render(true)
   }
 
-  /**
-   * Handle the final creation of dropped background Item data on the Actor.
-   * @param {Item} itemData     The item or items requested for creation
-   * @protected
-   */
+  /** Handles the final creation of dropped background Item data on the Actor. */
   async _onDropItemCreateBackgroundGrants(itemData) {
     const race = this.actor.getRaceType()
     const itemsToGrant = [
@@ -1553,11 +1536,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     super._onDropItemCreate(itemData)
   }
 
-  /**
-   * Handle the final creation of dropped trait Item data on the Actor.
-   * @param {Item} itemData     The item or items requested for creation
-   * @protected
-   */
+  /** Handles the final creation of dropped trait Item data on the Actor. */
   _onDropItemCreateTrait(itemData) {
     // If trait already exists
     if (this.actor.items.contents.some((item) => item.name === itemData.name)) {
@@ -1579,11 +1558,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
     }
   }
 
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
+  /** Handles clickable rolls. */
   _onRoll(event) {
     event.preventDefault()
     const element = event.currentTarget

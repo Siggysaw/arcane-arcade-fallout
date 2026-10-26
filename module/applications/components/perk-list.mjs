@@ -57,9 +57,7 @@ export default class PerkListApplication extends Application {
             }
         }) : this.perks
 
-        // Same "does this perk have anything to show in the requirements
-        // box" check used by the level-up Choose Perk dialog, so the two
-        // share the same card look.
+        // Same requirements-box check used by the level-up Choose Perk dialog, for a matching card look.
         const perksWithRequirements = filteredPerks.map((perk) => {
             if (
                 perk.system.lvlReq > 1 ||
@@ -97,11 +95,7 @@ export default class PerkListApplication extends Application {
         this.render(true);
       })
 
-      // Render-once/DOM-filter search, same architecture as the Crafting
-      // Bench and the level-up Choose Perk dialog: typing never calls
-      // render() (Application v1's render() replaces this whole `html`,
-      // which would drop focus/keystrokes), it just toggles which already-
-      // rendered cards are visible.
+      // Render-once/DOM-filter search like the Crafting Bench, so typing never drops focus.
       html.on('input', '[data-search]', (e) => {
         this.searchQuery = e.currentTarget.value
         this._applyPerkFilter(html)
@@ -117,15 +111,11 @@ export default class PerkListApplication extends Application {
         visible[0].click()
       })
 
-      // Re-apply on every activateListeners call (i.e. every render,
-      // including the ones triggered by the category filter checkboxes
-      // above) so a typed search survives switching category filters.
+      // Re-applies on every render so a typed search survives switching category filters.
       this._applyPerkFilter(html)
     }
 
-    // Pure DOM show/hide over the already-rendered perk grid — every card
-    // stays in the DOM, this just toggles which ones are visible. Mirrors
-    // ChoosePerk#_applyPerkFilter (see level-up.mjs).
+    // Pure DOM show/hide over the rendered perk grid, mirroring ChoosePerk#_applyPerkFilter.
     _applyPerkFilter(html) {
         const grid = html[0].querySelector('[data-perk-grid]')
         if (!grid) return

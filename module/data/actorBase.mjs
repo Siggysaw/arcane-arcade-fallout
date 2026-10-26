@@ -280,15 +280,7 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
     return schema
   }
 
-  /**
-   * @override
-   * Augment the actor source data with additional dynamic data. Typically,
-   * you'll want to handle most of your calculated/derived data in this step.
-   * Data calculated in this step should generally not exist in template.json
-   * (such as ability modifiers rather than ability scores) and should be
-   * available both inside and outside of character sheets (such as if an actor
-   * is queried and has a roll executed directly from it).
-   */
+  /** @override Augments the actor source data with calculated/derived data. */
   prepareDerivedData() {
     super.prepareDerivedData()
     this.abilities.str.img = '/systems/arcane-arcade-fallout/assets/perk-clips/strength.webp'

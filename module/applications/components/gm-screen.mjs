@@ -1,9 +1,7 @@
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 const { DragDrop, TextEditor } = foundry.applications.ux;
 
-// Packs to leave OUT of the quick-insert search (character-build stuff,
-// not things a GM drags onto an actor mid-session). Everything else that's
-// an Item compendium gets included automatically.
+// Packs excluded from quick-insert search (character-build stuff, not mid-session GM drags).
 const QUICK_INSERT_EXCLUDED_PACKS = [
   //'arcane-arcade-fallout.perks',
   //'arcane-arcade-fallout.traits',

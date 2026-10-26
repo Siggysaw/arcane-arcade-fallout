@@ -137,20 +137,14 @@ export function registerSystemSettings() {
   })
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'RobcoTerminals', {
     name: 'Robco Terminal Scanlines & Flicker',
-    hint: 'Journal Entries always use the Robco Industries terminal look (green phosphor text, terminal chrome). This adds the animated scanline overlay and corner-bracket flicker on top of that look.',
+    hint: 'Journal Entry Scanlines and Animations',
     scope: 'client',
     config: true,
     type: Boolean,
     default: false,
     requiresReload: false,
   })
-  // The FNV chat skin's own settings, moved here from chat-fnv/fnv-chat.mjs
-  // and chat-fnv/fnv-chat-dice.mjs for ease of maintenance - they used to be
-  // registered inline in each of those files. The behavior that reads them
-  // (the skin toggle, the crawl animation, the dice sprites) still lives in
-  // those files; only the registration moved. See the comments at the top
-  // of chat-fnv/fnv-chat.mjs for why the skin is now *applied* at the
-  // `setup` hook rather than `init`.
+  // FNV chat skin settings, moved here from chat-fnv/*.mjs for ease of maintenance.
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'ChatSkin', {
     name: 'FNV Chat Skin',
     hint: 'Restyle the chat sidebar, composer and roll cards as a Fallout terminal panel. Applies immediately.',
@@ -191,10 +185,7 @@ export function registerSystemSettings() {
     default: 4,
     requiresReload: false,
   })
-  // The "Group Roll Sounds" setting, moved here from group-roll/group-roll.mjs
-  // for ease of maintenance - it used to be registered inline there. The
-  // behavior that reads it (gating the cinematic group roll overlay's sound
-  // effects) still lives in that file; only the registration moved.
+  // Group Roll Sounds setting, moved here from group-roll.mjs for ease of maintenance.
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'groupRollSounds', {
     name: 'Group Roll Sounds',
     hint: 'Pip-Boy and V.A.T.S. sound effects for the cinematic group roll overlay.',
@@ -203,13 +194,7 @@ export function registerSystemSettings() {
     type: Boolean,
     default: true,
   })
-  // The four New Vegas Pause settings, moved here from nv-pause/nv-pause.mjs
-  // for ease of maintenance - they used to be registered inline there, inside
-  // a Hooks.once('init', ...) block. The behavior that reads them (building
-  // and tearing down the roulette-wheel overlay) still lives in that file;
-  // only the registration moved, so their onChange handlers call the
-  // exported refresh() from there (aliased refreshNVPause) instead of a
-  // local function.
+  // New Vegas Pause settings, moved here from nv-pause.mjs for ease of maintenance.
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'NVPause', {
     name: 'New Vegas Pause Graphic',
     hint: 'Replace the system pause banner with the spinning roulette wheel from the New Vegas loading screen. Applies immediately.',
@@ -372,7 +357,12 @@ export function registerHbsHelpers() {
     }
     return false
   })
-
+  Handlebars.registerHelper('Includes', function (item, list, options) {
+    if (list.includes(item)) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  })
   // Greater Than or Equal
   Handlebars.registerHelper('GreaterThan', function (v1, v2, options) {
     if (v1 >= v2) {

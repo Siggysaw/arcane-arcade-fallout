@@ -9,9 +9,9 @@
             <ul class="requirement-list">
                 {{#each selectedCraftable.system.crafting.mainRequirements as |requirement|}}
                 <li class="requirement-line"
-                    data-tooltip="{{../abilityBonus}} (Ability) + {{lookup ../skills requirement.key}} (Skill) + {{../luck}} (Luck) - {{../penaltyTotal}} (Penalties) | Attempt DC {{Sum requirement.dc 10}}">
+                    data-tooltip="{{lookup ../abilityBonuses requirement.key}} ({{lookup ../abilityLabels requirement.key}}) + {{lookup ../skills requirement.key}} ({{lookup ../skillLabels requirement.key}}) + {{../luck}} (Luck) - {{../penaltyTotal}} (Penalties) | Attempt DC {{Sum requirement.dc 10}}">
                     <span class="req-name">{{requirement.key}}</span>
-                    <span class="req-value">({{Subtract (Sum (Sum ../abilityBonus (lookup ../skills requirement.key)) ../luck) ../penaltyTotal}}/{{requirement.dc}})</span>
+                    <span class="req-value">({{Subtract (Sum (Sum (lookup ../abilityBonuses requirement.key) (lookup ../skills requirement.key)) ../luck) ../penaltyTotal}}/{{requirement.dc}})</span>
                 </li>
                 {{/each}}
             </ul>

@@ -7,9 +7,7 @@ export default class FalloutZeroCondition extends FalloutZeroItemBase {
     const schema = super.defineSchema()
 
     schema.quantity = new fields.NumberField({ ...requiredInteger, initial: 1, min: 0 })
-    // If true, this Condition shows up in the token HUD's status-effect
-    // quick list (see helpers/status-effects.mjs). Off by default so adding
-    // new conditions doesn't silently clutter that list.
+    // If true, shows up in the token HUD's status-effect quick list; off by default.
     schema.statusEffect = new fields.BooleanField({ initial: false })
     schema.load = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
     schema.raceReq = new fields.StringField({initial: "Organics only"})
@@ -18,7 +16,13 @@ export default class FalloutZeroCondition extends FalloutZeroItemBase {
     schema.apCost = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
     schema.range = new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
     schema.armDC = new fields.StringField({})
+    // Legacy free-text AOE notation; kept as a display fallback and migration source.
     schema.aoeRadius = new fields.StringField({})
+    // Structured AOE radii in grid distance units: full damage radius, half damage radius.
+    schema.areaOfEffect = new fields.SchemaField({
+      full: new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 }),
+      half: new fields.NumberField({ initial: null, nullable: true, min: 0 }),
+    })
     schema.damage1 = new fields.StringField({})
     schema.damageType1 = new fields.StringField({})
     schema.damage2 = new fields.StringField({})

@@ -1,10 +1,6 @@
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
-// Same 3-pane shell as CraftingBench (module/applications/components/
-// crafting-bench.mjs), retargeted at repair: the sidebar lists the actor's
-// own worn/damaged gear instead of a compendium-wide recipe catalog, and
-// there's no crafted-item creation step — a successful repair just moves
-// system.decay and consumes materials in place.
+// Same 3-pane shell as CraftingBench, retargeted at repair: moves system.decay in place instead of crafting.
 
 const REPAIR_CATEGORY_LABELS = {
   armor: 'Armor',
@@ -12,24 +8,13 @@ const REPAIR_CATEGORY_LABELS = {
   rangedWeapon: 'Ranged Weapons',
 }
 
-/**
- * Resolves the concrete {name, quantity} list a repair is actually about
- * to consume, for either requirements shape:
- *   - 'fixed' (armor): the resolved materials list is already concrete.
- *   - 'pool' (melee/ranged weapons): the player has chosen `slotsRequired`
- *     distinct names out of requirements.materialPool — each consumed at
- *     requirements.unitQuantity.
- */
+/** Resolves the concrete materials list a repair will consume, for fixed or pool requirements. */
 function resolveMaterialsToConsume(requirements, selectedMaterials) {
   if (requirements.mode === 'fixed') return requirements.materials
   return selectedMaterials.map((name) => ({ name, quantity: requirements.unitQuantity }))
 }
 
-/**
- * Consumes repair materials and, on success, advances the item's decay.
- * Shared between the auto-succeed "Repair" action and a resolved
- * RepairAttempt roll so both paths apply results identically.
- */
+/** Consumes repair materials and, on success, advances the item's decay. */
 async function applyRepairResult({ actor, item, requirements, selectedMaterials, success, dice = null }) {
   const materials = resolveMaterialsToConsume(requirements, selectedMaterials)
   const fraction = success ? 1 : 0.5
@@ -162,8 +147,7 @@ export default class RepairBench extends HandlebarsApplicationMixin(ApplicationV
     super(options);
     this.actor = actor
     this.selectedItemId = preselectedItemId
-    // Names the player has chosen, for a pool-mode repair, to sacrifice —
-    // reset whenever the selected item changes (see selectItem()).
+    // Materials chosen for a pool-mode repair; reset when the selected item changes.
     this.selectedMaterials = []
   }
 
@@ -248,13 +232,7 @@ export default class RepairBench extends HandlebarsApplicationMixin(ApplicationV
     return this.skillBonus >= this.requirements.bonus
   }
 
-  /**
-   * Materials list for the main panel, shaped for either mode:
-   *   - fixed: {name, quantity, ownedQuantity} — the concrete requirement.
-   *   - pool: {name, uuid, ownedQuantity, selected, disabled} — a
-   *     candidate the player can toggle on/off (disabled once they don't
-   *     own enough of it to cover requirements.unitQuantity).
-   */
+  /** Materials list for the main panel, shaped for fixed or pool requirement mode. */
   get materialsDisplay() {
     if (!this.requirements) return []
     if (this.requirements.mode === 'fixed') {

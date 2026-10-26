@@ -2,54 +2,17 @@ import { FALLOUTZERO } from "../config.mjs";
 import { DICE_DIR, diceOfRoll } from "../chat-fnv/fnv-chat-dice.mjs";
 import { perkAnimElement } from "./perk-clip.mjs";
 
-/* ---- Cinematic group rolls -----------------------------------------------
-   BG3-style fullscreen roll overlay, Fallout New Vegas dressing. The chat
-   card IS the session: the master message carries the roll definition in
-   flags, each participant's actual roll posts as their own flag-linked
-   message, and every client renders overlay + tally from that shared state
-   — so joining, reopening, and reload-survival are free. The socket carries
-   only the ephemeral pre-roll theater: advantage/ability toggles and
-   marked consumables, so the table can watch you reach for the Mentats.
-
-   Rolls are evaluated LIVE on the owning player's client with the system's
-   real math (skill: bonus + ability mod + boost + luck/2 - penalties;
-   SPECIAL: no luck, raw mod). Consumables spend through the system's own
-   actor.lowerInventory, so ghoul halving, addiction DC checks, drunkness
-   and the consumed-item chat card all apply. NOTE (system behavior): buffs
-   from consumption never auto-expire.
-
-   ---- Ported from the AAFO V.A.T.S. module --------------------------------
-   Logic is the module's, unchanged. What differs, and why:
-
-   - PKG_ID is the system id, which also moves the FLAG SCOPE from
-     `aafo-vats.groupRoll` to `arcane-arcade-fallout.groupRoll`. A roll left
-     open in chat from before the port is simply not recognised any more —
-     these are ephemeral session messages, so that is acceptable, but it is
-     why an in-flight roll should be finished before updating.
-   - socketlib is gone. It was carrying exactly one message type, so the
-     dependency is not worth a system taking on a module: see SOCKET below.
-   - The public API lands on `game.falloutzero.groupRoll`, not a module `api`
-     object, and is attached in `setup` rather than `init` — the system's own
-     init hook assigns `game.falloutzero = {…}` wholesale, and this file's
-     hooks are registered first (its import is evaluated before
-     falloutzero.mjs's body runs), so anything written in init is clobbered.
-   - Localized strings are inlined as the module's own English, matching the
-     convention registerSettings.mjs already uses. */
+// Cinematic BG3-style group roll overlay, ported from the AAFO V.A.T.S. module onto system hooks.
 
 const PKG_ID = FALLOUTZERO.systemId;
 const MASTER_FLAG = "groupRoll";
 const ENTRY_FLAG = "groupRollEntry";
-/* Derived from this file's own URL, not written out: absolute (AudioHelper
-   resolves against the document, so a bare "systems/…" 404s under a route
-   prefix — the same trap the dice sprites hit) and rename-proof. Two levels
-   up: this file sits in module/group-roll/. */
+// Absolute asset path derived from this file's URL, rename-proof.
 const SFX = new URL("../../assets/10-sfx", import.meta.url).pathname;
-// Primary tumble length — the suspense window before dice land, in the
-// overlay AND before the chat card reveals the faces.
+// Suspense window before dice land, in the overlay and before the chat card reveals faces.
 const LAND_MS = 3000;
 
-/* Approved default perk clip per skill / SPECIAL. World setting
-   "groupRollPerkMap" merges over this. */
+// Default perk clip per skill/SPECIAL; the "groupRollPerkMap" world setting merges over this.
 const DEFAULT_PERKS = {
   barter: "capcollector", breach: "locksmith", crafting: "scrapper",
   energy_weapons: "refractor", explosives: "demolitionexpert", guns: "gunslinger",
@@ -60,36 +23,11 @@ const DEFAULT_PERKS = {
   int: "intelligence", agi: "agility", lck: "luck"
 };
 
-/* Consumable paths that change a d20 roll: ability/skill modifiers or
-   advantage, boost dice, penalty relief. Buff chems (Mentats, Buffout,
-   Jet...) carry no direct modifiers at all — their payload is condition
-   items linked in the description HTML. */
+// Consumable paths that change a d20 roll: ability/skill modifiers, advantage, boost, penalties.
 const ROLL_RELEVANT = /^system\.(abilities\.\w+\.(modifiers|advantage)|skills\.\w+\.(modifiers|advantage)|boostDice$|penalties\.\w+\.(base|modifiers))/;
 const CONSUMABLE_TYPES = ["chem", "medicine", "foodAnddrink"];
 
-/* ---- SOCKET ---------------------------------------------------------------
-   The module used socketlib for exactly one message type — the ephemeral
-   panel state (advantage toggles, chosen ability, marked consumables) that
-   lets the table watch someone reach for the Mentats before they roll. None
-   of the session's real state travels this way; it all lives in message
-   flags, which is why a reload or a late join costs nothing.
-
-   One message type does not justify a system declaring a hard dependency on
-   a module, so this is core's own relay instead. Two differences from
-   socketlib worth knowing:
-
-   - The channel name MUST be `system.<id>`; core routes on that prefix and
-     silently drops anything else.
-   - `emit` is send-to-everyone-else, which is precisely socketlib's
-     `executeForOthers` — the sender is never echoed, so no self-filter is
-     needed. There is no acknowledgement and no return value; this payload
-     never needed either.
-
-   `"socket": true` in system.json is what opens the channel, and Foundry only
-   reads that at world launch — the world must be relaunched (not just
-   reloaded) after this is first installed, or every broadcast silently goes
-   nowhere and panels stop mirroring between clients. Everything else still
-   works, which is what makes that failure mode easy to miss. */
+// Core's own relay for ephemeral panel state, replacing socketlib's single message type.
 const SOCKET = `system.${PKG_ID}`;
 
 Hooks.once("ready", () => {
@@ -98,8 +36,6 @@ Hooks.once("ready", () => {
     onRemotePanelState(payload);
   });
 });
-
-/* ---- Session state (per client) ------------------------------------------ */
 
 let overlay = null; // { rollId, root, panels: Map<actorUuid, panelEl> }
 let closeTimer = null; // pending auto-close; rescheduled by each reveal
@@ -139,10 +75,7 @@ function playSfx(file) {
   foundry.audio.AudioHelper.play({ src: `${SFX}/${file}`, channel: "interface" });
 }
 
-/* Recolor the black-and-white perk art to an arbitrary color: sepia lands
-   every light pixel on one warm hue (~39deg), saturate pulls it out of
-   near-white, hue-rotate carries it to the target. Blacks stay black, so
-   the line work survives. */
+// Recolors the black-and-white perk art to an arbitrary color via a CSS filter.
 function tintFilter(css) {
   const hex = String(css ?? "").replace("#", "");
   if (hex.length < 6) return "sepia(1) saturate(50) hue-rotate(-40deg)";
@@ -163,13 +96,12 @@ function tintFilter(css) {
   return `sepia(1) saturate(${sat}) hue-rotate(${Math.round(h - 39)}deg) brightness(${bright})`;
 }
 
-/* GM-declared advantage/disadvantage on the roll itself, as a delta that
-   composes with actor conditions and marked items. */
+// GM-declared advantage/disadvantage delta, composing with actor conditions and marked items.
 function gmAdvDelta(data) {
   return data.modAdv === "advantage" ? 1 : data.modAdv === "disadvantage" ? -1 : 0;
 }
 
-/* The pre-set modifier line shown at the bottom of every panel. */
+// The pre-set modifier line shown at the bottom of every panel.
 function modLineHTML(data) {
   const bits = [];
   if (data.modAdv === "advantage") bits.push(`<span class="pos">ADVANTAGE</span>`);
@@ -183,8 +115,7 @@ function modLineHTML(data) {
   return bits.join(" ") + label;
 }
 
-/* FNV interface sounds, same idiom as fallout-ui-redux: a focus blip when
-   the pointer enters any control, an ok click on activation. */
+// FNV interface sounds: a focus blip on pointer enter, an ok click on activation.
 let lastFocusBlip = 0;
 function wireFnvSounds(rootEl) {
   rootEl.addEventListener("pointerover", (ev) => {
@@ -200,9 +131,7 @@ function wireFnvSounds(rootEl) {
   });
 }
 
-/* ---- Roll math (replicated from the system's SkillRoll/AbilityRoll;
-        boost/advantage read live so consumption is reflected) ------------- */
-
+// Roll math replicated from the system's SkillRoll/AbilityRoll; boost/advantage read live.
 function rollTermsFor(actor, kind, key, ability) {
   if (kind === "skill") {
     const abl = ability || actor.system.skills[key].defaultAbility || actor.system.skills[key].ability[0];
@@ -268,24 +197,11 @@ function itemTooltip(item) {
   return lines.join("\n");
 }
 
-/* ---- Predicted item effects ----------------------------------------------
-   So marking a chem flips the advantage toggle BEFORE consuming: collect
-   every advantage-granting change the item would apply — direct modifier
-   slots plus the linked condition items' effect changes (where the pack's
-   ability rows carry values and skill rows are empty = implicit +1). */
+// Predicted item effects, so marking a chem flips the advantage toggle before consuming.
 const itemEffectCache = new Map();
 const itemGrantCache = new Map();
 
-/* The names of the conditions a consumable attaches, whatever they change.
-
-   itemAdvChanges() below answers a narrower question — which changes affect a
-   d20 roll — and so only ever names a condition that grants `.advantage`. For
-   the caption on the spent row we want the condition regardless: a chem whose
-   payload is a flat skill bonus is still "granting" that condition, and
-   labelling it with the consumable's own name would be wrong.
-
-   Same description-link parse as itemAdvChanges, cached separately so neither
-   function has to change shape for the other. */
+// The names of every condition a consumable attaches, regardless of what they change.
 async function itemGrantNames(item) {
   if (itemGrantCache.has(item.uuid)) return itemGrantCache.get(item.uuid);
   const names = [];
@@ -317,8 +233,7 @@ async function itemAdvChanges(item) {
     const cond = await fromUuid(uuid).catch(() => null);
     for (const effect of cond?.effects ?? []) {
       for (const ch of effect.system?.changes ?? effect.changes ?? []) {
-        // Attribute to the CONDITION (the effect doing the granting), not
-        // the consumable that attaches it.
+        // Attribute to the condition granting it, not the consumable that attaches it.
         if (ch.key?.endsWith(".advantage")) changes.push({ key: ch.key, value: Number(ch.value) || 1, source: cond.name });
       }
     }
@@ -327,11 +242,7 @@ async function itemAdvChanges(item) {
   return changes;
 }
 
-/* Who is granting the advantage/disadvantage on this roll: effects from
-   items spent THIS roll (attributed "effect (via item)") plus condition
-   items already sitting on the actor. Deduped by effect name — a chem
-   spent now attaches its condition immediately, so it would otherwise
-   appear in both lists. */
+// Who is granting advantage/disadvantage: items spent this roll plus conditions already on the actor.
 async function advSourcesFor(actor, kind, key, abl, spentItems) {
   const sources = [];
   const seen = new Set();
@@ -566,10 +477,7 @@ function buildPanel(data, participant, index) {
   return el;
 }
 
-/* Wipe roll entries so they can be rolled again. Deleting the entry
-   messages is the whole reset: every client's card and panel rebuild from
-   that state. Consumables already spent stay spent — the system consumed
-   them for real. */
+// Wipes roll entries so they can be rolled again; already-spent consumables stay spent.
 async function resetRoll(rollId, actorUuid = null) {
   if (!game.user.isGM) return;
   const entries = entriesFor(rollId).filter((m) => !actorUuid || flag(m, ENTRY_FLAG).actorUuid === actorUuid);
@@ -701,24 +609,7 @@ function buildControls(el, data, participant, actor) {
   }
 }
 
-/* What to caption a marked/spent item with: the status effect it grants, or
-   the item itself when it grants no effect of its own. Grape Mentats attaches
-   the Anxiolytic condition, so the row reads ANXIOLYTIC — the consumable is
-   gone, the condition is what is now riding the roll.
-
-   Order of preference:
-     1. a condition the item's description links   (itemGrantNames)
-     2. an advantage change attributed to anything but the item itself
-     3. the item's own name
-
-   Step 2 is a backstop for an effect that reaches the roll without a
-   description link; step 1 is what normally answers, and it answers even when
-   the condition changes something other than advantage.
-
-   Deliberately NOT filtered by relevance to this particular check: the row
-   says what you spent and what it gave you. The labels that fall onto the die
-   during the reveal ARE relevance-filtered — those come from advSources — so
-   the two answer different questions on purpose. */
+// Captions a marked/spent item with the condition it grants, or its own name as a fallback.
 function grantLabel(itemName, changes, condNames) {
   const linked = (condNames ?? []).find(Boolean);
   if (linked) return linked;
@@ -726,9 +617,7 @@ function grantLabel(itemName, changes, condNames) {
   return effect ?? itemName;
 }
 
-/* The widget row above the dice: marked (pre-roll) or spent (post-roll)
-   item icons everyone can see, each captioned with what it grants; hover
-   reveals name + effects. */
+// The widget row above the dice: marked/spent item icons, each captioned with what it grants.
 function renderSpentRow(panelEl, rollId, actorUuid, spent = null) {
   const rowEl = panelEl.querySelector(".av-gr-spent");
   const items = spent ?? getPanelState(rollId, actorUuid).marked;
@@ -848,8 +737,7 @@ async function performGroupRoll(data, participant, actor, panelEl) {
   }, { messageMode: "public" }); // key of CONFIG.ChatMessage.modes (v14)
 }
 
-/* Ordered reveal parts. Negative values are maluses; zero-value parts are
-   skipped so the count-up only shows steps that move the number. */
+// Ordered reveal parts; zero-value parts are skipped so the count-up only shows moving steps.
 function buildBreakdown(actor, kind, key, ability, bonusVal = 0) {
   const parts = [];
   if (kind === "skill") {
@@ -889,19 +777,7 @@ function d20Element(face, { large = false } = {}) {
 }
 
 
-/* Drop one granted effect's name out of the spent-item icon that granted it
-   and onto the die — e.g. marking Grape Mentats sends "Anxiolytic" falling in
-   green from its icon at the top of the panel.
-
-   The travel distance is measured now rather than written into the CSS: the
-   gap between the spent row and the die depends on how many items were
-   marked, and the die itself has already started collapsing the losing half
-   of the pair by this point. Both boxes are read in the same frame and
-   converted to panel-local coordinates, so the label lands on whatever the
-   die's live position is.
-
-   Everything here degrades to a no-op rather than throwing: a source whose
-   icon is gone (a re-render mid-reveal) simply does not animate. */
+// Animates a granted effect's name falling from its spent-item icon onto the die.
 function dropEffectLabel(panel, src) {
   if (!panel?.isConnected) return;
   const tile = panel.querySelector(
@@ -935,10 +811,7 @@ function dropEffectLabel(panel, src) {
   setTimeout(() => label.remove(), 1000);
 }
 
-/* Every client animates a panel when its entry message arrives:
-   big dice tumble → land untinted → discarded die fades away → the total
-   counts up part by part (die, SPECIAL, SKILL, ITEMS...) → text and dice
-   turn green/red against the DC. */
+// Animates a panel on every client when its entry message arrives: tumble, land, count up, tint.
 function applyEntryToOverlay(message, { animate = true } = {}) {
   const entry = flag(message, ENTRY_FLAG);
   if (!entry || overlay?.rollId !== entry.rollId) return;
@@ -1079,10 +952,7 @@ function tallyFor(data) {
   return { results, passed, rolled: results.filter((r) => r.rolled && !r.fresh).length, anyFresh: results.some((r) => r.fresh) };
 }
 
-/* Inline dice cell for a card row. Unrolled: rest-pose d20(s) reflecting
-   the participant's live advantage toggle — one white die when undecided,
-   two green for advantage, two red for disadvantage. Rolled: the actual
-   faces, kept die tinted by outcome, dropped die ghosted. */
+// Inline dice cell for a card row: rest-pose d20s pre-roll, actual tinted faces post-roll.
 function cardDiceCell(data, r) {
   const cell = document.createElement("span");
   cell.className = "av-gr-card-dice";
@@ -1119,8 +989,7 @@ function cardDiceCell(data, r) {
   return cell;
 }
 
-/* The expandable math tab: pre-roll it previews the modifiers the actor
-   would bring; post-roll it replays the recorded math to the final total. */
+// The expandable math tab: previews modifiers pre-roll, replays the recorded math post-roll.
 function detailsFor(data, r) {
   const wrap = document.createElement("div");
   wrap.className = "av-gr-card-details";
@@ -1328,14 +1197,7 @@ function openRequestDialog() {
   new GroupRollRequest().render(true);
 }
 
-/* The public surface. A module would hang this off `game.modules.get(id).api`;
-   a system's equivalent is the namespace falloutzero.mjs already creates.
-
-   It has to be attached in `setup`, NOT `init`: this file's top-level runs
-   while falloutzero.mjs is still being evaluated, so its own init hook — which
-   does `game.falloutzero = { applications, rollItemMacro }`, replacing the
-   object wholesale — fires AFTER this one and would discard anything written
-   earlier. `setup` runs after every init hook has completed. */
+// The public surface, attached in "setup" since falloutzero.mjs's init hook replaces game.falloutzero wholesale.
 Hooks.once("setup", () => {
   game.falloutzero ??= {};
   game.falloutzero.groupRoll = {

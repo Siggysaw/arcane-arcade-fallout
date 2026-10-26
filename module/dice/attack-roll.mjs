@@ -1,5 +1,12 @@
 import { applyDamageToActor } from '../helpers/damage-relay.mjs'
 import { addDiceCount } from '../helpers/damage-formula.mjs'
+import { placeExplosionOnThrower } from '../helpers/explosive-template.mjs'
+import { hasAutomaticAdvantage, hasAutomaticDisadvantage } from '../helpers/advantage.mjs'
+
+function joinFormulaTerms(base, ...terms) {
+  const extras = terms.filter((t) => t !== undefined && t !== null && t !== '' && t !== 0 && t !== '0')
+  return extras.length ? `${base} + ${extras.join(' + ')}` : base
+}
 
 export default class AttackRoll extends FormApplication {
   constructor(actor, weapon, options = {}, callback = () => { }) {
@@ -42,6 +49,20 @@ export default class AttackRoll extends FormApplication {
     const abilityBonus = this.weapon.getAbilityBonus()
     const actorLuck = this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
 
+    let advantageSeed = AttackRoll.ADV_MODE.NORMAL
+    if (weapon.type === 'explosive') {
+      const explosivesSkill = weapon.system.skillBonus
+      const explosivesAbility = weapon.system.abilityMod
+      const autoAdvantage = hasAutomaticAdvantage(this.actor, { skill: explosivesSkill, ability: explosivesAbility })
+      const autoDisadvantage = hasAutomaticDisadvantage(this.actor, { skill: explosivesSkill, ability: explosivesAbility })
+      advantageSeed =
+        autoAdvantage && !autoDisadvantage
+          ? AttackRoll.ADV_MODE.ADVANTAGE
+          : autoDisadvantage && !autoAdvantage
+            ? AttackRoll.ADV_MODE.DISADVANTAGE
+            : AttackRoll.ADV_MODE.NORMAL
+    }
+
     this.formDataCache = {
       weaponType: weapon.type,
       isExplosive: weapon.type === 'explosive',
@@ -58,7 +79,7 @@ export default class AttackRoll extends FormApplication {
       bonus: this.actor.system.boostDice,
       targeted: null,
       forceCritical: false,
-      advantageMode: options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL,
+      advantageMode: weapon.type === 'explosive' ? advantageSeed : (options.advantageMode ?? AttackRoll.ADV_MODE.NORMAL),
       apCost: this.weapon.system.apCost,
       totalApCost: this.getBaseApCost(),
       adjustedApCost: 0,
@@ -90,12 +111,19 @@ export default class AttackRoll extends FormApplication {
       }),
     }
 
+
+    if (this.formDataCache.consumesAp && !this.hasEnoughAp()) {
+      ui.notifications.warn(`${this.actor.name} doesn't have enough AP to use ${this.weapon.name}.`)
+    }
+
     this.onSubmitCallback = callback
 
     this._targetHooks = [
       { hook: 'targetToken', id: Hooks.on('targetToken', () => this._refreshTargetSummary()) },
       { hook: 'controlToken', id: Hooks.on('controlToken', () => this._refreshTargetSummary()) },
     ]
+
+    this._minimizeActorSheet()
   }
 
   /** @override */
@@ -103,6 +131,7 @@ export default class AttackRoll extends FormApplication {
     this._targetHooks?.forEach(({ hook, id }) => Hooks.off(hook, id))
     this._targetHooks = []
     this._restoreCanvasTool()
+    this._restoreActorSheet()
     return super.close(options)
   }
 
@@ -127,10 +156,7 @@ export default class AttackRoll extends FormApplication {
 
   /* -------------------------------------------- */
 
-  /**
-   * Advantage mode of a d20 roll
-   * @enum {number}
-   */
+  /** Advantage mode of a d20 roll. */
   static ADV_MODE = {
     NORMAL: 1,
     ADVANTAGE: 2,
@@ -148,10 +174,7 @@ export default class AttackRoll extends FormApplication {
     carried: 4,
   }
 
-  /**
-   * Ordered die ranks a damage die can step through, low to high.
-   * @enum {number}
-   */
+  /** Ordered die ranks a damage die can step through, low to high. */
   static DICE_RANKS = [4, 6, 8, 10, 12, 20, 100]
 
   async getData() {
@@ -164,6 +187,8 @@ export default class AttackRoll extends FormApplication {
       formula: this.getModifiedFormula(damage.formula),
     }))
     data.attackTargetNames = this.getAttackTargets().map((t) => t.name)
+    data.areaOfEffect = this.weapon.system.areaOfEffect ?? null
+    data.insufficientAp = this.formDataCache.consumesAp && !this.hasEnoughAp()
     return data
   }
 
@@ -284,6 +309,9 @@ export default class AttackRoll extends FormApplication {
     const selectTargets = form.querySelector('[data-select-targets]')
     selectTargets?.addEventListener('click', () => this._onSelectTargets())
 
+    const placeExplosion = form.querySelector('[data-place-explosion]')
+    placeExplosion?.addEventListener('click', () => this._onPlaceExplosion())
+
     const closeButton = form.querySelector('[data-close]')
     closeButton?.addEventListener('click', this.close())
   }
@@ -295,27 +323,69 @@ export default class AttackRoll extends FormApplication {
 
   _activateTargetTool() {
     try {
-      const activeControl = ui.controls?.control?.name ?? ui.controls?.activeControl ?? null
-      const activeTool = ui.controls?.tool?.name ?? ui.controls?.activeTool ?? null
-      this._previousTool = activeControl === 'token' ? activeTool : null
-    } catch (err) {
-      this._previousTool = null
-    }
-    try {
       canvas.tokens?.activate({ tool: 'target' })
     } catch (err) {
       console.warn('AttackRoll: could not switch the canvas to the target tool automatically.', err)
     }
   }
 
-  _restoreCanvasTool() {
-    if (!this._previousTool) return
+  _minimizeActorSheet() {
+    const sheet = this.actor.sheet
+    if (!sheet?.rendered) return
+    sheet._falloutzeroAttackMinimizeCount = (sheet._falloutzeroAttackMinimizeCount ?? 0) + 1
+    if (sheet._falloutzeroAttackMinimizeCount > 1) return
     try {
-      canvas.tokens?.activate({ tool: this._previousTool })
+      sheet._falloutzeroSavedPosition = foundry.utils.deepClone(sheet.position)
+      sheet.minimize()
+    } catch (err) {
+      console.warn('AttackRoll: could not minimize the actor sheet.', err)
+    }
+  }
+
+  _restoreActorSheet() {
+    const sheet = this.actor.sheet
+    if (!sheet?._falloutzeroAttackMinimizeCount) return
+    sheet._falloutzeroAttackMinimizeCount -= 1
+    if (sheet._falloutzeroAttackMinimizeCount > 0) return
+    const savedPosition = sheet._falloutzeroSavedPosition
+    delete sheet._falloutzeroSavedPosition
+    try {
+      Promise.resolve(sheet.maximize()).then(() => {
+        if (savedPosition) sheet.setPosition(savedPosition)
+      })
+    } catch (err) {
+      console.warn('AttackRoll: could not restore the actor sheet.', err)
+    }
+  }
+
+  _restoreCanvasTool() {
+    try {
+      canvas.tokens?.activate({ tool: 'select' })
     } catch (err) {
       // Best-effort only - nothing to do if this fails.
     }
-    this._previousTool = null
+  }
+
+  async _onPlaceExplosion() {
+    const originToken = this.actor.getActiveTokens()[0] ?? null
+    const aoe = this.weapon.system.areaOfEffect ?? { full: 0, half: null }
+    const created = await placeExplosionOnThrower(originToken, aoe)
+    if (!created) {
+      ui.notifications.warn(
+        `${this.weapon.name} has no Area of Effect radius set, or there's no token on the canvas to center it on.`,
+      )
+      return
+    }
+    this._explosiveTemplateId = created.id
+    this._activateTemplateTool()
+  }
+
+  _activateTemplateTool() {
+    try {
+      canvas.templates?.activate({ tool: 'circle' })
+    } catch (err) {
+      console.warn('AttackRoll: could not switch the canvas to the template tool automatically.', err)
+    }
   }
 
   getBaseApCost() {
@@ -361,11 +431,8 @@ export default class AttackRoll extends FormApplication {
     }
   }
 
-
-
- 
- //Returns true if `text` appears in either the weapon's description or its bonusProperties field.
-   hasProperty(text) {
+  // True if `text` appears in the weapon's description or bonusProperties.
+  hasProperty(text) {
     const { description, bonusProperties } = this.weapon.system
     const inDescription = typeof description === 'string' && description.includes(text)
     const inBonusProperties = typeof bonusProperties === 'string' && bonusProperties.includes(text)
@@ -418,17 +485,7 @@ export default class AttackRoll extends FormApplication {
     return this.applyDestructive(result)
   }
 
-  // Empowered Energy: "Whenever you roll damage from an attack from an
-  // energy weapon, you can roll an additional damage dice" - up to 3 ranks
-  // (system.quantity), each rank adding one more die of whatever size the
-  // damage component already rolls. Gated on the weapon itself being an
-  // energy weapon per the perk's own wording, checked the same way
-  // Gunslinger/Fan the Hammer/etc. check weapon text elsewhere in this file
-  // (hasProperty() - the weapon's description OR its bonusProperties).
-  // Deliberately NOT covered here: the perk's secondary crit clause ("make
-  // an additional attack... or double the critical hit damage") - that's a
-  // player choice made after a crit is confirmed, not a passive formula
-  // change, and wasn't asked for.
+
   getEmpoweredEnergyRanks() {
     if (!this.hasProperty('Energy Weapon')) return 0
     const empoweredEnergy = this.actor.items.find((i) => i.name === 'Empowered Energy')
@@ -461,23 +518,7 @@ export default class AttackRoll extends FormApplication {
     return flavor
   }
 
-  /**
-   * Feed this attack into Automated Animations. That module ships built-in
-   * "system handlers" for only a fixed list of systems (dnd5e, pf2e, sw5e,
-   * swade, wfrp4e, twodsix, alienrpg as of v7.0.20) - this Fallout system
-   * isn't one of them, so Automated Animations never learns an attack
-   * happened no matter how many animations are configured for a weapon in
-   * its Autorec menu.
-   *
-   * `aa.workflow` is a plain Foundry hook Automated Animations always
-   * listens for internally (`Hooks.on("aa.workflow", (token, item, options)
-   * => playAnimation(token, item, options))`), independent of system
-   * support. Calling it here is a safe no-op if the module isn't installed
-   * or active - `Hooks.callAll` with no listeners does nothing.
-   *
-   * @param {boolean|null} hit    Whether the attack hit (null = no target selected).
-   * @param {Token[]} hitTargets  Tokens that were actually hit, if any.
-   */
+  /** Notifies the Automated Animations module of this attack via the aa.workflow hook. */
   triggerAutomatedAnimation(hit, hitTargets) {
     const sourceToken = this.actor.getActiveTokens()[0]
     if (!sourceToken) return
@@ -488,18 +529,16 @@ export default class AttackRoll extends FormApplication {
     })
   }
 
-  /**
-   * @returns {number}
-   */
+  /** Returns this weapon's critical threshold, adjusted for the actor's crit mod. */
   getCriticalThreshold() {
-    return this.weapon.system.critical.diceFinal - (this.actor.system.critMod ?? 0)
+    let critMod = this.actor.system.critMod ?? 0
+    if (lower(this.weapon.system.description).includes("shotgun")){
+      critMod += Math.floor(this.actor.system.abilities.lck.mod / 2)
+    }
+    return this.weapon.system.critical.diceFinal - (critMod)
   }
 
-  /**
-   * @param {Roll} roll            The evaluated attack roll.
-   * @param {boolean} isCritical   Whether this roll met the weapon's crit chance.
-   * @returns {{token: Token, ac: number, hit: boolean}[]}
-   */
+  /** Returns each targeted token's AC and whether this roll hits it. */
   getTargetHitResults(roll, isCritical) {
     return this.getAttackTargets().map((token) => {
       const ac = token.actor?.system?.armorClass?.value ?? 10
@@ -507,11 +546,7 @@ export default class AttackRoll extends FormApplication {
     })
   }
 
-  /**
-   * Apply an already-rolled damage message's damage to each given token.
-   * @param {ChatMessage} damageMessage   A 'damage'-type chat message.
-   * @param {Token[]} hitTokens           Tokens to apply it to.
-   */
+  /** Applies an already-rolled damage message's damage to each given token. */
   async applyDamageToHitTokens(damageMessage, hitTokens) {
     const damages = damageMessage?.applicationDamages
     if (!damages) return
@@ -527,8 +562,16 @@ export default class AttackRoll extends FormApplication {
     if (this.formDataCache.overrideAp) {
       return this.formDataCache.adjustedApCost
     }
-     
+
     return this.formDataCache.totalApCost
+  }
+
+  /** Read-only check: can the actor currently afford this weapon's AP cost? */
+  hasEnoughAp() {
+    if (!this.actor.inCombat) return true
+    const cost = Number(this.getFinalApCost())
+    const safeCost = Number.isFinite(cost) ? cost : 0
+    return Number(this.actor.system.actionPoints.value) - safeCost >= 0
   }
 
   getFinalAmmoCost() {
@@ -538,9 +581,7 @@ export default class AttackRoll extends FormApplication {
     return this.formDataCache.overClocked ? 3 : this.formDataCache.boosted ? 2 : 1
   }
 
-  /**
-   * Combine all damage formulas and targeted adjustment
-   */
+  /** Combines all damage formulas with the targeted adjustment. */
   getCombinedDamageFormula() {
     return this.weapon.system.damages.reduce((total, damage, index) => {
       const formula = this.getModifiedFormula(damage.formula)
@@ -619,22 +660,30 @@ export default class AttackRoll extends FormApplication {
     if (overClocked) damageBonus += 4
     if (boosted) damageBonus += 2
 
-    /**
-     * Generate damage rolls
-     */
+    // Generate damage rolls
     automaticAttack ? abilityBonus = 0 : ''
     const damageRolls = this.formDataCache.damages.map((damage) => {
       const baseFormula = this.getModifiedFormula(damage.formula)
+      const withBonuses = joinFormulaTerms(baseFormula, damageBonus, bonusdamage)
       return {
         type: damage.selectedDamageType,
         weapon: this.weaponType,
-        formula: this.formDataCache.targeted
-          ? this.getTargetedDamage(baseFormula + ` + ${damageBonus} + ${bonusdamage || ''}`)
-          : baseFormula + `+ ${damageBonus || ''} + ${bonusdamage || ''}`,
+        formula: this.formDataCache.targeted ? this.getTargetedDamage(withBonuses) : withBonuses,
       }
     })
 
     const finalCritical = this.getFinalCritical()
+    const criticalRolls = this.formDataCache.damages.map((damage, index) => {
+      const baseFormula = this.getTargetedDamage(this.getModifiedFormula(damage.formula))
+      const multiplied = index === 0
+        ? joinFormulaTerms(baseFormula, finalCritical.formula, abilityBonus)
+        : baseFormula
+      return {
+        type: damage.selectedDamageType,
+        weapon: this.weaponType,
+        formula: `(${multiplied}) * ${finalCritical.multiplier || 1}`,
+      }
+    })
     if (this.weapon.system.autoHit) {
       const isCritical = this.formDataCache.forceCritical === true
 
@@ -651,7 +700,8 @@ export default class AttackRoll extends FormApplication {
             damageBonus,
             isCritical,
             criticalCondition: this.weapon.system.critical.condition,
-            critical: `(${this.getCombinedDamageFormula()} + ${finalCritical.formula || ''} + ${abilityBonus}) * ${finalCritical.multiplier || ''}`,
+            critical: `(${joinFormulaTerms(this.getCombinedDamageFormula(), finalCritical.formula, abilityBonus)}) * ${finalCritical.multiplier || 1}`,
+            criticalRolls,
           },
         },
       })
@@ -662,16 +712,17 @@ export default class AttackRoll extends FormApplication {
         ? await message._onRollCriticalDamage()
         : await message._onRollDamage()
 
-      // Auto-applies to whatever is currently targeted - no separate on/off
-      // setting. Not targeting anything is the escape hatch: an empty
-      // target set makes this a no-op, same as the normal-roll branch below.
       await this.applyDamageToHitTokens(autoHitDamageMessage, this.getAttackTargets())
       return message
     }
+    if (this.weapon.type === 'explosive') {
+      const armDC = Number(this.weapon.system.armDC)
+      if (Number.isFinite(armDC) && armDC > 0) {
+        return this.performPlacedExplosiveArm({ armDC, skillBonus, abilityBonus, damageBonus, damageRolls })
+      }
+    }
 
-    /**
-     * Roll to hit
-     */
+    // Roll to hit
     const rollBonusTotal = Number(skillBonus + attackBonus + abilityBonus + actorLuck + Number(bonus) - actorPenalties - decayPenalty)
 
     const roll = new Roll(
@@ -680,6 +731,33 @@ export default class AttackRoll extends FormApplication {
     )
 
     await roll.evaluate()
+
+    if (this.weapon.type === 'explosive') {
+      const flavor = this.getFlavor(null, null, roll.total) || ''
+      const attackMessage = await roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor,
+        rollMode: game.settings.get('core', 'rollMode'),
+        'flags.falloutzero': {
+          type: 'attack',
+          itemId: this.weapon.id,
+          abilityBonus,
+          damage: {
+            rolls: damageRolls,
+            damageBonus,
+          },
+        },
+      })
+
+      if (roll.total <= 1 && !this._explosiveTemplateId) {
+        const originToken = this.actor.getActiveTokens()[0] ?? null
+        const aoe = this.weapon.system.areaOfEffect ?? { full: 0, half: null }
+        await placeExplosionOnThrower(originToken, aoe)
+      }
+
+      return roll
+    }
+
     const naturalCritical = roll.dice[0].total >= this.getCriticalThreshold()
     const hitResults = this.getTargetHitResults(roll, naturalCritical)
     const hitSummary = hitResults.length
@@ -703,9 +781,7 @@ export default class AttackRoll extends FormApplication {
     </div>
   `
 
-    /**
-     * Display roll to hit chat message
-     */
+    // Display roll-to-hit chat message
     const attackMessage = await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: (this.getFlavor(this.formDataCache.targeted?.target, anyHit, roll.total) || '') + hitSummary,
@@ -723,7 +799,8 @@ export default class AttackRoll extends FormApplication {
           isCritical: naturalCritical,
           forceCritical: this.formDataCache.forceCritical === true,
           criticalCondition: this.weapon.system.critical.condition,
-          critical: `(${this.getCombinedDamageFormula()} + ${finalCritical.formula || ''} + ${abilityBonus}) * ${finalCritical.multiplier || ''}`,
+          critical: `(${joinFormulaTerms(this.getCombinedDamageFormula(), finalCritical.formula, abilityBonus)}) * ${finalCritical.multiplier || 1}`,
+          criticalRolls,
         },
       },
     })
@@ -731,8 +808,6 @@ export default class AttackRoll extends FormApplication {
     const hitTokens = hitResults.filter((r) => r.hit).map((r) => r.token)
     this.triggerAutomatedAnimation(anyHit, hitTokens)
     const rollsCriticalDamage = naturalCritical || this.formDataCache.forceCritical === true
-    // No separate on/off setting - not targeting anything means hitTokens is
-    // empty and this is simply a no-op, which is the intended escape hatch.
     if (hitTokens.length) {
       const damageMessage = rollsCriticalDamage
         ? await attackMessage._onRollCriticalDamage()
@@ -743,11 +818,88 @@ export default class AttackRoll extends FormApplication {
     return roll
   }
 
+  /**
+   * Arms a placed explosive (armDC > 0), per the rulebook's "Arming a Placed
+   * Explosive" rule: succeed an explosives skill check at DC 10 + the item's
+   * Arm DC bonus, or it detonates immediately on whoever's arming it.
+   * Automatic success - no roll at all - when the actor's explosives skill
+   * bonus already meets or beats the Arm DC bonus outright.
+   *
+   * Replaces the thrown-explosive detonation-timing roll entirely for these
+   * items. Everything downstream of that - the blast template, and the
+   * manual "Roll damage" / "Apply" once the GM decides it's triggered - is
+   * unchanged and shared with thrown explosives: success or failure, the
+   * explosive still just sits there (armed, or already gone off) until the
+   * GM rolls and applies its damage, same as this system already does for
+   * every other explosive and weapon.
+   */
+  async performPlacedExplosiveArm({ armDC, skillBonus, abilityBonus, damageBonus, damageRolls }) {
+    const dc = 10 + armDC
+    // The rulebook's "explosives skill bonus" here includes the item's own
+    // ability modifier (abilityBonus - Perception by default, but whatever
+    // this item's system.abilityMod is set to - it's GM-editable per item),
+    // same as every other skill-adjacent roll bonus in this system is a
+    // skill-bonus-plus-ability-mod combination, not the bare skill bonus.
+    const abilityLabel = CONFIG.FALLOUTZERO.abilities[this.weapon.system.abilityMod]?.label ?? this.weapon.system.abilityMod
+    const explosivesCheckBonus = skillBonus + abilityBonus
+    const messageData = {
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      rollMode: game.settings.get('core', 'rollMode'),
+      'flags.falloutzero': {
+        type: 'attack',
+        itemId: this.weapon.id,
+        abilityBonus,
+        damage: {
+          rolls: damageRolls,
+          damageBonus,
+        },
+      },
+    }
+
+    let message
+    if (explosivesCheckBonus >= armDC) {
+      // Automatic success - the rulebook's own shortcut, not derived from
+      // the roll math below (a 1d20+explosivesCheckBonus roll could still
+      // miss DC 10+armDC even when explosivesCheckBonus >= armDC; this is a
+      // stated exception).
+      messageData.flavor =
+        `${this.weapon.name} is armed! Explosives skill bonus ${explosivesCheckBonus} (${skillBonus} skill + ${abilityBonus} ` +
+        `${abilityLabel}) automatically meets or beats this placed explosive's Arm DC bonus of ${armDC} - no roll needed.`
+      message = await getDocumentClass('ChatMessage').create(messageData)
+    } else {
+      const diceFormula = this.getDice()
+      const roll = new Roll(`${diceFormula} + ${explosivesCheckBonus}`, this.actor.getRollData())
+      await roll.evaluate()
+      const success = roll.total >= dc
+      messageData.flavor = success
+        ? `${this.weapon.name} arming check: rolled a total of ${roll.total} (${diceFormula} + ${skillBonus} skill + ${abilityBonus} ${abilityLabel}) vs DC ${dc} (10 + ${armDC} Arm DC bonus). Success - the explosive is armed!`
+        : `${this.weapon.name} arming check: rolled a total of ${roll.total} (${diceFormula} + ${skillBonus} skill + ${abilityBonus} ${abilityLabel}) vs DC ${dc} (10 + ${armDC} Arm DC bonus). Failure - it detonates immediately!`
+      message = await roll.toMessage(messageData)
+    }
+
+    // Place the blast template on the armer either way - success leaves it
+    // armed where they placed it, failure means it just went off on them -
+    // same as the existing thrown-explosive "exploded in your hand" case,
+    // the GM rolls and applies damage from the template manually either way.
+    if (!this._explosiveTemplateId) {
+      const originToken = this.actor.getActiveTokens()[0] ?? null
+      const aoe = this.weapon.system.areaOfEffect ?? { full: 0, half: null }
+      await placeExplosionOnThrower(originToken, aoe)
+    }
+
+    return message
+  }
+
   async _updateObject(event, formData) {
     Object.assign(this.formDataCache, formData)
 
     if (event.type !== 'submit') {
       this.render()
+      return
+    }
+
+    if (this.formDataCache.consumesAp && !this.hasEnoughAp()) {
+      this.close()
       return
     }
 

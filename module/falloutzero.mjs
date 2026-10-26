@@ -20,6 +20,8 @@ import './helpers/damage-relay.mjs'
 
 import './helpers/unarmed-strike.mjs'
 
+import { migrateExplosiveAreaOfEffect } from './helpers/explosive-migration.mjs'
+
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
@@ -29,11 +31,11 @@ Hooks.once('init', function () {
   // Add custom constants for configuration.
   CONFIG.FALLOUTZERO = FALLOUTZERO
 
-  // Add utility classes to the global game object so that they're more easily
-  // accessible in global contexts.
+  // Adds utility classes to the global game object for easier access.
   game.falloutzero = {
     applications,
     rollItemMacro,
+    migrateExplosiveAreaOfEffect,
   }
 
   // Registers system settings
@@ -43,10 +45,7 @@ Hooks.once('init', function () {
   const r = document.querySelector(':root');
   r.style.setProperty('--sheetcolor', sheetColor);
 
-  /**
-   * Set an initiative formula for the system
-   * @type {String}
-   */
+  /** Sets the initiative formula for the system. */
   CONFIG.Combat.initiative = {
     formula: '@combatSequence.formula + @combatSequence.value - @penaltyTotal',
     decimals: 2,
@@ -57,9 +56,7 @@ Hooks.once('init', function () {
   CONFIG.Item.documentClass = documents.FalloutZeroItem
   CONFIG.ChatMessage.documentClass = documents.FalloutZeroChatMessage
 
-  // Note that you don't need to declare a DataModel
-  // for the base actor/item classes - they are included
-  // with the Character/NPC as part of super.defineSchema()
+  // No DataModel needed for base actor/item classes; included via super.defineSchema().
   CONFIG.Actor.dataModels = {
     character: models.FalloutZeroCharacter,
     npc: models.FalloutZeroNPC,
@@ -89,9 +86,7 @@ Hooks.once('init', function () {
     property: models.FalloutZeroItemBase,
   }
 
-  // Active Effects are never copied to the Actor,
-  // but will still apply to the Actor from within the Item
-  // if the transfer property on the Active Effect is true.
+  // Active Effects stay on the Item but still apply to the Actor when transfer is true.
   CONFIG.ActiveEffect.legacyTransferral = false
 
   // Register sheet application classes
@@ -139,13 +134,7 @@ registerHooks()
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */
 
-/**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
- * @param {Object} data     The dropped data
- * @param {number} slot     The hotbar slot to use
- * @returns {Promise}
- */
+/** Creates a Macro from an Item drop, reusing an existing one if found. */
 async function createItemMacro(data, slot) {
   // First, determine if this is a valid owned item.
   if (data.type !== 'Item') return
@@ -171,11 +160,7 @@ async function createItemMacro(data, slot) {
   return false
 }
 
-/**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
- * @param {string} itemUuid
- */
+/** Rolls the item identified by itemUuid, loaded via its drop data. */
 function rollItemMacro(itemUuid) {
   // Reconstruct the drop data so that we can load the item.
   const dropData = {

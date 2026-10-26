@@ -3,45 +3,10 @@ import FalloutZeroItem from './item.mjs'
 import LevelUpApplication from '../applications/components/level-up.mjs'
 import ChemApplication from '../applications/components/chem-application.mjs'
 import { conditionIdFromStatusId } from '../helpers/status-effects.mjs'
-/**
-/**
- * Extend the base Actor class to implement additional system-specific logic.
- * @extends {Actor}
- */
+/** Extends the base Actor class to implement additional system-specific logic. */
 
 export default class FalloutZeroActor extends Actor {
-  /**
-   * Foundry's own status-icon highlighting (TokenHUD) and defeated/vision
-   * machinery read `actor.statuses` to know which status ids are currently
-   * "on". Condition items applied via `applyConditionStatus` aren't
-   * ActiveEffects, so they wouldn't normally show up there - merge in the
-   * status id recorded on each such item (flags.falloutzero.conditionStatusId)
-   * so a toggled-on condition still highlights its token HUD icon and toggles
-   * back off correctly on a second click.
-   *
-   * NOTE: this must NOT be a `get statuses()` override. Core declares
-   * `statuses` as a plain instance field (`statuses = this.statuses ?? new
-   * Set()`), not a getter, so `super.statuses` is always undefined - a getter
-   * here threw during actor construction (`.add`/`.clear` on undefined),
-   * which aborted world loading and made Actors/Scenes/Items appear to vanish
-   * (v0.2.18). Core rebuilds the set in applyActiveEffects(), so add ours
-   * right after it does.
-   *
-   * Arguments are passed straight through: v14 calls this once per change
-   * phase (`applyActiveEffects("initial")`, then `"final"`) and deprecates
-   * calling it without a phase, while v13 calls it with no arguments.
-   * Forwarding `...args` keeps both versions on core's own code path.
-   *
-   * The flag is read straight off `item.flags.falloutzero` instead of via
-   * `item.getFlag('falloutzero', ...)`: getFlag() only accepts the system's
-   * real id ("arcane-arcade-fallout"), "core", "world" or an active module
-   * as its scope, and throws for anything else. That throw happened inside
-   * data preparation for every actor with items, so sheets fell back to
-   * unprepared/default stats (v0.2.19) or failed to load (v0.2.18). Reading
-   * the raw path keeps every condition already tagged under "falloutzero"
-   * working without a data migration.
-   * @override
-   */
+  /** @override Merges condition-item status ids into actor.statuses so TokenHUD highlights them. */
   applyActiveEffects(...args) {
     const result = super.applyActiveEffects(...args)
     if (!this.statuses) return result
@@ -52,16 +17,7 @@ export default class FalloutZeroActor extends Actor {
     return result
   }
 
-  /**
-   * Overrides core's token-HUD status effect toggle. `CONFIG.statusEffects`
-   * is replaced with this system's "conditions" compendium (see
-   * helpers/status-effects.mjs's `registerConditionStatusEffects`), so every
-   * id Foundry's TokenHUD can hand us here maps back to a real Condition
-   * item - apply/remove that item instead of core's generic ActiveEffect.
-   * Falls through to core behavior for any status id that isn't one of ours
-   * (e.g. another module calling this directly with a vanilla id).
-   * @override
-   */
+  /** @override Toggles a Condition item instead of a generic ActiveEffect for TokenHUD status ids. */
   async toggleStatusEffect(statusId, options = {}) {
     const conditionId = conditionIdFromStatusId(statusId)
     if (!conditionId) return super.toggleStatusEffect(statusId, options)
@@ -74,16 +30,7 @@ export default class FalloutZeroActor extends Actor {
     return this.applyConditionStatus(statusId, conditionId)
   }
 
-  /**
-   * Add a Condition item from the compendium to this actor, tagged with the
-   * given token-HUD status id, exactly as if it had been dragged onto the
-   * token - same embedded-item creation and @-formula evaluation used
-   * elsewhere in this file for applied conditions (see `applyDrunkness` and
-   * `getConsequence` above).
-   * @param {string} statusId       The CONFIG.statusEffects id being toggled on.
-   * @param {string} conditionId    The document id of the source item in the "conditions" compendium.
-   * @returns {Promise<Item|null>}
-   */
+  /** Adds a Condition item from the compendium, tagged with the given token-HUD status id. */
   async applyConditionStatus(statusId, conditionId) {
     const pack = game.packs.get('arcane-arcade-fallout.conditions')
       ?? game.packs.get('conditions')
@@ -119,11 +66,7 @@ export default class FalloutZeroActor extends Actor {
     return created
   }
 
-  /**
-   * Remove every Condition item on this actor that was applied via the
-   * given token-HUD status id (see `applyConditionStatus`).
-   * @param {string} statusId
-   */
+  /** Removes every Condition item on this actor applied via the given token-HUD status id. */
   async removeConditionStatus(statusId) {
     const toRemove = this.items.filter((item) => item.flags?.falloutzero?.conditionStatusId === statusId)
     if (!toRemove.length) return
@@ -134,8 +77,7 @@ export default class FalloutZeroActor extends Actor {
     // Starts off by populating the roll data with a shallow copy of `this.system`
     const data = { ...this.system }
 
-    // Copy the ability scores to the top level, so that rolls can use
-    // formulas like `@str.mod + 4`.
+    // Copy ability scores to the top level so rolls can use formulas like `@str.mod + 4`.
     if (data.abilities) {
       for (let [k, v] of Object.entries(data.abilities)) {
         data[k] = foundry.utils.deepClone(v)
@@ -319,14 +261,7 @@ export default class FalloutZeroActor extends Actor {
     }
   }
 
-  /**
-   * Flash ring & display changes to health as scrolling combat text.
-   * @param {object} changes          Object of changes to hit points.
-   * @param {number} changes.hp       Changes to `hp.value`.
-   * @param {number} changes.temp     The change to `hp.temp`.
-   * @param {number} changes.total    The total change to hit points.
-   * @protected
-   */
+  /** Flashes the token ring and displays HP changes as scrolling combat text. */
   _displayTokenEffect(changes) {
     let key
     let value
@@ -417,9 +352,7 @@ export default class FalloutZeroActor extends Actor {
 
       const endure = actor.items.find((i) => i.name == "Endure the Battle")
       const endureWW = !!endure?.system.wildWasteland
-      // Base Endure the Battle drops Luck/Endurance from the roll entirely.
-      // Party Nerve is a Wild Wasteland-only loss ("you do not add your
-      // Luck, Endurance, or Party Nerve").
+      // Endure the Battle drops Luck/Endurance; Party Nerve is a Wild Wasteland-only loss.
       const abilityMod = endure ? 0 : '@' + rollAbility + '.mod'
       const partyNerve = endureWW ? 0 : actor.system.partyNerve.value
 
@@ -451,9 +384,7 @@ export default class FalloutZeroActor extends Actor {
       const saveDC = 10
       const success = roll.total >= saveDC
 
-      // Read the die(s) actually kept for the total, not just the first one
-      // physically rolled - matters with advantage/disadvantage (2d20kh/2d20kl),
-      // where the kept die can be the second one in roll order.
+      // Reads the die(s) actually kept for the total, not just the first one physically rolled.
       const keptDice = roll.terms[0].results.filter((r) => r.active).map((r) => r.result)
       const critSuccess = keptDice.includes(20)
       const critFailure = keptDice.includes(1)
@@ -483,8 +414,7 @@ export default class FalloutZeroActor extends Actor {
           flavor += ` - Endure the Battle triggers, returning to 1 hit point!`
           revive()
         } else {
-          // A natural 20 is worth 2 successes; reaching a 3rd success (from
-          // any combination of normal successes and crits) fully revives.
+          // A natural 20 is worth 2 successes; reaching a 3rd success fully revives.
           const successCount = hadSuccess1 ? (hadSuccess2 ? 2 : 1) : 0
           const newSuccessCount = successCount + (critSuccess ? 2 : 1)
           if (newSuccessCount >= 3) {
@@ -1096,26 +1026,7 @@ export default class FalloutZeroActor extends Actor {
     return this.items.contents.find((c) => c.type === 'race')?.system?.type
   }
 
-  /**
-   * Creates a Background item on this actor and grants it its starting
-   * equipment, in one step. Used by the character-creation walkthrough in
-   * LevelUp (applications/components/level-up.mjs) when a level-0 actor
-   * picks a Background for the first time.
-   *
-   * This mirrors what FalloutZeroActorSheet#_onDropItemCreateBackgroundGrants
-   * already does for a manually-dragged Background item (same grant
-   * resolution: this actor's race-specific grants plus the background's
-   * "All Races" grants, each fetched by uuid, cloned, created, and given its
-   * authored quantity) - written as its own actor-level method rather than
-   * reusing the sheet's version so the character-creation flow doesn't
-   * depend on a rendered ActorSheet existing. Requires a Race item to
-   * already be on this actor (getRaceType() reads it) - the caller is
-   * responsible for creating the race first and awaiting it.
-   *
-   * @param {Item} backgroundItem  A Background Item document (e.g. from the
-   *   `background` compendium) that has not yet been added to this actor.
-   * @returns {Promise<Item>} the created Background item, embedded on this actor
-   */
+  /** Creates a Background item and grants its starting equipment, for the character-creation wizard. */
   async grantBackgroundEquipment(backgroundItem) {
     const race = this.getRaceType()
     const backgroundData = backgroundItem.toObject()
@@ -1260,19 +1171,11 @@ export default class FalloutZeroActor extends Actor {
     this.update({ 'system.actionPoints.value': newAction })
   }
 
-  /**
-   *
-   * @param {number} cost
-   * @returns true if successful or false if not enough AP
-   */
+  /** Deducts AP cost; returns true if successful or false if not enough AP. */
   async applyApCost(cost) {
     if (!this.inCombat) return true
     !this.inCombat ? cost = 0 : ''
-    // A caller passing undefined/NaN (e.g. a weapon whose data model doesn't
-    // expose the field a cost calculation expected) used to flow straight
-    // into the update below and fail actionPoints' "must be a number"
-    // validation instead of deducting anything - treat anything that isn't
-    // a finite number as no cost rather than corrupting the update.
+    // A non-numeric cost (undefined/NaN) is treated as free rather than corrupting the update.
     const safeCost = Number.isFinite(Number(cost)) ? Number(cost) : 0
     const currentAP = this.system.actionPoints.value
     const newAP = Number(currentAP) - safeCost
@@ -2428,19 +2331,16 @@ export default class FalloutZeroActor extends Actor {
     var table, rows, switching, col, i, x, y, shouldSwitch
     table = document.getElementById(tableID)
     switching = true
-    /* Make a loop that will continue until
-    no switching has been done: */
+    // Loop until no switching has been done.
     while (switching) {
       // Start by saying: no switching is done:
       switching = false
       rows = table.rows
-      /* Loop through all table rows (except the
-      first, which contains table headers): */
+      // Loop through all table rows except the header.
       for (i = 2; i < rows.length - 1; i++) {
         // Start by saying there should be no switching:
         shouldSwitch = false
-        /* Get the two elements you want to compare,
-        one from current row and one from the next: */
+        // Compare the current row's element to the next row's.
         tableID == 'junkTable' ? (col = 1) : (col = 0)
         x = rows[i].getElementsByTagName('TD')[col]
         y = rows[i + 1].getElementsByTagName('TD')[col]
@@ -2455,20 +2355,14 @@ export default class FalloutZeroActor extends Actor {
         }
       }
       if (shouldSwitch) {
-        /* If a switch has been marked, make the switch
-        and mark that a switch has been done: */
+        // Swap the two rows and mark that a switch was made.
         rows[i].parentNode.insertBefore(rows[i + 1], rows[i])
         switching = true
       }
     }
   }
 
-  /**
-   * Apply a certain amount of damage or healing to the health pool for Actor
-   * @param {DamageDescription[]|number} damages     Damages to apply.
-   * @param {DamageApplicationOptions} [options={}]  Damage application options.
-   * @returns {Promise<Actor>}                     A Promise which resolves once the damage has been applied.
-   */
+  /** Applies a certain amount of damage or healing to the Actor's health pool. */
   async applyDamage(damages, options = {}) {
     const hp = this.system.health
     const sp = this.system.stamina
@@ -2484,6 +2378,7 @@ export default class FalloutZeroActor extends Actor {
 
     damages = damages.map((d) => (this.system.di.includes(d.type) ? { ...d, value: 0 } : d))
 
+    // Fitted 1: doubles DT when the damage was flagged area-of-effect upstream.
     const isAreaEffectDamage = damages.some((d) => d.properties?.has?.('areaOfEffect'))
     const fittedDtMultiplier = isAreaEffectDamage && (this.system.fittedTier ?? 0) >= 1 ? 2 : 1
 
@@ -2496,6 +2391,7 @@ export default class FalloutZeroActor extends Actor {
     const emergencyProtocolsDtBonus =
       emergencyProtocolsTier >= 2 && hp.value < hp.max / 2 ? 5 : 0
 
+    // Made of Sterner Stuff: +2 DT when wielding a melee weapon against a melee attack.
     const isMeleeAttackDamage = damages.some((d) => d.properties?.has?.('meleeAttack'))
     const madeOfSternerStuff = this.items.find((i) => i.name === 'Made of Sterner Stuff')
     const wieldingMeleeWeapon = this.items.some((i) => i.type === 'meleeWeapon' && i.system.itemEquipped)
@@ -2664,25 +2560,11 @@ export default class FalloutZeroActor extends Actor {
     ChatMessage.create(chatData)
   }
 
-  /**
-   * Calculate the damage that will be applied to this actor.
-   * @param {DamageDescription[]} damages            Damages to calculate.
-   * @param {DamageApplicationOptions} [options={}]  Damage calculation options.
-   * @returns {DamageDescription[]|false}            New damage descriptions with changes applied, or `false` if the
-   *                                                 calculation was canceled.
-   */
+  /** Calculates the damage that will be applied to this actor. */
   calculateDamage(damages, options = {}) {
     damages = foundry.utils.deepClone(damages)
 
-    /**
-     * A hook event that fires before damage amount is calculated for an actor.
-     * @param {Actor5e} actor                     The actor being damaged.
-     * @param {DamageDescription[]} damages       Damage descriptions.
-     * @param {DamageApplicationOptions} options  Additional damage application options.
-     * @returns {boolean}                         Explicitly return `false` to prevent damage application.
-     * @function aafo.preCalculateDamage
-     * @memberof hookEvents
-     */
+    // Hook fired before damage amount is calculated; returning false cancels it.
     if (Hooks.call('aafo.preCalculateDamage', this, damages, options) === false) return false
 
     const multiplier = options.multiplier ?? 1
@@ -2700,15 +2582,7 @@ export default class FalloutZeroActor extends Actor {
       d.active.multiplier = (d.active.multiplier ?? 1) * damageMultiplier
     })
 
-    /**
-     * A hook event that fires after damage values are calculated for an actor.
-     * @param {Actor5e} actor                     The actor being damaged.
-     * @param {DamageDescription[]} damages       Damage descriptions.
-     * @param {DamageApplicationOptions} options  Additional damage application options.
-     * @returns {boolean}                         Explicitly return `false` to prevent damage application.
-     * @function aafo.calculateDamage
-     * @memberof hookEvents
-     */
+    // Hook fired after damage values are calculated; returning false cancels it.
     if (Hooks.call('aafo.calculateDamage', this, damages, options) === false) return false
 
     return damages

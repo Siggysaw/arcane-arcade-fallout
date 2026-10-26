@@ -2,10 +2,7 @@ export const FALLOUTZERO = {
   systemId: 'arcane-arcade-fallout',
 }
 
-/**
- * The set of Ability Scores used within the system.
- * @type {Object}
- */
+/** The set of Ability Scores used within the system. */
 FALLOUTZERO.races = {
   human: {
     id: 'human',
@@ -1292,10 +1289,7 @@ FALLOUTZERO.damageTypes = {
 }
 
 
-/**
- * Colors used to visualize temporary and temporary maximum HP in token health bars.
- * @enum {number}
- */
+/** Colors used to visualize temporary and temporary maximum HP in token health bars. */
 FALLOUTZERO.tokenHPColors = {
   damage: 0xff0000,
   healing: 0x00ff00,
@@ -1420,15 +1414,7 @@ FALLOUTZERO.craftingTypes = {
 }
 
 
-// Must match the actual Item document `type` values (see template.json's
-// Item.types), not the crafting-category labels above or the compendium
-// pack name suffixes below (packsWithCraftables) — those use a different
-// naming convention (e.g. 'ammunition'/'food-and-drinks') and don't match
-// any real item.type, which silently excluded ammo, explosives, food and
-// drink, melee/ranged weapons, junk, and misc items from
-// actor.craftingMaterials (an item held by the actor whose type didn't
-// literally match one of these strings was never counted as an owned
-// crafting material, regardless of how many the actor had).
+// Must match the actual Item document `type` values, not the crafting-category labels above.
 FALLOUTZERO.craftingItemTypes = [
   'junkItem',
   'material',
@@ -1444,10 +1430,7 @@ FALLOUTZERO.craftingItemTypes = [
   'chem',
 ]
 
-// The item types that carry a decay bar today (see the equipped-* item
-// templates) and are therefore the ones the Repair Bench / item context
-// menu's "Repair" entry can act on. powerArmor is excluded — it has no
-// decay bar of its own in the current templates.
+// Item types with a decay bar, so the Repair Bench can act on them; powerArmor is excluded.
 FALLOUTZERO.repairableTypes = ['armor', 'meleeWeapon', 'rangedWeapon']
 
 FALLOUTZERO.packsWithCraftables = [
@@ -1501,14 +1484,7 @@ FALLOUTZERO.armorTypes = {
   },
 }
 
-// Repair DC bonus/materials/time straight from the Item Blueprint
-// Encyclopedia's Armor table (pg 94), keyed by the same armorType id every
-// armor item already carries in system.armorType — so every armor piece
-// gets book-accurate repair data with no per-item authoring needed.
-// "power" is intentionally excluded (power armor isn't a repairable type;
-// see FALLOUTZERO.repairableTypes). Multilayered's book entry ("any
-// combination of leather and cloth to equal 3 total junk items") is
-// approximated here as a fixed x2 leather + x1 cloth.
+// Repair DC bonus/materials/time from the rulebook's Armor table, keyed by armorType id.
 FALLOUTZERO.armorRepairTable = {
   cloth: { bonus: 0, materials: [{ name: 'Cloth', quantity: 2 }], time: { value: 5, unit: 'minutes' } },
   leather: { bonus: 1, materials: [{ name: 'Leather', quantity: 2 }], time: { value: 10, unit: 'minutes' } },
@@ -1518,22 +1494,7 @@ FALLOUTZERO.armorRepairTable = {
   steel: { bonus: 5, materials: [{ name: 'Steel', quantity: 2 }, { name: 'Leather', quantity: 1 }], time: { value: 10, unit: 'minutes' } },
 }
 
-// Unlike armor, the book prices every melee/ranged weapon's repair cost as
-// "x1 crafting material" repeated N times — N *distinct* materials of the
-// player's choosing (from whatever that weapon's own crafting recipe
-// uses), not a fixed named list. So these tables (transcribed from the
-// Item Blueprint Encyclopedia's weapon tables, pg 97-108) only carry the
-// repair DC bonus and that slot count N ("slots") plus repair time; the
-// actual material *names* come from the item's own system.crafting.materials
-// at runtime (see FalloutZeroItem#getRepairRequirements/_repairMaterialPool).
-// Keyed by lowercased item name for a direct, case-insensitive lookup — a
-// name not found here (homebrew items, a naming mismatch) falls back to a
-// generic default rather than throwing.
-//
-// A few items have a unique alternate material that repairs extra levels
-// of decay (Sharpened Pole/wood, the Bumper Swords, Ski Sword) — that
-// bonus-levels mechanic isn't modeled yet; these are listed here using
-// just their ordinary "or x1 crafting material" fallback slot count.
+// Weapon repair cost as a bonus and a slot count N of distinct crafting materials, by item name.
 FALLOUTZERO.meleeWeaponRepairTable = {
   'knife': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },
   'switchblade': { bonus: 1, slots: 2, time: { value: 5, unit: 'minutes' } },

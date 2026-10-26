@@ -11,8 +11,7 @@ export default class SkillRoll extends FormApplication {
     this.skill = actor.system.skills[skillKey]
     const abilities = this.skill.ability.map((key) => this.actor.system.abilities[key])
 
-    // Validate against ALL selectable abilities (matches what the dropdown actually offers),
-    // not just the skill's default-relevant ability array
+    // Validate against all selectable abilities, matching what the dropdown actually offers.
     const allAbilityKeys = Object.keys(CONFIG.FALLOUTZERO.abilities)
     const savedAbility = this.skill.defaultAbility
     const initialAbility = allAbilityKeys.includes(savedAbility) ? savedAbility : this.skill.ability[0]
@@ -54,10 +53,7 @@ export default class SkillRoll extends FormApplication {
 
   /* -------------------------------------------- */
 
-  /**
-   * Advantage mode of a d20 roll
-   * @enum {number}
-   */
+  /** Advantage mode of a d20 roll. */
   static ADV_MODE = {
     NORMAL: 1,
     ADVANTAGE: 2,
@@ -110,32 +106,24 @@ export default class SkillRoll extends FormApplication {
   async _updateObject(event, formData) {
     Object.assign(this.formDataCache, formData)
 
-    /**
-     * Rerender form if update and not submitted
-     */
+    // Rerenders the form if this update wasn't a submit.
     if (event.type !== 'submit') {
       this.render()
       return
     }
 
-    /**
-     * Deconstruct dialog form
-     */
+    // Deconstruct dialog form
     const { skillBonus, selectedAbility, actorLuck, actorPenalties, bonus } = this.formDataCache
     const abilityBonus = this.actor.getAbilityMod(selectedAbility)
 
-    /**
-     * Persist the chosen ability so this skill defaults to it next time
-     */
+    // Persist the chosen ability so this skill defaults to it next time.
     if (this.skill.defaultAbility !== selectedAbility) {
       await this.actor.update({
         [`system.skills.${this.skillKey}.defaultAbility`]: selectedAbility,
       })
     }
 
-    /**
-     * Roll to hit
-     */
+    // Roll to hit
     const roll = new Roll(
       `${this.getDice()} + ${skillBonus} + ${abilityBonus} + ${this.actor.system.boostDice} + ${actorLuck} + ${bonus || 0} - ${actorPenalties}`,
       this.actor.getRollData(),
@@ -155,9 +143,7 @@ export default class SkillRoll extends FormApplication {
         </div>
       `
 
-    /**
-     * Display roll to hit chat message
-     */
+    // Display roll-to-hit chat message
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: this.getFlavor(),

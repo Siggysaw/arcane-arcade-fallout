@@ -1,10 +1,7 @@
 import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 
-/**
- * Extend the basic ItemSheet with some very simple modifications
- * @extends {ItemSheet}
- */
+/** Extends the basic ItemSheet with some very simple modifications. */
 export default class FalloutZeroRaceSheet extends ItemSheet {
   /** @override */
   static get defaultOptions() {

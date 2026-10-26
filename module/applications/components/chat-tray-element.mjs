@@ -1,6 +1,4 @@
-/**
- * Custom element designed to display as a collapsible tray in chat.
- */
+/** Custom element designed to display as a collapsible tray in chat. */
 export default class ChatTrayElement extends HTMLElement {
   static observedAttributes = ['open']
 
@@ -8,10 +6,7 @@ export default class ChatTrayElement extends HTMLElement {
   /*  Properties                                  */
   /* -------------------------------------------- */
 
-  /**
-   * Is the tray expanded or collapsed?
-   * @type {boolean}
-   */
+  /** Whether the tray is expanded or collapsed. */
   get open() {
     return this.hasAttribute('open')
   }
@@ -32,10 +27,7 @@ export default class ChatTrayElement extends HTMLElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * Handle clicks to the collapsible header.
-   * @param {PointerEvent} event  Triggering click event.
-   */
+  /** Handles clicks on the collapsible header. */
   _handleClickHeader(event) {
     event.stopImmediatePropagation()
     if (!event.target.closest('.collapsible-content')) this.toggleAttribute('open')
@@ -43,10 +35,7 @@ export default class ChatTrayElement extends HTMLElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * Handle changing the collapsed state of this element.
-   * @param {boolean} open  Is the element open?
-   */
+  /** Handles changing the collapsed state of this element. */
   _handleToggleOpen(open) {
     this.dispatchEvent(new Event('toggle'))
 

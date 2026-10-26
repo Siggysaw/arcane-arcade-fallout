@@ -1,3 +1,5 @@
+import { hasAutomaticAdvantage, hasAutomaticDisadvantage, advantageDiceFormula } from '../../helpers/advantage.mjs'
+
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
 const ATTEMPT_RESULT = {
@@ -109,8 +111,6 @@ async function updateActorMaterials({ actor, craftable, materials, attemptResult
   return await Promise.all(
     materials.map(async (mat, matIndex) => {
       const item = actor.getCraftingMaterialItem(mat)
-      // Shouldn't happen if hasMaterials() gated this craft, but guard
-      // against it anyway rather than throwing on a missing item.
       if (!item) return null
 
       // on critical success, add the materialChange value to specific material quantity
@@ -237,11 +237,21 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async roll() {
+    const ability = CONFIG.FALLOUTZERO.skills[this.selectedSkill].ability[0]
     const skillBonus = this.actor.getSkillBonus(this.selectedSkill)
-    const abilityBonus = this.actor.getAbilityMod(CONFIG.FALLOUTZERO.skills[this.selectedSkill].ability[0])
+    const abilityBonus = this.actor.getAbilityMod(ability)
     const penaltyTotal = this.actor.system.penaltyTotal
     const luckModSkillBonus = this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
-    const roll = new Roll(`1d20 + ${skillBonus} + ${abilityBonus} - ${penaltyTotal} + ${luckModSkillBonus}`)
+    // Crafting checks previously never looked at advantage at all - apply
+    // it if either the crafting skill itself or its governing ability
+    // currently has an automatic advantage/disadvantage counter set (e.g.
+    // a perk, or a consumed item like Mentats), same check used for
+    // explosives arming/throwing rolls (see module/helpers/advantage.mjs).
+    const diceFormula = advantageDiceFormula(
+      hasAutomaticAdvantage(this.actor, { skill: this.selectedSkill, ability }),
+      hasAutomaticDisadvantage(this.actor, { skill: this.selectedSkill, ability }),
+    )
+    const roll = new Roll(`${diceFormula} + ${skillBonus} + ${abilityBonus} - ${penaltyTotal} + ${luckModSkillBonus}`)
     const dice = await roll.evaluate()
 
     let result
@@ -429,8 +439,10 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
       openBranches: this.openBranches,
       materials: this.materials,
       skills: this.skills,
+      skillLabels: this.skillLabels,
       luck: this.actor.system.luckmod,
-      abilityBonus: this.actor.system.abilities.int.mod,
+      abilityBonuses: this.abilityBonuses,
+      abilityLabels: this.abilityLabels,
       penaltyTotal: this.actor.system.penaltyTotal,
       owned: this.owned,
       hasRequirements: this.hasRequirements,
@@ -461,6 +473,32 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     }, {})
   }
 
+  // Full skill label (e.g. "Survival") per key, for main.hbs tooltips instead of "Skill".
+  get skillLabels() {
+    return Object.keys(this.actor.system.skills).reduce((acc, key) => {
+      acc[key] = CONFIG.FALLOUTZERO.skills[key].label
+      return acc
+    }, {})
+  }
+
+  // Each skill's governing-ability bonus, keyed by skill, for per-requirement-row display.
+  get abilityBonuses() {
+    return Object.keys(this.actor.system.skills).reduce((acc, key) => {
+      const abilityKey = CONFIG.FALLOUTZERO.skills[key].ability[0]
+      acc[key] = this.actor.getAbilityMod(abilityKey)
+      return acc
+    }, {})
+  }
+
+  // Full ability label (e.g. "Endurance") per skill, for main.hbs tooltips instead of "Ability".
+  get abilityLabels() {
+    return Object.keys(this.actor.system.skills).reduce((acc, key) => {
+      const abilityKey = CONFIG.FALLOUTZERO.skills[key].ability[0]
+      acc[key] = CONFIG.FALLOUTZERO.abilities[abilityKey].label
+      return acc
+    }, {})
+  }
+
   get materials() {
     return this.actor.craftingMaterials.reduce((acc, mat) => {
       acc[mat._stats.compendiumSource] = {
@@ -481,7 +519,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
 
   get hasRequirements() {
     return this.allRequirements.reduce((passes, req) => {
-      this.skillBonus = this.skills[req.key] + this.actor.system.abilities.int.mod + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
+      this.skillBonus = this.skills[req.key] + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.skills[req.key].ability[0]) + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
       if (this.skillBonus < req.dc) {
         passes = false
       }
@@ -557,9 +595,7 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
         ...mat,
         requiredQuantity,
         discountAmount: mat.quantity - requiredQuantity,
-        // Same resolution used by hasMaterials()/updateActorMaterials — see
-        // Actor#getCraftingMaterialItem — so the displayed owned count can
-        // never disagree with what crafting actually checks/consumes.
+        // Same resolution as hasMaterials()/updateActorMaterials, so the owned count stays accurate.
         ownedQuantity: this.actor.getCraftingMaterialItem(mat)?.system.quantity ?? 0,
       }
     })

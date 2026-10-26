@@ -2,10 +2,7 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/
 import FalloutZeroArmor from '../data/armor.mjs'
 import FalloutZeroItem from '../documents/item.mjs'
 
-/**
- * Extend the basic ItemSheet with some very simple modifications
- * @extends {ItemSheet}
- */
+/** Extends the basic ItemSheet with some very simple modifications. */
 export default class FalloutZeroItemSheet extends ItemSheet {
   /** @override */
   static get defaultOptions() {
@@ -239,7 +236,7 @@ export default class FalloutZeroItemSheet extends ItemSheet {
         FalloutZeroItem.prototype.deleteWholeUpgrade(this.object, myId)
       }
     })
-    //Drag and drop items into description box creates a link to it, whether it's a compendium or someone else's inventory.
+    // Linking a dragged item into the description box works for compendium or inventory items.
     html.on('click', '[item-description]', async () => {
       const description = this.object.system.description
       if (!description.includes('@UUID')) return

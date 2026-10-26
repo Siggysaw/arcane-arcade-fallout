@@ -92,7 +92,7 @@
             {{/if}}
         </div>
         <div data-tooltip="Bonus {{item.system.critical.formula}}{{#GreaterThan item.system.critical.multiplier 2}}x{{item.system.critical.multiplier}}{{/GreaterThan}} Damage {{item.system.critical.condition}}">
-            Crit:{{#Subtract item.system.critical.diceFinal ../actor.system.critMod}}{{/Subtract}}
+            Crit:{{#Includes  "Shotgun" item.system.description}}{{item.system.critical.diceFinal}}{{else}}{{#Subtract item.system.critical.diceFinal ../actor.system.critMod}}{{/Subtract}}{{/Includes}}
         </div>
         {{#each item.system.damages as |damage|}}
         <div class="weapon-damage">{{UpgradeFormula damage.formula item.system.bonusProperties}} {{damage.type}}</div>

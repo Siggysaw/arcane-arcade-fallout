@@ -92,6 +92,26 @@
         </fieldset>
     </div>
     {{/unless}}
+    {{#if isExplosive}}
+    <div class="form-group">
+        <fieldset>
+            <legend>Blast Placement</legend>
+            <div class="target-select-row">
+                <button type="button" data-place-explosion data-tooltip="Places a blast template sized to this item's Area of Effect, centered on you - drag it into position, then come back and roll">
+                    <i class="fas fa-bomb"></i> Place Explosion
+                </button>
+            </div>
+            {{#if areaOfEffect}}
+            <div class="target-summary">
+                <span class="target-summary-label">Blast radius:</span>
+                <span class="target-chip">{{ areaOfEffect.full }}ft full{{#if areaOfEffect.half}} / {{ areaOfEffect.half }}ft half{{/if}}</span>
+            </div>
+            {{else}}
+            <div class="target-summary none">No Area of Effect radius set on this item.</div>
+            {{/if}}
+        </fieldset>
+    </div>
+    {{/if}}
 
     <div class="form-group">
         <fieldset>
@@ -234,7 +254,7 @@
     </div>
 
     <div class="dialog-buttons flex">
-        <button type="submit">Roll</button>
+        <button type="submit">{{#if insufficientAp}}Close{{else}}Roll{{/if}}</button>
     </div>
 </form>
 {{ log 'attack' this}}

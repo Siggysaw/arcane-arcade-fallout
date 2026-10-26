@@ -1,21 +1,12 @@
-/**
- * Extend the basic Weapon with some very simple modifications.
- * @extends {Item}
- */
+/** Extends the basic Weapon with some very simple modifications. */
 export default class FalloutZeroWeapon extends Item {
-  /**
-   * Augment the basic Weapon data model with additional dynamic data.
-   */
+  /** Augments the basic Weapon data model with additional dynamic data. */
   prepareData() {
-    // As with the actor class, weapons are documents that can have their data
-    // preparation methods overridden (such as prepareBaseData()).
+    // Weapons can override data-preparation methods (e.g. prepareBaseData()) like actors.
     super.prepareData()
   }
 
-  /**
-   * Prepare a data object which defines the data schema used by dice roll commands against this Weapon
-   * @override
-   */
+  /** @override Builds roll data for dice commands run against this Weapon. */
   getRollData() {
     // Starts off by populating the roll data with `this.system`
     const rollData = { ...super.getRollData() }

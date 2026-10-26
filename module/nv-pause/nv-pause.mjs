@@ -1,41 +1,11 @@
-/* ---- Fallout: New Vegas pause graphic ------------------------------------
-   The spinning roulette wheel from New Vegas' loading screen, as an
-   alternative to the system's own pause banner. Ported from the standalone
-   `fallout-nv-pause` module (2.0.0) by Bekuraito, with permission implied by
-   the user's request to bake it in.
-
-   ---- How it sits alongside the existing banner ---------------------------
-   The system already dresses core's pause element in css/falloutzero.css:
-   a terminal plate with a Vault Boy and a fixedsys caption. That is left
-   completely untouched and is still the default. The `NVPause` setting is a
-   straight either/or — switch it on and the roulette overlay replaces the
-   banner; switch it off and the terminal plate comes back, live, with no
-   reload.
-
-   The two cannot both show, because the roulette needs the banner out of the
-   way: core's #pause carries its own animation and sits in the same part of
-   the screen. So the overlay hides it while active and restores it on the way
-   out — `restoreBanner()` is what makes the toggle reversible rather than
-   one-way.
-
-   Scope is CLIENT for everything except the caption text: which graphic you
-   look at is a personal preference, the words on it are the GM's. That
-   matches how the source module split it, and how the system already scopes
-   PipBoyEffects.
-
-   The overlay is plain DOM on <body> at z-index 99 — under windows (100+),
-   over the canvas and static UI. */
+// NV-style roulette pause overlay; toggle replaces or restores the system's banner live.
 
 import { FALLOUTZERO } from '../config.mjs'
 
 const PKG_ID = FALLOUTZERO.systemId
-/* Derived from this file's own URL: absolute (these are consumed as CSS
-   background-image from inline styles, so they resolve against the DOCUMENT
-   and a bare "systems/…" would 404 under a route prefix) and rename-proof.
-   Two levels up — this file sits in module/nv-pause/. */
+// Absolute asset path derived from this file's URL, rename-proof.
 const ASSET_PATH = new URL('../../assets/nv-pause/', import.meta.url).pathname
-// Exported alongside refresh() so registerSettings.mjs can use it as the
-// NVPauseColorCustom field's initial value without duplicating the literal.
+// Exported so registerSettings.mjs can reuse it as NVPauseColorCustom's initial value.
 export const DEFAULT_COLOR = '#ffb641'
 
 const COLOR_PRESETS = [
@@ -43,8 +13,7 @@ const COLOR_PRESETS = [
   { label: 'Green', value: '#1bff80' },
 ]
 
-// Vertical placement, as a percentage from the bottom: the hotbar wraps to a
-// second row on narrow viewports and the wheel has to clear it.
+// Vertical placement percentage from the bottom; the wheel must clear a wrapped hotbar.
 const BOTTOM_PERCENT_ONE_ROW = 20
 const BOTTOM_PERCENT_TWO_ROWS = 30
 
@@ -90,9 +59,7 @@ function getColor() {
     const playerColor = game.user?.color
     if (playerColor) return String(playerColor)
   }
-  // Key must match the registration below exactly — `setting()` swallows an
-  // unknown key and returns undefined, which would silently fall through to
-  // the amber default and make the custom colour picker look broken.
+  // Key must match the registration below exactly, or it silently falls back to amber.
   const color = setting('NVPauseColorCustom')
   return color ? String(color) : DEFAULT_COLOR
 }
@@ -138,8 +105,7 @@ function buildOverlay() {
     --fnv-color: ${color};
   `
 
-  // The art is greyscale; the feColorMatrix tints it to the chosen colour
-  // without needing a recoloured copy of each png.
+  // The art is greyscale; the feColorMatrix tints it without a recoloured copy of each png.
   const sprite = (file, css) => `
       <div class="fnv-img" style="
         position: absolute;
@@ -221,18 +187,13 @@ function bannerElement() {
   return pauseEl ?? document.getElementById('pause')
 }
 
-/** Undo the hiding, so turning the setting off brings the system's own
- *  terminal plate straight back without a reload. */
+/** Restores the terminal plate immediately when the setting is turned off. */
 function restoreBanner() {
   const el = bannerElement()
   if (el) el.style.display = ''
 }
 
-/* Exported so registerSettings.mjs can wire it up as the onChange handler for
-   the four NVPause* settings, which now live there (registerSystemSettings)
-   alongside the rest of the system's user-facing settings for ease of
-   maintenance — this function still does all the actual work, only where the
-   settings are *registered* changed. */
+// Wired up by registerSettings.mjs as the onChange handler for the four NVPause* settings.
 export function refresh() {
   const el = bannerElement()
   if (!setting('NVPause')) {
@@ -245,9 +206,7 @@ export function refresh() {
   else removeOverlay()
 }
 
-/* In v13+ the pause banner is the ApplicationV2 `GamePause`, so the hook is
-   renderGamePause and `html` is a plain HTMLElement. Capture it: once it is
-   hidden, it is the only handle on the element for putting it back. */
+// v13+ pause banner is ApplicationV2 GamePause; captures its element to restore later.
 Hooks.on('renderGamePause', (app, html) => {
   pauseEl = html
   refresh()
@@ -275,10 +234,7 @@ Hooks.on('updateUser', (user, changes) => {
   if (game.paused && setting('NVPauseColorMode') === 'player') refresh()
 })
 
-/* Colour presets, and hiding the colour fields when they cannot apply. The
-   source module did this for its own settings; kept because without it the
-   custom-colour picker sits there looking active while Match Player Colour is
-   selected. Guarded so a settings re-render does not stack duplicates. */
+// Colour presets; hides colour fields when Match Player Colour is selected.
 Hooks.on('renderSettingsConfig', (app, html) => {
   const root = html instanceof HTMLElement ? html : html?.[0]
   if (!root) return

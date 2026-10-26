@@ -1,10 +1,7 @@
 import { formatNumber } from '../../utils.mjs'
 import ChatTrayElement from './chat-tray-element.mjs'
 
-/**
- * List of multiplier options as tuples containing their numeric value and rendered text.
- * @type {[number, string][]}
- */
+/** Multiplier options as [numeric value, rendered text] tuples. */
 const MULTIPLIERS = [
   // [-1, '-1'],
   [0, '0'],
@@ -14,56 +11,36 @@ const MULTIPLIERS = [
   [2, '2'],
 ]
 
-/**
- * Application to handle applying damage from a chat card.
- */
+/** Application to handle applying damage from a chat card. */
 export default class DamageApplicationElement extends ChatTrayElement {
   /* -------------------------------------------- */
   /*  Properties                                  */
   /* -------------------------------------------- */
 
-  /**
-   * The apply damage button within the element.
-   * @type {HTMLButtonElement}
-   */
+  /** The apply damage button within the element. */
   applyButton
 
   /* -------------------------------------------- */
 
-  /**
-   * The chat message with which this damage is associated.
-   * @type {ChatMessage5e}
-   */
+  /** The chat message with which this damage is associated. */
   chatMessage
 
   /* -------------------------------------------- */
 
-  /**
-   * Damage descriptions that will be applied by this application.
-   * @type {DamageDescription[]}
-   */
+  /** Damage descriptions that will be applied by this application. */
   damages = []
 
   /* -------------------------------------------- */
 
-  /**
-   * Currently registered hook for monitoring for changes to selected tokens (selected mode).
-   * @type {number|null}
-   */
+  /** Currently registered hook for monitoring changes to selected tokens (selected mode). */
   selectedTokensHook = null
 
-  /**
-   * Currently registered hook for monitoring for changes to targeted tokens (targeted mode).
-   * @type {number|null}
-   */
+  /** Currently registered hook for monitoring changes to targeted tokens (targeted mode). */
   targetedTokensHook = null
 
   /* -------------------------------------------- */
 
-  /**
-   * Currently target selection mode.
-   * @type {"targeted"|"selected"}
-   */
+  /** Current target selection mode, "targeted" or "selected". */
   #targetingMode = 'selected'
 
   get targetingMode() {
@@ -108,25 +85,15 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * The list of application targets.
-   * @type {HTMLUListElement}
-   */
+  /** The list of application targets. */
   targetList
 
   /* -------------------------------------------- */
 
-  /**
-   * Options for each application target.
-   * @type {Map<string, DamageApplicationOptions>}
-   */
+  /** Options for each application target, keyed by target uuid. */
   #targetOptions = new Map()
 
-  /**
-   * Options for a specific target.
-   * @param {string} uuid  UUID of the targeted token.
-   * @returns {DamageApplicationOptions}
-   */
+  /** Options for a specific target. */
   getTargetOptions(uuid) {
     if (!this.#targetOptions.has(uuid)) this.#targetOptions.set(uuid, { multiplier: 1 })
     return this.#targetOptions.get(uuid)
@@ -134,10 +101,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * The controls for selecting target source mode.
-   * @type {HTMLElement}
-   */
+  /** The controls for selecting target source mode. */
   targetSourceControl
 
   /* -------------------------------------------- */
@@ -200,9 +164,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * Build a list of targeted tokens based on current mode & replace any existing targets.
-   */
+  /** Builds a list of targeted tokens based on current mode and replaces any existing targets. */
   buildTargetsList() {
     let sourceTokens =
       this.targetingMode === 'targeted'
@@ -221,11 +183,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * Create a list entry for a single target.
-   * @param {string} uuid  UUID of the token represented by this entry.
-   * @returns {HTMLLIElement|void}
-   */
+  /** Creates a list entry for a single target. */
   buildTargetListEntry(uuid) {
     const token = fromUuidSync(uuid)
     if (!token?.isOwner) return
@@ -293,12 +251,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * Calculate the total damage that will be applied to an actor.
-   * @param {Actor5e} actor
-   * @param {DamageApplicationOptions} options
-   * @returns {{temp: number, total: number, active: Record<string, Set<string>>}}
-   */
+  /** Calculates the total damage that will be applied to an actor. */
   calculateDamage(actor, options) {
     const damages = actor.calculateDamage(this.damages, options)
 
@@ -339,13 +292,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * Get the label and pressed value for a specific change source.
-   * @param {string} type                       Damage type represented by this source.
-   * @param {string} change                     Change type (e.g. resistance, immunity, etc.).
-   * @param {DamageApplicationOptions} options  Options object from which to determine final values.
-   * @returns {{label: string, pressed: string}}
-   */
+  /** Gets the label and pressed value for a specific change source. */
   getChangeSourceOptions(type, change, options) {
     let mode = 'active'
     if (options.ignore?.[change]?.has(type)) mode = 'ignore'
@@ -364,12 +311,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * Refresh the damage total on a list entry based on modified options.
-   * @param {Actor5e} token
-   * @param {HTMLLiElement} entry
-   * @param {DamageApplicationOptions} options
-   */
+  /** Refreshes the damage total on a list entry based on modified options. */
   refreshListEntry(token, entry, options) {
     const { temp, total } = this.calculateDamage(token, options)
     const calculatedDamage = entry.querySelector('.calculated.damage')
@@ -401,10 +343,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
   /*  Event Handlers                              */
   /* -------------------------------------------- */
 
-  /**
-   * Handle clicking the apply damage button.
-   * @param {PointerEvent} event  Triggering click event.
-   */
+  /** Handles clicking the apply damage button. */
   async _onApplyDamage(event) {
     event.preventDefault()
     for (const target of this.targetList.querySelectorAll('[data-target-uuid]')) {
@@ -417,10 +356,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * Handle clicking the targeted/selected toggle.
-   * @param {PointerEvent} event  Triggering click event.
-   */
+  /** Handles clicking the targeted/selected toggle. */
   _onChangeTargetingMode(event) {
     event.preventDefault()
     const button = event.target.closest('[data-mode]')
@@ -430,10 +366,7 @@ export default class DamageApplicationElement extends ChatTrayElement {
 
   /* -------------------------------------------- */
 
-  /**
-   * Handle clicking a multiplier button or resistance toggle.
-   * @param {PointerEvent} event  Triggering click event.
-   */
+  /** Handles clicking a multiplier button or resistance toggle. */
   async _onChangeOptions(event) {
     event.preventDefault()
     const button = event.target.closest('button')

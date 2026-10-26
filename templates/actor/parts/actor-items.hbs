@@ -34,9 +34,9 @@
     <div class="grid-span-4 combat-ammo explosives-attack">
         {{#GreaterThan item.system.quantity 0}}
         <div class="weapon-attack resource-label"
-              data-weapon-roll
-            data-weapon-id="{{ item._id }}">
-            CHUCK!
+             data-weapon-roll
+             data-weapon-id="{{ item._id }}">
+            {{#GreaterThan item.system.armDC 1}}PLACE{{else}}CHUCK{{/GreaterThan}}
         </div>
         {{else}}
         <div class="weapon-attack">

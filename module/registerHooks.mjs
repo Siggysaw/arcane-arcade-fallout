@@ -5,23 +5,24 @@ import FalloutZeroItem from './documents/item.mjs'
 import { getApCost, getLastWaypointGroup, sumWaypoints } from './helpers/movement.mjs'
 import { attachAttributeKeyAutocomplete } from './helpers/effects.mjs'
 import { registerConditionStatusEffects } from './helpers/status-effects.mjs'
+import { migrateExplosiveAreaOfEffect } from './helpers/explosive-migration.mjs'
+
+// Dotted-numeric compare for MigrationVersion, an independent one-shot migration step counter.
+function isMigrationVersionBelow(current, target) {
+  const currentParts = String(current ?? '0.0.0').split('.').map(Number)
+  const targetParts = String(target).split('.').map(Number)
+  for (let i = 0; i < targetParts.length; i += 1) {
+    const c = currentParts[i] ?? 0
+    const t = targetParts[i] ?? 0
+    if (c !== t) return c < t
+  }
+  return false
+}
 
 /* --------------------------------------------  */
 /*  Robco Terminal Journal skin                  */
 /* --------------------------------------------  */
-// Applies the Robco Terminal reskin (css/robco-terminal.css) to every
-// Journal Entry window — the coloration, fonts, chrome, and typography are
-// now always-on rather than gated behind a setting. The 'RobcoTerminals'
-// client setting instead toggles a second, purely cosmetic class
-// ('robco-fx') that layers the scanline overlay and corner-bracket flicker
-// animation on top (see css/robco-terminal.css's `.robco-terminal.robco-fx`
-// rules) for players who find the moving effects distracting. Kept entirely
-// defensive (try/catch, tolerant of both jQuery and raw-element render hook
-// signatures) since it targets core Foundry's own Journal sheet rather than
-// a template this system owns, and the exact class name for that sheet has
-// changed across Foundry versions (JournalSheet in v12, JournalEntrySheet
-// in newer ApplicationV2-based versions) — hooking both names is harmless
-// since Hooks.on for a hook that never fires is a no-op.
+// Applies the always-on Robco Terminal reskin to every Journal window; 'RobcoTerminals' toggles scanline fx.
 function applyRobcoTerminalSkin(app, html) {
   try {
     const el = html instanceof HTMLElement ? html : html?.[0] ?? app.element?.[0] ?? app.element
@@ -99,14 +100,30 @@ export function registerHooks() {
     /* --------------------------------------------  */
     await registerConditionStatusEffects()
 
-    // Rebuild the list whenever a condition's "Status Effect" checkbox (or
-    // any other field) changes, so it doesn't take a world reload to show
-    // up on the token HUD.
+    // Rebuilds the list when a condition's fields change, so no world reload is needed.
     Hooks.on('updateItem', (item) => {
       if (item.type === 'condition' && item.pack === 'arcane-arcade-fallout.conditions') {
         registerConditionStatusEffects()
       }
     })
+
+    /* --------------------------------------------  */
+    /*  Explosive AOE radius migration (one-shot)    */
+    /* --------------------------------------------  */
+    // GM-only, runs once per world; can be re-run by hand via the console, bypassing the gate.
+    if (game.user.isGM && isMigrationVersionBelow(
+      game.settings.get(CONFIG.FALLOUTZERO.systemId, 'MigrationVersion'),
+      '0.3.0',
+    )) {
+      const { unparsed } = await migrateExplosiveAreaOfEffect()
+      await game.settings.set(CONFIG.FALLOUTZERO.systemId, 'MigrationVersion', '0.3.0')
+      if (unparsed.length) {
+        ui.notifications.warn(
+          `Explosive AOE migration: ${unparsed.length} item(s) couldn't be confidently parsed from their old ` +
+            `radius text - check the console (F12) for the list and fix those items' Area of Effect by hand.`,
+        )
+      }
+    }
 
     /* --------------------------------------------  */
     /*  Auto recycle AP on turn end                                */

@@ -10,18 +10,12 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   /*  Properties                                  */
   /* -------------------------------------------- */
 
-  /**
-   * The currently highlighted token for attack roll evaluation.
-   * @type {Token5e|null}
-   */
+  /** The currently highlighted token for attack roll evaluation. */
   _highlighted = null
 
   /* -------------------------------------------- */
 
-  /**
-   * Should the apply damage options appear?
-   * @type {boolean}
-   */
+  /** Should the apply damage options appear? */
   get canApplyDamage() {
     return true
   }
@@ -49,12 +43,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     return this.flags?.falloutzero?.tooltip ?? null
   }
 
-  /**
-   * Whether this attack roll beat at least one targeted token's AC (or
-   * scored a natural crit). null when nothing was targeted, so there's
-   * nothing to compare against - see AttackRoll#performRoll.
-   * @type {boolean|null}
-   */
+  /** Whether this attack roll beat a targeted token's AC, or null if nothing was targeted. */
   get hit() {
     return this.flags?.falloutzero?.hit ?? null
   }
@@ -70,14 +59,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     return this.damage?.damageBonus ?? 0
   }
 
-  /**
-   * This (damage-type) message's rolls, in the DamageDescription[] shape
-   * FalloutZeroActor#applyDamage expects. Shared by the manual apply tray
-   * (_addApplyDamageButtons) and AttackRoll#applyDamageToHitTokens so both
-   * always build identical damage descriptions from the same damage
-   * message.
-   * @type {DamageDescription[]|null}
-   */
+  /** This damage message's rolls as DamageDescription[], shared by the apply-damage tray and attack roll. */
   get applicationDamages() {
     if (this.cardType !== 'damage') return null
     const damageTypes = this.flags?.falloutzero.damageTypes
@@ -120,10 +102,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /* -------------------------------------------- */
 
-  /**
-   * Handle collapsing or expanding trays depending on user settings.
-   * @param {HTMLElement} html  Rendered contents of the message.
-   */
+  /** Handles collapsing or expanding trays depending on user settings. */
   _collapseTrays(html) {
     let collapse = true
     for (const tray of html.querySelectorAll('.card-tray, .effects-tray')) {
@@ -136,11 +115,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /* -------------------------------------------- */
 
-  /**
-   * Optionally hide the display of chat card action buttons which cannot be performed by the user
-   * @param {jQuery} html     Rendered contents of the message.
-   * @protected
-   */
+  /** Hides chat card action buttons the current user cannot perform. */
   _displayChatActionButtons(html) {
     const chatCard = html.querySelectorAll('.falloutzero.chat-card')
     if (chatCard.length > 0) {
@@ -187,11 +162,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /* -------------------------------------------- */
 
-  /**
-   * Augment the chat card markup for additional styling.
-   * @param {HTMLElement} html  The chat card markup.
-   * @protected
-   */
+  /** Augments the chat card markup for additional styling. */
   _enrichChatCard(html) {
     // Header matter
     const { scene: sceneId, token: tokenId, actor: actorId } = this.speaker
@@ -308,10 +279,13 @@ export default class FalloutZeroChatMessage extends ChatMessage {
   }
 
   _cleanFormula(html) {
-    const formula = html.querySelector('.dice-roll .dice-result .dice-formula')
-    if (formula?.textContent?.startsWith('max(')) {
-      formula.textContent = formula.textContent.substring(6, formula.textContent.length - 1)
-    }
+    // A multi-damage-type roll (see _rollDamage) shows one dice-roll block per
+    // type, so every block needs cleaning, not just the first.
+    html.querySelectorAll('.dice-roll .dice-result .dice-formula').forEach((formula) => {
+      if (formula?.textContent?.startsWith('max(')) {
+        formula.textContent = formula.textContent.substring(6, formula.textContent.length - 1)
+      }
+    })
   }
 
   _addReRollButton(html) {
@@ -330,13 +304,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     formula.dataset.tooltip = this.tooltip
   }
 
-  /**
-   * Mark this message's dice-roll block as a hit so css/chat.css can color
-   * the dice red - only applies to the to-hit ('attack' type) roll, and
-   * only once a hit is actually known (this.hit is null with no target
-   * selected, since there's no AC to compare against).
-   * @param {HTMLElement} html
-   */
+  /** Marks the dice-roll block as a hit so css/chat.css colors the dice red. */
   _addHitStyling(html) {
     if (this.cardType !== 'attack') return
     if (this.hit !== true) return
@@ -363,10 +331,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       'system.health.value': actor.system.health.value + deltaHP,
     })
 
-    // Restore any Power Armor HP/decay this application consumed - without
-    // this, undoing damage that broke through armor would heal the wearer
-    // back but leave their Power Armor's HP/decay at whatever the damage
-    // left it at.
+    // Restores any Power Armor HP/decay this damage application consumed.
     if (powerArmor) {
       const armorItem = fromUuidSync(powerArmor.itemUuid)
       if (armorItem) {
@@ -413,9 +378,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     let rollFormula = this.rolls[0]._formula
     const persistant = this.actor.items.find((i) => i.name == "Persistent")
     const rollType = this.flags?.falloutzero?.type
-    // Base Persistent only grants advantage on a Skill check reroll; Wild Wasteland
-    // extends that to Ability checks and attack rolls too. Rolls with no tracked
-    // type (death saves, the custom-roll dialog) are outside the trait either way.
+    // Persistent grants advantage on reroll for skill checks; Wild Wasteland extends it to attacks.
     const persistentApplies = !!persistant && consumeKarmaCap && (
       rollType === 'skill' ||
       (rollType === 'attack' && persistant.system.wildWasteland)
@@ -469,41 +432,61 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     })
   }
 
-  /**
-   * Handle damage button click.
-   * @param {Event} event   The triggering event.
-   * @returns {Promise}     A promise that resolves once roll message sent
-   * @protected
-   */
+  /** Handles the damage button click. */
   async _onRollDamage() {
     try {
       const abilityBonus = this.abilityBonus || 0
-      const damageTypes = this.damage.rolls.map((damage) => damage.type)
-      const damageRolls = this.damage.rolls.map((damage) => damage.formula).join('+ ')
+      // One component per damage type - each gets rolled as its OWN Roll (see
+      // _rollDamage) so immune/resisted/vulnerable types can be told apart
+      // later. Joining every type into a single combined formula (the old
+      // behavior) produced one Roll whose total got tagged with only the
+      // FIRST damage type, so system.di immunity could never catch damage
+      // from the other types - this is the bug where a target immune to,
+      // say, Acid and Radiation still took full damage from a Piercing +
+      // Acid + Radiation attack, because the whole total read as "piercing".
+      const components = this.damage.rolls.map((damage, index) => ({
+        type: damage.type,
+        // The flat ability bonus applies once to the attack, not once per
+        // damage type - attach it to a single component so it isn't added
+        // N times for an N-damage-type weapon.
+        formula: index === 0 ? `${damage.formula} + ${abilityBonus}` : damage.formula,
+      }))
 
-      return this._rollDamage(`${damageRolls} + ${abilityBonus}`, damageTypes)
+      return this._rollDamage(components)
     } catch (error) {
       console.error('Error rolling damage', error)
     }
   }
 
-  /**
-   * Handle damage button click.
-   * @param {Event} event   The triggering event.
-   * @returns {Promise}     A promise that resolves once roll message sent
-   * @protected
-   */
+  /** Handles the critical damage button click. */
   async _onRollCriticalDamage() {
     try {
+      // criticalRolls (added alongside the legacy combined `critical` string
+      // in attack-roll.mjs) carries one already-multiplied formula per
+      // damage type, mirroring damage.rolls. Older chat messages created
+      // before this fix only have the combined `critical` string - fall
+      // back to rolling that as a single component so they still work,
+      // just without the per-type split.
       const damageTypes = this.damage.rolls.map((damage) => damage.type)
+      const components = this.damage.criticalRolls
+        ? this.damage.criticalRolls.map((damage) => ({ type: damage.type, formula: damage.formula }))
+        : [{ type: damageTypes[0], formula: this.damage.critical }]
 
-      return this._rollDamage(this.damage.critical, damageTypes, true)
+      return this._rollDamage(components, true)
     } catch (error) {
       console.error('Error rolling critical damage', error)
     }
   }
 
-  async _rollDamage(formula, types, isCritical = false) {
+  /**
+   * Rolls one Roll per damage-type component and posts them all on a single
+   * chat message, so `applicationDamages` can hand Actor#applyDamage a
+   * correctly-typed DamageDescription per type instead of one lump total.
+   * @param {{type: string, formula: string}[]} components
+   * @param {boolean} isCritical
+   */
+  async _rollDamage(components, isCritical = false) {
+    const types = components.map((c) => c.type)
     let flavor = `KAPOW! ${types.join(' and ')} damage`
     if (this.targeted?.target) {
       const target =
@@ -516,48 +499,57 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     if (isCritical && this.damage.criticalCondition) {
       flavor += ` And applies condition ${this.damage.criticalCondition}`
     }
-    const roll = new Roll(
-      this.targeted?.target === 'eyes' ? `max(${minDamage}, floor((${formula}) / 2))` : `max(${minDamage}, ${formula})`,
-      this.actor.getRollData(),
-    )
 
-    await roll.evaluate()
+    const isEyesTarget = this.targeted?.target === 'eyes'
+    const rollData = this.actor.getRollData()
 
-    // Upgraded: +2 damage for every individual damage die that shows a 1 or 2
+    // Only the first component gets the minDamage floor - applying "at least
+    // minDamage" to every type separately would let an N-type weapon deal
+    // N*minDamage as a guaranteed floor instead of minDamage overall.
+    const rolls = []
+    for (let i = 0; i < components.length; i++) {
+      const floor = i === 0 ? minDamage : 0
+      const wrapped = isEyesTarget
+        ? `max(${floor}, floor((${components[i].formula}) / 2))`
+        : `max(${floor}, ${components[i].formula})`
+      const roll = new Roll(wrapped, rollData)
+      await roll.evaluate()
+      rolls.push(roll)
+    }
+
+    // Upgraded: +2 damage for every individual damage die (across every
+    // damage-type roll) that shows a 1 or 2
     const weapon = this.actor?.items?.get(this.flags?.falloutzero?.itemId)
     const hasUpgraded =
       typeof weapon?.system?.bonusProperties === 'string' && weapon.system.bonusProperties.includes('Upgraded')
 
-    // Fitted 1 (armor upgrade): DT is doubled against area-of-effect damage.
-    // A weapon/explosive counts as an area-of-effect source if "Area of
-    // Effect" appears in its properties (ranged/melee weapons only),
-    // description, or bonusProperties text.
-    const isAreaEffect = [
-      weapon?.system?.properties,
-      weapon?.system?.description,
-      weapon?.system?.bonusProperties,
-    ].some((text) => typeof text === 'string' && text.includes('Area of Effect'))
+    // Fitted 1: DT doubles vs area-of-effect damage; explosives always count as AOE.
+    const isAreaEffect =
+      weapon?.type === 'explosive' ||
+      [
+        weapon?.system?.properties,
+        weapon?.system?.description,
+        weapon?.system?.bonusProperties,
+      ].some((text) => typeof text === 'string' && text.includes('Area of Effect'))
 
-    // Made of Sterner Stuff (perk): DT bonus specifically against Melee
-    // Attacks, applied in FalloutZeroActor#applyDamage. An attack counts as
-    // a melee attack if the attacking weapon's item type is 'meleeWeapon' -
-    // same check AttackRoll#getTargetedApCost already uses
-    // (`this.weapon.type === 'meleeWeapon'`).
+    // Made of Sterner Stuff grants DT specifically against melee weapon-type attacks.
     const isMeleeAttack = weapon?.type === 'meleeWeapon'
 
     let upgradedBonus = 0
     let upgradedDieCount = 0
     if (hasUpgraded) {
-      for (const die of roll.dice) {
-        for (const result of die.results) {
-          if (result.active && (result.result === 1 || result.result === 2)) {
-            upgradedBonus += 2
-            upgradedDieCount += 1
+      for (const roll of rolls) {
+        for (const die of roll.dice) {
+          for (const result of die.results) {
+            if (result.active && (result.result === 1 || result.result === 2)) {
+              upgradedBonus += 2
+              upgradedDieCount += 1
+            }
           }
         }
       }
       if (upgradedBonus > 0) {
-        roll._total += upgradedBonus
+        rolls[0]._total += upgradedBonus
         flavor += ` (+${upgradedBonus} from Upgraded)`
       }
     }
@@ -570,29 +562,32 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       </div>
     `
 
-    return roll.toMessage({
+    // Post every component's Roll on one message. Originally this called
+    // firstRoll.toMessage({ rolls: restRolls, ... }), trusting Roll#toMessage
+    // to merge the remaining rolls in - confirmed live that it doesn't (only
+    // the first roll ever showed up in the posted message, the rest silently
+    // vanished). Creating the ChatMessage directly instead, the same way
+    // attack-roll.mjs's own autoHit branch already successfully does,
+    // passing every roll explicitly as the `rolls` array.
+    return getDocumentClass('ChatMessage').create({
+      rolls,
       flavor,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       rollMode: game.settings.get('core', 'rollMode'),
+      sound: CONFIG.sounds.dice,
       'flags.falloutzero': {
         type: 'damage',
         damageTypes: types,
         tooltip,
         isAreaEffect,
-        // Strengthened (armor upgrade): bonus DT specifically against
-        // critical-hit damage, applied in FalloutZeroActor#applyDamage.
+        // Strengthened grants bonus DT specifically against critical-hit damage.
         isCritical,
         isMeleeAttack,
       },
     })
   }
 
-  /**
-   * Handle target selection and panning.
-   * @param {Event} event   The triggering event.
-   * @returns {Promise}     A promise that resolves once the canvas pan has completed.
-   * @protected
-   */
+  /** Handles target selection and canvas panning. */
   async _onTargetMouseDown(event) {
     const uuid = event.currentTarget.dataset.uuid
     const actor = fromUuidSync(uuid)
@@ -608,11 +603,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /* -------------------------------------------- */
 
-  /**
-   * Handle hovering over a target in an attack roll message.
-   * @param {Event} event     Initiating hover event.
-   * @protected
-   */
+  /** Handles hovering over a target in an attack roll message. */
   _onTargetHoverIn(event) {
     const uuid = event.currentTarget.dataset.uuid
     const actor = fromUuidSync(uuid)
@@ -625,11 +616,7 @@ export default class FalloutZeroChatMessage extends ChatMessage {
 
   /* -------------------------------------------- */
 
-  /**
-   * Handle hovering out of a target in an attack roll message.
-   * @param {Event} event     Initiating hover event.
-   * @protected
-   */
+  /** Handles hovering out of a target in an attack roll message. */
   _onTargetHoverOut(event) {
     if (this._highlighted) this._highlighted._onHoverOut(event)
     this._highlighted = null

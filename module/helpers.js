@@ -1,9 +1,4 @@
-/**
- * Filter a collection of Items by type and return them sorted
- * @param {Array} collection The list of Items
- * @param {String} type The Type of item we're looking for
- * @returns The filtered, sorted list
- */
+/** Filters a collection of Items by type and returns them sorted. */
 export const filter_items = async (
   collection,
   type,
@@ -21,12 +16,7 @@ export const filter_items = async (
   return items
 }
 
-/**
- * Filter a collection of Techniques by approach
- * @param {Array} collection The list of Techniques
- * @param {String} approach The Approach we want
- * @returns The items in the collection matching the specified approach
- */
+/** Filters a collection of Techniques by approach. */
 export const filter_techniques = (collection, approach) => {
   return collection.filter(
     (element) =>
@@ -42,12 +32,7 @@ export const onlyUnique = (array) => {
   return array.filter((value, index, array) => array.indexOf(value) === index)
 }
 
-/**
- * Enrich a HTML block
- * @param {String} html The HTML to be enriched
- * @param {Boolean} secrets Whether to render secret blocks
- * @returns
- */
+/** Enriches an HTML block, optionally rendering secret blocks. */
 export const enrich = async (html, secrets = false) => {
   if (html) {
     return await TextEditor.enrichHTML(html, {

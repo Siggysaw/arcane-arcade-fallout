@@ -1,27 +1,9 @@
-/* ---- Chat dice sprites ---------------------------------------------------
-   Kneeshaw grayscale dice sheets rendered into roll messages: each die
-   tumbles gray on its 4-frame rolling strip, then lands on the rolled face
-   from the matching number sheet (rows = faces, columns = a wobble that
-   settles on the last column). Landing tint: green on pass, red on fail,
-   green when the message carries no discernible DC. Fresh messages animate
-   once; history re-renders show the landed frame immediately.
+// Animates grayscale dice sprites in roll messages; green on pass, red on fail.
 
-   Ported from the AAFO V.A.T.S. module. Styling is css/fnv-chat-dice.css. */
-
-/* The sprite paths must be ABSOLUTE. They are handed to the browser as
-   `--av-strip: url(...)` via element.style.setProperty, so the base for
-   resolution is the DOCUMENT, not the stylesheet — a bare "systems/..."
-   string works at /game but 404s the moment Foundry is served under a route
-   prefix, and a "../assets/..." string is meaningless here.
-
-   import.meta.url is already absolute AND already carries the route prefix,
-   so deriving from it is strictly better than foundry.utils.getRoute() with
-   a hard-coded system id. Note the TWO levels up: this file sits in
-   module/chat-fnv/, the sheets in assets/dice/. */
+// Sprite paths must be absolute, derived from this file's URL, to survive a route prefix.
 export const DICE_DIR = new URL('../../assets/dice/', import.meta.url).pathname
 
-// sheets: [file, first face, last face]. cols is the wobble frame count per
-// row (48px cells). d10 faces are printed 0-9, so a rolled 10 maps to row 0.
+// sheets: [file, first face, last face]; cols is the wobble frame count per row.
 const SHEETS = {
   4: { strip: 'd4.png', cols: 7, sheets: [['d4_numbers.png', 1, 4]] },
   6: { strip: 'd6.png', cols: 7, sheets: [['d6_numbers.png', 1, 6]] },
@@ -51,21 +33,7 @@ const ROLL_DELAY_MS = 500 // at-rest beat before the tumble starts (matches the 
 const ROLL_MS = 480 // rolling phase before the first die lands
 const LAND_STAGGER_MS = 90 // extra tumble per additional die
 
-/* Pass/fail tinting. A null verdict means "no DC discernible", which the
-   caller renders as the neutral green — that is the case on most rolls, and
-   it is the intended default, not a failure.
-
-   The patterns below are this system's flavor-text formats. Where the DC is
-   recoverable, total-vs-DC is recomputed here rather than trusting the
-   flavor words: FalloutZeroChatMessage#_reRoll copies the original flavor
-   verbatim, so its Success/Failure text can be stale while the dice are new.
-
-   Attack rolls are the one exception to "recompute from flavor": they carry
-   an explicit `flags.falloutzero.hit` verdict already (set in
-   AttackRoll#performRoll from getTargetHitResults - the real AC comparison/
-   natural-crit rule, not something regex-recoverable from the flavor text),
-   so that's checked directly rather than trying to pattern-match "BOOM!
-   Attack hits with X". */
+// Classifies a roll's pass/fail tint; attack rolls use their stored hit flag directly.
 function classifyOutcome(message) {
   if (message.flags?.falloutzero?.type === 'attack') {
     const hit = message.flags.falloutzero.hit
@@ -91,9 +59,7 @@ function classifyOutcome(message) {
   if ((m = flavor.match(/, DC (\d+) for /))) {
     return total > Number(m[1]) ? 'pass' : 'fail'
   }
-  // Crafting attempt: flavor begins with the outcome word; the DC never
-  // reaches the message, so the word is all we have — a karma reroll keeps
-  // the original word over new dice and can tint stale here.
+  // Crafting attempt: flavor begins with the outcome word; a karma reroll can tint stale here.
   if (flavor.includes('Crafting attempt')) {
     if (/^\s*(?:critical )?success/i.test(flavor)) return 'pass'
     if (/^\s*(?:critical )?fail/i.test(flavor)) return 'fail'
@@ -101,22 +67,14 @@ function classifyOutcome(message) {
   return null
 }
 
-/* The face a die is counted as. A min/max modifier (the system rewrites
-   damage as max(N, …) for targeted attacks and minimums) clamps by writing
-   r.count and leaving r.result on the face the die physically showed;
-   DiceTerm#total sums r.count, so landing on the raw face would contradict
-   the printed total. Success counting also writes r.count, but as a 0/1
-   tally — demand the clamp's rerolled marker, no success verdict, and a real
-   face value. */
+// Picks the face a die counts as, honoring a min/max-clamp's rerolled marker over the raw face.
 function countedFace(r, faces) {
   if (r.rerolled !== true || r.success !== undefined) return r.result
   if (typeof r.count !== 'number' || r.count < 1 || r.count > faces) return r.result
   return r.count
 }
 
-// One entry per rendered die: which strip/sheet, the face row, and whether
-// the die was dropped by a kh/kl modifier. A d100 becomes two d10 sprites
-// (percentile tens sheet + units sheet).
+// One entry per rendered die: which strip/sheet, face row, and whether it was dropped by kh/kl.
 export function diceOfRoll(roll) {
   const out = []
   for (const term of roll.dice ?? []) {
@@ -148,8 +106,7 @@ export function diceOfRoll(roll) {
 
 export function injectDiceSprites(message, html, fresh) {
   if (!message.rolls?.length) return
-  // Whispered/blind rolls render as ???/? for non-recipients, but the roll
-  // data still syncs to every client — never land a sprite on a hidden face.
+  // Never land a sprite on a hidden face for whispered/blind rolls.
   if (!message.isContentVisible) return
   const results = html.querySelectorAll('.message-content .dice-roll .dice-result')
   if (!results.length) return
@@ -184,21 +141,16 @@ export function injectDiceSprites(message, html, fresh) {
       }
       row.appendChild(die)
     })
-    // Sits between the formula and the total, reading like the terminal's
-    // output line: formula, the dice themselves, then the result.
+    // Sits between the formula and the total, reading like the terminal's output line.
     target.insertBefore(row, target.querySelector('.dice-total'))
   })
 }
 
 const FRESH_MS = 2000
 
-/**
- * Call from a `setup` hook (or later) - `ChatDiceSprites` itself is
- * registered in registerSettings.mjs, at `init`.
- */
+/** Call from a setup hook; ChatDiceSprites itself is registered at init. */
 export function registerChatDice(systemId) {
-  // Runs before any reveal walk so the sprite row wipes in with its
-  // .dice-roll rather than appearing after it. Stale renders land instantly.
+  // Runs before any reveal walk so the sprite row wipes in with its .dice-roll.
   Hooks.on('renderChatMessageHTML', (message, html) => {
     let on
     try {

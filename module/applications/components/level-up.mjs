@@ -4,14 +4,7 @@ import ChooseSpecial from './choose-special.mjs'
 import ChooseRace from './choose-race.mjs'
 import ChooseBackground from './choose-background.mjs'
 
-// How many points a level-0 character distributes across their SPECIAL
-// abilities at creation, per the Character Creation checklist (PDF pg 4,
-// step 2): "you gain 3 points which you can use to increase any ability
-// score used. You can also decrease any ability score to gain extra points
-// equal to the amount decreased." This is separate from - and stacks with -
-// the ordinary per-level "Perk OR +1 SPECIAL" choice below (perkOrSpecial),
-// which still fires normally at level 1 and covers the checklist's step 23
-// ("choose a Perk that you meet the requirements for").
+// Points a level-0 character distributes across SPECIAL at creation (separate from perkOrSpecial).
 const CREATION_SPECIAL_POINTS = 3
 const MIN_SPECIAL_SCORE = 1
 
@@ -32,23 +25,14 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
         this.specialBoost = null
         this.newPerk = null
 
-        // Character creation: a level-0 actor hasn't been through Character
-        // Creation (PDF pg 4) yet. needsRace/needsBackground are computed
-        // once here (not as live getters) so a mid-flow race/background pick
-        // doesn't retroactively change which steps are shown.
+        // needsRace/needsBackground computed once so a mid-flow pick doesn't change shown steps.
         this.isCharacterCreation = this.actor.system.level === 0
         this.needsRace = this.isCharacterCreation && !this.actor.getRaceType()
         this.needsBackground = this.isCharacterCreation && !this.actor.items.some((i) => i.type === 'background')
         this.newRace = null
         this.newBackground = null
 
-        // specialChanges tracks every SPECIAL ability's chosen base score,
-        // starting from its current value - always populated (not just
-        // during creation) so the existing single "+1 SPECIAL" perkOrSpecial
-        // choice below composes correctly with the creation-only 3-point
-        // pool when both happen to target the same ability at level 1 (see
-        // performLevelup). Outside character creation this pool is just 0
-        // and specialChanges never differs from the actor's real base.
+        // Tracks every SPECIAL ability's chosen base score, so perkOrSpecial composes with it correctly.
         this.specialChanges = Object.keys(actor.system.abilities).reduce((acc, id) => {
             acc[id] = actor.system.abilities[id].base
             return acc
@@ -128,12 +112,7 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
         return ![5, 9, 13, 17, 19].includes(this.nextLevel)
     }
 
-    // Character Creation checklist (PDF pg 4, step 23) calls for choosing a
-    // Perk specifically at level 1, with no SPECIAL alternative mentioned -
-    // unlike the general per-level perk-point rule (pg 5), which lets any
-    // perk point become +1 SPECIAL instead. Per the GM's ruling on this
-    // ambiguity, level 1 is perk-only; the SPECIAL alternative opens up
-    // starting at level 2.
+    // Level 1 is perk-only per GM ruling; the SPECIAL alternative opens up at level 2.
     get perkOnly() {
         return this.nextLevel === 1
     }
@@ -193,9 +172,7 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
             return
         }
 
-        // Race has to exist on the actor before Background grants are
-        // resolved - actor.grantBackgroundEquipment() reads getRaceType()
-        // internally - so these run sequentially, race first, each awaited.
+        // Race must exist before Background grants resolve, so these run sequentially.
         if (this.newRace) {
             await this.actor.createEmbeddedDocuments('Item', [this.newRace.toObject()])
         }
@@ -210,14 +187,7 @@ export default class LevelUp extends HandlebarsApplicationMixin(ApplicationV2) {
             return acc
         }, {})
 
-        // specialChanges already holds every ability's chosen base (edited
-        // by the creation-only 3-point pool, if any) - only the ones that
-        // actually changed need to go in the update payload. If the
-        // ordinary perkOrSpecial "+1 SPECIAL" choice targets the same
-        // ability the creation pool already touched, it adds its +1 on top
-        // of that pool's value rather than the actor's original base, so
-        // the two features compose correctly instead of one clobbering the
-        // other.
+        // Only abilities that actually changed from the actor's base go into the update payload.
         const abilityUpdates = Object.entries(this.specialChanges).reduce((acc, [id, base]) => {
             if (base !== this.actor.system.abilities[id].base) {
                 acc[`system.abilities.${id}.base`] = base

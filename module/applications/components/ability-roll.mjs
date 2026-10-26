@@ -41,21 +41,12 @@ export default class AbilityRoll extends FormApplication {
 
   /* -------------------------------------------- */
 
-  /**
-   * Dynamic window title, e.g. "Strength Roll".
-   * The default options.title is static (set before an actor/ability
-   * exist), so it can't know which ability this instance is for -
-   * override the instance getter instead.
-   * @override
-   */
+  /** @override Dynamic window title, e.g. "Strength Roll". */
   get title() {
     return `${this.formDataCache.abilities.label} Roll`
   }
 
-  /**
-   * Advantage mode of a d20 roll
-   * @enum {number}
-   */
+  /** Advantage mode of a d20 roll. */
   static ADV_MODE = {
     NORMAL: 1,
     ADVANTAGE: 2,
@@ -108,22 +99,16 @@ export default class AbilityRoll extends FormApplication {
   async _updateObject(event, formData) {
     Object.assign(this.formDataCache, formData)
 
-    /**
-     * Rerender form if update and not submitted
-     */
+    // Rerenders the form if this update wasn't a submit.
     if (event.type !== 'submit') {
       this.render()
       return
     }
 
-    /**
-     * Deconstruct dialog form
-     */
+    // Deconstruct dialog form
     let { skillBonus, selectedAbility, actorLuck, actorPenalties, actorBoost, bonus } = this.formDataCache
     let abilityBonus = this.actor.system.abilities[selectedAbility].mod
-    /**
-     * Roll to hit
-     */
+    // Roll to hit
     const roll = new Roll(
       `${this.getDice()} + ${abilityBonus} + ${bonus || 0} + ${actorBoost || 0} - ${actorPenalties}`,
       this.actor.getRollData(),
@@ -140,9 +125,7 @@ export default class AbilityRoll extends FormApplication {
         </div>
       `
 
-    /**
-     * Display roll to hit chat message
-     */
+    // Display roll-to-hit chat message
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: this.getFlavor(),
