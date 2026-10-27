@@ -532,9 +532,8 @@ export default class AttackRoll extends FormApplication {
   /** Returns this weapon's critical threshold, adjusted for the actor's crit mod. */
   getCriticalThreshold() {
     let critMod = this.actor.system.critMod ?? 0
-    if (lower(this.weapon.system.description).includes("shotgun")){
-      critMod += Math.floor(this.actor.system.abilities.lck.mod / 2)
-    }
+    this.weapon.system.description.includes("shotgun") ?
+      critMod += Math.floor(this.actor.system.abilities.lck.mod / 2) : critMod
     return this.weapon.system.critical.diceFinal - (critMod)
   }
 

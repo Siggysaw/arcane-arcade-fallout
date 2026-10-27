@@ -1,3 +1,5 @@
-2026/10/26-18:40:47.221 9db8 Recovering log #2308
-2026/10/26-18:40:47.230 9db8 Delete type=0 #2308
-2026/10/26-18:40:47.230 9db8 Delete type=3 #2307
+2026/10/26-19:49:13.220 bfb8 Recovering log #2310
+2026/10/26-19:49:13.220 bfb8 Level-0 table #2312: started
+2026/10/26-19:49:13.227 bfb8 Level-0 table #2312: 3419 bytes OK
+2026/10/26-19:49:13.237 bfb8 Delete type=0 #2310
+2026/10/26-19:49:13.237 bfb8 Delete type=3 #2309
