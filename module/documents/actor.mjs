@@ -2473,9 +2473,15 @@ export default class FalloutZeroActor extends Actor {
         if (this.system.dr.includes(d.type)) {
           acc += Math.floor(d.value / 2)
         } else if (this.system.dv.includes(d.type)) {
-          //acc += Math.floor(d.value * 2)
+          // Was commented out: any damage type the actor is Vulnerable to
+          // (and, below, any type that's neither Resistant nor Vulnerable -
+          // i.e. the common "Neutral" case) silently contributed 0 to
+          // hpDamage instead of its real value, so most attacks "went
+          // through" the hit roll and the damage roll but never reduced HP
+          // at all.
+          acc += Math.floor(d.value * 2)
         } else {
-          //acc += d.value
+          acc += d.value
         }
         return acc
       }, 0)
