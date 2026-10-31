@@ -1,3 +1,5 @@
-2026/10/26-22:04:31.235 c1ec Recovering log #2464
-2026/10/26-22:04:31.243 c1ec Delete type=0 #2464
-2026/10/26-22:04:31.244 c1ec Delete type=3 #2463
+2026/10/31-12:32:37.451 22fc Recovering log #2482
+2026/10/31-12:32:37.451 22fc Level-0 table #2484: started
+2026/10/31-12:32:37.458 22fc Level-0 table #2484: 2215 bytes OK
+2026/10/31-12:32:37.467 22fc Delete type=0 #2482
+2026/10/31-12:32:37.467 22fc Delete type=3 #2481

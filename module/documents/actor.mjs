@@ -2473,9 +2473,9 @@ export default class FalloutZeroActor extends Actor {
         if (this.system.dr.includes(d.type)) {
           acc += Math.floor(d.value / 2)
         } else if (this.system.dv.includes(d.type)) {
-          acc += Math.floor(d.value * 2)
+          //acc += Math.floor(d.value * 2)
         } else {
-          acc += d.value
+          //acc += d.value
         }
         return acc
       }, 0)
@@ -2489,11 +2489,6 @@ export default class FalloutZeroActor extends Actor {
         // dt > hp damage
         hpDamage = 0
       } else {
-        // reduce total HP damage by dt
-        const blocking = this.items.find((i) => i.name == "Blocking")
-        let dtBoost = 0
-        blocking && blocking.system.quantity > 1 ? dtBoost = 2 : ''
-        blocking ? dt.value += (2 * this.system.abilities.end.mod) + dtBoost: ''
         hpDamage -= effectiveDt()
       }
     }

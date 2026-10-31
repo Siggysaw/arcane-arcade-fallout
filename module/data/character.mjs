@@ -407,7 +407,7 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
 
     alertness ? this.passiveSense.value += this.abilities.per.value + this.passiveSense.modifiers : ''
     this.armorClass.value = this.armorClass.base + this.armorClass.armor + this.armorClass.modifiers
-    this.damageThreshold.value += this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
+    this.damageThreshold.value = this.damageThreshold.base + this.damageThreshold.armor + this.damageThreshold.modifiers
     this.damageThreshold.value < 1 ? this.damageThreshold.value = 0 : ''
     this.armorClass.value < 10 ? this.armorClass.value = 10 : ''
     if (powerArmor && powerArmor.system.itemEquipped) {
