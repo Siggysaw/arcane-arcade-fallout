@@ -396,3 +396,17 @@
 .robco-terminal .pm-menu button {
   color: var(--robco-green) !important;
 }
+
+.robco-terminal #context-menu {
+  background: #222 !important;
+}
+
+  .robco-terminal #context-menu li:hover {
+    background: var(--robco-green) !important;
+    color: black !important;
+  }
+
+  .robco-terminal #context-menu li span:hover,
+  .robco-terminal #context-menu li span:active {
+    color: var(--robco-black) !important;
+  }

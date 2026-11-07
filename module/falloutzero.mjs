@@ -20,6 +20,10 @@ import './helpers/damage-relay.mjs'
 
 import './helpers/unarmed-strike.mjs'
 
+import './helpers/manual-roll.mjs'
+
+import './helpers/party-perks.mjs'
+
 import { migrateExplosiveAreaOfEffect } from './helpers/explosive-migration.mjs'
 
 /* -------------------------------------------- */

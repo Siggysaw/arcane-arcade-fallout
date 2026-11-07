@@ -24,11 +24,12 @@
     </fieldset>
     <div class="perk-grid" data-perk-grid>
         {{#each perks as |perk|}}
-        <div class="perk-card"
+        <div class="perk-card{{#if perk.isCustom}} perk-custom{{/if}}"
            data-edit
            data-uuid="{{ perk.uuid }}"
            data-item-name="{{ perk.name }}"
            data-tooltip="{{ perk.name }}">
+            {{#if perk.isCustom}}<span class="perk-custom-tag" data-tooltip="Custom perk from this world">Custom</span>{{/if}}
             <img class="perk-image" alt="{{ perk.name }}" data-tooltip="{{ perk.system.description }}" src="{{ perk.img }}" />
             {{#if perk.hasRequirements}}
             <div class="text-center">

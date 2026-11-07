@@ -1,6 +1,8 @@
 import { FALLOUTZERO } from "../config.mjs";
 import { DICE_DIR, diceOfRoll } from "../chat-fnv/fnv-chat-dice.mjs";
 import { perkAnimElement } from "./perk-clip.mjs";
+import { evaluateManualRoll } from "../helpers/manual-roll.mjs";
+import { advantageDiceCount } from "../helpers/advantage.mjs";
 
 // Cinematic BG3-style group roll overlay, ported from the AAFO V.A.T.S. module onto system hooks.
 
@@ -158,8 +160,9 @@ function rollTermsFor(actor, kind, key, ability) {
   };
 }
 
-function diceExpr(advantageMode) {
-  return advantageMode === 2 ? "2d20kh" : advantageMode === 3 ? "2d20kl" : "1d20";
+function diceExpr(advantageMode, actor = null) {
+  // Advantage rolls 2d20 + one per Outrageous Advantage level.
+  return advantageMode === 2 ? `${advantageDiceCount(actor)}d20kh` : advantageMode === 3 ? "2d20kl" : "1d20";
 }
 
 /* ---- Consumable filtering + tooltips ------------------------------------- */
@@ -699,7 +702,9 @@ async function performGroupRoll(data, participant, actor, panelEl) {
   // flat numbers — that keeps the reveal breakdown exact per part.
   let bonusVal = 0;
   if (state.bonus && Roll.validate(state.bonus)) {
-    bonusVal = (await new Roll(state.bonus, actor.getRollData()).evaluate()).total;
+    bonusVal = (await evaluateManualRoll(new Roll(state.bonus, actor.getRollData()), {
+      actor, title: `${actor.name}: Situational Bonus`, flavor: `${data.label} - situational bonus dice.`
+    })).total;
   }
   const breakdown = buildBreakdown(actor, data.kind, data.key, state.ability, bonusVal);
   // The GM's pre-set modifier rides along as its own labelled step.
@@ -711,9 +716,13 @@ async function performGroupRoll(data, participant, actor, panelEl) {
   const terms = rollTermsFor(actor, data.kind, data.key, state.ability);
   let mode = state.advantageMode ?? 1;
   if (mode === 1 && terms.defaultAdvantage + gmAdvDelta(data) > 0) mode = 2;
-  const formula = [diceExpr(mode), ...breakdown.map((b) => String(b.value))].join(" + ");
+  const formula = [diceExpr(mode, actor), ...breakdown.map((b) => String(b.value))].join(" + ");
 
-  const roll = await new Roll(formula, actor.getRollData()).evaluate();
+  const roll = await evaluateManualRoll(new Roll(formula, actor.getRollData()), {
+    actor,
+    title: `${actor.name}: ${data.label} ${data.kind === "skill" ? "Check" : "Test"}`,
+    flavor: `${data.title}${data.dc != null ? ` - DC ${data.dc}` : ""}`
+  });
   playSfx("terminal/ui_hacking_charscroll.wav");
   const d20 = roll.dice.find((d) => d.faces === 20);
   const dice = (d20?.results ?? []).map((r) => ({ v: r.result, kept: !(r.discarded === true || r.active === false) }));

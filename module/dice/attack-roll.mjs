@@ -1,7 +1,8 @@
 import { applyDamageToActor } from '../helpers/damage-relay.mjs'
 import { addDiceCount } from '../helpers/damage-formula.mjs'
 import { placeExplosionOnThrower } from '../helpers/explosive-template.mjs'
-import { hasAutomaticAdvantage, hasAutomaticDisadvantage } from '../helpers/advantage.mjs'
+import { hasAutomaticAdvantage, hasAutomaticDisadvantage, advantageDiceCount } from '../helpers/advantage.mjs'
+import { evaluateManualRoll } from '../helpers/manual-roll.mjs'
 
 function joinFormulaTerms(base, ...terms) {
   const extras = terms.filter((t) => t !== undefined && t !== null && t !== '' && t !== 0 && t !== '0')
@@ -198,11 +199,12 @@ export default class AttackRoll extends FormApplication {
 
   getDice() {
     const advantageMode = Number(this.formDataCache.advantageMode)
-    const diceCount = [AttackRoll.ADV_MODE.ADVANTAGE, AttackRoll.ADV_MODE.DISADVANTAGE].includes(
-      advantageMode,
-    )
-      ? 2
-      : 1
+    // Advantage rolls 2d20 + one per Outrageous Advantage level.
+    const diceCount = advantageMode === AttackRoll.ADV_MODE.ADVANTAGE
+      ? advantageDiceCount(this.actor)
+      : advantageMode === AttackRoll.ADV_MODE.DISADVANTAGE
+        ? 2
+        : 1
     const diceSuffix =
       AttackRoll.ADV_MODE.ADVANTAGE === advantageMode
         ? 'kh'
@@ -729,7 +731,11 @@ export default class AttackRoll extends FormApplication {
       this.actor.getRollData(),
     )
 
-    await roll.evaluate()
+    await evaluateManualRoll(roll, {
+      actor: this.actor,
+      title: `${this.actor.name}: ${this.weapon.name} ${this.weapon.type === 'explosive' ? 'Throw' : 'Attack'}`,
+      flavor: this.weapon.type === 'explosive' ? `Throwing ${this.weapon.name}.` : `Attack roll to hit with ${this.weapon.name}.`,
+    })
 
     if (this.weapon.type === 'explosive') {
       const flavor = this.getFlavor(null, null, roll.total) || ''
@@ -868,7 +874,11 @@ export default class AttackRoll extends FormApplication {
     } else {
       const diceFormula = this.getDice()
       const roll = new Roll(`${diceFormula} + ${explosivesCheckBonus}`, this.actor.getRollData())
-      await roll.evaluate()
+      await evaluateManualRoll(roll, {
+        actor: this.actor,
+        title: `${this.actor.name}: Arm ${this.weapon.name}`,
+        flavor: `Explosives check to arm ${this.weapon.name} (DC ${dc}).`,
+      })
       const success = roll.total >= dc
       messageData.flavor = success
         ? `${this.weapon.name} arming check: rolled a total of ${roll.total} (${diceFormula} + ${skillBonus} skill + ${abilityBonus} ${abilityLabel}) vs DC ${dc} (10 + ${armDC} Arm DC bonus). Success - the explosive is armed!`

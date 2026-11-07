@@ -1,3 +1,5 @@
+import { evaluateManualRoll, releaseModal } from '../../helpers/manual-roll.mjs'
+
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
 // Same 3-pane shell as CraftingBench, retargeted at repair: moves system.decay in place instead of crafting.
@@ -120,7 +122,12 @@ class RepairAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     const penaltyTotal = this.actor.system.penaltyTotal
     const luckModSkillBonus = this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
     const roll = new Roll(`1d20 + ${skillBonus} + ${abilityBonus} - ${penaltyTotal} + ${luckModSkillBonus}`)
-    const dice = await roll.evaluate()
+    releaseModal(this.element) // so the Manual Rolls box isn't stuck behind this modal
+    const dice = await evaluateManualRoll(roll, {
+      actor: this.actor,
+      title: `${this.actor.name}: Repair Check`,
+      flavor: `Repairing ${this.item.name} - DC ${this.requirements.dc}.`,
+    })
 
     const success = dice.total >= this.requirements.dc
 

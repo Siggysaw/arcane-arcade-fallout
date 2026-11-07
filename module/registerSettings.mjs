@@ -1,5 +1,6 @@
 import { FALLOUTZERO } from './config.mjs'
 import { refresh as refreshNVPause, DEFAULT_COLOR as NV_PAUSE_DEFAULT_COLOR } from './nv-pause/nv-pause.mjs'
+import { registerManualRollSettings } from './helpers/manual-roll.mjs'
 export function registerSystemSettings() {
   game.settings.register(CONFIG.FALLOUTZERO.systemId, 'MigrationVersion', {
     name: 'Migration Version',
@@ -244,6 +245,8 @@ export function registerSystemSettings() {
       if (game.paused) refreshNVPause()
     },
   })
+  // Manual Rolls (physical dice) - per-account toggle, see helpers/manual-roll.mjs.
+  registerManualRollSettings()
 }
 export function registerHbsHelpers() {
   Handlebars.registerHelper('isVaultTec', function (options) {

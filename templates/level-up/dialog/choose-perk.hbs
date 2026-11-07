@@ -17,7 +17,8 @@
     </div>
     <div class="perk-grid" data-perk-grid>
         {{#each perks as |perk|}}
-            <div class="perk-card" data-item-name="{{perk.name}}">
+            <div class="perk-card{{#if perk.isCustom}} perk-custom{{/if}}" data-item-name="{{perk.name}}">
+                {{#if perk.isCustom}}<span class="perk-custom-tag" data-tooltip="Custom perk from this world">Custom</span>{{/if}}
                 <img
                     class="mx-auto"
                     src="{{perk.img}}"
@@ -53,7 +54,7 @@
                 <button
                     data-tooltip="{{perk.name}}"
                     data-action="perk"
-                    data-perk-id="{{ perk.id }}"
+                    data-perk-uuid="{{ perk.uuid }}"
                 >
                     {{ perk.name }}
                 </button>

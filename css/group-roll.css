@@ -499,6 +499,8 @@
   margin-top: 6px;
   padding-top: 6px;
   border-top: 1px solid var(--fnv-faint);
+  max-height:200px;
+  overflow:scroll;
 }
 .av-gr-items.av-gr-empty { display: none; }
 /* ---- Item tiles ----------------------------------------------------------

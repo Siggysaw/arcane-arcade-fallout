@@ -43,8 +43,30 @@ export function hasAutomaticDisadvantage(actor, { skill, ability } = {}) {
  * manual Advantage/Disadvantage selection already resolves when they'd
  * otherwise conflict.
  */
-export function advantageDiceFormula(hasAdvantage, hasDisadvantage) {
-  if (hasAdvantage && !hasDisadvantage) return '2d20kh'
+export function advantageDiceFormula(hasAdvantage, hasDisadvantage, actor = null) {
+  if (hasAdvantage && !hasDisadvantage) return `${advantageDiceCount(actor)}d20kh`
   if (hasDisadvantage && !hasAdvantage) return '2d20kl'
   return '1d20'
+}
+
+/**
+ * Outrageous Advantage perk: each level of the "Outrageous Advantage"
+ * condition (its quantity) adds one more d20 to any roll made WITH
+ * advantage - 1 level = 3d20kh, 2 levels = 4d20kh, and so on.
+ * Disadvantage and normal rolls are unaffected. Matched as condition-type
+ * items named "Outrageous Advantage" (optionally "... Condition"), so the
+ * perk item of the same name doesn't count on its own. Levels from every
+ * matching condition add up - the party-wide copy kept in sync by
+ * ./outrageous-advantage.mjs plus any copy a GM adds by hand.
+ */
+export function outrageousAdvantageLevel(actor) {
+  const items = actor?.items?.filter?.(
+    (i) => i.type === 'condition' && /^outrageous advantage( condition)?$/i.test(String(i.name ?? '').trim()),
+  ) ?? []
+  return items.reduce((sum, i) => sum + Math.max(0, Math.floor(Number(i.system?.quantity) || 0)), 0)
+}
+
+/** How many d20s an advantage roll uses for this actor: 2 + Outrageous Advantage levels. */
+export function advantageDiceCount(actor) {
+  return 2 + outrageousAdvantageLevel(actor)
 }

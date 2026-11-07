@@ -2,6 +2,8 @@ import { FALLOUTZERO } from '../config.mjs'
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs'
 import { addDiceCount } from '../helpers/damage-formula.mjs'
 import SkillRoll from '../dice/skill-roll.mjs'
+import { evaluateManualRoll } from '../helpers/manual-roll.mjs'
+import { advantageDiceCount } from '../helpers/advantage.mjs'
 import PerkListApplication from '../applications/components/perk-list.mjs'
 import ChemApplication from '../applications/components/chem-application.mjs'
 
@@ -1559,7 +1561,7 @@ export default class FalloutZeroActorSheet extends ActorSheet {
   }
 
   /** Handles clickable rolls. */
-  _onRoll(event) {
+  async _onRoll(event) {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
@@ -1578,17 +1580,18 @@ export default class FalloutZeroActorSheet extends ActorSheet {
       let label = dataset.label || ''
       if (typeof dataset.advantage != 'undefined' && !dataset.roll.includes('2d20')) {
         if (Number(dataset.advantage) > 0) {
-          dataset.roll = dataset.roll.split('d20').join('2d20kh')
+          dataset.roll = dataset.roll.split('d20').join(`${advantageDiceCount(this.actor)}d20kh`)
         }
         if (Number(dataset.advantage) < 0) {
           dataset.roll = dataset.roll.split('d20').join('2d20kl')
         }
       }
       let roll = new Roll(dataset.roll, this.actor.getRollData())
+      await evaluateManualRoll(roll, { actor: this.actor, title: `${this.actor.name}: ${label || 'Roll'}`, flavor: label })
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: label,
-        rollMode: game.settings.get(CONFIG.FALLOUTZERO.systemId, 'rollMode'),
+        rollMode: game.settings.get('core', 'rollMode'),
       })
       return roll
     }

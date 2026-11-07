@@ -166,6 +166,25 @@
   box-shadow: 0 0 8px var(--pb-glow);
 }
 
+.perk-card.perk-custom {
+  position: relative;
+}
+
+/* Marks perks that come from the world (Items directory or a world compendium), not the system pack. */
+.perk-card .perk-custom-tag {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 0 4px;
+  font-size: 7pt;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--pb-hairline);
+  background: var(--dark);
+  color: var(--sheetcolor);
+  pointer-events: auto;
+}
+
 .perk-card .perk-req-ability {
   font-size: 9pt;
 }

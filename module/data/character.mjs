@@ -230,13 +230,21 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
     triggerDiscipline ? this.combatSequence.modifiers -= 2 : ''
     triggerDiscipline && triggerDiscipline.system.wildWasteland ? this.combatSequence.modifiers -= 3 : ''
     vigilantWatch ? this.combatSequence.modifiers -= 1 : ''
+
+    for (const item of this.parent.items) {
+      const name = String(item.name ?? '').trim()
+      if (item.type === 'perk' && /^life ?giver$/i.test(name)) {
+        this.health.boostMax += 10 * Math.max(1, Math.floor(Number(item.system?.quantity) || 1))
+      } else if (item.type === 'condition' && /^life ?giver( condition)?$/i.test(name)) {
+        this.health.boostMax += Math.max(0, Math.floor(Number(item.system?.quantity) || 0))
+      }
+    }
     hazmatSuit && hazmatSuit.system.worn ? this.radiationDC.modifiers -= hazmatSuit.system.decay : ''
     back2back ? this.damageThreshold.modifiers += 2 : ''
     back2back ? this.armorClass.modifiers += 1 : ''
     toughness?.system?.quantity > 1 ? this.damageThreshold.modifiers += 1 : ''
     radTastic ? this.radiationDC.modifiers -= 3 : ''
     radTastic ? this.penalties.radiation.ignored += 3 : this.penalties.radiation.ignored
-    // Made of Sterner Stuff: flat +1 AC regardless of armor; the melee-DT half lives in actor.mjs.
     madeOfSternerStuff ? this.armorClass.modifiers += 1 : ''
 
     if (vigilantWatch && vigilantWatch.system.wildWasteland) {
@@ -264,7 +272,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       }
     }
     if (onerousRegeneration) {
-      // Wild Wasteland replaces the base Healing Rate bonus rather than stacking on it.
       if (onerousRegeneration.system.wildWasteland) {
         this.healingRate.modifiers += Number(this.level)
       } else {
@@ -278,7 +285,6 @@ export default class FalloutZeroCharacter extends FalloutZeroActor {
       if (denseCircuitry.system.wildWasteland) {
         this.healingRate.modifiers += this.level
         this.combatSequence.modifiers += -2
-        // WW: "Combat Sequence rolls have disadvantage" - roll 2, keep the lower
         this.combatSequence.formula = "2d20kl"
       }
     }

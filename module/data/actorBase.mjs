@@ -1,4 +1,5 @@
 import { FALLOUTZERO } from '../config.mjs'
+import { advantageDiceCount } from '../helpers/advantage.mjs'
 
 export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -420,7 +421,8 @@ export default class FalloutZeroActor extends foundry.abstract.TypeDataModel {
       }
     }
 
-    this.combatSequence.advantage > 0 ? this.combatSequence.formula = "2d20kh" :
+    // Advantage rolls 2d20 + one per Outrageous Advantage level.
+    this.combatSequence.advantage > 0 ? this.combatSequence.formula = `${advantageDiceCount(this.parent)}d20kh` :
       this.combatSequence.advantage < 0 ? this.combatSequence.formula = "2d20kl" : ''
   }
 }

@@ -2157,3 +2157,71 @@ body.game .app .vaulttec .tabs > [data-tab] {
       background: inherit;
       padding-top: 6px;
     }
+
+/* Manual Rolls - see module/helpers/manual-roll.mjs */
+
+.aaf-manual-roll-dialog .aaf-manual-roll-prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.aaf-manual-roll-dialog .aaf-manual-roll-prompt p {
+  margin: 0;
+}
+.aaf-manual-roll-dialog .aaf-manual-roll-flavor {
+  font-weight: bold;
+}
+.aaf-manual-roll-dialog .hint {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+.aaf-manual-roll-dialog .aaf-manual-roll-error {
+  color: var(--color-level-error, #e05252);
+  font-weight: bold;
+}
+.aaf-manual-roll-dialog .aaf-manual-roll-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  margin: 0;
+}
+.aaf-manual-roll-dialog .aaf-manual-roll-formula {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.95em;
+  opacity: 0.85;
+}
+.aaf-manual-roll-dialog .form-group label {
+  display: flex;
+  flex-direction: column;
+}
+.aaf-manual-roll-dialog .aaf-manual-roll-range {
+  font-size: 0.8em;
+  font-weight: normal;
+  opacity: 0.75;
+}
+.aaf-manual-roll-dialog input[type='number'] {
+  font-size: 1.15em;
+  text-align: center;
+}
+.aaf-manual-roll-dialog .form-group .aaf-manual-roll-blank {
+  flex: 0 0 100%;
+  margin: 0.15em 0 0;
+  font-size: 0.75em;
+  text-align: right;
+  opacity: 0.7;
+}
+
+/* Badge on chat cards whose dice were entered by hand */
+.aaf-manual-roll-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  margin-right: 0.4em;
+  padding: 0 0.4em;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-size: 0.8em;
+  line-height: 1.5;
+  opacity: 0.85;
+  white-space: nowrap;
+}

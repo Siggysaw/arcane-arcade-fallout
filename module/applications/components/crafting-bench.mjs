@@ -1,4 +1,5 @@
 import { hasAutomaticAdvantage, hasAutomaticDisadvantage, advantageDiceFormula } from '../../helpers/advantage.mjs'
+import { evaluateManualRoll, releaseModal } from '../../helpers/manual-roll.mjs'
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
@@ -250,9 +251,15 @@ class CraftingAttempt extends HandlebarsApplicationMixin(ApplicationV2) {
     const diceFormula = advantageDiceFormula(
       hasAutomaticAdvantage(this.actor, { skill: this.selectedSkill, ability }),
       hasAutomaticDisadvantage(this.actor, { skill: this.selectedSkill, ability }),
+      this.actor,
     )
     const roll = new Roll(`${diceFormula} + ${skillBonus} + ${abilityBonus} - ${penaltyTotal} + ${luckModSkillBonus}`)
-    const dice = await roll.evaluate()
+    releaseModal(this.element) // so the Manual Rolls box isn't stuck behind this modal
+    const dice = await evaluateManualRoll(roll, {
+      actor: this.actor,
+      title: `${this.actor.name}: Crafting Check`,
+      flavor: `Crafting ${this.craftable.name} - DC ${this.dc}.`,
+    })
 
     let result
     if (dice.total <= this.dc) {
@@ -509,22 +516,28 @@ export default class CraftingBench extends HandlebarsApplicationMixin(Applicatio
     }, {})
   }
 
-  get allRequirements() {
-    if (!this.selectedCraftable) return []
-    return [
-      ...this.selectedCraftable.system.crafting.mainRequirements,
-      ...this.selectedCraftable.system.crafting.additionalRequirements,
-    ]
+  // Whether the actor's bonus for a single requirement (skill + its governing
+  // ability + Luck mod) meets that requirement's DC.
+  _meetsRequirement(req) {
+    const abilityKey = CONFIG.FALLOUTZERO.skills[req.key].ability[0]
+    const bonus = this.skills[req.key] + this.actor.getAbilityMod(abilityKey) + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
+    return bonus >= req.dc
   }
 
   get hasRequirements() {
-    return this.allRequirements.reduce((passes, req) => {
-      this.skillBonus = this.skills[req.key] + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.skills[req.key].ability[0]) + this.actor.getAbilityMod(CONFIG.FALLOUTZERO.abilities.lck.id)
-      if (this.skillBonus < req.dc) {
-        passes = false
-      }
-      return passes
-    }, true)
+    if (!this.selectedCraftable) return false
+    const { mainRequirements, additionalRequirements } = this.selectedCraftable.system.crafting
+
+    // mainRequirements lists alternative skills for the same craft (e.g.
+    // Purified Water: Science OR Survival, shown together under "Skill
+    // Requirement" in main.hbs) - meeting any one of them is enough, not all
+    // of them. additionalRequirements are separate, stacked constraints (shown
+    // under its own "Additional Requirement" heading) and still all must be
+    // met.
+    const mainMet = mainRequirements.length === 0 || mainRequirements.some((req) => this._meetsRequirement(req))
+    const additionalMet = additionalRequirements.every((req) => this._meetsRequirement(req))
+
+    return mainMet && additionalMet
   }
 
   get craftingTree() {

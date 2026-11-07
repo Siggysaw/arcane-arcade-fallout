@@ -1,3 +1,4 @@
+import { getAllPerks, perkHasRequirements } from './perk-sources.mjs'
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2) {
     constructor(actor, perks) {
@@ -49,28 +50,9 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
     }
   
     static async create(actor) {
-      const perksPack = game.packs.find((p) => p.collection === 'arcane-arcade-fallout.perks')
-      const allPerks = await perksPack.getDocuments()
-      const perks = allPerks.sort((a, b) => {
-        const nameA = a.name.toUpperCase()
-        const nameB = b.name.toUpperCase()
-        if (nameA < nameB) {
-            return -1;
-        }
-
-        if (nameA > nameB) {
-            return 1;
-        }
-        
-          return 0;
-      }).map((perk) => {
-        if (
-            perk.system.lvlReq > 1 ||
-            perk.system.raceReq.length > 0 ||
-            (perk.system.specialReq.special !== '' && perk.system.specialReq.special !== 'None')
-        ) {
-            perk.hasRequirements = true
-        }
+      // System compendium + world compendiums + world Items, deduped and sorted by name.
+      const perks = (await getAllPerks()).map((perk) => {
+        perk.hasRequirements = perkHasRequirements(perk)
         return perk
       })
 
@@ -155,7 +137,7 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
 
     filterPerks() {
         return this.perks.filter((perk) => {
-            const raceIds = perk.system.raceReq.map((race) => race.id)
+            const raceIds = (perk.system.raceReq ?? []).map((race) => race.id)
             const hasSpecialReq = (perk.system.specialReq.special && perk.system.specialReq.special !== 'None')
             if (
                 (!perk.system.lvlReq || this.nextLevel >= perk.system.lvlReq) &&
@@ -168,8 +150,9 @@ export default class ChoosePerk extends HandlebarsApplicationMixin(ApplicationV2
     }
 
     static onPerkChoice (e, target) {
-        const { perkId } = target.dataset
-        const choice = this.perks.find((perk) => perk.id === perkId)
+        // Matched by UUID: a world perk and a compendium perk can share the same id.
+        const { perkUuid } = target.dataset
+        const choice = this.perks.find((perk) => perk.uuid === perkUuid)
         ChoosePerk.#onSubmit(choice)
         this.close()
     }

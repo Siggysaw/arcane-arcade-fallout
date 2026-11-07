@@ -1,4 +1,5 @@
 import { FALLOUTZERO } from '../../config.mjs'
+import { getAllPerks, perkHasRequirements } from './perk-sources.mjs'
 export default class PerkListApplication extends Application {
     constructor() {
         super();
@@ -20,13 +21,8 @@ export default class PerkListApplication extends Application {
     }
 
     async init() {
-        try {
-            const perksPack = game.packs.find((p) => p.collection === 'arcane-arcade-fallout.perks')
-            this.perks = await perksPack.getDocuments()
-        } catch (error) {
-            console.error(error);
-            ui.notifications.warn('Failed to get perks from compendium')
-        }
+        // System compendium + world compendiums + world Items, deduped and sorted by name.
+        this.perks = await getAllPerks()
     }
 
     static get defaultOptions() {
@@ -46,8 +42,8 @@ export default class PerkListApplication extends Application {
         const context = super.getData()
 
         const filteredPerks = this.selectedFilters.length > 0 ? this.perks.filter((perk) => {
-            const specialKey = FALLOUTZERO.abilities[perk.system.specialReq.special]?.label?.toLowerCase() || null
-            const requiredRaces = perk.system.raceReq
+            const specialKey = FALLOUTZERO.abilities[perk.system.specialReq?.special]?.label?.toLowerCase() || null
+            const requiredRaces = perk.system.raceReq ?? []
             if (specialKey && this.selectedFilters.includes(specialKey)){
                 return true
             } else if (requiredRaces.length > 0 && this.selectedFilters.includes('racial')) {
@@ -59,13 +55,7 @@ export default class PerkListApplication extends Application {
 
         // Same requirements-box check used by the level-up Choose Perk dialog, for a matching card look.
         const perksWithRequirements = filteredPerks.map((perk) => {
-            if (
-                perk.system.lvlReq > 1 ||
-                perk.system.raceReq.length > 0 ||
-                (perk.system.specialReq.special !== '' && perk.system.specialReq.special !== 'None')
-            ) {
-                perk.hasRequirements = true
-            }
+            perk.hasRequirements = perkHasRequirements(perk)
             return perk
         })
 

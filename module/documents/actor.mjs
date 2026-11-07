@@ -3,6 +3,8 @@ import FalloutZeroItem from './item.mjs'
 import LevelUpApplication from '../applications/components/level-up.mjs'
 import ChemApplication from '../applications/components/chem-application.mjs'
 import { conditionIdFromStatusId } from '../helpers/status-effects.mjs'
+import { evaluateManualRoll } from '../helpers/manual-roll.mjs'
+import { advantageDiceCount } from '../helpers/advantage.mjs'
 /** Extends the base Actor class to implement additional system-specific logic. */
 
 export default class FalloutZeroActor extends Actor {
@@ -371,7 +373,10 @@ export default class FalloutZeroActor extends Actor {
       const hadFailure1 = actor.system.saveFailures.first
       const hadFailure2 = actor.system.saveFailures.second
 
-      let rollInput = withAdvantage !== 'false' ? `2d20${withAdvantage}` : '1d20'
+      // Advantage rolls 2d20 + one per Outrageous Advantage level.
+      let rollInput = withAdvantage === 'kh'
+        ? `${advantageDiceCount(actor)}d20kh`
+        : withAdvantage !== 'false' ? `2d20${withAdvantage}` : '1d20'
       if (withModifiers === 'true') {
         rollInput += ` - ${actor.system.penaltyTotal}`
       }
@@ -379,7 +384,7 @@ export default class FalloutZeroActor extends Actor {
         rollInput += `+ ${rollBonus}`
       }
       const roll = new Roll(`${rollInput}+${abilityMod}+${partyNerve}`, actor.getRollData())
-      await roll.evaluate()
+      await evaluateManualRoll(roll, { actor, title: `${actor.name}: Death Save`, flavor: 'Death save - DC 10.' })
 
       const saveDC = 10
       const success = roll.total >= saveDC
@@ -489,10 +494,10 @@ export default class FalloutZeroActor extends Actor {
         rollInput += `+ ${rollBonus}`
       }
       const roll = new Roll(`${rollInput}`, actor.getRollData())
-      await roll.evaluate()
+      await evaluateManualRoll(roll, { actor, title: `${actor.name}: Custom Roll` })
 
       roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this }),
+        speaker: ChatMessage.getSpeaker({ actor }),
         flavor: `${actor.name} rolled a Custom Roll!`,
         rollMode: game.settings.get("core", 'rollMode'),
       })
@@ -844,7 +849,11 @@ export default class FalloutZeroActor extends Actor {
     const lckMod = Math.floor(foundry.utils.getProperty(this, 'system.abilities.lck.mod') / 2)
     const dc = Number(ev.currentTarget.dataset.dc)
 
-    const roll = await (new Roll(`1d20 + ${mod} - @penaltyTotal + ${lckMod}`, this.getRollData())).evaluate({ async: true })
+    const roll = await evaluateManualRoll(new Roll(`1d20 + ${mod} - @penaltyTotal + ${lckMod}`, this.getRollData()), {
+      actor: this,
+      title: `${this.name}: ${abilityLabel} Check`,
+      flavor: `${abilityLabel} check, DC ${dc}, against ${ev.currentTarget.dataset.condition}.`,
+    })
 
     let rollContent = ''
     if (Number.isFinite(dc)) {
@@ -1474,7 +1483,11 @@ export default class FalloutZeroActor extends Actor {
   async rollSave({ formula, saveDC, type }) {
     console.log(`Formula: ${formula} SaveDC:${saveDC},Type:${type}`)
     let roll = new Roll(`${formula} - ${this.system.penaltyTotal}`, this.getRollData())
-    await roll.evaluate()
+    await evaluateManualRoll(roll, {
+      actor: this,
+      title: `${this.name}: ${type ? `${type[0].toUpperCase()}${type.slice(1)} ` : ''}Save`,
+      flavor: `Save against DC ${saveDC}.`,
+    })
 
     let flavor = ''
     const success = roll.total >= saveDC

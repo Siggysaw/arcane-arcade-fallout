@@ -1,4 +1,6 @@
 import { getTableFromPack } from '../helpers/tables.mjs'
+import { evaluateManualRoll, evaluateManualRolls } from '../helpers/manual-roll.mjs'
+import { advantageDiceCount } from '../helpers/advantage.mjs'
 
 export default class FalloutZeroChatMessage extends ChatMessage {
   /** @inheritDoc */
@@ -386,15 +388,31 @@ export default class FalloutZeroChatMessage extends ChatMessage {
     if (persistentApplies) {
       ui.notifications.notify("Persistent Perk Activated! Advantage Gained!")
 
+      // Normal -> advantage (2d20 + one per Outrageous Advantage level),
+      // disadvantage -> normal, advantage -> one extra d20.
       let newRollFormula = rollFormula
-      rollFormula.includes("1d20") ? newRollFormula = rollFormula.replace("1d20", "2d20kh") : 
-      rollFormula.includes("2d20kl") ? newRollFormula = rollFormula.replace("2d20kl", "1d20") : 
-      rollFormula.includes("2d20kh") ? newRollFormula = rollFormula.replace("2d20kh", "3d20kh") : ''
+      const keepHighest = rollFormula.match(/(\d+)d20kh/)
+      if (rollFormula.includes("2d20kl")) {
+        newRollFormula = rollFormula.replace("2d20kl", "1d20")
+      } else if (keepHighest) {
+        newRollFormula = rollFormula.replace(keepHighest[0], `${Number(keepHighest[1]) + 1}d20kh`)
+      } else if (rollFormula.includes("1d20")) {
+        newRollFormula = rollFormula.replace("1d20", `${advantageDiceCount(this.actor)}d20kh`)
+      }
 
       this.rolls[0]._formula = newRollFormula
     }
 
-    let newRoll = await this.rolls[0].reroll()
+    // clone() keeps the (possibly Persistent-boosted) formula; evaluating
+    // through Manual Rolls lets physical-dice users enter the reroll.
+    const newRoll = this.rolls[0].clone()
+    newRoll.options = { ...newRoll.options }
+    delete newRoll.options.aafManual
+    await evaluateManualRoll(newRoll, {
+      actor: this.actor,
+      title: `${this.actor?.name ?? 'Karma Cap'}: Reroll`,
+      flavor: 'Rerolling with a karma cap.',
+    })
     
     newRoll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -512,10 +530,16 @@ export default class FalloutZeroChatMessage extends ChatMessage {
       const wrapped = isEyesTarget
         ? `max(${floor}, floor((${components[i].formula}) / 2))`
         : `max(${floor}, ${components[i].formula})`
-      const roll = new Roll(wrapped, rollData)
-      await roll.evaluate()
-      rolls.push(roll)
+      rolls.push(new Roll(wrapped, rollData))
     }
+    // Manual Rolls: one box for every damage type's dice (plain evaluate otherwise).
+    const damageWeapon = this.actor?.items?.get(this.flags?.falloutzero?.itemId)
+    await evaluateManualRolls(rolls, {
+      actor: this.actor,
+      title: `${this.actor?.name ?? 'Damage'}: ${isCritical ? 'Critical ' : ''}Damage`,
+      flavor: `${isCritical ? 'Critical hit! ' : 'Hit! '}Roll damage${damageWeapon ? ` for ${damageWeapon.name}` : ''} - enter your damage dice total.`,
+      labels: components.length > 1 ? components.map((c) => `${c.type ?? ''} damage`) : [],
+    })
 
     // Upgraded: +2 damage for every individual damage die (across every
     // damage-type roll) that shows a 1 or 2

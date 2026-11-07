@@ -1,3 +1,5 @@
+import { advantageDiceCount } from '../helpers/advantage.mjs'
+import { evaluateManualRoll } from '../helpers/manual-roll.mjs'
 export default class SkillRoll extends FormApplication {
   constructor(actor, skillKey, options = {}, callback = () => { }) {
     super(actor, options)
@@ -70,11 +72,12 @@ export default class SkillRoll extends FormApplication {
 
   getDice() {
     const advantageMode = Number(this.formDataCache.advantageMode)
-    const diceCount = [SkillRoll.ADV_MODE.ADVANTAGE, SkillRoll.ADV_MODE.DISADVANTAGE].includes(
-      advantageMode,
-    )
-      ? 2
-      : 1
+    // Advantage rolls 2d20 + one per Outrageous Advantage level.
+    const diceCount = advantageMode === SkillRoll.ADV_MODE.ADVANTAGE
+      ? advantageDiceCount(this.actor)
+      : advantageMode === SkillRoll.ADV_MODE.DISADVANTAGE
+        ? 2
+        : 1
     const diceSuffix =
       SkillRoll.ADV_MODE.ADVANTAGE === advantageMode
         ? 'kh'
@@ -129,7 +132,11 @@ export default class SkillRoll extends FormApplication {
       this.actor.getRollData(),
     )
 
-    await roll.evaluate()
+    await evaluateManualRoll(roll, {
+      actor: this.actor,
+      title: `${this.actor.name}: ${this.getFlavor().replace(/^Performed an? /, '')}`,
+      flavor: this.getFlavor(),
+    })
 
     const skillTooltip = `
         <div>
